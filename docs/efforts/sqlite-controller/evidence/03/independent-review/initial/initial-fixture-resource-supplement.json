@@ -1,0 +1,10 @@
+{
+  "retained_pid_start_identities": 72,
+  "starts_by_record_kind": {
+    "kata-start": 22,
+    "owned-process-start": 50
+  },
+  "matching_live": [],
+  "terminal_records": 133,
+  "limits": "Includes early kata-start records as well as later owned-process-start; early incomplete setup without retained identity stays uncredited; no signalling."
+}

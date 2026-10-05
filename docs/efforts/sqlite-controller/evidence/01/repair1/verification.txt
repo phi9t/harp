@@ -1,0 +1,32 @@
+Base/original candidate:6fb501904a2900aae91139e67c615032925af38f
+Repair round1/3. Root-owned re-review pending. All listed commands terminal.
+Logs retain raw output followed by a wrapper-recorded exit status.
+
+Behavioral RED before production corrections, each status101:
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public project_base_must
+  red-base.log: accepted nonexact base HEAD.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public message_
+  red-messages.log: private A→operator event leaked to B; original sender misses ack.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test process slow_drip
+  red-deadline.log: healthy queued request blocked2402ms by slow drip.
+
+Focused GREEN, each status0:
+- Same project_base_must command, green-base.log.
+- Same message_ command, green-messages.log.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test process slow_drip -- --nocapture
+  green-deadline.log:1003ms, healthy query succeeds.
+
+Final exact-source verification, each status0:
+- cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml -- --check
+  fmt-final.log.
+- cargo clippy --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --all-targets --all-features -- -D warnings
+  clippy-final.log.
+- sh tools/agents/checks.d/70-sqlite-controller.sh
+  expands cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture
+  test-final.log:18/18 (15 public +3 daemon/process), including original rollback,
+  restart, ownership and unknown-capacity proofs and new slow-client proof.
+- git diff --check (status0); final staged diff/source manifest inspected before commit.
+
+Original reports were copied as retained data only; manifest records their byte
+hashes, checked against root-owned source reports. Original evidence/source
+candidate was retained, not rewritten. No broad legacy service matrix ran.

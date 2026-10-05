@@ -1,0 +1,17 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.02s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 3 tests
+cancel_before_start_tombstone={"ok":{"binding":{"attempt":"de22a09b-d1cd-4744-962e-fb0e3bd5f412","base":"0123456789abcdef0123456789abcdef01234567","brief":"ec7c50b6-bb41-44a9-9521-6ba0f38dec05","operation":"85bf717e-9c6c-492a-96fb-02c5a8925d82","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"e7bb6963-e225-4ce2-9675-d2637cd68f91","incarnation":"75fc7866-0f82-4dc7-97ea-758cafaf9c64","init_start_ticks":null,"namespace_init":null,"outcome":"cancel tombstone: effect never started","pid":null,"pid_namespace":null,"start_ticks":null,"state":"exited"}}
+test pause_prevents_prepared_dispatch_and_cancel_overtakes_start ... ok
+lost_reply_adopted={"binding":{"attempt":"db9329c6-ff12-4738-a182-f01ea2e919da","base":"0123456789abcdef0123456789abcdef01234567","brief":"8d6a824d-6cfe-4cf0-824f-9c2003162dca","operation":"dc29e520-9249-412f-bb47-3b4084ec9cce","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"112c713a-f936-4231-b4ce-b1bd034741b6","incarnation":"8405e19f-147f-4cb5-94ac-23100bbb32f9","init_start_ticks":"50742614","namespace_init":2509677,"outcome":null,"pid":2509675,"pid_namespace":4026539690,"start_ticks":"50742613","state":"running"}; unreachable_supervisor_occupied_slots=1
+test lost_start_reply_is_looked_up_and_unavailable_supervisor_keeps_capacity ... ok
+actual_private_boundary_probe={"workspace_inode": 149628367, "pid": 1, "descendant": 2, "home": "/home/worker", "network": "blocked", "forbidden": ["/data02/home/philip.yang/devx/tmp/.tmpDc8HrD", "/data02/home/philip.yang/devx/tmp/.tmpDc8HrD/api.sock", "/data02/home/philip.yang/devx/tmp/.tmpDc8HrD/supervisor.sock", "/root/.ssh", "/home/philip.yang", "/workspace/.git"]}
+two_live_execution_identities a={"binding":{"attempt":"82b13045-7964-4bc9-8788-ac848dbc726c","base":"0123456789abcdef0123456789abcdef01234567","brief":"a33e0e12-c666-4c87-9b6c-487143234938","operation":"85963c69-54c3-4c23-a13f-a2379e5387d7","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"f99f8502-8cde-4b42-817f-a3fdbd9a53a5","incarnation":"56534cd2-3462-4d0c-ba2f-2d2164ea5d22","init_start_ticks":"50742614","namespace_init":2509678,"outcome":null,"pid":2509676,"pid_namespace":4026539790,"start_ticks":"50742614","state":"running"} b={"binding":{"attempt":"daa193dd-4a9b-4516-9fe8-f0bdc85bc534","base":"0123456789abcdef0123456789abcdef01234567","brief":"c6ffc66a-b116-4eec-a34f-303aacbe5e0c","operation":"0b1d362e-d438-4974-b082-df8ec89dc05c","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"90107fef-49e4-457f-ac5c-2eb89e49611a","incarnation":"56534cd2-3462-4d0c-ba2f-2d2164ea5d22","init_start_ticks":"50742616","namespace_init":2509680,"outcome":null,"pid":2509679,"pid_namespace":4026539874,"start_ticks":"50742615","state":"running"}
+host_namespace_worker_pids=[2509678, 2509686]
+controller_restart_adopted_same_handles; cancellation_observed_removed_host_descendants=[2509678, 2509686]
+test independently_supervised_workers_survive_restart_and_cancel_descendants ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

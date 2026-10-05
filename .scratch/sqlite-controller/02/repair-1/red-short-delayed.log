@@ -1,0 +1,19 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.31s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 1 test
+
+thread 'repair_short_exit_during_delayed_identity_sampling_is_confirmed' (187147) panicked at tests/runtime.rs:34:9:
+behavior deadline exceeded
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair_short_exit_during_delayed_identity_sampling_is_confirmed ... FAILED
+
+failures:
+
+failures:
+    repair_short_exit_during_delayed_identity_sampling_is_confirmed
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 12 filtered out; finished in 8.34s
+
+error: test failed, to rerun pass `--test runtime`

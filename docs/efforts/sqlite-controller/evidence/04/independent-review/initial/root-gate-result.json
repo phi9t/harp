@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-04T17:16:55Z",
+  "source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "current_initial_gate": "PASS78 incl27native",
+  "assembled_seconds": 990.1692060340429,
+  "source_unchanged": true,
+  "source_files": 34,
+  "default_git_kata_fmt_strict_clippy_normal_build": "PASS",
+  "retention": {
+    "records": 95,
+    "logs": 29,
+    "source_archives": 36,
+    "archived_files": 1212,
+    "fixture_identities": 772,
+    "matching_live": 0,
+    "unknown_reads": 0
+  },
+  "acceptance": "UNACCEPTED: independent Spec3/Standards1/branch6457 findings consolidate9, repair1 active; does not qualify repair source or live model trial",
+  "gate_sha256": "55492ad701d4a00f244aacbb3481b024ccb994c39e78d95756a2e342f36c21af",
+  "audit_sha256": "fd508151a32c16da311b30246f83470254306f7617572e886f14542e9c1398da"
+}

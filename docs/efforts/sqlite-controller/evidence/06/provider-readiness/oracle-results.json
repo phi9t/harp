@@ -1,0 +1,15 @@
+{
+  "retained_native_tui_no_account_required": true,
+  "owned_native_fixtures_have_no_auth_file": true,
+  "proxy_overrides_authorization": true,
+  "proxy_forwards_untrusted_account_header": true,
+  "proxy_forwards_unqualified_model": true,
+  "proxy_rejects_unqualified_paths_and_connect": true,
+  "proxy_accepts_opaque_synthetic_bearer": true,
+  "proxy_follows_redirect": true,
+  "redirect_drops_bearer_but_forwards_account_and_body": true,
+  "small_event_buffered_in_probe": true,
+  "large_event_streamed_before_completion": true,
+  "proxy_preserves_synthetic401": true,
+  "owned_proxy_processes_gone": true
+}

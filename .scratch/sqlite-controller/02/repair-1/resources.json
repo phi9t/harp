@@ -1,0 +1,385 @@
+{
+  "observed_utc": "2026-10-04T06:17:36Z",
+  "surviving_owned_executions": [],
+  "execution_records": [
+    {
+      "binding": {
+        "attempt": "10bd88a1-458c-4618-a5ee-633c9f3cf26d",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "18bc6c72-1def-4d42-bfb9-d5c83533e294",
+        "operation": "a7e7bc45-3593-43e9-8b1d-d120a88160b5",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "0e2c9c11-551f-433b-a395-91502f7f44ad",
+      "incarnation": "8c3aed48-4a25-4bf3-8366-656b043b0422",
+      "init_start_ticks": "51011904",
+      "namespace_init": 920474,
+      "outcome": "owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)",
+      "pid": 920464,
+      "pid_namespace": 4026540085,
+      "start_ticks": "51011902",
+      "state": "exited"
+    },
+    {
+      "binding": {
+        "attempt": "49c1bde2-55d4-4efd-877c-ab5f544efce6",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "6c08edf2-2daa-48b3-84ff-6dcb24fb0a9f",
+        "operation": "c2b2966a-beb0-42b3-98d0-8a20d8ddf409",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "3c65288e-f635-4208-9b1b-c55f4a67c7ce",
+      "incarnation": "3e093cdd-8f1d-4002-ba00-0a8f3e4cd060",
+      "init_start_ticks": "51011899",
+      "namespace_init": 920456,
+      "outcome": null,
+      "pid": 920455,
+      "pid_namespace": 4026539690,
+      "start_ticks": "51011899",
+      "state": "running"
+    },
+    {
+      "binding": {
+        "attempt": "9e6f637c-75d8-4721-ae79-a2a8fd485816",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "96a3f97d-0fb9-4892-a9da-cf7cb5178a0e",
+        "operation": "cac0a94e-f134-4fba-bd0e-3eee6b4784e9",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "e093088e-f181-4d0c-826a-2043597322bf",
+      "incarnation": "c6b60d25-0e84-4452-a04a-5fe60daaeeac",
+      "init_start_ticks": "51011905",
+      "namespace_init": 920475,
+      "outcome": null,
+      "pid": 920470,
+      "pid_namespace": 4026540291,
+      "start_ticks": "51011904",
+      "state": "running"
+    },
+    {
+      "binding": {
+        "attempt": "a5d86bb5-7455-43da-897d-8a4659991dc8",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "da4cdfb0-1ab7-4e1d-9232-d9001e5b1ed3",
+        "operation": "061a88e3-294f-4e2d-968e-338e09dfb64e",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "259065e3-4a3f-493f-a8d1-5ddd900a87ca",
+      "incarnation": "c6b60d25-0e84-4452-a04a-5fe60daaeeac",
+      "init_start_ticks": "51011907",
+      "namespace_init": 920478,
+      "outcome": null,
+      "pid": 920477,
+      "pid_namespace": 4026540375,
+      "start_ticks": "51011906",
+      "state": "running"
+    },
+    {
+      "binding": {
+        "attempt": "5d7fd71a-56d6-4bc7-9c15-c5a24b761402",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "9aecaf24-c92c-41a6-b9e7-8818dbb44896",
+        "operation": "12d3db2d-0531-4ed8-a272-0cef661e4a22",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "2e11b63d-1418-4130-b633-3183ffd566bf",
+      "incarnation": "7a8f3082-b41c-400d-9561-280bfa6b57c8",
+      "init_start_ticks": "51011904",
+      "namespace_init": 920473,
+      "outcome": "owned namespace process pidfd confirmed termination: exit status: 0",
+      "pid": 920463,
+      "pid_namespace": 4026540167,
+      "start_ticks": "51011902",
+      "state": "exited"
+    },
+    {
+      "binding": {
+        "attempt": "a53ab515-275f-4a75-acae-63e48f3fe388",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "b40d828d-7d3a-4ea9-ac08-eb579144c098",
+        "operation": "6c87083d-53ca-4bcd-b01d-0d88534747ef",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "4649aead-0eb4-4bbe-8345-554e0830236f",
+      "incarnation": "9c379d01-bf88-47e1-8d49-5ab4e0432563",
+      "init_start_ticks": "51011900",
+      "namespace_init": 920458,
+      "outcome": "supervisor ownership lost; PID reconstruction refused",
+      "pid": 920457,
+      "pid_namespace": 4026539790,
+      "start_ticks": "51011900",
+      "state": "unknown"
+    },
+    {
+      "binding": {
+        "attempt": "dd1c1e63-4155-4478-bc1c-f727b3dbd755",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "860536f3-4c91-4740-8471-2bf5af4a9334",
+        "operation": "c44ec782-e7d1-48f1-a409-cc1195a3d563",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "217499e6-c1fe-44b4-bfb3-e94a2a62dab9",
+      "incarnation": "b45a17a2-c14c-4f9a-8e3a-48783b69449c",
+      "init_start_ticks": null,
+      "namespace_init": null,
+      "outcome": "monitor exited without retained whole-process identity",
+      "pid": 920461,
+      "pid_namespace": null,
+      "start_ticks": "51011902",
+      "state": "unknown"
+    },
+    {
+      "binding": {
+        "attempt": "d4103c94-eff2-45c0-b594-4b1ad730c923",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "35b9ab30-aced-4425-81f1-9f098330ad96",
+        "operation": "e695d351-b806-4e88-972b-a2886dfc8eb0",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "0eaf8f1b-10f5-4df1-b462-11735bb347f1",
+      "incarnation": "fead9320-e15c-4f70-868f-d4213889c640",
+      "init_start_ticks": "51011904",
+      "namespace_init": 920472,
+      "outcome": "owned namespace process pidfd confirmed termination: exit status: 0",
+      "pid": 920465,
+      "pid_namespace": 4026540000,
+      "start_ticks": "51011902",
+      "state": "exited"
+    },
+    {
+      "binding": {
+        "project": "p",
+        "attempt": "95ba034e-cca4-475d-80bb-8c56afef199e",
+        "operation": "4c98d853-5c03-4ed5-a32a-76c3900e56bc",
+        "scope_epoch": 1,
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "8b74ef54-a2a9-493a-97ad-6ab04a1fa994"
+      },
+      "handle": "e4d8ba58-1a7d-4759-a7ef-b4b49dc35fb3",
+      "incarnation": "339d0112-c002-437d-a11e-578cddda8fdf",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "pid": 920496,
+      "start_ticks": "51011919",
+      "namespace_init": 920497,
+      "init_start_ticks": "51011920",
+      "pid_namespace": 4026539790,
+      "state": "exited",
+      "outcome": "owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)"
+    },
+    {
+      "binding": {
+        "attempt": "7ec4be79-2c6a-446d-93a0-3b968176ae52",
+        "base": "0123456789abcdef0123456789abcdef01234567",
+        "brief": "61cc9e56-47f4-4468-80da-dbeb344b555b",
+        "operation": "d81f8dbc-23cc-4574-90ff-fda0967e44f5",
+        "project": "p",
+        "scope_epoch": 1
+      },
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "handle": "2b2995bf-48d0-4a6a-9892-773fe3fd681a",
+      "incarnation": "68af4bf1-93b1-490f-b94a-7ab8f6e57fa5",
+      "init_start_ticks": "51011904",
+      "namespace_init": 920471,
+      "outcome": "owned namespace process pidfd confirmed termination: exit status: 0",
+      "pid": 920462,
+      "pid_namespace": 4026539964,
+      "start_ticks": "51011902",
+      "state": "exited"
+    }
+  ],
+  "kernel_identity_observations": [
+    {
+      "pid": 920464,
+      "expected_start_ticks": "51011902",
+      "operation": "a7e7bc45-3593-43e9-8b1d-d120a88160b5",
+      "handle": "0e2c9c11-551f-433b-a395-91502f7f44ad",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920474,
+      "expected_start_ticks": "51011904",
+      "operation": "a7e7bc45-3593-43e9-8b1d-d120a88160b5",
+      "handle": "0e2c9c11-551f-433b-a395-91502f7f44ad",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920455,
+      "expected_start_ticks": "51011899",
+      "operation": "c2b2966a-beb0-42b3-98d0-8a20d8ddf409",
+      "handle": "3c65288e-f635-4208-9b1b-c55f4a67c7ce",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920456,
+      "expected_start_ticks": "51011899",
+      "operation": "c2b2966a-beb0-42b3-98d0-8a20d8ddf409",
+      "handle": "3c65288e-f635-4208-9b1b-c55f4a67c7ce",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920470,
+      "expected_start_ticks": "51011904",
+      "operation": "cac0a94e-f134-4fba-bd0e-3eee6b4784e9",
+      "handle": "e093088e-f181-4d0c-826a-2043597322bf",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920475,
+      "expected_start_ticks": "51011905",
+      "operation": "cac0a94e-f134-4fba-bd0e-3eee6b4784e9",
+      "handle": "e093088e-f181-4d0c-826a-2043597322bf",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920477,
+      "expected_start_ticks": "51011906",
+      "operation": "061a88e3-294f-4e2d-968e-338e09dfb64e",
+      "handle": "259065e3-4a3f-493f-a8d1-5ddd900a87ca",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920478,
+      "expected_start_ticks": "51011907",
+      "operation": "061a88e3-294f-4e2d-968e-338e09dfb64e",
+      "handle": "259065e3-4a3f-493f-a8d1-5ddd900a87ca",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920463,
+      "expected_start_ticks": "51011902",
+      "operation": "12d3db2d-0531-4ed8-a272-0cef661e4a22",
+      "handle": "2e11b63d-1418-4130-b633-3183ffd566bf",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920473,
+      "expected_start_ticks": "51011904",
+      "operation": "12d3db2d-0531-4ed8-a272-0cef661e4a22",
+      "handle": "2e11b63d-1418-4130-b633-3183ffd566bf",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920457,
+      "expected_start_ticks": "51011900",
+      "operation": "6c87083d-53ca-4bcd-b01d-0d88534747ef",
+      "handle": "4649aead-0eb4-4bbe-8345-554e0830236f",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920458,
+      "expected_start_ticks": "51011900",
+      "operation": "6c87083d-53ca-4bcd-b01d-0d88534747ef",
+      "handle": "4649aead-0eb4-4bbe-8345-554e0830236f",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920461,
+      "expected_start_ticks": "51011902",
+      "operation": "c44ec782-e7d1-48f1-a409-cc1195a3d563",
+      "handle": "217499e6-c1fe-44b4-bfb3-e94a2a62dab9",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920465,
+      "expected_start_ticks": "51011902",
+      "operation": "e695d351-b806-4e88-972b-a2886dfc8eb0",
+      "handle": "0eaf8f1b-10f5-4df1-b462-11735bb347f1",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920472,
+      "expected_start_ticks": "51011904",
+      "operation": "e695d351-b806-4e88-972b-a2886dfc8eb0",
+      "handle": "0eaf8f1b-10f5-4df1-b462-11735bb347f1",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920496,
+      "expected_start_ticks": "51011919",
+      "operation": "4c98d853-5c03-4ed5-a32a-76c3900e56bc",
+      "handle": "e4d8ba58-1a7d-4759-a7ef-b4b49dc35fb3",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920497,
+      "expected_start_ticks": "51011920",
+      "operation": "4c98d853-5c03-4ed5-a32a-76c3900e56bc",
+      "handle": "e4d8ba58-1a7d-4759-a7ef-b4b49dc35fb3",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920462,
+      "expected_start_ticks": "51011902",
+      "operation": "d81f8dbc-23cc-4574-90ff-fda0967e44f5",
+      "handle": "2b2995bf-48d0-4a6a-9892-773fe3fd681a",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 920471,
+      "expected_start_ticks": "51011904",
+      "operation": "d81f8dbc-23cc-4574-90ff-fda0967e44f5",
+      "handle": "2b2995bf-48d0-4a6a-9892-773fe3fd681a",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    }
+  ],
+  "surviving_resources": [
+    "isolated worktree sqlite02/runtime",
+    "Cargo target cache",
+    "explicit retained historical and repair logs"
+  ],
+  "disposal_proof": "setup-failure test observes empty supervisor children list; zombie test owns pidfds and confirms descendant readiness; outer proc checks cover retained final-run monitor/init identities"
+}

@@ -1,0 +1,19 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.32s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 1 test
+
+thread 'repair_zombie_init_leader_with_live_thread_cannot_release_early' (49651) panicked at tests/runtime.rs:687:5:
+capacity released while exact namespace process still has live threads
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair_zombie_init_leader_with_live_thread_cannot_release_early ... FAILED
+
+failures:
+
+failures:
+    repair_zombie_init_leader_with_live_thread_cannot_release_early
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.24s
+
+error: test failed, to rerun pass `--test runtime`

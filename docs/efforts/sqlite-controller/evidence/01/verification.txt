@@ -1,0 +1,56 @@
+Worktree: /data02/home/philip.yang/workspace/corenius-sqlite01-storage
+Original base: cf52c11055be09298e6ecc1353e5901e45726551
+Root-authorized doc-only FF / implementation base: 55bb58b344c44990f527b7bfb61947702fbe5445
+Exact final source: tested-source.json SHA256 file manifest; same source committed with these logs.
+Author self-inspection: command/auth/replay order, transaction boundary, schema relationships,
+query confidentiality, socket/OS lock lifecycle, real process tests, scope and final staged diff.
+Independent Standards/Spec and branch gate: root-owned, not yet performed by author.
+Ticket status: unchanged claimed; no resolved/accepted declaration.
+
+SETUP (not behavioral RED):
+- cargo test --manifest-path crates/sqlite-controller/Cargo.toml --test public
+  status143, terminated owned cargo fetch after download timeouts; red-initial.log.
+  Four bounded curl downloads (max-time20s each) populated normal Cargo cache; status0.
+  Offline Cargo validated the lockfile checksums. No external service was launched.
+- setup-compile.log: status101, unsigned rusqlite SQL integer types corrected.
+- setup-clippy.log: status101, collapsible-if/type-complexity cleanup; final clippy passes.
+
+BEHAVIORAL RED, status101 for each, against real on-disk public seams:
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public
+  red-public.log: six expected failed behavior assertions against empty controller stub.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection --test process --test public
+  red-service.log: two daemon process behaviors fail because the service stub exits before serving.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public dispatch_credentials
+  red-dispatch-query.log: missing operator dispatch-context query.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public answers_reconnect
+  red-answer-events.log: own question answer missing from event reconnect.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public controller_files
+  red-file-permissions.log: controller DB file permission assertion fails.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public canonical_work_ref
+  red-work-ref.log: alias for one WorkRef incorrectly admitted as a second task.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public foreign_or_future
+  red-fresh-database.log: unversioned foreign database incorrectly accepted.
+
+GREEN slices (status0): green-public.log (initial6), green-service.log (7+2),
+green-answer-events.log, green-file-permissions.log, green-work-ref.log,
+green-fresh-database.log. Final state covers every slice below.
+
+FINAL exact-source verification, all status0:
+- cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml -- --check
+  fmt-final.log (empty stdout is successful).
+- cargo clippy --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --all-targets --all-features -- -D warnings
+  clippy-final.log.
+- sh tools/agents/checks.d/70-sqlite-controller.sh
+  expands cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture
+  test-final.log:12 public +2 real process tests pass; includes exact owned PIDs,
+  SIGKILL statuses, competing ownership refusal, pre-COMMIT rollback observation,
+  restart with unknown attempt/capacity and prepared operation retained.
+- python3 tools/agents/tracker.py lint
+  tracker-final.log.
+- sh -n tools/agents/checks.d/70-sqlite-controller.sh
+  status0.
+
+Full legacy repository gate not run: it invokes the parked70-team-control-plane.sh
+Temporal/PostgreSQL service suite. Root owns assembled baseline qualification;
+standalone hook has no such dependency. No model, runtime, Kata, Git landing,
+backup-restore or power-loss qualification is inferred from these tests.

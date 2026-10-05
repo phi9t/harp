@@ -1,0 +1,31 @@
+{
+  "source_fixtures_read_only": true,
+  "fixtures": [
+    {
+      "original": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress-probe.py",
+      "original_sha256": "79fe54062e1f0922717323cbbced8b4f03dd4ae9392840b254e1f62bccb34c3f",
+      "owned": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/fixtures/progress-probe.py",
+      "owned_sha256": "981a61990cec682ec02d5277ce64537e7d9f639a72e9b20629a31bd5cda0f325"
+    },
+    {
+      "original": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver-v2.py",
+      "original_sha256": "1bbdb62dfba27141cd7fb97c59302b425490c33a73528ca71d7ce0321db0cda2",
+      "owned": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/fixtures/correction-driver.py",
+      "owned_sha256": "89216397bae56940c9d5c576065f07822670564344b1cded5cdfa8bec3748a17"
+    },
+    {
+      "original": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-exercise.py",
+      "original_sha256": "7eed19d46bf99945886b055cea9cbcefe4993d95b551d9c2ed778dfd3812a7f0",
+      "owned": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/fixtures/correction-exercise.py",
+      "owned_sha256": "b4cf6433665cb26e31ee5b66d34e23761844808ee2705b9d0ba5caadd70c8171"
+    },
+    {
+      "original": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/native-registry-v2.py",
+      "original_sha256": "dc915b7a56164db6245ebf6c48a7f37c58f7e2ecfe5cef34190ff9897db30b13",
+      "owned": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/fixtures/native-registry.py",
+      "owned_sha256": "23481316c11463deb04e94531e7bbddc332235e53673b778c04cd6986f5f3acd"
+    }
+  ],
+  "changes": "Own paths/binary/archive roots; C2 adds actual contract assertion; C1 removes pre-fairness regrant and observes later authorized entry, accepts presented or explicit acknowledged peer, then asserts genuine fresh grant/new decision/same correction and retained old decision. First old peer-state assertion failure retained, not target RED. No generic restart from initial v2 inherited fix.",
+  "hash_timing": "Owned fixture hashes were sealed after runs and after peer terminal-state/contract predicate refinement; original per-run fixture-file hash was not captured. Retained distinct run logs are original. Runtime/source binary boundaries and final tracked regressions are retained; do not treat final fixture hash as exact RED-script runtime pin."
+}

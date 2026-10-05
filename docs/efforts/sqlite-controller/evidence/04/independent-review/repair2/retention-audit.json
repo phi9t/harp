@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-10-04T18:43:34.087621+00:00",
+  "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "evidence_tip": "0b97408bf8f7cd8663da181425cb35f230af9c01",
+  "phase": "repair2",
+  "retention_records_verified": 47,
+  "raw_logs_verified": 8,
+  "source_archives_verified": 17,
+  "archived_source_files_verified": 578,
+  "retained_fixture_identities_checked": 340,
+  "recorded_terminal_receipts_including_duplicates": 451,
+  "matching_current_kernel_identities": [],
+  "unresolved_kernel_reads": [],
+  "scope": "Immutable requested04 phase evidence plus explicit root gate log, when supplied. Only explicit fixture process/namespace receipts scanned; exact PID/start checks, no signals or broad process discovery. Historical unknown domain rows remain unknown. Retention/source-integrity audit only; not behavioral conformance or live Codex qualification.",
+  "runner_sha256": "eac79f692d3736b79987f14120fa748d84e3eb6f2c0e93a78be20e36b801f263",
+  "verdict": "PASS"
+}

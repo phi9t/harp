@@ -1,0 +1,20 @@
+{
+  "command": [
+    "env",
+    "CORENIUS_TEST_CONTROL_CENTER=1",
+    "CORENIUS_TEST_REPAIR3_UI=1",
+    "CORENIUS_TEST_RETAIN_RAW=1",
+    "CORENIUS_TEST_TOPOLOGY=shared",
+    "python3",
+    ".scratch/sqlite-controller/c1c2-happy/fixtures/correction-driver.py",
+    ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+  ],
+  "started_utc": "2026-10-05T03:18:59.478193+00:00",
+  "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "pid": 115415,
+  "start_ticks": "58591977",
+  "exit": 1,
+  "seconds": 48.605267296079546,
+  "finished_utc": "2026-10-05T03:19:48.083460+00:00",
+  "log_sha256": "809c84a7c55d167be30138a43a1623a8ed7323b0c770f968cf43caf19ec63888"
+}

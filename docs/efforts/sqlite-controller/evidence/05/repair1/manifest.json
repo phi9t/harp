@@ -1,0 +1,154 @@
+{
+  "acceptance": "root pending",
+  "created_at": "2026-10-04T22:49:56.144070+00:00",
+  "files": {
+    "admission.json": {
+      "bytes": 801,
+      "sha256": "5345ead6a296b2b2db26b69962ee2e0d58ebc623508d5ae57c660f95b1f66385"
+    },
+    "driver-retention.json": {
+      "bytes": 776,
+      "sha256": "599f38e33fd7b651324ece17937a913b1157159b1646259fac51870f68ce7fcb"
+    },
+    "final-owned-process-dispositions.json": {
+      "bytes": 35334,
+      "sha256": "e4edd47f44587f954c79ce4c0fdfb4febafa21b13a36503f6317594a6cdb4eda"
+    },
+    "handoff.md": {
+      "bytes": 12935,
+      "sha256": "d7b70a027bbaee695927a31c51f4026a7e13623767bb84da3fa04919edeafe6e"
+    },
+    "initial-driver-only.diff": {
+      "bytes": 1564,
+      "sha256": "d53f51ec967d0193fa7e0651f2502f93a1e526a5f8fbf5cdcaa62db8462b50bc"
+    },
+    "initial-measurement-change.json": {
+      "bytes": 710,
+      "sha256": "c060ce24484ee60a089b3324667f7fb9de5346aa1a924d35eb436c92c9e8e5b9"
+    },
+    "origin-retention.json": {
+      "bytes": 8038,
+      "sha256": "19dc8869da95b753fc7eb5906abd6696aae9be84ce2d44b0f696da045340199c"
+    },
+    "original-reviews/branch650.json": {
+      "bytes": 8465,
+      "sha256": "3330018810af402b7d007455c0ddc067a524a4e0646337c26bf221f0165199d4"
+    },
+    "original-reviews/initial-confirm-default.json": {
+      "bytes": 11088,
+      "sha256": "0a3d0fc25f8c559d597702e97edf68b975b78364d20f08db8e198257c35e0632"
+    },
+    "original-reviews/retention-audit.json": {
+      "bytes": 1943,
+      "sha256": "09f5a714fa2b9f49c6fbbba6c623a552a39b73484a58dd9e674ba07e520281da"
+    },
+    "original-reviews/root-source924-gate.json": {
+      "bytes": 13653,
+      "sha256": "994573233144648c6f5ffa45906d1daa08f5aa6aec8641cf46b9938739420dd6"
+    },
+    "original-reviews/spec.json": {
+      "bytes": 14370,
+      "sha256": "fa94acb94f0e77b5847da8496985b013eb9165eac0cc0c8896958401ce52df75"
+    },
+    "original-reviews/spec.md": {
+      "bytes": 2800,
+      "sha256": "980754fa86386c3ac76c899ddc31e6c856690418d7034ac282741f575e18d544"
+    },
+    "original-reviews/standards.json": {
+      "bytes": 26756,
+      "sha256": "f8d14a8d463acbf8eefc3323ac6923dc90c8800e4f9002dcbb85ac2db2287a39"
+    },
+    "original-reviews/standards.md": {
+      "bytes": 10519,
+      "sha256": "fc81e91eb385fb125acb7fd1ed2fc2b47f4532ee313089c352e1aa62b1f7539a"
+    },
+    "raw-retention.json": {
+      "bytes": 25408,
+      "sha256": "e12e5d865f6587d6fdf2ab420b2ee9373613edb248d02fe101620e97e2e7975f"
+    },
+    "repair1-brief.md": {
+      "bytes": 8302,
+      "sha256": "440121f27468085b5508ed2eb60e33e2777cca859949f5772d986abfdb535b7f"
+    },
+    "root-initial-confirm-measurement.json": {
+      "bytes": 2249,
+      "sha256": "d11494af5ec79471967a8a23298da8d1476dfc6b4c25b01d24243d5f3e30b0de"
+    },
+    "run-index.json": {
+      "bytes": 18455,
+      "sha256": "b83d11f9106985a7a0c42e71cf21a4e4a35fac9f784d4e03b5136a8df2d4b2fb"
+    },
+    "run-record-driver.py": {
+      "bytes": 1335,
+      "sha256": "cc2e68bcbab15392327944db16a953092079183d95ee15821893314a2894c053"
+    },
+    "runs/repair1-57-dispatcher-input-red.json": {
+      "bytes": 10880,
+      "sha256": "6457af38b936d746bda786a563712831e3118168d6089a3f3a9c2665de203bdb"
+    },
+    "runs/repair1-58-dispatcher-input-red.json": {
+      "bytes": 10880,
+      "sha256": "8fbaa8f3d3e1e4ebbff071b1154e2f9a7f00e3124fb677817b78a298757ad220"
+    },
+    "runs/repair1-59-batch-retention-red.json": {
+      "bytes": 10884,
+      "sha256": "3d77075432a55a84a80a7e517219899d00617d79916c077aacdf06bd2d9e2264"
+    },
+    "runs/repair1-60-ui-native-red.json": {
+      "bytes": 10959,
+      "sha256": "ea64cf852d1cde56c5ebcff3b55b7c29bbf4a7460f080279d85297438812ffcc"
+    },
+    "runs/repair1-61-replay-initial-order-red.json": {
+      "bytes": 10908,
+      "sha256": "f7b6a89d13cdd2ff0a9394dfdbd34c82dee64512be92f057a2885932c64d8176"
+    },
+    "runs/repair1-62-ui-active-metadata-red.json": {
+      "bytes": 10937,
+      "sha256": "3f3a74de94ed41942cc7aabb712ff030d966f4f81bc3306a268723363723bd15"
+    },
+    "runs/repair1-63-six-controls-unit-green.json": {
+      "bytes": 10880,
+      "sha256": "3699bcd7e4906b38c16b149cdcb58f8a96b7ad98a19732547144ebb304518c1c"
+    },
+    "runs/repair1-64-focused-green.json": {
+      "bytes": 10928,
+      "sha256": "6d3f01a44ae6148f552117834d848ebc7aee308d6fc1611bfd62ec98ddbaa8cf"
+    },
+    "runs/repair1-65-focused-green.json": {
+      "bytes": 10926,
+      "sha256": "57ec093fba6938df26a58942db3bd0773d27e34f09b98a83c369b5d9c17093c9"
+    },
+    "runs/repair1-66-native-combined-green.json": {
+      "bytes": 11137,
+      "sha256": "1120f10c6c9beaa55ef64c082e4d948fe6cd74b13fe9951a9919df3f996b5ff0"
+    },
+    "runs/repair1-67-default-initial-green.json": {
+      "bytes": 10949,
+      "sha256": "bcc3e6ae1f44cb72a7277de032c313f95268ba0720781c705579035867b08ec1"
+    },
+    "runs/repair1-68-strict-clippy.json": {
+      "bytes": 10855,
+      "sha256": "13628f2728b9b2298aa2d313b80dcacfa7e0e179a979ace080bbafd8df78abbb"
+    },
+    "runs/repair1-69-final-focused.json": {
+      "bytes": 10926,
+      "sha256": "5068827e34d090614a3a832f04a7356cc07f26f6b5b5df2fcb907a5ee9ef84b8"
+    },
+    "runs/repair1-70-final-native.json": {
+      "bytes": 11137,
+      "sha256": "2ee75bb54e6a91430aae43d28c93db518b133948c05ea2fed4075bb3449ccd35"
+    },
+    "runs/repair1-71-format-check.json": {
+      "bytes": 10759,
+      "sha256": "c163b03f7bf51a4ae31387dfabec8bd858ba96bb1b0c976a61018b78cec98ed6"
+    },
+    "source-files.json": {
+      "bytes": 9189,
+      "sha256": "586fe5a9000d7f9fda3b07aa20db2d190ed3c37b9839a89a3574bfd178624350"
+    }
+  },
+  "repair_cap": 3,
+  "repair_round": 1,
+  "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+  "source_tree": "9ec2a1d066dbe1a6a1872849458dcda6ac7006e3"
+}

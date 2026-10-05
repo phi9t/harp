@@ -1,0 +1,11 @@
+Standards axis: **PASS** for `d201642b36695dbd0f29a7ac857ee9e8de520728..4d5fbff0323f27c6dcb30aec5cf3df7a839511e0`.
+
+No actionable documented-standard violations or new baseline-smell findings in this repair delta. The earlier LOW captured-source `Value`/domain-type heuristic remains deferred; the repair does not establish a new hard requirement for typed source records.
+
+Read `CONSTITUTION.md`, `AGENTS.md`, `CONTEXT.md`, `docs/agents/agentic-engineering.md`, its domain/orchestration guidance, controller README and canonical SQLite effort/spec/ticket03 plus capped cleanup routing. Applied the code-review skill's twelve smell heuristics as judgement calls, suppressing tooling-enforced issues.
+
+The changes keep supported Kata HTTP outside SQLite locks/transactions, retain durable publication intent/history and per-task ordering, and serialize controller writes through the existing connection/effect gates (SPEC, “SQLite storage” and “Recovery”; README, publication contract). Descriptor-relative snapshot helpers validate/read the same owned regular-file descriptor; their unsafe ownership assumptions are stated. Recovery separates current availability from projection drift without rewriting admitted versions. Bounded UTF-8 progress excerpts retain full local reports. Fixtures drive public behavior with real pinned services, matching Constitution §5 and the approved public seam.
+
+Native adoption changes are `fault-injection`-gated and exact-actor-scoped; both actor projections qualify before global fixture hold. Original frame/history/identity assertions and 30-second binding deadline remain. This follows canonical ticket03's 2026-10-04 bounded fixture ruling; production cleanup/branch642 remains outside this review.
+
+Read-only source review: no tests, runtime launches, credential reads, cleanup, ref changes or source edits. Verified clean source HEAD, common-base identity, all 29 frozen source hashes and fixed review-package SHA. Author/root test outcomes are supplied context, not fresh test results produced here. Prior full-gate failure, incomplete attribution of its original native failure, and ticket06's future complete assembled gate remain retained limitations. Root alone owns evidence acceptance and ticket/source acceptance.

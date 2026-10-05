@@ -1,0 +1,17 @@
+{
+  "admitted_at": "2026-10-04T23:18:13.267246+00:00",
+  "coordinator": "/root",
+  "actor": "/root/sqlite05_control_center_author",
+  "source": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+  "base_evidence": "655c86ee9a212878b1c921c34dee55dee5066c3c",
+  "repair_round": 2,
+  "repair_cap": 3,
+  "old_caps": "02/04 3/3exhaustedunchanged",
+  "brief_sha256": "3ac4ca527fdd8bc95e5f2bbb19a747946adef49b2d88851617c112784f5aa0cf",
+  "spec_addendum_index_sha256": "75ced68769e9b584ad14f45ab1a916e00bf8dedbb3cb29ca0758f43d294eb915",
+  "spec_addendum_files_verified": 78,
+  "actual_root_gate": "terminal101/37nativePASS1FAIL;sourceunchanged;laterchecksnotrun",
+  "root_gate_archive_gap": "EMPTY_RESTART mode rawtemporary fixture not retained;original failedtuple/cause unknown",
+  "preflight_errors": "Earlier oversized exec parse rejected before any tool invocation/mutation; this concrete brief and verified admission are authoritative.",
+  "status": "authenticated bounded admission pending actor ACK; three independently confirmed fixes plus narrow unchanged-fence diagnosis/test-only retention"
+}

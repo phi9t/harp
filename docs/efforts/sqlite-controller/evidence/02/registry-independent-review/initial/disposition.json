@@ -1,0 +1,15 @@
+{
+  "candidate": "2dcc4ec34bf7bdd74a6759bcd2f743361083e01c",
+  "phase_base": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "tested_source": "f77df6493f1090841bafa388b8b38b624a24571f",
+  "crate_tree_identical": true,
+  "root_test_count": 50,
+  "root_gate": "PASS",
+  "standards": "PASS_NONBLOCKING_P3_PARKED",
+  "spec": "FAIL_TWO_P1",
+  "branch_job": 639,
+  "branch": "FAIL_FOUR_FINDINGS",
+  "verdict": "REJECTED_REPAIR_REQUIRED",
+  "classification": "MODEL_FREE_ACTUAL_PROTOCOL_NOT_LIVE",
+  "retained_resources": "original author/reader roots, branches, source and all evidence preserved; root declared native namespaces terminated"
+}

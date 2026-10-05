@@ -1,0 +1,1457 @@
+{
+  "all_captured_owned_identities_reconciled": true,
+  "bounded_signals": [
+    {
+      "label": "actual_UI_drain_interleaving",
+      "observation": {
+        "background_before": {
+          "current_turn": {
+            "id": "01a108db-44c0-7fd3-98e8-54626f29451b",
+            "native_status": "completed",
+            "source": "typed_native_history",
+            "state": "terminal"
+          },
+          "environment_id": "executor-2b639aa7-57ac-4c05-a6b9-5cf1178d1cff-56552488",
+          "executor": {
+            "auth_ref": "native:2f2b946b-79a0-4d87-9db7-0a18e214093a",
+            "control_endpoint": "/tmp/cnr-ccqw_gxu/t-exec/2b639aa7-57ac-4c05-a6b9-5cf1178d1cff/control.sock",
+            "controlplane_cwd": "/workspace",
+            "endpoint": "/tmp/cnr-ccqw_gxu/t-exec/2b639aa7-57ac-4c05-a6b9-5cf1178d1cff/native.sock",
+            "incarnation": "17c58cbc15635ce0cee06733a29c4407920bd95e7ce6d1614938407617437282",
+            "kind": "exec",
+            "own_executor_only": false,
+            "pid_namespace": 4026540035,
+            "pins": {
+              "binary": {
+                "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+                "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+              },
+              "catalog": {
+                "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json",
+                "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"
+              },
+              "companion": {
+                "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+                "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+              },
+              "config": {
+                "path": "/tmp/cnr-ccqw_gxu/runtime.toml",
+                "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"
+              },
+              "executor_root": null,
+              "kind": "exec",
+              "launcher": {
+                "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/support/codex_insula.py",
+                "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+              },
+              "own_executor_only": false,
+              "provider_socket": null,
+              "transport_root": "/tmp/cnr-ccqw_gxu/t-exec"
+            },
+            "runtime_pid": 2626939,
+            "runtime_start": "56552488",
+            "store_id": "70d91ca1-8702-4f5f-a0b0-5652111149f9",
+            "store_identity": "31:3924994",
+            "workspace_generation": "2f2b946b-79a0-4d87-9db7-0a18e214093a",
+            "workspace_identity": "31:3924986"
+          },
+          "executor_effect_binding": {
+            "attempt": "2b639aa7-57ac-4c05-a6b9-5cf1178d1cff",
+            "base": "0123456789abcdef0123456789abcdef01234567",
+            "brief": "lead-authority:1",
+            "operation": "1b22ec05-14fa-4e71-86e9-6685abbe6415",
+            "project": "p",
+            "scope_epoch": 1
+          },
+          "executor_execution": {
+            "binding": {
+              "attempt": "2b639aa7-57ac-4c05-a6b9-5cf1178d1cff",
+              "base": "0123456789abcdef0123456789abcdef01234567",
+              "brief": "lead-authority:1",
+              "operation": "1b22ec05-14fa-4e71-86e9-6685abbe6415",
+              "project": "p",
+              "scope_epoch": 1
+            },
+            "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+            "handle": "2f2b946b-79a0-4d87-9db7-0a18e214093a",
+            "incarnation": "56813cc5-325a-4841-96d5-0ee982ca72e2",
+            "init_start_ticks": "56552459",
+            "namespace_init": 2626919,
+            "native_store": "70d91ca1-8702-4f5f-a0b0-5652111149f9",
+            "outcome": null,
+            "pid": 2626918,
+            "pid_namespace": 4026540035,
+            "start_ticks": "56552459",
+            "state": "running"
+          },
+          "native_activity": [
+            {
+              "emittedAtMs": 1791149950201,
+              "method": "item/started",
+              "params": {
+                "item": {
+                  "clientId": "606abd0b-43fb-4c9f-8cc3-5f408edfb3dc",
+                  "content": [
+                    {
+                      "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                      "text_elements": [],
+                      "type": "text"
+                    }
+                  ],
+                  "id": "01a108db-44f8-71d3-8fb8-eedb1e70a76a",
+                  "type": "userMessage"
+                },
+                "startedAtMs": 1791149950201,
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+                "turnId": "01a108db-44c0-7fd3-98e8-54626f29451b"
+              }
+            },
+            {
+              "emittedAtMs": 1791149950202,
+              "method": "item/completed",
+              "params": {
+                "completedAtMs": 1791149950201,
+                "item": {
+                  "clientId": "606abd0b-43fb-4c9f-8cc3-5f408edfb3dc",
+                  "content": [
+                    {
+                      "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                      "text_elements": [],
+                      "type": "text"
+                    }
+                  ],
+                  "id": "01a108db-44f8-71d3-8fb8-eedb1e70a76a",
+                  "type": "userMessage"
+                },
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+                "turnId": "01a108db-44c0-7fd3-98e8-54626f29451b"
+              }
+            },
+            {
+              "emittedAtMs": 1791149950206,
+              "method": "item/started",
+              "params": {
+                "item": {
+                  "delivery": null,
+                  "id": "msg-LEAD-1",
+                  "memoryCitation": null,
+                  "phase": null,
+                  "questions": null,
+                  "text": "MODEL_FREE_FIXTURE_DONE",
+                  "type": "agentMessage"
+                },
+                "startedAtMs": 1791149950206,
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+                "turnId": "01a108db-44c0-7fd3-98e8-54626f29451b"
+              }
+            },
+            {
+              "emittedAtMs": 1791149950207,
+              "method": "item/completed",
+              "params": {
+                "completedAtMs": 1791149950206,
+                "item": {
+                  "delivery": null,
+                  "id": "msg-LEAD-1",
+                  "memoryCitation": null,
+                  "phase": null,
+                  "questions": null,
+                  "text": "MODEL_FREE_FIXTURE_DONE",
+                  "type": "agentMessage"
+                },
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+                "turnId": "01a108db-44c0-7fd3-98e8-54626f29451b"
+              }
+            },
+            {
+              "emittedAtMs": 1791149950209,
+              "method": "thread/tokenUsage/updated",
+              "params": {
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+                "tokenUsage": {
+                  "last": {
+                    "cacheWriteInputTokens": 0,
+                    "cachedInputTokens": 0,
+                    "inputTokens": 1,
+                    "outputTokens": 1,
+                    "reasoningOutputTokens": 0,
+                    "totalTokens": 2
+                  },
+                  "modelContextWindow": 258400,
+                  "total": {
+                    "cacheWriteInputTokens": 0,
+                    "cachedInputTokens": 0,
+                    "inputTokens": 1,
+                    "outputTokens": 1,
+                    "reasoningOutputTokens": 0,
+                    "totalTokens": 2
+                  }
+                },
+                "turnId": "01a108db-44c0-7fd3-98e8-54626f29451b"
+              }
+            },
+            {
+              "emittedAtMs": 1791149950211,
+              "method": "thread/status/changed",
+              "params": {
+                "status": {
+                  "type": "idle"
+                },
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b"
+              }
+            },
+            {
+              "emittedAtMs": 1791149950211,
+              "method": "turn/completed",
+              "params": {
+                "threadId": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+                "turn": {
+                  "completedAt": 1791149950,
+                  "durationMs": 22,
+                  "error": null,
+                  "id": "01a108db-44c0-7fd3-98e8-54626f29451b",
+                  "items": [
+                    {
+                      "delivery": null,
+                      "id": "msg-LEAD-1",
+                      "memoryCitation": null,
+                      "phase": null,
+                      "questions": null,
+                      "text": "MODEL_FREE_FIXTURE_DONE",
+                      "type": "agentMessage"
+                    }
+                  ],
+                  "itemsView": "summary",
+                  "startedAt": 1791149950,
+                  "status": "completed"
+                }
+              }
+            }
+          ],
+          "native_turns": [
+            {
+              "completedAt": 1791149950,
+              "durationMs": 22,
+              "error": null,
+              "id": "01a108db-44c0-7fd3-98e8-54626f29451b",
+              "items": [
+                {
+                  "clientId": "606abd0b-43fb-4c9f-8cc3-5f408edfb3dc",
+                  "content": [
+                    {
+                      "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                      "text_elements": [],
+                      "type": "text"
+                    }
+                  ],
+                  "id": "01a108db-44f8-71d3-8fb8-eedb1e70a76a",
+                  "type": "userMessage"
+                },
+                {
+                  "delivery": null,
+                  "id": "msg-LEAD-1",
+                  "memoryCitation": null,
+                  "phase": null,
+                  "questions": null,
+                  "text": "MODEL_FREE_FIXTURE_DONE",
+                  "type": "agentMessage"
+                }
+              ],
+              "itemsView": "full",
+              "startedAt": 1791149950,
+              "status": "completed"
+            }
+          ],
+          "observed_environments": [
+            {
+              "cwd": "/workspace",
+              "environmentId": "executor-2b639aa7-57ac-4c05-a6b9-5cf1178d1cff-56552488",
+              "runtimeWorkspaceRoots": [
+                "/workspace"
+              ]
+            }
+          ],
+          "recovery_state": "remote_validated",
+          "server_execution": {
+            "binding": {
+              "attempt": "9a5b51b8-061d-46b8-8448-858a43357ce7",
+              "base": "0123456789abcdef0123456789abcdef01234567",
+              "brief": "184ff5fc-7e8d-439f-aaf8-e2cb3bdd96a9",
+              "operation": "980220b1-1b12-4eed-9026-e825ff288175",
+              "project": "p",
+              "scope_epoch": 1
+            },
+            "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+            "handle": "0e0c9a5f-a572-4be0-9584-f5cbe93af2ea",
+            "incarnation": "3835cf78-662b-4393-8cb0-c5e3faa36047",
+            "init_start_ticks": "56551175",
+            "namespace_init": 2620690,
+            "native_store": "e2b99e64-5931-4030-8476-0af289046601",
+            "outcome": null,
+            "pid": 2620688,
+            "pid_namespace": 4026539869,
+            "start_ticks": "56551174",
+            "state": "running"
+          },
+          "server_id": "native",
+          "server_incarnation": "e8d511a2a22eaabea281bd1d03f28427fc8361417ec10829565713cced186543",
+          "server_store": "e2b99e64-5931-4030-8476-0af289046601",
+          "thread_id": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+          "turn_id": "01a108db-44c0-7fd3-98e8-54626f29451b",
+          "ui_input_ready": true
+        },
+        "completed_before_release": false,
+        "current_binding": {
+          "attempt": null,
+          "authority_epoch": 1,
+          "document": {
+            "current_turn": {
+              "id": "01a108db-54b8-79b1-ab55-9b51cdedc1c2",
+              "native_status": null,
+              "source": "typed_native_history",
+              "state": "unknown"
+            },
+            "environment_id": "executor-2b639aa7-57ac-4c05-a6b9-5cf1178d1cff-56552488",
+            "executor": {
+              "auth_ref": "native:2f2b946b-79a0-4d87-9db7-0a18e214093a",
+              "control_endpoint": "/tmp/cnr-ccqw_gxu/t-exec/2b639aa7-57ac-4c05-a6b9-5cf1178d1cff/control.sock",
+              "controlplane_cwd": "/workspace",
+              "endpoint": "/tmp/cnr-ccqw_gxu/t-exec/2b639aa7-57ac-4c05-a6b9-5cf1178d1cff/native.sock",
+              "incarnation": "17c58cbc15635ce0cee06733a29c4407920bd95e7ce6d1614938407617437282",
+              "kind": "exec",
+              "own_executor_only": false,
+              "pid_namespace": 4026540035,
+              "pins": {
+                "binary": {
+                  "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+                  "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+                },
+                "catalog": {
+                  "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json",
+                  "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"
+                },
+                "companion": {
+                  "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+                  "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+                },
+                "config": {
+                  "path": "/tmp/cnr-ccqw_gxu/runtime.toml",
+                  "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"
+                },
+                "executor_root": null,
+                "kind": "exec",
+                "launcher": {
+                  "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/support/codex_insula.py",
+                  "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+                },
+                "own_executor_only": false,
+                "provider_socket": null,
+                "transport_root": "/tmp/cnr-ccqw_gxu/t-exec"
+              },
+              "runtime_pid": 2626939,
+              "runtime_start": "56552488",
+              "store_id": "70d91ca1-8702-4f5f-a0b0-5652111149f9",
+              "store_identity": "31:3924994",
+              "workspace_generation": "2f2b946b-79a0-4d87-9db7-0a18e214093a",
+              "workspace_identity": "31:3924986"
+            },
+            "executor_effect_binding": {
+              "attempt": "2b639aa7-57ac-4c05-a6b9-5cf1178d1cff",
+              "base": "0123456789abcdef0123456789abcdef01234567",
+              "brief": "lead-authority:1",
+              "operation": "1b22ec05-14fa-4e71-86e9-6685abbe6415",
+              "project": "p",
+              "scope_epoch": 1
+            },
+            "executor_execution": {
+              "binding": {
+                "attempt": "2b639aa7-57ac-4c05-a6b9-5cf1178d1cff",
+                "base": "0123456789abcdef0123456789abcdef01234567",
+                "brief": "lead-authority:1",
+                "operation": "1b22ec05-14fa-4e71-86e9-6685abbe6415",
+                "project": "p",
+                "scope_epoch": 1
+              },
+              "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+              "handle": "2f2b946b-79a0-4d87-9db7-0a18e214093a",
+              "incarnation": "56813cc5-325a-4841-96d5-0ee982ca72e2",
+              "init_start_ticks": "56552459",
+              "namespace_init": 2626919,
+              "native_store": "70d91ca1-8702-4f5f-a0b0-5652111149f9",
+              "outcome": null,
+              "pid": 2626918,
+              "pid_namespace": 4026540035,
+              "start_ticks": "56552459",
+              "state": "running"
+            },
+            "native_activity": [],
+            "native_turns": [
+              {
+                "completedAt": 1791149950,
+                "durationMs": 22,
+                "error": null,
+                "id": "01a108db-44c0-7fd3-98e8-54626f29451b",
+                "items": [
+                  {
+                    "clientId": "606abd0b-43fb-4c9f-8cc3-5f408edfb3dc",
+                    "content": [
+                      {
+                        "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                        "text_elements": [],
+                        "type": "text"
+                      }
+                    ],
+                    "id": "01a108db-44f8-71d3-8fb8-eedb1e70a76a",
+                    "type": "userMessage"
+                  },
+                  {
+                    "delivery": null,
+                    "id": "msg-LEAD-1",
+                    "memoryCitation": null,
+                    "phase": null,
+                    "questions": null,
+                    "text": "MODEL_FREE_FIXTURE_DONE",
+                    "type": "agentMessage"
+                  }
+                ],
+                "itemsView": "full",
+                "startedAt": 1791149950,
+                "status": "completed"
+              }
+            ],
+            "observed_environments": [
+              {
+                "cwd": "/workspace",
+                "environmentId": "executor-2b639aa7-57ac-4c05-a6b9-5cf1178d1cff-56552488",
+                "runtimeWorkspaceRoots": [
+                  "/workspace"
+                ]
+              }
+            ],
+            "recovery_state": "remote_validated",
+            "server_execution": {
+              "binding": {
+                "attempt": "9a5b51b8-061d-46b8-8448-858a43357ce7",
+                "base": "0123456789abcdef0123456789abcdef01234567",
+                "brief": "184ff5fc-7e8d-439f-aaf8-e2cb3bdd96a9",
+                "operation": "980220b1-1b12-4eed-9026-e825ff288175",
+                "project": "p",
+                "scope_epoch": 1
+              },
+              "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+              "handle": "0e0c9a5f-a572-4be0-9584-f5cbe93af2ea",
+              "incarnation": "3835cf78-662b-4393-8cb0-c5e3faa36047",
+              "init_start_ticks": "56551175",
+              "namespace_init": 2620690,
+              "native_store": "e2b99e64-5931-4030-8476-0af289046601",
+              "outcome": null,
+              "pid": 2620688,
+              "pid_namespace": 4026539869,
+              "start_ticks": "56551174",
+              "state": "running"
+            },
+            "server_id": "native",
+            "server_incarnation": "e8d511a2a22eaabea281bd1d03f28427fc8361417ec10829565713cced186543",
+            "server_store": "e2b99e64-5931-4030-8476-0af289046601",
+            "thread_id": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+            "turn_id": "01a108db-54b8-79b1-ab55-9b51cdedc1c2",
+            "ui_input_ready": true
+          },
+          "id": "lead:p:1",
+          "role": "lead",
+          "state": "bound"
+        },
+        "operations": [
+          {
+            "binding": "lead:p:1",
+            "id": "72d1ae68-625b-4587-908a-dedfb0fd5ef0",
+            "intent": {
+              "authority_epoch": 1,
+              "expected_turn": null,
+              "principal": "lead:81c44875-5e72-4198-adf4-a5adfcc844cf",
+              "principal_epoch": 1,
+              "role": "lead",
+              "text": "LITERAL_UI_DRAIN_CONSISTENCY"
+            },
+            "kind": "codex_turn",
+            "observation": {
+              "turn": {
+                "completedAt": null,
+                "durationMs": null,
+                "error": null,
+                "id": "01a108db-54b8-79b1-ab55-9b51cdedc1c2",
+                "items": [],
+                "itemsView": "notLoaded",
+                "startedAt": null,
+                "status": "inProgress"
+              }
+            },
+            "state": "confirmed"
+          }
+        ],
+        "result": {
+          "ok": {
+            "turn": {
+              "completedAt": null,
+              "durationMs": null,
+              "error": null,
+              "id": "01a108db-54b8-79b1-ab55-9b51cdedc1c2",
+              "items": [],
+              "itemsView": "notLoaded",
+              "startedAt": null,
+              "status": "inProgress"
+            }
+          }
+        }
+      },
+      "topology": "shared"
+    },
+    {
+      "label": "actual_native_peer_tool_queued_then_validated_owner_replied",
+      "observation": {
+        "invocation": {
+          "arguments": "{\"arguments\":{\"kind\":\"own_assignment\"},\"tool\":\"corenius_query\"}",
+          "binding": "worker:8aafaf8a-8215-4769-a6b9-0bac49e6ab98:1",
+          "epoch": 1,
+          "identity": "d4c240b037be2259df365fce99e6a99be03d58cce6eeb1193e5735a390368caf",
+          "method": "corenius_query",
+          "response_retained": 1
+        },
+        "operation": {
+          "binding": "worker:8aafaf8a-8215-4769-a6b9-0bac49e6ab98:1",
+          "operation": "85b2e6a2-75a6-453e-aaa0-49df4d78d53d",
+          "state": "prepared"
+        },
+        "routing": {
+          "connection": "e860702a-cf2a-4158-93f5-844005001384",
+          "owner_rpc_thread": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+          "peer_request": {
+            "id": 0,
+            "method": "item/tool/call",
+            "params": {
+              "arguments": {
+                "kind": "own_assignment"
+              },
+              "callId": "exec-be0dde37-ce84-4a33-9422-f8cf9043f12d",
+              "namespace": null,
+              "threadId": "01a108da-fee2-7640-ac94-bc5883affbd4",
+              "tool": "corenius_query",
+              "turnId": "01a108db-5558-7783-a8a6-2a144b756b62"
+            }
+          },
+          "reply_sent_by_wrong_binding": false
+        },
+        "target": {
+          "owner": "01a108db-3115-7fd3-90d3-dda718d2c66b",
+          "peer": "01a108da-fee2-7640-ac94-bc5883affbd4",
+          "topology": "shared"
+        }
+      },
+      "topology": "shared"
+    },
+    {
+      "label": "actual_native_allowed_input_retained_scoped_observer_read",
+      "observation": {
+        "digest": "a107926820a9fcb337175295d82190f0d72c6809afb0432b36fcaa3f00a3e58a",
+        "redaction": {
+          "original_source_digest": "a107926820a9fcb337175295d82190f0d72c6809afb0432b36fcaa3f00a3e58a",
+          "policy": "typed-visible-v1; known capabilities, credential fields, bearer values redacted; reasoning excluded",
+          "redacted_input_digest": "a107926820a9fcb337175295d82190f0d72c6809afb0432b36fcaa3f00a3e58a",
+          "retention": "complete allowed input; no automatic expiry"
+        }
+      },
+      "topology": "shared"
+    },
+    {
+      "label": "actual_UI_drain_interleaving",
+      "observation": {
+        "background_before": {
+          "current_turn": {
+            "id": "01a108dc-2562-76b0-96f7-fa4cd4c50059",
+            "native_status": "completed",
+            "source": "typed_native_history",
+            "state": "terminal"
+          },
+          "environment_id": "executor-f1084cf3-8aab-4a52-9e60-179eebfcbe4e-56558174",
+          "executor": {
+            "auth_ref": "native:3c42f31b-9333-46bb-84d8-f59ba0e197be",
+            "control_endpoint": "/tmp/cnr-rodqpxb1/t-exec/f1084cf3-8aab-4a52-9e60-179eebfcbe4e/control.sock",
+            "controlplane_cwd": "/workspace",
+            "endpoint": "/tmp/cnr-rodqpxb1/t-exec/f1084cf3-8aab-4a52-9e60-179eebfcbe4e/native.sock",
+            "incarnation": "b42c6f96f8782d3ddf36db73e080fe039c238a62af6a2a6278ba13089a275dd2",
+            "kind": "exec",
+            "own_executor_only": false,
+            "pid_namespace": 4026540118,
+            "pins": {
+              "binary": {
+                "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+                "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+              },
+              "catalog": {
+                "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json",
+                "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"
+              },
+              "companion": {
+                "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+                "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+              },
+              "config": {
+                "path": "/tmp/cnr-rodqpxb1/runtime.toml",
+                "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"
+              },
+              "executor_root": null,
+              "kind": "exec",
+              "launcher": {
+                "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/support/codex_insula.py",
+                "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+              },
+              "own_executor_only": false,
+              "provider_socket": null,
+              "transport_root": "/tmp/cnr-rodqpxb1/t-exec"
+            },
+            "runtime_pid": 2640132,
+            "runtime_start": "56558174",
+            "store_id": "128ff62f-428d-4fd2-b172-6149eac0d068",
+            "store_identity": "31:3925658",
+            "workspace_generation": "3c42f31b-9333-46bb-84d8-f59ba0e197be",
+            "workspace_identity": "31:3925650"
+          },
+          "executor_effect_binding": {
+            "attempt": "f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+            "base": "0123456789abcdef0123456789abcdef01234567",
+            "brief": "lead-authority:1",
+            "operation": "6e256723-1b82-4f72-929b-f8fb3ffb8e5b",
+            "project": "p",
+            "scope_epoch": 1
+          },
+          "executor_execution": {
+            "binding": {
+              "attempt": "f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+              "base": "0123456789abcdef0123456789abcdef01234567",
+              "brief": "lead-authority:1",
+              "operation": "6e256723-1b82-4f72-929b-f8fb3ffb8e5b",
+              "project": "p",
+              "scope_epoch": 1
+            },
+            "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+            "handle": "3c42f31b-9333-46bb-84d8-f59ba0e197be",
+            "incarnation": "9a65b3cc-e078-42db-8497-e854ca653696",
+            "init_start_ticks": "56558146",
+            "namespace_init": 2640104,
+            "native_store": "128ff62f-428d-4fd2-b172-6149eac0d068",
+            "outcome": null,
+            "pid": 2640103,
+            "pid_namespace": 4026540118,
+            "start_ticks": "56558145",
+            "state": "running"
+          },
+          "native_activity": [
+            {
+              "emittedAtMs": 1791150007704,
+              "method": "thread/status/changed",
+              "params": {
+                "status": {
+                  "activeFlags": [],
+                  "type": "active"
+                },
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007704,
+              "method": "turn/started",
+              "params": {
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "turn": {
+                  "completedAt": null,
+                  "durationMs": null,
+                  "error": null,
+                  "id": "01a108dc-2562-76b0-96f7-fa4cd4c50059",
+                  "items": [],
+                  "itemsView": "notLoaded",
+                  "startedAt": 1791150007,
+                  "status": "inProgress"
+                }
+              }
+            },
+            {
+              "emittedAtMs": 1791150007714,
+              "method": "item/started",
+              "params": {
+                "item": {
+                  "clientId": "7a5cc5be-1018-406e-b290-8a817a0bb419",
+                  "content": [
+                    {
+                      "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                      "text_elements": [],
+                      "type": "text"
+                    }
+                  ],
+                  "id": "01a108dc-25a2-7980-9920-7fd98f39f6fc",
+                  "type": "userMessage"
+                },
+                "startedAtMs": 1791150007714,
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "turnId": "01a108dc-2562-76b0-96f7-fa4cd4c50059"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007716,
+              "method": "item/completed",
+              "params": {
+                "completedAtMs": 1791150007714,
+                "item": {
+                  "clientId": "7a5cc5be-1018-406e-b290-8a817a0bb419",
+                  "content": [
+                    {
+                      "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                      "text_elements": [],
+                      "type": "text"
+                    }
+                  ],
+                  "id": "01a108dc-25a2-7980-9920-7fd98f39f6fc",
+                  "type": "userMessage"
+                },
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "turnId": "01a108dc-2562-76b0-96f7-fa4cd4c50059"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007722,
+              "method": "item/started",
+              "params": {
+                "item": {
+                  "delivery": null,
+                  "id": "msg-LEAD-1",
+                  "memoryCitation": null,
+                  "phase": null,
+                  "questions": null,
+                  "text": "MODEL_FREE_FIXTURE_DONE",
+                  "type": "agentMessage"
+                },
+                "startedAtMs": 1791150007722,
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "turnId": "01a108dc-2562-76b0-96f7-fa4cd4c50059"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007723,
+              "method": "item/completed",
+              "params": {
+                "completedAtMs": 1791150007722,
+                "item": {
+                  "delivery": null,
+                  "id": "msg-LEAD-1",
+                  "memoryCitation": null,
+                  "phase": null,
+                  "questions": null,
+                  "text": "MODEL_FREE_FIXTURE_DONE",
+                  "type": "agentMessage"
+                },
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "turnId": "01a108dc-2562-76b0-96f7-fa4cd4c50059"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007725,
+              "method": "thread/tokenUsage/updated",
+              "params": {
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "tokenUsage": {
+                  "last": {
+                    "cacheWriteInputTokens": 0,
+                    "cachedInputTokens": 0,
+                    "inputTokens": 1,
+                    "outputTokens": 1,
+                    "reasoningOutputTokens": 0,
+                    "totalTokens": 2
+                  },
+                  "modelContextWindow": 258400,
+                  "total": {
+                    "cacheWriteInputTokens": 0,
+                    "cachedInputTokens": 0,
+                    "inputTokens": 1,
+                    "outputTokens": 1,
+                    "reasoningOutputTokens": 0,
+                    "totalTokens": 2
+                  }
+                },
+                "turnId": "01a108dc-2562-76b0-96f7-fa4cd4c50059"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007726,
+              "method": "thread/status/changed",
+              "params": {
+                "status": {
+                  "type": "idle"
+                },
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75"
+              }
+            },
+            {
+              "emittedAtMs": 1791150007726,
+              "method": "turn/completed",
+              "params": {
+                "threadId": "01a108dc-11c9-7f10-a509-98344b801a75",
+                "turn": {
+                  "completedAt": 1791150007,
+                  "durationMs": 31,
+                  "error": null,
+                  "id": "01a108dc-2562-76b0-96f7-fa4cd4c50059",
+                  "items": [
+                    {
+                      "delivery": null,
+                      "id": "msg-LEAD-1",
+                      "memoryCitation": null,
+                      "phase": null,
+                      "questions": null,
+                      "text": "MODEL_FREE_FIXTURE_DONE",
+                      "type": "agentMessage"
+                    }
+                  ],
+                  "itemsView": "summary",
+                  "startedAt": 1791150007,
+                  "status": "completed"
+                }
+              }
+            }
+          ],
+          "native_turns": [
+            {
+              "completedAt": 1791150007,
+              "durationMs": 31,
+              "error": null,
+              "id": "01a108dc-2562-76b0-96f7-fa4cd4c50059",
+              "items": [
+                {
+                  "clientId": "7a5cc5be-1018-406e-b290-8a817a0bb419",
+                  "content": [
+                    {
+                      "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                      "text_elements": [],
+                      "type": "text"
+                    }
+                  ],
+                  "id": "01a108dc-25a2-7980-9920-7fd98f39f6fc",
+                  "type": "userMessage"
+                },
+                {
+                  "delivery": null,
+                  "id": "msg-LEAD-1",
+                  "memoryCitation": null,
+                  "phase": null,
+                  "questions": null,
+                  "text": "MODEL_FREE_FIXTURE_DONE",
+                  "type": "agentMessage"
+                }
+              ],
+              "itemsView": "full",
+              "startedAt": 1791150007,
+              "status": "completed"
+            }
+          ],
+          "observed_environments": [
+            {
+              "cwd": "/workspace",
+              "environmentId": "executor-f1084cf3-8aab-4a52-9e60-179eebfcbe4e-56558174",
+              "runtimeWorkspaceRoots": [
+                "/workspace"
+              ]
+            }
+          ],
+          "recovery_state": "remote_validated",
+          "server_execution": {
+            "binding": {
+              "attempt": "f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+              "base": "0123456789abcdef0123456789abcdef01234567",
+              "brief": "lead-authority:1",
+              "operation": "5d2a4475-a86a-430f-ba37-d2a52efad881",
+              "project": "p",
+              "scope_epoch": 1
+            },
+            "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+            "handle": "418df75b-1c5b-4b08-9813-1fa514108c31",
+            "incarnation": "d79e2659-43fb-4f11-a27b-50e71492fc9d",
+            "init_start_ticks": "56558182",
+            "namespace_init": 2640355,
+            "native_store": "18bd0913-0f88-4a0f-9aa6-b60379cc996f",
+            "outcome": null,
+            "pid": 2640354,
+            "pid_namespace": 4026540201,
+            "start_ticks": "56558182",
+            "state": "running"
+          },
+          "server_id": "native:f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+          "server_incarnation": "6c94b8e45cf615307c68717588cec65afbd3d3f261bdaf4ae3ce780b7d6cccbf",
+          "server_store": "18bd0913-0f88-4a0f-9aa6-b60379cc996f",
+          "thread_id": "01a108dc-11c9-7f10-a509-98344b801a75",
+          "turn_id": "01a108dc-2562-76b0-96f7-fa4cd4c50059",
+          "ui_input_ready": true
+        },
+        "completed_before_release": false,
+        "current_binding": {
+          "attempt": null,
+          "authority_epoch": 1,
+          "document": {
+            "current_turn": {
+              "id": "01a108dc-354b-71e0-8158-2446d26ab8ce",
+              "native_status": null,
+              "source": "typed_native_history",
+              "state": "unknown"
+            },
+            "environment_id": "executor-f1084cf3-8aab-4a52-9e60-179eebfcbe4e-56558174",
+            "executor": {
+              "auth_ref": "native:3c42f31b-9333-46bb-84d8-f59ba0e197be",
+              "control_endpoint": "/tmp/cnr-rodqpxb1/t-exec/f1084cf3-8aab-4a52-9e60-179eebfcbe4e/control.sock",
+              "controlplane_cwd": "/workspace",
+              "endpoint": "/tmp/cnr-rodqpxb1/t-exec/f1084cf3-8aab-4a52-9e60-179eebfcbe4e/native.sock",
+              "incarnation": "b42c6f96f8782d3ddf36db73e080fe039c238a62af6a2a6278ba13089a275dd2",
+              "kind": "exec",
+              "own_executor_only": false,
+              "pid_namespace": 4026540118,
+              "pins": {
+                "binary": {
+                  "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+                  "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+                },
+                "catalog": {
+                  "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json",
+                  "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"
+                },
+                "companion": {
+                  "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+                  "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+                },
+                "config": {
+                  "path": "/tmp/cnr-rodqpxb1/runtime.toml",
+                  "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"
+                },
+                "executor_root": null,
+                "kind": "exec",
+                "launcher": {
+                  "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/support/codex_insula.py",
+                  "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+                },
+                "own_executor_only": false,
+                "provider_socket": null,
+                "transport_root": "/tmp/cnr-rodqpxb1/t-exec"
+              },
+              "runtime_pid": 2640132,
+              "runtime_start": "56558174",
+              "store_id": "128ff62f-428d-4fd2-b172-6149eac0d068",
+              "store_identity": "31:3925658",
+              "workspace_generation": "3c42f31b-9333-46bb-84d8-f59ba0e197be",
+              "workspace_identity": "31:3925650"
+            },
+            "executor_effect_binding": {
+              "attempt": "f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+              "base": "0123456789abcdef0123456789abcdef01234567",
+              "brief": "lead-authority:1",
+              "operation": "6e256723-1b82-4f72-929b-f8fb3ffb8e5b",
+              "project": "p",
+              "scope_epoch": 1
+            },
+            "executor_execution": {
+              "binding": {
+                "attempt": "f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+                "base": "0123456789abcdef0123456789abcdef01234567",
+                "brief": "lead-authority:1",
+                "operation": "6e256723-1b82-4f72-929b-f8fb3ffb8e5b",
+                "project": "p",
+                "scope_epoch": 1
+              },
+              "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+              "handle": "3c42f31b-9333-46bb-84d8-f59ba0e197be",
+              "incarnation": "9a65b3cc-e078-42db-8497-e854ca653696",
+              "init_start_ticks": "56558146",
+              "namespace_init": 2640104,
+              "native_store": "128ff62f-428d-4fd2-b172-6149eac0d068",
+              "outcome": null,
+              "pid": 2640103,
+              "pid_namespace": 4026540118,
+              "start_ticks": "56558145",
+              "state": "running"
+            },
+            "native_activity": [],
+            "native_turns": [
+              {
+                "completedAt": 1791150007,
+                "durationMs": 31,
+                "error": null,
+                "id": "01a108dc-2562-76b0-96f7-fa4cd4c50059",
+                "items": [
+                  {
+                    "clientId": "7a5cc5be-1018-406e-b290-8a817a0bb419",
+                    "content": [
+                      {
+                        "text": "You are the lead for project p at authority epoch 1. Use the scoped controller tools for team coordination.",
+                        "text_elements": [],
+                        "type": "text"
+                      }
+                    ],
+                    "id": "01a108dc-25a2-7980-9920-7fd98f39f6fc",
+                    "type": "userMessage"
+                  },
+                  {
+                    "delivery": null,
+                    "id": "msg-LEAD-1",
+                    "memoryCitation": null,
+                    "phase": null,
+                    "questions": null,
+                    "text": "MODEL_FREE_FIXTURE_DONE",
+                    "type": "agentMessage"
+                  }
+                ],
+                "itemsView": "full",
+                "startedAt": 1791150007,
+                "status": "completed"
+              }
+            ],
+            "observed_environments": [
+              {
+                "cwd": "/workspace",
+                "environmentId": "executor-f1084cf3-8aab-4a52-9e60-179eebfcbe4e-56558174",
+                "runtimeWorkspaceRoots": [
+                  "/workspace"
+                ]
+              }
+            ],
+            "recovery_state": "remote_validated",
+            "server_execution": {
+              "binding": {
+                "attempt": "f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+                "base": "0123456789abcdef0123456789abcdef01234567",
+                "brief": "lead-authority:1",
+                "operation": "5d2a4475-a86a-430f-ba37-d2a52efad881",
+                "project": "p",
+                "scope_epoch": 1
+              },
+              "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+              "handle": "418df75b-1c5b-4b08-9813-1fa514108c31",
+              "incarnation": "d79e2659-43fb-4f11-a27b-50e71492fc9d",
+              "init_start_ticks": "56558182",
+              "namespace_init": 2640355,
+              "native_store": "18bd0913-0f88-4a0f-9aa6-b60379cc996f",
+              "outcome": null,
+              "pid": 2640354,
+              "pid_namespace": 4026540201,
+              "start_ticks": "56558182",
+              "state": "running"
+            },
+            "server_id": "native:f1084cf3-8aab-4a52-9e60-179eebfcbe4e",
+            "server_incarnation": "6c94b8e45cf615307c68717588cec65afbd3d3f261bdaf4ae3ce780b7d6cccbf",
+            "server_store": "18bd0913-0f88-4a0f-9aa6-b60379cc996f",
+            "thread_id": "01a108dc-11c9-7f10-a509-98344b801a75",
+            "turn_id": "01a108dc-354b-71e0-8158-2446d26ab8ce",
+            "ui_input_ready": true
+          },
+          "id": "lead:p:1",
+          "role": "lead",
+          "state": "bound"
+        },
+        "operations": [
+          {
+            "binding": "lead:p:1",
+            "id": "320df013-2ba2-47bf-8828-923ac084e05b",
+            "intent": {
+              "authority_epoch": 1,
+              "expected_turn": null,
+              "principal": "lead:01460fc0-726d-49db-b0a5-b65b0397df82",
+              "principal_epoch": 1,
+              "role": "lead",
+              "text": "LITERAL_UI_DRAIN_CONSISTENCY"
+            },
+            "kind": "codex_turn",
+            "observation": {
+              "turn": {
+                "completedAt": null,
+                "durationMs": null,
+                "error": null,
+                "id": "01a108dc-354b-71e0-8158-2446d26ab8ce",
+                "items": [],
+                "itemsView": "notLoaded",
+                "startedAt": null,
+                "status": "inProgress"
+              }
+            },
+            "state": "confirmed"
+          }
+        ],
+        "result": {
+          "ok": {
+            "turn": {
+              "completedAt": null,
+              "durationMs": null,
+              "error": null,
+              "id": "01a108dc-354b-71e0-8158-2446d26ab8ce",
+              "items": [],
+              "itemsView": "notLoaded",
+              "startedAt": null,
+              "status": "inProgress"
+            }
+          }
+        }
+      },
+      "topology": "separate"
+    },
+    {
+      "label": "actual_native_peer_tool_queued_then_validated_owner_replied",
+      "observation": {
+        "invocation": {
+          "arguments": "{\"arguments\":{\"kind\":\"own_assignment\"},\"tool\":\"corenius_query\"}",
+          "binding": "worker:5a7d5ec7-8c71-4f52-9be0-8a015905b629:1",
+          "epoch": 1,
+          "identity": "a058d7a58be979e664a8f59db48b912ce0280054b4b2aa5f4d447e2cdebaa088",
+          "method": "corenius_query",
+          "response_retained": 1
+        },
+        "operation": {
+          "binding": "worker:5a7d5ec7-8c71-4f52-9be0-8a015905b629:1",
+          "operation": "db764aa0-13ec-4e31-9055-edd4be544acb",
+          "state": "prepared"
+        },
+        "routing": {
+          "distinct_server_isolation": true
+        },
+        "target": {
+          "owner": "01a108dc-11c9-7f10-a509-98344b801a75",
+          "peer": "01a108db-dd10-70b2-99a5-e6cf799492a1",
+          "topology": "separate"
+        }
+      },
+      "topology": "separate"
+    },
+    {
+      "label": "actual_native_allowed_input_retained_scoped_observer_read",
+      "observation": {
+        "digest": "dbfc513849542bd66989ae6b6edb64db0f66632e03bb78acd5a97dce0bf6200c",
+        "redaction": {
+          "original_source_digest": "dbfc513849542bd66989ae6b6edb64db0f66632e03bb78acd5a97dce0bf6200c",
+          "policy": "typed-visible-v1; known capabilities, credential fields, bearer values redacted; reasoning excluded",
+          "redacted_input_digest": "dbfc513849542bd66989ae6b6edb64db0f66632e03bb78acd5a97dce0bf6200c",
+          "retention": "complete allowed input; no automatic expiry"
+        }
+      },
+      "topology": "separate"
+    }
+  ],
+  "checked_at": "2026-10-04T21:47:09.541272+00:00",
+  "final_run": "native-56-combined-final",
+  "namespace_fixture_cleanup_count": 3,
+  "namespace_product_cleanup_count": 10,
+  "namespaces": [
+    {
+      "execution_handle": "64a9f0dd-844d-43b9-afae-b08d9610d1e6",
+      "fixture_cleanup_signalled": false,
+      "pid": 2620197,
+      "pid_namespace": 4026539685,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56551121",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "95e82c74-c17c-404c-8b20-7be0b75a11f5",
+      "fixture_cleanup_signalled": false,
+      "pid": 2620199,
+      "pid_namespace": 4026539785,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56551122",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "0e0c9a5f-a572-4be0-9584-f5cbe93af2ea",
+      "fixture_cleanup_signalled": true,
+      "pid": 2620690,
+      "pid_namespace": 4026539869,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56551175",
+      "terminated_after_service_cleanup": false,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "2f2b946b-79a0-4d87-9db7-0a18e214093a",
+      "fixture_cleanup_signalled": false,
+      "pid": 2626919,
+      "pid_namespace": 4026540035,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56552459",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "256ad414-2bae-4597-9688-f6739e48e42b",
+      "fixture_cleanup_signalled": false,
+      "pid": 2631011,
+      "pid_namespace": 4026540037,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56554376",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "58ce9619-02b7-489d-98fe-37871fe9c2cd",
+      "fixture_cleanup_signalled": false,
+      "pid": 2636457,
+      "pid_namespace": 4026539685,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56556807",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "21263b77-f9d9-4b5d-a49d-44b087dd7b16",
+      "fixture_cleanup_signalled": false,
+      "pid": 2636460,
+      "pid_namespace": 4026539785,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56556808",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "0f54d445-03bc-4346-88e6-3a715aa15d36",
+      "fixture_cleanup_signalled": false,
+      "pid": 2636918,
+      "pid_namespace": 4026539869,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56556860",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "380fb31f-cd68-4380-8478-d966485cda30",
+      "fixture_cleanup_signalled": false,
+      "pid": 2636920,
+      "pid_namespace": 4026540035,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56556861",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "3c42f31b-9333-46bb-84d8-f59ba0e197be",
+      "fixture_cleanup_signalled": false,
+      "pid": 2640104,
+      "pid_namespace": 4026540118,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56558146",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "418df75b-1c5b-4b08-9813-1fa514108c31",
+      "fixture_cleanup_signalled": false,
+      "pid": 2640355,
+      "pid_namespace": 4026540201,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56558182",
+      "terminated_after_service_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "895931bb-6bad-4d37-9367-4814de28d9af",
+      "fixture_cleanup_signalled": true,
+      "pid": 2648284,
+      "pid_namespace": 4026540120,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56560000",
+      "terminated_after_service_cleanup": false,
+      "whole_process_terminated": true
+    },
+    {
+      "execution_handle": "75ac959c-b1e5-4397-afdc-3180ed83b623",
+      "fixture_cleanup_signalled": true,
+      "pid": 2648530,
+      "pid_namespace": 4026540205,
+      "same_process_identity_present_at_handoff": false,
+      "start_ticks": "56560035",
+      "terminated_after_service_cleanup": false,
+      "whole_process_terminated": true
+    }
+  ],
+  "qualification": "Process cleanup is identity-fenced and local. Fixture cleanup counts remain distinct from product retirement/cancellation success. No unrelated process inspection or cleanup.",
+  "resources": [
+    {
+      "exit": -9,
+      "name": "gateway",
+      "pid": 2630079,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2630079 (corenius-sqlite) R 2617629 2616654 2616654 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 56554151 8065024 1 18446744073709551615 94374628019392 94374633898528 140723237779504 0 0 0 0 0 0 0 0 0 17 160 0 0 0 0 0 94374634145520 94374634170088 94374651543552 140723237780922 140723237781115 140723237781115 140723237781363 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+        "--remote",
+        "ws://127.0.0.1:16143",
+        "--remote-auth-token-env",
+        "CORENIUS_VIEW_TOKEN",
+        "resume",
+        "01a108db-3115-7fd3-90d3-dda718d2c66b",
+        "--no-alt-screen"
+      ],
+      "binary_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+      "exit": -9,
+      "name": "native-tui",
+      "pid": 2630081,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2630081 (codex) R 2617629 2630081 2630081 0 -1 4194304 22 0 0 0 0 0 0 0 20 0 1 0 56554156 287592448 1 18446744073709551615 140395829370880 140396053583974 140726206871360 0 0 0 0 0 0 0 0 0 17 109 0 0 0 0 0 140396103303576 140396108938512 93825011884032 140726206873074 140726206873313 140726206873313 140726206873487 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-ccqw_gxu/workers.json",
+        "/tmp/cnr-ccqw_gxu/workers.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "sha256": "913aa797d903b72c91793fa227f592481dae5d45d580493b7cb34be978de24a9"
+      },
+      "exit": -9,
+      "name": "workers",
+      "pid": 2617758,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2617758 (corenius-attemp) R 2617629 2616654 2616654 0 -1 4194304 135 0 0 0 2 0 0 0 20 0 1 0 56549505 4751360 295 18446744073709551615 94436873832864 94436875189392 140735342597296 0 0 0 0 4096 1088 0 0 0 17 72 0 0 0 0 0 94436875268104 94436875270648 94436905918464 140735342603816 140735342604012 140735342604012 140735342604146 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-ccqw_gxu/controlplanes.json",
+        "/tmp/cnr-ccqw_gxu/controlplanes.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "sha256": "913aa797d903b72c91793fa227f592481dae5d45d580493b7cb34be978de24a9"
+      },
+      "exit": -9,
+      "name": "controlplanes",
+      "pid": 2619804,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2619804 (corenius-attemp) R 2617629 2616654 2616654 0 -1 4194304 132 0 0 0 2 0 0 0 20 0 1 0 56550302 4751360 296 18446744073709551615 94352198146464 94352199502992 140731534970352 0 0 0 0 4096 1088 0 0 0 17 65 0 0 0 0 0 94352199581704 94352199584248 94352213176320 140731534974488 140731534974696 140731534974696 140731534974834 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-ccqw_gxu/state.db",
+        "/tmp/cnr-ccqw_gxu/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "sha256": "667ba4876f8bdffee55541c72d9f85973df3fc102ffad99046198eb08efd7e6f"
+      },
+      "exit": -9,
+      "name": "controller",
+      "pid": 2620166,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2620166 (corenius-sqlite) S 2617629 2616654 2616654 0 -1 1077936128 398 0 0 0 0 0 0 0 20 0 2 0 56551094 81162240 2057 18446744073709551615 94020889492672 94020895371808 140728790533792 0 0 0 0 4096 1088 0 0 0 17 166 0 0 0 0 0 94020895618800 94020895643368 94020917014528 140728790534527 140728790534721 140728790534721 140728790536051 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-ccqw_gxu/state.db",
+        "/tmp/cnr-ccqw_gxu/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "sha256": "667ba4876f8bdffee55541c72d9f85973df3fc102ffad99046198eb08efd7e6f"
+      },
+      "exit": -9,
+      "name": "controller-restarted",
+      "pid": 2626438,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2626438 (corenius-sqlite) S 2617629 2616654 2616654 0 -1 1077936128 365 0 0 0 0 0 0 0 20 0 2 0 56552327 80670720 1971 18446744073709551615 94404458802368 94404464681504 140735044779312 0 0 0 0 4096 1088 0 0 0 17 107 0 0 0 0 0 94404464928496 94404464953064 94404483547136 140735044782463 140735044782657 140735044782657 140735044783987 0\n"
+    },
+    {
+      "exit": -9,
+      "name": "gateway",
+      "pid": 2647770,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2647770 (corenius-sqlite) R 2617629 2616654 2616654 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 56559811 8065024 1 18446744073709551615 94156447632576 94156453511712 140727853676176 0 0 0 0 0 0 0 0 0 17 55 0 0 0 0 0 94156453758704 94156453783272 94156474208256 140727853678010 140727853678203 140727853678203 140727853678451 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+        "--remote",
+        "ws://127.0.0.1:30589",
+        "--remote-auth-token-env",
+        "CORENIUS_VIEW_TOKEN",
+        "resume",
+        "01a108dc-11c9-7f10-a509-98344b801a75",
+        "--no-alt-screen"
+      ],
+      "binary_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+      "exit": -9,
+      "name": "native-tui",
+      "pid": 2647776,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2647776 (codex) R 2617629 2647776 2647776 0 -1 4194304 9 0 0 0 0 0 0 0 20 0 1 0 56559815 287592448 1 18446744073709551615 139821060317184 139821284530278 140737396908160 0 0 0 0 0 0 0 0 0 17 187 0 0 0 0 0 139821334249880 139821339884816 93824999034880 140737396915698 140737396915937 140737396915937 140737396916111 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-rodqpxb1/workers.json",
+        "/tmp/cnr-rodqpxb1/workers.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "sha256": "913aa797d903b72c91793fa227f592481dae5d45d580493b7cb34be978de24a9"
+      },
+      "exit": -9,
+      "name": "workers",
+      "pid": 2633029,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2633029 (corenius-attemp) R 2617629 2616654 2616654 0 -1 4194304 135 0 0 0 2 0 0 0 20 0 1 0 56555163 4751360 285 18446744073709551615 94755230087584 94755231444112 140735303263264 0 0 0 0 4096 1088 0 0 0 17 196 0 0 0 0 0 94755231522824 94755231525368 94755248697344 140735303269928 140735303270124 140735303270124 140735303270258 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-rodqpxb1/controlplanes.json",
+        "/tmp/cnr-rodqpxb1/controlplanes.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-attempt-supervisor",
+        "sha256": "913aa797d903b72c91793fa227f592481dae5d45d580493b7cb34be978de24a9"
+      },
+      "exit": -9,
+      "name": "controlplanes",
+      "pid": 2635847,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2635847 (corenius-attemp) R 2617629 2616654 2616654 0 -1 4194304 133 0 0 0 1 0 0 0 20 0 1 0 56555976 4751360 286 18446744073709551615 93842348321184 93842349677712 140725908886176 0 0 0 0 4096 1088 0 0 0 17 95 0 0 0 0 0 93842349756424 93842349758968 93842360811520 140725908893208 140725908893416 140725908893416 140725908893554 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-rodqpxb1/state.db",
+        "/tmp/cnr-rodqpxb1/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "sha256": "667ba4876f8bdffee55541c72d9f85973df3fc102ffad99046198eb08efd7e6f"
+      },
+      "exit": -9,
+      "name": "controller",
+      "pid": 2636423,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2636423 (corenius-sqlite) S 2617629 2616654 2616654 0 -1 1077936128 400 0 0 0 0 0 0 0 20 0 2 0 56556780 81162240 2103 18446744073709551615 94589901651136 94589907530272 140736299998912 0 0 0 0 4096 1088 0 0 0 17 84 0 0 0 0 0 94589907777264 94589907801832 94589928161280 140736300005759 140736300005953 140736300005953 140736300007283 0\n"
+    },
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-rodqpxb1/state.db",
+        "/tmp/cnr-rodqpxb1/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/crates/sqlite-controller/target/debug/corenius-sqlite-controller",
+        "sha256": "667ba4876f8bdffee55541c72d9f85973df3fc102ffad99046198eb08efd7e6f"
+      },
+      "exit": -9,
+      "name": "controller-restarted",
+      "pid": 2638974,
+      "same_process_identity_present_at_handoff": false,
+      "start_stat": "2638974 (corenius-sqlite) S 2617629 2616654 2616654 0 -1 1077936128 365 0 0 0 0 0 0 0 20 0 2 0 56558013 80670720 1935 18446744073709551615 94787343658176 94787349537312 140721769087808 0 0 0 0 4096 1088 0 0 0 17 85 0 0 0 0 0 94787349784304 94787349808872 94787364433920 140721769093503 140721769093697 140721769093697 140721769095027 0\n"
+    }
+  ],
+  "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b"
+}

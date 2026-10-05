@@ -1,0 +1,17 @@
+{
+  "disposition": "TESTED_REVIEW_REJECTED",
+  "source": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "evidence_tip": "40d4805ce34d74521f3473b7f8ad2b9f7451d0c2",
+  "standards": "PASS; one LOW heuristic deferred",
+  "spec": "FAIL; unchanged-source recovery",
+  "branch643": "FAIL; five findings",
+  "root_gate": "FAIL; native24/25, separate adoption deadline; return101",
+  "source_unchanged_after_failed_gate": true,
+  "root_matching_live": 0,
+  "root_retained_identities": 549,
+  "terminal_disposal_receipts": 199,
+  "handoff_checked": true,
+  "acceptance": false,
+  "repair_dispatch": "repair1/3; six Kata findings plus bounded native-failure diagnosis",
+  "full02_accepted": false
+}

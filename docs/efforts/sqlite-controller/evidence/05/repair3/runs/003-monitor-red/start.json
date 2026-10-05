@@ -1,0 +1,22 @@
+{
+  "utc": "2026-10-05T01:35:11.594756+00:00",
+  "argv": [
+    "cargo",
+    "test",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--test",
+    "client",
+    "repair3_monitor_corrections_have_bounded_complete_projection",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "source_map_sha256": "c5501122642e25c8d3ae06de8302de4cd634aeb716e77e2d406492927839c57d",
+  "archive_sha256": "45ace3ca39052837fd5a6825f11ad81b0f8844b1f0c7f54d4ca2324758988bd0",
+  "environment": {
+    "CARGO_TARGET_DIR": "/tmp/sqlite05-repair3-target",
+    "CARGO_BUILD_JOBS": "2",
+    "CORENIUS_TEST_RETAIN_RAW": "1"
+  }
+}

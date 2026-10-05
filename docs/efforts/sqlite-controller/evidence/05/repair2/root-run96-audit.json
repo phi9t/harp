@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-05T00:37:52.576193+00:00",
+  "record_sha256": "3dc4de9095d0dba1020438a9b2548f1cd5dcce70ed8294232c332a02d94503a7",
+  "actual_exit": 101,
+  "log_sha256": "57b8f05a826d68527e4f50caae13283e5aad030c5d3a9288c8ebc5db5e44c3f2",
+  "archive_sha256": "1b1de863c4cf3da009c93e68ebbbcd599c684d22f5b810698352419a54fdb7a9",
+  "unchanged_inputs": 46,
+  "failure": "control_center_native.py106 json.loads(call.arguments) receives dict from newly bounded public projection; actual TypeError in both topology traces; not a target-native-effect RED or passing combined gate.",
+  "disposition": "Retain failure; public read consumers must follow final page/ref/decoded payload protocol with exact argument/response ownership and original assertions/deadlines unchanged. Root final source gates still mandatory; no source acceptance/cap reset."
+}

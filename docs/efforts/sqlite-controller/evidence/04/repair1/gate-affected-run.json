@@ -1,0 +1,33 @@
+{
+  "name": "gate-affected",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--features",
+    "fault-injection",
+    "--test",
+    "git",
+    "--test",
+    "kata",
+    "--test",
+    "process",
+    "--test",
+    "public",
+    "--test",
+    "runtime",
+    "--",
+    "--nocapture",
+    "--test-threads=2"
+  ],
+  "started": "2026-10-04T17:53:27.275577+00:00",
+  "ended": "2026-10-04T17:56:10.287984+00:00",
+  "elapsed_seconds": 163.01239493803587,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair1/gate-affected.log",
+  "environment": {}
+}

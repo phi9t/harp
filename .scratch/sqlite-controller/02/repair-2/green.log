@@ -1,0 +1,20 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.80s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-6c9795750c2ac521)
+
+running 2 tests
+decoy_kernel_stat=1517065 (python3) S 1517060 1517065 1517065 0 -1 1077936384 1730 0 0 0 1 2 0 0 20 0 1 0 51124964 20455424 2989 18446744073709551615 4321280 7158201 140721222623792 0 0 0 0 16781312 2 1 0 0 17 171 0 0 0 0 0 9731528 11035224 13619200 140721222629730 140721222631347 140721222631347 140721222631399 0
+
+owned_descriptor_decoy={"binding":{"attempt":"73987d7c-0de0-46a4-9bc9-9f93f8927b97","base":"0123456789abcdef0123456789abcdef01234567","brief":"0703754b-79cd-4890-9633-b9602a43e4e8","operation":"3cb17061-641a-415d-b34e-d06bf78fcabb","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"43d0821a-bed4-457f-b67d-ca4b233b985a","incarnation":"2d958496-353b-4c82-a1d6-7a2fbb1bdab2","init_start_ticks":"51124964","namespace_init":1517065,"outcome":null,"pid":1517060,"pid_namespace":4026539692,"start_ticks":"51124963","state":"running"}
+decoy_kernel_stat=1517066 (python3) S 1517061 1517066 1517066 0 -1 1077936384 1735 0 0 0 1 2 0 0 20 0 1 0 51124964 19406848 3025 18446744073709551615 4321280 7158201 140736976924288 0 0 0 0 16781312 2 1 0 0 17 205 0 0 0 0 0 9731528 11035224 32333824 140736976927074 140736976928691 140736976928691 140736976928743 0
+
+owned_namespace_decoy={"binding":{"attempt":"d8f19185-7abf-4cf6-b2b4-5e6bccaa8ab5","base":"0123456789abcdef0123456789abcdef01234567","brief":"ac19f4d8-db1b-46fb-94f2-1823ab04f31e","operation":"ccbebc3d-c38c-417a-a03b-56e39e4caa53","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"673479dc-ff07-4a2c-8945-8cbfa07e9245","incarnation":"51d71207-1783-405d-a57f-20d4869e80fe","init_start_ticks":"51124964","namespace_init":1517066,"outcome":null,"pid":1517061,"pid_namespace":4026539733,"start_ticks":"51124964","state":"running"}
+qualification_reply={"error":"provisional pidfd kernel target mismatch"}; real_decoy_pidfd_ready=false
+qualification_reply={"error":"namespace init owned monitor lineage mismatch"}; real_decoy_pidfd_ready=false
+qualification_disposed_identity={"binding":{"attempt":"74a6e91c-e6b6-4654-95c7-635072b98456","base":"0123456789abcdef0123456789abcdef01234567","brief":"f18eea02-e5b0-4353-b13c-a4a3678d1fc6","operation":"1dccb6c2-168f-4c87-9def-742f25339a43","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"bc2970b4-ee4d-488c-a16f-4633a260339a","incarnation":"922c4895-782c-430a-947f-dde3686577ab","init_start_ticks":null,"namespace_init":null,"outcome":"monitor exited without retained whole-process identity","pid":1517134,"pid_namespace":null,"start_ticks":"51124982","state":"unknown"}; decoy_alive=true; owned_children=0
+qualification_disposed_identity={"binding":{"attempt":"003adffa-babf-4d3e-ba4b-0fffab870c3b","base":"0123456789abcdef0123456789abcdef01234567","brief":"2d3ae750-7a6c-4450-9772-fc86ab6267c9","operation":"f9de2f64-f339-47dd-ab4f-5da5a87fa114","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"76542a55-33dd-4421-bc44-3dd3fa13cfff","incarnation":"2bc16db3-4f27-4517-a4a0-c30cdd9f0531","init_start_ticks":null,"namespace_init":null,"outcome":"monitor exited without retained whole-process identity","pid":1517135,"pid_namespace":null,"start_ticks":"51124982","state":"unknown"}; decoy_alive=true; owned_children=0
+test repair2_descriptor_target_mismatch_is_never_signal_authority ... ok
+test repair2_another_namespace_init_cannot_qualify_as_owned_child ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.32s
+

@@ -1,0 +1,104 @@
+{
+  "recorded_at": "2026-10-05T02:10:03.104930+00:00",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "source_tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+  "phase": "Author final repair3/3 evidence handoff; independent acceptance pending",
+  "pre_source_matrix": {
+    "path": "pre-source-nine-plus-five-matrix-v2.json",
+    "sha256": "99dabd931ccfecf913782514dcae173e225bc0190d7772ce3e5737cc4c641d2c"
+  },
+  "authenticated_pre_source_root_seal": {
+    "path": "05-repair3-pre-source-root-matrix.json",
+    "sha256": "9df34387bf21c32d7953c494d29632c02a97d671e619bc55bb2251a0311d4139"
+  },
+  "inherited_nine": {
+    "path": "inherited-nine-matrix.json",
+    "sha256": "86b701b1aaec9e1e2e2d7412301fcafff357cf4503d0c75e42681224587c45d6",
+    "disposition": "Unchanged canonical original-nine evidence and limits retained, not requalified by a repeated native/EMPTY run."
+  },
+  "five_controls": [
+    {
+      "control": "Repair transition versus unresolved landing",
+      "red": "006-landing-red",
+      "green": [
+        "011-landing-kata-green: Git two tests only; overall exit101",
+        "015-final-controller-git-kata"
+      ],
+      "proof": "Actual private Git candidate and physical ref; applying and deadline-produced unknown both refuse repair without domain mutation; public recovery yields one publication. Preserves actor and terminal checks.",
+      "qualification": "006 prelaunch inputs retained; unused Kata test edits during execution; scoped Git RED only, no after-map."
+    },
+    {
+      "control": "UI preadmission revision retry",
+      "red": "009-native-ui-red",
+      "green": [
+        "010-native-ui-green",
+        "016-final-native-replay"
+      ],
+      "proof": "Actual pinned native shared/separate topologies; public progress interleaves after saved request via scheduling-only FI hook. First conflict has no receipt/native operation; exact retry admits once; replay, changed intent, foreign/revoked actor checks preserved."
+    },
+    {
+      "control": "Immutable Kata approved source and brief amendment",
+      "red": "007-kata-red",
+      "green": [
+        "012-kata-green",
+        "015-final-controller-git-kata"
+      ],
+      "proof": "Actual pinned Kata, physical Git commit and captured snapshot. Exact retained version/digest/revision updates approved source and brief atomically; immutable old source, offline receipt and real metadata synchronization verified. Invented/foreign/mismatched/active/closed proposals refuse.",
+      "qualification": "008 unsupported closure endpoint and011 short closure message were fixture failures; both preserved."
+    },
+    {
+      "control": "Bounded monitor corrections and full authorized retrieval",
+      "red": "003-monitor-red",
+      "green": [
+        "005-monitor-green",
+        "015-final-controller-git-kata"
+      ],
+      "proof": "Actual public TCP/MCP/dashboard responses, 20 corrections with80 fields of65536 bytes; bounded pages and full UTF8 reconstruction with digest/size checks; peer/changed/offset refusals; review credit unchanged.",
+      "qualification": "004 fixed budget but failed erroneous top-level field lookup; actual exit101 retained.005 follows retained document reference, original budget assertions unchanged."
+    },
+    {
+      "control": "WebSocket ping and pong",
+      "red": "001-websocket-red",
+      "green": [
+        "002-websocket-green",
+        "015-final-controller-git-kata",
+        "016-final-native-replay"
+      ],
+      "proof": "Actual authenticated sockets: ping payload echoed, pong accepted, close validation, malformed/unmasked/oversized controls refuse; subsequent native read works without added native operation.",
+      "qualification": "001\u2192002 only wire logging changed; assertions unchanged. No after-source maps in001\u2013006."
+    }
+  ],
+  "historical_gap_correction": "Canonical unreviewed04 history gap122\u20131262; v2 typo122\u2013126 is preserved and superseded only by this correction. No new coverage credit.",
+  "final_tests": {
+    "015": {
+      "exit": 0,
+      "passed": 89,
+      "groups": "lib21/client5/control8/git6/kata9/process4/public20/runtime16"
+    },
+    "016": {
+      "exit": 0,
+      "passed": 2,
+      "scope": "Only exact repair2 admitted lost-ack/steer and repair3 unadmitted retry tests, each shared/separate;38 filtered, no full native suite or EMPTY diagnostics."
+    }
+  },
+  "final_checks": [
+    "014 strict FI all-targets Clippy -D warnings exit0",
+    "017 fmt check exit0",
+    "018 default bins build exit0"
+  ],
+  "retained_failures": [
+    "001",
+    "003",
+    "004",
+    "006",
+    "007",
+    "008",
+    "009",
+    "011",
+    "evidence-export-failure01.json",
+    "inherited root73241 fullgate101; diagnostic childexitUNKNOWN",
+    "original80070 raw cause/actual tuple remainUNKNOWN"
+  ],
+  "caps": "05 final3/3;02 and04 exhausted3/3;EMPTY2/2 exhausted. No new rounds or allowances.",
+  "acceptance": false
+}

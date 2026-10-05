@@ -1,0 +1,248 @@
+{
+  "sealed_at": "2026-10-05T03:28:21.481190+00:00",
+  "phase": "before exact C1/C2 source freeze",
+  "authority": "ONE extra round; prior05/02/04 repair3 and EMPTY2 remain consumed",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "source_files": [
+    {
+      "path": "crates/sqlite-controller/src/monitor.rs",
+      "sha256": "527b6268a57fbfd8e65cf780e3d137341843e156ab9c54d36683229990c39739"
+    },
+    {
+      "path": "crates/sqlite-controller/src/view.rs",
+      "sha256": "3bff6c43708b102665a5b5c9969bd318353ddf2541de5e2bf2bf289d95f66a0c"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/codex.rs",
+      "sha256": "e3c7ffbdbce4b7919ed7b70682dbd4444060c5e7e49c6bf2a9f0e2336dc5fd22"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/git.rs",
+      "sha256": "c20f9c390f2589288ba845bbb421ec7cd5002a68f0457cde4f2711b309a8b4a5"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/support/git_protocol.py",
+      "sha256": "d42cf4a91f94391950e843d165ca68b8b435b2ed6154397df299413721484b8b"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/support/native_registry.py",
+      "sha256": "0a071eaf726fb87da2d6c75beaec3f5e8536c192eae845aa5edb7e8ff33a1695"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/support/correction_authority.py",
+      "sha256": "dd5a8587cd03ff7b7d4bbf00dcc09359ee8a45794d571ba34d0aaebefe6c3925"
+    }
+  ],
+  "inherited_sources": [
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/04/independent-review/repair3/nine-finding-root-matrix.json",
+      "sha256": "f65b58717a46d8448eb9e64f05c61d225e23ed8b6719bf320d09fe5bf90e8edd"
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/repair3/05-repair3-pre-source-root-matrix.json",
+      "sha256": "9df34387bf21c32d7953c494d29632c02a97d671e619bc55bb2251a0311d4139"
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/repair3/final-nine-plus-five-matrix.json",
+      "sha256": "1f9d0635ccdccf0846dc19a2443dec5fddc860e1c38ea88408ff84a310b2560b"
+    }
+  ],
+  "inherited_nine": {
+    "status": "INHERITED at retained exact SOURCE7b20 and original unchanged04 controls; not newly rerun or new-source PASS",
+    "findings": [
+      {
+        "finding": 1,
+        "topic": "trusted imports",
+        "original_actual_failure": "shadow-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 2,
+        "topic": "landing authority",
+        "original_actual_failure": "authority-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 3,
+        "topic": "recovered publication",
+        "original_actual_failure": "publication-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 4,
+        "topic": "terminal lifecycle",
+        "original_actual_failure": "terminal-capture-red,terminal-accept-red,accepted-capture-red; repair2 composition-red: fresh proof passed, reports1->2/revision9->10, original accepted proof could no longer land",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 5,
+        "topic": "selected stop retry",
+        "original_actual_failure": "native-final-driver-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 6,
+        "topic": "inventory responsiveness",
+        "original_actual_failure": "inventory-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 7,
+        "topic": "final output",
+        "original_actual_failure": "final-output-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 8,
+        "topic": "archive producer",
+        "original_actual_failure": "archive-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      },
+      {
+        "finding": 9,
+        "topic": "partial deletion",
+        "original_actual_failure": "partial-red",
+        "root_final_status": "resolved on qualified current product source; original failures/changed-fixture rationale/source pairs retained",
+        "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown."
+      }
+    ]
+  },
+  "inherited_old05five": {
+    "status": "INHERITED; consumer monitor.rs/view.rs changed only for C1/C2; independent review required",
+    "controls": [
+      {
+        "control_number": 1
+      },
+      {
+        "control_number": 2
+      },
+      {
+        "control_number": 3
+      },
+      {
+        "control_number": 4
+      },
+      {
+        "control_number": 5
+      }
+    ]
+  },
+  "C1": {
+    "IDs": [
+      "S05-R3-C1",
+      "STD05-015"
+    ],
+    "initial_driver_failure": "C1-RED: peer progressed presented to explicit ACK during fairness observation; uncorrected inherited terminal-state assertion failed; NOT target RED",
+    "RED": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "CORENIUS_TEST_TOPOLOGY=shared",
+        "python3",
+        ".scratch/sqlite-controller/c1c2-happy/fixtures/correction-driver.py",
+        ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+      ],
+      "started_utc": "2026-10-05T03:21:08.252877+00:00",
+      "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "pid": 127791,
+      "start_ticks": "58604855",
+      "exit": 1,
+      "seconds": 48.805064082029276,
+      "finished_utc": "2026-10-05T03:21:57.057941+00:00",
+      "log_sha256": "bf920c31c0ba384c29945bd5708856bcb8eab845dc3ab4724b7f637532bc5306"
+    },
+    "GREEN": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_CORRECTION_AUTHORITY=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "python3",
+        "crates/sqlite-controller/tests/support/native_registry.py",
+        ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+      ],
+      "started_utc": "2026-10-05T03:25:21.957344+00:00",
+      "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "pid": 158091,
+      "start_ticks": "58630225",
+      "exit": 0,
+      "seconds": 75.11345558101311,
+      "finished_utc": "2026-10-05T03:26:37.070808+00:00",
+      "log_sha256": "e8c0f2f61f8678978bad3763350e4242812843407fa520ba9f4dd3aeaffd7bdb"
+    },
+    "result": "current correction native delivery; durable stale grant; fresh operator decision supersedes old decision; old lead refuses; both shared/separate"
+  },
+  "C2": {
+    "IDs": [
+      "S05-R3-C2",
+      "STD05-016"
+    ],
+    "RED": {
+      "command": [
+        "python3",
+        ".scratch/sqlite-controller/c1c2-happy/fixtures/progress-probe.py"
+      ],
+      "started_utc": "2026-10-05T03:18:59.478194+00:00",
+      "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "pid": 115416,
+      "start_ticks": "58591977",
+      "exit": 1,
+      "seconds": 6.414533284958452,
+      "finished_utc": "2026-10-05T03:19:05.892726+00:00",
+      "log_sha256": "96d7477a7428ec2223cd4714352d41215c2698172970b1a5ecb5a84c2d3eadad"
+    },
+    "tracked_RED": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_GIT_MODES=attempt-progress",
+        "python3",
+        "crates/sqlite-controller/tests/support/git_protocol.py",
+        ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+      ],
+      "started_utc": "2026-10-05T03:22:23.171828+00:00",
+      "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "pid": 141482,
+      "start_ticks": "58612347",
+      "exit": 1,
+      "seconds": 6.177885623066686,
+      "finished_utc": "2026-10-05T03:22:29.349714+00:00",
+      "log_sha256": "7d541f02211c387e7388bab755fd1396db166219e9b5bdf08535138ecaa888b1"
+    },
+    "GREEN": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_GIT_MODES=attempt-progress",
+        "python3",
+        "crates/sqlite-controller/tests/support/git_protocol.py",
+        ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+      ],
+      "started_utc": "2026-10-05T03:25:21.956761+00:00",
+      "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "pid": 158090,
+      "start_ticks": "58630225",
+      "exit": 0,
+      "seconds": 6.416924350894988,
+      "finished_utc": "2026-10-05T03:25:28.373685+00:00",
+      "log_sha256": "fb641a39e256306a90fb98b5a6b0aeff1ef4ade8f9dcd2922dde346cc8449c01"
+    },
+    "result": "new Attempt no inherited predecessor/task report; own current report attributable; retained historical Attempt/operator scopes; revoked old report refuses"
+  },
+  "unresolved": [
+    "independent scoped review pending",
+    "live provider backend/header and bounded real entitlement request untested",
+    "dedicated actual lead/two-worker demo pending",
+    "full final new-source acceptance/source-freeze/integration/release/hardening gates deferred by owner delivery order",
+    "historical80070 UNKNOWN and04gap122-1262 UNREVIEWED remain"
+  ],
+  "qualification": "happy path NOT demonstrated; baseline NOT qualified"
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "pid": 2922857,
+    "argv": [
+      "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "responses-api-proxy",
+      "--upstream-url",
+      "http://127.0.0.1:29829/v1/responses",
+      "--server-info",
+      "/data02/home/philip.yang/devx/tmp/corenius-sqlite-live-relay-readiness-5u659ldu/proxy-info.json"
+    ],
+    "start_stat": "2922857 (codex) R 2922853 2922857 2922857 0 -1 4194304 24 0 0 0 0 0 0 0 20 0 1 0 51820414 287592448 1 18446744073709551615 140385496543232 140385720756326 140730141927648 0 0 0 0 0 0 0 0 0 17 26 0 0 0 0 0 140385770475928 140385776110864 93824996233216 140730141928867 140730141929153 140730141929153 140730141929359 0\n",
+    "exit_code": -15,
+    "terminated": true
+  }
+]

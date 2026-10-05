@@ -1,0 +1,16 @@
+{
+  "source_head_read": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "kind": "MODEL-FREE ACTUAL NATIVE PROTOCOL",
+  "model_metadata": "bundled gpt-5.5; no live model or entitlement claim",
+  "tools": [
+    {
+      "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+      "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+    }
+  ],
+  "code_mode_host_used": false
+}

@@ -1,0 +1,46 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.57s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-09d8e44e34ad1918)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 2757314, "start_stat": "2757314 (corenius-attemp) R 2757297 2756744 2756744 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51693426 1998848 1 18446744073709551615 94921152203584 94921153317856 140724974116688 0 0 0 0 0 0 0 0 0 17 60 0 0 0 0 0 94921153385944 94921153388480 94921163288576 140724974124664 140724974124853 140724974124853 140724974124921 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-vdu_n42p/workers.json", "/tmp/cnr-vdu_n42p/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 2758556, "start_stat": "2758556 (corenius-attemp) R 2757297 2756744 2756744 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51694235 1998848 1 18446744073709551615 93837596343104 93837597457376 140733608227168 0 0 0 0 0 0 0 0 0 17 104 0 0 0 0 0 93837597525464 93837597528000 93837602668544 140733608234600 140733608234801 140733608234801 140733608234873 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-vdu_n42p/controlplanes.json", "/tmp/cnr-vdu_n42p/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 2758899, "start_stat": "2758899 (corenius-sqlite) R 2757297 2756744 2756744 0 -1 4194304 19 0 0 0 0 0 0 0 20 0 1 0 51695049 4276224 1 18446744073709551615 94622325277136 94622328212048 140732284548736 0 0 0 0 0 0 0 0 0 17 207 0 0 0 0 0 94622328321976 94622328346464 94622338891776 140732284550562 140732284550749 140732284550749 140732284551034 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-vdu_n42p/state.db", "/tmp/cnr-vdu_n42p/controller.sock"], "exit": -9}]
+owned_log controller.stderr native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: remote executor not ready: {"status":"pending"}
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: remote executor not ready: {"status":"pending"}
+native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: Resource temporarily unavailable (os error 11)
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: Resource temporarily unavailable (os error 11)
+native reconcile c870c422-ab33-4e5c-904e-7238d48a0a65: thread creation acknowledgement unknown; no replay
+native reconcile 23fc7668-3348-4327-8f42-1aa98706d332: thread creation acknowledgement unknown; no replay
+
+
+
+thread 'configured_native_topologies_are_isolated_and_controller_owned' (2757296) panicked at tests/codex.rs:43:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 116, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 100, in run
+    registry=wait(bound,8)
+             ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 21, in wait
+    raise AssertionError('behavior deadline')
+AssertionError: behavior deadline
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test configured_native_topologies_are_isolated_and_controller_owned ... FAILED
+
+failures:
+
+failures:
+    configured_native_topologies_are_isolated_and_controller_owned
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 25.59s
+
+error: test failed, to rerun pass `--test codex`

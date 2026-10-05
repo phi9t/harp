@@ -1,0 +1,28 @@
+{
+  "source_commit": "8d05117a5d7be0793e37667bd0a245073305e757",
+  "crate_tree": "9ecb1686cfa424fd1f6e31a4c38ce1e25e8924b4",
+  "frozen_codex_rs_sha256": "b18a11f60a7c5fa2fa92513c50addff06a0707c1152c14649e3e0b306dbdd45d",
+  "inputs": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/02/registry/repair3/branch-642.md",
+      "sha256": "b82765ae3e296b6792db004afd545c91942ff7da4d0a7a88930574f2c341037a"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md",
+      "sha256": "566e9aff6c7d352806b356df998e6317d0c7603c2ec6be38acc3deebd78f5597"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/tickets/03-kata-participant-protocol.md",
+      "sha256": "0fc9105707389677b3a54980c3e54b5e8eb7d8c0068943e4b694a230d8a8a653"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/tickets/04-git-candidates-landing.md",
+      "sha256": "c40b6bd1dfd55f831355b233d47ddee73be0162885938f7893b27090d52aa402"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/CONTROLLED-TRIAL.md",
+      "sha256": "35742c7434829af4f8ef24f3a987877fcac248a8fac10bc6c7d4eb1a427b5e96"
+    }
+  ],
+  "method": "Read-only exact-commit source trace and canonical requirement reading; no test/probe or new runtime evidence."
+}

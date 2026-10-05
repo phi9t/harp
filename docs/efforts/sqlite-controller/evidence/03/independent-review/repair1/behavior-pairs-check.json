@@ -1,0 +1,46 @@
+{
+  "method": "Independent source-pinned public driver identity comparison, plus raw RED/GREEN assertion/test-summary inspection",
+  "pairs": [
+    {
+      "case": "snapshot",
+      "red_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-snapshot-red-before.json",
+      "green_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-snapshot-green-before.json",
+      "identical_public_driver_sha256": "18b6d3a5698d3690547157ff5e1d983871bb55d8c4f31aefeabdeb0ddbc1299e",
+      "red_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-snapshot-red.log",
+      "green_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-snapshot-green.log"
+    },
+    {
+      "case": "availability",
+      "red_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-availability-red-before.json",
+      "green_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-availability-green-before.json",
+      "identical_public_driver_sha256": "18b6d3a5698d3690547157ff5e1d983871bb55d8c4f31aefeabdeb0ddbc1299e",
+      "red_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-availability-red.log",
+      "green_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-availability-green.log"
+    },
+    {
+      "case": "isolation",
+      "red_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-isolation-red-before.json",
+      "green_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-isolation-green-before.json",
+      "identical_public_driver_sha256": "18b6d3a5698d3690547157ff5e1d983871bb55d8c4f31aefeabdeb0ddbc1299e",
+      "red_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-isolation-red.log",
+      "green_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-isolation-green.log"
+    },
+    {
+      "case": "progress",
+      "red_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-progress-red-before.json",
+      "green_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-progress-green-before.json",
+      "identical_public_driver_sha256": "18b6d3a5698d3690547157ff5e1d983871bb55d8c4f31aefeabdeb0ddbc1299e",
+      "red_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-progress-red.log",
+      "green_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-progress-green.log"
+    },
+    {
+      "case": "responsiveness",
+      "red_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-responsiveness-red2-before.json",
+      "green_manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-responsiveness-green-before.json",
+      "identical_public_driver_sha256": "18b6d3a5698d3690547157ff5e1d983871bb55d8c4f31aefeabdeb0ddbc1299e",
+      "red_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-responsiveness-red2.log",
+      "green_log": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-responsiveness-green.log"
+    }
+  ],
+  "limits": "Responsiveness original RED passed and is uncredited; corrected RED2 reaches intended control-receipt starvation. Native diagnostics are separate; this is not accepted-source or live qualification."
+}

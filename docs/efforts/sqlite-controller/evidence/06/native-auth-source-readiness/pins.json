@@ -1,0 +1,15 @@
+{
+  "version": "0.159.3",
+  "codex_path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+  "codex_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+  "source_tag": "rust-v0.159.3",
+  "annotated_tag": "8e46774a94a745ffdf676bd7a8aa36466bbd4f99",
+  "source_commit": "01fc69f4026735edfdf6789820549727a4867b11",
+  "release_sigstore_subject_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+  "installed_binary_matches_release_sigstore_subject": true,
+  "sigstore_trust_verification": "Not performed; compared subject digest in artifact obtained from official release URL.",
+  "corenius_source_commit_read": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "prior_report_source": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/evidence/06/provider-readiness/readiness.md",
+  "prior_report_sha256": "d2b65bfff0a06131cdfa5496b19228e81c3fae878f792633f03b67c1cb390e2c",
+  "read_utc": "2026-10-04T09:55:03.562345+00:00"
+}

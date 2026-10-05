@@ -1,0 +1,35 @@
+{
+  "source_base": "8d05117a5d7be0793e37667bd0a245073305e757",
+  "classification": "MODEL_FREE_ACTUAL_PROTOCOL; no paid/live inference",
+  "commands": [
+    {
+      "command": "cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture --test-threads=2",
+      "exit": 0,
+      "log": "gate-tests.log",
+      "seconds": 884.58,
+      "started_at": "2026-10-04T12:54:05.007281+00:00"
+    },
+    {
+      "command": "cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml --check",
+      "exit": 0,
+      "log": "gate-fmt.log",
+      "seconds": 0.22,
+      "started_at": "2026-10-04T13:08:49.589039+00:00"
+    },
+    {
+      "command": "cargo clippy --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --all-targets --features fault-injection -- -D warnings",
+      "exit": 0,
+      "log": "gate-clippy.log",
+      "seconds": 0.1,
+      "started_at": "2026-10-04T13:08:49.807875+00:00"
+    },
+    {
+      "command": "cargo build --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml",
+      "exit": 0,
+      "log": "gate-normal-build.log",
+      "seconds": 1.13,
+      "started_at": "2026-10-04T13:08:49.906637+00:00"
+    }
+  ],
+  "tested_source_unchanged": true
+}

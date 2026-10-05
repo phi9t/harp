@@ -1,0 +1,886 @@
+diff --git a/crates/sqlite-controller/src/control.rs b/crates/sqlite-controller/src/control.rs
+index 68ed459..5b5bffd 100644
+--- a/crates/sqlite-controller/src/control.rs
++++ b/crates/sqlite-controller/src/control.rs
+@@ -66,7 +66,11 @@ pub(super) fn apply(
+             let old:(String,String)=db(tx.query_row("SELECT b.work_ref,t.state FROM tasks t JOIN briefs b ON b.id=t.brief WHERE t.project=?1 AND t.id=?2",params![project,task],|r|Ok((r.get(0)?,r.get(1)?))))?;
+             let brief = id();
+             let proposal = id();
+-            let body = text(a, "body")?;
++            let captured = kata::revised_brief(tx, project, task, a)?;
++            let body = match captured.as_deref() {
++                Some(body) => body,
++                None => text(a, "body")?,
++            };
+             db(tx.execute(
+                 "INSERT INTO briefs VALUES(?1,?2,?3,?4,?5,?6,?7)",
+                 params![
+@@ -101,6 +105,7 @@ pub(super) fn apply(
+             if changed != 1 {
+                 return Err("task not eligible for revised admission".into());
+             }
++            kata::approve_revised_brief(tx, project, &task, &brief)?;
+             db(tx.execute(
+                 "UPDATE control_brief_proposals SET state='approved' WHERE id=?1",
+                 [proposal],
+@@ -114,6 +119,10 @@ pub(super) fn apply(
+             if !valid {
+                 return Err("repair candidate/task binding mismatch".into());
+             }
++            let landing:bool=db(tx.query_row("SELECT EXISTS(SELECT 1 FROM operations o JOIN candidates c ON c.id=json_extract(o.payload,'$.candidate') JOIN attempts a ON a.id=c.attempt WHERE o.project=?1 AND a.project=?1 AND (a.task=?2 OR c.id=?3) AND o.kind='git-land_candidate' AND o.state IN ('prepared','applying','unknown'))",params![project,task,candidate],|r|r.get(0)))?;
++            if landing {
++                return Err("repair waits for unresolved physical landing disposition".into());
++            }
+             let changed=db(tx.execute("UPDATE tasks SET state='repair-required' WHERE project=?1 AND id=?2 AND state IN ('submitted','accepted','repair-required')",params![project,task]))?;
+             if changed != 1 {
+                 return Err("task cannot request repair".into());
+diff --git a/crates/sqlite-controller/src/kata.rs b/crates/sqlite-controller/src/kata.rs
+index 2bbdd0c..c063134 100644
+--- a/crates/sqlite-controller/src/kata.rs
++++ b/crates/sqlite-controller/src/kata.rs
+@@ -789,6 +789,92 @@ pub(super) fn apply(
+         _ => Err("unsupported Kata mutation".into()),
+     }
+ }
++/// Select a retained controller capture, never caller-authored linked intent.
++pub(super) fn revised_brief(
++    c: &Connection,
++    project: &str,
++    task: &str,
++    args: &Value,
++) -> Result<Option<String>> {
++    if !is_configured(c)? {
++        return Ok(None);
++    }
++    let current: Option<String> = db(c.query_row("SELECT v.body FROM kata_sources s JOIN kata_versions v ON v.id=s.current WHERE s.project=?1 AND s.task=?2", params![project,task], |r|r.get(0)).optional())?;
++    let Some(current) = current else {
++        return Ok(None);
++    };
++    let version = text(args, "source_version")?;
++    let body: Option<String> = db(c
++        .query_row(
++            "SELECT body FROM kata_versions WHERE id=?1 AND project=?2 AND task=?3",
++            params![version, project, task],
++            |r| r.get(0),
++        )
++        .optional())?;
++    let mut source: Value =
++        serde_json::from_str(&body.ok_or("captured source version/task missing")?)
++            .map_err(|e| e.to_string())?;
++    let current: Value = serde_json::from_str(&current).map_err(|e| e.to_string())?;
++    if source["digest"] != args["source_digest"]
++        || source["digest"] != current["digest"]
++        || args["source_revision"] != format!("rev-{}", source["revision"])
++        || source["work_ref"] != current["work_ref"]
++        || source["intent"]["status"] != "open"
++        || source["intent"].get("deleted_at").is_some()
++    {
++        return Err("captured source revision/digest/WorkRef is mismatched or closed".into());
++    }
++    if let Some(artifacts) = source["files"]["artifacts"].as_array_mut() {
++        for artifact in artifacts {
++            artifact
++                .as_object_mut()
++                .ok_or("captured source artifact missing")?
++                .remove("content_base64");
++        }
++    }
++    source["version"] = json!(version);
++    if let Some(body) = args.get("body") {
++        let supplied: Value = serde_json::from_str(body.as_str().ok_or("source body type")?)
++            .map_err(|_| "source body must match captured version")?;
++        if supplied != source {
++            return Err("source body must match captured version".into());
++        }
++    }
++    Ok(Some(source.to_string()))
++}
++
++pub(super) fn approve_revised_brief(
++    tx: &Transaction<'_>,
++    project: &str,
++    task: &str,
++    brief: &str,
++) -> Result<()> {
++    if !is_configured(tx)? {
++        return Ok(());
++    }
++    let linked: bool = db(tx.query_row(
++        "SELECT EXISTS(SELECT 1 FROM kata_sources WHERE project=?1 AND task=?2)",
++        params![project, task],
++        |r| r.get(0),
++    ))?;
++    if !linked {
++        return Ok(());
++    }
++    let (body, revision): (String, String) = db(tx.query_row(
++        "SELECT body,source_revision FROM briefs WHERE id=?1 AND project=?2 AND task=?3",
++        params![brief, project, task],
++        |r| Ok((r.get(0)?, r.get(1)?)),
++    ))?;
++    let source: Value =
++        serde_json::from_str(&body).map_err(|_| "linked brief lacks captured source version")?;
++    revised_brief(tx, project, task, &json!({"source_version":source["version"],"source_digest":source["digest"],"source_revision":revision,"body":body}))?.ok_or("linked source version missing")?;
++    db(tx.execute(
++        "UPDATE kata_sources SET admitted=?3 WHERE project=?1 AND task=?2",
++        params![project, task, text(&source, "version")?],
++    ))?;
++    Ok(())
++}
++
+ fn observe_source(
+     tx: &Transaction<'_>,
+     project: &str,
+@@ -937,6 +1023,7 @@ pub(super) fn queue_for_event(
+         || !matches!(
+             kind,
+             "admit"
++                | "approve_brief"
+                 | "observe_attempt"
+                 | "abort_task"
+                 | "cancel_attempt"
+diff --git a/crates/sqlite-controller/src/monitor.rs b/crates/sqlite-controller/src/monitor.rs
+index 5f7020b..7e1c349 100644
+--- a/crates/sqlite-controller/src/monitor.rs
++++ b/crates/sqlite-controller/src/monitor.rs
+@@ -968,72 +968,36 @@ pub(super) fn apply(
+ }
+ 
+ pub(super) fn projection(c: &Connection, p: &Principal, project: &str) -> Result<Value> {
+-    let mut streams = query::rows(
+-        c,
+-        "SELECT rowid AS cursor,id,attempt,epoch,source,ingested,byte_offset,previous_digest,reviewed_history,reviewed_live,segment,gap,last_ingested_at,CASE WHEN ingested=0 THEN NULL ELSE CAST(MAX(0,(julianday('now')-julianday(last_ingested_at))*86400) AS INTEGER) END AS age_seconds FROM monitor_streams WHERE project=?1 AND (?2 IS NULL OR attempt=?2) ORDER BY rowid DESC LIMIT 100",
+-        &[&project, &p.attempt],
+-    )?;
+-    for s in streams.as_array_mut().unwrap() {
+-        s["source"] =
+-            serde_json::from_str(s["source"].as_str().unwrap()).map_err(|e| e.to_string())?;
+-        s["history_gap"] = json!(s["reviewed_history"].as_i64() < s["reviewed_live"].as_i64());
+-        s["backlog"] =
+-            json!(s["ingested"].as_i64().unwrap() - s["reviewed_history"].as_i64().unwrap());
++    let mut result = json!({"view_limits":{"collection_byte_limit":32768,"byte_limit":200000,"item_limit":20},"continuous_runner":"not implemented/qualified; ticket06","authority":"advisory analyzer; controller authenticates adjudication and delivery"});
++    for name in [
++        "streams",
++        "batches",
++        "assessments",
++        "findings",
++        "corrections",
++        "hypotheses",
++    ] {
++        let page = records(c, p, project, &json!({"collection":name}))?;
++        result[name] = page["items"].clone();
++        result["pagination"][name] = page["page"].clone();
+     }
+-    let batches = query::rows(
+-        c,
+-        "SELECT b.rowid AS cursor,b.id,b.stream,b.lane,b.predecessor,b.through,b.input_digest,json_extract(b.intent,'$.brief') AS brief,json_extract(b.intent,'$.digest') AS intent_digest,b.boundary,b.state FROM monitor_batches b JOIN monitor_streams s ON s.id=b.stream WHERE s.project=?1 AND (?2 IS NULL OR s.attempt=?2) ORDER BY b.rowid DESC LIMIT 100",
+-        &[&project, &p.attempt],
+-    )?;
+-    let assessments = query::rows(
+-        c,
+-        "SELECT a.rowid AS cursor,a.id,a.batch,a.analyst,a.version,a.output_digest FROM monitor_assessments a JOIN monitor_batches b ON b.id=a.batch JOIN monitor_streams s ON s.id=b.stream WHERE s.project=?1 AND (?2 IS NULL OR s.attempt=?2) ORDER BY a.rowid DESC LIMIT 100",
+-        &[&project, &p.attempt],
+-    )?;
+-    let findings = query::rows(
+-        c,
+-        "SELECT rowid AS cursor,* FROM monitor_findings WHERE project=?1 AND (?2 IS NULL OR attempt=?2) ORDER BY rowid DESC LIMIT 20",
+-        &[&project, &p.attempt],
+-    )?;
+-    let corrections = query::rows(
+-        c,
+-        "SELECT rowid AS cursor,* FROM monitor_corrections WHERE project=?1 AND (?2 IS NULL OR attempt=?2) ORDER BY rowid DESC LIMIT 20",
+-        &[&project, &p.attempt],
+-    )?;
+-    let hypotheses = query::rows(
+-        c,
+-        "SELECT s.attempt,s.epoch,a.id AS assessment,json_extract(a.report,'$.steps[#-1].criterion') AS criterion,substr(json_extract(a.report,'$.steps[#-1].hypothesis'),1,1024) AS hypothesis,json_extract(a.report,'$.steps[#-1].assessment') AS disposition,substr(json_extract(a.report,'$.steps[#-1].next_test'),1,1024) AS next_test FROM monitor_assessments a JOIN monitor_batches b ON b.id=a.batch JOIN monitor_streams s ON s.id=b.stream WHERE s.project=?1 AND (?2 IS NULL OR s.attempt=?2) ORDER BY a.rowid DESC LIMIT 20",
+-        &[&project, &p.attempt],
+-    )?;
+-    Ok(
+-        json!({"streams":streams,"batches":batches,"assessments":assessments,"hypotheses":hypotheses,"findings":findings,"corrections":corrections,"view_limits":{"streams":100,"batches":100,"assessments":100,"findings":20,"corrections":20,"hypothesis_excerpt_bytes":1024,"older_records":"monitor_records(after cursor); immutable inputs/report: monitor_batch/monitor_assessment"},"continuous_runner":"not implemented/qualified; ticket06","authority":"advisory analyzer; controller authenticates adjudication and delivery"}),
+-    )
++    Ok(result)
+ }
+ 
+ pub(super) fn records(c: &Connection, p: &Principal, project: &str, args: &Value) -> Result<Value> {
+-    let collection = text(args, "collection")?;
+-    let after = args["after"].as_u64().unwrap_or(0);
+-    let limit = args["limit"].as_u64().unwrap_or(10).clamp(1, 20);
+-    let select = match collection {
+-        "streams" => {
+-            "SELECT s.rowid AS cursor,s.* FROM monitor_streams s WHERE s.project=?1 AND (?2 IS NULL OR s.attempt=?2) AND s.rowid>?3 ORDER BY s.rowid LIMIT ?4"
+-        }
+-        "batches" => {
+-            "SELECT b.rowid AS cursor,b.id,b.stream,b.lane,b.predecessor,b.through,b.input_digest,b.boundary,b.state FROM monitor_batches b JOIN monitor_streams s ON s.id=b.stream WHERE s.project=?1 AND (?2 IS NULL OR s.attempt=?2) AND b.rowid>?3 ORDER BY b.rowid LIMIT ?4"
+-        }
+-        "assessments" => {
+-            "SELECT a.rowid AS cursor,a.id,a.batch,a.analyst,a.version,a.output_digest FROM monitor_assessments a JOIN monitor_batches b ON b.id=a.batch JOIN monitor_streams s ON s.id=b.stream WHERE s.project=?1 AND (?2 IS NULL OR s.attempt=?2) AND a.rowid>?3 ORDER BY a.rowid LIMIT ?4"
+-        }
+-        "findings" => {
+-            "SELECT rowid AS cursor,* FROM monitor_findings WHERE project=?1 AND (?2 IS NULL OR attempt=?2) AND rowid>?3 ORDER BY rowid LIMIT ?4"
+-        }
+-        "corrections" => {
+-            "SELECT rowid AS cursor,* FROM monitor_corrections WHERE project=?1 AND (?2 IS NULL OR attempt=?2) AND rowid>?3 ORDER BY rowid LIMIT ?4"
+-        }
++    let collection = match text(args, "collection")? {
++        "streams" => "monitor_streams",
++        "batches" => "monitor_batches",
++        "assessments" => "monitor_assessments",
++        "findings" => "monitor_findings",
++        "corrections" => "monitor_corrections",
++        "hypotheses" => "monitor_hypotheses",
+         _ => return Err("monitor collection refused".into()),
+     };
+-    let after = i64::try_from(after).map_err(|_| "monitor cursor bound")?;
+-    query::rows(c, select, &[&project, &p.attempt, &after, &(limit as i64)])
++    let mut result = crate::view::page(c, p, project, collection, args)?;
++    result["page"]["continuation"]["kind"] = json!("monitor_records");
++    result["page"]["continuation"]["args"]["collection"] = args["collection"].clone();
++    Ok(result)
+ }
+ 
+ fn publication_source(
+diff --git a/crates/sqlite-controller/src/native_ui.rs b/crates/sqlite-controller/src/native_ui.rs
+index 43c23e8..6ea63af 100644
+--- a/crates/sqlite-controller/src/native_ui.rs
++++ b/crates/sqlite-controller/src/native_ui.rs
+@@ -335,6 +335,9 @@ impl CodexRuntime {
+             )
+             .optional())?
+         };
++        let unadmitted_retry = prior
++            .as_ref()
++            .is_some_and(|(_, _, receipt)| receipt.is_none());
+         let request = if let Some((parameters, request, _)) = prior {
+             if parameters != serialized_params {
+                 return Err("native UI stable input arguments changed".into());
+@@ -381,11 +384,53 @@ impl CodexRuntime {
+             ))?;
+             safe
+         };
++        #[cfg(feature = "fault-injection")]
++        if let Ok(path) = std::env::var("CORENIUS_TEST_UI_ADMISSION_BARRIER")
++            && std::path::Path::new(&path).is_file()
++        {
++            std::fs::write(format!("{path}.observed"), &key).map_err(|e| e.to_string())?;
++            let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
++            while std::path::Path::new(&path).is_file() {
++                if std::time::Instant::now() > deadline {
++                    return Err("declared UI admission barrier deadline".into());
++                }
++                std::thread::sleep(std::time::Duration::from_millis(5));
++            }
++        }
+         let mut request = request;
+         // The saved command owns retry semantics even after runtime state changes.
+         let saved_kind = crate::text(&request["command"], "kind")?.to_owned();
+         request["auth"] = json!({"principal":r.auth.principal,"token":r.auth.token});
+-        let receipt = controller.handle(request)?;
++        let receipt = if unadmitted_retry {
++            let mut c = controller
++                .connection
++                .lock()
++                .map_err(|_| "controller lock poisoned")?;
++            let actor = authenticate(&c, &r.auth, &r.project)?;
++            // A core receipt and its native operation commit in the same transaction.
++            // Only an intent with neither saved nor core receipt can refresh its revision.
++            let admitted: bool = db(c.query_row(
++                "SELECT EXISTS(SELECT 1 FROM receipts WHERE project=?1 AND key=?2)",
++                params![r.project, key],
++                |row| row.get(0),
++            ))?;
++            if !admitted {
++                request["command"]["expected_revision"] = json!(db(c.query_row(
++                    "SELECT revision FROM projects WHERE id=?1",
++                    [&r.project],
++                    |row| row.get::<_, i64>(0)
++                ))?);
++                let mut safe = request.clone();
++                safe.as_object_mut().unwrap().remove("auth");
++                db(c.execute("UPDATE control_ui_commands SET request=?2 WHERE identity=?1 AND receipt IS NULL",params![key,safe.to_string()]))?;
++            }
++            let command =
++                serde_json::from_value(request["command"].clone()).map_err(|e| e.to_string())?;
++            // Hold the writer through revision selection and command admission. No runtime I/O.
++            controller.command(&mut c, &actor, &r.project, command, None, None)?
++        } else {
++            controller.handle(request)?
++        };
+         {
+             let c = controller
+                 .connection
+diff --git a/crates/sqlite-controller/src/query.rs b/crates/sqlite-controller/src/query.rs
+index 8325836..9b70155 100644
+--- a/crates/sqlite-controller/src/query.rs
++++ b/crates/sqlite-controller/src/query.rs
+@@ -31,7 +31,20 @@ pub(super) fn rows(c: &Connection, sql: &str, values: &[&dyn rusqlite::ToSql]) -
+ }
+ 
+ pub(super) fn run(c: &Connection, p: &Principal, project: &str, q: Query) -> Result<Value> {
++    let monitor_reference = matches!(q.kind.as_str(), "control_input" | "control_records")
++        && matches!(
++            q.args["collection"].as_str(),
++            Some(
++                "monitor_streams"
++                    | "monitor_batches"
++                    | "monitor_assessments"
++                    | "monitor_findings"
++                    | "monitor_corrections"
++                    | "monitor_hypotheses"
++            )
++        );
+     if p.role == "observer"
++        && !monitor_reference
+         && !matches!(
+             q.kind.as_str(),
+             "monitor_context" | "monitor_batch" | "monitor_assessment" | "monitor_records"
+diff --git a/crates/sqlite-controller/src/ui_gateway.rs b/crates/sqlite-controller/src/ui_gateway.rs
+index a4df0a7..9c55c16 100644
+--- a/crates/sqlite-controller/src/ui_gateway.rs
++++ b/crates/sqlite-controller/src/ui_gateway.rs
+@@ -40,7 +40,10 @@ fn send(stream: &mut TcpStream, value: &Value) -> Result<(), String> {
+     if data.len() > 2_097_152 {
+         return Err("UI output bound".into());
+     }
+-    let mut bytes = vec![0x81];
++    send_frame(stream, 1, &data)
++}
++fn send_frame(stream: &mut TcpStream, opcode: u8, data: &[u8]) -> Result<(), String> {
++    let mut bytes = vec![0x80 | opcode];
+     if data.len() < 126 {
+         bytes.push(data.len() as u8);
+     } else if data.len() < 65536 {
+@@ -50,7 +53,7 @@ fn send(stream: &mut TcpStream, value: &Value) -> Result<(), String> {
+         bytes.push(127);
+         bytes.extend_from_slice(&(data.len() as u64).to_be_bytes());
+     }
+-    bytes.extend_from_slice(&data);
++    bytes.extend_from_slice(data);
+     stream
+         .set_write_timeout(Some(Duration::from_secs(1)))
+         .map_err(|e| e.to_string())?;
+@@ -77,13 +80,14 @@ fn frame(stream: &mut TcpStream) -> Result<Option<Value>, String> {
+     let deadline = Instant::now() + Duration::from_secs(1);
+     let mut second = [0];
+     exact(stream, &mut second, deadline)?;
+-    if first[0] == 0x88 {
+-        return Err("UI closed".into());
+-    }
+-    if first[0] != 0x81 || second[0] & 0x80 == 0 {
+-        return Err("UI requires complete masked text frames".into());
++    let opcode = first[0] & 0x0f;
++    if first[0] & 0xf0 != 0x80 || !matches!(opcode, 1 | 8 | 9 | 10) || second[0] & 0x80 == 0 {
++        return Err("UI requires complete masked text or control frames".into());
+     }
+     let mut len = (second[0] & 0x7f) as u64;
++    if opcode >= 8 && len > 125 {
++        return Err("UI control frame bound".into());
++    }
+     if len == 126 {
+         let mut b = [0; 2];
+         exact(stream, &mut b, deadline)?;
+@@ -103,6 +107,29 @@ fn frame(stream: &mut TcpStream) -> Result<Option<Value>, String> {
+     for (i, b) in body.iter_mut().enumerate() {
+         *b ^= mask[i % 4];
+     }
++    match opcode {
++        8 => {
++            if body.len() == 1 {
++                return Err("UI close payload refused".into());
++            }
++            if body.len() >= 2 {
++                let code = u16::from_be_bytes([body[0], body[1]]);
++                if !matches!(code, 1000..=1003 | 1007..=1014 | 3000..=4999)
++                    || std::str::from_utf8(&body[2..]).is_err()
++                {
++                    return Err("UI close status/reason refused".into());
++                }
++            }
++            send_frame(stream, 8, &body)?;
++            return Err("UI closed".into());
++        }
++        9 => {
++            send_frame(stream, 10, &body)?;
++            return Ok(None);
++        }
++        10 => return Ok(None),
++        _ => {}
++    }
+     serde_json::from_slice(&body)
+         .map(Some)
+         .map_err(|e| e.to_string())
+diff --git a/crates/sqlite-controller/tests/client.rs b/crates/sqlite-controller/tests/client.rs
+index 02e4d2b..f1803d2 100644
+--- a/crates/sqlite-controller/tests/client.rs
++++ b/crates/sqlite-controller/tests/client.rs
+@@ -162,3 +162,29 @@ fn control_center_cli_reports_transport_failure_without_opening_storage() {
+     );
+     assert!(!error.contains("operator-client-secret"));
+ }
++
++#[test]
++fn repair3_authenticated_websocket_control_frames() {
++    let status = Command::new("python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/support/websocket_controls.py"
++        ))
++        .arg(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
++        .status()
++        .unwrap();
++    assert!(status.success(), "authenticated WebSocket controls failed");
++}
++
++#[test]
++fn repair3_monitor_corrections_have_bounded_complete_projection() {
++    let status = Command::new("python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/support/monitor_projection.py"
++        ))
++        .arg(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
++        .status()
++        .unwrap();
++    assert!(status.success(), "bounded monitoring projection failed");
++}
+diff --git a/crates/sqlite-controller/tests/codex.rs b/crates/sqlite-controller/tests/codex.rs
+index 49ec74e..63ac640 100644
+--- a/crates/sqlite-controller/tests/codex.rs
++++ b/crates/sqlite-controller/tests/codex.rs
+@@ -550,3 +550,12 @@ fn repair1_before_source_original_initial_confirmation_ordering() {
+         ("CORENIUS_TEST_INITIAL_CONFIRM_ORDERING", "1"),
+     ]);
+ }
++
++#[cfg(feature = "fault-injection")]
++#[test]
++fn repair3_native_ui_unadmitted_revision_retry() {
++    repair_fixture(&[
++        ("CORENIUS_TEST_CONTROL_CENTER", "1"),
++        ("CORENIUS_TEST_REPAIR3_UI", "1"),
++    ]);
++}
+diff --git a/crates/sqlite-controller/tests/git.rs b/crates/sqlite-controller/tests/git.rs
+index 1e1ac92..1111a85 100644
+--- a/crates/sqlite-controller/tests/git.rs
++++ b/crates/sqlite-controller/tests/git.rs
+@@ -70,3 +70,33 @@ fn repair2_bounded_physical_inventory_preserves_history_and_inputs() {
+         String::from_utf8_lossy(&output.stderr)
+     );
+ }
++
++#[test]
++#[cfg(feature = "fault-injection")]
++fn repair3_landing_applying_refuses_competing_repair() {
++    let status = std::process::Command::new("python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/support/git_protocol.py"
++        ))
++        .arg(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
++        .env("CORENIUS_TEST_GIT_MODES", "repair3-applying")
++        .status()
++        .unwrap();
++    assert!(status.success(), "repair must preserve admitted landing");
++}
++
++#[test]
++#[cfg(feature = "fault-injection")]
++fn repair3_landing_unknown_refuses_competing_repair() {
++    let status = std::process::Command::new("python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/support/git_protocol.py"
++        ))
++        .arg(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
++        .env("CORENIUS_TEST_GIT_MODES", "repair3-unknown")
++        .status()
++        .unwrap();
++    assert!(status.success(), "repair must preserve admitted landing");
++}
+diff --git a/crates/sqlite-controller/tests/kata.rs b/crates/sqlite-controller/tests/kata.rs
+index 83f5515..a2d7027 100644
+--- a/crates/sqlite-controller/tests/kata.rs
++++ b/crates/sqlite-controller/tests/kata.rs
+@@ -41,6 +41,11 @@ fn recovered_git_after_ref_effect_publishes_once_to_supported_kata() {
+     run_fixture(Some("git-publication-after_ref_update"));
+ }
+ 
++#[test]
++fn repair3_captured_kata_brief_amendment_advances_exact_admitted_source() {
++    run_fixture(Some("brief-amendment"));
++}
++
+ fn run_fixture(case: Option<&str>) {
+     let mut command = Command::new("python3");
+     command
+diff --git a/crates/sqlite-controller/tests/support/git_protocol.py b/crates/sqlite-controller/tests/support/git_protocol.py
+index 08f8147..230599e 100644
+--- a/crates/sqlite-controller/tests/support/git_protocol.py
++++ b/crates/sqlite-controller/tests/support/git_protocol.py
+@@ -187,7 +187,14 @@ def normal():
+   assert os.stat(f.r/'workers'/a['attempt']/'workspace/.git').st_ino!=os.stat(f.r/'workers'/b['attempt']/'workspace/.git').st_ino
+   inventory=f.query('workspace_inventory');assert len(inventory['workspaces'])==2 and not inventory['ref_drift'];assert all(w['ownership_drift'] is None for w in inventory['workspaces'])
+   center=f.query('control_center');assert center['occupied_slots']==2 and len(center['filesystem']['workspaces'])==2
+-  assert center['filesystem']['workspaces']==inventory['workspaces'] and not center['projection_consistency']['refresh_required']
++  (f.r/'normal-inventory-pair.json').write_text(json.dumps({'inventory':inventory,'center':center},indent=2))
++  def stable_inspections(rows):
++   stable=json.loads(json.dumps(rows))
++   for row in stable:
++    process=row['inspection']['process'];assert process['exit']==0 and process['waited']
++    assert process.pop('pid')>0 and process.pop('start_ticks')
++   return stable
++  assert stable_inspections(center['filesystem']['workspaces'])==stable_inspections(inventory['workspaces']) and not center['projection_consistency']['refresh_required']
+   ca=f.capture(a);cb=f.capture(b);assert ca['commit']==C and cb['commit']==D and ca['base']==cb['base']==f.base
+   for grant,c in [(a,ca),(b,cb)]:
+    ev=f.query('candidate_evidence',{'candidate':c['candidate']});assert ev['candidate']['commit']==c['commit'];assert not ev['verification']
+@@ -540,10 +547,49 @@ def bounded_inventory():
+   f.command('cancel_attempt',{'attempt':a['attempt']});wait(lambda:not f.query('runtime_context')['attempts'])
+   print('actual_bounded_inventory_history',json.dumps({'seeded_exited_rows':25,'actual_active_workspace':a['attempt'],'workspace_records':len(seen),'history_records':len(history),'pages':pages,'complete_large_inputs':len(originals),'scope_negatives':True,'current_cancelled':True}),flush=True)
+  finally:f.close()
++def repair_landing(mode):
++ f=Fixture(mode)
++ try:
++  a=f.admit('a');C=f.ready(a,'a');c=f.capture(a);f.accept(c);f.stop_attempt(a)
++  lead=f.command('replace_lead',{});actor={k:lead[k] for k in ['principal','token']}
++  f.terminate(f.controller);barrier=f.r/'admission-barrier'
++  f.env.update(CORENIUS_TEST_GIT_BARRIER_POINT='after_land_admission',CORENIUS_TEST_GIT_BARRIER_FILE=str(barrier));f.controller=f.start_controller('controller-barrier');barrier.write_text('actual admitted physical landing boundary')
++  revision=f.query('snapshot')['revision'];args={'candidate':c['candidate'],'expected_trunk':f.base}
++  with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
++   future=pool.submit(f.command,'land_candidate',args,auth=actor,key='repair3-land',revision=revision,allow_error=True)
++   wait(lambda:(f.r/'admission-barrier.observed').exists())
++   operation=json.loads((f.r/'admission-barrier.observed').read_text())['operation']
++   if mode=='repair3-unknown':
++    outcome=future.result(timeout=12);assert outcome.get('error')
++    assert next(x for x in f.query('snapshot')['operations'] if x['id']==operation)['state']=='unknown'
++   before=f.query('snapshot');events=f.query('events')
++   with sqlite3.connect((f.r/'state.db').as_uri()+'?mode=ro',uri=True) as db:receipts=db.execute('SELECT COUNT(*) FROM receipts').fetchone()[0]
++   refusal=f.command('request_repair',{'task':'a','candidate':c['candidate'],'rationale':'repair cannot supersede admitted landing'},allow_error=True)
++   after=f.query('snapshot');after_events=f.query('events')
++   with sqlite3.connect((f.r/'state.db').as_uri()+'?mode=ro',uri=True) as db:after_receipts=db.execute('SELECT COUNT(*) FROM receipts').fetchone()[0]
++   barrier.unlink();result=future.result(timeout=12)
++  record={'mode':mode,'operation':operation,'refusal':refusal,'before':before,'after':after,'events_before':events,'events_after':after_events,'receipts':[receipts,after_receipts],'land_result':result,'physical_ref_before_recovery':git(f.r/'canonical','rev-parse','refs/heads/protected')}
++  (f.r/'repair3-transition.json').write_text(json.dumps(record,indent=2));print('actual_repair3_landing_transition',json.dumps(record),flush=True)
++  assert refusal.get('error'),'same-task repair must refuse unresolved admitted physical landing'
++  assert before==after and events==after_events and receipts==after_receipts,'denied repair must have no durable mutation'
++  replacement=f.command('replace_lead',{})
++  f.command('reconcile_git',{})
++  assert git(f.r/'canonical','rev-parse','refs/heads/protected')==C
++  assert next(t for t in f.query('snapshot')['tasks'] if t['id']=='a')['state']=='landed'
++  assert len([e for e in f.query('events') if e['kind']=='land_candidate'])==1
++  assert f.command('land_candidate',args,auth=actor,key='repair3-land',revision=revision,allow_error=True).get('error')
++  assert f.command('request_repair',{'task':'a','candidate':c['candidate'],'rationale':'terminal landing preserved'},allow_error=True).get('error')
++  b=f.admit('b');f.ready(b,'b');cb=f.capture(b);f.accept(cb);f.stop_attempt(b)
++  repair_args={'task':'b','candidate':cb['candidate'],'rationale':'before landing repair remains available'}
++  assert f.command('request_repair',repair_args)['state']=='repair-required'
++  assert f.command('land_candidate',{'candidate':cb['candidate'],'expected_trunk':C},allow_error=True).get('error')
++  assert f.command('request_repair',repair_args)['state']=='repair-required'
++ finally:f.close()
+ if __name__=='__main__':
+  modes=os.environ.get('CORENIUS_TEST_GIT_MODES','normal,before_ref_update,after_ref_update,divergence,hostile,bounded-output,cancel,before_workspace_cleanup,after_workspace_cleanup,shadow-imports,before_land_admission,after_land_admission,publication-before_ref_update,publication-after_ref_update,terminal-capture,terminal-accept,terminal-land,accepted-capture,inventory-slow,final-output,bounded-archive,partial_workspace_cleanup,accepted-verification').split(',')
+  for mode in modes:
+-  if mode=='bounded-inventory':bounded_inventory()
++  if mode in ['repair3-applying','repair3-unknown']:repair_landing(mode)
++  elif mode=='bounded-inventory':bounded_inventory()
+   elif mode=='observer-authority':observer_authority()
+   elif mode=='normal':normal()
+   elif mode=='hostile':hostile()
+diff --git a/crates/sqlite-controller/tests/support/kata_protocol.py b/crates/sqlite-controller/tests/support/kata_protocol.py
+index d6b338a..a8b770d 100644
+--- a/crates/sqlite-controller/tests/support/kata_protocol.py
++++ b/crates/sqlite-controller/tests/support/kata_protocol.py
+@@ -249,6 +249,47 @@ try:
+     assert cmd('create_kata_task',creation,key='capture-a',revision=first['revision']-1) == first
+     cmd('create_kata_task',{'task':'b','item':other['uid'],'expected_source_revision':other['revision'],'source_files':{'storage':'fixture-input','mode':'git','commit':base,'paths':['spec.md','task.md']}},key='capture-b')
+     case = os.environ.get('CORENIUS_KATA_REPAIR_CASE')
++    if case == 'brief-amendment':
++        old = first['result']
++        changed = http('PATCH',ipath,{'body':'Amended exact task.md and spec.md intent'},token=token)['issue']
++        (repo/'task.md').write_text('Amended local immutable task input.\n')
++        git('add','task.md');git('commit','-m','amended source');amended_commit=git('rev-parse','HEAD')
++        refreshed=cmd('refresh_kata_source',{'task':'a'})['result'];version=refreshed['version']
++        source=next(x for x in query('control_center')['sources'] if x['task']=='a')['current']
++        assert source['files']['commit']==amended_commit and source['digest']!=old['source']['digest']
++        body=json.loads(json.dumps(source));body['version']=version
++        for artifact in body['files']['artifacts']:artifact.pop('content_base64',None)
++        body=json.dumps(body,sort_keys=True,separators=(',',':'),ensure_ascii=False)
++        args={'task':'a','body':body,'source_version':version,'source_digest':source['digest'],'source_revision':'rev-'+str(source['revision']),'rationale':'explicit authenticated amendment of captured intent'}
++        proposal=cmd('revise_brief',args)['result'];before=query()
++        assert next(t for t in before['tasks'] if t['id']=='a')['brief']==old['brief']
++        approval_revision=before['revision'];approval=cmd('approve_brief',{'proposal':proposal['proposal']},key='approve-amendment',revision=approval_revision)
++        center=query('control_center');accepted=next(x for x in center['sources'] if x['task']=='a')
++        records.append({'name':'repair3-brief-amendment','old':old,'selected_version':version,'source':source,'proposal':proposal,'approval':approval,'accepted_view':accepted})
++        assert accepted['admitted']['digest']==source['digest'],'approved brief must atomically advance exact captured Kata admitted source'
++        Proxy.offline=True
++        assert cmd('approve_brief',{'proposal':proposal['proposal']},key='approve-amendment',revision=approval_revision)==approval
++        Proxy.offline=False
++        for bad in [dict(args,source_version='invented'),dict(args,source_digest='0'*64),dict(args,source_revision='rev-0'),dict(args,body='invented approved intent'),dict(args,task='b')]:
++            denied('revise_brief',bad,auth,match='source')
++        admitted=cmd('admit',{'task':'a'})['result'];assert admitted['brief']==proposal['brief']
++        denied('approve_brief',{'proposal':cmd('revise_brief',args)['result']['proposal']},auth,match='active')
++        assert next(t for t in query()['tasks'] if t['id']=='a')['brief']==proposal['brief']
++        cmd('sync_kata_task',{'task':'a'});reconcile()
++        remote=http('GET',ipath,token=token)['issue'];summary=remote['metadata']['corenius.execution']
++        assert summary['brief']==proposal['brief'] and summary['admitted_version']==version
++        # External edits remain proposals and cannot mutate the current admitted attempt.
++        http('PATCH',ipath,{'body':'later external intent'},token=token)
++        assert cmd('refresh_kata_source',{'task':'a'})['result']['disposition']=='proposed'
++        assert next(x for x in query('control_center')['sources'] if x['task']=='a')['admitted']['digest']==source['digest']
++        http('POST',project_path+'/issues/'+other['uid']+'/actions/close',{'retry_protocol':'close-v1','reason':'done','message':'External fixture closure only; no Corenius acceptance or execution termination is implied.','evidence':[{'type':'test','command':'true'}]},token=token,headers={'Idempotency-Key':'repair3-close-peer'})
++        closed=cmd('refresh_kata_source',{'task':'b'})['result']
++        closed_source=next(x for x in query('control_center')['sources'] if x['task']=='b')['current']
++        assert closed_source['intent']['status']=='closed'
++        closed_args={'task':'b','source_version':closed['version'],'source_digest':closed_source['digest'],'source_revision':'rev-'+str(closed_source['revision']),'rationale':'closed source cannot be approved'}
++        denied('revise_brief',closed_args,auth,match='closed')
++        records.append({'name':'repair3-brief-amendment-positive','admitted':admitted,'remote_summary':summary,'source_commit':amended_commit,'retained_old_brief':old['brief'],'retained_old_version':old['version']})
++        finish_case('brief-amendment')
+     if case in ('git-publication-before_ref_update','git-publication-after_ref_update'):
+         # Reuse the owned actual Git/supervisor fixture, linking a fresh real Kata
+         # issue through the supported configuration and source-capture protocol.
+diff --git a/crates/sqlite-controller/tests/support/monitor_projection.py b/crates/sqlite-controller/tests/support/monitor_projection.py
+new file mode 100644
+index 0000000..aeb83ff
+--- /dev/null
++++ b/crates/sqlite-controller/tests/support/monitor_projection.py
+@@ -0,0 +1,80 @@
++"""Actual socket/dashboard/MCP accumulated-load and scoped continuation contract."""
++import hashlib,json,os,pathlib,signal,socket,subprocess,sys,tempfile,time,tarfile
++
++binary=pathlib.Path(sys.argv[1]);token='projection-private-fixture-secret';auth={'principal':'operator','token':token}
++env={'PATH':'/usr/bin:/bin','CORENIUS_OPERATOR_TOKEN':token,'CORENIUS_CLIENT_TOKEN':token}
++with tempfile.TemporaryDirectory(prefix='monitor05-') as directory:
++ root=pathlib.Path(directory);sock=root/'s';proc=subprocess.Popen([str(binary),str(root/'state.db'),str(sock)],env=env,stdout=(root/'stdout').open('wb'),stderr=(root/'stderr').open('wb'))
++ fd=os.pidfd_open(proc.pid);start=pathlib.Path(f'/proc/{proc.pid}/stat').read_text();revision=0
++ def request(value,actor=auth):
++  with socket.socket(socket.AF_UNIX) as stream:
++   stream.settimeout(15);stream.connect(str(sock));stream.sendall(json.dumps(dict(auth=actor,project='p',**value)).encode()+b'\n');raw=stream.makefile('rb').readline()
++  with (root/'public-calls.jsonl').open('a') as log:log.write(json.dumps({'request':dict(auth=actor,project='p',**value),'response':json.loads(raw)})+'\n')
++  return json.loads(raw),len(raw)
++ def query(kind,args={},actor=auth):
++  reply,size=request({'query':{'kind':kind,'args':args}},actor);assert 'ok' in reply,reply;assert size<1_048_576,(kind,size);return reply['ok']
++ def command(kind,key,args):
++  global revision
++  saved={'kind':kind,'idempotency_key':key,'expected_revision':revision,'args':args};reply,_=request({'command':saved});assert 'ok' in reply,reply;revision=reply['ok']['revision'];return reply['ok'],saved
++ def client(mode,payload=None,actor=auth):
++  e=dict(env,CORENIUS_CLIENT_TOKEN=actor['token'],CORENIUS_CLIENT_PRINCIPAL=actor['principal'])
++  return subprocess.run([str(binary),mode,str(sock),'p']+(['--once'] if mode=='--dashboard' else []),input=payload,text=True,env=e,capture_output=True,timeout=15)
++ def mcp(kind,args={},actor=auth):
++  result=client('--mcp',json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/call','params':{'name':'corenius_query','arguments':{'kind':kind,'args':args}}})+'\n',actor)
++  assert result.returncode==0,result.stderr;response=json.loads(result.stdout);assert 'error' not in response,response
++  return json.loads(response['result']['content'][0]['text'])
++ try:
++  deadline=time.monotonic()+5
++  while not sock.exists():assert proc.poll() is None and time.monotonic()<deadline;time.sleep(.01)
++  command('create_project','project',{'name':'p','base':'0123456789abcdef0123456789abcdef01234567'})
++  grants=[]
++  for task in ['a','b']:
++   command('create_task','task-'+task,{'task':task,'brief':'immutable intent','work_ref':{'deployment':'fixture','project':'p','item':task},'source_revision':'r1'})
++   grant,_=command('admit','admit-'+task,{'task':task});grants.append(grant['result'])
++  stream,_=command('register_monitor_stream','stream',{'attempt':grants[0]['attempt'],'source':{'deployment':'fixture','store':'fixture','thread':'own','segment':'one','parser':'visible-v1','identity':'pinned-input'},'live_baseline':0});stream=stream['result']['stream']
++  command('ingest_monitor_events','input',{'stream':stream,'expected_ordinal':0,'previous_digest':'','events':[{'item':'one','turn':'t','kind':'public_message','text':'actual visible fixture observation','ordinal':1,'byte_end':20,'digest':'d1'}]})
++  batch,_=command('seal_monitor_batch','batch',{'stream':stream,'lane':'history','through':1,'boundary':'compaction'})
++  command('publish_monitor_assessment','assessment',{'batch':batch['result']['batch'],'analyst':'observer','version':'1','steps':[{'item':'one','criterion':'original-intent','hypothesis':'inspect observed result','rationale':'public observed input','observation':'actual fixture observation','assessment':'valid_learning','next_test':'inspect exact input'}],'findings':[{'issue':'issue-'+str(i),'criterion':'original-intent','text':'requires authorized disposition','items':['one']} for i in range(20)],'evidence':[]})
++  content='é'*32767+'ab';assert len(content.encode())==65536
++  findings=query('monitor_context')['findings'];assert len(findings)==20
++  for i,finding in enumerate(findings):
++   command('adjudicate_monitor_finding','adjudicate-'+str(i),{'finding':finding['id'],'decision':'accepted','rationale':'operator decision'})
++   command('authorize_correction','correct-'+str(i),dict(finding=finding['id'],expected_epoch=finding['epoch'],criterion='original-intent',**{key:content for key in ['action','prohibited_scope','next_checkpoint','rationale']}))
++  observer,_=command('create_monitor_observer','observer',{'name':'bounded observer'});actor={k:observer['result'][k] for k in ['principal','token']}
++  context,context_bytes=request({'query':{'kind':'monitor_context','args':{}}},actor)
++  records,records_bytes=request({'query':{'kind':'monitor_records','args':{'collection':'corrections','limit':20}}},actor)
++  print('actual_monitor_max_corrections',json.dumps({'count':20,'field_bytes':65536,'context_wire_bytes':context_bytes,'records_wire_bytes':records_bytes}),flush=True)
++  assert context_bytes<=200000 and records_bytes<=32768,'monitor projections must have serialized byte budgets'
++  assert 'ok' in context and 'ok' in records
++  assert client('--dashboard').returncode==0 and mcp('monitor_context',actor=actor)['streams'][0]['reviewed_history']==1
++  cursor=0;items=[]
++  while True:
++   page=mcp('monitor_records',{'collection':'corrections','after':cursor,'limit':20},actor)
++   assert len(json.dumps(page).encode())<=32768 and page['page']['byte_limit']==32768
++   items+=page['items']
++   if not page['page']['has_more']:break
++   assert page['page']['after']>cursor;cursor=page['page']['after']
++  assert len(items)==20 and len({x['id'] for x in items})==20
++  for item in items:
++   reference=item['document']['text_reference'];chunks=[];offset=0
++   while True:
++    chunk=mcp('control_input',dict(reference,offset=offset),actor);chunks.append(chunk['text'])
++    assert len(json.dumps(chunk).encode())<=400000 and chunk['offset']==offset
++    if chunk['next_offset'] is None:break
++    assert chunk['next_offset']>offset;offset=chunk['next_offset']
++   full=''.join(chunks);assert len(full.encode())==reference['bytes'] and hashlib.sha256(full.encode()).hexdigest()==reference['sha256']
++   document=json.loads(full)
++   for field in ['action','prohibited_scope','next_checkpoint','rationale']:assert document[field]==content
++  own={k:grants[0][k] for k in ['principal','token']};peer={k:grants[1][k] for k in ['principal','token']}
++  assert mcp('control_input',reference,own)['text']==full[:len(mcp('control_input',reference,own)['text'])]
++  for bad,who in [(reference,peer),(dict(reference,sha256='0'*64),actor),(dict(reference,bytes=1),actor),(dict(reference,offset=full.encode().index('é'.encode())+1),actor),(dict(reference,collection='events'),actor)]:
++   assert 'error' in request({'query':{'kind':'control_input','args':bad}},who)[0]
++  assert 'error' in request({'query':{'kind':'control_records','args':{'collection':'questions'}}},actor)[0]
++  assert query('snapshot')['revision']==revision
++  print('actual_monitor_bounded_roundtrip',json.dumps({'corrections':20,'complete_fields':80,'utf8_sha256':hashlib.sha256(content.encode()).hexdigest(),'observer_operator_worker_scope':True,'credit_unchanged':query('monitor_context')['streams'][0]['reviewed_history']==1}),flush=True)
++ finally:
++  if proc.poll() is None:signal.pidfd_send_signal(fd,signal.SIGTERM)
++  proc.wait(timeout=5);os.close(fd)
++  print('owned_projection_resources',json.dumps([{'pid':proc.pid,'start_stat':start,'exit':proc.returncode,'executed_binary':{'path':str(binary),'sha256':hashlib.sha256(binary.read_bytes()).hexdigest()},'waited':True}]),flush=True)
++  destination=pathlib.Path(__file__).resolve().parents[4]/'.scratch/sqlite-controller/05-repair3/fixtures';destination.mkdir(parents=True,exist_ok=True)
++  with tarfile.open(destination/(root.name+'.tar.gz'),'w:gz') as archive:archive.add(root,arcname=root.name)
+diff --git a/crates/sqlite-controller/tests/support/native_registry.py b/crates/sqlite-controller/tests/support/native_registry.py
+index c2e0e03..e03324d 100644
+--- a/crates/sqlite-controller/tests/support/native_registry.py
++++ b/crates/sqlite-controller/tests/support/native_registry.py
+@@ -152,6 +152,7 @@ def run(topology):
+    if os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1':(r/'crash-boundary').write_text('declared initial native turn receipt before projection adoption')
+    if os.environ.get('CORENIUS_TEST_PAGE_FIXTURE')=='1':(r/'page-setup').write_text('declared native-only setup threads, no controller assignments')
+    if git_native:env['CORENIUS_GIT_CONFIG']=str(git_policy)
++   env['CORENIUS_TEST_UI_ADMISSION_BARRIER']=str(r/'ui-admission-barrier')
+    env['CORENIUS_TEST_EARLY_QUESTION']=str(r/'early-question')
+    env['CORENIUS_TEST_LOSE_TOOL_REPLY']=str(r/'lose-tool-reply')
+    env['CORENIUS_TEST_QUESTION_RACE']=str(r/'question-race')
+@@ -769,7 +770,10 @@ def run(topology):
+ 
+    lead_rows=wait(lambda:[b for b in query('codex_registry')['bindings'] if b['role']=='lead' and b['document'].get('turn_id')] or False)
+    if os.environ.get('CORENIUS_TEST_CONTROL_CENTER')=='1':
+-    if os.environ.get('CORENIUS_TEST_REPAIR2_UI')=='1':
++    if os.environ.get('CORENIUS_TEST_REPAIR3_UI')=='1':
++     import repair3_native_ui
++     repair3_native_ui.exercise(r,query,command,request,grants,lead,wait,topology,TOKEN)
++    elif os.environ.get('CORENIUS_TEST_REPAIR2_UI')=='1':
+      import repair2_native_ui
+      repair2_native_ui.exercise(r,query,command,request,grants,lead,wait,topology,TOKEN)
+     else:
+@@ -777,6 +781,8 @@ def run(topology):
+      control_center_native.exercise(r,query,command,request,grants,lead,wait,topology,TOKEN)
+    old_lead=lead_rows[0];command('replace_lead',{})
+    wait(lambda:any(b['id']==old_lead['id'] and b['state']=='revoked' and b['document']['executor_execution']['state']=='exited' and not b['document']['ui_input_ready'] for b in query('codex_registry')['bindings']))
++   if os.environ.get('CORENIUS_TEST_REPAIR3_UI')=='1':
++    saved=json.loads((r/'repair3-ui-request.json').read_text());assert 'error' in request(r/'controller.sock',saved)
+    if os.environ.get('CORENIUS_TEST_REPAIR2_UI')=='1':
+     saved=json.loads((r/'repair2-native-ui-exact-retries.json').read_text());old_binding=saved['binding']
+     def old_identity_counts():
+diff --git a/crates/sqlite-controller/tests/support/repair3_native_ui.py b/crates/sqlite-controller/tests/support/repair3_native_ui.py
+new file mode 100644
+index 0000000..495b97b
+--- /dev/null
++++ b/crates/sqlite-controller/tests/support/repair3_native_ui.py
+@@ -0,0 +1,52 @@
++"""Actual native input with a public progress command between save and admission."""
++import concurrent.futures,json,os,pathlib,signal,sqlite3,subprocess,sys
++from wsutil import WS
++
++def exercise(root,query,command,request,grants,lead,wait,topology,token):
++ auth={k:lead[k] for k in ['principal','token']}
++ binding=wait(lambda:next((b for b in query('codex_registry')['bindings'] if b['role']=='lead' and b['document'].get('ui_input_ready')),None))
++ bid=binding['id'];thread=binding['document']['thread_id']
++ def current():return next(b for b in query('codex_registry')['bindings'] if b['id']==bid)['document']
++ wait(lambda:current().get('current_turn',{}).get('state')=='terminal',8)
++ value={'auth':auth,'project':'p','native_ui':{'method':'turn/start','params':{'threadId':thread,'clientUserMessageId':'repair3-revision-race','input':[{'type':'text','text':'REPAIR3_EXACT_REVISION_RETRY','text_elements':[]}]}}}
++ (root/'repair3-ui-request.json').write_text(json.dumps(value))
++ barrier=root/'ui-admission-barrier';barrier.write_text('after saved intent before public command admission')
++ with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
++  future=pool.submit(request,root/'controller.sock',value)
++  wait(lambda:(root/'ui-admission-barrier.observed').exists(),8)
++  key=(root/'ui-admission-barrier.observed').read_text()
++  before=query('snapshot')['revision'];progress=command('report_progress',{'task':'TASK_A','text':'actual unrelated public progress before UI admission'});after=query('snapshot')['revision'];assert after>before
++  barrier.unlink();first=future.result(timeout=12)
++ def counts():
++  with sqlite3.connect((root/'state.db').as_uri()+'?mode=ro',uri=True) as db:
++   return {'ui':db.execute('SELECT parameters,request,receipt FROM control_ui_commands WHERE identity=?',(key,)).fetchall(),'receipts':db.execute('SELECT COUNT(*) FROM receipts WHERE key=?',(key,)).fetchone()[0],'operations':db.execute("SELECT COUNT(*) FROM codex_operations WHERE binding=? AND json_extract(intent,'$.text')='REPAIR3_EXACT_REVISION_RETRY'",(bid,)).fetchone()[0]}
++ initial=counts();assert len(initial['ui'])==1 and initial['operations']==0 and initial['receipts']==0 and 'revision conflict' in first.get('error',''),(first,initial)
++ changed=json.loads(json.dumps(value));changed['native_ui']['params']['input'][0]['text']='changed retained input'
++ assert 'error' in request(root/'controller.sock',changed)
++ foreign=json.loads(json.dumps(value));foreign['native_ui']['params']['threadId']='foreign-thread'
++ assert 'error' in request(root/'controller.sock',foreign)
++ retry=request(root/'controller.sock',value);final=counts()
++ record={'topology':topology,'public_progress':progress,'revisions':[before,after],'first':first,'initial':initial,'retry':retry,'final':final}
++ (root/'repair3-ui-result.json').write_text(json.dumps(record,indent=2));print('actual_repair3_ui_unadmitted_retry',json.dumps(record),flush=True)
++ assert 'ok' in retry and final['operations']==1 and final['receipts']==1,'exact proven-unadmitted UI intent must recover after revision conflict'
++ assert request(root/'controller.sock',value)==retry and counts()==final
++ wait(lambda:current().get('current_turn',{}).get('state')=='terminal',8)
++ # The authenticated gateway uses this real pinned native binding. Keepalive adds no turn.
++ env={'PATH':'/usr/bin:/bin','CORENIUS_CLIENT_PRINCIPAL':auth['principal'],'CORENIUS_CLIENT_TOKEN':auth['token'],'CORENIUS_UI_TOKEN':'repair3-native-ui-capability'}
++ gateway=subprocess.Popen([sys.argv[1],'--native-ui',str(root/'controller.sock'),'p','127.0.0.1:0'],env=env,stdout=(root/'repair3-gateway.stdout').open('wb'),stderr=(root/'repair3-gateway.stderr').open('wb'))
++ fd=os.pidfd_open(gateway.pid);stat=pathlib.Path(f'/proc/{gateway.pid}/stat').read_text()
++ try:
++  port=wait(lambda:int((root/'repair3-gateway.stdout').read_text().strip().split(':')[-1]) if (root/'repair3-gateway.stdout').read_text().strip() else False,5)
++  ws=WS.connect('localhost',port,env['CORENIUS_UI_TOKEN']);ops=len(query('codex_registry')['operations'])
++  try:
++   ws.send(b'exact-native-keepalive',9);header=ws.f.read(2);assert header==bytes([0x8a,22]),header
++   assert ws.f.read(22)==b'exact-native-keepalive'
++   ws.send(b'unsolicited native pong',10);ws.send({'id':'after-ping','method':'thread/read','params':{'threadId':thread}})
++   reply=ws.recv();assert reply['id']=='after-ping' and 'result' in reply,reply
++   assert len(query('codex_registry')['operations'])==ops
++   print('actual_native_gateway_ping_no_turn',topology,json.dumps({'reply':reply,'operations_before_after':ops}),flush=True)
++  finally:ws.close()
++ finally:
++  if gateway.poll() is None:signal.pidfd_send_signal(fd,signal.SIGTERM)
++  gateway.wait(timeout=5);os.close(fd)
++  print('owned_repair3_gateway',json.dumps({'pid':gateway.pid,'start_stat':stat,'exit':gateway.returncode,'waited':True}),flush=True)
+diff --git a/crates/sqlite-controller/tests/support/websocket_controls.py b/crates/sqlite-controller/tests/support/websocket_controls.py
+new file mode 100644
+index 0000000..14364ae
+--- /dev/null
++++ b/crates/sqlite-controller/tests/support/websocket_controls.py
+@@ -0,0 +1,64 @@
++"""Authenticated real TCP gateway controls; no native runtime or paid provider."""
++import hashlib,json,os,pathlib,signal,socket,struct,subprocess,sys,tempfile,time,tarfile
++
++binary=pathlib.Path(sys.argv[1]);root=pathlib.Path(tempfile.mkdtemp(prefix='ws05-'))
++env={'PATH':'/usr/bin:/bin','CORENIUS_OPERATOR_TOKEN':'operator-fixture-secret','CORENIUS_CLIENT_TOKEN':'operator-fixture-secret','CORENIUS_CLIENT_PRINCIPAL':'operator','CORENIUS_UI_TOKEN':'separate-ui-fixture-secret'}
++owned=[]
++def spawn(args,name):
++ p=subprocess.Popen([str(binary),*args],env=env,stdout=(root/(name+'.stdout')).open('wb'),stderr=(root/(name+'.stderr')).open('wb'))
++ owned.append((p,os.pidfd_open(p.pid),pathlib.Path(f'/proc/{p.pid}/stat').read_text(),args));return p
++def exact(s,n):
++ b=b''
++ while len(b)<n:
++  part=s.recv(n-len(b));assert part,'gateway disconnected before response';b+=part
++ return b
++def connect():
++ s=socket.create_connection(address,timeout=3)
++ s.sendall(b'GET / HTTP/1.1\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: YXV0aGVudGljYXRlZA==\r\nAuthorization: Bearer separate-ui-fixture-secret\r\n\r\n')
++ response=b''
++ while not response.endswith(b'\r\n\r\n'):response+=exact(s,1)
++ assert response.startswith(b'HTTP/1.1 101');return s
++def send(s,opcode,data=b'',masked=True,fin=True):
++ with (root/'wire-calls.jsonl').open('a') as log:log.write(json.dumps({'opcode':opcode,'payload':data.hex(),'masked':masked,'fin':fin})+'\n')
++ mask=b'abcd';n=len(data);header=bytes([(128 if fin else 0)|opcode,(128 if masked else 0)|(n if n<126 else 126)])
++ if n>=126:header+=struct.pack('!H',n)
++ s.sendall(header+(mask+bytes(b^mask[i%4] for i,b in enumerate(data)) if masked else data))
++def receive(s):
++ first,second=exact(s,2);assert second<128;n=second
++ if n==126:n=struct.unpack('!H',exact(s,2))[0]
++ if n==127:n=struct.unpack('!Q',exact(s,8))[0]
++ return first,exact(s,n)
++try:
++ sock=root/'s';spawn([str(root/'db'),str(sock)],'controller')
++ deadline=time.monotonic()+5
++ while not sock.exists():assert time.monotonic()<deadline;time.sleep(.01)
++ spawn(['--native-ui',str(sock),'p','127.0.0.1:0'],'gateway')
++ while not (root/'gateway.stdout').read_text().strip():assert time.monotonic()<deadline;time.sleep(.01)
++ host,port=(root/'gateway.stdout').read_text().strip().split()[-1].split(':');address=(host,int(port))
++ with connect() as s:
++  payload=b'exact\x00ping\xff';send(s,9,payload);reply=receive(s)
++  (root/'ping-result.json').write_text(json.dumps({'sent':payload.hex(),'opcode':reply[0],'returned':reply[1].hex()}))
++  assert reply==(0x8a,payload),reply
++  send(s,10,b'unsolicited pong')
++  send(s,1,json.dumps({'id':7,'method':'thread/list','params':{}}).encode())
++  opcode,raw=receive(s);response=json.loads(raw);assert opcode==0x81 and response['id']==7
++  # No native binding is configured: ordinary authenticated RPC reaches its existing refusal.
++  assert 'error' in response,response
++  send(s,8,struct.pack('!H',1000)+b'done');assert receive(s)==(0x88,struct.pack('!H',1000)+b'done')
++ for opcode,data,masked,fin in [(9,b'a',False,True),(9,b'a'*126,True,True),(9,b'a',True,False),(8,b'x',True,True),(8,struct.pack('!H',1005),True,True),(8,struct.pack('!H',1000)+b'\xff',True,True)]:
++  with connect() as s:
++   send(s,opcode,data,masked,fin)
++   try:result=s.recv(1)
++   except ConnectionResetError:result=b''
++   assert result==b'',(opcode,result)
++ print('actual_authenticated_websocket_controls',json.dumps({'ping_echo':True,'pong_then_rpc':response,'close_echo':True,'malformed_refused':6,'native_configured':False}),flush=True)
++finally:
++ records=[]
++ for p,fd,start,args in reversed(owned):
++  if p.poll() is None:signal.pidfd_send_signal(fd,signal.SIGTERM)
++  p.wait(timeout=5);os.close(fd);records.append({'pid':p.pid,'start_stat':start,'argv':args,'exit':p.returncode,'waited':True})
++ (root/'resources.json').write_text(json.dumps(records,indent=2))
++ destination=pathlib.Path(__file__).resolve().parents[4]/'.scratch/sqlite-controller/05-repair3/fixtures';destination.mkdir(parents=True,exist_ok=True)
++ archive=destination/(root.name+'.tar.gz')
++ with tarfile.open(archive,'w:gz') as out:out.add(root,arcname=root.name)
++ print('retained_websocket_fixture',json.dumps({'root':str(root),'archive':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'resources':records}),flush=True)

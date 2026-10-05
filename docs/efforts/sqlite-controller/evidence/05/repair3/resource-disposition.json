@@ -1,0 +1,7099 @@
+{
+  "observed_at": "2026-10-05T02:01:33.757328+00:00",
+  "fenced_identity_count": 382,
+  "same_original_present": 0,
+  "unknown_identity_observations": 0,
+  "identities": [
+    {
+      "pid": 1843220,
+      "start_ticks": "57952670",
+      "origins": [
+        "001-websocket-red/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1853047,
+      "start_ticks": "57954370",
+      "origins": [
+        "001-websocket-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1853062,
+      "start_ticks": "57954374",
+      "origins": [
+        "001-websocket-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1882863,
+      "start_ticks": "57961318",
+      "origins": [
+        "002-websocket-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1884118,
+      "start_ticks": "57961470",
+      "origins": [
+        "002-websocket-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1884130,
+      "start_ticks": "57961474",
+      "origins": [
+        "002-websocket-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1922673,
+      "start_ticks": "57969189",
+      "origins": [
+        "003-monitor-red/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 1922852,
+      "start_ticks": "57969217",
+      "origins": [
+        "003-monitor-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2071557,
+      "start_ticks": "57973978",
+      "origins": [
+        "004-monitor-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2075368,
+      "start_ticks": "57974142",
+      "origins": [
+        "004-monitor-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2237027,
+      "start_ticks": "57984137",
+      "origins": [
+        "005-monitor-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2237147,
+      "start_ticks": "57984146",
+      "origins": [
+        "005-monitor-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2394639,
+      "start_ticks": "57992729",
+      "origins": [
+        "006-landing-red/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2400594,
+      "start_ticks": "57993433",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2402518,
+      "start_ticks": "57993497",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2404584,
+      "start_ticks": "57993649",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2406388,
+      "start_ticks": "57993959",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2407030,
+      "start_ticks": "57994134",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2407130,
+      "start_ticks": "57994194",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2407290,
+      "start_ticks": "57994321",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2408610,
+      "start_ticks": "57994628",
+      "origins": [
+        "006-landing-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2523535,
+      "start_ticks": "58004917",
+      "origins": [
+        "007-kata-red/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2527830,
+      "start_ticks": "58005095",
+      "origins": [
+        ".scratch/k3-3r457qlm/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2528204,
+      "start_ticks": "58005103",
+      "origins": [
+        ".scratch/k3-3r457qlm/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2668410,
+      "start_ticks": "58012329",
+      "origins": [
+        "008-kata-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2669975,
+      "start_ticks": "58012540",
+      "origins": [
+        ".scratch/k3-gv41crd_/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2670046,
+      "start_ticks": "58012549",
+      "origins": [
+        ".scratch/k3-gv41crd_/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2778620,
+      "start_ticks": "58023220",
+      "origins": [
+        "009-native-ui-red/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2779339,
+      "start_ticks": "58023468",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780080,
+      "start_ticks": "58024273",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780568,
+      "start_ticks": "58025089",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780586,
+      "start_ticks": "58025116",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780587,
+      "start_ticks": "58025116",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780588,
+      "start_ticks": "58025117",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780589,
+      "start_ticks": "58025118",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780605,
+      "start_ticks": "58025146",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2780607,
+      "start_ticks": "58025147",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2781080,
+      "start_ticks": "58025169",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2781081,
+      "start_ticks": "58025170",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2781119,
+      "start_ticks": "58025200",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2782328,
+      "start_ticks": "58026322",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2782792,
+      "start_ticks": "58026453",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2783551,
+      "start_ticks": "58027224",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2783964,
+      "start_ticks": "58028029",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2784833,
+      "start_ticks": "58028829",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2784896,
+      "start_ticks": "58028856",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2784897,
+      "start_ticks": "58028857",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2784900,
+      "start_ticks": "58028858",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2784901,
+      "start_ticks": "58028858",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2785270,
+      "start_ticks": "58028888",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2785271,
+      "start_ticks": "58028888",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2785978,
+      "start_ticks": "58028910",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2785986,
+      "start_ticks": "58028910",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2785998,
+      "start_ticks": "58028911",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2786006,
+      "start_ticks": "58028912",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2786150,
+      "start_ticks": "58028940",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2786155,
+      "start_ticks": "58028941",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2787782,
+      "start_ticks": "58030097",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2788277,
+      "start_ticks": "58030264",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2788544,
+      "start_ticks": "58030301",
+      "origins": [
+        "009-native-ui-red"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2797959,
+      "start_ticks": "58035028",
+      "origins": [
+        "010-native-ui-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2800025,
+      "start_ticks": "58035282",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2803454,
+      "start_ticks": "58036078",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804360,
+      "start_ticks": "58036891",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804440,
+      "start_ticks": "58036917",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804442,
+      "start_ticks": "58036918",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804447,
+      "start_ticks": "58036919",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804448,
+      "start_ticks": "58036920",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804511,
+      "start_ticks": "58036949",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804529,
+      "start_ticks": "58036950",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804987,
+      "start_ticks": "58036971",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2804988,
+      "start_ticks": "58036972",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2805111,
+      "start_ticks": "58037002",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2807469,
+      "start_ticks": "58038124",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2808092,
+      "start_ticks": "58038330",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2811668,
+      "start_ticks": "58039026",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2812143,
+      "start_ticks": "58039091",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2814218,
+      "start_ticks": "58039874",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2814969,
+      "start_ticks": "58040679",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816206,
+      "start_ticks": "58041487",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816220,
+      "start_ticks": "58041513",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816221,
+      "start_ticks": "58041514",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816222,
+      "start_ticks": "58041515",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816223,
+      "start_ticks": "58041516",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816237,
+      "start_ticks": "58041544",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816239,
+      "start_ticks": "58041545",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816781,
+      "start_ticks": "58041567",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816782,
+      "start_ticks": "58041568",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816783,
+      "start_ticks": "58041569",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816784,
+      "start_ticks": "58041569",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816797,
+      "start_ticks": "58041599",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2816799,
+      "start_ticks": "58041599",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2818607,
+      "start_ticks": "58042720",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2819106,
+      "start_ticks": "58042887",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2819341,
+      "start_ticks": "58042924",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2820403,
+      "start_ticks": "58043644",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2820477,
+      "start_ticks": "58043715",
+      "origins": [
+        "010-native-ui-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2829187,
+      "start_ticks": "58047389",
+      "origins": [
+        "011-landing-kata-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2829430,
+      "start_ticks": "58047422",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2829890,
+      "start_ticks": "58047480",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2830376,
+      "start_ticks": "58047610",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2831614,
+      "start_ticks": "58047912",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2832680,
+      "start_ticks": "58048167",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2833931,
+      "start_ticks": "58048492",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2834035,
+      "start_ticks": "58048550",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2834298,
+      "start_ticks": "58048678",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2834814,
+      "start_ticks": "58048986",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2837102,
+      "start_ticks": "58050292",
+      "origins": [
+        "011-landing-kata-green"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2838060,
+      "start_ticks": "58050628",
+      "origins": [
+        ".scratch/k3-w2znedoy/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2838136,
+      "start_ticks": "58050636",
+      "origins": [
+        ".scratch/k3-w2znedoy/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2846167,
+      "start_ticks": "58055144",
+      "origins": [
+        "012-kata-green/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2846185,
+      "start_ticks": "58055167",
+      "origins": [
+        ".scratch/k3-5vm6mwqg/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2846255,
+      "start_ticks": "58055176",
+      "origins": [
+        ".scratch/k3-5vm6mwqg/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2848288,
+      "start_ticks": "58058368",
+      "origins": [
+        "013-format/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2849734,
+      "start_ticks": "58059667",
+      "origins": [
+        "014-clippy/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2854960,
+      "start_ticks": "58067022",
+      "origins": [
+        "015-final-controller-git-kata/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2856988,
+      "start_ticks": "58067800",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857014,
+      "start_ticks": "58067812",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857018,
+      "start_ticks": "58067815",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857040,
+      "start_ticks": "58067827",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857743,
+      "start_ticks": "58068329",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857744,
+      "start_ticks": "58068329",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857903,
+      "start_ticks": "58068389",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2857904,
+      "start_ticks": "58068389",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2858023,
+      "start_ticks": "58068518",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2858029,
+      "start_ticks": "58068520",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2858169,
+      "start_ticks": "58068609",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2858741,
+      "start_ticks": "58068984",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2858899,
+      "start_ticks": "58069042",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2858924,
+      "start_ticks": "58069088",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859174,
+      "start_ticks": "58069318",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859289,
+      "start_ticks": "58069378",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859430,
+      "start_ticks": "58069506",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859431,
+      "start_ticks": "58069506",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859450,
+      "start_ticks": "58069520",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 0,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859504,
+      "start_ticks": "58069577",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2859505,
+      "start_ticks": "58069578",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2860644,
+      "start_ticks": "58070151",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2860670,
+      "start_ticks": "58070159",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2860789,
+      "start_ticks": "58070211",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2860803,
+      "start_ticks": "58070218",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2860976,
+      "start_ticks": "58070340",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2860992,
+      "start_ticks": "58070347",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2861426,
+      "start_ticks": "58070618",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2861453,
+      "start_ticks": "58070643",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2861580,
+      "start_ticks": "58070737",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2861877,
+      "start_ticks": "58070901",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2861878,
+      "start_ticks": "58070901",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2861975,
+      "start_ticks": "58070961",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2862320,
+      "start_ticks": "58071090",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2862719,
+      "start_ticks": "58071228",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2862761,
+      "start_ticks": "58071286",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2863619,
+      "start_ticks": "58071364",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2863664,
+      "start_ticks": "58071414",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2863773,
+      "start_ticks": "58071509",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2863979,
+      "start_ticks": "58071628",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2864056,
+      "start_ticks": "58071689",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2864125,
+      "start_ticks": "58071718",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2864607,
+      "start_ticks": "58071817",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2865227,
+      "start_ticks": "58072092",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2865306,
+      "start_ticks": "58072212",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2865461,
+      "start_ticks": "58072357",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2865474,
+      "start_ticks": "58072415",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2865609,
+      "start_ticks": "58072543",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2866007,
+      "start_ticks": "58072578",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2866097,
+      "start_ticks": "58072638",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2866195,
+      "start_ticks": "58072766",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2866673,
+      "start_ticks": "58072984",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": null,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2866712,
+      "start_ticks": "58073024",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867314,
+      "start_ticks": "58073299",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867345,
+      "start_ticks": "58073357",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867438,
+      "start_ticks": "58073485",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867454,
+      "start_ticks": "58073497",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867635,
+      "start_ticks": "58073651",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867652,
+      "start_ticks": "58073711",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867741,
+      "start_ticks": "58073840",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867742,
+      "start_ticks": "58073841",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867910,
+      "start_ticks": "58073945",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2867955,
+      "start_ticks": "58074032",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868046,
+      "start_ticks": "58074126",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868065,
+      "start_ticks": "58074186",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868191,
+      "start_ticks": "58074313",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868204,
+      "start_ticks": "58074314",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868274,
+      "start_ticks": "58074417",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868310,
+      "start_ticks": "58074503",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868564,
+      "start_ticks": "58074597",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868589,
+      "start_ticks": "58074658",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868669,
+      "start_ticks": "58074785",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868670,
+      "start_ticks": "58074786",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868866,
+      "start_ticks": "58074885",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 0,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868902,
+      "start_ticks": "58074923",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2868923,
+      "start_ticks": "58074981",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2869044,
+      "start_ticks": "58075112",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2869276,
+      "start_ticks": "58075386",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2869392,
+      "start_ticks": "58075514",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2869466,
+      "start_ticks": "58075573",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2869590,
+      "start_ticks": "58075699",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2869878,
+      "start_ticks": "58075976",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870039,
+      "start_ticks": "58076154",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870132,
+      "start_ticks": "58076215",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870324,
+      "start_ticks": "58076343",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870569,
+      "start_ticks": "58076646",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870627,
+      "start_ticks": "58076770",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870966,
+      "start_ticks": "58076920",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2870991,
+      "start_ticks": "58076978",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2871124,
+      "start_ticks": "58077110",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2873444,
+      "start_ticks": "58077412",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2873614,
+      "start_ticks": "58077561",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2873681,
+      "start_ticks": "58077671",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2873721,
+      "start_ticks": "58077731",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2874035,
+      "start_ticks": "58077859",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2874676,
+      "start_ticks": "58078393",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2874758,
+      "start_ticks": "58078453",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2874846,
+      "start_ticks": "58078583",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2875708,
+      "start_ticks": "58079017",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2875724,
+      "start_ticks": "58079078",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2875876,
+      "start_ticks": "58079206",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2876305,
+      "start_ticks": "58079639",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2876325,
+      "start_ticks": "58079699",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2876457,
+      "start_ticks": "58079827",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2877410,
+      "start_ticks": "58080238",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2877509,
+      "start_ticks": "58080299",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2877657,
+      "start_ticks": "58080426",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2877658,
+      "start_ticks": "58080426",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2877677,
+      "start_ticks": "58080442",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 0,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878160,
+      "start_ticks": "58081065",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878180,
+      "start_ticks": "58081125",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878285,
+      "start_ticks": "58081255",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878357,
+      "start_ticks": "58081351",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878494,
+      "start_ticks": "58081515",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 0,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878725,
+      "start_ticks": "58081829",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878765,
+      "start_ticks": "58081889",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878907,
+      "start_ticks": "58082017",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2878908,
+      "start_ticks": "58082018",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879103,
+      "start_ticks": "58082165",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": null,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879218,
+      "start_ticks": "58082220",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879263,
+      "start_ticks": "58082280",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879477,
+      "start_ticks": "58082408",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879478,
+      "start_ticks": "58082409",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        },
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879591,
+      "start_ticks": "58082514",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879648,
+      "start_ticks": "58082601",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879848,
+      "start_ticks": "58082801",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2879987,
+      "start_ticks": "58082861",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2880303,
+      "start_ticks": "58082989",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882328,
+      "start_ticks": "58083566",
+      "origins": [
+        ".scratch/k3-6b7bihqh/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882329,
+      "start_ticks": "58083566",
+      "origins": [
+        ".scratch/k3-c05sq39v/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882467,
+      "start_ticks": "58083575",
+      "origins": [
+        ".scratch/k3-6b7bihqh/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882468,
+      "start_ticks": "58083575",
+      "origins": [
+        ".scratch/k3-c05sq39v/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882517,
+      "start_ticks": "58083587",
+      "origins": [
+        ".scratch/k3-6b7bihqh/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882733,
+      "start_ticks": "58083655",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882804,
+      "start_ticks": "58083663",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882891,
+      "start_ticks": "58083692",
+      "origins": [
+        ".scratch/k3-1_plozue/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2882977,
+      "start_ticks": "58083699",
+      "origins": [
+        ".scratch/k3-1_plozue/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883036,
+      "start_ticks": "58083716",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883481,
+      "start_ticks": "58083776",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883548,
+      "start_ticks": "58083790",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883552,
+      "start_ticks": "58083793",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883733,
+      "start_ticks": "58083820",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883803,
+      "start_ticks": "58083857",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883887,
+      "start_ticks": "58083866",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2883894,
+      "start_ticks": "58083873",
+      "origins": [
+        ".scratch/k3-qk4q4l0x/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884055,
+      "start_ticks": "58083933",
+      "origins": [
+        ".scratch/k3-wahdm546/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884131,
+      "start_ticks": "58083941",
+      "origins": [
+        ".scratch/k3-wahdm546/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884159,
+      "start_ticks": "58083949",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884221,
+      "start_ticks": "58083957",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884433,
+      "start_ticks": "58084017",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884529,
+      "start_ticks": "58084062",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2884811,
+      "start_ticks": "58084190",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "stopped_before_fixture_cleanup": true,
+          "whole_process_terminated": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885069,
+      "start_ticks": "58084263",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885257,
+      "start_ticks": "58084412",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885480,
+      "start_ticks": "58084499",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": 81
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885521,
+      "start_ticks": "58084518",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885638,
+      "start_ticks": "58084622",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885640,
+      "start_ticks": "58084631",
+      "origins": [
+        ".scratch/k3-yx_g_u6s/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2885712,
+      "start_ticks": "58084640",
+      "origins": [
+        ".scratch/k3-yx_g_u6s/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886282,
+      "start_ticks": "58084769",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886284,
+      "start_ticks": "58084769",
+      "origins": [
+        ".scratch/k3-1g1cmaj7/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886381,
+      "start_ticks": "58084778",
+      "origins": [
+        ".scratch/k3-1g1cmaj7/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886493,
+      "start_ticks": "58084865",
+      "origins": [
+        ".scratch/k3-p6it6_up/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886576,
+      "start_ticks": "58084873",
+      "origins": [
+        ".scratch/k3-p6it6_up/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886591,
+      "start_ticks": "58084881",
+      "origins": [
+        ".scratch/k3-p602i90e/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886674,
+      "start_ticks": "58084890",
+      "origins": [
+        ".scratch/k3-p602i90e/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886700,
+      "start_ticks": "58084900",
+      "origins": [
+        ".scratch/k3-p6it6_up/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2886957,
+      "start_ticks": "58084927",
+      "origins": [
+        ".scratch/k3-p6it6_up/qualification.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887280,
+      "start_ticks": "58085178",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887281,
+      "start_ticks": "58085179",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887289,
+      "start_ticks": "58085180",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887290,
+      "start_ticks": "58085181",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887431,
+      "start_ticks": "58085224",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887432,
+      "start_ticks": "58085224",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887471,
+      "start_ticks": "58085245",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887472,
+      "start_ticks": "58085246",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887504,
+      "start_ticks": "58085257",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887506,
+      "start_ticks": "58085257",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887514,
+      "start_ticks": "58085263",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "unknown",
+          "outcome": "monitor exited without retained whole-process identity"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887529,
+      "start_ticks": "58085274",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "unknown",
+          "outcome": "monitor exited without retained whole-process identity"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887621,
+      "start_ticks": "58085318",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887627,
+      "start_ticks": "58085318",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887660,
+      "start_ticks": "58085328",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "unknown",
+          "outcome": "monitor exited without retained whole-process identity"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887742,
+      "start_ticks": "58085363",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887743,
+      "start_ticks": "58085364",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887817,
+      "start_ticks": "58085389",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887818,
+      "start_ticks": "58085389",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887832,
+      "start_ticks": "58085399",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887852,
+      "start_ticks": "58085399",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "exited",
+          "outcome": "owned namespace process pidfd confirmed termination: exit status: 0"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887899,
+      "start_ticks": "58085416",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "unknown",
+          "outcome": "supervisor ownership lost; PID reconstruction refused"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2887901,
+      "start_ticks": "58085416",
+      "origins": [
+        "015-final-controller-git-kata"
+      ],
+      "kinds": [
+        "namespace-init"
+      ],
+      "dispositions": [
+        {
+          "state": "unknown",
+          "outcome": "supervisor ownership lost; PID reconstruction refused"
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2902555,
+      "start_ticks": "58089180",
+      "origins": [
+        "016-final-native-replay/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2902964,
+      "start_ticks": "58089264",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2909746,
+      "start_ticks": "58090084",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912417,
+      "start_ticks": "58090974",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912559,
+      "start_ticks": "58091000",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912572,
+      "start_ticks": "58091001",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912582,
+      "start_ticks": "58091002",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912589,
+      "start_ticks": "58091002",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912758,
+      "start_ticks": "58091031",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2912837,
+      "start_ticks": "58091032",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2913529,
+      "start_ticks": "58091054",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2913558,
+      "start_ticks": "58091054",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2913707,
+      "start_ticks": "58091085",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2918704,
+      "start_ticks": "58092207",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2919678,
+      "start_ticks": "58092412",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2921756,
+      "start_ticks": "58093370",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2924500,
+      "start_ticks": "58094152",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2928222,
+      "start_ticks": "58094968",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2930916,
+      "start_ticks": "58095785",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2930977,
+      "start_ticks": "58095812",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2930978,
+      "start_ticks": "58095812",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2930979,
+      "start_ticks": "58095813",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2930980,
+      "start_ticks": "58095814",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931079,
+      "start_ticks": "58095842",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931081,
+      "start_ticks": "58095843",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931547,
+      "start_ticks": "58095865",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931548,
+      "start_ticks": "58095866",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931553,
+      "start_ticks": "58095867",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931554,
+      "start_ticks": "58095867",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931655,
+      "start_ticks": "58095897",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2931657,
+      "start_ticks": "58095897",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2934715,
+      "start_ticks": "58097018",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2935217,
+      "start_ticks": "58097219",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2935510,
+      "start_ticks": "58097256",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2936381,
+      "start_ticks": "58098225",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2936666,
+      "start_ticks": "58098262",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2937073,
+      "start_ticks": "58098523",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2937733,
+      "start_ticks": "58099324",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938162,
+      "start_ticks": "58100145",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938295,
+      "start_ticks": "58100171",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938296,
+      "start_ticks": "58100172",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938297,
+      "start_ticks": "58100173",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938298,
+      "start_ticks": "58100173",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938362,
+      "start_ticks": "58100202",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938364,
+      "start_ticks": "58100202",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938845,
+      "start_ticks": "58100225",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938846,
+      "start_ticks": "58100226",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2938872,
+      "start_ticks": "58100255",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2940526,
+      "start_ticks": "58101377",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2941458,
+      "start_ticks": "58101582",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2946532,
+      "start_ticks": "58102279",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2946853,
+      "start_ticks": "58102345",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2951001,
+      "start_ticks": "58103125",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2953386,
+      "start_ticks": "58103954",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2956914,
+      "start_ticks": "58104751",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957160,
+      "start_ticks": "58104777",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957163,
+      "start_ticks": "58104778",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957168,
+      "start_ticks": "58104779",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957171,
+      "start_ticks": "58104779",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957303,
+      "start_ticks": "58104808",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957304,
+      "start_ticks": "58104808",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957807,
+      "start_ticks": "58104831",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957809,
+      "start_ticks": "58104832",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957810,
+      "start_ticks": "58104832",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957811,
+      "start_ticks": "58104833",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "namespace-init",
+        "process"
+      ],
+      "dispositions": [
+        {
+          "state": "running",
+          "outcome": null
+        },
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957963,
+      "start_ticks": "58104862",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2957964,
+      "start_ticks": "58104862",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "native-runtime"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2962684,
+      "start_ticks": "58105984",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -9
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2963717,
+      "start_ticks": "58106185",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2963980,
+      "start_ticks": "58106222",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": false,
+          "terminated_after_service_cleanup": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2965696,
+      "start_ticks": "58106942",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "exit": -15,
+          "waited": true
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2965922,
+      "start_ticks": "58107016",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2966319,
+      "start_ticks": "58107053",
+      "origins": [
+        "016-final-native-replay"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [
+        {
+          "whole_process_terminated": true,
+          "fixture_cleanup_signalled": true,
+          "terminated_after_service_cleanup": false
+        }
+      ],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2992100,
+      "start_ticks": "58113002",
+      "origins": [
+        "017-format-check/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    },
+    {
+      "pid": 2992437,
+      "start_ticks": "58113058",
+      "origins": [
+        "018-default-build/process.json"
+      ],
+      "kinds": [
+        "process"
+      ],
+      "dispositions": [],
+      "observation_now": "original-absent"
+    }
+  ],
+  "pid_only_unfenced_observations": [
+    {
+      "pid": 2887071,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887072,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887079,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887081,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887082,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887083,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887090,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887094,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887108,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    },
+    {
+      "pid": 2887109,
+      "birth_identity": "not retained in original PID-only process-test output",
+      "pid_path_present_now": false,
+      "claim": "original identity not established; no independent whole-process reconciliation inference"
+    }
+  ],
+  "namespace_dispositions": [
+    {
+      "origin": "006-landing-red",
+      "pid": 2404584,
+      "start_ticks": "57993649",
+      "handle": "17defb23-c0c8-43de-a7f8-cddba73aca3f",
+      "pid_namespace": 4026539795,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "006-landing-red",
+      "pid": 2407290,
+      "start_ticks": "57994321",
+      "handle": "a8e0608c-f6a6-4ab8-92e3-5793ef23b7da",
+      "pid_namespace": 4026539791,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2780587,
+      "start_ticks": "58025116",
+      "execution_handle": "50d503f1-f5a0-4bb7-84be-3793ba18acbd",
+      "pid_namespace": 4026539774,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2780589,
+      "start_ticks": "58025118",
+      "execution_handle": "86cd22f8-f730-4f6c-8020-5f048fe5b75d",
+      "pid_namespace": 4026539868,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2781081,
+      "start_ticks": "58025170",
+      "execution_handle": "6a6228ae-566e-4949-b35b-9613c4037d7c",
+      "pid_namespace": 4026540358,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2782792,
+      "start_ticks": "58026453",
+      "execution_handle": "3c46e85e-c338-4b24-80d7-636985b13c0e",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2784897,
+      "start_ticks": "58028857",
+      "execution_handle": "9e4d22e4-c54d-4320-82da-e262fc375ee5",
+      "pid_namespace": 4026539774,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2784901,
+      "start_ticks": "58028858",
+      "execution_handle": "15ee0d53-bec1-4d19-a7f0-766b9e3480a3",
+      "pid_namespace": 4026539868,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2785986,
+      "start_ticks": "58028910",
+      "execution_handle": "72f2ed29-92f1-47ef-9acf-ec20f3a80757",
+      "pid_namespace": 4026540117,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2786006,
+      "start_ticks": "58028912",
+      "execution_handle": "9a4d8e1b-08e5-4d11-ab8d-faa68f6a34ea",
+      "pid_namespace": 4026540283,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2788277,
+      "start_ticks": "58030264",
+      "execution_handle": "06209794-dd2b-4aad-a5db-55530d55a37f",
+      "pid_namespace": 4026540366,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "009-native-ui-red",
+      "pid": 2788544,
+      "start_ticks": "58030301",
+      "execution_handle": "d537debf-fbd0-4203-987e-e3a3916ba374",
+      "pid_namespace": 4026540449,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2804442,
+      "start_ticks": "58036918",
+      "execution_handle": "32613888-dc9c-4dce-a8df-685e021af071",
+      "pid_namespace": 4026539641,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2804448,
+      "start_ticks": "58036920",
+      "execution_handle": "96c3f359-7540-4a23-b7a7-9981ab182342",
+      "pid_namespace": 4026539861,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2804988,
+      "start_ticks": "58036972",
+      "execution_handle": "2387c741-ca13-4b2e-9127-f6fb749f7e48",
+      "pid_namespace": 4026539944,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2808092,
+      "start_ticks": "58038330",
+      "execution_handle": "9c5cef1d-3773-4755-8068-54b02f68c673",
+      "pid_namespace": 4026540193,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2812143,
+      "start_ticks": "58039091",
+      "execution_handle": "de8f855e-0373-48f8-8244-aeebefc10cd0",
+      "pid_namespace": 4026540356,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2816221,
+      "start_ticks": "58041514",
+      "execution_handle": "ba2cd033-41e2-45c1-b504-8bc1cd538452",
+      "pid_namespace": 4026539641,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2816223,
+      "start_ticks": "58041516",
+      "execution_handle": "61c91afa-12a4-449b-8382-b3f36ef6f547",
+      "pid_namespace": 4026539857,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2816782,
+      "start_ticks": "58041568",
+      "execution_handle": "fb6a3b78-7ef7-4f99-b3fc-abd31655fd14",
+      "pid_namespace": 4026539940,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2816784,
+      "start_ticks": "58041569",
+      "execution_handle": "4e3f9214-e504-4073-8bbc-c3aef7c3047b",
+      "pid_namespace": 4026540189,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2819106,
+      "start_ticks": "58042887",
+      "execution_handle": "6f8c8168-26f0-450a-b4b2-39c1009b0de3",
+      "pid_namespace": 4026540355,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2819341,
+      "start_ticks": "58042924",
+      "execution_handle": "ea636fb9-c75b-40c5-9bbe-baa6f5186295",
+      "pid_namespace": 4026540438,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "010-native-ui-green",
+      "pid": 2820477,
+      "start_ticks": "58043715",
+      "execution_handle": "3685fab3-1620-4e09-a033-86b30a2a3699",
+      "pid_namespace": 4026540357,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "011-landing-kata-green",
+      "pid": 2830376,
+      "start_ticks": "58047610",
+      "handle": "4773e2da-d158-46b5-840a-7c2828945fbc",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "011-landing-kata-green",
+      "pid": 2832680,
+      "start_ticks": "58048167",
+      "handle": "14f5e6e9-26e5-4c69-a806-999c5c7fd41a",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "011-landing-kata-green",
+      "pid": 2834298,
+      "start_ticks": "58048678",
+      "handle": "a739acf9-d007-4635-a1a3-7bb16aaf19e2",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "011-landing-kata-green",
+      "pid": 2837102,
+      "start_ticks": "58050292",
+      "handle": "672a8c91-8104-4c04-9500-a73f3520fa9d",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2858023,
+      "start_ticks": "58068518",
+      "handle": "12ed4971-75fa-474b-a25e-0a6a3017a58f",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2859431,
+      "start_ticks": "58069506",
+      "handle": "80628158-7940-442b-a992-04b6c9c6eda3",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2860976,
+      "start_ticks": "58070340",
+      "handle": "61302030-381e-465e-898f-6f88ef7c405b",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2861877,
+      "start_ticks": "58070901",
+      "handle": "2f28a637-4d4d-490d-858c-c3571dbc6608",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2863664,
+      "start_ticks": "58071414",
+      "handle": "0acf42af-f93c-4823-b870-20526261b05f",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2866712,
+      "start_ticks": "58073024",
+      "handle": "f04f8c97-2531-497c-bcd5-56a29e8a16b7",
+      "pid_namespace": 4026539860,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2858029,
+      "start_ticks": "58068520",
+      "handle": "c0c5c53c-8094-4055-bf8d-0f587d884682",
+      "pid_namespace": 4026539857,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2858169,
+      "start_ticks": "58068609",
+      "handle": "23a96bec-4c86-49b2-a97c-e882e36fbfb0",
+      "pid_namespace": 4026539942,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2859505,
+      "start_ticks": "58069578",
+      "handle": "5f6a79ab-79b2-429f-aae1-dc412d670f02",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2860992,
+      "start_ticks": "58070347",
+      "handle": "72b336c9-cfa2-4bd5-9531-5cfc4de5c98e",
+      "pid_namespace": 4026539858,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2862320,
+      "start_ticks": "58071090",
+      "handle": "502addef-b1c4-45c0-8c8a-ce8e1e5f3f70",
+      "pid_namespace": 4026539860,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2864607,
+      "start_ticks": "58071817",
+      "handle": "f42ed2c6-ed65-4f8e-aff6-8a8bf1503de3",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2865609,
+      "start_ticks": "58072543",
+      "handle": "8f1ff4f3-29b7-4ed2-9338-7f37c6eccc47",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2866195,
+      "start_ticks": "58072766",
+      "handle": "53016583-4414-4e10-9440-57fcd7b4112b",
+      "pid_namespace": 4026539647,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2867438,
+      "start_ticks": "58073485",
+      "handle": "d57eda45-b169-4d53-9eba-b3ec1be11d3c",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2867742,
+      "start_ticks": "58073841",
+      "handle": "7626dcb4-beba-4cfb-8aaa-f9fb981c8b92",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2868204,
+      "start_ticks": "58074314",
+      "handle": "55350274-12e5-4552-9389-3689251f60b0",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2868670,
+      "start_ticks": "58074786",
+      "handle": "151c813f-1e55-4e80-9b47-f557f6631679",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2869044,
+      "start_ticks": "58075112",
+      "handle": "90f5ea0c-7219-4f35-877e-3daed1cb9be9",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2869590,
+      "start_ticks": "58075699",
+      "handle": "c138cc32-532f-43ee-9292-b5fe9b1ac9fc",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2870324,
+      "start_ticks": "58076343",
+      "handle": "d6e64db0-71a6-4d61-a9db-2ad26bf7f409",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2871124,
+      "start_ticks": "58077110",
+      "handle": "1438d504-76d1-48f6-be4a-32ea6cad1f67",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2874035,
+      "start_ticks": "58077859",
+      "handle": "0f554a49-8690-4a06-a152-cee282f5d7eb",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2874846,
+      "start_ticks": "58078583",
+      "handle": "4cbf3d0a-4ffe-439d-91d8-4248c098019d",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2875876,
+      "start_ticks": "58079206",
+      "handle": "c8d4ced6-34d7-400d-b5b6-4cb468e5673f",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2876457,
+      "start_ticks": "58079827",
+      "handle": "c7c3f2aa-e4f9-4424-a3b3-d4b2fff8dcaa",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2877658,
+      "start_ticks": "58080426",
+      "handle": "7ee64cb4-6acd-4b1e-b59d-2e9fbf08c9af",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2878285,
+      "start_ticks": "58081255",
+      "handle": "fbf6721c-fbee-49b2-9f6b-e796c4079f45",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2878908,
+      "start_ticks": "58082018",
+      "handle": "e03fd7e4-f52b-45d9-a9e4-30df678ef05f",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2879478,
+      "start_ticks": "58082409",
+      "handle": "fb56e016-4186-45e9-a651-584f4acaccaf",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2880303,
+      "start_ticks": "58082989",
+      "handle": "d2509be6-573d-47fa-b0d1-c0a5039b18bb",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2884159,
+      "start_ticks": "58083949",
+      "handle": "927f42c1-95ee-483b-83b1-1ebfde3ed099",
+      "pid_namespace": 4026539641,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "015-final-controller-git-kata",
+      "pid": 2884811,
+      "start_ticks": "58084190",
+      "handle": "9a90d380-76d3-46e4-b4c4-28b8adc2239f",
+      "pid_namespace": 4026539859,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2912572,
+      "start_ticks": "58091001",
+      "execution_handle": "d8eaac1c-67d0-445f-af28-7b0523e9101a",
+      "pid_namespace": 4026539641,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2912589,
+      "start_ticks": "58091002",
+      "execution_handle": "971b696a-de96-47d5-b8ee-9f49a8b15234",
+      "pid_namespace": 4026539857,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2913558,
+      "start_ticks": "58091054",
+      "execution_handle": "7d161a05-f6fa-4d40-99e7-d4dc539fa0ea",
+      "pid_namespace": 4026539940,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2919678,
+      "start_ticks": "58092412",
+      "execution_handle": "7232268e-3f8d-430e-86cc-dd379bfba7c1",
+      "pid_namespace": 4026540189,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2921756,
+      "start_ticks": "58093370",
+      "execution_handle": "23f9e53a-fc8b-48bb-a9c9-3555293a9afc",
+      "pid_namespace": 4026540191,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2930978,
+      "start_ticks": "58095812",
+      "execution_handle": "302c24ae-3555-42c9-bd05-bfb0a6b8be87",
+      "pid_namespace": 4026539641,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2930980,
+      "start_ticks": "58095814",
+      "execution_handle": "255f7205-9d5b-4d4d-803d-ef0c7f09d9ba",
+      "pid_namespace": 4026539857,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2931548,
+      "start_ticks": "58095866",
+      "execution_handle": "e0c21cb5-749a-49f9-afba-e8f9e2bbfb1c",
+      "pid_namespace": 4026539940,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2931554,
+      "start_ticks": "58095867",
+      "execution_handle": "4bac65ff-2a81-4be2-a7b3-dcbe81db66ae",
+      "pid_namespace": 4026540189,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2935217,
+      "start_ticks": "58097219",
+      "execution_handle": "5d52d478-1193-4a56-8682-a618d6c46eac",
+      "pid_namespace": 4026540355,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2935510,
+      "start_ticks": "58097256",
+      "execution_handle": "616f3b52-91c6-4464-8fcf-0ff568967d1d",
+      "pid_namespace": 4026540438,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2936381,
+      "start_ticks": "58098225",
+      "execution_handle": "1be2c621-f253-4b8f-b4fb-5204825d0350",
+      "pid_namespace": 4026540357,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2936666,
+      "start_ticks": "58098262",
+      "execution_handle": "302f66c9-f7b4-4cac-8b8e-262126f26478",
+      "pid_namespace": 4026540442,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2938296,
+      "start_ticks": "58100172",
+      "execution_handle": "29bb1cab-e2b1-43ce-bae8-59ecc42d5678",
+      "pid_namespace": 4026539641,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2938298,
+      "start_ticks": "58100173",
+      "execution_handle": "677a1ff8-4017-44c0-97f7-af19c027bb77",
+      "pid_namespace": 4026539857,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2938846,
+      "start_ticks": "58100226",
+      "execution_handle": "819979ed-415c-4ad4-a909-0d0bdc91f714",
+      "pid_namespace": 4026539940,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2941458,
+      "start_ticks": "58101582",
+      "execution_handle": "465dd5dc-8849-4227-8b6d-c773500223ab",
+      "pid_namespace": 4026540189,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2946853,
+      "start_ticks": "58102345",
+      "execution_handle": "440a89d6-00a8-4d0c-aa84-452748b88ae8",
+      "pid_namespace": 4026540191,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2957163,
+      "start_ticks": "58104778",
+      "execution_handle": "0c3e71e7-ff00-4580-b77f-ce639c10c75e",
+      "pid_namespace": 4026539641,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2957171,
+      "start_ticks": "58104779",
+      "execution_handle": "550fd81e-900c-459e-bc9f-271d94ab1c5f",
+      "pid_namespace": 4026539857,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2957809,
+      "start_ticks": "58104832",
+      "execution_handle": "604484e6-3353-4e01-93d4-fbed07241478",
+      "pid_namespace": 4026539940,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2957811,
+      "start_ticks": "58104833",
+      "execution_handle": "fa417993-4946-42b1-9175-ee3aeef7f41d",
+      "pid_namespace": 4026540189,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2963717,
+      "start_ticks": "58106185",
+      "execution_handle": "7a81518b-a2f1-4e73-88c6-a9a591011c53",
+      "pid_namespace": 4026540355,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2963980,
+      "start_ticks": "58106222",
+      "execution_handle": "044443be-e317-4b57-ad60-c27970ecfc24",
+      "pid_namespace": 4026540438,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2965922,
+      "start_ticks": "58107016",
+      "execution_handle": "07e8c372-0a54-4524-9eb9-2581bb751446",
+      "pid_namespace": 4026540357,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "origin": "016-final-native-replay",
+      "pid": 2966319,
+      "start_ticks": "58107053",
+      "execution_handle": "29bf7a74-1f55-4a22-b387-8adacd049a81",
+      "pid_namespace": 4026540442,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    }
+  ],
+  "qualification": "Read-only identity audit of retained original PID/start observations. Absence is not product reconciliation. Native/Git fixture cleanup and observed product stop remain distinct; retained unknown domain rows remain unknown. No signals sent by this audit. Process-suite PID-only observations lack a birth fence and are explicitly unqualified."
+}

@@ -1,0 +1,31 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.24s
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-cd4847af97302830)
+
+running 2 tests
+test kill_during_atomic_admission_exposes_none_then_retry_exposes_all ... FAILED
+test real_process_restart_retains_operations_and_ownership ... FAILED
+
+failures:
+
+---- kill_during_atomic_admission_exposes_none_then_retry_exposes_all stdout ----
+
+thread 'kill_during_atomic_admission_exposes_none_then_retry_exposes_all' (684205) panicked at tests/process.rs:14:13:
+daemon exited before serving public seam
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- real_process_restart_retains_operations_and_ownership stdout ----
+
+thread 'real_process_restart_retains_operations_and_ownership' (684206) panicked at tests/process.rs:14:13:
+daemon exited before serving public seam
+
+
+failures:
+    kill_during_atomic_admission_exposes_none_then_retry_exposes_all
+    real_process_restart_retains_operations_and_ownership
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test process`
+
+# Recorded command exit status: 101

@@ -1,0 +1,98 @@
+diff --git a/crates/sqlite-controller/tests/support/control_center_native.py b/crates/sqlite-controller/tests/support/control_center_native.py
+index 4284736..4cce5b9 100644
+--- a/crates/sqlite-controller/tests/support/control_center_native.py
++++ b/crates/sqlite-controller/tests/support/control_center_native.py
+@@ -1,7 +1,36 @@
+ """Actual pinned native/Insula fixture extension. Provider is deterministic and local."""
+-import concurrent.futures, json, os, time, pathlib, sqlite3, uuid
++import concurrent.futures, hashlib, json, os, time, pathlib, sqlite3, uuid
+ 
+ COUNTS = {}
++
++def records(query, collection):
++    items=[];cursor=0
++    while True:
++        page=query('control_records',{'collection':collection,'after':cursor,'limit':20})
++        items.extend(page['items'])
++        if not page['page']['has_more']:return items
++        next_cursor=page['page']['after'];assert next_cursor>cursor
++        cursor=next_cursor
++
++def retained_value(query, value):
++    if isinstance(value,dict) and value.get('text_reference',{}).get('kind')=='control_input':
++        reference=value['text_reference'];chunks=[];offset=0
++        while True:
++            part=query('control_input',dict(reference,offset=offset))
++            assert part['offset']==offset and part['sha256']==reference['sha256'] and part['bytes']==reference['bytes']
++            chunks.append(part['text'])
++            if part['next_offset'] is None:break
++            assert part['next_offset']>offset;offset=part['next_offset']
++        content=''.join(chunks)
++        assert len(content.encode())==reference['bytes'] and hashlib.sha256(content.encode()).hexdigest()==reference['sha256']
++        return content
++    if isinstance(value,dict):return {key:retained_value(query,item) for key,item in value.items()}
++    if isinstance(value,list):return [retained_value(query,item) for item in value]
++    return value
++
++def retained_json(query, value):
++    value=retained_value(query,value)
++    return json.loads(value) if isinstance(value,str) else value
+ def provider_item(value, root, request, token):
+     raw=json.dumps(value.get('input',[]))
+     if 'INTERLEAVING_PEER_TOOL' in raw:
+@@ -24,7 +53,7 @@ def provider_item(value, root, request, token):
+         if n>1:return None
+         code='text(await tools.corenius_command('+json.dumps({'kind':'ack_correction','operation_id':'fixture-ack-'+correction['id'],'expected_revision':center['revision'],'args':{'correction':correction['id'],'response':'ACTUAL_ADDRESSED_WORKER_ACK'}})+'));'
+         return {'type':'custom_tool_call','id':'correction-fixture','call_id':'outer-correction','name':'exec','namespace':'functions','input':code}
+-    questions=[q for q in center['questions'] if q['answer'] is None and (q['text'] in raw or (q['id'] in raw and q.get('delivery') and q['delivery'] in raw))]
++    questions=[q for q in center['questions'] if q['answer'] is None and ((isinstance(q.get('text'),str) and q['text'] in raw) or (q['id'] in raw and q.get('delivery') and q['delivery'] in raw))]
+     if not questions:return None
+     q=questions[0]
+     key=(str(root),q['id']);n=COUNTS.get(key,0)+1;COUNTS[key]=n
+@@ -102,8 +131,8 @@ def exercise(root, query, command, request, grants, lead, wait, topology, token)
+         (root/'tool-routing-target.json').write_text(json.dumps(target))
+         operation=command('codex_turn',{'attempt':grants[0]['attempt'],'text':'INTERLEAVING_PEER_TOOL actual own assignment query'})
+         def answered():
+-            invocations=query('control_center')['tool_invocations']
+-            return next((call for call in invocations if call['binding']==worker['id'] and json.loads(call['arguments'])=={'tool':'corenius_query','arguments':{'kind':'own_assignment'}} and call['response_retained']),None)
++            invocations=records(query,'tool_invocations')
++            return next((call for call in invocations if call['binding']==worker['id'] and retained_json(query,call['arguments'])=={'tool':'corenius_query','arguments':{'kind':'own_assignment'}} and call['response_retained']),None)
+         invocation=wait(answered,18)
+         with sqlite3.connect((root/'state.db').as_uri()+'?mode=ro',uri=True) as db:
+             reply=json.loads(db.execute('SELECT response FROM control_tool_calls WHERE identity=?',(invocation['identity'],)).fetchone()[0])
+@@ -129,7 +158,7 @@ def exercise(root, query, command, request, grants, lead, wait, topology, token)
+         return (q,center) if q['delivery_state']=='resolved' else False
+     q,center=wait(resolved,18)
+     assert q['attempt']==grants[0]['attempt'] and q['answer']=='ACTUAL_MODEL_FREE_EXPLICIT_LEAD_ANSWER'
+-    history=json.loads(q['history'])
++    history=retained_json(query,q['history'])
+     assert any(x['state']=='prepared' for x in history) and any(x['state']=='acknowledged_by_lead' for x in history) and any(x['state']=='resolved' for x in history),history
+     if os.environ.get('CORENIUS_TEST_CONTROL_RACES')=='1':
+         assert any(x.get('early') for x in history),('actual early acknowledgement not qualified',history)
+@@ -137,7 +166,7 @@ def exercise(root, query, command, request, grants, lead, wait, topology, token)
+         early_transport=json.loads((root/'early-question.observed').read_text());assert early_transport.get('actual_native_reply_deferred_before_adapter_return') or early_transport.get('actual_tool_before_native_start_reply'),early_transport
+         assert (root/'lose-tool-reply.observed').exists()
+         assert len([x for x in history if x['state']=='acknowledged_by_lead'])==1
+-        calls=[x for x in center['tool_invocations'] if json.loads(x['arguments']).get('arguments',{}).get('kind')=='ack_question' and json.loads(x['arguments'])['arguments']['args']['question']==question]
++        calls=[x for x in records(query,'tool_invocations') if retained_json(query,x['arguments']).get('arguments',{}).get('kind')=='ack_question' and retained_json(query,x['arguments'])['arguments']['args']['question']==question]
+         assert len(calls)==1 and calls[0]['response_retained'],calls
+         wait(lambda:next(b for b in query('codex_registry')['bindings'] if b['id']==binding['id'])['document'].get('native_turns',[])[-1]['status']=='completed',8)
+         (root/'lose-ack').write_text('declared question transport acknowledgement loss')
+@@ -146,7 +175,7 @@ def exercise(root, query, command, request, grants, lead, wait, topology, token)
+         second_id=second['ok']['result']['question']
+         lost=wait(lambda:next((x for x in query('control_center')['questions'] if x['id']==second_id and x['delivery_state']=='resolved'),None),18)
+         assert (root/'lose-ack.observed').exists()
+-        lost_history=json.loads(lost['history'])
++        lost_history=retained_json(query,lost['history'])
+         assert any(x.get('observation',{}).get('reconciled_from_native_history') for x in lost_history),lost_history
+         operations=query('codex_registry')['operations'];assert len([o for o in operations if any(x.get('id')==second_id for x in o.get('intent',{}).get('questions',[]))])==1
+         center=query('control_center')
+@@ -182,7 +211,7 @@ def exercise(root, query, command, request, grants, lead, wait, topology, token)
+             command('adjudicate_monitor_finding',{'finding':finding['id'],'decision':'accepted','rationale':'operator independently authorizes fixture action'})
+             correction=command('authorize_correction',{'finding':finding['id'],'expected_epoch':finding['epoch'],'criterion':finding['criterion'],'action':'bounded diagnostic only','prohibited_scope':'do not change acceptance or dispatch another actor','next_checkpoint':'one public result','rationale':'source-bound fixture qualification'})
+             acknowledged=wait(lambda:next((x for x in query('control_center')['monitoring']['corrections'] if x['id']==correction['correction'] and x['state']=='acknowledged'),None),18)
+-            assert json.loads(acknowledged['acknowledgement'])['principal']==grants[0]['principal']
++            assert retained_json(query,acknowledged['acknowledgement'])['principal']==grants[0]['principal']
+             command('resolve_correction',{'correction':correction['correction'],'evidence':report['assessment'],'rationale':'actual addressed worker acknowledged; controller retained typed tool receipt'})
+             assert query('snapshot')['occupied_slots']==2
+             print('actual_advisory_finding_authenticated_correction_worker_ack',topology,json.dumps(acknowledged),flush=True)

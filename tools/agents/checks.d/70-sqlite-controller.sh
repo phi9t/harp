@@ -1,0 +1,4 @@
+#!/bin/sh
+# Retained model-free SQLite baseline; no PostgreSQL/Temporal services.
+set -eu
+cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture --test-threads=2

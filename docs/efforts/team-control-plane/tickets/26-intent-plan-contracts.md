@@ -1,10 +1,10 @@
 # 26 intent-plan-contracts: exact admitted work and success contracts
 
 Type: task
-Status: claimed
-Owner: corenius-intent26
+Status: open
+Owner:
 Blocked by: 16
-Claimed: 2026-10-03T17:53:11Z expires 2026-10-04T17:53:11Z
+Claimed:
 Label: implementation:planned
 Parent: ../PLAN.md
 
@@ -58,3 +58,5 @@ No change to accepted v1 specification/evidence identity.
 
 - 2026-10-03T17:30:00Z lead: Added from the owner's RFC0002 correction; affected execution awaits independent reconciliation critique. Open is not proof or runtime admission.
 - 2026-10-03T17:53:11Z corenius-intent26: claimed until 2026-10-04T17:53:11Z
+
+- 2026-10-04T03:55:29Z codex-design: Prior implementation claim retired at safe terminal boundary by owner SQLite/controller-first priority. Dirty candidate-import2 tree and all evidence retained; no conformance/acceptance/landing inferred. Parked, unfinished; no new PostgreSQL work admitted. See ../decisions/20261004-owner-sqlite-controller-first-supersession.md.

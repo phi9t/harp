@@ -1,0 +1,22 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--features",
+    "fault-injection",
+    "--test",
+    "codex",
+    "repair3_adopted",
+    "--",
+    "--nocapture",
+    "--test-threads=2"
+  ],
+  "exit": 101,
+  "seconds": 58.44,
+  "started_at": "2026-10-04T12:40:21.762378+00:00",
+  "source_unchanged": true
+}

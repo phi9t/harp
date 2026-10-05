@@ -1,0 +1,1634 @@
+{
+  "notes": [
+    "Before-launch full source archives begin13; earlier partial maps are honestly retained.",
+    "Canonical public setup action108 is not a separately retained raw logfile. Corrected valid RED action117 has retrospective reconstructed BASE/corrected-driver pin, cargo101/3 failures; wrapper tail exit0 was not PASS.",
+    "Root owns independent exact-commit full regression, two-axis review, branch review and acceptance. Author scoped GREENs do not confer acceptance."
+  ],
+  "raw_root": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/.scratch/sqlite-controller/05",
+  "records": [
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:06:02.811388+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 5280,
+          "path": ".scratch/sqlite-controller/05/authority-37-observer-red.log",
+          "sha256": "3c7d6ca74698b3bbb10ff3004c8843d4c0b9d069cdac6682b44ae4b49e113931"
+        },
+        {
+          "bytes": 203317,
+          "path": ".scratch/sqlite-controller/05/authority-37-observer-red-source.tar.gz",
+          "sha256": "f6dc52f31d819e69dd7c73122a3ff1daee044fad271c55ed3ef978c5edac2976"
+        },
+        {
+          "bytes": 5605,
+          "path": ".scratch/sqlite-controller/05/authority-37-observer-red-start.json",
+          "sha256": "cf9ae90ffbe1b7cf11c41370b48e4001d13552a1ef1891ea8498441b9f93c3fa"
+        }
+      ],
+      "log_sha256": "3c7d6ca74698b3bbb10ff3004c8843d4c0b9d069cdac6682b44ae4b49e113931",
+      "name": "authority-37-observer-red",
+      "qualification": "Configured actual Git direct observer verification mutated reports/journal/receipts/events/revision. Gateway then revision-conflicted, so gateway RED credit comes from independent root original probe.",
+      "record_sha256": "fd7665f3085b99d841cfb67ff691e2f1847d774f3680ba162ee19c09e2aba47c",
+      "retained_record": "runs/authority-37-observer-red.json",
+      "source_archive_sha256": "f6dc52f31d819e69dd7c73122a3ff1daee044fad271c55ed3ef978c5edac2976",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:05:58.231495+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:07:00.483603+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 6664,
+          "path": ".scratch/sqlite-controller/05/authority-38-observer-green.log",
+          "sha256": "821e1536e1855ce53f0ab3c0d28cbf0dacadd5e2d080e3cc2371dd564b6b74f4"
+        },
+        {
+          "bytes": 203453,
+          "path": ".scratch/sqlite-controller/05/authority-38-observer-green-source.tar.gz",
+          "sha256": "2a67ebc16a104f9e97e701472bbcc78cdda55d714838b8a779494b709930ee90"
+        },
+        {
+          "bytes": 5605,
+          "path": ".scratch/sqlite-controller/05/authority-38-observer-green-start.json",
+          "sha256": "44002cf6f6c44a5952ba4322a456ab022aeec7cdd461faa158e5f8415e67b0fa"
+        }
+      ],
+      "log_sha256": "821e1536e1855ce53f0ab3c0d28cbf0dacadd5e2d080e3cc2371dd564b6b74f4",
+      "name": "authority-38-observer-green",
+      "qualification": "All7 direct Git mutation negatives plus gateway/privileged query negatives no effects; authorized verifier/acceptance/landing/physical retirement positive.",
+      "record_sha256": "61597ae6cdd0579e0a289b690db08e1802e902afe861ce23148ab8983177423d",
+      "retained_record": "runs/authority-38-observer-green.json",
+      "source_archive_sha256": "2a67ebc16a104f9e97e701472bbcc78cdda55d714838b8a779494b709930ee90",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:06:52.569253+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 2,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1446,
+          "path": ".scratch/sqlite-controller/05/client-07-red.log",
+          "sha256": "8e4298e5dc03dc2324fd32cac9fb407badad8cc43ea3e50f93f2e36766eb5050"
+        }
+      ],
+      "log_sha256": "8e4298e5dc03dc2324fd32cac9fb407badad8cc43ea3e50f93f2e36766eb5050",
+      "name": "client-07-red",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "b1d84ac8bf3a0f5f14c8289c35135d5741d9efcc43f08e7655824d2b2bc3d4fa",
+      "retained_record": "runs/client-07-red.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:15:30.384784+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1233,
+          "path": ".scratch/sqlite-controller/05/clients-25-socket-green.log",
+          "sha256": "9d2b1503db762fe3dd0cc07ca7822320dabf98b9d8c582d904c32bfce6370498"
+        },
+        {
+          "bytes": 193212,
+          "path": ".scratch/sqlite-controller/05/clients-25-socket-green-source.tar.gz",
+          "sha256": "27f44bd29c42eaa57d07e1029722814c53c2585b460def7e320407da1efa9160"
+        },
+        {
+          "bytes": 5509,
+          "path": ".scratch/sqlite-controller/05/clients-25-socket-green-start.json",
+          "sha256": "47cfb81595acccfb469c765d76dbdcab1687b2c4b105d70617737cbfb384bf02"
+        }
+      ],
+      "log_sha256": "9d2b1503db762fe3dd0cc07ca7822320dabf98b9d8c582d904c32bfce6370498",
+      "name": "clients-25-socket-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "7ce5f72c58addeb376b34ccb18872e290ef851b5a55cc6c8efe05e41c4ecf125",
+      "retained_record": "runs/clients-25-socket-green.json",
+      "source_archive_sha256": "27f44bd29c42eaa57d07e1029722814c53c2585b460def7e320407da1efa9160",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:15:27.299995+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 19,
+      "completed_at": null,
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 691,
+          "path": ".scratch/sqlite-controller/05/control-02.log",
+          "sha256": "64b425a1d2961e6a037d3727d2b7a533c15d7f53829cd15b9b1745414435e71f"
+        }
+      ],
+      "log_sha256": "64b425a1d2961e6a037d3727d2b7a533c15d7f53829cd15b9b1745414435e71f",
+      "name": "control-02",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "a19ff10620379b7471e42b7cdf5d431875640472e281b951102717b5475bc7bb",
+      "retained_record": "runs/control-02.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 22,
+      "completed_at": null,
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1151,
+          "path": ".scratch/sqlite-controller/05/control-client-11-green.log",
+          "sha256": "ffa7fb848ae6c2e53f5f303a712bd612f266b0bd279cccc26106857ce8c7e9c8"
+        }
+      ],
+      "log_sha256": "ffa7fb848ae6c2e53f5f303a712bd612f266b0bd279cccc26106857ce8c7e9c8",
+      "name": "control-client-11-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "ac4bedf3b342f5263c39e6addff23addc9c68e6cfc24bb7a44433ceae2d0773c",
+      "retained_record": "runs/control-client-11-green.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:33:11.357770+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 126993,
+          "path": ".scratch/sqlite-controller/05/diagnostic-52-initial-persistence.log",
+          "sha256": "61264db94edeb36fc8d6a503ef585606326679c4ab085e13993f2f7044fadeb6"
+        },
+        {
+          "bytes": 212483,
+          "path": ".scratch/sqlite-controller/05/diagnostic-52-initial-persistence-source.tar.gz",
+          "sha256": "7eddbbf44729432b3c640e712392512aee5898afb655ff34d800a430b9f1c9f2"
+        },
+        {
+          "bytes": 5705,
+          "path": ".scratch/sqlite-controller/05/diagnostic-52-initial-persistence-start.json",
+          "sha256": "87c886123aacb2269c783ced0b6ba7ea2f6176b221524bfe4eb8e6c28138b5ce"
+        }
+      ],
+      "log_sha256": "61264db94edeb36fc8d6a503ef585606326679c4ab085e13993f2f7044fadeb6",
+      "name": "diagnostic-52-initial-persistence",
+      "qualification": "Optional diagnostic polls exact original turn/clientId within SAME10s, BOTH first-read PASS. Does not prove async cause/new05 attribution; original default fixture remains unchanged.",
+      "record_sha256": "a06289c5e86c123095bd0b8b199466f61b696ad6d2ebedb833c0dbf6fdf3ba0c",
+      "retained_record": "runs/diagnostic-52-initial-persistence.json",
+      "source_archive_sha256": "7eddbbf44729432b3c640e712392512aee5898afb655ff34d800a430b9f1c9f2",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:32:09.331937+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:22:21.288399+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1054,
+          "path": ".scratch/sqlite-controller/05/durability-48-atomic-delivery.log",
+          "sha256": "afcda35ea5ca6e6c37b6f15803a52539015492f3f8233814c23036bfcb90120e"
+        },
+        {
+          "bytes": 210189,
+          "path": ".scratch/sqlite-controller/05/durability-48-atomic-delivery-source.tar.gz",
+          "sha256": "a595b22775a2f73388020f21cfd3c8b18e2da596d716f05f221900153403c049"
+        },
+        {
+          "bytes": 5586,
+          "path": ".scratch/sqlite-controller/05/durability-48-atomic-delivery-start.json",
+          "sha256": "6f216b3095e5c897384fe6813cea106854800e6ca2fed36188011d63b2939ce1"
+        }
+      ],
+      "log_sha256": "afcda35ea5ca6e6c37b6f15803a52539015492f3f8233814c23036bfcb90120e",
+      "name": "durability-48-atomic-delivery",
+      "qualification": "Compiler mutable-connection mismatch failure, no behavioral credit.",
+      "record_sha256": "1a5d4a53ed83fb3d43d17ec36dd0cbe9314b34990c6cb73866eee20c5503f5e1",
+      "retained_record": "runs/durability-48-atomic-delivery.json",
+      "source_archive_sha256": "a595b22775a2f73388020f21cfd3c8b18e2da596d716f05f221900153403c049",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:22:20.578962+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:22:45.186999+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 561,
+          "path": ".scratch/sqlite-controller/05/durability-49-atomic-delivery.log",
+          "sha256": "bdf8a9021b7aac30906395c14fa5d32efe6b5dd9c54dc6c618fef6c556383f9e"
+        },
+        {
+          "bytes": 210193,
+          "path": ".scratch/sqlite-controller/05/durability-49-atomic-delivery-source.tar.gz",
+          "sha256": "96c69dad42e6242c222a1b3ad9596e91182ed610696260c444597ce3d610c5fd"
+        },
+        {
+          "bytes": 5586,
+          "path": ".scratch/sqlite-controller/05/durability-49-atomic-delivery-start.json",
+          "sha256": "e7122b93a8e82f11ea281596de230b2971606879a6f0b856cb8b4230caa4ebe7"
+        }
+      ],
+      "log_sha256": "bdf8a9021b7aac30906395c14fa5d32efe6b5dd9c54dc6c618fef6c556383f9e",
+      "name": "durability-49-atomic-delivery",
+      "qualification": "Real SQLite injected second-write abort plus reopen; atomic rollback/retry and early ACK/idempotent-history positives. No actual kill claim.",
+      "record_sha256": "544b54bd2789567edad408b0ae2e7237bf4801fa49a41ecadbfff27512b7e3a5",
+      "retained_record": "runs/durability-49-atomic-delivery.json",
+      "source_archive_sha256": "96c69dad42e6242c222a1b3ad9596e91182ed610696260c444597ce3d610c5fd",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:22:43.659754+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:32:31.784972+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1887,
+          "path": ".scratch/sqlite-controller/05/final-32-focused.log",
+          "sha256": "0010380d8c1dd350920d2180f8211b955258fa49899d7d704ff259b7a4fb85c1"
+        },
+        {
+          "bytes": 199956,
+          "path": ".scratch/sqlite-controller/05/final-32-focused-source.tar.gz",
+          "sha256": "0fc0dfccf661c3975f7a8741c647bc0be90ff4fe46f4976f6a7a846495803925"
+        },
+        {
+          "bytes": 5583,
+          "path": ".scratch/sqlite-controller/05/final-32-focused-start.json",
+          "sha256": "32d7a23ac0215c350ee995491f70686be0a08f97a15835acdde02a2dc611270b"
+        }
+      ],
+      "log_sha256": "0010380d8c1dd350920d2180f8211b955258fa49899d7d704ff259b7a4fb85c1",
+      "name": "final-32-focused",
+      "qualification": "Fixture idempotency-key collision between live/history requests; corrected33 uses distinct unchanged requests.",
+      "record_sha256": "865277216b576e3b0b401ea90cdc09034ddb6e744b170805b39c4363aa9c3b54",
+      "retained_record": "runs/final-32-focused.json",
+      "source_archive_sha256": "0fc0dfccf661c3975f7a8741c647bc0be90ff4fe46f4976f6a7a846495803925",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:32:28.007057+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:33:25.387126+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1408,
+          "path": ".scratch/sqlite-controller/05/final-33-protocol.log",
+          "sha256": "4478ebf55533068d07354f62f32aaa497ae53038ef47649777290c9c066d823e"
+        },
+        {
+          "bytes": 199952,
+          "path": ".scratch/sqlite-controller/05/final-33-protocol-source.tar.gz",
+          "sha256": "8a1d1e877dabc04ef926c23b0553eaafcf945329c77b1fa0553bacb1019007a6"
+        },
+        {
+          "bytes": 5583,
+          "path": ".scratch/sqlite-controller/05/final-33-protocol-start.json",
+          "sha256": "522caa89853a016e0529deeb65ae146857bc6f8dad2bf01e1dfb8a512cea43f0"
+        }
+      ],
+      "log_sha256": "4478ebf55533068d07354f62f32aaa497ae53038ef47649777290c9c066d823e",
+      "name": "final-33-protocol",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "2cdd104e92a0abc50d3b5dac6fc42feecc933d4b137f05623f84ff3eed28d0e6",
+      "retained_record": "runs/final-33-protocol.json",
+      "source_archive_sha256": "8a1d1e877dabc04ef926c23b0553eaafcf945329c77b1fa0553bacb1019007a6",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:33:24.677621+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:37:19.616673+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 2292,
+          "path": ".scratch/sqlite-controller/05/final-34-clippy.log",
+          "sha256": "b66d466e9bdce5847297752145ba74e8d073e447151bd0ae9e4a68c283f77afc"
+        },
+        {
+          "bytes": 202360,
+          "path": ".scratch/sqlite-controller/05/final-34-clippy-source.tar.gz",
+          "sha256": "5d1e1431d760bdf4a484bfdcd2fc1b126a14d61a3bad883ce2c18080d32695b8"
+        },
+        {
+          "bytes": 5530,
+          "path": ".scratch/sqlite-controller/05/final-34-clippy-start.json",
+          "sha256": "15f1f2b796b19d09035f18e8dd40f9efd32d46e52b7447abb0e2ae29ed334bc2"
+        }
+      ],
+      "log_sha256": "b66d466e9bdce5847297752145ba74e8d073e447151bd0ae9e4a68c283f77afc",
+      "name": "final-34-clippy",
+      "qualification": "Actual strict clippy FAIL, cmp_owned/handler type complexity.",
+      "record_sha256": "280062550565153a3fd30e064ffc4cf92c9186f1deb7eaa30ec52f0dbf0b1f58",
+      "retained_record": "runs/final-34-clippy.json",
+      "source_archive_sha256": "5d1e1431d760bdf4a484bfdcd2fc1b126a14d61a3bad883ce2c18080d32695b8",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:37:15.020602+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:38:12.258619+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 214,
+          "path": ".scratch/sqlite-controller/05/final-35-clippy.log",
+          "sha256": "6c3baf4ab4d1374f6f2a2c7e7de404475cf16069636550e6c4c3f6ff584decce"
+        },
+        {
+          "bytes": 202420,
+          "path": ".scratch/sqlite-controller/05/final-35-clippy-source.tar.gz",
+          "sha256": "63fc3b38e9075335c12577a80c822129297f9647bfa606dc540b1107ac7ab2b6"
+        },
+        {
+          "bytes": 5530,
+          "path": ".scratch/sqlite-controller/05/final-35-clippy-start.json",
+          "sha256": "3630cea6488fd49e3c6a83e6e96b4b70a0bdb5e0908aacc18956d6483faef6be"
+        }
+      ],
+      "log_sha256": "6c3baf4ab4d1374f6f2a2c7e7de404475cf16069636550e6c4c3f6ff584decce",
+      "name": "final-35-clippy",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "62e21d1af8518e5c600f4fc0a6076ac5eadd8106d78b4c52177e56bd95c354ac",
+      "retained_record": "runs/final-35-clippy.json",
+      "source_archive_sha256": "63fc3b38e9075335c12577a80c822129297f9647bfa606dc540b1107ac7ab2b6",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:38:08.533581+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:04:06.200500+00:00",
+      "exit": 1,
+      "ignored_raw": [
+        {
+          "bytes": 3139195,
+          "path": ".scratch/sqlite-controller/05/final-36-repository-gate.log",
+          "sha256": "d1dcdf4349c5bbddbd0e64fd896840657fbc896c780749986fed701cbd486221"
+        },
+        {
+          "bytes": 202493,
+          "path": ".scratch/sqlite-controller/05/final-36-repository-gate-source.tar.gz",
+          "sha256": "12617fcbdac00ba91f7190f79da8a5bf529314798918886ce14e2785fc845094"
+        },
+        {
+          "bytes": 5364,
+          "path": ".scratch/sqlite-controller/05/final-36-repository-gate-start.json",
+          "sha256": "dc0416e8f6c6ebab9f10de981984c135c27d2aed8a597777ffaea9f5b12acada"
+        }
+      ],
+      "log_sha256": "d1dcdf4349c5bbddbd0e64fd896840657fbc896c780749986fed701cbd486221",
+      "name": "final-36-repository-gate",
+      "qualification": "Aggregate FAIL1, native31PASS/2FAIL1101.68s; historical advanced service and main crate stages pass. Original initial-confirm predicate/archive gap and UI replacement timeout preserved; no caps reset.",
+      "record_sha256": "75746aba953b82482219c4c695c3c2d6f1250bfbb168d0bf328182622b00f0c8",
+      "retained_record": "runs/final-36-repository-gate.json",
+      "source_archive_sha256": "12617fcbdac00ba91f7190f79da8a5bf529314798918886ce14e2785fc845094",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:39:29.270770+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 19,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1125,
+          "path": ".scratch/sqlite-controller/05/gateway-03-red.log",
+          "sha256": "c736c89c92654f8c1775bd0abc24136cfd80dfd402834a582ec58cbadb7275d9"
+        }
+      ],
+      "log_sha256": "c736c89c92654f8c1775bd0abc24136cfd80dfd402834a582ec58cbadb7275d9",
+      "name": "gateway-03-red",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "dce7504eaa946abb02408ed7d1d37fa5cd1a2c0785c4f9a0181230f01ce27a65",
+      "retained_record": "runs/gateway-03-red.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 20,
+      "completed_at": null,
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1138,
+          "path": ".scratch/sqlite-controller/05/gateway-04-green.log",
+          "sha256": "8744aa9163b41adac568a3df5aa20f52dc9881df8996aba66d71a268dce84d44"
+        }
+      ],
+      "log_sha256": "8744aa9163b41adac568a3df5aa20f52dc9881df8996aba66d71a268dce84d44",
+      "name": "gateway-04-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "7d7954e0c00e3ce2af56e290237bdad66b02cd7be67cafc0c9786701c33b4692",
+      "retained_record": "runs/gateway-04-green.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:08:36.517976+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 2137,
+          "path": ".scratch/sqlite-controller/05/gateway-39-pending-turn-red.log",
+          "sha256": "83c441277b3c4fac037b74ea90693123c00eb791f18cb5c39b301740a72ee7dc"
+        },
+        {
+          "bytes": 204630,
+          "path": ".scratch/sqlite-controller/05/gateway-39-pending-turn-red-source.tar.gz",
+          "sha256": "c5d400ef8b3a834f93b0ac7b4196f463d197eb1d1128f277f2ddd2ec25423129"
+        },
+        {
+          "bytes": 5578,
+          "path": ".scratch/sqlite-controller/05/gateway-39-pending-turn-red-start.json",
+          "sha256": "34193d4105541fb69ab15f3019ab6f068ea99958e4f1b14da1bb8b18296134e9"
+        }
+      ],
+      "log_sha256": "83c441277b3c4fac037b74ea90693123c00eb791f18cb5c39b301740a72ee7dc",
+      "name": "gateway-39-pending-turn-red",
+      "qualification": "Meaningful declared real-SQLite pending changed-payload/op and unrelated-turn effect RED; same-payload/cache positive.",
+      "record_sha256": "aa4c7aa73527a70b25212ce304c696f5bf426f9cdb1904d6ad765bc800fc0484",
+      "retained_record": "runs/gateway-39-pending-turn-red.json",
+      "source_archive_sha256": "c5d400ef8b3a834f93b0ac7b4196f463d197eb1d1128f277f2ddd2ec25423129",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:08:32.479598+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:12:04.634879+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 4088,
+          "path": ".scratch/sqlite-controller/05/gateway-42-correlated-turn-green.log",
+          "sha256": "b871cbfc81d7afafca8f24e42294f826bdcbf41a5cf5e3915fbf89ae7dacade2"
+        },
+        {
+          "bytes": 206276,
+          "path": ".scratch/sqlite-controller/05/gateway-42-correlated-turn-green-source.tar.gz",
+          "sha256": "142cbf549ca7a4f65f0bb2d6c0e23ddabf89991e4e4d88926008dd3ab4c42991"
+        },
+        {
+          "bytes": 5556,
+          "path": ".scratch/sqlite-controller/05/gateway-42-correlated-turn-green-start.json",
+          "sha256": "e03c74726cc55603ea53bc8b1b6f952e28afb1c7ed7c9f5b6162dac1501f43de"
+        }
+      ],
+      "log_sha256": "b871cbfc81d7afafca8f24e42294f826bdcbf41a5cf5e3915fbf89ae7dacade2",
+      "name": "gateway-42-correlated-turn-green",
+      "qualification": "Actual compiler FAIL despite green filename (handler signature mismatch).",
+      "record_sha256": "a70082534382f501094a8ade1af49409360861681be699d2874ed8c4978e6fc0",
+      "retained_record": "runs/gateway-42-correlated-turn-green.json",
+      "source_archive_sha256": "142cbf549ca7a4f65f0bb2d6c0e23ddabf89991e4e4d88926008dd3ab4c42991",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:12:03.631530+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:12:26.011587+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1147,
+          "path": ".scratch/sqlite-controller/05/gateway-43-correlated-turn-green.log",
+          "sha256": "596b0d4a301dd5e478796a1c4accf57dd81fef4410c98e98cad323d65debd6b4"
+        },
+        {
+          "bytes": 206271,
+          "path": ".scratch/sqlite-controller/05/gateway-43-correlated-turn-green-source.tar.gz",
+          "sha256": "0551a93f155cafaed04fd0f4ee51ef06b83164d7c8a629e3dc0c46bc9c6b0c1f"
+        },
+        {
+          "bytes": 5556,
+          "path": ".scratch/sqlite-controller/05/gateway-43-correlated-turn-green-start.json",
+          "sha256": "3c32982c4a62e9ea5983bf4965babe270ef02ab7880d0891ba88467cdbbc0ee8"
+        }
+      ],
+      "log_sha256": "596b0d4a301dd5e478796a1c4accf57dd81fef4410c98e98cad323d65debd6b4",
+      "name": "gateway-43-correlated-turn-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "1a883acb8a72541892234a1c618e68d60ffb31415764a2f68706ec70a8fc91b7",
+      "retained_record": "runs/gateway-43-correlated-turn-green.json",
+      "source_archive_sha256": "0551a93f155cafaed04fd0f4ee51ef06b83164d7c8a629e3dc0c46bc9c6b0c1f",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:12:24.246608+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:27:36.264272+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1657,
+          "path": ".scratch/sqlite-controller/05/gateway-50-early-routing.log",
+          "sha256": "2e7f008a0b66f0df27b77c82a49305aa11ddb9593bfb430e899f166c0cf77391"
+        },
+        {
+          "bytes": 211181,
+          "path": ".scratch/sqlite-controller/05/gateway-50-early-routing-source.tar.gz",
+          "sha256": "80bf618105885f923396fd682d9c4dcdb92a47a5d53432ec0eeff32baf4fd69e"
+        },
+        {
+          "bytes": 5556,
+          "path": ".scratch/sqlite-controller/05/gateway-50-early-routing-start.json",
+          "sha256": "b0f242eb4187f4353d62f7d77e9793d6a02b604b41ce4127574aa4e1c6b33a55"
+        }
+      ],
+      "log_sha256": "2e7f008a0b66f0df27b77c82a49305aa11ddb9593bfb430e899f166c0cf77391",
+      "name": "gateway-50-early-routing",
+      "qualification": "Owned wire early tool-before-start-ack/typed correlation and routing controls pass. Distinct from actual native reply deferral.",
+      "record_sha256": "2bdc2bff89d2ea2eb3710addaf8f57a67ef2059267ddb4ef53364e8a93dba9ba",
+      "retained_record": "runs/gateway-50-early-routing.json",
+      "source_archive_sha256": "80bf618105885f923396fd682d9c4dcdb92a47a5d53432ec0eeff32baf4fd69e",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:27:34.744141+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:50:35.903918+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1116,
+          "path": ".scratch/sqlite-controller/05/monitor-18-rerun-red.log",
+          "sha256": "70033ce9ea18c5887e9c7bfa1fbaf174a0e9bdc64178ee651d9b8e20cf54b7d9"
+        },
+        {
+          "bytes": 187472,
+          "path": ".scratch/sqlite-controller/05/monitor-18-rerun-red-source.tar.gz",
+          "sha256": "d396f62311434b80f42cd59ce3f146d40afcc2459915e8c552a66a42abc559b3"
+        },
+        {
+          "bytes": 5479,
+          "path": ".scratch/sqlite-controller/05/monitor-18-rerun-red-start.json",
+          "sha256": "97182d91bb6ee04833db4c2967036e468dc4270784c880611e65555048cf1f77"
+        }
+      ],
+      "log_sha256": "70033ce9ea18c5887e9c7bfa1fbaf174a0e9bdc64178ee651d9b8e20cf54b7d9",
+      "name": "monitor-18-rerun-red",
+      "qualification": "New analyzer version rejected after reviewed batch: meaningful versioned-assessment RED.",
+      "record_sha256": "baecf3f36e329be875a928805a4c449e9c4ad242a8d8ffae9cfcb01adc9ac6a4",
+      "retained_record": "runs/monitor-18-rerun-red.json",
+      "source_archive_sha256": "d396f62311434b80f42cd59ce3f146d40afcc2459915e8c552a66a42abc559b3",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:50:32.560795+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:53:11.968020+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 860,
+          "path": ".scratch/sqlite-controller/05/monitor-20-rerun-green.log",
+          "sha256": "1cfbcc8963296ed16852be99d514e7ff1281114e73241e9cd4cb920fd732d62a"
+        },
+        {
+          "bytes": 187679,
+          "path": ".scratch/sqlite-controller/05/monitor-20-rerun-green-source.tar.gz",
+          "sha256": "37a62dfbbd767e3cde869ee4e21ef6b7c3dfd3e58fa47d5ac6c5ef94e5942a19"
+        },
+        {
+          "bytes": 5452,
+          "path": ".scratch/sqlite-controller/05/monitor-20-rerun-green-start.json",
+          "sha256": "cbe924d59fc7298d92c320c42a90b01953d145de06f99e6a9f5f7d89c4c2b06e"
+        }
+      ],
+      "log_sha256": "1cfbcc8963296ed16852be99d514e7ff1281114e73241e9cd4cb920fd732d62a",
+      "name": "monitor-20-rerun-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "b968a2d61fc41a0cdc277657ec3bdf23a775e65e739c67b30afcf1c5b8feabe5",
+      "retained_record": "runs/monitor-20-rerun-green.json",
+      "source_archive_sha256": "37a62dfbbd767e3cde869ee4e21ef6b7c3dfd3e58fa47d5ac6c5ef94e5942a19",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:53:10.285350+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:02:10.475206+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 36814,
+          "path": ".scratch/sqlite-controller/05/monitor-22-native-red.log",
+          "sha256": "71549b59b47a7af1f149e65f385d0f8f40b3cc47238f527cabec9c4112361195"
+        },
+        {
+          "bytes": 188138,
+          "path": ".scratch/sqlite-controller/05/monitor-22-native-red-source.tar.gz",
+          "sha256": "ab5bad4d94a469a601806c51dada0af5ff19d33fd04b1b56ff1ad3a91407ba09"
+        },
+        {
+          "bytes": 5584,
+          "path": ".scratch/sqlite-controller/05/monitor-22-native-red-start.json",
+          "sha256": "5bad2ca7fc7664747a1d1a17b400ae5ab88a1ec3b7a027f9a57aa9489a388849"
+        }
+      ],
+      "log_sha256": "71549b59b47a7af1f149e65f385d0f8f40b3cc47238f527cabec9c4112361195",
+      "name": "monitor-22-native-red",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "9c7d47961bb36a3e69a1c74f9997a38b0e0151e2237b70b476d0001813a7f0b5",
+      "retained_record": "runs/monitor-22-native-red.json",
+      "source_archive_sha256": "ab5bad4d94a469a601806c51dada0af5ff19d33fd04b1b56ff1ad3a91407ba09",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:01:30.126321+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:10:12.675276+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 80430,
+          "path": ".scratch/sqlite-controller/05/monitor-23-native-green.log",
+          "sha256": "67e20b4b6d4bdbc089773c31b3ebb1db1eacc0c8bbc6012b6be4ebdd953d0f3e"
+        },
+        {
+          "bytes": 190702,
+          "path": ".scratch/sqlite-controller/05/monitor-23-native-green-source.tar.gz",
+          "sha256": "aa2f944e010eff18667170b8203a92fc4b6da1d2b5a5a673c15d6745f36bda06"
+        },
+        {
+          "bytes": 5584,
+          "path": ".scratch/sqlite-controller/05/monitor-23-native-green-start.json",
+          "sha256": "837cfad05536de4cd3f1aea1d5a15a5c83a489990dcd48c57d648d93be59327a"
+        }
+      ],
+      "log_sha256": "67e20b4b6d4bdbc089773c31b3ebb1db1eacc0c8bbc6012b6be4ebdd953d0f3e",
+      "name": "monitor-23-native-green",
+      "qualification": "All43 before/after maps identical including git.rs. Later inventory edits are outside this specific run.",
+      "record_sha256": "382559ee4a5a4761440566f251645dba1fe46a2688024afb161bf94e88e1c932",
+      "retained_record": "runs/monitor-23-native-green.json",
+      "source_archive_sha256": "aa2f944e010eff18667170b8203a92fc4b6da1d2b5a5a673c15d6745f36bda06",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:08:40.856754+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:18:46.047985+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1233,
+          "path": ".scratch/sqlite-controller/05/monitor-27-bounded-green.log",
+          "sha256": "1481c2403884b60062bb74ece006d6b2a11ec55bbfbcd275fbe4d9f7dcdb0a58"
+        },
+        {
+          "bytes": 194780,
+          "path": ".scratch/sqlite-controller/05/monitor-27-bounded-green-source.tar.gz",
+          "sha256": "cf2fc576248184e0da73ec721febedf002ae89d9fa3eb1d831f67dd0e9e8ea3c"
+        },
+        {
+          "bytes": 5509,
+          "path": ".scratch/sqlite-controller/05/monitor-27-bounded-green-start.json",
+          "sha256": "fb9331bf580ff2a621ac7531cd0c8e80ef9c344a8a520006518200d683c8320c"
+        }
+      ],
+      "log_sha256": "1481c2403884b60062bb74ece006d6b2a11ec55bbfbcd275fbe4d9f7dcdb0a58",
+      "name": "monitor-27-bounded-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "0b41fc4a91f1c33dd78693ab3111cc5c9fc2c5725ab4f36151a72667f30bc0f8",
+      "retained_record": "runs/monitor-27-bounded-green.json",
+      "source_archive_sha256": "cf2fc576248184e0da73ec721febedf002ae89d9fa3eb1d831f67dd0e9e8ea3c",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:18:43.862389+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:19:17.830590+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 2136,
+          "path": ".scratch/sqlite-controller/05/monitor-46-retained-input-red.log",
+          "sha256": "e4f64511a387b70aca08954a908648ef3371b4480c4b28ffdd38b49340bc9e28"
+        },
+        {
+          "bytes": 208436,
+          "path": ".scratch/sqlite-controller/05/monitor-46-retained-input-red-source.tar.gz",
+          "sha256": "e57bbdc39b3d9da2443841fe650cfc64fb970e4ea4a82c9c188e313a80cd378d"
+        },
+        {
+          "bytes": 5584,
+          "path": ".scratch/sqlite-controller/05/monitor-46-retained-input-red-start.json",
+          "sha256": "1d08a8eb24993364a2c78b2e72bcd295d8f90d69efae0f7e015389b12d081253"
+        }
+      ],
+      "log_sha256": "e4f64511a387b70aca08954a908648ef3371b4480c4b28ffdd38b49340bc9e28",
+      "name": "monitor-46-retained-input-red",
+      "qualification": "Public API RED: FIFO blocked until matching bytes written then succeeded; matching-byte symlink succeeded.",
+      "record_sha256": "290ec8752e733b3bfb7d6d348bef5b9ea3c26b3c7be67fa5d4b2cdf3ec657b5a",
+      "retained_record": "runs/monitor-46-retained-input-red.json",
+      "source_archive_sha256": "e57bbdc39b3d9da2443841fe650cfc64fb970e4ea4a82c9c188e313a80cd378d",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:19:15.451274+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:20:17.614174+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 657,
+          "path": ".scratch/sqlite-controller/05/monitor-47-retained-input-green.log",
+          "sha256": "5e065b96adb679f3b3bab109262107623fc7c18461116362b55b5e0ee4ac65c6"
+        },
+        {
+          "bytes": 208920,
+          "path": ".scratch/sqlite-controller/05/monitor-47-retained-input-green-source.tar.gz",
+          "sha256": "4eef929b9a859f86e80df76fdcd986aca5721369a41ba13b5781ae25e980098f"
+        },
+        {
+          "bytes": 5584,
+          "path": ".scratch/sqlite-controller/05/monitor-47-retained-input-green-start.json",
+          "sha256": "e7b76ae8907c792fb6546d0baed2490acbe65cb2d51fa59e4cf45e6be83710f8"
+        }
+      ],
+      "log_sha256": "5e065b96adb679f3b3bab109262107623fc7c18461116362b55b5e0ee4ac65c6",
+      "name": "monitor-47-retained-input-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "08f04ea2433f55c9786ce7ad69ba093463f150d6043ccf881e14c3f239151f1f",
+      "retained_record": "runs/monitor-47-retained-input-green.json",
+      "source_archive_sha256": "4eef929b9a859f86e80df76fdcd986aca5721369a41ba13b5781ae25e980098f",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:20:16.091779+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 27,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 36738,
+          "path": ".scratch/sqlite-controller/05/native-05-red.log",
+          "sha256": "c89d59e2c02959f62ee6eda258a61c8a86201756849a82bcb0f5f5dd1763b6b6"
+        }
+      ],
+      "log_sha256": "c89d59e2c02959f62ee6eda258a61c8a86201756849a82bcb0f5f5dd1763b6b6",
+      "name": "native-05-red",
+      "qualification": "Fixture syntax/setup failure, no intended native criterion credit.",
+      "record_sha256": "953cfb6748d26759175edb19c9fae2022a0324ac97af9c676e7e184476d77fb0",
+      "retained_record": "runs/native-05-red.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 27,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 35472,
+          "path": ".scratch/sqlite-controller/05/native-06-red.log",
+          "sha256": "740cdb64541efc9aca70bb2d5004dd1f8e6c3e7b4d36fdb72147d2a9f382013a"
+        }
+      ],
+      "log_sha256": "740cdb64541efc9aca70bb2d5004dd1f8e6c3e7b4d36fdb72147d2a9f382013a",
+      "name": "native-06-red",
+      "qualification": "Original actual 18s missing-delivery behavioral RED, distinct from provider ambiguity08. No full pre-adapter source archive survives for a matched final-driver pair.",
+      "record_sha256": "eeefa81b9ab8033682d22b6d6dfb0fb0e38fa0cb9b307ac3cffb8a7900b96dc1",
+      "retained_record": "runs/native-06-red.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 28,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 36814,
+          "path": ".scratch/sqlite-controller/05/native-08-green.log",
+          "sha256": "fb8580835331c30c436598ea5f7de84229f399096ac4ded66f386f7d15fd1b25"
+        }
+      ],
+      "log_sha256": "fb8580835331c30c436598ea5f7de84229f399096ac4ded66f386f7d15fd1b25",
+      "name": "native-08-green",
+      "qualification": "Actual FAIL despite green filename: submitted runtime transport/no tool call; scripted TASK_A provider routing ambiguity.",
+      "record_sha256": "c77642b8f00f144b912e567668905f75ea6bcb42771768d9a5eaf2ff9f7a0c16",
+      "retained_record": "runs/native-08-green.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 28,
+      "completed_at": null,
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 37565,
+          "path": ".scratch/sqlite-controller/05/native-09-green.log",
+          "sha256": "ff2b14bdb8c23fdc00f626837c77e96b1c5d44a5186f0e83fe538c271aa6d6b2"
+        }
+      ],
+      "log_sha256": "ff2b14bdb8c23fdc00f626837c77e96b1c5d44a5186f0e83fe538c271aa6d6b2",
+      "name": "native-09-green",
+      "qualification": "Corrected model-free provider classifies actual lead question before TASK_A provenance. Actual pinned native/companion success, not live model reasoning.",
+      "record_sha256": "176751b1fb9d32b3cd0b2a48437e3f9c4fb041be59c109b293180f62425f3a63",
+      "retained_record": "runs/native-09-green.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:15:23.530581+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 52231,
+          "path": ".scratch/sqlite-controller/05/native-44-ui-drain-red.log",
+          "sha256": "cb4fe63117bb5e0d3af0250b36bfd86f064427b87540622962160b1262712cb0"
+        },
+        {
+          "bytes": 206917,
+          "path": ".scratch/sqlite-controller/05/native-44-ui-drain-red-source.tar.gz",
+          "sha256": "1a759c0c6f20a256d6fda6eb80f30c60f261f57c7ab4f1a0a28f40697ca6db92"
+        },
+        {
+          "bytes": 5610,
+          "path": ".scratch/sqlite-controller/05/native-44-ui-drain-red-start.json",
+          "sha256": "6e51c1d4c1642fd579e2cd3beb543cd5f328186da54e9f366f3484f24c9c82c0"
+        }
+      ],
+      "log_sha256": "cb4fe63117bb5e0d3af0250b36bfd86f064427b87540622962160b1262712cb0",
+      "name": "native-44-ui-drain-red",
+      "qualification": "Actual barrier shows UI completes while background holds old binding read. Immediate final snapshot matches new UI turn; this alone does not establish overwrite.",
+      "record_sha256": "2772655f39221d7f7ab8526bdd7f8cbfd15a049fff29306d9c7c1114a2e5c6e1",
+      "retained_record": "runs/native-44-ui-drain-red.json",
+      "source_archive_sha256": "1a759c0c6f20a256d6fda6eb80f30c60f261f57c7ab4f1a0a28f40697ca6db92",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:14:43.289429+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:17:43.773622+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 111150,
+          "path": ".scratch/sqlite-controller/05/native-45-ui-drain-green.log",
+          "sha256": "09deae19ea189854a5e2254bacd42c3b81939d001d62c123317ad5f1d2d41fdf"
+        },
+        {
+          "bytes": 207020,
+          "path": ".scratch/sqlite-controller/05/native-45-ui-drain-green-source.tar.gz",
+          "sha256": "a3f727d7d53693171ea85c0990e250a9edf8cce5acce8311b939c52323531d56"
+        },
+        {
+          "bytes": 5610,
+          "path": ".scratch/sqlite-controller/05/native-45-ui-drain-green-start.json",
+          "sha256": "af0cacdccf7afcf8c3747b204aab14cc50a625b2e376b298573d92ba8f50f375"
+        }
+      ],
+      "log_sha256": "09deae19ea189854a5e2254bacd42c3b81939d001d62c123317ad5f1d2d41fdf",
+      "name": "native-45-ui-drain-green",
+      "qualification": "Both topology actual lifecycle serialization barrier/original replacement and cleanup regressions pass.",
+      "record_sha256": "2fd9d8e3480e243df2119d5cc32618772e861b13dd91de1fa7fcce9ff85c41f9",
+      "retained_record": "runs/native-45-ui-drain-green.json",
+      "source_archive_sha256": "a3f727d7d53693171ea85c0990e250a9edf8cce5acce8311b939c52323531d56",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:16:06.548357+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:30:50.950078+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 85347,
+          "path": ".scratch/sqlite-controller/05/native-51-peer-interleaving.log",
+          "sha256": "3fb88d6a11eabeb228abe835225743833e62ee60b83ee76df932917b3ac7abda"
+        },
+        {
+          "bytes": 211935,
+          "path": ".scratch/sqlite-controller/05/native-51-peer-interleaving-source.tar.gz",
+          "sha256": "1b9c994375e5b94527b9bdbe06cb5b7f9e51a7132cc748e4e0d6bd59f21dc40f"
+        },
+        {
+          "bytes": 5614,
+          "path": ".scratch/sqlite-controller/05/native-51-peer-interleaving-start.json",
+          "sha256": "7d3722115a82d0819a741b2f4ec2f61c394d45e04f630875e5c9608e3df48319"
+        }
+      ],
+      "log_sha256": "3fb88d6a11eabeb228abe835225743833e62ee60b83ee76df932917b3ac7abda",
+      "name": "native-51-peer-interleaving",
+      "qualification": "Actual shared peer queued/owner reply and separate server isolation pass. Later one-shot marker consumption and decoded response assertions qualified56, outside51.",
+      "record_sha256": "20aa4fa7b952d866fed578470f8ce211f045d02c3ca3c64612b01f67b8b47c38",
+      "retained_record": "runs/native-51-peer-interleaving.json",
+      "source_archive_sha256": "1b9c994375e5b94527b9bdbe06cb5b7f9e51a7132cc748e4e0d6bd59f21dc40f",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:29:20.232941+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:40:22.218077+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 145436,
+          "path": ".scratch/sqlite-controller/05/native-56-combined-final.log",
+          "sha256": "f49c8cba1200f8018e6be54ef12a4e361ec06a05b4c88adfa46a6e6963690b96"
+        },
+        {
+          "bytes": 213324,
+          "path": ".scratch/sqlite-controller/05/native-56-combined-final-source.tar.gz",
+          "sha256": "a2310006872e47216c813582eb239d4e825c497ecf36d059650f24555b3c65c2"
+        },
+        {
+          "bytes": 5757,
+          "path": ".scratch/sqlite-controller/05/native-56-combined-final-start.json",
+          "sha256": "2c5899e168adbff25243c7cde801a47fe925d545abd7a0cda923defc809ec016"
+        }
+      ],
+      "log_sha256": "f49c8cba1200f8018e6be54ef12a4e361ec06a05b4c88adfa46a6e6963690b96",
+      "name": "native-56-combined-final",
+      "qualification": "Final exact SOURCE actual combined UI/drain/peer/early-ACK/lost-reply/correction check PASS BOTH topologies108.02s. Model-free deterministic local provider, not acceptance/live reasoning.",
+      "record_sha256": "09800aab0a4cb9971b51baef87dee9d0269fcf7efb4c9a70a51352b9a68cf569",
+      "retained_record": "runs/native-56-combined-final.json",
+      "source_archive_sha256": "a2310006872e47216c813582eb239d4e825c497ecf36d059650f24555b3c65c2",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:38:32.905907+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 21,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1098,
+          "path": ".scratch/sqlite-controller/05/observer-10-red.log",
+          "sha256": "500474e9f17247167973c569a4f698539b25d7f0527dfa98780c0feed0bccfd9"
+        }
+      ],
+      "log_sha256": "500474e9f17247167973c569a4f698539b25d7f0527dfa98780c0feed0bccfd9",
+      "name": "observer-10-red",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "c6d3db3ce51476f678a823882a211c0813b5811d635694d7828b8a9fc5f6e226",
+      "retained_record": "runs/observer-10-red.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:15:13.354170+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 40548,
+          "path": ".scratch/sqlite-controller/05/races-24-early-red.log",
+          "sha256": "af1c924fdf575a913c5e6996aee3c7e45a26e5a0d1da40818c832205b2495383"
+        },
+        {
+          "bytes": 193207,
+          "path": ".scratch/sqlite-controller/05/races-24-early-red-source.tar.gz",
+          "sha256": "e73eab2d882673780da6bc6c3c5b6bbe3a6561882faeb2ff45a6828ab158bc23"
+        },
+        {
+          "bytes": 5577,
+          "path": ".scratch/sqlite-controller/05/races-24-early-red-start.json",
+          "sha256": "5410ee3cc11e3594af6cedbd74c88c79920c6cd27cded6c28a118c6feda3dc70"
+        }
+      ],
+      "log_sha256": "af1c924fdf575a913c5e6996aee3c7e45a26e5a0d1da40818c832205b2495383",
+      "name": "races-24-early-red",
+      "qualification": "Actual early acknowledgement deadline failure, preserved.",
+      "record_sha256": "8d3cd1f3705251208702d1723433bd7c2781c5c499276b43cbe7592de53a1296",
+      "retained_record": "runs/races-24-early-red.json",
+      "source_archive_sha256": "e73eab2d882673780da6bc6c3c5b6bbe3a6561882faeb2ff45a6828ab158bc23",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:14:30.842272+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:19:03.961966+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 39385,
+          "path": ".scratch/sqlite-controller/05/races-26-early-correction-green.log",
+          "sha256": "60960f6f252552e936768f600e80714dfcf7c2ae0a6821d975a4a8b21d283366"
+        },
+        {
+          "bytes": 194787,
+          "path": ".scratch/sqlite-controller/05/races-26-early-correction-green-source.tar.gz",
+          "sha256": "a08023098d350449eff5fcc8e1fe44f7cdaaba6f37ea51a223763c7a9e471f2d"
+        },
+        {
+          "bytes": 5577,
+          "path": ".scratch/sqlite-controller/05/races-26-early-correction-green-start.json",
+          "sha256": "3d2335b8f7479d81c5dd7e126353600142ac9e5ed5a6f33e8d713d25f3694c26"
+        }
+      ],
+      "log_sha256": "60960f6f252552e936768f600e80714dfcf7c2ae0a6821d975a4a8b21d283366",
+      "name": "races-26-early-correction-green",
+      "qualification": "Actual FAIL. Concurrent27 feature build could replace shared author target binary: execution/source credit disqualified even though source maps match.",
+      "record_sha256": "4893366ec8dcb3f8fe492d9e9a98595459c66e94c0b96a2cc63876f38e6a2d01",
+      "retained_record": "runs/races-26-early-correction-green.json",
+      "source_archive_sha256": "a08023098d350449eff5fcc8e1fe44f7cdaaba6f37ea51a223763c7a9e471f2d",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:18:22.175299+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:21:39.045498+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 40227,
+          "path": ".scratch/sqlite-controller/05/races-28-pinned-early.log",
+          "sha256": "c71b740325946c1acd154e90ee7154792e31546904c90cd8d83332dfd6604523"
+        },
+        {
+          "bytes": 194830,
+          "path": ".scratch/sqlite-controller/05/races-28-pinned-early-source.tar.gz",
+          "sha256": "810d880bedba271bf2a5d35372a90b9436924e0890b408740b1ea42722eac84f"
+        },
+        {
+          "bytes": 5577,
+          "path": ".scratch/sqlite-controller/05/races-28-pinned-early-start.json",
+          "sha256": "4ef81680a4f61e62629ee10fb5ddaafc8304d15e8ba9d236543fc7146690652c"
+        }
+      ],
+      "log_sha256": "c71b740325946c1acd154e90ee7154792e31546904c90cd8d83332dfd6604523",
+      "name": "races-28-pinned-early",
+      "qualification": "Actual early deadline RED with per-process executable pin. monitor.rs changed between run maps; after-source bytes receive no execution credit from this run.",
+      "record_sha256": "3977fe3755e38fc7d7a7a069e733976d0bdf24be5df605e9080dbda13f0f3191",
+      "retained_record": "runs/races-28-pinned-early.json",
+      "source_archive_sha256": "810d880bedba271bf2a5d35372a90b9436924e0890b408740b1ea42722eac84f",
+      "source_unchanged": false,
+      "started_at": "2026-10-04T20:20:54.877165+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:22:57.325951+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 41606,
+          "path": ".scratch/sqlite-controller/05/races-29-responsive-green.log",
+          "sha256": "f3c7972392cc95ef6930f4291878dad0eeb4f293154cbce29d5a0f1671e6354f"
+        },
+        {
+          "bytes": 195067,
+          "path": ".scratch/sqlite-controller/05/races-29-responsive-green-source.tar.gz",
+          "sha256": "c00bdbf155a3697977d8e0cbedab7d67d2b1e6e628f0581c6cdb6ee8e9fff1e8"
+        },
+        {
+          "bytes": 5577,
+          "path": ".scratch/sqlite-controller/05/races-29-responsive-green-start.json",
+          "sha256": "5d787813dba94604bd9c99dde2146e51127758b06a48d58743299d60f1a8dd8e"
+        }
+      ],
+      "log_sha256": "f3c7972392cc95ef6930f4291878dad0eeb4f293154cbce29d5a0f1671e6354f",
+      "name": "races-29-responsive-green",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "8402eb89391d7f480e4a2c147a82604d5e10a58575f3382b6781733fa2fbdd8d",
+      "retained_record": "runs/races-29-responsive-green.json",
+      "source_archive_sha256": "c00bdbf155a3697977d8e0cbedab7d67d2b1e6e628f0581c6cdb6ee8e9fff1e8",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:22:07.864172+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:27:35.357562+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 40744,
+          "path": ".scratch/sqlite-controller/05/races-30-active-and-tool-reply.log",
+          "sha256": "5fd8c54968fe4b7215f8cdb4ed38bc0b273cc7cbb21bb32563bb33068ed3b716"
+        },
+        {
+          "bytes": 196624,
+          "path": ".scratch/sqlite-controller/05/races-30-active-and-tool-reply-source.tar.gz",
+          "sha256": "4c57bbfa6e7c91da853383cf0f6e52e2d983b0cc5ede635898ee214689adfda4"
+        },
+        {
+          "bytes": 5577,
+          "path": ".scratch/sqlite-controller/05/races-30-active-and-tool-reply-start.json",
+          "sha256": "5ebee4f039d820030d7e1bf3d78c7041077ace2fa763d2a216a56bd041d6a590"
+        }
+      ],
+      "log_sha256": "5fd8c54968fe4b7215f8cdb4ed38bc0b273cc7cbb21bb32563bb33068ed3b716",
+      "name": "races-30-active-and-tool-reply",
+      "qualification": "Actual FAIL: provider incorrectly selected undelivered global question by old marker. Corrected31 requires exact delivered question text/id; oracles unchanged.",
+      "record_sha256": "994b5135ed709a2c56cbc1d499c59ac190380a751a32dd40ca7a65297fe6568c",
+      "retained_record": "runs/races-30-active-and-tool-reply.json",
+      "source_archive_sha256": "4c57bbfa6e7c91da853383cf0f6e52e2d983b0cc5ede635898ee214689adfda4",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:26:44.421829+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T20:29:38.256410+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 45675,
+          "path": ".scratch/sqlite-controller/05/races-31-delivered-routing.log",
+          "sha256": "b878706d249e4b55bb6c9768e778d38f2f84c619efc354f84e79782f3b872b9f"
+        },
+        {
+          "bytes": 196635,
+          "path": ".scratch/sqlite-controller/05/races-31-delivered-routing-source.tar.gz",
+          "sha256": "84e2326c0167536957ed7b077925333e6d616c448f46b65f9542a1b203dc0f76"
+        },
+        {
+          "bytes": 5577,
+          "path": ".scratch/sqlite-controller/05/races-31-delivered-routing-start.json",
+          "sha256": "24050966b3029d28471b5a28569cf928efd12982f24622c40c8833e3eff99c93"
+        }
+      ],
+      "log_sha256": "b878706d249e4b55bb6c9768e778d38f2f84c619efc354f84e79782f3b872b9f",
+      "name": "races-31-delivered-routing",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "a796d62dceb9f58215fa4930df403c6cde7c1148adc2bc72e751ffd5b2269059",
+      "retained_record": "runs/races-31-delivered-routing.json",
+      "source_archive_sha256": "84e2326c0167536957ed7b077925333e6d616c448f46b65f9542a1b203dc0f76",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T20:28:46.443418+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 0,
+      "completed_at": null,
+      "exit": 101,
+      "log_sha256": null,
+      "name": "red-control-center-pins",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "808d03b9ded0cb004b479176366755ff9f123796372dc7d19e6418eb498c7036",
+      "retained_record": "runs/red-control-center-pins.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 0,
+      "completed_at": null,
+      "exit": 101,
+      "log_sha256": null,
+      "name": "red-control-center-retrospective",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "75588ec11fed71db4ed96e16360333318fe03ed7b6ba13de75671caa8a35676a",
+      "retained_record": "runs/red-control-center-retrospective.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:09:31.115212+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1014,
+          "path": ".scratch/sqlite-controller/05/routing-40-peer-red.log",
+          "sha256": "0940087a76ea0aff11ec1606abe30a013fa1dfd757016e41af9378a8abab3783"
+        },
+        {
+          "bytes": 205238,
+          "path": ".scratch/sqlite-controller/05/routing-40-peer-red-source.tar.gz",
+          "sha256": "b54ecb7154f2b3daacf2dd235bb4e6359375944a86e8edae324b5831a5d826c0"
+        },
+        {
+          "bytes": 5598,
+          "path": ".scratch/sqlite-controller/05/routing-40-peer-red-start.json",
+          "sha256": "81c2637d221b9e792b9c037884d2b455ad75288c7457f3d280875cd2f791c9f6"
+        }
+      ],
+      "log_sha256": "0940087a76ea0aff11ec1606abe30a013fa1dfd757016e41af9378a8abab3783",
+      "name": "routing-40-peer-red",
+      "qualification": "Wire fixture prematurely closed peer: broken pipe setup failure, no intended criterion credit.",
+      "record_sha256": "afbc4483c1287e0aa44b389923e6ee3fca753de52f773e585d0a30df94f52f8d",
+      "retained_record": "runs/routing-40-peer-red.json",
+      "source_archive_sha256": "b54ecb7154f2b3daacf2dd235bb4e6359375944a86e8edae324b5831a5d826c0",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:09:29.970153+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:10:27.556300+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1008,
+          "path": ".scratch/sqlite-controller/05/routing-41-owned-peer-red.log",
+          "sha256": "18ff3174f8dac84e329993e1bb3c171c11fd7807c1e0382aa70c31db76c8522a"
+        },
+        {
+          "bytes": 205280,
+          "path": ".scratch/sqlite-controller/05/routing-41-owned-peer-red-source.tar.gz",
+          "sha256": "82a5ca122df77270e216c075695b0ab678d86b298a27a0cc184d95dbf212e479"
+        },
+        {
+          "bytes": 5598,
+          "path": ".scratch/sqlite-controller/05/routing-41-owned-peer-red-start.json",
+          "sha256": "12535ddc6312361e29ec80b460066eb457ac31171f88df9d69cd6340244b1d6d"
+        }
+      ],
+      "log_sha256": "18ff3174f8dac84e329993e1bb3c171c11fd7807c1e0382aa70c31db76c8522a",
+      "name": "routing-41-owned-peer-red",
+      "qualification": "Corrected owned wire fixture meaningful RED: current RPC handler invoked on peer call.",
+      "record_sha256": "4ad5eee0fe4d246662aa8ed66fc0509bf73ef0f0375607385908144c6ea72c9c",
+      "retained_record": "runs/routing-41-owned-peer-red.json",
+      "source_archive_sha256": "82a5ca122df77270e216c075695b0ab678d86b298a27a0cc184d95dbf212e479",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:10:26.389220+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:34:52.880397+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 2967,
+          "path": ".scratch/sqlite-controller/05/source-53-focused-review.log",
+          "sha256": "520b851a93d8d82722c182ca8fe4117f358ace87c116f2eeac17fa396b1b65fd"
+        },
+        {
+          "bytes": 213381,
+          "path": ".scratch/sqlite-controller/05/source-53-focused-review-source.tar.gz",
+          "sha256": "44d6dc8ea1a5c19b4aded39f6a06059029be711c64881bf671729f9f851696ad"
+        },
+        {
+          "bytes": 5620,
+          "path": ".scratch/sqlite-controller/05/source-53-focused-review-start.json",
+          "sha256": "e1297da7dc8d35832b6239dac6c3200afc9d4c162319805a3dd97c5c9f66cfa4"
+        }
+      ],
+      "log_sha256": "520b851a93d8d82722c182ca8fe4117f358ace87c116f2eeac17fa396b1b65fd",
+      "name": "source-53-focused-review",
+      "qualification": "14 units,7 public control tests,2 actual client-process tests pass; subsequent module placement only cleanup qualified strict55 and final56.",
+      "record_sha256": "e1c58bb01ec1aeae646ec6085fe0d608218e90fb3e68f4fce61cd38ffb4b24d1",
+      "retained_record": "runs/source-53-focused-review.json",
+      "source_archive_sha256": "44d6dc8ea1a5c19b4aded39f6a06059029be711c64881bf671729f9f851696ad",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:34:49.974274+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:37:13.257295+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1446,
+          "path": ".scratch/sqlite-controller/05/source-54-strict-clippy.log",
+          "sha256": "15731c76fd55e59493d47023c9cceaf6e72ca9b202bcf275ed86cb97b7d4fc33"
+        },
+        {
+          "bytes": 213441,
+          "path": ".scratch/sqlite-controller/05/source-54-strict-clippy-source.tar.gz",
+          "sha256": "96f51b87223c033f529876e2948e057b7564176b2c23078dedc54c60b810355b"
+        },
+        {
+          "bytes": 5549,
+          "path": ".scratch/sqlite-controller/05/source-54-strict-clippy-start.json",
+          "sha256": "8b94b5fde056c92631ad0c4a610a33d4a98e36231217e0ae712f014f58240112"
+        }
+      ],
+      "log_sha256": "15731c76fd55e59493d47023c9cceaf6e72ca9b202bcf275ed86cb97b7d4fc33",
+      "name": "source-54-strict-clippy",
+      "qualification": "Actual clippy FAIL items_after_test_module; test modules moved to file ends without behavior change.",
+      "record_sha256": "91186b59bf7c381e4396ec8fe74285b37041d4e89b7f6add4e9d407f6658422c",
+      "retained_record": "runs/source-54-strict-clippy.json",
+      "source_archive_sha256": "96f51b87223c033f529876e2948e057b7564176b2c23078dedc54c60b810355b",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:37:09.717206+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T21:38:02.832262+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 214,
+          "path": ".scratch/sqlite-controller/05/source-55-strict-clippy.log",
+          "sha256": "da63900ea031c7bd94825bc47a98f44a3786e463dfa6957d4663737e130f9f92"
+        },
+        {
+          "bytes": 213323,
+          "path": ".scratch/sqlite-controller/05/source-55-strict-clippy-source.tar.gz",
+          "sha256": "aa6732e19f51915de17a446d735b7f5e0b97948b5554f0c37c2fa000c27f3a5b"
+        },
+        {
+          "bytes": 5549,
+          "path": ".scratch/sqlite-controller/05/source-55-strict-clippy-start.json",
+          "sha256": "5e207fb8881cc008b7bf3a9ac6befd9d85b103c2f1fcf9bfb3f483590f92ba4e"
+        }
+      ],
+      "log_sha256": "da63900ea031c7bd94825bc47a98f44a3786e463dfa6957d4663737e130f9f92",
+      "name": "source-55-strict-clippy",
+      "qualification": "All-target fault-injection strict clippy PASS; exact source maps equal final56.",
+      "record_sha256": "c7ddb22a4589325fed4159ad4f0014e5cce960d89f950ee7e9f90d15db01977d",
+      "retained_record": "runs/source-55-strict-clippy.json",
+      "source_archive_sha256": "aa6732e19f51915de17a446d735b7f5e0b97948b5554f0c37c2fa000c27f3a5b",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T21:37:59.211946+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:49:43.233966+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 42326,
+          "path": ".scratch/sqlite-controller/05/tui-17-shared.log",
+          "sha256": "3dfbb45d8bde693a5d36a3b8d9308e3c3c77a1c370d1434d1bf11a02974dae21"
+        },
+        {
+          "bytes": 187393,
+          "path": ".scratch/sqlite-controller/05/tui-17-shared-source.tar.gz",
+          "sha256": "78fc66d35e82e19b6a44c5ee9deb266565c2b2206586b7f35141ebcfa378b0a8"
+        },
+        {
+          "bytes": 5574,
+          "path": ".scratch/sqlite-controller/05/tui-17-shared-start.json",
+          "sha256": "dc5e1992d1c581301a730fdf21ade474b8487cf03a5d9a66f405788953e411f5"
+        }
+      ],
+      "log_sha256": "3dfbb45d8bde693a5d36a3b8d9308e3c3c77a1c370d1434d1bf11a02974dae21",
+      "name": "tui-17-shared",
+      "qualification": "Actual TUI trusted resume compatibility RED.",
+      "record_sha256": "01fa6573ed7ea8fd45fdc4414cb99f87769dfb92f1c3ce3354a0a4fb7aae9e2a",
+      "retained_record": "runs/tui-17-shared.json",
+      "source_archive_sha256": "78fc66d35e82e19b6a44c5ee9deb266565c2b2206586b7f35141ebcfa378b0a8",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:49:01.170015+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:52:14.916232+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 44839,
+          "path": ".scratch/sqlite-controller/05/tui-19-shared.log",
+          "sha256": "dc8394db65cb35208f2193fb0eb27e0cffd44a5ecb98ecafd090aba2fa76e7ec"
+        },
+        {
+          "bytes": 187544,
+          "path": ".scratch/sqlite-controller/05/tui-19-shared-source.tar.gz",
+          "sha256": "b0a53ff3520329b6bf9787a79ef99c65208f4a6088dd0d4ef9752aa2f025d185"
+        },
+        {
+          "bytes": 5574,
+          "path": ".scratch/sqlite-controller/05/tui-19-shared-start.json",
+          "sha256": "c1084805e44cd29b48c940b666ee69061ab95ba7fa8c4611fa490dba6072c4fb"
+        }
+      ],
+      "log_sha256": "dc8394db65cb35208f2193fb0eb27e0cffd44a5ecb98ecafd090aba2fa76e7ec",
+      "name": "tui-19-shared",
+      "qualification": "Actual TUI legitimate pagination compatibility RED.",
+      "record_sha256": "a805090cb11f1cd4ba848c8ebc426061ab6a033510de26b7b90e2c4251833434",
+      "retained_record": "runs/tui-19-shared.json",
+      "source_archive_sha256": "b0a53ff3520329b6bf9787a79ef99c65208f4a6088dd0d4ef9752aa2f025d185",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:51:32.984040+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:56:50.700314+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 47494,
+          "path": ".scratch/sqlite-controller/05/tui-21-shared.log",
+          "sha256": "2acf308196d3c680eabe005821e42d0923bdfaa7f8b56b2640df5f3b05e13b79"
+        },
+        {
+          "bytes": 187977,
+          "path": ".scratch/sqlite-controller/05/tui-21-shared-source.tar.gz",
+          "sha256": "b5e9e1acc2f58cd2763aeb855eedf6c346ddf2cde21e9e7ef682987dbeb81f1a"
+        },
+        {
+          "bytes": 5574,
+          "path": ".scratch/sqlite-controller/05/tui-21-shared-start.json",
+          "sha256": "f6af4a86307d3b5b41b4788b0d7de46ba4e36554ea1e64f9a5ae1f590018d3a8"
+        }
+      ],
+      "log_sha256": "2acf308196d3c680eabe005821e42d0923bdfaa7f8b56b2640df5f3b05e13b79",
+      "name": "tui-21-shared",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "6d2b3c65cb4caf4c9a7307237be82d5a7fbd6eaacdcb568d62744f50fe27980e",
+      "retained_record": "runs/tui-21-shared.json",
+      "source_archive_sha256": "b5e9e1acc2f58cd2763aeb855eedf6c346ddf2cde21e9e7ef682987dbeb81f1a",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:56:00.780054+00:00"
+    },
+    {
+      "after_input_count": 0,
+      "before_input_count": 28,
+      "completed_at": null,
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 38812,
+          "path": ".scratch/sqlite-controller/05/ui-12-red.log",
+          "sha256": "e0481610ac1e5708c74e55aa8d3fc60cd05e9cef96df83bfea3c9318f0497f01"
+        }
+      ],
+      "log_sha256": "e0481610ac1e5708c74e55aa8d3fc60cd05e9cef96df83bfea3c9318f0497f01",
+      "name": "ui-12-red",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "97ebac0fb6ff3c6f9f44f8e6bc27226611b0c601201054a242fa0e9bce0cd7a5",
+      "retained_record": "runs/ui-12-red.json",
+      "source_archive_sha256": null,
+      "source_unchanged": null,
+      "started_at": null
+    },
+    {
+      "after_input_count": 42,
+      "before_input_count": 42,
+      "completed_at": "2026-10-04T19:41:30.051979+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1151,
+          "path": ".scratch/sqlite-controller/05/ui-13-build.log",
+          "sha256": "4fba26de5d791151e4c6eeb4f5029d38c4294c6c9929cdad625b59ea7689d029"
+        },
+        {
+          "bytes": 182522,
+          "path": ".scratch/sqlite-controller/05/ui-13-build-source.tar.gz",
+          "sha256": "99598bba6757152aa9459a8aa355345e52fa851acc49dbb65a1f51b55c1d5ff5"
+        },
+        {
+          "bytes": 5403,
+          "path": ".scratch/sqlite-controller/05/ui-13-build-start.json",
+          "sha256": "f9d88b18c42b0d9d3e220dd4d31e5aa9e3fc9248387fa1aecd6fa6081ad3e12c"
+        }
+      ],
+      "log_sha256": "4fba26de5d791151e4c6eeb4f5029d38c4294c6c9929cdad625b59ea7689d029",
+      "name": "ui-13-build",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "069b979462094ef7aac383136b2b3da26d21b29d738dd39a41b0668e2207216c",
+      "retained_record": "runs/ui-13-build.json",
+      "source_archive_sha256": "99598bba6757152aa9459a8aa355345e52fa851acc49dbb65a1f51b55c1d5ff5",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:41:26.974427+00:00"
+    },
+    {
+      "after_input_count": 42,
+      "before_input_count": 42,
+      "completed_at": "2026-10-04T19:42:29.193468+00:00",
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 36732,
+          "path": ".scratch/sqlite-controller/05/ui-14-shared.log",
+          "sha256": "404c132739cfad15b312dc550e91035e3853d579a299a4945207a0ea872bd588"
+        },
+        {
+          "bytes": 182523,
+          "path": ".scratch/sqlite-controller/05/ui-14-shared-source.tar.gz",
+          "sha256": "9bab31c7bc5880031448c88e38d9eed7cab46873537e4b876b7d91d2cda85650"
+        },
+        {
+          "bytes": 5467,
+          "path": ".scratch/sqlite-controller/05/ui-14-shared-start.json",
+          "sha256": "d32706c6c31c23978d132c31928d11783d202ffdc72defd3333cbb22bca6052c"
+        }
+      ],
+      "log_sha256": "404c132739cfad15b312dc550e91035e3853d579a299a4945207a0ea872bd588",
+      "name": "ui-14-shared",
+      "qualification": "Overbroad UI-ready guard blocked inherited reconciliation; narrowed to attachment seam.",
+      "record_sha256": "e286408c973f68b66a0266c80d3fb02a41b01fabad7be35f1ea31cb91cbbad70",
+      "retained_record": "runs/ui-14-shared.json",
+      "source_archive_sha256": "9bab31c7bc5880031448c88e38d9eed7cab46873537e4b876b7d91d2cda85650",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:41:57.867192+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:44:00.264145+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 274,
+          "path": ".scratch/sqlite-controller/05/ui-15-build.log",
+          "sha256": "949aac74ab78b44c6f4d0cc4a7f03c5ce5a249a862dbac21b35739bd57cbc1dd"
+        },
+        {
+          "bytes": 185024,
+          "path": ".scratch/sqlite-controller/05/ui-15-build-source.tar.gz",
+          "sha256": "4dd9ced60175f4847a1e5d97e127ad662dd5ff4892d7391a7deebb9728cb3a2f"
+        },
+        {
+          "bytes": 5458,
+          "path": ".scratch/sqlite-controller/05/ui-15-build-start.json",
+          "sha256": "21422f4cacd08fb207a254f3e00c68ad42e238db66e0d005ac027c82c13af307"
+        }
+      ],
+      "log_sha256": "949aac74ab78b44c6f4d0cc4a7f03c5ce5a249a862dbac21b35739bd57cbc1dd",
+      "name": "ui-15-build",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "12b6b1188b380627ee0662c538320dd71f46273a4be037b4f059593888e4bea3",
+      "retained_record": "runs/ui-15-build.json",
+      "source_archive_sha256": "4dd9ced60175f4847a1e5d97e127ad662dd5ff4892d7391a7deebb9728cb3a2f",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:43:55.036887+00:00"
+    },
+    {
+      "after_input_count": 43,
+      "before_input_count": 43,
+      "completed_at": "2026-10-04T19:45:08.484655+00:00",
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 37707,
+          "path": ".scratch/sqlite-controller/05/ui-16-shared.log",
+          "sha256": "32d24ae9df9380859cc445b89ac2461ed9bc1ec3d3b4c751c21d055f0eeec090"
+        },
+        {
+          "bytes": 184992,
+          "path": ".scratch/sqlite-controller/05/ui-16-shared-source.tar.gz",
+          "sha256": "742abbd0d6bf45c81eb9a8d9fe1843d2453cba1f92e4c8f076cd33757b963302"
+        },
+        {
+          "bytes": 5585,
+          "path": ".scratch/sqlite-controller/05/ui-16-shared-start.json",
+          "sha256": "1b121e55fe4f6e9c2cf35973133b32358e43726dfbfdb37747d696273f91bdaa"
+        }
+      ],
+      "log_sha256": "32d24ae9df9380859cc445b89ac2461ed9bc1ec3d3b4c751c21d055f0eeec090",
+      "name": "ui-16-shared",
+      "qualification": "Use actual exit and retained record; filename is not an outcome oracle.",
+      "record_sha256": "bd947a61144c5cf8c7e7ce08ad3af007db680b16d0187dd90128a9101feda340",
+      "retained_record": "runs/ui-16-shared.json",
+      "source_archive_sha256": "742abbd0d6bf45c81eb9a8d9fe1843d2453cba1f92e4c8f076cd33757b963302",
+      "source_unchanged": true,
+      "started_at": "2026-10-04T19:44:20.061264+00:00"
+    }
+  ],
+  "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b"
+}

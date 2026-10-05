@@ -1,0 +1,23 @@
+{
+  "command": [
+    "env",
+    "CARGO_TARGET_DIR=.scratch/sqlite-controller/c1c2-happy/target",
+    "cargo",
+    "build",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--locked",
+    "--offline",
+    "--bins",
+    "--features",
+    "fault-injection"
+  ],
+  "started_utc": "2026-10-05T03:23:55.795354+00:00",
+  "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "pid": 148403,
+  "start_ticks": "58621609",
+  "exit": 0,
+  "seconds": 1.6684433249756694,
+  "finished_utc": "2026-10-05T03:23:57.463810+00:00",
+  "log_sha256": "33e9071d8c2b462452708a0b642af2db7a35af7b96ec669dfa45922f2b7782d9"
+}

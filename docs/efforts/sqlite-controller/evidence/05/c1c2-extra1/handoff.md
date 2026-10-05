@@ -1,0 +1,21 @@
+# One authorized C1/C2 extra round: review boundary
+
+SOURCE `a70ddebc27b8971370af93f6be961fcf4f483990`, tree `b55b0537e7db60885cd0742e76280e49f5214826`, base EVID43d585c2 / SOURCE7b20. Author `/root/sqlite05_c1c2_happy_author`, thread `01a10a0d-f18a-7641-9ca5-1cb49cb81603`; sole writer checkout `corenius-sqlite05-c1c2-happy`, branch `sqlite05/c1c2-happy`. Implementation is frozen for root independent disposition. No acceptance, live demo, mainline integration or baseline qualification is claimed.
+
+C1 retains the withdrawn grant with `authorization-stale`, considers later currently authorized corrections, and issues a new authenticated decision linked to the old decision when the prior effect is absent or known failed. Prepared/applied/unknown effects remain unreplayed. The correction identity stays stable and old decisions/operations remain retained. C2 selects current reported progress through the retained principal's exact Attempt. Historical reports expose Attempt versus task scope in bounded `progress_reports`; current absence stays null until its own report. Old authority still refuses.
+
+Actual retained process exits: initial build0; C1 initial driver failure1/48.61s (peer reached explicit ACK, so inherited presented-only terminal assertion failed; not target RED); corrected C1 target RED1/48.81s; C2 target RED1/6.41s; tracked C2 RED1/6.18s; final build0; C1 GREEN0/75.11s in shared and separate actual native topologies; C2 GREEN0/6.42s with physical Git/SQLite/observed exit/readmission; affected library/client/control-center34 tests0/10.46s; full no-FI default suite64 tests0/97.03s, including6 default Codex tests; fmt/diff checks0. No full FI/native129 gate was rerun. Exact commands/exits/log hashes are separate JSON records; original logs are compressed under logs/. Command records name HEAD EVID43d585c2 because these runs preceded the source commit; the seven final tested source hashes match sealed SOURCE. See source-freeze.json for this distinction.
+
+The before-freeze nine-plus-five matrix is retained with exact prior source/index pins. Those controls are INHERITED, not newly run or new-source PASS. C1/C2 lifetime IDs and prior05/02/04 repair3 plus EMPTY2 are immutable. This is the ONE authorized extra round. Seven own raw archives remain at exact paths/hashes in archive-index.json. All tested wrappers/services and captured namespaces are terminal; active handles=[], unknown effects=[]. Reproducer-provenance.json explicitly records a missing per-run fixture hash rather than silently crediting its final hash to the earlier RED script.
+
+The current native launcher already bridges a fixed provider Unix socket into only the sterile app-server's loopback:8777. Executor confinement can stay unchanged. Root confirmed pinned Codex login status reports ChatGPT authentication without reading credential values. API-key absence is not a blocker. Remaining live link: a host-side, authenticated, fixed-origin/path, bounded Responses relay and its retained one-command disposable tmux runner; exact pinned backend/header and real entitlement/connectivity are untested. No auth.json copy or wider executor network is needed. Provider exploration was deferred until this safe source boundary at root's direction.
+
+Existing executable role attachment seams for the next runner are:
+
+```sh
+# Supply the fixed scoped participant and private UI credentials through environment.
+.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller --native-ui "$CORENIUS_API_SOCKET" "$CORENIUS_PROJECT" 127.0.0.1:19001
+/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex --remote ws://127.0.0.1:19001 --remote-auth-token-env CORENIUS_UI_TOKEN
+```
+
+These are supported existing attachment commands, not a claim that a complete trial runner exists. Root owns independent review/admission and author continuation or quiescent fresh-context transfer. No compaction control is exposed here; no ordinary /compact text or reduction is credited. Last root-provided metric was input111203/window258400 at03:21:18Z; newer child metrics are not exposed in this context. Source/evidence writes stop after the evidence commit.

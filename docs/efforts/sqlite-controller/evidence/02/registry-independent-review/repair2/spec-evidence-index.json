@@ -1,0 +1,140 @@
+{
+  "source": {
+    "base": "cbe7854b59898f9750d1478d2277584c7eca7b42",
+    "tip": "6f55bc67624b2399c3430fe2c5e003baeb4c22e0",
+    "crate_tree": "9aead302dc0826d69b91112e8e5dca228d9a90cb"
+  },
+  "archives": [
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-initial-source.json",
+      "manifest_sha256": "af77e7eb083b92893ebdc6ee3a20bf05646be11538918ddf1eff458199e905f2",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-initial-source.tar.gz",
+      "archive_sha256": "b8e557c3eda306930ec292bbb7b403d173023d0ee258cbfcf6386a736380c807",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-initial-corrected-source.json",
+      "manifest_sha256": "91919383a175eeabc79ee64db5cf50a7004d918e5da55b9f999ddb99eec7e136",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-initial-corrected-source.tar.gz",
+      "archive_sha256": "05c8b0a87c1f1be6030f2108787d6c4b2110fb95404daf6f401ef64113d08b6f",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-pagination-remote-setup-source.json",
+      "manifest_sha256": "0b30a37a4ce3f373a5fbff12018f25e556f36c9ad97081b4330703a277df1a91",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-pagination-remote-setup-source.tar.gz",
+      "archive_sha256": "04f6375d90603dc42c812ad6fd9256c8dfb9daf500262b7f3612255670612037",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-pagination-source.json",
+      "manifest_sha256": "239a73181ddad6290cd31f478366e9b84554018bdac97c2a66423c4c69127502",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-pagination-source.tar.gz",
+      "archive_sha256": "367c7f47788fd520e03bac747336c4f295adf353db7b8c121790f2c875548a62",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-retired-events-batched-source.json",
+      "manifest_sha256": "b4245f62ec0949cc711abb32d9d520205d0145b00196c7885188d4393350d9df",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-retired-events-batched-source.tar.gz",
+      "archive_sha256": "741112c99c2009ccc0183dca7c49852b547f596b8ad920bbf24c8e83d27a4cd0",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-retired-events-source.json",
+      "manifest_sha256": "3f17cbaf5f02e6c5c3c6286614991c8af18a3028b809b47e28f23358312ed55e",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-retired-events-source.tar.gz",
+      "archive_sha256": "d774090e8aeb76b430eb7a98446f55610a69057e3534da4f8587b727eb9cc3c7",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/covering-source.json",
+      "manifest_sha256": "1785e4857bb435ab8727e3b1a922d1ad5b49d87cb66872a72b415f3422876aa8",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/covering-source.tar.gz",
+      "archive_sha256": "7cb8ec49805085c39fd002353c1f7c8b37824915a24b73154f5f1001bf12eccf",
+      "entries": 25,
+      "archive_mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/gate-source.json",
+      "manifest_sha256": "aa14290ed730fd234f23d32f941772a725b982203574ba428e1d6f7dd8063d91",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/gate-source.tar.gz",
+      "archive_sha256": "362778b0184a29fd70dd8f0a023208f68817f7722c47221a72adbec428ae5e72",
+      "entries": 25,
+      "archive_mismatches": [],
+      "frozen_commit_mismatches": []
+    }
+  ],
+  "files": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-initial.log",
+      "sha256": "9177084b36cdfc4d6f904951e18a0f45444358ef14767c204e28e02c9cf3e6a2"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-initial-corrected.log",
+      "sha256": "1f4f2167674b8c25fca6f0dc1152e2911b09e0d8f82362c2f399a5f297bc4ce5"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-pagination-remote-setup.log",
+      "sha256": "e5b612f6b66b503d241e141888b2f91080043b57d00e0e4f13e2ffa4910cde82"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-pagination.log",
+      "sha256": "c933ff8b8c9234f092734031448de0cdf254201e7711afb9cded3faeb83c08f8"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/red-retired-events-batched.log",
+      "sha256": "16ce2f668f6467c0f1e53f566b5a4ec608ef3372fa9d0e92686195b73918ee9c"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-retired-events.log",
+      "sha256": "de1a995cef58b8934da24993f033deb89f209feaeb567169dcda57af5f677cd0"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/covering.log",
+      "sha256": "fa14e30f4cba0f8fa2afc3d206f43dea1bd1b74a4edc066cdbca3c44e7ad4949"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/covering-pagination-negatives.log",
+      "sha256": "f8b33c1ceaa751b919bfcc3eca90b3693dbb171b4b9fd4c9491e4794e983e409"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/chronology.json",
+      "sha256": "2c488a268ae326460f43e967b0de3f3c7b308389b543ff57e26977cb5c1d5a2a"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md",
+      "sha256": "566e9aff6c7d352806b356df998e6317d0c7603c2ec6be38acc3deebd78f5597"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/tickets/02-supervised-attempt-recovery.md",
+      "sha256": "58b252519f00e3427d1ad662ff70f88a60d0c8b91b09f28bdabb25cf26443481"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/docs/efforts/sqlite-controller/evidence/02/registry/repair2/handoff.md",
+      "sha256": "0b76b5faf24ab74a75c4ec35de96ad2adb48000a13f599aee8d666c62096bc66"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/02/registry/repair2/spec-brief.md",
+      "sha256": "eb398f0d1a738d4b96c496bd5003f0a761f88a94b7f4c05065407a71bdc932e1"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/02/registry/repair2/brief.md",
+      "sha256": "c490f7694bb385242c3b6de72cb9ccad34f7f039abda49c6f0b5a3263c45fab5"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/02/registry/repair2/review-package.txt",
+      "sha256": "36413d9290783d1a9c34bd1584ac4b5ceb7af081fe71687d506c3850a0bc3210"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/02/registry/repair2/branch-641.md",
+      "sha256": "ba3aad2fdab2fc73d41005975fa9b95291763764b426cc462ad28bc507f158ab"
+    }
+  ]
+}

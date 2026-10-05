@@ -1,0 +1,38 @@
+{
+  "axis": "Spec",
+  "verdict": "FAIL",
+  "candidate": "2dcc4ec34bf7bdd74a6759bcd2f743361083e01c",
+  "base": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "findings": [
+    {
+      "severity": "P1",
+      "path": "crates/sqlite-controller/src/codex.rs",
+      "line": 958,
+      "end_line": 965,
+      "title": "Recover confirmed turn receipts before trusting the retained binding",
+      "requirement_source": "docs/efforts/sqlite-controller/SPEC.md, Owner clarification; registry phase requirements.md",
+      "requirement": "Bind each lead role or attempt to server identity + thread ID + current turn ID when known, role/attempt authority epoch, execution handle and workspace identity.",
+      "phase_requirement": "Controller reconnect validates current native thread/turn and existing execution, without a second launch.",
+      "description": "A successful codex_turn receipt autocommits at958\u2013961 before binding.turn_id is persisted at1239. A controller crash between these writes leaves the operation confirmed and the binding pointing at the previous turn. Recovery excludes confirmed operations at773; confirmed_creation at1189 handles only initial turn/start with a null turn_id. The typed history read does not repair this:1227 selects the stale retained turn. The new current ID is rejected by the expected-turn guard at1314, and shutdown_turn refuses native interruption at419 because current native turn is not retained. Reconciliation itself has the same split-write window at823\u2013824.",
+      "reproduction": "Establish T1; submit codex_turn creating T2; terminate controller after the confirmed-operation UPDATE at959 and before save_binding at1239; restart with both supervisors/native services surviving; compare durable binding.turn_id to confirmed operation observation.turn.id and native history. This is a source-traced crash scenario, not a performed runtime reproduction.",
+      "recommendation": "Atomically persist the confirmed receipt and adopted binding, or reconcile confirmed receipts against identity-bound native history before projecting current turn or permitting dispatch. Add a public crash-boundary regression for codex_turn confirmation and reconciled acknowledgements."
+    },
+    {
+      "severity": "P1",
+      "path": "crates/sqlite-controller/src/supervisor.rs",
+      "line": 544,
+      "end_line": 548,
+      "title": "Keep native store receipts out of the execution-record loader",
+      "requirement_source": "docs/efforts/sqlite-controller/SPEC.md, Highest priority and permanent baseline",
+      "requirement": "Fixes may evolve it compatibly; retain supported recovery and explicit migration contracts.",
+      "description": "native_lookup persists native-store-<operation>.json in the supervisor root at544\u2013548 and563\u2013577. Supervisor::open325 selects every root .json and333\u2013335 deserializes it as deny_unknown_fields Execution, but this receipt contains only execution/generation/filesystem. Any later startup therefore aborts, including after all executions have exited, instead of providing retained execution records and supported unknown-state recovery.",
+      "reproduction": "Perform one successful native_lookup, then restart that supervisor with the same configuration/root. Startup parses native-store-<operation>.json as Execution and fails. Source-traced scenario; no runtime reproduction performed.",
+      "recommendation": "Give auxiliary store receipts a separate validated namespace or explicit record discriminator and add a native-profile supervisor restart regression preserving receipt and execution identities."
+    }
+  ],
+  "qualification_limits": [
+    "Read-only source and retained-evidence review; root owns fresh gate and acceptance.",
+    "Retained final gate demonstrates actual shared/separate shell/apply_patch, namespace isolation, reconnect, restart restoration and lost-ACK recovery, but its confirmation crash hook covers thread/start only.",
+    "Model-free native protocol evidence does not establish live inference. Linked05/06 delivery, scoped TUI and live trial remain downstream."
+  ]
+}

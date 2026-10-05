@@ -1,0 +1,11 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.65s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-3da6f15969cf6052)
+
+running 1 test
+test answers_reconnect_to_own_attempt_and_storage_busy_is_bounded ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.52s
+
+
+# Recorded command exit status: 0

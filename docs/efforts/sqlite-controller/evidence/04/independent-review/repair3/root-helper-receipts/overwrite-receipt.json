@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/inputs/artifact-observations.py",
+    "--output",
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/fresh.json"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/inputs/artifact-observations.py\", line 8, in <module>\n    if output.exists() or output.is_symlink():raise FileExistsError(output)\n                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileExistsError: /data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/fresh.json\n",
+  "process": {
+    "pid": 944836,
+    "start_ticks": "55590354",
+    "waited": true,
+    "exit": 1
+  },
+  "helper_sha256": "b35323cd6f189c11aa94d1b8d736a028192e3237d3f4ecbf8e314997505807ef"
+}

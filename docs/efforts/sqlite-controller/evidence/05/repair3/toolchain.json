@@ -1,0 +1,71 @@
+{
+  "captured_at": "2026-10-05T01:56:21.331584+00:00",
+  "tools": {
+    "rustc": {
+      "path": "/data02/home/philip.yang/.cargo/bin/rustc",
+      "resolved": "/data02/home/philip.yang/.cargo/bin/rustup",
+      "binary_sha256": "4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10",
+      "argv": [
+        "/data02/home/philip.yang/.cargo/bin/rustc",
+        "--version",
+        "--verbose"
+      ],
+      "exit": 0,
+      "stdout": "rustc 1.95.0 (59807616e 2026-04-14)\nbinary: rustc\ncommit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860\ncommit-date: 2026-04-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.95.0\nLLVM version: 22.1.2\n",
+      "stderr": ""
+    },
+    "cargo": {
+      "path": "/data02/home/philip.yang/.cargo/bin/cargo",
+      "resolved": "/data02/home/philip.yang/.cargo/bin/rustup",
+      "binary_sha256": "4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10",
+      "argv": [
+        "/data02/home/philip.yang/.cargo/bin/cargo",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)\n",
+      "stderr": ""
+    },
+    "git": {
+      "path": "/usr/bin/git",
+      "resolved": "/usr/bin/git",
+      "binary_sha256": "00c84136d8294294580daa32f25b3e83ddb8341e9b5b70722e4c9a973ba5f749",
+      "argv": [
+        "/usr/bin/git",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "git version 2.39.5\n",
+      "stderr": ""
+    },
+    "python3": {
+      "path": "/usr/bin/python3",
+      "resolved": "/usr/bin/python3.11",
+      "binary_sha256": "44e5a74ce34ac8837cfbaa6273a9a2cb7542d7d5495781cc4bf48e7de7abe8ed",
+      "argv": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "Python 3.11.2\n",
+      "stderr": ""
+    },
+    "bwrap": {
+      "path": "/usr/bin/bwrap",
+      "resolved": "/usr/bin/bwrap",
+      "binary_sha256": "85580dd52ed366ece8844e90fa75ac7c4de8802963071344e123221fb9f6f11e",
+      "argv": [
+        "/usr/bin/bwrap",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "bubblewrap 0.8.0\n",
+      "stderr": ""
+    }
+  },
+  "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+  "private_target": "/tmp/sqlite05-repair3-target",
+  "jobs": 2,
+  "top_level_test_timeout_seconds": 900,
+  "native_pins": "actual fixture logs pin Codex0.159.3 and code-mode companion; deterministic local Responses provider; no paid model"
+}

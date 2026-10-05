@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    ".scratch/sqlite-controller/c1c2-happy/fixtures/progress-probe.py"
+  ],
+  "started_utc": "2026-10-05T03:18:59.478194+00:00",
+  "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "pid": 115416,
+  "start_ticks": "58591977",
+  "exit": 1,
+  "seconds": 6.414533284958452,
+  "finished_utc": "2026-10-05T03:19:05.892726+00:00",
+  "log_sha256": "96d7477a7428ec2223cd4714352d41215c2698172970b1a5ecb5a84c2d3eadad"
+}

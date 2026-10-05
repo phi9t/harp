@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-04T18:24:17.749723+00:00",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "evidence_tip": "7d8daaebb6b63bc5aedde5111fa594750f4f134b",
+  "status": "UNACCEPTED",
+  "root_gate": {
+    "verdict": "PASS",
+    "tests": 82,
+    "native_tests": 29,
+    "seconds": 1116.1,
+    "default_fmt_clippy_build": "PASS",
+    "source_unchanged": true
+  },
+  "standards": "scoped source-conformance PASS",
+  "spec": "scoped PASS",
+  "branch646": "FAIL2",
+  "adjudication": {
+    "finding1": "confirmed F4 fresh-verification-afteraccept composition; authorizedrepair2of3",
+    "finding2": "cross-revision limitation; initial04 rejected/unaccepted; no promised migration; explicit exact-build qualification/failclosed required"
+  },
+  "retention": {
+    "captured_at": "2026-10-04T18:17:21.231272+00:00",
+    "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+    "evidence_tip": "7d8daaebb6b63bc5aedde5111fa594750f4f134b",
+    "phase": "repair1",
+    "retention_records_verified": 125,
+    "raw_logs_verified": 36,
+    "source_archives_verified": 73,
+    "archived_source_files_verified": 2482,
+    "retained_fixture_identities_checked": 982,
+    "recorded_terminal_receipts_including_duplicates": 1244,
+    "matching_current_kernel_identities": [],
+    "unresolved_kernel_reads": [],
+    "scope": "Immutable requested04 phase evidence plus explicit root gate log, when supplied. Only explicit fixture process/namespace receipts scanned; exact PID/start checks, no signals or broad process discovery. Historical unknown domain rows remain unknown. Retention/source-integrity audit only; not behavioral conformance or live Codex qualification.",
+    "runner_sha256": "eac79f692d3736b79987f14120fa748d84e3eb6f2c0e93a78be20e36b801f263",
+    "verdict": "PASS"
+  },
+  "caps": {
+    "ticket02": "original registry3of3 preserved, linkedcleanup04",
+    "ticket04": "repair2of3 authorized samephase"
+  },
+  "monitoring": "owner832e769 adopted05/06; manual root receipts live1471..1796, history122..1262unreviewed; no unattendedclaim",
+  "source_landing": "none",
+  "live_codex": "pending06"
+}

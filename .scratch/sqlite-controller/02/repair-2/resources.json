@@ -1,0 +1,872 @@
+{
+  "observed_utc": "2026-10-04T06:36:48.422988+00:00",
+  "primitive": "read-only /proc start identity and process pidfd readiness; no signals",
+  "surviving_owned_executions": [],
+  "kernel_observations": [
+    {
+      "role": "monitor",
+      "pid": 1459570,
+      "start_ticks": "51118169",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1459586,
+      "start_ticks": "51118170",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1459572,
+      "start_ticks": "51118169",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1459589,
+      "start_ticks": "51118170",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1459680,
+      "start_ticks": "51118188",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1459681,
+      "start_ticks": "51118188",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1459689,
+      "start_ticks": "51118188",
+      "source": "red.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1517060,
+      "start_ticks": "51124963",
+      "source": "green.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1517065,
+      "start_ticks": "51124964",
+      "source": "green.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1517061,
+      "start_ticks": "51124964",
+      "source": "green.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1517066,
+      "start_ticks": "51124964",
+      "source": "green.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1517134,
+      "start_ticks": "51124982",
+      "source": "green.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1517135,
+      "start_ticks": "51124982",
+      "source": "green.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587714,
+      "start_ticks": "51131436",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587747,
+      "start_ticks": "51131438",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587686,
+      "start_ticks": "51131434",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587699,
+      "start_ticks": "51131435",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587671,
+      "start_ticks": "51131432",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587685,
+      "start_ticks": "51131433",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587688,
+      "start_ticks": "51131434",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587703,
+      "start_ticks": "51131435",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587709,
+      "start_ticks": "51131436",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587749,
+      "start_ticks": "51131439",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587740,
+      "start_ticks": "51131438",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587750,
+      "start_ticks": "51131439",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587687,
+      "start_ticks": "51131434",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587701,
+      "start_ticks": "51131435",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587710,
+      "start_ticks": "51131436",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587715,
+      "start_ticks": "51131436",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587748,
+      "start_ticks": "51131439",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587888,
+      "start_ticks": "51131455",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587898,
+      "start_ticks": "51131457",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587864,
+      "start_ticks": "51131453",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587878,
+      "start_ticks": "51131454",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "monitor",
+      "pid": 1587707,
+      "start_ticks": "51131435",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    },
+    {
+      "role": "namespace_init",
+      "pid": 1587739,
+      "start_ticks": "51131437",
+      "source": "gate.log",
+      "same_identity": false,
+      "observation": "kernel proc entry absent"
+    }
+  ],
+  "execution_records": [
+    {
+      "source": "red.log",
+      "execution": {
+        "binding": {
+          "attempt": "550c6cc9-8ea3-4786-b320-16dc7acefcfa",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "9afac652-1648-4387-bd6b-1d8c62eab261",
+          "operation": "50ca70c8-983c-4721-abee-e7f36f1dd6c2",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "953e98fb-830b-4067-8c4f-ed3000a33176",
+        "incarnation": "172b9a82-4479-4396-8d08-5a9a4488c7fa",
+        "init_start_ticks": "51118170",
+        "namespace_init": 1459586,
+        "outcome": null,
+        "pid": 1459570,
+        "pid_namespace": 4026539692,
+        "start_ticks": "51118169",
+        "state": "running"
+      }
+    },
+    {
+      "source": "red.log",
+      "execution": {
+        "binding": {
+          "attempt": "5e8c3e39-1951-4a65-a3c9-4de536ef6c26",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "cfcb848d-5c1a-4d41-acb5-6f2bf9744377",
+          "operation": "5cd72c68-31e1-4051-b0a8-c5cbb197f99f",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "12bbb442-706b-4367-8ef9-0dd8d523d624",
+        "incarnation": "e5ae0e94-72dc-42bc-8758-1fff20fb8af2",
+        "init_start_ticks": "51118170",
+        "namespace_init": 1459589,
+        "outcome": null,
+        "pid": 1459572,
+        "pid_namespace": 4026539728,
+        "start_ticks": "51118169",
+        "state": "running"
+      }
+    },
+    {
+      "source": "red.log",
+      "execution": {
+        "binding": {
+          "attempt": "bbfa7092-0a0a-4d2f-8497-a54c53f29435",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "683006b4-eb13-413f-bf86-fc39666f8e0d",
+          "operation": "afba5b28-ebff-4a33-8cfa-1ff03b610434",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "739866c6-866c-4b78-82b5-5e3391be5f34",
+        "incarnation": "9713e689-b7a5-4865-ac0a-1d2e34fb3e37",
+        "init_start_ticks": "51118170",
+        "namespace_init": 1459586,
+        "outcome": null,
+        "pid": 1459680,
+        "pid_namespace": 4026539692,
+        "start_ticks": "51118188",
+        "state": "running"
+      }
+    },
+    {
+      "source": "red.log",
+      "execution": {
+        "binding": {
+          "attempt": "bbfa7092-0a0a-4d2f-8497-a54c53f29435",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "683006b4-eb13-413f-bf86-fc39666f8e0d",
+          "operation": "afba5b28-ebff-4a33-8cfa-1ff03b610434",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "739866c6-866c-4b78-82b5-5e3391be5f34",
+        "incarnation": "9713e689-b7a5-4865-ac0a-1d2e34fb3e37",
+        "init_start_ticks": "51118170",
+        "namespace_init": 1459586,
+        "outcome": null,
+        "pid": 1459680,
+        "pid_namespace": 4026539692,
+        "start_ticks": "51118188",
+        "state": "running"
+      }
+    },
+    {
+      "source": "red.log",
+      "execution": {
+        "binding": {
+          "attempt": "58c33a53-c547-47ce-b0a5-44f4cb93f66b",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "85dca406-1f80-4765-b92a-972d80d35077",
+          "operation": "8f5a2c0d-473f-4bc7-8a4c-9509fb94cf1d",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "50507fa9-fe90-4c49-899a-b1dd8bfe4b4e",
+        "incarnation": "96f0dda0-d105-4a53-a152-d1efb260c4db",
+        "init_start_ticks": "51118188",
+        "namespace_init": 1459689,
+        "outcome": null,
+        "pid": 1459681,
+        "pid_namespace": 4026539919,
+        "start_ticks": "51118188",
+        "state": "running"
+      }
+    },
+    {
+      "source": "red.log",
+      "execution": {
+        "binding": {
+          "attempt": "58c33a53-c547-47ce-b0a5-44f4cb93f66b",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "85dca406-1f80-4765-b92a-972d80d35077",
+          "operation": "8f5a2c0d-473f-4bc7-8a4c-9509fb94cf1d",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "50507fa9-fe90-4c49-899a-b1dd8bfe4b4e",
+        "incarnation": "96f0dda0-d105-4a53-a152-d1efb260c4db",
+        "init_start_ticks": "51118188",
+        "namespace_init": 1459689,
+        "outcome": null,
+        "pid": 1459681,
+        "pid_namespace": 4026539919,
+        "start_ticks": "51118188",
+        "state": "running"
+      }
+    },
+    {
+      "source": "green.log",
+      "execution": {
+        "binding": {
+          "attempt": "73987d7c-0de0-46a4-9bc9-9f93f8927b97",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "0703754b-79cd-4890-9633-b9602a43e4e8",
+          "operation": "3cb17061-641a-415d-b34e-d06bf78fcabb",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "43d0821a-bed4-457f-b67d-ca4b233b985a",
+        "incarnation": "2d958496-353b-4c82-a1d6-7a2fbb1bdab2",
+        "init_start_ticks": "51124964",
+        "namespace_init": 1517065,
+        "outcome": null,
+        "pid": 1517060,
+        "pid_namespace": 4026539692,
+        "start_ticks": "51124963",
+        "state": "running"
+      }
+    },
+    {
+      "source": "green.log",
+      "execution": {
+        "binding": {
+          "attempt": "d8f19185-7abf-4cf6-b2b4-5e6bccaa8ab5",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "ac19f4d8-db1b-46fb-94f2-1823ab04f31e",
+          "operation": "ccbebc3d-c38c-417a-a03b-56e39e4caa53",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "673479dc-ff07-4a2c-8945-8cbfa07e9245",
+        "incarnation": "51d71207-1783-405d-a57f-20d4869e80fe",
+        "init_start_ticks": "51124964",
+        "namespace_init": 1517066,
+        "outcome": null,
+        "pid": 1517061,
+        "pid_namespace": 4026539733,
+        "start_ticks": "51124964",
+        "state": "running"
+      }
+    },
+    {
+      "source": "green.log",
+      "execution": {
+        "binding": {
+          "attempt": "74a6e91c-e6b6-4654-95c7-635072b98456",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "f18eea02-e5b0-4353-b13c-a4a3678d1fc6",
+          "operation": "1dccb6c2-168f-4c87-9def-742f25339a43",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "bc2970b4-ee4d-488c-a16f-4633a260339a",
+        "incarnation": "922c4895-782c-430a-947f-dde3686577ab",
+        "init_start_ticks": null,
+        "namespace_init": null,
+        "outcome": "monitor exited without retained whole-process identity",
+        "pid": 1517134,
+        "pid_namespace": null,
+        "start_ticks": "51124982",
+        "state": "unknown"
+      }
+    },
+    {
+      "source": "green.log",
+      "execution": {
+        "binding": {
+          "attempt": "003adffa-babf-4d3e-ba4b-0fffab870c3b",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "2d3ae750-7a6c-4450-9772-fc86ab6267c9",
+          "operation": "f9de2f64-f339-47dd-ab4f-5da5a87fa114",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "76542a55-33dd-4421-bc44-3dd3fa13cfff",
+        "incarnation": "2bc16db3-4f27-4517-a4a0-c30cdd9f0531",
+        "init_start_ticks": null,
+        "namespace_init": null,
+        "outcome": "monitor exited without retained whole-process identity",
+        "pid": 1517135,
+        "pid_namespace": null,
+        "start_ticks": "51124982",
+        "state": "unknown"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "484c18fb-2112-4b4f-8840-e9e5a526a5fc",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "a0fa4fdc-d4f0-4ec6-8507-736c9d6a4b23",
+          "operation": "fbc3ea59-c9d2-4519-b8f8-9870a42c6ce9",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "b1bdef4e-4748-4311-bedd-04c6e407fc3d",
+        "incarnation": "f103d37c-f7aa-4315-8e67-c5308739f931",
+        "init_start_ticks": "51131438",
+        "namespace_init": 1587747,
+        "outcome": null,
+        "pid": 1587714,
+        "pid_namespace": 4026540171,
+        "start_ticks": "51131436",
+        "state": "running"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "0e90abce-a704-4d3f-a673-52fcc0f8fd6d",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "bd412ac7-01cb-454e-b12c-f889cd7ec511",
+          "operation": "4fa25a1f-2e20-49a9-ac2d-49eb1209eb49",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "430b0317-7cc8-44fe-9ae3-eafc4bfe6b65",
+        "incarnation": "a8fe86ec-2ffd-4743-9ddf-a508fa2fdcf7",
+        "init_start_ticks": null,
+        "namespace_init": null,
+        "outcome": "cancel tombstone: effect never started",
+        "pid": null,
+        "pid_namespace": null,
+        "start_ticks": null,
+        "state": "exited"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "14b9d96d-6a18-455d-9521-1cdfd710cd19",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "0da52256-88a1-4df9-b485-cb53b22ed685",
+          "operation": "026901b1-9baa-4664-83f2-8d00a7c29216",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "50ec9788-6977-46d8-9e3f-d00617b67f5f",
+        "incarnation": "b33d566b-764c-48dc-945d-3fcfea343102",
+        "init_start_ticks": "51131435",
+        "namespace_init": 1587699,
+        "outcome": null,
+        "pid": 1587686,
+        "pid_namespace": 4026539790,
+        "start_ticks": "51131434",
+        "state": "running"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "c7d91c79-ea29-4a74-ba3f-eaee73cbcafa",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "903bd0d0-2f84-4e97-8c26-7b3dee532552",
+          "operation": "4f170549-53a0-4cd8-b4d9-75f5674ed34f",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "5559e824-148f-42b2-b9c5-ea08e22b983f",
+        "incarnation": "5dc81d56-a4ab-4551-96b5-7e6cad888578",
+        "init_start_ticks": "51131433",
+        "namespace_init": 1587685,
+        "outcome": null,
+        "pid": 1587671,
+        "pid_namespace": 4026539690,
+        "start_ticks": "51131432",
+        "state": "running"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "12f5e057-00a7-486e-9ebd-bd7ba6fc79ff",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "cb776abb-14e6-46b4-a08b-b89994a4f574",
+          "operation": "e6992add-d9a7-4fab-883b-db745328f9c0",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "1772c5b1-d667-4c53-90d3-b78d29c8a216",
+        "incarnation": "0c7c5b3d-9a9f-4278-b87e-36b6d8a02cc1",
+        "init_start_ticks": "51131435",
+        "namespace_init": 1587703,
+        "outcome": null,
+        "pid": 1587688,
+        "pid_namespace": 4026539912,
+        "start_ticks": "51131434",
+        "state": "running"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "2c27b783-36f3-40ee-b8e4-81a37ee8fe62",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "cc1d2bf0-21b6-46c4-a165-809af3df2ff6",
+          "operation": "688cf388-26c3-4771-a197-e37fc93e79ff",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "3101699f-eafb-42e5-9de9-35cde6b89b2b",
+        "incarnation": "9a862a69-d52a-4c0b-b19f-ed90a45ecd0a",
+        "init_start_ticks": "51131439",
+        "namespace_init": 1587749,
+        "outcome": "owned namespace process pidfd confirmed termination: exit status: 0",
+        "pid": 1587709,
+        "pid_namespace": 4026540333,
+        "start_ticks": "51131436",
+        "state": "exited"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "f890a67a-e2e6-4aae-b059-e3b78f06fb2a",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "199f40e6-c152-49d1-ae11-a8c1ecec7665",
+          "operation": "d98d9492-d585-4084-977f-908e32ade65e",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "4be67668-a054-446d-b9bd-2d2d1fe298e6",
+        "incarnation": "24fe10c0-7e7a-4f3d-aebe-50cae5f2c5af",
+        "init_start_ticks": "51131439",
+        "namespace_init": 1587750,
+        "outcome": null,
+        "pid": 1587740,
+        "pid_namespace": 4026540456,
+        "start_ticks": "51131438",
+        "state": "running"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "fd02ccbd-d91d-4e85-8b7b-090fab8e2b32",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "82012d6a-72ef-4830-abfa-0c4b502b1fa4",
+          "operation": "877fe3a9-290e-42b5-80b1-da242c32268a",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "97efdc7a-aef5-4090-9703-e37088e18e48",
+        "incarnation": "2969412c-e02a-4bec-bb2b-76512f9ab658",
+        "init_start_ticks": "51131435",
+        "namespace_init": 1587701,
+        "outcome": "supervisor ownership lost; PID reconstruction refused",
+        "pid": 1587687,
+        "pid_namespace": 4026539836,
+        "start_ticks": "51131434",
+        "state": "unknown"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "484c18fb-2112-4b4f-8840-e9e5a526a5fc",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "a0fa4fdc-d4f0-4ec6-8507-736c9d6a4b23",
+          "operation": "fbc3ea59-c9d2-4519-b8f8-9870a42c6ce9",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "b1bdef4e-4748-4311-bedd-04c6e407fc3d",
+        "incarnation": "f103d37c-f7aa-4315-8e67-c5308739f931",
+        "init_start_ticks": "51131438",
+        "namespace_init": 1587747,
+        "outcome": "owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)",
+        "pid": 1587714,
+        "pid_namespace": 4026540171,
+        "start_ticks": "51131436",
+        "state": "exited"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "953c271b-2776-469a-a3fa-639975caf3e9",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "c0130d83-a85e-4355-8ea5-0f76b8515d7e",
+          "operation": "209605ef-94cc-41e2-a62c-a7ab5ecc4e38",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "d2aaf168-281a-44d3-acc6-12e26a07a7be",
+        "incarnation": "51250230-cce5-46e0-a5f5-e600ca619246",
+        "init_start_ticks": null,
+        "namespace_init": null,
+        "outcome": "monitor exited without retained whole-process identity",
+        "pid": 1587710,
+        "pid_namespace": null,
+        "start_ticks": "51131436",
+        "state": "unknown"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "7c6b9fee-0b42-4b1c-9499-28b13110f3b9",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "42323038-8b41-4d19-8aaa-462552bf7bd0",
+          "operation": "7861deaf-1fa8-49cf-accc-4d40524d058c",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "a35b52bc-b04c-4174-8e30-d5f82cbfb55c",
+        "incarnation": "485b8068-990f-4d63-a834-c456fd8a673e",
+        "init_start_ticks": "51131439",
+        "namespace_init": 1587748,
+        "outcome": "owned namespace process pidfd confirmed termination: exit status: 0",
+        "pid": 1587715,
+        "pid_namespace": 4026540252,
+        "start_ticks": "51131436",
+        "state": "exited"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "fb774428-acbc-4cc1-a58f-6fdf67ab2065",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "f7219712-43aa-424c-9b19-c3e3e18c6a78",
+          "operation": "55043101-e4ff-4722-928e-0f1e48f40ab5",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "fe7b101c-ddf2-4958-b4d6-143b43d43653",
+        "incarnation": "e19a1e0e-7787-4257-9d3a-d7e98a97f318",
+        "init_start_ticks": null,
+        "namespace_init": null,
+        "outcome": "monitor exited without retained whole-process identity",
+        "pid": 1587888,
+        "pid_namespace": null,
+        "start_ticks": "51131455",
+        "state": "unknown"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "f193b1da-af83-4af2-b8cc-eba9485264ce",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "df7a38ef-8cdc-4b5c-8e23-bb2f036f2375",
+          "operation": "46f42dcb-2bd0-4e3c-93df-0cf208f4ae31",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "a14468d9-fc6c-4d16-ae15-d951da60b2cf",
+        "incarnation": "407a7105-1b8a-45ad-a6f3-0cfae2f6f976",
+        "init_start_ticks": null,
+        "namespace_init": null,
+        "outcome": "monitor exited without retained whole-process identity",
+        "pid": 1587898,
+        "pid_namespace": null,
+        "start_ticks": "51131457",
+        "state": "unknown"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "project": "p",
+          "attempt": "dabb2dfb-6cf3-414e-af0e-129d247b0a09",
+          "operation": "920beab7-b596-48fc-85bf-d9613967bbd2",
+          "scope_epoch": 1,
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "2659835f-d93b-4bf5-af92-39ab0f79046d"
+        },
+        "handle": "4f59a19f-a8b8-4780-a424-2c3124a1f428",
+        "incarnation": "b89a9474-f129-4132-bc98-f19e07141e2d",
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "pid": 1587864,
+        "start_ticks": "51131453",
+        "namespace_init": 1587878,
+        "init_start_ticks": "51131454",
+        "pid_namespace": 4026539693,
+        "state": "exited",
+        "outcome": "owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)"
+      }
+    },
+    {
+      "source": "gate.log",
+      "execution": {
+        "binding": {
+          "attempt": "0897a2f4-9019-40e4-9ff6-1cfb7612ac2e",
+          "base": "0123456789abcdef0123456789abcdef01234567",
+          "brief": "972be8e3-6c90-4e63-9a2d-b713654c8c94",
+          "operation": "e6785f05-044e-4113-969e-881e54409046",
+          "project": "p",
+          "scope_epoch": 1
+        },
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "handle": "27afd17d-ad26-465e-b22e-306d895370c9",
+        "incarnation": "e858d41e-e129-4d09-b776-dddfe750bc26",
+        "init_start_ticks": "51131437",
+        "namespace_init": 1587739,
+        "outcome": "owned namespace process pidfd confirmed termination: exit status: 0",
+        "pid": 1587707,
+        "pid_namespace": 4026540045,
+        "start_ticks": "51131435",
+        "state": "exited"
+      }
+    }
+  ]
+}

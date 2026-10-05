@@ -1,0 +1,13 @@
+{
+  "drift": {
+    "crates/sqlite-controller/tests/kata.rs": {
+      "before": "05fe7a43b0b42797d63bc5154bd5bf745d364825d1bbd1ea51c65a1c01c62500",
+      "after": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    "crates/sqlite-controller/tests/support/kata_protocol.py": {
+      "before": "06e10df931bd62840c12619085b7db2e62a86478837c56144a069967ed8ea7d1",
+      "after": "daddf76fdcb286aea0463a17a17a2a326cfcffec131575b8aa8dff8c22c7e0d7"
+    }
+  },
+  "disposition": "Only unused Kata test/driver edited while Git run in progress. All production source and the executed Git driver/Rust test stayed byte-identical to prelaunch archive. Limited Git RED proof; no full unchanged source-map claim. Subsequent launches freeze all inputs until terminal."
+}

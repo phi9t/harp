@@ -1,0 +1,5 @@
+Spec scoped PASS at clean HEAD15ae62ca8eaa39c3f5e96bed6aa8dfea23951fcf, reviewing only ed85fe9ed7df6390d53584cbe3d0917b32593471..15ae62c.
+Reviewer: /root/sqlite01_spec_repair3.
+branch634 ownership finding ADDRESSED. Ticket01 requires single controller owns mutations. Check rejects dangling database symlinks before lock selection or target creation. Existing aliases canonicalize to target lifetime lock; hardlink refusal intact.
+RED reproduces competing ownership through alias and target. GREEN leaves target absent, both names share exclusion after creation, alias excludes target, normal release permits reopen. Hardlinks refused through both names and reopen after extra link removal. Real daemon competitor PIDs refuse target/alias, then SIGKILL/restart via alias retains revision.
+All11 source hashes and both retained634 JSON/Markdown hashes independently recomputed and match. No new Important breakage/scope creep. Retained20 public+4 process tests/fmt/clippy PASS; no reviewer test/build/runtime. Root fresh gate separate. Storage fixture only;02 runtime recovery and powerloss unqualified.

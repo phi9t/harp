@@ -1,0 +1,157 @@
+{
+  "axis": "Spec",
+  "verdict": "FAIL",
+  "scope": "Separate ae4 addendum: three branch651 edges and narrow root regression correlation; original scoped PASS immutable",
+  "created_utc": "2026-10-04T23:11:43.032847+00:00",
+  "source": {
+    "owner": "/root/sqlite04_repair1_spec_review",
+    "source": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+    "source_tree": "9ec2a1d066dbe1a6a1872849458dcda6ac7006e3",
+    "evidence_tip": "655c86ee9a212878b1c921c34dee55dee5066c3c",
+    "evidence_tree": "dd9467b39c676342a76436955482fdca88b2c8e3",
+    "base": "92429710c422075332f9d5d4f7a5eaa9b583da2b"
+  },
+  "baseline": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+  "source_files_unchanged": 43,
+  "binary_provenance": "Copied own prior exact ae4 FI build; hashes verified in binary-pins and actual fixture executed_binary records. No product source changes.",
+  "findings": [
+    {
+      "id": "S05-A1",
+      "severity": "high",
+      "status": "CONFIRMED",
+      "branch651": "lost start acknowledgement native response",
+      "locations": [
+        "crates/sqlite-controller/src/native_ui.rs:402",
+        "crates/sqlite-controller/src/codex.rs:1353"
+      ],
+      "requirement": {
+        "path": "docs/efforts/sqlite-controller/SPEC.md:78",
+        "quote": "lost acknowledgement is reconciled before repeat",
+        "related": "SPEC58 every action returns a durable receipt; ticket05 native TUI usable/reconnect"
+      },
+      "behavior": "The UI returns the raw operation observation. History confirmation stores a flat turn_id observation, so exact native turn/start replay succeeds with no turn.id. The durable effect is confirmed but the client response contract is broken.",
+      "actual": "Actual shared and separate: first response unknown after FI lost ACK; same operation becomes confirmed from native history; same stable request returns flat turn_id. No duplicate operation (25->25 shared;19->19 separate).",
+      "required_correction": "Project both direct native and history-reconciled start observations into the pinned native turn/start response with the original non-null turn identity. Retain current authorization/binding and uncertainty fences; prove exact replay without effect duplication.",
+      "evidence": "native-addendum-result.json"
+    },
+    {
+      "id": "S05-A2",
+      "severity": "medium",
+      "status": "CONFIRMED",
+      "branch651": "exact retained steer replay after turn advances",
+      "locations": [
+        "crates/sqlite-controller/src/native_ui.rs:305",
+        "crates/sqlite-controller/src/native_ui.rs:308"
+      ],
+      "requirement": {
+        "path": "docs/efforts/sqlite-controller/SPEC.md:58",
+        "quote": "Every action returns a durable receipt and visible disposition.",
+        "related": "SPEC30 idempotency records/argument equality; SPEC78 expected turn identity for active-turn admission"
+      },
+      "behavior": "Current-turn admission validation runs before persisted command lookup. An exact saved steer for turn A cannot replay after current turn B begins, despite unchanged current authorization, binding and retained receipt.",
+      "actual": "Both real topologies: first steer A confirmed; saved parameters/request/non-null receipt read-only inspected; exact retry after B active returns native UI expected turn mismatch. Counts unchanged (28->28 shared;22->22 separate). New stale steer is also refused, and new valid B steer succeeds.",
+      "required_correction": "Replay the exact saved operation under current authentication/binding and parameter-equality checks before enforcing current-turn conditions for new admission. Preserve rejection of new stale or changed-argument commands.",
+      "evidence": "native-addendum-result.json"
+    },
+    {
+      "id": "S05-A3",
+      "severity": "high",
+      "status": "CONFIRMED",
+      "branch651": "unbounded control-center question projection",
+      "locations": [
+        "crates/sqlite-controller/src/control.rs:354",
+        "crates/sqlite-controller/src/client.rs:39"
+      ],
+      "requirement": {
+        "path": "docs/efforts/sqlite-controller/tickets/05-lead-control-center.md:12",
+        "quote": "Usable lead tools and dashboard share controller commands/projections.",
+        "related": "SPEC58 questions/uncertainty views; SPEC80 event cursors support reconnect"
+      },
+      "behavior": "The projection includes every question with full text/history. Valid durable questions grow beyond the public client response bound; dashboard initial event replay is oversized too.",
+      "actual": "Public API admitted70 questions of65536 UTF8 bytes each. control_center wire4605875 bytes; events wire4600749; clientlimit4194304. Before: dashboard/MCP healthy. After: dashboard exit1 bound/framing; MCP process exit0 but JSON-RPC error-32000 bound/framing.",
+      "required_correction": "Bound and paginate aggregate projection/event payloads below the client transport limit while preserving visible question coverage and task-authorized full-text retrieval. Prove usable dashboard/MCP and reconnect at this valid accumulated load; merely raising a fixed cap leaves unbounded growth.",
+      "evidence": "projection-result.json"
+    }
+  ],
+  "prior_scoped_pass": {
+    "directory": "/data02/home/philip.yang/devx/tmp/sqlite05-r1-final-spec-hhgi6jnq",
+    "sha256": {
+      "report.md": "d4ec167aa2975ad1b5045e3dc5dc89dd842bb3f32e87a8bfccbf9d3ac1d6a9d0",
+      "report.json": "64b993ffd29bb266c671cea56af66c436b4caaf6fdbe92e4674021cdc067df86",
+      "evidence-index.json": "00f2695612e5ddddff172b9e0487b272f9f67948935c65484a2668ec6f0a946f",
+      "evidence-index.md": "8c872b8d13590541a7c906914b34cbbab44eaf6bf5294ff321c158a2facfb02e"
+    },
+    "unchanged": true
+  },
+  "actual_runs": [
+    {
+      "name": "projection",
+      "driver": "projection-probe.py",
+      "exec_session": 74458,
+      "exit": 0,
+      "meaning": "measurement complete; contract FAIL"
+    },
+    {
+      "name": "native-addendum",
+      "driver": "native-addendum.py",
+      "exec_session": 76689,
+      "exit": 0,
+      "topologies": [
+        "shared",
+        "separate"
+      ],
+      "meaning": "measurement complete; both specified contracts FAIL in both topologies"
+    },
+    {
+      "name": "empty-restart",
+      "driver": "empty-restart-driver.py",
+      "exec_session": 73859,
+      "exit": 0,
+      "topologies": [
+        "shared"
+      ],
+      "meaning": "original contract PASS this diagnostic run only; root80070 failure unresolved"
+    }
+  ],
+  "empty_restart": {
+    "evidence": "empty-restart-result.json",
+    "source_derivation": "empty-restart-fixture.diff",
+    "original_assertions_and_2s_preserved": true,
+    "samples": 29,
+    "tuple": [
+      "unknown",
+      null,
+      false
+    ],
+    "counts": "one original thread/start; zero turn/start; occupied_slots2 throughout original loop",
+    "correlation": "Actual app incarnation replaced, same store; original empty binding remains unknown. root reported failure at same hold assertion is retained, not cleared by this independent run; no inferred cause or blanket flakiness claim."
+  },
+  "ownership_cleanup": {
+    "all_recorded_owned_identities_terminal": true,
+    "counts": {
+      "native-addendum": {
+        "resources": 8,
+        "namespaces": 12,
+        "product_terminated": 10,
+        "fixture_signalled": 2,
+        "whole_processes_terminal": true
+      },
+      "empty-restart": {
+        "resources": 4,
+        "namespaces": 3,
+        "product_terminated": 2,
+        "fixture_signalled": 1,
+        "whole_processes_terminal": true
+      }
+    },
+    "evidence": "cleanup.json",
+    "note": "Native app/exec namespace product termination and explicit fixture cleanup are separately counted. Native driver exits waited via owned exec sessions; only recorded PID/start identities claimed."
+  },
+  "qualification_limits": [
+    "No acceptance or integration; root gate80070 and retention/coordination remain root-owned.",
+    "Prior PASS covers six repairs/four original controls; these new edges do not rewrite that artifact.",
+    "Real native Codex0.159.3/Insula with deterministic provider is model-free, not live model acceptance.06 live recurring runner scope unchanged.",
+    "No paid calls, user sessions, subagents, root/author/verification edits, product source mutation, or allowance reset.02 registry3/3 and04 final3/3 unchanged.",
+    "Root EMPTY_RESTART failure is unresolved even though independent metadata-instrumented shared execution passed. Original assertions/deadline not weakened; no extra causal attribution."
+  ]
+}

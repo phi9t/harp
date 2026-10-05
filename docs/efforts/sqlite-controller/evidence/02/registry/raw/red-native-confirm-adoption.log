@@ -1,0 +1,53 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.80s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-5ccbdc162d59f0df)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 3268371, "start_stat": "3268371 (corenius-attemp) R 3268369 3267769 3267769 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 51995700 2068480 1 18446744073709551615 94572494373280 94572495534688 140728457839824 0 0 0 0 0 0 0 0 0 17 137 0 0 0 0 0 94572495604664 94572495607200 94572499668992 140728457842296 140728457842485 140728457842485 140728457842553 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-n7x529zz/workers.json", "/tmp/cnr-n7x529zz/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 3268631, "start_stat": "3268631 (corenius-attemp) R 3268369 3267769 3267769 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51996502 2068480 1 18446744073709551615 94183619084704 94183620246112 140731290055328 0 0 0 0 0 0 0 0 0 17 138 0 0 0 0 0 94183620316088 94183620318624 94183632715776 140731290062440 140731290062641 140731290062641 140731290062713 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-n7x529zz/controlplanes.json", "/tmp/cnr-n7x529zz/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 3269723, "start_stat": "3269723 (corenius-sqlite) R 3268369 3267769 3267769 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51997303 4562944 1 18446744073709551615 94534164315088 94534167472000 140723127221808 0 0 0 0 0 0 0 0 0 17 29 0 0 0 0 0 94534167594536 94534167619040 94534187220992 140723127225578 140723127225765 140723127225765 140723127226234 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-n7x529zz/state.db", "/tmp/cnr-n7x529zz/controller.sock"], "exit": 79}, {"name": "controller-confirm-restarted", "pid": 3270698, "start_stat": "3270698 (corenius-sqlite) R 3268369 3267769 3267769 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51997972 4562944 1 18446744073709551615 94298101185488 94298104342400 140728966452384 0 0 0 0 0 0 0 0 0 17 30 0 0 0 0 0 94298104464936 94298104489440 94298110107648 140728966454506 140728966454693 140728966454693 140728966455162 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-n7x529zz/state.db", "/tmp/cnr-n7x529zz/controller.sock"], "exit": -9}]
+owned_log controller.stderr native reconcile 46001209-2d89-453e-be30-4fc646c2475f: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile ad03ba5f-e978-402a-bdc4-d320683f883a: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 46001209-2d89-453e-be30-4fc646c2475f: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile ad03ba5f-e978-402a-bdc4-d320683f883a: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 46001209-2d89-453e-be30-4fc646c2475f: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile ad03ba5f-e978-402a-bdc4-d320683f883a: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 46001209-2d89-453e-be30-4fc646c2475f: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile ad03ba5f-e978-402a-bdc4-d320683f883a: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 46001209-2d89-453e-be30-4fc646c2475f: remote executor not ready: {"status":"pending"}
+native reconcile ad03ba5f-e978-402a-bdc4-d320683f883a: remote executor not ready: {"status":"pending"}
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51997414", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51997361", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51997361", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+
+thread 'durable_native_confirmation_survives_crash_before_binding_adoption' (3268368) panicked at tests/codex.rs:140:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 255, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 114, in run
+    assert len(starts)==1 and starts[0]['observation']['thread']['id']==binding['document']['thread_id'],'confirmed native creation must be adopted without replay after daemon crash'
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: confirmed native creation must be adopted without replay after daemon crash
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test durable_native_confirmation_survives_crash_before_binding_adoption ... FAILED
+
+failures:
+
+failures:
+    durable_native_confirmation_survives_crash_before_binding_adoption
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 28.98s
+
+error: test failed, to rerun pass `--test codex`

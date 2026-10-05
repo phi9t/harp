@@ -1,0 +1,22 @@
+{
+  "status": "author helper controls PASS; root independent helper/branch PASS reported; scoped reviews/committed retention pending",
+  "repair_round": "ticket04 final3/3, ticket02 cap3/3 unchanged",
+  "helper_commit": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+  "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "product34_unchanged": true,
+  "historical_unchanged_files": 578,
+  "retained_records": 11,
+  "raw_logs": 3,
+  "source_archives": 9,
+  "source_members": 330,
+  "fixture_input_members": 92,
+  "records_matching_historical_content": 59,
+  "explicit_owned_process_identities": 6,
+  "matching_live": 0,
+  "unknown_process_reads": 0,
+  "matched_driver_and_inputs": true,
+  "all_artifact_source_fixture_hashes_verified": true,
+  "independent_root_checkpoint": "Root reported own relocated89-archive old/new helper RED1/GREEN0,59 identical-content/provenance records, FileExistsError overwrite refusal, unchanged inputs/output/product34; exact helper branch649 PASS. Scoped Standards/Spec and committed retention pending.",
+  "no_product_rust_gate_repeat": true,
+  "acceptance_withheld": true
+}

@@ -1,0 +1,467 @@
+{
+  "axis": "Standards",
+  "verdict": "FAIL",
+  "reviewer": "/root/sqlite05_standards_review",
+  "created_at": "2026-10-04T21:58:15.181222+00:00",
+  "source": {
+    "commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+    "tree": "917018ee0d6fe5cd35847ea569cf37894454e229",
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+    "committed_archive_sha256": "6369e5c84f2a9ceaf62976018320e4e48de90bf92b09d90a85074e3c03ab43a0",
+    "review_brief_sha256": "1666f80d818fa82dfce3b80ed90997f2acbf768c9d9271bae06880b9a63c834f",
+    "pinned_files": 43,
+    "source_pins": {
+      "crates/sqlite-controller/Cargo.toml": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114",
+      "crates/sqlite-controller/Cargo.lock": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a",
+      "crates/sqlite-controller/README.md": "97787228c80ada27fe86db58f6db334eac390923fed1f828127355669eecc6c4",
+      "crates/sqlite-controller/support/codex_insula.py": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+      "crates/sqlite-controller/src/gateway.rs": "5416a5b78809c730a2650b2c79d7c59e5985ee4bf6a8737f3ef13843b388899b",
+      "crates/sqlite-controller/src/monitor.rs": "8be40b7b5ffc2b90403c67032d762abb9f8a444eda2fd5b72c5876fcce93e48f",
+      "crates/sqlite-controller/src/codex_schema.sql": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e",
+      "crates/sqlite-controller/src/runtime.rs": "6ef2364b8c00edab0550298b23f63ab79ecef341aa3c71e6df36e65b8d0fccf7",
+      "crates/sqlite-controller/src/native_ui.rs": "77d3c0e81440a9ab3558c6862d62c4632b294fb14ca38513c6952c362d3dc2e7",
+      "crates/sqlite-controller/src/lib.rs": "441e0a83f20c59a67c3a812db16375da01b5a2dbcf01e721183080c986bbf73e",
+      "crates/sqlite-controller/src/native_profile.rs": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9",
+      "crates/sqlite-controller/src/query.rs": "d94252c3e3e34f16e85e15bd6f0d525e3cd7c2fd2c4416f2b44ec7087c3282ed",
+      "crates/sqlite-controller/src/control.rs": "6de1ffe096223d3ddcfe3100c14b5d7f26aa0dc95b8ea438cb7b1c52ef44dfa8",
+      "crates/sqlite-controller/src/native_ws.rs": "26d65faa31ee891c3bd4b6d4d8e6c7064cbe2267f02fd5e5d9cb26eef05917f4",
+      "crates/sqlite-controller/src/git_workspace.rs": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7",
+      "crates/sqlite-controller/src/client.rs": "e795347e48d1197e413ecd9e6ca814a6a777d1c425efa6605085e4dfcd12aa1b",
+      "crates/sqlite-controller/src/service.rs": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061",
+      "crates/sqlite-controller/src/main.rs": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7",
+      "crates/sqlite-controller/src/supervisor.rs": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+      "crates/sqlite-controller/src/control_schema.sql": "1d2ff2c13f80ead53642c3af8c5fff1514ac56c44fc534f342809de5f762a273",
+      "crates/sqlite-controller/src/ui_gateway.rs": "acd4df77a9f17b200907ec4e520c6f88c40765283f86c45a44e4c6e4be4c10c9",
+      "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+      "crates/sqlite-controller/src/git.rs": "6b341a7a0be5fa97e38e34777d1e888789eab8679e487f61c691724e70c52895",
+      "crates/sqlite-controller/src/codex.rs": "4afa147e65d0622d3350d6fe62d5a90893c6a18acd407f78b4a5411860fc63e8",
+      "crates/sqlite-controller/src/kata_schema.sql": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe",
+      "crates/sqlite-controller/src/kata.rs": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+      "crates/sqlite-controller/src/bin/corenius-attempt-gate.rs": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626",
+      "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+      "crates/sqlite-controller/tests/control_center.rs": "35074cc958f97a205bfd79a6683c05fecb2a1de5b8c50d27ccf7fb0541ff40d2",
+      "crates/sqlite-controller/tests/process.rs": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02",
+      "crates/sqlite-controller/tests/runtime.rs": "7bdcd64e6fd71c276b923167492819770fc32968bf74d7521f079be164d90fa5",
+      "crates/sqlite-controller/tests/client.rs": "b5e384b985100ed1c498507dab284dab5fcfdf6b0b5b3c1965da6dc6a9465bcd",
+      "crates/sqlite-controller/tests/public.rs": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae",
+      "crates/sqlite-controller/tests/git.rs": "418324acb121f4a946a5467db96af6b10a565010b02892565710625abb60900a",
+      "crates/sqlite-controller/tests/codex.rs": "7c495017e8a9aba5c09eb245fd3d966b638c23ab9cae854ebad8492b32f27156",
+      "crates/sqlite-controller/tests/kata.rs": "05fe7a43b0b42797d63bc5154bd5bf745d364825d1bbd1ea51c65a1c01c62500",
+      "crates/sqlite-controller/tests/support/git_protocol.py": "1949538f4376fa44f8e930cae3268fe717c2cd828840a772ca062c0978035261",
+      "crates/sqlite-controller/tests/support/native_init.py": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8",
+      "crates/sqlite-controller/tests/support/native_profile.py": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c",
+      "crates/sqlite-controller/tests/support/control_center_native.py": "349a08202e3b8cf4bdaecfbef8aefd1d7c0b412f71bff7fbb876408e2a8e85d9",
+      "crates/sqlite-controller/tests/support/wsutil.py": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+      "crates/sqlite-controller/tests/support/kata_protocol.py": "caad56e4847dc1b470e621974962b4d999d96ef2700238bf4d10724e568975aa",
+      "crates/sqlite-controller/tests/support/native_registry.py": "c7bf23d1bb0e039380c116a1e95c72667159ff447814d4d64a140a0483d275d9"
+    },
+    "author_native56_matches_committed_source": true,
+    "author_native56_record_sha256": "09800aab0a4cb9971b51baef87dee9d0269fcf7efb4c9a70a51352b9a68cf569",
+    "author_native56_map_sha256": "2c5899e168adbff25243c7cde801a47fe925d545abd7a0cda923defc809ec016",
+    "author_native56_archive_sha256": "a2310006872e47216c813582eb239d4e825c497ecf36d059650f24555b3c65c2",
+    "owned_snapshot": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot"
+  },
+  "source_before_sha256": "c2835c3bc5723e6d3914451d4c680a190047bd0a902be6beb2a953601d502408",
+  "source_after_sha256": "d65aceb0c539e3986a6c1d6d3d8f6a5cb791b6e4b89a54b6f8188000ed077f08",
+  "observed_evidence_only_tip": "0fccc193949476e9b7f04da1b0c9513f3d0a055c",
+  "scope": {
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+    "changed_crate_files": 23,
+    "insertions": 4746,
+    "deletions": 44,
+    "full_delta": "final-full.diff",
+    "repair_delta": "repair.diff",
+    "includes": "client/control/gateway/monitor/native_ui/ui_gateway/schema/tests and changed lib/codex/native_ws/query/service; original review plus final repair inspection"
+  },
+  "original_review": {
+    "archive_sha256": "12617fcbdac00ba91f7190f79da8a5bf529314798918886ce14e2785fc845094",
+    "map_sha256": "dc0416e8f6c6ebab9f10de981984c135c27d2aed8a597777ffaea9f5b12acada",
+    "verdict": "FAIL",
+    "findings": 6,
+    "report_sha256": "96ed9eee8cd9aec8a8a38d1dddab2c0d7afeec7bfdef81b32ad8d7d67a81ea89"
+  },
+  "original_finding_dispositions": [
+    {
+      "id": "STD05-001",
+      "priority": "P1",
+      "disposition": "RESOLVED",
+      "title": "Observer Git effects and privileged evidence",
+      "locations": [
+        "src/git.rs:314",
+        "src/git.rs:359",
+        "src/gateway.rs:83"
+      ],
+      "behavior": "Only operator/lead can use privileged Git routes; gateway refuses observer commands except advisory assessment. Direct and gateway denial precede journals, revisions and physical effects.",
+      "evidence": [
+        "observer-git.log",
+        "observer-git-receipt.json"
+      ],
+      "validation": "Real configured Git fixture denied seven mutation routes and privileged evidence; table counts, revision, protected ref and workspace unchanged. Authorized verification, acceptance, landing and retirement succeeded."
+    },
+    {
+      "id": "STD05-002",
+      "priority": "P1",
+      "disposition": "RESOLVED",
+      "title": "Current or admitted in-flight native turn admission",
+      "locations": [
+        "src/gateway.rs:236",
+        "src/gateway.rs:243",
+        "src/native_ws.rs:368",
+        "src/native_ws.rs:427"
+      ],
+      "behavior": "New/pending effects require active observed exact thread/turn and current binding turn or a matching applying/unknown admitted start operation. Exact completed cached reply is returned before the active-turn guard.",
+      "evidence": [
+        "units.log",
+        "native-combined.log"
+      ],
+      "validation": "Gateway negative tests caused no new journals; same-payload recovery and completed replay succeeded. Wire peer emitted tool before start reply; actual native combined fixture separately validated native reply deferral/early ACK in both topologies."
+    },
+    {
+      "id": "STD05-003",
+      "priority": "P1",
+      "disposition": "RESOLVED",
+      "title": "Peer tool routing during another binding RPC",
+      "locations": [
+        "src/native_ws.rs:387",
+        "src/native_ws.rs:492",
+        "src/codex.rs:1959"
+      ],
+      "behavior": "Current handler receives only current allowed owner thread; other allowed thread requests are queued and routed through their own binding.",
+      "evidence": [
+        "units.log",
+        "native-combined.log"
+      ],
+      "validation": "Actual UnixStream peer test did not invoke wrong-owner handler; real pinned native shared/separate interleaving passed with one-shot routing barrier and decoded own-assignment response limited to TASK_A and its single worker."
+    },
+    {
+      "id": "STD05-004",
+      "priority": "P1",
+      "disposition": "RESOLVED",
+      "title": "Changed payload under pending native call identity",
+      "locations": [
+        "src/gateway.rs:228",
+        "src/gateway.rs:251"
+      ],
+      "behavior": "Every existing identity compares exact serialized tool/arguments, including NULL response rows, before recovery/effects. Completed exact cached replies remain idempotent.",
+      "evidence": [
+        "units.log"
+      ],
+      "validation": "Changed pending arguments denied without journals; same-payload pending recovery and terminal cached replay passed."
+    },
+    {
+      "id": "STD05-005",
+      "priority": "P1",
+      "disposition": "UNRESOLVED",
+      "title": "Stale-turn failure still strands delivery after applying autocommit",
+      "locations": [
+        "src/codex.rs:1450",
+        "src/codex.rs:1474",
+        "src/codex.rs:1299",
+        "src/codex.rs:1388",
+        "src/control.rs:228",
+        "src/control.rs:292",
+        "src/monitor.rs:940"
+      ],
+      "behavior": "The failed/domain writes now share a transaction, but dispatcher commits applying before checking expected_turn. Failure of the subsequent question write rolls back only that transaction. Reopen leaves operation applying and question prepared; start-only reconciliation ignores codex_steer, dispatch selects prepared only, and delivery preparation skips the applying row.",
+      "evidence": [
+        "dispatcher-failure-probe.log",
+        "dispatcher-failure-probe-receipt.json",
+        "dispatcher-failure-recovery-probe.log",
+        "dispatcher-failure-recovery-probe-receipt.json",
+        "probe-source-map.json"
+      ],
+      "validation": "Independent append-only cfg(test) probe called unchanged real dispatcher with real on-disk SQLite and an ABORT trigger on prepared\u2192persisted. After dropping trigger and reopening, reconcile_turn_ack + dispatch_prepared + prepare_delivery left applying/prepared, operations=1. No native process was used. SQL injected write failure and reopen are actual; process-kill/power-loss equivalence is not claimed."
+    },
+    {
+      "id": "STD05-006",
+      "priority": "P2",
+      "disposition": "RESOLVED",
+      "title": "Bounded retained artifact descriptor reads",
+      "locations": [
+        "src/monitor.rs:5",
+        "src/monitor.rs:206",
+        "src/monitor.rs:397",
+        "src/monitor.rs:921"
+      ],
+      "behavior": "Common reader opens O_NOFOLLOW|O_NONBLOCK, requires regular one-link file with bounded size, validates descriptor/named identity before/after read, then caller validates immutable bytes/hash. All three analogous production retained reads use it.",
+      "evidence": [
+        "units.log",
+        "public-clients.log"
+      ],
+      "validation": "Public monitor_input rejected FIFO within300ms, symlink even with matching bytes, oversize/replaced/missing inputs without reviewed-history credit; synthetic native credentials redacted. Static inspection confirms all production retained reads share the descriptor fence."
+    }
+  ],
+  "findings": [
+    {
+      "id": "STD05-005",
+      "priority": "P1",
+      "title": "Keep stale-turn delivery retryable when the failure transaction aborts",
+      "file": "crates/sqlite-controller/src/codex.rs",
+      "line": 1450,
+      "supporting_locations": [
+        {
+          "file": "crates/sqlite-controller/src/codex.rs",
+          "line": 1474
+        },
+        {
+          "file": "crates/sqlite-controller/src/codex.rs",
+          "line": 1299
+        },
+        {
+          "file": "crates/sqlite-controller/src/control.rs",
+          "line": 228
+        }
+      ],
+      "requirements": [
+        {
+          "file": "docs/efforts/sqlite-controller/tickets/05-lead-control-center.md",
+          "line": 16,
+          "text": "Durable delivery/ack/resolution states and turn-race recovery."
+        },
+        {
+          "file": "docs/efforts/sqlite-controller/SPEC.md",
+          "line": 46,
+          "text": "Controller reconciles unfinished operations after storage recovery."
+        },
+        {
+          "file": "review-brief.md",
+          "control": 5,
+          "text": "Native delivery failure/domain transitions atomic or explicitly crash-recoverable; fail second write and reopen."
+        }
+      ],
+      "observed": {
+        "dispatcher_error": "storage: review injected delivery write failure",
+        "reopened_operation": "applying",
+        "reopened_question": "prepared",
+        "operations_after_reconciliation_dispatch_and_reprepare": 1,
+        "native_processes_used": 0
+      },
+      "impact": "A transient SQLite write failure during a stale-turn question delivery permanently blocks that pending batch and later lead deliveries under the normal drain/reopen paths. The same applying ambiguity fence exists for corrections; that analogous consequence is source-based inference, not independently reproduced here.",
+      "recommendation": "Decide stale-turn failure before committing applying under the existing writer boundary, or add explicit safe recovery for pre-effect applying steer operations. Cover the real dispatcher second-write boundary, reopen and normal reprepare path while retaining early-ACK/idempotent history controls. Do not blindly replay ambiguous external steers.",
+      "test_limitation": "Actual real SQLite write fault and reopen; no actual process kill or storage power-loss simulation."
+    }
+  ],
+  "actual_commands": [
+    {
+      "name": "units",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T21:47:26.509344+00:00",
+      "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "pid": 2731254,
+      "start_stat": "2731254 (cargo) R 2731252 2731245 2731245 0 -1 4194304 17 0 0 0 0 0 0 0 20 0 1 0 56602680 18980864 2 18446744073709551615 94399157501952 94399174979612 140730286275984 0 0 0 0 0 0 0 0 0 17 65 0 0 0 0 0 94399177078992 94399178171568 94399191810048 140730286285243 140730286285476 140730286285476 140730286292942 0\n",
+      "exit_code": 0,
+      "completed_at": "2026-10-04T21:47:44.064948+00:00",
+      "elapsed_seconds": 17.556,
+      "log_sha256": "b763135c85c677e18230287ed97a65e464cbeae8104a7ef68f5dc374fb920caa"
+    },
+    {
+      "name": "public-clients",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--test",
+        "client",
+        "--test",
+        "control_center"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T21:47:44.065466+00:00",
+      "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "pid": 2738250,
+      "start_stat": "2738250 (cargo) R 2731252 2731245 2731245 0 -1 4194304 17 0 0 0 0 0 0 0 20 0 1 0 56604436 18980864 2 18446744073709551615 94424277188608 94424294666268 140736895160928 0 0 0 0 0 0 0 0 0 17 171 0 0 0 0 0 94424296765648 94424297858224 94424317120512 140736895164861 140736895165092 140736895165092 140736895172558 0\n",
+      "exit_code": 0,
+      "completed_at": "2026-10-04T21:47:51.231900+00:00",
+      "elapsed_seconds": 7.166,
+      "log_sha256": "d46fe6405baea62b04bcb4ea4e1370b114d4654a698e44334927c98d413ef680"
+    },
+    {
+      "name": "observer-git",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--test",
+        "git",
+        "actual_observer_git_authority_has_no_effect_and_preserves_authorized_control",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T21:47:51.232206+00:00",
+      "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "pid": 2739713,
+      "start_stat": "2739713 (cargo) R 2731252 2731245 2731245 0 -1 4194304 17 0 0 0 0 0 0 0 20 0 1 0 56605153 18980864 2 18446744073709551615 93903533375488 93903550853148 140730117115952 0 0 0 0 0 0 0 0 0 17 65 0 0 0 0 0 93903552952528 93903554045104 93903570194432 140730117120361 140730117120676 140730117120676 140730117128142 0\n",
+      "exit_code": 0,
+      "completed_at": "2026-10-04T21:47:58.127898+00:00",
+      "elapsed_seconds": 6.896,
+      "log_sha256": "ce5efe1fa227fd693db129050a61dd4035fd9ad983ebb704cd8892737856ab89"
+    },
+    {
+      "name": "native-combined",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "actual_native_control_races_and_authenticated_correction",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/target",
+        "CARGO_BUILD_JOBS": "2",
+        "CORENIUS_TEST_UI_FIXTURE": "1",
+        "CORENIUS_TEST_UI_DRAIN_RACE": "1",
+        "CORENIUS_TEST_TOOL_INTERLEAVING": "1"
+      },
+      "started_at": "2026-10-04T21:47:58.128173+00:00",
+      "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "pid": 2741434,
+      "start_stat": "2741434 (cargo) R 2731252 2731245 2731245 0 -1 4194304 16 0 0 0 0 0 0 0 20 0 1 0 56605842 18980864 2 18446744073709551615 94617085149184 94617102626844 140723757462688 0 0 0 0 0 0 0 0 0 17 205 0 0 0 0 0 94617104726224 94617105818800 94617115570176 140723757469984 140723757470281 140723757470281 140723757477838 0\n",
+      "exit_code": 0,
+      "completed_at": "2026-10-04T21:49:46.852559+00:00",
+      "elapsed_seconds": 108.724,
+      "log_sha256": "299c8b347d7713523fb307136746d9db1c714c997b97e6d6faeb6445cf140b9f"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_review_dispatcher_second_write_failure_is_still_stranded",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/probe-target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_at": "2026-10-04T21:51:21.675236+00:00",
+      "pid": 2783584,
+      "start_stat": "2783584 (cargo) R 2783576 2783575 2783575 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 56626197 18980864 2 18446744073709551615 94293769322496 94293786800156 140729220103984 0 0 0 0 0 0 0 0 0 17 7 0 0 0 0 0 94293788899536 94293789992112 94293803270144 140729220112646 140729220112924 140729220112924 140729220120526 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 16.937,
+      "completed_at": "2026-10-04T21:51:38.612593+00:00",
+      "log_sha256": "14b2af4bcf6439e58fefddba612a0b66df0b1fadfd044cd3b76e43bcc0124739"
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_review_dispatcher_second_write_failure_is_still_stranded",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/probe-target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_at": "2026-10-04T21:53:03.997535+00:00",
+      "pid": 2804294,
+      "start_stat": "2804294 (cargo) R 2804292 2804291 2804291 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 56636429 18980864 2 18446744073709551615 93895604043776 93895621521436 140732363935824 0 0 0 0 0 0 0 0 0 17 28 0 0 0 0 0 93895623620816 93895624713392 93895627214848 140732363940102 140732363940380 140732363940380 140732363947982 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 1.516,
+      "completed_at": "2026-10-04T21:53:05.513579+00:00",
+      "log_sha256": "d8b4ecb17142bf962b396eb8e300c849fb7d149185fd5425a4e83fa14424d9f2"
+    }
+  ],
+  "additional_control": {
+    "native_ui_lifecycle": "RESOLVED on tested final source",
+    "locations": [
+      "src/codex.rs:284",
+      "src/native_ui.rs:36",
+      "src/native_ui.rs:375"
+    ],
+    "evidence": "native-combined.log",
+    "behavior": "One lifecycle gate covers background drain and native UI binding selection/update; scoped queries/tools remain available. Actual shared/separate barrier held UI request until drain release, then confirmed matching current turn and original replacement assertion passed.",
+    "historical_limit": "Native44 proved an unserialized window only; immediate snapshot matched new turn, so overwrite was not proven."
+  },
+  "maintainability": {
+    "assessment": "No additional actionable documented-standards/deep-module defect beyond the unresolved caller/transaction recovery seam. Client projections and gateway keep storage and raw native authority behind controller interfaces; retained descriptor checks are centralized. Typed NativeTurn correlation and lifecycle ownership reduce duplicated policy decisions.",
+    "lock_io": "Runtime/Git/filesystem I/O is outside SQLite writer transaction. Lifecycle serialization intentionally spans native operations without holding SQLite writer lock."
+  },
+  "ownership": {
+    "root": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez",
+    "shared_source_mutations": 0,
+    "paid_model_calls": 0,
+    "user_sessions_used": 0,
+    "subagents": 0,
+    "recorded_owned_process_identities": 34,
+    "all_owned_process_identities_absent": true,
+    "cleanup_file": "owned-process-cleanup.json"
+  },
+  "limits": [
+    "This independent Standards review is separate from root full FI/default/fmt/strict-Clippy/build gate and does not claim overall acceptance.",
+    "Native fixtures use pinned actual Codex0.159.3 and deterministic local provider, not paid/live-model qualification.",
+    "Original full gate36 native31PASS/2FAIL1101.68s/exit1 is preserved. TUI replacement20s timeout and default initial-confirm one-shot failure are not reclassified; asynchronous cause/05 attribution remains unproved, and raw original INITIAL_CONFIRM archive gap remains.",
+    "No relaxed initial-confirm diagnostic branch was enabled in independent combined test. Root complete default gate remains responsible for original mandatory assertion/deadline.",
+    "Accepted01\u201304 and original02/04final3/3 repair history remain unchanged.",
+    "Ticket06 recurring runner/permanent harness/live assembled qualification is intentionally sequenced future work and is not an extra05 failure."
+  ],
+  "retained_fixtures": "retained-fixture-artifacts.json"
+}

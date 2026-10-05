@@ -1,0 +1,33 @@
+{
+  "exit": 101,
+  "before_inputs": {
+    "crates/sqlite-controller/src/gateway.rs": "0da35aa2e3dafe3dbd15941d272e136d7a663a426d411377e53d1701b5cb8590",
+    "crates/sqlite-controller/src/monitor.rs": "510bfc9a1a1c2fadc6fce6b114a20e4fd5d4bf2c2770a8ab199b5c3e12704bf5",
+    "crates/sqlite-controller/src/codex_schema.sql": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e",
+    "crates/sqlite-controller/src/runtime.rs": "6ef2364b8c00edab0550298b23f63ab79ecef341aa3c71e6df36e65b8d0fccf7",
+    "crates/sqlite-controller/src/lib.rs": "5b43f5eae4a417f9d1d301b58b7f6204fe69b3b5e543899e3fad81e02edc6aaf",
+    "crates/sqlite-controller/src/native_profile.rs": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9",
+    "crates/sqlite-controller/src/query.rs": "f9b6fd7738b2e09ae5cfae2e34ba87c01f26777457ec3484df515ca0d4eeb1af",
+    "crates/sqlite-controller/src/control.rs": "2ae02b044040bdbcc14dcc35805564790d5713e136a8fdc3c7c1868cd024db52",
+    "crates/sqlite-controller/src/native_ws.rs": "223e34e3db112d5f24ab29dd2b28f02b51fa2ce976a03d728848161c08f9c42e",
+    "crates/sqlite-controller/src/git_workspace.rs": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7",
+    "crates/sqlite-controller/src/service.rs": "38bd4fcadf8d8e37de76e48273ad67182c85cbd9b3ddecd36dfc188ccd01065d",
+    "crates/sqlite-controller/src/main.rs": "a1caf672f2aee17e07bbd3769dcde41819b1cd97e9891e2493749acb7e0b89de",
+    "crates/sqlite-controller/src/supervisor.rs": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+    "crates/sqlite-controller/src/control_schema.sql": "ef8eb5fcf96fbb50105d409d6e0fc69d367b6d52f78a1b0c13d3669888a6b82b",
+    "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+    "crates/sqlite-controller/src/git.rs": "5ab84ddfe4cfe236094fca6f22fe8cfb45771ac114c1cbc445cd327af493dd84",
+    "crates/sqlite-controller/src/codex.rs": "4da2c61ade03bf49287709605a0991966d44f94d2612f1c57b2b73d1db384761",
+    "crates/sqlite-controller/src/kata_schema.sql": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe",
+    "crates/sqlite-controller/src/kata.rs": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+    "crates/sqlite-controller/tests/support/git_protocol.py": "bf7ce38f0721b0bf817a1b18ea14b6cb00f21eea3ba2a63a543ca913f8a6f987",
+    "crates/sqlite-controller/tests/support/native_init.py": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8",
+    "crates/sqlite-controller/tests/support/native_profile.py": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c",
+    "crates/sqlite-controller/tests/support/control_center_native.py": "d1b25dc40abebf9a1c83015a8b9f10b11a5181aaf02d75206705d24233796bd0",
+    "crates/sqlite-controller/tests/support/wsutil.py": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+    "crates/sqlite-controller/tests/support/kata_protocol.py": "afceb3b19fe94452cf6c12d44ce22adb16dd880aec199f5943c3c597592fff2c",
+    "crates/sqlite-controller/tests/support/native_registry.py": "82d13d96970b9564e164918448ef6d35ea01197217c83670f3dd56748d7f9c76",
+    "crates/sqlite-controller/tests/codex.rs": "3232c9c91253c320991ed6efbed4139ecbb542da3368b5d31d5fc1bcdfcc0ae3"
+  },
+  "log_sha256": "c89d59e2c02959f62ee6eda258a61c8a86201756849a82bcb0f5f5dd1763b6b6"
+}

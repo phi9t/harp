@@ -1,0 +1,275 @@
+{
+  "at": "2026-10-04T17:35:12.890960+00:00",
+  "scope": "Available retained repair1 source archives only; not frozen final source or behavioral conformance. Replaces prior zero-result search at the wrong directory.",
+  "archives": [
+    {
+      "manifest": "accepted-capture-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "af9a5bbd944600aac87b0124c2dda27e632d1a2e6804be2727d2ab945b85ed0c"
+    },
+    {
+      "manifest": "accepted-capture-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "3714875dbc516ee82893e15a177314dc557fac27db1c68ca864a824ad5cece18"
+    },
+    {
+      "manifest": "authority-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "db72dd59d5af66c533f5302f4eb390a0595ac66b3f922e8e322c81bac7dfabf5"
+    },
+    {
+      "manifest": "authority-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "fde85d32097c010ba83977321891ede92fa6616b6a796e9f4bfb95aaaad577c7"
+    },
+    {
+      "manifest": "authority-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "9fed9e2cb69c326a353b7831c4dce8ac8a58bebe60658f6fe7dd620dd9a8313e"
+    },
+    {
+      "manifest": "authority-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "e0e029fd4cb853841e639ac6c3d5be502ccfdb031ff7977e56f18f4d190782b7"
+    },
+    {
+      "manifest": "final-output-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "9b7755b4b59c49080bb397fd2afaec89a510f88da5dd630f65249b15094dfec1"
+    },
+    {
+      "manifest": "final-output-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "1e647a750dce961f586523ecad07af1964e37347a06b0448cac05810786b04ab"
+    },
+    {
+      "manifest": "inventory-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "38c8a8cd1b29eeb6d370506648f6e641fbaf60414b017bdad2fc3d02338b526e"
+    },
+    {
+      "manifest": "inventory-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "211603c2bfeee2dcd2328d4ad29cbb515995e88280bb5cf32d9cb7bfc4517a23"
+    },
+    {
+      "manifest": "inventory-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "0ae189155beae7e2f7537eefd84fcc9b248ddd3b45cfb791ebe75a8c51e11a0a"
+    },
+    {
+      "manifest": "inventory-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "4bcaa581f56f356162b634d83dcc0495315a24034964bb7a34331a54a3b14756"
+    },
+    {
+      "manifest": "lifecycle-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "45535881cbf0d3896ee47e5728dbe5e078783b5cd16cbd80587ed48726845823"
+    },
+    {
+      "manifest": "lifecycle-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "f6a98ed7bde0b445cf1a4204a5035546a39ae490d0334b1082300d63fb55c9ba"
+    },
+    {
+      "manifest": "native-final-driver-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "0c311c442bbb7a67228ff1357a2527720adc3ec9cfa8c6db60b513dc5255d21d"
+    },
+    {
+      "manifest": "native-final-driver-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "a349bd7ee41b9ec9de142a7d5405548aab07f304e504898fff88aece34267d54"
+    },
+    {
+      "manifest": "native-final-driver-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "061d82c58f92a8c66d77f059438ab93dfab49d30cc592b23074839f3787779aa"
+    },
+    {
+      "manifest": "native-final-driver-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "560a7e4ec1ee78b0e0c86681cc6d61dc07111eaee180c625594950ee13ca5c83"
+    },
+    {
+      "manifest": "native-lost-ack-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "3bdfab4f3548ddae49b61033b30bd37a8dda12d97b31fcdc0e085098c26afd68"
+    },
+    {
+      "manifest": "native-lost-ack-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "3801a268b4712727eb4ce847fdc0568441248ece738786ac8f81189bdc945e9e"
+    },
+    {
+      "manifest": "native-lost-ack-green2-after.json",
+      "source_files": 34,
+      "archive_sha256": "68e339cd834b5f69711ef1e1a1a68ffdb21b90e9bc6025ea4216ab9f14e92646"
+    },
+    {
+      "manifest": "native-lost-ack-green2-before.json",
+      "source_files": 34,
+      "archive_sha256": "21d0d50bf8d74bf2a90c4325180040fd34278033e1bcdc76c570b9cd20855f19"
+    },
+    {
+      "manifest": "native-lost-ack-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "1ad276f3e0f31e7ee93fd18293f5329afc3805786ba0b65c35d273cfe2c3b687"
+    },
+    {
+      "manifest": "native-lost-ack-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "79f698371a5db208ebb6e9ee36f0dd271075b9527166144989bed39c05653bde"
+    },
+    {
+      "manifest": "publication-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "990940705b7d11c6738799900ff47ad8cca1f5ad52395dd1d4c45290d4bdbe08"
+    },
+    {
+      "manifest": "publication-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "43b192766c7dbdc039e127c02b05b8218640f9282fc3816ab66be3c1dc876495"
+    },
+    {
+      "manifest": "publication-green2-after.json",
+      "source_files": 34,
+      "archive_sha256": "ffa3be683d7e29b97faff1d3db6571c1156db568c1dff93c5c01b34df4c374cd"
+    },
+    {
+      "manifest": "publication-green2-before.json",
+      "source_files": 34,
+      "archive_sha256": "e966775fe91649acf6a9a5ff2bf54d5ee1ac12b6deadb1fa3cf435fb22127e02"
+    },
+    {
+      "manifest": "publication-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "c1afc12e7fb9cf5cfa07bb52557129b30f02757bacedce8e567afd97937adee7"
+    },
+    {
+      "manifest": "publication-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "9509ce975537a8746d9c417d71ff3a1fbd08871cdd46d88220a48318c446a306"
+    },
+    {
+      "manifest": "shadow-green-after.json",
+      "source_files": 34,
+      "archive_sha256": "52c49bd002b3bebda90b7b3b54858906018511b31dafbf9deca3447f7fdd1f28"
+    },
+    {
+      "manifest": "shadow-green-before.json",
+      "source_files": 34,
+      "archive_sha256": "4d4c130080da8a049eabb6c9773ed7daabdf84947a8dff88c84af649203dfca8"
+    },
+    {
+      "manifest": "shadow-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "1fb6de9ed9946ae936d6f84711d7fc7042f1980ea7cbde6053e89a31d139074e"
+    },
+    {
+      "manifest": "shadow-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "63cd09a93fcf2ddbd0c663a32d66085a5ecbc5e97c263e89ed5e4fe16dd340d0"
+    },
+    {
+      "manifest": "terminal-accept-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "23e11014f7eefbc235cc3cc3f9f3ce56451d828213a6d3453afe51239ae611ae"
+    },
+    {
+      "manifest": "terminal-accept-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "6056139791b3e6d172361f5a06b22efe20ea19a036e90aae1c60e0ab58ace324"
+    },
+    {
+      "manifest": "terminal-capture-red-after.json",
+      "source_files": 34,
+      "archive_sha256": "8bb865307c19b7bb279e9af41602bb3490ace0822a47e49f4534fdfce3252b45"
+    },
+    {
+      "manifest": "terminal-capture-red-before.json",
+      "source_files": 34,
+      "archive_sha256": "403ec030d989d3b77898f1b34e276f6d0b1a5e2508c20125e14dabd163b8be4b"
+    }
+  ],
+  "completed_pairs": [
+    {
+      "run": "accepted-capture-red",
+      "matching_source": true
+    },
+    {
+      "run": "authority-green",
+      "matching_source": true
+    },
+    {
+      "run": "authority-red",
+      "matching_source": true
+    },
+    {
+      "run": "final-output-red",
+      "matching_source": true
+    },
+    {
+      "run": "inventory-green",
+      "matching_source": true
+    },
+    {
+      "run": "inventory-red",
+      "matching_source": true
+    },
+    {
+      "run": "lifecycle-green",
+      "matching_source": true
+    },
+    {
+      "run": "native-final-driver-green",
+      "matching_source": true
+    },
+    {
+      "run": "native-final-driver-red",
+      "matching_source": true
+    },
+    {
+      "run": "native-lost-ack-green",
+      "matching_source": true
+    },
+    {
+      "run": "native-lost-ack-green2",
+      "matching_source": true
+    },
+    {
+      "run": "native-lost-ack-red",
+      "matching_source": true
+    },
+    {
+      "run": "publication-green",
+      "matching_source": true
+    },
+    {
+      "run": "publication-green2",
+      "matching_source": true
+    },
+    {
+      "run": "publication-red",
+      "matching_source": true
+    },
+    {
+      "run": "shadow-green",
+      "matching_source": true
+    },
+    {
+      "run": "shadow-red",
+      "matching_source": true
+    },
+    {
+      "run": "terminal-accept-red",
+      "matching_source": true
+    },
+    {
+      "run": "terminal-capture-red",
+      "matching_source": true
+    }
+  ],
+  "mismatched_pairs": []
+}

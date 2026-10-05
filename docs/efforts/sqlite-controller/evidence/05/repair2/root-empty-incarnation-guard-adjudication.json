@@ -1,0 +1,74 @@
+{
+  "id": "05-repair2-empty-incarnation-guard",
+  "at": "2026-10-04T23:31:41.203653+00:00",
+  "coordinator": "/root",
+  "actor": "/root/sqlite05_control_center_author",
+  "repair_round": 2,
+  "source": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+  "source_codex_sha256": "6040fadd62df4a0a0fa0bb47bfb684adfddb330f371b3b273191d265f2581a9c",
+  "diagnostic72": {
+    "actual_exit": 101,
+    "source_inputs": 43,
+    "unchanged_during_run": true,
+    "record_sha256": "6563810c8458cea9dd2c0dfed36324a0a469279b059d3f14f7596b90db70ef8d",
+    "log_sha256": "e26d5975bc8b6cc26cd81594b995c500ff8a9fbf933480d1108e6a8ea8a25f95",
+    "archives": [
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/.scratch/sqlite-controller/native/shared-cnr-zfifoekk.tar.gz",
+        "sha256": "8c14d6e4b2be454eea2d7c984c68fe968a36f873b1d90d2d9d6d949716413335",
+        "diagnostic_member": "cnr-zfifoekk/empty-restart-diagnostic.json",
+        "samples": 8,
+        "last": {
+          "elapsed": 0.5042790879961103,
+          "state": "reconciling",
+          "turn_id": null,
+          "ui_input_ready": false,
+          "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+          "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+          "recovery_state": "qualification_unknown",
+          "thread_starts": 1,
+          "turn_starts": 0
+        }
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/.scratch/sqlite-controller/native/separate-cnr-ic7h5u6v.tar.gz",
+        "sha256": "be953879fadfb9d24283c88b6d4d260e2178b39625642743a0cf78ee9d8d6e9a",
+        "diagnostic_member": "cnr-ic7h5u6v/empty-restart-diagnostic.json",
+        "samples": 29,
+        "last": {
+          "elapsed": 1.9871110970852897,
+          "state": "unknown",
+          "turn_id": null,
+          "ui_input_ready": false,
+          "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+          "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+          "recovery_state": "qualification_unknown",
+          "thread_starts": 1,
+          "turn_starts": 0,
+          "occupied_slots": 2
+        }
+      }
+    ],
+    "launches_used": 1,
+    "launch_cap": 2
+  },
+  "proposal": "After existing adopt_initial_turn, before incarnation-mismatch save_binding reconciling, a retained thread with null turn must have exact confirmed thread/start receipt thread.id and receipt controller_server_incarnation matching current qualified native incarnation. Missing/mismatch returns existing no-replay error before native connection/environment effects; caller block_binding preserves unknown/input-blocked. Keep later same-incarnation loaded-thread validation.",
+  "decision": "ADMIT this exact fail-closed order correction within ticket05 repair2; no other accepted-core mutation admitted.",
+  "reason": "Current retained diagnostic reproduces transient reconciling on conclusive empty-thread incarnation mismatch; moving the existing identity fence earlier prevents misleading durable state while preserving all admission/no-replay controls.",
+  "preserve": [
+    "New binding without retained thread follows existing preparation.",
+    "Same-incarnation empty thread still requires exact loaded native identity.",
+    "Confirmed initial-turn adoption precedes guard; nonempty resume/history paths unchanged.",
+    "No assertion/deadline/generation/authority/UI/native effect waiver.",
+    "No edits while any positively owned test remains active.",
+    "Original80070 failed tuple and raw-fixture gap remain unknown; no historical causal claim.",
+    "Accepted01\u201304 and exhausted02/04 3/3 caps unchanged; not a new legacy repair round."
+  ],
+  "required_proof": [
+    "Use already retained diagnostic72 as actual RED, not source PASS text.",
+    "Second permitted diagnostic launch is matched original EMPTY_CRASH+EMPTY_RESTART GREEN both topologies, exact source pins/raw retention and original assertions/2s.",
+    "Qualify same-incarnation empty adoption, initial-confirm, nonempty restart/lostACK regressions under new frozen candidate.",
+    "Two independent axes plus root full assembled/default/strict checks and branch gate before05 acceptance."
+  ],
+  "status": "authenticated scope admission pending actor ACK; no task acceptance"
+}

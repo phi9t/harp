@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-10-05T02:08:37.354977+00:00",
+  "result": "PASS: read-only evidence/hash verification; no product run or acceptance",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "source_inputs": 49,
+  "run_records": 18,
+  "prelaunch_archive_members_verified": 872,
+  "base_archive_members_verified": 46,
+  "fixture_archives_verified": 63,
+  "fixture_members_verified": 6698,
+  "final_source_equal_before_and_after_runs": [
+    "014",
+    "015",
+    "016",
+    "017",
+    "018"
+  ],
+  "root_retained_admissions_verified": 2,
+  "limitations": "001\u2013006 no after maps;006 scoped Git RED with unused Kata test drift. No historical proof backfill or process/domain reconciliation."
+}

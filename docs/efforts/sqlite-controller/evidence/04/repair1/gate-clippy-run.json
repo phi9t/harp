@@ -1,0 +1,24 @@
+{
+  "name": "gate-clippy",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "command": [
+    "cargo",
+    "clippy",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--locked",
+    "--offline",
+    "--all-targets",
+    "--features",
+    "fault-injection",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "started": "2026-10-04T18:10:26.106897+00:00",
+  "ended": "2026-10-04T18:10:28.955403+00:00",
+  "elapsed_seconds": 2.8484973220620304,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair1/gate-clippy.log",
+  "environment": {}
+}

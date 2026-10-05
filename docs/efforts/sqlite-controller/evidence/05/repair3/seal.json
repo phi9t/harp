@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-10-05T02:10:03.104930+00:00",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+  "evidence_file_count": 129,
+  "sha256": {
+    "manifest.json": "6f745911bf3d5721b87902c3bee9e8c66fc4bcdf04cb72ac2f976fd47d140c7a",
+    "source-freeze.json": "befc1410f0b5bfc0441e4a2148ee7354c3224fd2f2db6458e35030497e92ce0b",
+    "handoff.md": "955847de83cd8414a7a45ba98a7a048dd1cc3588adb57272a18d974e13d29fd7",
+    "final-nine-plus-five-matrix.json": "1f9d0635ccdccf0846dc19a2443dec5fddc860e1c38ea88408ff84a310b2560b",
+    "resource-disposition.json": "2f57f87334a395272fe8e03a5d450c55c689c266255fd8c614f7fc5bc74c6450",
+    "artifact-index.json": "ff83c03c793a6d158d6ed062291b9a732fe967b26787fd3d83f5993d8433234d",
+    "run-index.json": "0d72e11dcac3c9b8793c79dc54b0a0eb2c599fee13a7c78822f355209d938f79",
+    "05-repair3-pre-source-root-matrix.json": "9df34387bf21c32d7953c494d29632c02a97d671e619bc55bb2251a0311d4139",
+    "05-source7b20-review-admission.json": "bfa9cad5dee5ac3e6533fccac98eecf6171e9e8d8df4c1b094bf58751c3f0dd0",
+    "evidence-verification.json": "74e6163bab2708f66070172f1edc255a8ee7c19d9f6f3f7c4a02ca103eaecc3d"
+  },
+  "acceptance": false,
+  "resource_slot": "author released; private target and evidence retained; historical unknowns not reconciled"
+}

@@ -1,0 +1,442 @@
+{
+  "archives": [
+    {
+      "bytes": 203317,
+      "path": ".scratch/sqlite-controller/05/authority-37-observer-red-source.tar.gz",
+      "sha256": "f6dc52f31d819e69dd7c73122a3ff1daee044fad271c55ed3ef978c5edac2976"
+    },
+    {
+      "bytes": 203453,
+      "path": ".scratch/sqlite-controller/05/authority-38-observer-green-source.tar.gz",
+      "sha256": "2a67ebc16a104f9e97e701472bbcc78cdda55d714838b8a779494b709930ee90"
+    },
+    {
+      "bytes": 193212,
+      "path": ".scratch/sqlite-controller/05/clients-25-socket-green-source.tar.gz",
+      "sha256": "27f44bd29c42eaa57d07e1029722814c53c2585b460def7e320407da1efa9160"
+    },
+    {
+      "bytes": 212483,
+      "path": ".scratch/sqlite-controller/05/diagnostic-52-initial-persistence-source.tar.gz",
+      "sha256": "7eddbbf44729432b3c640e712392512aee5898afb655ff34d800a430b9f1c9f2"
+    },
+    {
+      "bytes": 210189,
+      "path": ".scratch/sqlite-controller/05/durability-48-atomic-delivery-source.tar.gz",
+      "sha256": "a595b22775a2f73388020f21cfd3c8b18e2da596d716f05f221900153403c049"
+    },
+    {
+      "bytes": 210193,
+      "path": ".scratch/sqlite-controller/05/durability-49-atomic-delivery-source.tar.gz",
+      "sha256": "96c69dad42e6242c222a1b3ad9596e91182ed610696260c444597ce3d610c5fd"
+    },
+    {
+      "bytes": 199956,
+      "path": ".scratch/sqlite-controller/05/final-32-focused-source.tar.gz",
+      "sha256": "0fc0dfccf661c3975f7a8741c647bc0be90ff4fe46f4976f6a7a846495803925"
+    },
+    {
+      "bytes": 199952,
+      "path": ".scratch/sqlite-controller/05/final-33-protocol-source.tar.gz",
+      "sha256": "8a1d1e877dabc04ef926c23b0553eaafcf945329c77b1fa0553bacb1019007a6"
+    },
+    {
+      "bytes": 202360,
+      "path": ".scratch/sqlite-controller/05/final-34-clippy-source.tar.gz",
+      "sha256": "5d1e1431d760bdf4a484bfdcd2fc1b126a14d61a3bad883ce2c18080d32695b8"
+    },
+    {
+      "bytes": 202420,
+      "path": ".scratch/sqlite-controller/05/final-35-clippy-source.tar.gz",
+      "sha256": "63fc3b38e9075335c12577a80c822129297f9647bfa606dc540b1107ac7ab2b6"
+    },
+    {
+      "bytes": 202493,
+      "path": ".scratch/sqlite-controller/05/final-36-repository-gate-source.tar.gz",
+      "sha256": "12617fcbdac00ba91f7190f79da8a5bf529314798918886ce14e2785fc845094"
+    },
+    {
+      "bytes": 204630,
+      "path": ".scratch/sqlite-controller/05/gateway-39-pending-turn-red-source.tar.gz",
+      "sha256": "c5d400ef8b3a834f93b0ac7b4196f463d197eb1d1128f277f2ddd2ec25423129"
+    },
+    {
+      "bytes": 206276,
+      "path": ".scratch/sqlite-controller/05/gateway-42-correlated-turn-green-source.tar.gz",
+      "sha256": "142cbf549ca7a4f65f0bb2d6c0e23ddabf89991e4e4d88926008dd3ab4c42991"
+    },
+    {
+      "bytes": 206271,
+      "path": ".scratch/sqlite-controller/05/gateway-43-correlated-turn-green-source.tar.gz",
+      "sha256": "0551a93f155cafaed04fd0f4ee51ef06b83164d7c8a629e3dc0c46bc9c6b0c1f"
+    },
+    {
+      "bytes": 211181,
+      "path": ".scratch/sqlite-controller/05/gateway-50-early-routing-source.tar.gz",
+      "sha256": "80bf618105885f923396fd682d9c4dcdb92a47a5d53432ec0eeff32baf4fd69e"
+    },
+    {
+      "bytes": 74397,
+      "path": ".scratch/sqlite-controller/05/git-fixtures/observer-authority-g4-_0r3j1pk.tar.gz",
+      "sha256": "04a05a3bf67ae5d624843f74accc17ea16e0a93232ef6cf0007b113ad8f69d8b"
+    },
+    {
+      "bytes": 56739,
+      "path": ".scratch/sqlite-controller/05/git-fixtures/observer-authority-g4-llem1z30.tar.gz",
+      "sha256": "e45c24cc4681f1f475714f21035c933ae8aa71e0f60fa7aa246b5d2bb3ad9241"
+    },
+    {
+      "bytes": 187472,
+      "path": ".scratch/sqlite-controller/05/monitor-18-rerun-red-source.tar.gz",
+      "sha256": "d396f62311434b80f42cd59ce3f146d40afcc2459915e8c552a66a42abc559b3"
+    },
+    {
+      "bytes": 187679,
+      "path": ".scratch/sqlite-controller/05/monitor-20-rerun-green-source.tar.gz",
+      "sha256": "37a62dfbbd767e3cde869ee4e21ef6b7c3dfd3e58fa47d5ac6c5ef94e5942a19"
+    },
+    {
+      "bytes": 188138,
+      "path": ".scratch/sqlite-controller/05/monitor-22-native-red-source.tar.gz",
+      "sha256": "ab5bad4d94a469a601806c51dada0af5ff19d33fd04b1b56ff1ad3a91407ba09"
+    },
+    {
+      "bytes": 190702,
+      "path": ".scratch/sqlite-controller/05/monitor-23-native-green-source.tar.gz",
+      "sha256": "aa2f944e010eff18667170b8203a92fc4b6da1d2b5a5a673c15d6745f36bda06"
+    },
+    {
+      "bytes": 194780,
+      "path": ".scratch/sqlite-controller/05/monitor-27-bounded-green-source.tar.gz",
+      "sha256": "cf2fc576248184e0da73ec721febedf002ae89d9fa3eb1d831f67dd0e9e8ea3c"
+    },
+    {
+      "bytes": 208436,
+      "path": ".scratch/sqlite-controller/05/monitor-46-retained-input-red-source.tar.gz",
+      "sha256": "e57bbdc39b3d9da2443841fe650cfc64fb970e4ea4a82c9c188e313a80cd378d"
+    },
+    {
+      "bytes": 208920,
+      "path": ".scratch/sqlite-controller/05/monitor-47-retained-input-green-source.tar.gz",
+      "sha256": "4eef929b9a859f86e80df76fdcd986aca5721369a41ba13b5781ae25e980098f"
+    },
+    {
+      "bytes": 206917,
+      "path": ".scratch/sqlite-controller/05/native-44-ui-drain-red-source.tar.gz",
+      "sha256": "1a759c0c6f20a256d6fda6eb80f30c60f261f57c7ab4f1a0a28f40697ca6db92"
+    },
+    {
+      "bytes": 207020,
+      "path": ".scratch/sqlite-controller/05/native-45-ui-drain-green-source.tar.gz",
+      "sha256": "a3f727d7d53693171ea85c0990e250a9edf8cce5acce8311b939c52323531d56"
+    },
+    {
+      "bytes": 211935,
+      "path": ".scratch/sqlite-controller/05/native-51-peer-interleaving-source.tar.gz",
+      "sha256": "1b9c994375e5b94527b9bdbe06cb5b7f9e51a7132cc748e4e0d6bd59f21dc40f"
+    },
+    {
+      "bytes": 213324,
+      "path": ".scratch/sqlite-controller/05/native-56-combined-final-source.tar.gz",
+      "sha256": "a2310006872e47216c813582eb239d4e825c497ecf36d059650f24555b3c65c2"
+    },
+    {
+      "bytes": 193207,
+      "path": ".scratch/sqlite-controller/05/races-24-early-red-source.tar.gz",
+      "sha256": "e73eab2d882673780da6bc6c3c5b6bbe3a6561882faeb2ff45a6828ab158bc23"
+    },
+    {
+      "bytes": 194787,
+      "path": ".scratch/sqlite-controller/05/races-26-early-correction-green-source.tar.gz",
+      "sha256": "a08023098d350449eff5fcc8e1fe44f7cdaaba6f37ea51a223763c7a9e471f2d"
+    },
+    {
+      "bytes": 194830,
+      "path": ".scratch/sqlite-controller/05/races-28-pinned-early-source.tar.gz",
+      "sha256": "810d880bedba271bf2a5d35372a90b9436924e0890b408740b1ea42722eac84f"
+    },
+    {
+      "bytes": 195067,
+      "path": ".scratch/sqlite-controller/05/races-29-responsive-green-source.tar.gz",
+      "sha256": "c00bdbf155a3697977d8e0cbedab7d67d2b1e6e628f0581c6cdb6ee8e9fff1e8"
+    },
+    {
+      "bytes": 196624,
+      "path": ".scratch/sqlite-controller/05/races-30-active-and-tool-reply-source.tar.gz",
+      "sha256": "4c57bbfa6e7c91da853383cf0f6e52e2d983b0cc5ede635898ee214689adfda4"
+    },
+    {
+      "bytes": 196635,
+      "path": ".scratch/sqlite-controller/05/races-31-delivered-routing-source.tar.gz",
+      "sha256": "84e2326c0167536957ed7b077925333e6d616c448f46b65f9542a1b203dc0f76"
+    },
+    {
+      "bytes": 205238,
+      "path": ".scratch/sqlite-controller/05/routing-40-peer-red-source.tar.gz",
+      "sha256": "b54ecb7154f2b3daacf2dd235bb4e6359375944a86e8edae324b5831a5d826c0"
+    },
+    {
+      "bytes": 205280,
+      "path": ".scratch/sqlite-controller/05/routing-41-owned-peer-red-source.tar.gz",
+      "sha256": "82a5ca122df77270e216c075695b0ab678d86b298a27a0cc184d95dbf212e479"
+    },
+    {
+      "bytes": 213381,
+      "path": ".scratch/sqlite-controller/05/source-53-focused-review-source.tar.gz",
+      "sha256": "44d6dc8ea1a5c19b4aded39f6a06059029be711c64881bf671729f9f851696ad"
+    },
+    {
+      "bytes": 213441,
+      "path": ".scratch/sqlite-controller/05/source-54-strict-clippy-source.tar.gz",
+      "sha256": "96f51b87223c033f529876e2948e057b7564176b2c23078dedc54c60b810355b"
+    },
+    {
+      "bytes": 213323,
+      "path": ".scratch/sqlite-controller/05/source-55-strict-clippy-source.tar.gz",
+      "sha256": "aa6732e19f51915de17a446d735b7f5e0b97948b5554f0c37c2fa000c27f3a5b"
+    },
+    {
+      "bytes": 187393,
+      "path": ".scratch/sqlite-controller/05/tui-17-shared-source.tar.gz",
+      "sha256": "78fc66d35e82e19b6a44c5ee9deb266565c2b2206586b7f35141ebcfa378b0a8"
+    },
+    {
+      "bytes": 187544,
+      "path": ".scratch/sqlite-controller/05/tui-19-shared-source.tar.gz",
+      "sha256": "b0a53ff3520329b6bf9787a79ef99c65208f4a6088dd0d4ef9752aa2f025d185"
+    },
+    {
+      "bytes": 187977,
+      "path": ".scratch/sqlite-controller/05/tui-21-shared-source.tar.gz",
+      "sha256": "b5e9e1acc2f58cd2763aeb855eedf6c346ddf2cde21e9e7ef682987dbeb81f1a"
+    },
+    {
+      "bytes": 182522,
+      "path": ".scratch/sqlite-controller/05/ui-13-build-source.tar.gz",
+      "sha256": "99598bba6757152aa9459a8aa355345e52fa851acc49dbb65a1f51b55c1d5ff5"
+    },
+    {
+      "bytes": 182523,
+      "path": ".scratch/sqlite-controller/05/ui-14-shared-source.tar.gz",
+      "sha256": "9bab31c7bc5880031448c88e38d9eed7cab46873537e4b876b7d91d2cda85650"
+    },
+    {
+      "bytes": 185024,
+      "path": ".scratch/sqlite-controller/05/ui-15-build-source.tar.gz",
+      "sha256": "4dd9ced60175f4847a1e5d97e127ad662dd5ff4892d7391a7deebb9728cb3a2f"
+    },
+    {
+      "bytes": 184992,
+      "path": ".scratch/sqlite-controller/05/ui-16-shared-source.tar.gz",
+      "sha256": "742abbd0d6bf45c81eb9a8d9fe1843d2453cba1f92e4c8f076cd33757b963302"
+    },
+    {
+      "bytes": 648023,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-78pvmv9e.tar.gz",
+      "sha256": "1bf64ad21da47949f2a7da0773c0c9fd61d502f23d7e2343c21e86ba42f39b99"
+    },
+    {
+      "bytes": 748322,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-7tfe1iqu.tar.gz",
+      "sha256": "270e46ccc02a29470cdba869c72fa5c763eae021f288670d1947d17d1348c14a"
+    },
+    {
+      "bytes": 1667852,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-7xas4mjp.tar.gz",
+      "sha256": "27b54e0d088be9b58995f31b6bfea0ee3d65356fb7c7fc8157baa3643eca841e"
+    },
+    {
+      "bytes": 1624462,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-bh7cvmed.tar.gz",
+      "sha256": "b4de77ee17e514a0a38226497d428d2c857add96d1746e49c619c44416bbad6a"
+    },
+    {
+      "bytes": 1731029,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-jfpn5pjw.tar.gz",
+      "sha256": "552d4c08a3f9e707ba05ada8c415cdab6c3cf46cf026276e96f37a96438db294"
+    },
+    {
+      "bytes": 764507,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-jl__aeyi.tar.gz",
+      "sha256": "e0a59b74e915230d4416a2aac1c650359b44b433158bbb5c511e0432c5360b7d"
+    },
+    {
+      "bytes": 650840,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-jns192fj.tar.gz",
+      "sha256": "f4dc26e89c7e7ce0183cce6aca549ea5bd3ac34dc771c25c805fbd6f819aa51b"
+    },
+    {
+      "bytes": 2003739,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-rodqpxb1.tar.gz",
+      "sha256": "ffeba065c493402b5190e0f72c189cc5feec19a6459de587c976c7d55d6f5611"
+    },
+    {
+      "bytes": 1616248,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-rubytzgx.tar.gz",
+      "sha256": "89e09097e794e782dbe6d80453ca4a3b8ce7df821fb1c17755893c9080a26707"
+    },
+    {
+      "bytes": 1943225,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-u9yc44gi.tar.gz",
+      "sha256": "99355ac8975b955cba78bd8f5bfe6c5508d6f5f1da1c9243d819484e4ac2d793"
+    },
+    {
+      "bytes": 1650632,
+      "path": ".scratch/sqlite-controller/native/separate-cnr-zucmm4rw.tar.gz",
+      "sha256": "efc0b7daa2cf6207f35a6d4e84f8672e8ddbfed4fbfa22e7caea95e50608f904"
+    },
+    {
+      "bytes": 410016,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-186wus4z.tar.gz",
+      "sha256": "edb3136e2be59186fd67e1c73432d60c18d44f8078a83dec3cc09f9ed18366e8"
+    },
+    {
+      "bytes": 764971,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-18hmbi5a.tar.gz",
+      "sha256": "41477d5557f6799715610dfdaf5966eeafbdcc516b1a0e46e8471f95bebafe7b"
+    },
+    {
+      "bytes": 444436,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-4w4bgnwv.tar.gz",
+      "sha256": "8d72d0fcd29314626bf3270eeb842666efbaad73ae8df30eedc7770f036991fb"
+    },
+    {
+      "bytes": 1864040,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-55oe3e0p.tar.gz",
+      "sha256": "314e72d2a82149fbd20a456a7d1168991fc9f1893f017a709c37077b418e7d14"
+    },
+    {
+      "bytes": 1023590,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-5w_e_o6j.tar.gz",
+      "sha256": "6040283158ea25f9f3bfd37c74f2339fba68a14871bd59613c39d4586b0743ff"
+    },
+    {
+      "bytes": 700924,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-61_6eskr.tar.gz",
+      "sha256": "de2c25103e91c042f9d7c97559d341b7fe221b72e20d6484a8a745c5ca2bb91a"
+    },
+    {
+      "bytes": 1054357,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-7c6p_6jn.tar.gz",
+      "sha256": "1ad149fcea53c2bc277c75fcdafdf9f2fa918dbf5a8aada44f223bf654ee77aa"
+    },
+    {
+      "bytes": 512297,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-7gv6pxxt.tar.gz",
+      "sha256": "ef1e739c2adfc96824ffa2ab2b2f67dad40846873248bef3ba17eda4b85f46df"
+    },
+    {
+      "bytes": 523146,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-8f1a9yrt.tar.gz",
+      "sha256": "8b96091b21642df0e310e5570d684d4f4073f72e8e42a0fea5e05dd25c9b99bc"
+    },
+    {
+      "bytes": 763678,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-9g5rufjq.tar.gz",
+      "sha256": "9d2104b1a7598feaef2290731dbcabfbd0ce7bf2812ed3459b5cbe5a9461d412"
+    },
+    {
+      "bytes": 759833,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-_0fgd8b7.tar.gz",
+      "sha256": "9316a2e058465a6100b71b35d60b7bf156cf23a22227c3fe4b751cf01af99f43"
+    },
+    {
+      "bytes": 906454,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-cakpik3l.tar.gz",
+      "sha256": "68eed41d51cc53f430870a857ec3b3e259a25cbe90727bf907a9fd45316401b7"
+    },
+    {
+      "bytes": 1471247,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-ccqw_gxu.tar.gz",
+      "sha256": "fc55f7e3901172aa1f3cbdb43c4d27ae7edf6b95d40ed855364fc954f7cac1fd"
+    },
+    {
+      "bytes": 1140145,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-douiv87x.tar.gz",
+      "sha256": "2d5e3430b07b3ba85375607612a745a3a9fbfd055853e9a2e2e3395ec8cca5f6"
+    },
+    {
+      "bytes": 512411,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-h3vcswvh.tar.gz",
+      "sha256": "b87f6d381014f24462fb59d5dbd9c7fa8c1854d739762d9a5a290a7864500196"
+    },
+    {
+      "bytes": 1321393,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-hbo2ktfw.tar.gz",
+      "sha256": "3d6e86d04c73f238983aece188444c2979da86ec2a27291cd28f5ea1714edd6b"
+    },
+    {
+      "bytes": 907489,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-hioj0xoa.tar.gz",
+      "sha256": "492c5692080dda1500451b2371afbbbd953315be71ac2d303fd92158be4aa241"
+    },
+    {
+      "bytes": 970279,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-igvr9a4s.tar.gz",
+      "sha256": "88e174f153112d0d6ddcf0d6922f6aca4b29b3319787a645a995cf196712a666"
+    },
+    {
+      "bytes": 761226,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-jfoc6d5h.tar.gz",
+      "sha256": "b97a70fc5a09280c0339beb80229009836fd8e88f0f6dac2446dd53584a4d5ea"
+    },
+    {
+      "bytes": 923589,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-k28cqzmf.tar.gz",
+      "sha256": "ee32c79591f63ea058c3c8408244bc930eb8757e89f9e8485ec1185e84bd8ce6"
+    },
+    {
+      "bytes": 651763,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-l92vnq2r.tar.gz",
+      "sha256": "0961b1117cee85bee8bb8c0fa79f0dc0c4407dc6ce6db2f002a6fe4d78d80f34"
+    },
+    {
+      "bytes": 598484,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-nqauqlww.tar.gz",
+      "sha256": "0882eb72b6924e881526c4a3eee0ce5fe2ed4aba034dddfaf34ae58d7683eef8"
+    },
+    {
+      "bytes": 379381,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-nvs0wbip.tar.gz",
+      "sha256": "339d687c51778fb09f5894cab7a2d8f0643fccabde9fb2e89c9bbc2c59ac6077"
+    },
+    {
+      "bytes": 580116,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-oombi6zv.tar.gz",
+      "sha256": "1c547de416417be56a71d895a811d16e2de520da579ea42f0fa964e40794c743"
+    },
+    {
+      "bytes": 1329600,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-p157nndn.tar.gz",
+      "sha256": "fbea10b40bb30f944288fab4c49df758619c2d294ec1ba0f004560515d4b3879"
+    },
+    {
+      "bytes": 699090,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-p64rb1ag.tar.gz",
+      "sha256": "82fa5f940481c211d527773de7c8dc5c1013433604ffb001fc2f6b9e8c460c6f"
+    },
+    {
+      "bytes": 981004,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-r8lofik_.tar.gz",
+      "sha256": "a5cf36abab24ce5cc3a9459e515f3788c3828196a5868e7330e15fdb90051ce2"
+    },
+    {
+      "bytes": 609495,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-x8e2zkm_.tar.gz",
+      "sha256": "057c05a39e33c3c67130411759f36a1122824369ff4953193698568a54f839cb"
+    },
+    {
+      "bytes": 508988,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-yqixx68j.tar.gz",
+      "sha256": "a33fb7f9dec70b000bb1518b192c8eab5e416a2042d334cc362894e1f83c0a18"
+    },
+    {
+      "bytes": 932528,
+      "path": ".scratch/sqlite-controller/native/shared-cnr-zrg47o5l.tar.gz",
+      "sha256": "dc7abe091aa31f65b3ccf88c8b6ea09bf9f2c7e59eae658386469bf41cc36c16"
+    }
+  ],
+  "original_initial_confirm36_archive_gap": true,
+  "raw_logs_retained_ignored": true,
+  "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b"
+}

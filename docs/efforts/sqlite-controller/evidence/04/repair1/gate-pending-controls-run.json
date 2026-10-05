@@ -1,0 +1,28 @@
+{
+  "name": "gate-pending-controls",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--features",
+    "fault-injection",
+    "--test",
+    "codex",
+    "repair3_",
+    "--",
+    "--nocapture",
+    "--test-threads=2",
+    "--skip",
+    "repair3_adopted_thread_delivers_received_first_turn_notifications"
+  ],
+  "started": "2026-10-04T18:01:37.381321+00:00",
+  "ended": "2026-10-04T18:03:40.609393+00:00",
+  "elapsed_seconds": 123.22806078207213,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair1/gate-pending-controls.log",
+  "environment": {}
+}

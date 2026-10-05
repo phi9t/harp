@@ -1,0 +1,17 @@
+{
+  "name": "gate-fmt",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "command": [
+    "cargo",
+    "fmt",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--check"
+  ],
+  "started": "2026-10-04T18:10:14.258921+00:00",
+  "ended": "2026-10-04T18:10:14.697312+00:00",
+  "elapsed_seconds": 0.43837933405302465,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair1/gate-fmt.log",
+  "environment": {}
+}

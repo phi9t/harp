@@ -1,0 +1,60 @@
+[
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocation-paired-green.log",
+    "retained": "relocation-paired-green.log.gz",
+    "raw_sha256": "788c25f7e9ca982597d436895f68308ceaa6f436e67422fd1b99d4304aa9b401",
+    "sha256": "894f1dd32bea9e27b33a14e36568a3d6038161d1b5510dfbda92fd6c1de75fff"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocation-paired-red.log",
+    "retained": "relocation-paired-red.log.gz",
+    "raw_sha256": "eb645bcceb6eeba4555399ba55f024c720b2d847fae4b1ba59866469600cfce5",
+    "sha256": "885c50ca1a212ead32c9ac400c97e84a19cf6b55d4856227e57a14c5820d0488"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocation-red.log",
+    "retained": "relocation-red.log.gz",
+    "raw_sha256": "1fcb2cd9ddcf7b85fe2193a5d33996e9adb08d177c2dbab9db43380ea57681e5",
+    "sha256": "3c3b8f8318f8b3b85d64666761aeffb394122918809d7915962d0d80cbda5722"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/red-receipt.json",
+    "retained": "red-receipt.json",
+    "sha256": "0cf89e495b164cc2256f8805ad86d2594b85487bd93d4efb93a7a279223948f8"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/paired-red-receipt.json",
+    "retained": "paired-red-receipt.json",
+    "sha256": "e3fda4b8e4c2a9c9989646f8d96e7afd3fcd920515888b4c08c6df805f39cc48"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/paired-green-receipt.json",
+    "retained": "paired-green-receipt.json",
+    "sha256": "20796c93f81da68bf8a5a818ebc8070d896cbd4557dbe8e28fa4edb8cd90f222"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/paired-green-output.json",
+    "retained": "paired-green-output.json",
+    "sha256": "0966602d0226cf7dc3d88a7db332d6b8199a18552b3b1049ec1ed488a0e0cbb5"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/input-manifest.json",
+    "retained": "input-manifest.json",
+    "sha256": "0b733570f427e9ab57bc8be25a6fec2ccba5315bc8a51d9ac3e65ba8fbcc1d51"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs",
+    "retained": "relocated-inputs.tar.gz",
+    "sha256": "1d0b61792f113499ab1b6fb8f8e2cfbc2c17d102a82d8577e27b9a1058904930"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/duplicate/retention.json",
+    "retained": "duplicate-retention.json",
+    "sha256": "ccb1644028ce854edf4c7fd60a3d88a06ff5b741d16967100a64f60e8dbb9f4b"
+  },
+  {
+    "original": ".scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/digest/retention.json",
+    "retained": "digest-retention.json",
+    "sha256": "0a62f09544c3daee6e238035b1a9d9eaf9dcedd10d0b0ffbeb35c71c238fcf11"
+  }
+]

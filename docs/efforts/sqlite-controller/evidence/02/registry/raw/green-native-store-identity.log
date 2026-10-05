@@ -1,0 +1,21 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.77s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-09d8e44e34ad1918)
+
+running 1 test
+actual_private_native_initialize {'id': 1, 'result': {'userAgent': 'corenius_private_profile/0.159.3 (Debian 12.0.0; x86_64) unknown (corenius_private_profile; 0.1)', 'codexHome': '/home/worker/.codex', 'platformFamily': 'unix', 'platformOs': 'linux'}}
+native_qualified_observation {'auth_ref': 'native:dc3b76a7-8590-47d0-b733-841d066499bb', 'control_endpoint': '/tmp/cnp-6oh39kic/transport/56d3b4e2-c9d8-4de3-aab7-d306e50bb1f1/control.sock', 'controlplane_cwd': '/workspace', 'endpoint': '/tmp/cnp-6oh39kic/transport/56d3b4e2-c9d8-4de3-aab7-d306e50bb1f1/native.sock', 'incarnation': 'ed5a15807450ba1f7663c7c593a68437e04265b7fcc8c92db839b205cb8e0002', 'kind': 'app', 'own_executor_only': False, 'pid_namespace': 4026539952, 'pins': {'binary': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex', 'sha256': '8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479'}, 'catalog': {'path': '/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json', 'sha256': '262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6'}, 'companion': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host', 'sha256': 'fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5'}, 'config': {'path': '/tmp/cnp-6oh39kic/runtime.toml', 'sha256': '4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660'}, 'executor_root': None, 'kind': 'app', 'launcher': {'path': '/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py', 'sha256': '16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444'}, 'own_executor_only': False, 'provider_socket': '/tmp/cnp-6oh39kic/provider.sock', 'transport_root': '/tmp/cnp-6oh39kic/transport'}, 'runtime_pid': 2842024, 'runtime_start': '51760488', 'store_id': '6de7c9f3-f0a1-4f33-92c9-e00a9a31a9f8', 'store_identity': '31:3262614', 'workspace_generation': 'dc3b76a7-8590-47d0-b733-841d066499bb', 'workspace_identity': '31:3262605'}
+native_store_replacement_refused {'error': 'native persistent store filesystem identity changed'}
+native_profile_cancel_identity {'ok': {'binding': {'attempt': '56d3b4e2-c9d8-4de3-aab7-d306e50bb1f1', 'base': '0123456789abcdef0123456789abcdef01234567', 'brief': '0fe90b3d-7a8a-4bd0-a23e-4df2321ea1b9', 'operation': '690cea97-1de9-44c5-819d-8dfa7d0917f9', 'project': 'native', 'scope_epoch': 1}, 'boot_id': '6f48f645-3b26-40c9-93fb-db4190c7629b', 'handle': 'dc3b76a7-8590-47d0-b733-841d066499bb', 'incarnation': '473c2e19-3ef4-40b0-96aa-602a1b665c0b', 'init_start_ticks': '51760459', 'namespace_init': 2842003, 'native_store': '6de7c9f3-f0a1-4f33-92c9-e00a9a31a9f8', 'outcome': 'owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)', 'pid': 2842001, 'pid_namespace': 4026539952, 'start_ticks': '51760458', 'state': 'exited'}}
+native_owned_output {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51760488", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+
+test pinned_native_services_use_supervised_private_network_profiles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 9.13s
+

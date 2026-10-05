@@ -1,0 +1,77 @@
+{
+  "axis": "Standards",
+  "round": "repair2/3",
+  "verdict": "PASS",
+  "qualification": "source-conformance PASS with final gates/retention pending",
+  "whole_base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "repair_base": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "tree": "de03ef1b16360f0bbc7115c83f3b49dedeabbce4",
+  "changed_files": [
+    "crates/sqlite-controller/README.md",
+    "crates/sqlite-controller/src/git.rs",
+    "crates/sqlite-controller/tests/support/git_protocol.py"
+  ],
+  "findings": [],
+  "blocking_findings": 0,
+  "baseline_smells": [],
+  "source_files_identical": 34,
+  "unchanged_from_repair1": 31,
+  "contracts": [
+    {
+      "standard": "SPEC28 short transactions and no runtime/Git effects under transaction",
+      "location": "git.rs417\u2013432",
+      "assessment": "New admission performs only scoped SQL and state/identity checks, before operation insertion; no external effect added to transaction."
+    },
+    {
+      "standard": "SPEC30 current authority/idempotent exact argument identity; append-only candidate/proof records",
+      "location": "git.rs353\u2013379,417\u2013435",
+      "assessment": "Authentication and retained receipt replay precede fresh admission; refused new verification creates no newer operation or proof, preserving accepted evidence and stable replay."
+    },
+    {
+      "standard": "SPEC12/16 supported recovery and explicit migration contracts; adopted branch646 adjudication",
+      "location": "README562\u2013569",
+      "assessment": "Documents exact tested build/policy recovery, unsupported rejected initial04 journals, missing provenance refusal, retention and future migration obligation; adds no invented provenance or migration."
+    },
+    {
+      "standard": "CONSTITUTION5 behavior/contract evidence and distinguish qualification",
+      "location": "git_protocol.py388\u2013411",
+      "assessment": "Actual public verify\u2192accept\u2192freshverify fixture checks operation/revision/evidence preservation, original proof replay, physical landing and landed refusal. Identical driver source is pinned for observed RED/GREEN."
+    }
+  ],
+  "observed_regression": {
+    "red": "1 passed/1 failed,6.76s; old code freshverify passes,revision9\u219210,operations4\u21925,accepted evidence changes and original landing refuses.",
+    "green": "2 passed,7.56s(wall9.03); freshverify refuses before journal,revision9\u21929,operations4\u21924,evidence identical; stable proof replay and original landing succeed; landed freshverify also refuses without mutation.",
+    "rerun_by_reviewer": false
+  },
+  "source_pairs": {
+    "composition-red": {
+      "before_after_source_equal": true,
+      "source_files": 34,
+      "git_rs_matches_repair1": true,
+      "git_rs_matches_repair2": false,
+      "driver_sha256": "bf7ce38f0721b0bf817a1b18ea14b6cb00f21eea3ba2a63a543ca913f8a6f987",
+      "git_head_at_capture": "7d8daaebb6b63bc5aedde5111fa594750f4f134b",
+      "whole_snapshot_matches_frozen_count": 32
+    },
+    "composition-green": {
+      "before_after_source_equal": true,
+      "source_files": 34,
+      "git_rs_matches_repair1": false,
+      "git_rs_matches_repair2": true,
+      "driver_sha256": "bf7ce38f0721b0bf817a1b18ea14b6cb00f21eea3ba2a63a543ca913f8a6f987",
+      "git_head_at_capture": "7d8daaebb6b63bc5aedde5111fa594750f4f134b",
+      "whole_snapshot_matches_frozen_count": 34
+    }
+  },
+  "qualification_limits": [
+    "Bounded static Standards review of exactly three product/test delta files and relevant contracts; initial FAIL and repair1 PASS preserved.",
+    "No tests, helpers, model calls, runtime processes, signals, source edits, checkout/staging, or user-session actions; only new external reports written.",
+    "Fresh author/root affected/native4 gates and final repair2 evidence-retention tip are pending, not credited as complete. Root owns Spec/branch gates and acceptance.",
+    "Source-paired author RED/GREEN logs and fixture/source archives are observed filesystem evidence; final committed retention verification remains with root. Capture HEAD is evidence tip7d8daa, while per-file digests establish actual working source; it is not falsely labelled pristine HEAD.",
+    "Repair1 complete82/native29 evidence is historical proof for unchanged source only, not a fresh repair2 full-gate claim. Native source/fixtures remain byte-identical; unchanged hashes indexed.",
+    "Exact-build journal qualification follows adopted branch646 architectural ruling; no rejected-initial04 migration, fabricated authorized admission, or destructive cleanup authority inferred.",
+    "Owner832 monitoring routing remains outside04 product scope. Root manual bootstrap is private scratch, not implemented or qualified monitoring functionality.",
+    "No optional jj/PG/Temporal/live05/06, production, restore or power-loss qualification inferred."
+  ]
+}

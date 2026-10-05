@@ -1,0 +1,112 @@
+{
+  "verdict": "PASS",
+  "scope": "bounded ticket04 repair2/3 Spec review; not acceptance",
+  "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "base": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "tree": "de03ef1b16360f0bbc7115c83f3b49dedeabbce4",
+  "findings": [],
+  "resolved": [
+    {
+      "finding": "F4 / branch646 finding1",
+      "path": "crates/sqlite-controller/src/git.rs",
+      "line": 418,
+      "requirement": "repair2 F4; SPEC30/36/40",
+      "resolution": "Transactional submitted/current admission before operation insertion; prior receipt replay remains earlier."
+    },
+    {
+      "finding": "branch646 finding2 adopted qualification",
+      "path": "crates/sqlite-controller/README.md",
+      "line": 562,
+      "requirement": "decision02; SPEC12/16",
+      "resolution": "Explicit tested-build/policy support and preservation of rejected-version journals without invented authority or migration scope."
+    }
+  ],
+  "source_pairs": [
+    {
+      "name": "composition-green",
+      "before": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-green-before.json",
+      "after": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-green-after.json",
+      "same_files": true
+    },
+    {
+      "name": "composition-red",
+      "before": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-red-before.json",
+      "after": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-red-after.json",
+      "same_files": true
+    },
+    {
+      "name": "gate-affected",
+      "before": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/gate-affected-before.json",
+      "after": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/gate-affected-after.json",
+      "same_files": true
+    },
+    {
+      "name": "gate-native",
+      "before": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/gate-native-before.json",
+      "after": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair2/source/gate-native-after.json",
+      "same_files": true
+    }
+  ],
+  "regression_driver_sha256": "bf7ce38f0721b0bf817a1b18ea14b6cb00f21eea3ba2a63a543ca913f8a6f987",
+  "matched_before_after_source_count": 34,
+  "unchanged_source_count": 31,
+  "results": {
+    "composition-red": [
+      "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.76s"
+    ],
+    "composition-green": [
+      "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.56s"
+    ],
+    "gate-affected": [
+      "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 151.84s",
+      "ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.80s",
+      "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s",
+      "ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s",
+      "ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.29s"
+    ]
+  },
+  "validated_fixture_archives": [
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-verification-g4-zrf7gony.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-verification-g4-kh3808kd.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/normal-g4-6pisoee5.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_ref_update-g4-365k66d2.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_ref_update-g4-m3ds836a.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_ref_update-divergence-g4-rq3ndcy0.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/hostile-scratch-g4-eg128si1.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-output-g4-_qpkprql.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/capture-cancel-race-g4-g5ndxl1w.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_workspace_cleanup-g4-0gbp_l4i.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_workspace_cleanup-g4-_6q9ov7y.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/shadow-imports-g4-469kosn4.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_land_admission-g4-pw0h505o.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_land_admission-g4-7d7yr478.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-before_ref_update-g4-h93yz_3m.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-after_ref_update-g4-bmfc63m5.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-capture-g4-tddcqrlr.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-accept-g4-rdw1jkc5.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-land-g4-u0sihm7k.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-capture-g4-8x2dip7u.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/slow-inventory-g4-pdj8qx9o.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-dlw7uxmu.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-archive-g4-06f961tl.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-4zqf61o4.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-verification-g4-3mds9yqr.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-after_ref_update-g4-7gtsc34m.tar.gz",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-before_ref_update-g4-7nk0io47.tar.gz"
+  ],
+  "remaining_root_gates": [
+    "Final committed evidence retention audit",
+    "Fresh required native/default/fmt/strict-Clippy/normal-build completion",
+    "branch648 exact range independent review",
+    "root acceptance decision"
+  ],
+  "qualification_limits": [
+    "Read-only static/source and retained evidence inspection, no tests executed.",
+    "Repair1 complete82/native29 is inherited evidence, not a current repair2 full-suite claim.",
+    "Root-reported affected49 passed; remaining gate status may advance after report capture.",
+    "No live Codex, assembled06, backup/power-loss or jj qualification.",
+    "04 round2/3 and original02 cap unchanged; accepted01/03 unchanged.",
+    "Owner832 monitor product scope belongs05/06."
+  ],
+  "captured_at": "2026-10-04T18:32:44.057824+00:00"
+}

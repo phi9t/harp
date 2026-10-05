@@ -1,0 +1,214 @@
+{
+  "axis": "Spec",
+  "code_verdict": "PASS",
+  "base": "61855127702745ae66f588b43f441968213dad01",
+  "head": "18f704c90fc8704a984fd507f01349e0d938b064",
+  "scope": "Startup-readiness delta only; previous four findings not reopened",
+  "reviewed_at": "2026-10-04T11:00:55.503058+00:00",
+  "findings": [],
+  "requirement": "SPEC.md:46,54,76,78: identity-bound qualified native registration, fail-closed recovery and pinned runtime capabilities",
+  "source_trace": [
+    {
+      "location": "crates/sqlite-controller/src/codex.rs:1164",
+      "finding": "New/app or executor incarnation branch performs real authenticated readiness handshake before executor_bridge and before any environment/add intent/effect; unchanged environment/status ready check gates thread creation."
+    },
+    {
+      "location": "crates/sqlite-controller/src/native_ws.rs:63",
+      "finding": "Readiness reuses actual private Unix bridge WS upgrade, bearer token and corenius_start fence; validates HTTP101 plus challenge-specific Sec-WebSocket-Accept; failure propagates before registration.200ms read/write timeout; absolute upgrade read deadline."
+    },
+    {
+      "location": "crates/sqlite-controller/support/codex_insula.py:53",
+      "finding": "Existing trusted bridge validates current native start and child liveness before forwarding handshake to native exec-server. Endpoint checked against qualified per-attempt transport and supervisor-owned capability."
+    },
+    {
+      "location": "crates/sqlite-controller/src/supervisor.rs:624",
+      "finding": "New one-shot stop hook feature-gated, exec-kind and lead-brief gated, runs only after existing owned execution/child/executable/namespace/store checks and uses already-qualified child pidfd. Fixture separately checks start ticks/namespace/stopped state and resumes same live identity by pidfd."
+    }
+  ],
+  "evidence": {
+    "red": "red-exec-readiness-owned.log: both actual stopped native lead executors nonetheless have confirmed environment/add; test0passed1failed70.82s",
+    "green": "green-exec-readiness.log: both modes registration list empty at stopped-state observation; after actual>=3sec pause and resume exactly one confirmed environment/add, actual lead thread/turn, replacement-authority rejection and cancellation succeed;1passed91.27s",
+    "source": "Both25-entry source inventories match retained archives. GREEN25 entries match exact18f704c Git blobs. RED has owned stop hook and lacks new production readiness call; GREEN includes it.",
+    "resource_receipts": "RED10 and GREEN13 retained namespace-disposal receipts all whole_process_terminated; reviewer did not perform process actions.",
+    "observations": [
+      {
+        "log": "red-exec-readiness-owned.log",
+        "line": 14,
+        "marker": "actual_registration_while_exec_stopped",
+        "topology": "shared",
+        "data": {
+          "observation": {
+            "attempt": "b9e33035-556e-4ef2-a415-6eeee256df34",
+            "execution": "491d864e-8583-4142-883e-88f8f7c5dcad",
+            "pid_namespace": 4026540035,
+            "runtime_pid": 439959,
+            "runtime_start": "52670620"
+          },
+          "binding": "lead:p:1",
+          "registrations_while_stopped": [
+            {
+              "binding": "lead:p:1",
+              "id": "82da7d00-1d8c-4585-aa93-8ce59dbc142b",
+              "intent": {
+                "auth_ref": "native:491d864e-8583-4142-883e-88f8f7c5dcad",
+                "environmentId": "executor-b9e33035-556e-4ef2-a415-6eeee256df34-52670620",
+                "execServerUrl": "ws://127.0.0.1:43791/?corenius_start=52670620",
+                "executor_incarnation": "6c138216d1d735580fb986cac5f2b8f02491e507d177f82c1b0315777ba5fe92"
+              },
+              "kind": "environment/add",
+              "observation": {
+                "registered": true
+              },
+              "state": "confirmed"
+            }
+          ]
+        }
+      },
+      {
+        "log": "red-exec-readiness-owned.log",
+        "line": 71,
+        "marker": "actual_registration_while_exec_stopped",
+        "topology": "separate",
+        "data": {
+          "observation": {
+            "attempt": "8575ab1c-21d6-4f12-b951-9be6fc834b18",
+            "execution": "fca2790d-8574-4b22-aa31-6b9ee054c8bb",
+            "pid_namespace": 4026540118,
+            "runtime_pid": 444811,
+            "runtime_start": "52674167"
+          },
+          "binding": "lead:p:1",
+          "registrations_while_stopped": [
+            {
+              "binding": "lead:p:1",
+              "id": "4b75640d-8ed5-4d16-aed7-06c7a7652a0b",
+              "intent": {
+                "auth_ref": "native:fca2790d-8574-4b22-aa31-6b9ee054c8bb",
+                "environmentId": "executor-8575ab1c-21d6-4f12-b951-9be6fc834b18-52674167",
+                "execServerUrl": "ws://127.0.0.1:42281/?corenius_start=52674167",
+                "executor_incarnation": "d2eae06002e3bf1324fc14ee0259bfd3a7ef3bb773078d0ad7447ed6e968e1b3"
+              },
+              "kind": "environment/add",
+              "observation": {
+                "registered": true
+              },
+              "state": "confirmed"
+            }
+          ]
+        }
+      },
+      {
+        "log": "green-exec-readiness.log",
+        "line": 14,
+        "marker": "actual_registration_while_exec_stopped",
+        "topology": "shared",
+        "data": {
+          "observation": {
+            "attempt": "ba9bcee7-cc0f-490e-9a9b-74fd6f037f9f",
+            "execution": "07be07e0-c42e-430e-9d95-d8a006243a37",
+            "pid_namespace": 4026540035,
+            "runtime_pid": 467878,
+            "runtime_start": "52681091"
+          },
+          "binding": "lead:p:1",
+          "registrations_while_stopped": []
+        }
+      },
+      {
+        "log": "green-exec-readiness.log",
+        "line": 16,
+        "marker": "actual_exec_ready_recovered_one_registration",
+        "topology": "shared",
+        "data": {
+          "readiness": {
+            "observation": {
+              "attempt": "ba9bcee7-cc0f-490e-9a9b-74fd6f037f9f",
+              "execution": "07be07e0-c42e-430e-9d95-d8a006243a37",
+              "pid_namespace": 4026540035,
+              "runtime_pid": 467878,
+              "runtime_start": "52681091"
+            },
+            "binding": "lead:p:1",
+            "registrations_while_stopped": [],
+            "actual_pause_seconds": 3.013696057954803
+          },
+          "registration": {
+            "binding": "lead:p:1",
+            "id": "2ed6baa9-8fb3-4068-8fef-2140a4643c42",
+            "intent": {
+              "auth_ref": "native:07be07e0-c42e-430e-9d95-d8a006243a37",
+              "environmentId": "executor-ba9bcee7-cc0f-490e-9a9b-74fd6f037f9f-52681091",
+              "execServerUrl": "ws://127.0.0.1:41663/?corenius_start=52681091",
+              "executor_incarnation": "fbaab836ca26b11f8147aa0165e6090bd1daacc10ccd4e6a1c0bf27072041f33"
+            },
+            "kind": "environment/add",
+            "observation": {
+              "registered": true
+            },
+            "state": "confirmed"
+          }
+        }
+      },
+      {
+        "log": "green-exec-readiness.log",
+        "line": 82,
+        "marker": "actual_registration_while_exec_stopped",
+        "topology": "separate",
+        "data": {
+          "observation": {
+            "attempt": "c9577ee7-e7ba-42eb-b123-fec6fb297e1d",
+            "execution": "cb07d6a1-0259-4de7-8b2d-a789cafd6ed7",
+            "pid_namespace": 4026540118,
+            "runtime_pid": 472792,
+            "runtime_start": "52685920"
+          },
+          "binding": "lead:p:1",
+          "registrations_while_stopped": []
+        }
+      },
+      {
+        "log": "green-exec-readiness.log",
+        "line": 84,
+        "marker": "actual_exec_ready_recovered_one_registration",
+        "topology": "separate",
+        "data": {
+          "readiness": {
+            "observation": {
+              "attempt": "c9577ee7-e7ba-42eb-b123-fec6fb297e1d",
+              "execution": "cb07d6a1-0259-4de7-8b2d-a789cafd6ed7",
+              "pid_namespace": 4026540118,
+              "runtime_pid": 472792,
+              "runtime_start": "52685920"
+            },
+            "binding": "lead:p:1",
+            "registrations_while_stopped": [],
+            "actual_pause_seconds": 3.0166002210462466
+          },
+          "registration": {
+            "binding": "lead:p:1",
+            "id": "afeaaf89-e84d-4aa7-a424-312bbd6bd00c",
+            "intent": {
+              "auth_ref": "native:cb07d6a1-0259-4de7-8b2d-a789cafd6ed7",
+              "environmentId": "executor-c9577ee7-e7ba-42eb-b123-fec6fb297e1d-52685920",
+              "execServerUrl": "ws://127.0.0.1:39729/?corenius_start=52685920",
+              "executor_incarnation": "3bfba08cd2d295d85dc0a0adc65792f028925b84afbed71a432b1dd8b0818ae2"
+            },
+            "kind": "environment/add",
+            "observation": {
+              "registered": true
+            },
+            "state": "confirmed"
+          }
+        }
+      }
+    ]
+  },
+  "full_gate_status": "PENDING: fresh58 author/root gates and final evidence tip are not covered by this code verdict. Prior618 root57pass and separate author16/17native failure contextual only.",
+  "limits": [
+    "Read-only review and log/archive inspection; no tests launched.",
+    "The200ms is not a new guaranteed wall-clock bound on the entire connector: inherited blocking UnixStream::connect and initial write precede absolute upgrade-read deadline. Trusted bridge saturation/hang not newly qualified; this is inherited transport behavior, not a startup-delta regression.",
+    "Readiness is a point-in-time authenticated listener observation; subsequent environment/status still independently gates use.",
+    "Stopped-state registration is sampled around2.3seconds within the>=3second pause, not continuously logged. Source ordering establishes the pre-registration guard.",
+    "No paid/live inference, upstream/account requests, credentials, checkout modifications, tmux, cleanup or subagents; no expanded05/06 qualification."
+  ]
+}

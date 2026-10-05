@@ -1,0 +1,26 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 3 tests
+
+thread 'pause_prevents_prepared_dispatch_and_cancel_overtakes_start' (2492401) panicked at tests/runtime.rs:306:5:
+paused prepared operation must not start an effect
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test pause_prevents_prepared_dispatch_and_cancel_overtakes_start ... FAILED
+
+thread 'independently_supervised_workers_survive_restart_and_cancel_descendants' (2492399) panicked at tests/runtime.rs:208:5:
+qualified PID namespace init identity required: {"binding":{"attempt":"188271f9-d313-4b84-8234-16e8fdcb5349","operation":"4bf920a6-ae2c-4d03-9871-26bbd37d5bce","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"f62208ce-ec62-47f4-afd2-4ff24752197b","incarnation":"fc974809-3431-48ff-9c95-95a707f99d77","outcome":null,"pid":2492410,"start_ticks":"50720955","state":"running"}
+test independently_supervised_workers_survive_restart_and_cancel_descendants ... FAILED
+lost_reply_adopted={"binding":{"attempt":"b94d864e-6f02-4727-bcf4-f4ad79ffec5f","operation":"36bed535-f2fd-4342-89f3-7e8d2ac62dd7","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"920200db-8c8d-4de4-9752-4fe3d03374c1","incarnation":"506d4b8c-c5e2-4cf2-b492-1d28208d192a","outcome":null,"pid":2492408,"start_ticks":"50720955","state":"running"}; unreachable_supervisor_occupied_slots=1
+test lost_start_reply_is_looked_up_and_unavailable_supervisor_keeps_capacity ... ok
+
+failures:
+
+failures:
+    independently_supervised_workers_survive_restart_and_cancel_descendants
+    pause_prevents_prepared_dispatch_and_cancel_overtakes_start
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+error: test failed, to rerun pass `--test runtime`

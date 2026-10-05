@@ -1,0 +1,110 @@
+{
+  "axis": "Spec",
+  "verdict": "PASS",
+  "base": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "source": "4d5fbff0323f27c6dcb30aec5cf3df7a839511e0",
+  "crate_tree": "fd4c1993248cadf90e5ac06cb55f13c53e141550",
+  "new_blocking_findings": [],
+  "addressed_findings": [
+    {
+      "id": "snapshot",
+      "previous_severity": "High",
+      "status": "ADDRESSED",
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/crates/sqlite-controller/src/kata.rs",
+      "line": 433,
+      "assessment": "Descriptor-relative O_NOFOLLOW traversal anchors directories; regular-file metadata and bounded reads use the same opened descriptor. Final-file and ancestor replacements cannot dereference outside symlinks.",
+      "requirement_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:82",
+      "requirement_quote": "Capture dirty/uncommitted input by an explicit immutable snapshot",
+      "red": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-snapshot-red.log",
+      "green": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-snapshot-green.log"
+    },
+    {
+      "id": "responsiveness",
+      "previous_severity": "Medium",
+      "status": "ADDRESSED",
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/crates/sqlite-controller/src/service.rs",
+      "line": 62,
+      "assessment": "Autonomous Kata drain runs on a controller-owned thread, outside socket acceptance. Existing effect mutex serializes publication and DB locks remain short. Explicit operator diagnostic reconciliation remains synchronous.",
+      "requirement_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:28",
+      "requirement_quote": "Use bounded busy handling and short transactions.",
+      "red": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-responsiveness-red2.log",
+      "green": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-responsiveness-green.log"
+    },
+    {
+      "id": "independent_publication",
+      "previous_severity": "Medium",
+      "status": "ADDRESSED",
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/crates/sqlite-controller/src/kata.rs",
+      "line": 1060,
+      "assessment": "Earliest pending effect per project/task preserves task order. Failed heads are withheld only for that task and rotated behind untouched heads; genuine B metadata/comments publish despite A projection drift.",
+      "requirement_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:20",
+      "requirement_quote": "Offline/unconfirmed synchronization remains visible and retryable",
+      "red": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-isolation-red.log",
+      "green": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-isolation-green.log"
+    },
+    {
+      "id": "progress_bounds",
+      "previous_severity": "Medium",
+      "status": "ADDRESSED",
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/crates/sqlite-controller/src/kata.rs",
+      "line": 915,
+      "assessment": "4096-byte UTF-8 progress excerpt and 8192-byte comment framing retain operation marker and original local report. ASCII and escaping/multibyte 65536-byte inputs publish.",
+      "requirement_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:84",
+      "requirement_quote": "retain controller event/revision and acknowledged Kata revision",
+      "red": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-progress-red.log",
+      "green": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-progress-green.log"
+    },
+    {
+      "id": "default_feature",
+      "previous_severity": "Medium",
+      "status": "ADDRESSED",
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/crates/sqlite-controller/tests/kata.rs",
+      "line": 1,
+      "assessment": "The deterministic fixture module requires fault-injection. Feature-off runs zero such fixtures; feature-on retains protocol plus five regression cases.",
+      "requirement_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:16",
+      "requirement_quote": "its own configuration, documentation and regression suite",
+      "red": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-default-feature-red.log",
+      "green": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-after-fi-default-feature.log"
+    },
+    {
+      "id": "unchanged_recovery",
+      "previous_severity": "P2",
+      "status": "ADDRESSED",
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/crates/sqlite-controller/src/kata.rs",
+      "line": 647,
+      "assessment": "Successful equality now compares current drift independently, retains a recovery event, clears obsolete availability uncertainty, and preserves real projection drift and immutable admitted/current versions. Prior failure events remain.",
+      "requirement_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:84",
+      "requirement_quote": "show pending synchronization or drift",
+      "red": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-final-driver-availability-red.log",
+      "green": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-availability-green.log"
+    }
+  ],
+  "native_fixture": {
+    "status": "ADDRESSED_WITHIN_AUTHORIZED_FI_SCOPE",
+    "source_locations": [
+      "src/codex.rs:88",
+      "src/codex.rs:153",
+      "src/codex.rs:916",
+      "src/codex.rs:1782",
+      "tests/support/native_registry.py:249",
+      "tests/support/native_registry.py:275"
+    ],
+    "assessment": "Exact admitted B scheduling deferral is before its native RPC, disarms after real A projection, and retries normally after per-actor freeze. First qualified A snapshot stays unchanged; only both exact qualified snapshots authorize global hold. Original30s readiness,15s event deadlines and real A history/client/frame/exactly-once/thread-turn counts plus B creation control remain. All native source changes are cfg(fault-injection), active adoption fixture only.",
+    "evidence": "Same native driver SHA e0c809d371fc40a62e13c51f0d1eaf286207566b18851afe8e5b9bca87a8cffa; actual controlled shared/separate RED94.29s and GREEN61.20s. Root exact case61.11s passes both."
+  },
+  "gates": {
+    "root": "PASS_SCOPED_50",
+    "author": "PASS_COMPOSED_50",
+    "full_current_native_suite": "NOT_RUN",
+    "release": "NOT_QUALIFIED"
+  },
+  "limitations": [
+    "Independent read-only Spec review of fixed repair delta; root alone owns acceptance. No tests rerun, runtime/process operations, checkout writes, helpers, credential reads, or upstream calls.",
+    "Current root gate is scoped 49 affected tests plus one exact native case exercising both topologies, not all current native25. Historical initial root24/25 failure is retained; original actual B list_turns refusal and disposed-state causal uncertainty remain.",
+    "Controlled native RED proves declared scheduling trap, not reproduction of the unsupported native method. FI correction does not change native production capability or repair642.",
+    "Explicit operator diagnostic reconcile remains synchronous; autonomous delayed-upstream responsiveness is qualified.",
+    "Operator must explicitly select complete referenced source-file closure. Additive kata-v1/current binary+matching configuration contract remains unchanged; old-binary downgrade fencing is unsupported.",
+    "04 owns unaccepted native642 cleanup obligation; final06 whole assembled gate and live qualification remain mandatory. No runtime retirement/replacement completion or model/live qualification inferred.",
+    "Retained resource reports are read-only observed dispositions, not new reviewer process scans: root native31 identities/0 matching live/7 terminated whole-process receipts; Kata6 fixtures/20 identities/0 matching live/28 terminal records."
+  ]
+}

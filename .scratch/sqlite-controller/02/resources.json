@@ -1,0 +1,120 @@
+{
+  "observed_utc": "2026-10-04T05:42:39Z",
+  "surviving_owned_executions": [],
+  "kernel_identity_observations": [
+    {
+      "pid": 2767770,
+      "expected_start_ticks": "50806878",
+      "operation": "915f4d4d-314c-47bd-9acb-2e1cf751aea9",
+      "handle": "785dd761-7ec9-4ca0-bf43-086e10374933",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767775,
+      "expected_start_ticks": "50806879",
+      "operation": "915f4d4d-314c-47bd-9acb-2e1cf751aea9",
+      "handle": "785dd761-7ec9-4ca0-bf43-086e10374933",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767790,
+      "expected_start_ticks": "50806881",
+      "operation": "c472e146-0a20-48f6-9063-b692db1ceefb",
+      "handle": "22c8f5df-03fe-4768-b306-5a521fa3e0c5",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767797,
+      "expected_start_ticks": "50806882",
+      "operation": "c472e146-0a20-48f6-9063-b692db1ceefb",
+      "handle": "22c8f5df-03fe-4768-b306-5a521fa3e0c5",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767816,
+      "expected_start_ticks": "50806883",
+      "operation": "e4acc0e4-39e7-4876-ba53-c88f91bd7ea3",
+      "handle": "1942c617-9e47-4ce1-bb1f-4bac66dd4c97",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767820,
+      "expected_start_ticks": "50806884",
+      "operation": "e4acc0e4-39e7-4876-ba53-c88f91bd7ea3",
+      "handle": "1942c617-9e47-4ce1-bb1f-4bac66dd4c97",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767830,
+      "expected_start_ticks": "50806885",
+      "operation": "01117f16-c867-419b-b60f-f2f75740934a",
+      "handle": "6bdeabf7-1e32-4512-ab5f-206aa4a36335",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767843,
+      "expected_start_ticks": "50806886",
+      "operation": "01117f16-c867-419b-b60f-f2f75740934a",
+      "handle": "6bdeabf7-1e32-4512-ab5f-206aa4a36335",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767776,
+      "expected_start_ticks": "50806879",
+      "operation": "3fd6dc91-3d69-4a84-bfdf-2aa93719c362",
+      "handle": "3b52fd70-5d6d-474a-9e3b-b9c387f38c48",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767787,
+      "expected_start_ticks": "50806880",
+      "operation": "3fd6dc91-3d69-4a84-bfdf-2aa93719c362",
+      "handle": "3b52fd70-5d6d-474a-9e3b-b9c387f38c48",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767937,
+      "expected_start_ticks": "50806899",
+      "operation": "1c6aee68-408d-47dc-b31f-20d76336e4e9",
+      "handle": "ec7304f0-f2d7-4bd9-95dc-8639a3c2635e",
+      "role": "pid",
+      "kernel_state": "absent",
+      "same_identity": false
+    },
+    {
+      "pid": 2767941,
+      "expected_start_ticks": "50806899",
+      "operation": "1c6aee68-408d-47dc-b31f-20d76336e4e9",
+      "handle": "ec7304f0-f2d7-4bd9-95dc-8639a3c2635e",
+      "role": "namespace_init",
+      "kernel_state": "absent",
+      "same_identity": false
+    }
+  ],
+  "retained_resources": [
+    "isolated git worktree sqlite02/runtime",
+    "standalone Cargo target cache",
+    "explicitly retained .scratch/sqlite-controller/02 logs"
+  ],
+  "fixture_roots_removed": true
+}

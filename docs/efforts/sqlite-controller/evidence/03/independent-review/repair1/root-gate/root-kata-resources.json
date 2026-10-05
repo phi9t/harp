@@ -1,0 +1,320 @@
+{
+  "fixtures": [
+    {
+      "root": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/k3-mc3q8rgo",
+      "qualification_sha256": "1845cae34b27fb8e99ac4c64c5b5e124412939eee2427052f615c9f1faa86090",
+      "records": 9
+    },
+    {
+      "root": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/k3-5qbm999c",
+      "qualification_sha256": "e622cfc767f3d2bf36dbc9154cee3016916a405422ef9ca276f0d78a320c97fe",
+      "records": 5
+    },
+    {
+      "root": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/k3-x3rzf3fp",
+      "qualification_sha256": "063b84920a065d42c133ae794ea71f341fee99530fa142c738deeab622522495",
+      "records": 6
+    },
+    {
+      "root": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/k3-3m5gmwcl",
+      "qualification_sha256": "fb526d7f5d422cb36351235a15b85976688fcd138e8b6c8c736cfa21046d5153",
+      "records": 11
+    },
+    {
+      "root": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/k3-e8k6ecd4",
+      "qualification_sha256": "a9f4befc882bbc2b2cc7b3f3007670d5b4117ab61a3eb3b4e68dd5019ff26d26",
+      "records": 38
+    },
+    {
+      "root": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/k3-j3zqy3sp",
+      "qualification_sha256": "0c07698ddefdc66e98adf346429232b0edaef53e80c563b1778ed234e31890b3",
+      "records": 5
+    }
+  ],
+  "identities": [
+    {
+      "pid": 3239845,
+      "start_ticks": "54268581",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3239846,
+      "start_ticks": "54268581",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3239986,
+      "start_ticks": "54268590",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3239987,
+      "start_ticks": "54268590",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3240023,
+      "start_ticks": "54268602",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3240143,
+      "start_ticks": "54268671",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3240215,
+      "start_ticks": "54268679",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3240252,
+      "start_ticks": "54268701",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3240338,
+      "start_ticks": "54268709",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3240665,
+      "start_ticks": "54268796",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3240734,
+      "start_ticks": "54268804",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3240747,
+      "start_ticks": "54268814",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3240757,
+      "start_ticks": "54268818",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3240886,
+      "start_ticks": "54268831",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3241052,
+      "start_ticks": "54268857",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3241166,
+      "start_ticks": "54268879",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3241233,
+      "start_ticks": "54268888",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3241234,
+      "start_ticks": "54268895",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3241326,
+      "start_ticks": "54268931",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3241402,
+      "start_ticks": "54268940",
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "kind": "controller",
+      "state": "absent"
+    }
+  ],
+  "matching_live": 0,
+  "terminal_records": [
+    {
+      "name": "owned-process-terminal",
+      "pid": 3239987,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3239846,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3239987,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240023,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3239845,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3239986,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240252,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240338,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240665,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240886,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240665,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240734,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240886,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241052,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240143,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240215,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240757,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240747,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241233,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240143,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240215,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240747,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3240757,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241166,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241233,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241234,
+      "exit_code": -15
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241326,
+      "exit_code": 0
+    },
+    {
+      "name": "owned-process-terminal",
+      "pid": 3241402,
+      "exit_code": -15
+    }
+  ],
+  "method": "Read-only pidfd/stat against positive starts emitted by the exact root-owned fixed driver. No foreign process enumeration/signalling. Durable task rows are not rewritten as stopped."
+}

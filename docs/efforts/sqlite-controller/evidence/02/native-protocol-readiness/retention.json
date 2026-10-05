@@ -1,0 +1,40 @@
+{
+  "origin": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg",
+  "all_origin_files_verified": 312,
+  "external_aliases_to_pinned_binary": [
+    {
+      "path": "codex/tmp/arg0/codex-arg089Pmlz/apply_patch",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "codex/tmp/arg0/codex-arg089Pmlz/applypatch",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "codex/tmp/arg0/codex-arg089Pmlz/codex-execve-wrapper",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "codex/tmp/arg0/codex-arg089Pmlz/codex-linux-sandbox",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    }
+  ],
+  "classification": "MODEL_FREE_NATIVE_PROTOCOL_PRIMITIVES_ONLY",
+  "not_qualified": [
+    "private networking/credential relay",
+    "sterile shared controlplane containment",
+    "full controller adapter authorization",
+    "live model/account qualification"
+  ],
+  "critical_constraint": "Native server restart loses remote binding and resume selects local; require explicit validated restoration per turn and fail-closed UI input.",
+  "metadata_sha256": {
+    "readiness.md": "b3c6631b6a5d0471d8014c2cb46d8635a48382b5547b8d88cb323c8554bcd34a",
+    "tool-pins.json": "72ce77d211cf60d9379b5ba0bfc7b171b7038375e470c138aa252adddea974ce",
+    "manifest.json": "8e5db2f17e3a1843fad9e1ea8effe5b57cafada0ffea99b346c4cefd576ef832",
+    "cleanup-checks.json": "91c92a2c5152e8190de9556d94108a133840963d51ab88700c1e555c1a1cdd7e"
+  }
+}

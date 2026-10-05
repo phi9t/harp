@@ -1,0 +1,25 @@
+{
+  "original_base": "cf52c11055be09298e6ecc1353e5901e45726551",
+  "integration_base": "55bb58b344c44990f527b7bfb61947702fbe5445",
+  "branch": "sqlite01/storage",
+  "tested_at_utc": "2026-10-04T04:19:41.626036+00:00",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "cargo": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+  "files_sha256": {
+    "crates/sqlite-controller/Cargo.toml": "12324d7fe4e265326be0dc1d0b2a48cf60e860e0dec80b7d722f619f04653844",
+    "crates/sqlite-controller/Cargo.lock": "52dc89ac3aaf894d6b765eb152b9adb7984052787bdc3974fbac4180a3b0ed3b",
+    "crates/sqlite-controller/README.md": "beecc11cf17b2cb32c36c4b4cf398a03b03b37d93cc6e2032015526865da55d3",
+    "tools/agents/checks.d/70-sqlite-controller.sh": "f3949ef5dcc7ecd260e207c42f3902cc30da1b7492626ecfe97146a71c830436",
+    "crates/sqlite-controller/src/lib.rs": "533ebabc30e817f11262fc17cd0f1784522add340b7de39c50f900b8f17aa737",
+    "crates/sqlite-controller/src/main.rs": "5645f68875e1835bd5b16bdd7ecb9384b8dd0ea15b1b5470150f76d0d66e40b1",
+    "crates/sqlite-controller/src/query.rs": "b77d0ba118b431c3e2d1e2cd74bcb2913ddf5c85ffe17e8c40d72421864e9f2d",
+    "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+    "crates/sqlite-controller/src/service.rs": "1f25ccaea9a8bf717556e36a7ca62820f24ac5fceff01c5051124ca384626714",
+    "crates/sqlite-controller/tests/process.rs": "7f5e2689eb5a73abe99f839a4a1e9e6a8d49c08958a39cc9e417a68fb5fe8b16",
+    "crates/sqlite-controller/tests/public.rs": "9f94a313bbf86a3a8215bbc8a2f08850ced5fba7488484515bc787a7e770b65b"
+  },
+  "source_manifest_sha256": "4669531b12ce589d2b763bb1df5367857bf57df304d4ac1298418162aa683378",
+  "sqlite_crate": "rusqlite=0.38.0 bundled",
+  "native_binding": "libsqlite3-sys=0.36.0",
+  "qualification": "model-free local persistent SQLite and controller process kill; no live runtime or physical Git/Kata effects"
+}

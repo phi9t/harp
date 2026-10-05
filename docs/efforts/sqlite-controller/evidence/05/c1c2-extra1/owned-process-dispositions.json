@@ -1,0 +1,549 @@
+{
+  "all_tested_processes_waited": true,
+  "all_captured_namespaces_terminal": true,
+  "active_handles": [],
+  "unknown_effects": [],
+  "records": [
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/probe-retention/.scratch/sqlite-controller/04/fixtures/review-progress-attempt-provenance-g4-0fieaxt2.tar.gz",
+      "records": {
+        "processes": [
+          {
+            "name": "supervisor",
+            "pid": 115453,
+            "start_ticks": "58591987",
+            "argv": [
+              "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+              "/tmp/g4-0fieaxt2/supervisor.json",
+              "/tmp/g4-0fieaxt2/supervisor.sock"
+            ],
+            "exit": -9
+          },
+          {
+            "name": "controller",
+            "pid": 115495,
+            "start_ticks": "58592047",
+            "argv": [
+              "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+              "/tmp/g4-0fieaxt2/state.db",
+              "/tmp/g4-0fieaxt2/controller.sock"
+            ],
+            "exit": -9
+          }
+        ],
+        "namespaces": [
+          {
+            "pid": 115727,
+            "start_ticks": "58592175",
+            "handle": "d306c540-54b2-4579-86a6-f75d505b4530",
+            "pid_namespace": 4026539685,
+            "stopped_before_fixture_cleanup": true,
+            "whole_process_terminated": true
+          },
+          {
+            "pid": 116226,
+            "start_ticks": "58592562",
+            "handle": "fc261b40-1497-4623-9e80-ccba057a9d6e",
+            "pid_namespace": 4026539687,
+            "stopped_before_fixture_cleanup": false,
+            "whole_process_terminated": true
+          }
+        ]
+      }
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/04/fixtures/attempt-progress-g4-qrd7dcna.tar.gz",
+      "records": {
+        "processes": [
+          {
+            "name": "supervisor",
+            "pid": 158112,
+            "start_ticks": "58630233",
+            "argv": [
+              "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+              "/tmp/g4-qrd7dcna/supervisor.json",
+              "/tmp/g4-qrd7dcna/supervisor.sock"
+            ],
+            "exit": -9
+          },
+          {
+            "name": "controller",
+            "pid": 158156,
+            "start_ticks": "58630294",
+            "argv": [
+              "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+              "/tmp/g4-qrd7dcna/state.db",
+              "/tmp/g4-qrd7dcna/controller.sock"
+            ],
+            "exit": -9
+          }
+        ],
+        "namespaces": [
+          {
+            "pid": 158220,
+            "start_ticks": "58630422",
+            "handle": "c7b39904-7b54-4040-9e99-87a7763d7138",
+            "pid_namespace": 4026539685,
+            "stopped_before_fixture_cleanup": true,
+            "whole_process_terminated": true
+          },
+          {
+            "pid": 158667,
+            "start_ticks": "58630809",
+            "handle": "fbafb7e8-a714-4342-926e-12131fb0379d",
+            "pid_namespace": 4026539687,
+            "stopped_before_fixture_cleanup": true,
+            "whole_process_terminated": true
+          }
+        ]
+      }
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/04/fixtures/attempt-progress-g4-k059zhl7.tar.gz",
+      "records": {
+        "processes": [
+          {
+            "name": "supervisor",
+            "pid": 141500,
+            "start_ticks": "58612355",
+            "argv": [
+              "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+              "/tmp/g4-k059zhl7/supervisor.json",
+              "/tmp/g4-k059zhl7/supervisor.sock"
+            ],
+            "exit": -9
+          },
+          {
+            "name": "controller",
+            "pid": 141530,
+            "start_ticks": "58612415",
+            "argv": [
+              "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+              "/tmp/g4-k059zhl7/state.db",
+              "/tmp/g4-k059zhl7/controller.sock"
+            ],
+            "exit": -9
+          }
+        ],
+        "namespaces": [
+          {
+            "pid": 141639,
+            "start_ticks": "58612544",
+            "handle": "3eca05d6-5c0d-4515-a1e5-a67f30a6a476",
+            "pid_namespace": 4026539685,
+            "stopped_before_fixture_cleanup": true,
+            "whole_process_terminated": true
+          },
+          {
+            "pid": 142048,
+            "start_ticks": "58612931",
+            "handle": "9e3b5e4a-7cb8-4d46-828c-f05815b8be9e",
+            "pid_namespace": 4026539687,
+            "stopped_before_fixture_cleanup": true,
+            "whole_process_terminated": true
+          }
+        ]
+      }
+    },
+    {
+      "run": "C1-RED",
+      "namespaces": [
+        {
+          "pid": 117985,
+          "start_ticks": "58593667",
+          "execution_handle": "6e11af01-14af-4003-83ae-7543fc7f0eed",
+          "pid_namespace": 4026539685,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 117987,
+          "start_ticks": "58593668",
+          "execution_handle": "ee7b7659-a69b-4e5d-8ccb-b9b03e31142e",
+          "pid_namespace": 4026539869,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 118469,
+          "start_ticks": "58593721",
+          "execution_handle": "986d9bdb-73d4-43ae-ad41-61957ce1161e",
+          "pid_namespace": 4026540118,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 120082,
+          "start_ticks": "58594896",
+          "execution_handle": "3b0f11db-dc20-425e-a436-f0002aa3bcb2",
+          "pid_namespace": 4026540284,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 120816,
+          "start_ticks": "58595556",
+          "execution_handle": "a47088f5-15a7-457b-865c-993bbcf69228",
+          "pid_namespace": 4026540286,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        }
+      ]
+    },
+    {
+      "run": "C1-RED",
+      "processes": [
+        {
+          "name": "workers",
+          "pid": 115477,
+          "start_stat": "115477 (corenius-attemp) R 115415 115399 115399 0 -1 4194304 134 0 0 0 2 0 0 0 20 0 1 0 58592035 4763648 293 18446744073709551615 94470829753616 94470831110784 140721935207280 0 0 0 0 4096 1088 0 0 0 17 90 0 0 0 0 0 94470831189584 94470831192128 94470852071424 140721935212182 140721935212323 140721935212323 140721935212457 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-rq03a7rv/workers.json",
+            "/tmp/cnr-rq03a7rv/workers.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "3774719ef63aa388398cb2f51c64ef48c3b2e7f9f684832f8234b523277e1de2"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controlplanes",
+          "pid": 116438,
+          "start_stat": "116438 (corenius-attemp) R 115415 115399 115399 0 -1 4194304 135 0 0 0 2 0 0 0 20 0 1 0 58592831 4763648 294 18446744073709551615 94252807267600 94252808624768 140728825940336 0 0 0 0 4096 1088 0 0 0 17 186 0 0 0 0 0 94252808703568 94252808706112 94252825817088 140728825941638 140728825941791 140728825941791 140728825941929 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-rq03a7rv/controlplanes.json",
+            "/tmp/cnr-rq03a7rv/controlplanes.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "3774719ef63aa388398cb2f51c64ef48c3b2e7f9f684832f8234b523277e1de2"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controller",
+          "pid": 117965,
+          "start_stat": "117965 (corenius-sqlite) S 115415 115399 115399 0 -1 1077936128 411 0 0 0 0 0 0 0 20 0 2 0 58593640 81432576 2104 18446744073709551615 94826289668816 94826295739248 140734305619776 0 0 0 0 4096 1088 0 0 0 17 187 0 0 0 0 0 94826295997600 94826296022152 94826297421824 140734305622435 140734305622574 140734305622574 140734305623978 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "/tmp/cnr-rq03a7rv/state.db",
+            "/tmp/cnr-rq03a7rv/controller.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "sha256": "c59dfa2c95f11b76793c83deeaf96236c8da5aabe1dd5e6946e224a4eea2c12a"
+          },
+          "exit": -9
+        }
+      ]
+    },
+    {
+      "run": "C1-RED-corrected",
+      "namespaces": [
+        {
+          "pid": 132922,
+          "start_ticks": "58606565",
+          "execution_handle": "2978a923-a76e-468f-a148-e05c5be3554e",
+          "pid_namespace": 4026539685,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 132924,
+          "start_ticks": "58606567",
+          "execution_handle": "433e702f-a8e3-4500-874a-c591fb6f6fb4",
+          "pid_namespace": 4026539869,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 133893,
+          "start_ticks": "58606619",
+          "execution_handle": "8480d49a-1b90-4f4a-89a4-73e7821e2978",
+          "pid_namespace": 4026540118,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 135243,
+          "start_ticks": "58607795",
+          "execution_handle": "0d640370-9ba7-4c10-8707-7d96f17d6d10",
+          "pid_namespace": 4026540284,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 136556,
+          "start_ticks": "58608455",
+          "execution_handle": "08512274-eb28-4155-b6f6-42f0b4896237",
+          "pid_namespace": 4026540286,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        }
+      ]
+    },
+    {
+      "run": "C1-RED-corrected",
+      "processes": [
+        {
+          "name": "workers",
+          "pid": 127814,
+          "start_stat": "127814 (corenius-attemp) R 127791 127782 127782 0 -1 4194304 133 0 0 0 2 0 0 0 20 0 1 0 58604912 4763648 293 18446744073709551615 94899441714448 94899443071616 140736998328416 0 0 0 0 4096 1088 0 0 0 17 104 0 0 0 0 0 94899443150416 94899443152960 94899455705088 140736998330006 140736998330147 140736998330147 140736998330281 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-w9ucxsuh/workers.json",
+            "/tmp/cnr-w9ucxsuh/workers.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "3774719ef63aa388398cb2f51c64ef48c3b2e7f9f684832f8234b523277e1de2"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controlplanes",
+          "pid": 129115,
+          "start_stat": "129115 (corenius-attemp) R 127791 127782 127782 0 -1 4194304 134 0 0 0 2 0 0 0 20 0 1 0 58605721 4763648 277 18446744073709551615 94280434504976 94280435862144 140732473199840 0 0 0 0 4096 1088 0 0 0 17 102 0 0 0 0 0 94280435940944 94280435943488 94280468619264 140732473204358 140732473204511 140732473204511 140732473204649 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-w9ucxsuh/controlplanes.json",
+            "/tmp/cnr-w9ucxsuh/controlplanes.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "3774719ef63aa388398cb2f51c64ef48c3b2e7f9f684832f8234b523277e1de2"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controller",
+          "pid": 132907,
+          "start_stat": "132907 (corenius-sqlite) S 127791 127782 127782 0 -1 1077936128 412 0 0 0 0 0 0 0 20 0 2 0 58606538 81432576 2103 18446744073709551615 94586679505616 94586685576048 140731724485104 0 0 0 0 4096 1088 0 0 0 17 51 0 0 0 0 0 94586685834400 94586685858952 94586688147456 140731724487075 140731724487214 140731724487214 140731724488618 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "/tmp/cnr-w9ucxsuh/state.db",
+            "/tmp/cnr-w9ucxsuh/controller.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "sha256": "c59dfa2c95f11b76793c83deeaf96236c8da5aabe1dd5e6946e224a4eea2c12a"
+          },
+          "exit": -9
+        }
+      ]
+    },
+    {
+      "run": "C1-GREEN",
+      "namespaces": [
+        {
+          "pid": 159262,
+          "start_ticks": "58631935",
+          "execution_handle": "8b85bd08-8413-4f20-9441-57b3abd75690",
+          "pid_namespace": 4026539685,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 159264,
+          "start_ticks": "58631937",
+          "execution_handle": "fa191949-6cc4-4305-848b-96b66d7b87aa",
+          "pid_namespace": 4026539869,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 159722,
+          "start_ticks": "58631989",
+          "execution_handle": "41c8b77e-d51a-41bb-847f-380d5f0a501b",
+          "pid_namespace": 4026540118,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 161495,
+          "start_ticks": "58633164",
+          "execution_handle": "d551ce05-39f4-41f6-b241-4d2c1046fdd5",
+          "pid_namespace": 4026540284,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        }
+      ]
+    },
+    {
+      "run": "C1-GREEN",
+      "processes": [
+        {
+          "name": "workers",
+          "pid": 158148,
+          "start_stat": "158148 (corenius-attemp) R 158091 158074 158074 0 -1 4194304 134 0 0 0 2 0 0 0 20 0 1 0 58630283 4767744 279 18446744073709551615 94196135803856 94196137161024 140725176622736 0 0 0 0 4096 1088 0 0 0 17 204 0 0 0 0 0 94196137239824 94196137242368 94196151529472 140725176630934 140725176631075 140725176631075 140725176631209 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-mgf43uqg/workers.json",
+            "/tmp/cnr-mgf43uqg/workers.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "5546a2a85803ecee843947c6301799f1a6eb7deaebf53113a7a4d19f96546a5c"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controlplanes",
+          "pid": 158771,
+          "start_stat": "158771 (corenius-attemp) R 158091 158074 158074 0 -1 4194304 132 0 0 0 2 0 0 0 20 0 1 0 58631100 4767744 291 18446744073709551615 94092402473936 94092403831104 140721855751392 0 0 0 0 4096 1088 0 0 0 17 73 0 0 0 0 0 94092403909904 94092403912448 94092411740160 140721855757958 140721855758111 140721855758111 140721855758249 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-mgf43uqg/controlplanes.json",
+            "/tmp/cnr-mgf43uqg/controlplanes.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "5546a2a85803ecee843947c6301799f1a6eb7deaebf53113a7a4d19f96546a5c"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controller",
+          "pid": 159247,
+          "start_stat": "159247 (corenius-sqlite) S 158091 158074 158074 0 -1 1077936128 412 0 0 0 0 0 0 0 20 0 2 0 58631908 81461248 2110 18446744073709551615 94812882711344 94812888803600 140737121458976 0 0 0 0 4096 1088 0 0 0 17 74 0 0 0 0 0 94812889062720 94812889087272 94812901421056 140737121462691 140737121462830 140737121462830 140737121464234 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "/tmp/cnr-mgf43uqg/state.db",
+            "/tmp/cnr-mgf43uqg/controller.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "sha256": "827f5ec39a34938cfeecfe5261cbbecf7bc7bccd5b9d7100e225547171548b20"
+          },
+          "exit": -9
+        }
+      ]
+    },
+    {
+      "run": "C1-GREEN",
+      "namespaces": [
+        {
+          "pid": 167737,
+          "start_ticks": "58635621",
+          "execution_handle": "17705650-40e7-4248-b135-87c30a50e494",
+          "pid_namespace": 4026539685,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 167744,
+          "start_ticks": "58635622",
+          "execution_handle": "a5a8c3c5-2dd8-437e-a6e1-605c01f0b61d",
+          "pid_namespace": 4026539869,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 168290,
+          "start_ticks": "58635674",
+          "execution_handle": "72a409c4-2a49-4d6c-8150-ceb0af8f3db4",
+          "pid_namespace": 4026540118,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 168292,
+          "start_ticks": "58635676",
+          "execution_handle": "414c6e6b-11e2-4e66-ab6b-94bf1eb1c3b6",
+          "pid_namespace": 4026540284,
+          "terminated_after_service_cleanup": false,
+          "fixture_cleanup_signalled": true,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 175136,
+          "start_ticks": "58636888",
+          "execution_handle": "d0bda5c7-d66a-4efc-8d81-2cfcd6dbff02",
+          "pid_namespace": 4026541363,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        },
+        {
+          "pid": 175516,
+          "start_ticks": "58636925",
+          "execution_handle": "a80fd692-e89f-46b4-abe9-e556afd5d9b3",
+          "pid_namespace": 4026541446,
+          "terminated_after_service_cleanup": true,
+          "fixture_cleanup_signalled": false,
+          "whole_process_terminated": true
+        }
+      ]
+    },
+    {
+      "run": "C1-GREEN",
+      "processes": [
+        {
+          "name": "workers",
+          "pid": 165120,
+          "start_stat": "165120 (corenius-attemp) R 158091 158074 158074 0 -1 4194304 135 0 0 0 2 0 0 0 20 0 1 0 58633986 4734976 300 18446744073709551615 94175366985536 94175368324864 140725439751472 0 0 0 0 4096 1088 0 0 0 17 185 0 0 0 0 0 94175368402920 94175368405464 94175399493632 140725439757974 140725439758115 140725439758115 140725439758249 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-4xk7nwj5/workers.json",
+            "/tmp/cnr-4xk7nwj5/workers.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "859eecd1f02b24ac46800f6b82d0e56240b779f88b20a3d5a35da5f14bc69347"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controlplanes",
+          "pid": 166263,
+          "start_stat": "166263 (corenius-attemp) R 158091 158074 158074 0 -1 4194304 133 0 0 0 2 0 0 0 20 0 1 0 58634786 4734976 294 18446744073709551615 93913490032448 93913491371776 140732540823120 0 0 0 0 4096 1088 0 0 0 17 84 0 0 0 0 0 93913491449832 93913491452376 93913521082368 140732540829318 140732540829471 140732540829471 140732540829609 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "/tmp/cnr-4xk7nwj5/controlplanes.json",
+            "/tmp/cnr-4xk7nwj5/controlplanes.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-attempt-supervisor",
+            "sha256": "859eecd1f02b24ac46800f6b82d0e56240b779f88b20a3d5a35da5f14bc69347"
+          },
+          "exit": -9
+        },
+        {
+          "name": "controller",
+          "pid": 167714,
+          "start_stat": "167714 (corenius-sqlite) S 158091 158074 158074 0 -1 1077936128 410 0 0 0 0 0 0 0 20 0 2 0 58635594 81297408 1793 18446744073709551615 94747644004832 94747649972720 140736563688400 0 0 0 0 4096 1088 0 0 0 17 185 0 0 0 0 0 94747650226072 94747650250632 94747678650368 140736563693987 140736563694126 140736563694126 140736563695530 0\n",
+          "argv": [
+            ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "/tmp/cnr-4xk7nwj5/state.db",
+            "/tmp/cnr-4xk7nwj5/controller.sock"
+          ],
+          "executed_binary": {
+            "path": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy/.scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller",
+            "sha256": "ca30eaef57b4c115f3a26c1ab6a5181f0bb9eeeb3a495a298fbc95889a272971"
+          },
+          "exit": -9
+        }
+      ]
+    }
+  ]
+}

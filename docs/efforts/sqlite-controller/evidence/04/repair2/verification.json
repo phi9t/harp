@@ -1,0 +1,170 @@
+{
+  "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "tree": "de03ef1b16360f0bbc7115c83f3b49dedeabbce4",
+  "status": "author-focused-and-frozen-gates-pass; branch648-helper-relocation-blocker-retained; acceptance-withheld",
+  "gates": [
+    {
+      "name": "gate-affected",
+      "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "git",
+        "--test",
+        "kata",
+        "--test",
+        "process",
+        "--test",
+        "public",
+        "--test",
+        "runtime",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T18:27:11.122375+00:00",
+      "ended": "2026-10-04T18:30:01.180527+00:00",
+      "elapsed_seconds": 170.05813944200054,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair2/gate-affected.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-native",
+      "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "ticket04_",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T18:30:58.817774+00:00",
+      "ended": "2026-10-04T18:32:11.288496+00:00",
+      "elapsed_seconds": 72.47071781591512,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair2/gate-native.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-default",
+      "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T18:37:35.042855+00:00",
+      "ended": "2026-10-04T18:40:29.723632+00:00",
+      "elapsed_seconds": 174.68076563393697,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair2/gate-default.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-fmt",
+      "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--check"
+      ],
+      "started": "2026-10-04T18:40:34.614698+00:00",
+      "ended": "2026-10-04T18:40:35.057929+00:00",
+      "elapsed_seconds": 0.44321966590359807,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair2/gate-fmt.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-clippy",
+      "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started": "2026-10-04T18:40:43.591136+00:00",
+      "ended": "2026-10-04T18:40:45.396311+00:00",
+      "elapsed_seconds": 1.8051675090100616,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair2/gate-clippy.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-build-last",
+      "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--locked",
+        "--offline"
+      ],
+      "started": "2026-10-04T18:40:55.001389+00:00",
+      "ended": "2026-10-04T18:40:56.429991+00:00",
+      "elapsed_seconds": 1.428593093995005,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair2/gate-build-last.log",
+      "environment": {}
+    }
+  ],
+  "retention": {
+    "retained_records": 47,
+    "raw_logs": 8,
+    "source_archives": 17,
+    "source_members": 578,
+    "source_pairs": 8,
+    "all_pairs_identical": true,
+    "all_artifact_and_source_hashes_verified": true
+  },
+  "source_delta": {
+    "changed_files": 3,
+    "unchanged_files": 31,
+    "native_source_and_fixtures_unchanged": true
+  },
+  "independent_review_checkpoint": {
+    "Standards": "scoped repair PASS, root reported",
+    "Spec": "scoped repair PASS, root reported",
+    "root_scoped_gate": "affected49 + native4/default Git Kata/fmt/strictClippy/normal build PASS,34source unchanged, root reported",
+    "branch648": "FAIL sole LOW: retained evidence helper original absolute author paths; final bounded helper-only round3 brief pending"
+  },
+  "normal_build_last": true,
+  "paid_model_calls": false,
+  "integration_performed": false,
+  "unchanged_native29_author_repeat": false
+}

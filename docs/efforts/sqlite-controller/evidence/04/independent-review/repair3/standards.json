@@ -1,0 +1,47 @@
+{
+  "schema": "sqlite04-repair3-standards-review/v1",
+  "axis": "Standards",
+  "verdict": "PASS",
+  "blockers": [],
+  "nonblocking_findings": [],
+  "base": "0b97408bf8f7cd8663da181425cb35f230af9c01",
+  "source": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+  "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "scope": [
+    "docs/efforts/sqlite-controller/evidence/04/repair1/artifact-observations.py"
+  ],
+  "helper_sha256": "b35323cd6f189c11aa94d1b8d736a028192e3237d3f4ecbf8e314997505807ef",
+  "driver_sha256": "9eec04db0de74cfa0f8a7ec4fe7539c4457f4ec533901d2285fc9ca8ae70e78e",
+  "evidence_index_sha256": "9909b4723f530b7fce4584d0c36e8c562cf605fe2c5f384dbb94e1dce6cf8e6a",
+  "standards_sources": [
+    "AGENTS.md: one writer; preserve shared checkout",
+    "CONSTITUTION.md sections 1,4,5: bounded request, preserve existing work, verify reality",
+    "docs/agents/agentic-engineering.md gated path gates6-9 and operating boundaries",
+    "docs/agents/skill-orchestration.md ticket review/behavioral proof/authority",
+    "canonical repair3 brief and branch648 evidence-portability finding",
+    "decisions/02-git-journal-qualification.md"
+  ],
+  "hard_violations": [],
+  "smell_baseline_judgment": "No actionable introduced smell. Revalidation on the open descriptor before tar reads preserves byte qualification; the inherited compact style is unchanged.",
+  "verified_read_only_checks": {
+    "sole_helper_diff": true,
+    "source_snapshots_exact": true,
+    "historical578_unchanged": true,
+    "product34_unchanged": true,
+    "retained_input92_exact": true,
+    "retained_archives89_digest_and_size": true,
+    "paired_final_driver": true,
+    "red_old_source_wrong_path": true,
+    "green59_historical_content_and_provenance": true,
+    "actual_overwrite_FileExistsError": true,
+    "duplicate_and_digest_rejection": true
+  },
+  "limitations": [
+    "This is the helper-only Standards axis; the final evidence-only commit/handoff and exact-tip branch review are not accepted by this report.",
+    "Retained behavior was audited as source-bound public proof; root owns fresh independent relocation/overwrite execution and final retention checks.",
+    "The 49 affected, four native, default Git/Kata, fmt, strict clippy and normal build results are scoped/inherited from unchanged product e31; no Rust, native, model or broad gates were run here.",
+    "Git-journal qualification decision02 remains binding; no migration, authorization, or cleanup admission is inferred.",
+    "Ticket04 remains final repair3/3 and ticket02 registry cap3/3 with linked routing; this review does not renew either cap. Ticket06 whole-baseline gate remains mandatory."
+  ],
+  "acceptance": "pending root checks and final retention; Standards PASS is qualified to frozen helper f439e9a and pinned proof bytes"
+}

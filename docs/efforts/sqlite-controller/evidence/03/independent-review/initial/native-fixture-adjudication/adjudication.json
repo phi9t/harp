@@ -1,0 +1,67 @@
+{
+  "type": "Independent bounded fixture-ordering adjudication; no new conformance verdict",
+  "source": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "decision": "Concrete fixture ordering defect confirmed in source; attribution of the exact root failure remains strongly supported but not conclusively observed. Native architecture defect is not established.",
+  "causal_chain": [
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/codex.rs:1683",
+      "fact": "First A projection is durably saved and copied to adopt-events.projection, then FI writes a global hold without checking peer readiness."
+    },
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/codex.rs:193",
+      "fact": "Only the start of a later drain observes this hold. The current pass may still attempt B; any one B failure clears readiness via existing block_binding then requires another drain."
+    },
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/tests/support/native_registry.py:247",
+      "fact": "Fixture wait requires both bound thread/turn IDs and ui_input_ready, but its hold blocks every future native reconciliation. Parent wait cannot release the hold until after that predicate succeeds."
+    }
+  ],
+  "root_failure_facts": [
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/root-test.log:1210",
+      "fact": "Actual separate A terminal history and tool-turn completion precede failure."
+    },
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/root-test.log:1213",
+      "fact": "Re-started controller records B (5c7115ec-4295-402b-9da1-9c8a6d1f7fdc) native error -32601: list_turns is not supported yet. This is an independent real native error, not evidence of eventual recovery."
+    },
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/root-test.log:1254",
+      "fact": "bound()30-second predicate expires; final B readiness, A projection file and hold flags were not retained before fixture disposal."
+    },
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/root-test.log:2401",
+      "fact": "Full native gate is FAILED24/25; later passing reruns do not erase this result."
+    }
+  ],
+  "rerun_limits": [
+    "Unchanged both-topology focused test passes58.59s; its source archive matches29-file manifest and native source matches d201.",
+    "Diagnostic2 has only state-print/post-cleanup-archive fixture changes (3-file diagnostic archive matches). Its samples at lines5/41 show both ready while hold=true. They do not establish readiness before hold.",
+    "Neither run forces B to require a second drain after A snapshot. Root B unsupported method may be transient or persistent; no corresponding later native response is retained."
+  ],
+  "proposed_owned_fixture_only_reproducer": {
+    "authorization": "Proposal only; do not run absent root routing. Use a new isolated disposable copy of exact d201 native sources and existing local fake Responses/Insula fixture, never concurrent author source or credentials.",
+    "method": [
+      "Add an adoption-fixture-only scheduling gate, compiled behind fault-injection and keyed to exact fixture B attempt. Before any B native binding RPC, defer B with a clearly labelled fixture error while A lacks its first projection. This ensures the actual post-thread/start-confirmation crash applies to A, not B. Do not fabricate native replies or edit controller SQLite.",
+      "Once A actual recovered first turn has real received frames, terminal history and saved first projection, deliberately defer B for that same pass once more, record a deferral marker, and disarm B gate for subsequent passes. Preserve the existing30-second bound and original actual native A history/tool/frame assertions.",
+      "On old fixture schedule, require evidence A projection and hold=true, B nonready, B deferral actually observed, and no subsequent B attempt despite the gate now disarmed. This deterministically establishes the circular wait; it is declared scheduling fault evidence, not a reproduction of the native list_turns error. If these prerequisites are absent, classify setup inconclusive, not RED.",
+      "Retain contemporaneous immutable source/driver/binary pins, exact A/B registry and operation IDs, received frames, marker timestamps and owned-process disposition. Existing fixture cleanup may act only on its positively owned children/identity-fenced namespaces."
+    ]
+  },
+  "safe_fixture_only_correction": {
+    "contract": "Per-binding observation freeze; global drain freeze only after both exact fixture actors qualify. All changes confined to this FI/fixture mode; production scheduling and native routing unchanged.",
+    "steps": [
+      "Keep A first projection captured at the existing post-save location, with the original exact received-frame, terminal-history, client/thread/turn and single-effect oracle. Do not overwrite it on later polls.",
+      "After first validated projection, suspend only further reconciliation of that already-observed fixture binding under an adoption-only FI guard. Preserve its saved database document so the existing projection==A.document assertion remains meaningful. Leave an unready peer eligible for ordinary retries.",
+      "Likewise retain B first actual qualified peer projection and its real thread/started positive-control frame; prevent later drain iterations from clearing that observation while waiting for A. Scope both freezes to exact admitted fixture attempt identities.",
+      "Set hold-codex only when A captured projection and B real qualified thread/turn/environment/ui_input_ready projection are both retained. Do not synchronously wait for B inside A callback: one-thread drain would deadlock. Finish the current pass without revisiting frozen bindings.",
+      "Keep original30-second readiness deadline,15-second A event barrier, real post-confirmation crash, original frame/identity/count assertions and model-free native tool effects. Global hold removal and bounded owned cancellation still happen only after assertions. If B native error remains after ordinary retries are available, preserve failure and route that separate capability question; do not call it a fixture success."
+    ]
+  },
+  "b_first_alternative": "Not a drop-in correction. B-before-A with the original armed crash redirects the post-confirmation fault to B. Delaying crash arming until B qualification preserves the A fault, but controller restart still forces B resume/requalification and changes the peer creation-event control; pre-crash ready is not post-restart ready. It would need another post-restart scheduling barrier and explicit preserved peer-event evidence, so it is more intrusive than per-binding snapshot freeze and cannot be assumed to satisfy unchanged assertions.",
+  "scope_limits": [
+    "No tests/probes run, source edited, native process launched, credential/model/upstream action, tmux/ref mutation or cleanup performed. New external report artifacts only.",
+    "No fresh actual deterministic reproduction is claimed; root failure retains missing diagnostics and B unsupported-method uncertainty.",
+    "No642 or native-production repair is recommended. Prior02/03 reviews unchanged; root controls fixture repair and fresh gate routing. No partial02 acceptance or live qualification."
+  ]
+}

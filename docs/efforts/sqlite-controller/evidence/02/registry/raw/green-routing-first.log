@@ -1,0 +1,75 @@
+     Locking 2 packages to latest Rust 1.95 compatible versions
+      Adding base64 v0.22.1 (available: v0.23.1)
+      Adding sha1 v0.10.6
+   Compiling base64 v0.22.1
+   Compiling sha1 v0.10.6
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-09d8e44e34ad1918)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 2745197, "start_stat": "2745197 (corenius-attemp) R 2745194 2744576 2744576 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51684329 1998848 1 18446744073709551615 94082441988976 94082443103248 140720504585104 0 0 0 0 0 0 0 0 0 17 155 0 0 0 0 0 94082443171336 94082443173872 94082467430400 140720504589944 140720504590133 140720504590133 140720504590201 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-w83scuhw/workers.json", "/tmp/cnr-w83scuhw/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 2745445, "start_stat": "2745445 (corenius-attemp) R 2745194 2744576 2744576 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51685131 1998848 1 18446744073709551615 94361516297072 94361517411344 140729620120160 0 0 0 0 0 0 0 0 0 17 109 0 0 0 0 0 94361517479432 94361517481968 94361538183168 140729620123240 140729620123441 140729620123441 140729620123513 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-w83scuhw/controlplanes.json", "/tmp/cnr-w83scuhw/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 2745687, "start_stat": "2745687 (corenius-sqlite) R 2745194 2744576 2744576 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51685949 4268032 1 18446744073709551615 94471540924784 94471543859488 140731982058176 0 0 0 0 0 0 0 0 0 17 3 0 0 0 0 0 94471543969360 94471543993856 94471551565824 140731982060962 140731982061149 140731982061149 140731982061434 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-w83scuhw/state.db", "/tmp/cnr-w83scuhw/controller.sock"], "exit": -9}]
+owned_log controller.stderr dy
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+native reconcile 9bd57ca7-b6f7-4a07-8edb-021d06f85be0: remote executor not ready
+native reconcile 1242e2bf-c6ec-4fb4-969f-b4419a219f01: remote executor not ready
+
+
+
+thread 'configured_native_topologies_are_isolated_and_controller_owned' (2745193) panicked at tests/codex.rs:43:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 116, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 100, in run
+    registry=wait(bound,8)
+             ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 21, in wait
+    raise AssertionError('behavior deadline')
+AssertionError: behavior deadline
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test configured_native_topologies_are_isolated_and_controller_owned ... FAILED
+
+failures:
+
+failures:
+    configured_native_topologies_are_isolated_and_controller_owned
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 25.08s
+
+error: test failed, to rerun pass `--test codex`

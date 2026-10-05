@@ -1,0 +1,39 @@
+{
+  "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "tools": [
+    {
+      "path": "/usr/bin/git",
+      "sha256": "00c84136d8294294580daa32f25b3e83ddb8341e9b5b70722e4c9a973ba5f749"
+    },
+    {
+      "path": "/usr/bin/python3",
+      "sha256": "44e5a74ce34ac8837cfbaa6273a9a2cb7542d7d5495781cc4bf48e7de7abe8ed"
+    },
+    {
+      "path": "/usr/bin/bwrap",
+      "sha256": "85580dd52ed366ece8844e90fa75ac7c4de8802963071344e123221fb9f6f11e"
+    },
+    {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    {
+      "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+      "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned",
+      "sha256": "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6"
+    }
+  ],
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)\nbinary: rustc\ncommit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860\ncommit-date: 2026-04-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.95.0\nLLVM version: 22.1.2\n",
+  "cargo": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)\nrelease: 1.95.0\ncommit-hash: f2d3ce0bd7f24a49f8f72d9000448f8838c4e850\ncommit-date: 2026-03-21\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.2 (sys:0.20.4 vendored)\nlibcurl: 8.15.0-DEV (sys:0.4.83+curl-8.15.0 vendored ssl:OpenSSL/3.5.4)\nssl: OpenSSL 3.5.4 30 Sep 2025\nos: Debian 12.0.0 (bookworm) [64-bit]\n",
+  "kata_api_schema": "0.24.0",
+  "kata_source": "b70a4306464e319701df30a3b92860289613b15a",
+  "codex_version": "0.159.3",
+  "provenance": "Revalidated every tool SHA and exact rustc/cargo version during repair2; pinned tools unchanged from repair1."
+}

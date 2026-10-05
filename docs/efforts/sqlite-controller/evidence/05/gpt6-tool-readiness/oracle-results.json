@@ -1,0 +1,15 @@
+{
+  "pinned_gpt6_metadata_is_code_mode_only": true,
+  "actual_requests_use_gpt6": true,
+  "code_mode_and_companion_enabled": true,
+  "actual_schema_exposes_all_three_dynamic_methods": true,
+  "only_real_code_mode_custom_calls_emitted": true,
+  "native_broker_received_exact_three_methods": true,
+  "native_calls_share_thread_and_turn": true,
+  "inner_call_ids_distinct_from_outer": true,
+  "custom_outputs_contain_all_three_results": true,
+  "explicit_states_persisted_in_order": true,
+  "explicit_answer_persisted": true,
+  "actual_pinned_companion_observed": true,
+  "owned_native_processes_gone": true
+}

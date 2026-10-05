@@ -1,0 +1,29 @@
+{
+  "time": "2026-10-05T03:18:24.710786+00:00",
+  "author": "/root/sqlite05_c1c2_happy_author",
+  "thread": "01a10a0d-f18a-7641-9ca5-1cb49cb81603",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "evidence_base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "authority": "ONE owner-authorized extra C1/C2 round; previous caps immutable",
+  "actions": "initial required policy/fixture reads; one file enumeration accidentally included huge fixture descendants and was truncated; no reasoning analysis or writes outside owned tree",
+  "hypotheses": {
+    "C1": [
+      "oldest stale request terminates selection before valid current entry",
+      "reauthorization reuses stale decision",
+      "native target readiness blocks all target work independently"
+    ],
+    "C2": [
+      "task-only event selection includes old Attempt",
+      "report event lacks independently attributable Attempt",
+      "current principal revocation fails"
+    ]
+  },
+  "next": "actual inherited public Git/native RED then narrow fixes",
+  "metrics": {
+    "input": "unavailable",
+    "cached": "unavailable",
+    "uncached": "unavailable",
+    "output": "unavailable",
+    "window": "unavailable"
+  }
+}

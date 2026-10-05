@@ -1,0 +1,46 @@
+{
+  "recorded_at": "2026-10-04T19:10:26Z",
+  "owner_design_commit": "832e76947f64e853092c0ea34bd9c314da6015f0",
+  "coordination_owner": "root",
+  "actor": "/root/sqlite04_git_author",
+  "actor_thread": "01a1078b-d944-7c82-a392-50333a175a77",
+  "source_adapter": "local-observed/pinned canonical completed visible items, source prefix/thread/turn/item identity and dedup; not stable API assurance",
+  "manual_ingested_raw_cursor": 2455,
+  "manual_live_reviewed_raw_cursor": 2451,
+  "live_review_origin": 1471,
+  "reviewed_visible_actions": 156,
+  "immutable_review_receipts": 12,
+  "root_historical_reviewed_cursor": 0,
+  "external_owner_coverage": [
+    [
+      13,
+      121
+    ],
+    [
+      1263,
+      1470
+    ]
+  ],
+  "history122_1262": "unreviewed",
+  "private_reasoning": "excluded",
+  "cadence": "20completed visible actions/10minutes plus compaction/handoff; manual publication lag recorded, no continuous service claim",
+  "first_scoped_checkpoint": {
+    "raw_range": [
+      1471,
+      1539
+    ],
+    "visible_actions": 11,
+    "source_prefix_and_input_digests": "retained in root-owned private ledger; no owner ledger write"
+  },
+  "findings": "nine-finding matrices preserve original failures, hypotheses, fixture rationale, focused/independent/source-bound outcomes, unresolved controls and next tests",
+  "correction": {
+    "issue": "pre-GREEN driver removed helper before overwrite call",
+    "root_action": "authenticated narrow correction, same actor/cap",
+    "acknowledged": true,
+    "resolved": "actual immutable helper FileExistsError refusal and unchanged bytes; false success never credited"
+  },
+  "drift": "no established goal drift or replacement trigger",
+  "caps": "02registry3of3 preserved; linked04cleanup qualified;04final3of3 consumed, no reset",
+  "runtime_ownership": "no positively owned tests interrupted; no user sessions changed or second scheduler built",
+  "product_status": "pending05control-center/06retained qualification and supervised recurring runner; no deployed unattended coverage claim"
+}

@@ -1,0 +1,51 @@
+{
+  "source_head_read": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "kind": "read-only provider readiness plus internal proxy fake-upstream primitive",
+  "existing_origins": [
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-lead-routing-lt5kx2vz/protocol.jsonl",
+      "sha256": "7bfb2582542cb644e3aa11730c36a760a91ea8da9ca6cb1f956c65cd72c8741a"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-gpt6-lead-tools-m4ns0y2v/requests.json",
+      "sha256": "26f67b3e3ada372c03548fe6c42d8666f4e2fdd412ea87b2cb1e2dd708f1fd75"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/tui-protocol.jsonl",
+      "sha256": "c497e17e87b8ed0660cc79f0f67c1e849577b301a2a7192104a2042c1c8f9d86"
+    }
+  ],
+  "actual_native_tui_account_read": {
+    "connection": "tui",
+    "direction": "recv",
+    "message": {
+      "id": 1,
+      "result": {
+        "account": null,
+        "requiresOpenaiAuth": false,
+        "workspaceRouting": null
+      }
+    }
+  },
+  "actual_gpt6_request_keys": [
+    "model",
+    "input",
+    "tool_choice",
+    "parallel_tool_calls",
+    "reasoning",
+    "store",
+    "stream",
+    "include",
+    "prompt_cache_key",
+    "text",
+    "client_metadata"
+  ],
+  "store_false_stream_true_all": true,
+  "model_routes": [
+    "gpt-6-sol"
+  ],
+  "native_auth_files_exist_in_owned_fixtures": {
+    "/data02/home/philip.yang/devx/tmp/corenius-sqlite-gpt6-lead-tools-m4ns0y2v/codex/auth.json": false,
+    "/data02/home/philip.yang/devx/tmp/corenius-sqlite-lead-routing-lt5kx2vz/codex/auth.json": false
+  }
+}

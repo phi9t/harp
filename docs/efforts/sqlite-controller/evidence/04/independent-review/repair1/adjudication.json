@@ -1,0 +1,70 @@
+{
+  "ruling": "Not baseline migration blocker; explicit version qualification/documentation required; retain fail-closed unknown/refusal",
+  "finding": "branch646 finding2 only",
+  "finding_fact": "Old rejected04 pending journal formats lose automatic recovery under e6; true static compatibility limitation",
+  "scope": "bounded architectural adjudication, no additional product Spec review",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "previous_unaccepted_source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "authority_interpretation": "SPEC12 excludes implied historical migration; SPEC16 protects supported baseline recovery, not automatic qualification of rejected development revisions.",
+  "required_action": "Root-recorded scope adjudication and concise Git build/journal qualification in already bounded repair2 documentation; no legacy product migration inferred.",
+  "risk_if_wrong": "A proven deployed/supported initial04 contract would convert progress loss into a baseline migration blocker; automatic authorization backfill risks legitimizing revoked-lead effects.",
+  "limitations": [
+    "Static inference only; no upgrade execution proof.",
+    "No acceptance; finding1 still requires narrow source repair.",
+    "Root owns final decision, caps, gate and retention.",
+    "Previous completed Spec report preserved."
+  ],
+  "captured_at": "2026-10-04T18:11:08.438823+00:00",
+  "pins": {
+    "2b1887b8c8c6e0ea806487271ae77fc3b743f63d:crates/sqlite-controller/README.md": {
+      "sha256": "2077aaaa5983efcf1421fcd206c4851485b8caf9a3aa4d4886a60ac330d08368",
+      "bytes": 34679,
+      "provenance": "exact committed Git blob"
+    },
+    "2b1887b8c8c6e0ea806487271ae77fc3b743f63d:crates/sqlite-controller/src/git.rs": {
+      "sha256": "aedf6bfecf61fc3430d67608afaaf6a540537782a8ecd562098790db8f018cfb",
+      "bytes": 55272,
+      "provenance": "exact committed Git blob"
+    },
+    "e6ab0abb9ff58e08669398034e693a2190ef46a1:crates/sqlite-controller/README.md": {
+      "sha256": "2077aaaa5983efcf1421fcd206c4851485b8caf9a3aa4d4886a60ac330d08368",
+      "bytes": 34679,
+      "provenance": "exact committed Git blob"
+    },
+    "e6ab0abb9ff58e08669398034e693a2190ef46a1:crates/sqlite-controller/src/git.rs": {
+      "sha256": "9be65994dcbf0c6b39df541ace712251bde0129b5fb7367cdfab023a3845692b",
+      "bytes": 62628,
+      "provenance": "exact committed Git blob"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md": {
+      "sha256": "57a25de6d827a5a364d41e748ea08d6b8196a81790238128ec65ed58d656cdd6",
+      "bytes": 17620,
+      "provenance": "explicit filesystem snapshot; no root HEAD equivalence claimed"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/CONTROLLED-TRIAL.md": {
+      "sha256": "35742c7434829af4f8ef24f3a987877fcac248a8fac10bc6c7d4eb1a427b5e96",
+      "bytes": 6969,
+      "provenance": "explicit filesystem snapshot; no root HEAD equivalence claimed"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair1/branch-646.md": {
+      "sha256": "e4396f2f95bea1d6e765e72f05e99b9e10bf360acb2567b2cf23436fa5b394ff",
+      "bytes": 1596,
+      "provenance": "explicit filesystem snapshot; no root HEAD equivalence claimed"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair1/branch-646.json": {
+      "sha256": "11d1166dd1926441131abf1b4d2e7944a1a5ea265a85445f1af33d8dc81dd194",
+      "bytes": 7862,
+      "provenance": "explicit filesystem snapshot; no root HEAD equivalence claimed"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/spec.md": {
+      "sha256": "d691d7fa733f938cb625d0151a34ff9a457045e3823a812da2663af310f6c5d2",
+      "bytes": 2659,
+      "provenance": "explicit filesystem snapshot; no root HEAD equivalence claimed"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/tickets/03-kata-participant-protocol.md": {
+      "sha256": "d54a57de0be3845235a46703e702b23987c62ed018a307c11ee2353d3cbc9c5d",
+      "bytes": 5965,
+      "provenance": "explicit filesystem snapshot; no root HEAD equivalence claimed"
+    }
+  }
+}

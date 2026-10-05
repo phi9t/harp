@@ -1,0 +1,25 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.77s
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-cd4847af97302830)
+
+running 2 tests
+test real_process_restart_retains_operations_and_ownership ... ok
+test kill_during_atomic_admission_exposes_none_then_retry_exposes_all ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-61d68823dd4ab064)
+
+running 7 tests
+test exclusive_lifetime_writer_lock_and_bootstrap_refusal ... ok
+test same_task_racing_commands_admit_once ... ok
+test lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope ... ok
+test restart_retains_journal_questions_decisions_and_unknown_capacity ... ok
+test dispatch_credentials_and_receipts_are_not_in_public_events_or_other_attempts ... ok
+test two_slots_atomic_admission_and_scoped_replay ... ok
+test messages_answers_and_operation_outcomes_are_retained ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+# Recorded command exit status: 0

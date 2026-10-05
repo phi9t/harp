@@ -1,0 +1,18 @@
+{
+  "driver_delta": "initial-driver-only.diff",
+  "exact_before_after_retained_ignored": [
+    {
+      "bytes": 84780,
+      "ignored_path": ".scratch/sqlite-controller/05/repair1/initial-driver-before.py",
+      "kind": "initial-driver-before.py",
+      "sha256": "0bfe72fba7d9eefe2293b8fde043f9162ca2f174e4e7f8f9b69c2b6ea0b8e64f"
+    },
+    {
+      "bytes": 85068,
+      "ignored_path": ".scratch/sqlite-controller/05/repair1/initial-driver-after.py",
+      "kind": "initial-driver-after.py",
+      "sha256": "8b567d9598eb009c1936ab70103f89e8f2e7644e579f147fb342dea71883c65c"
+    }
+  ],
+  "note": "Full source drivers retain synthetic fixture capability literals only in ignored raw retention. Exact full bytes are digest-bound; source/run archives also remain retained."
+}

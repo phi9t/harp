@@ -1,0 +1,26 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.59s
+     Running tests/client.rs (/tmp/sqlite05-repair3-target/debug/deps/client-1ec261db07eb1716)
+
+running 1 test
+test repair3_monitor_corrections_have_bounded_complete_projection ... actual_monitor_max_corrections {"count": 20, "field_bytes": 65536, "context_wire_bytes": 24955, "records_wire_bytes": 12463}
+owned_projection_resources [{"pid": 2075368, "start_stat": "2075368 (corenius-sqlite) R 2075319 2071404 2071404 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 57974142 8114176 1 18446744073709551615 94297754394480 94297760311104 140720344874672 0 0 0 0 0 0 0 0 0 17 149 0 0 0 0 0 94297760561904 94297760586472 94297783201792 140720344878722 140720344878901 140720344878901 140720344879034 0\n", "exit": -15, "executed_binary": {"path": "/tmp/sqlite05-repair3-target/debug/corenius-sqlite-controller", "sha256": "d8115c038621557d4228d960b573746681651a2b621030a01dd868f0bf8451ec"}, "waited": true}]
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller/tests/support/monitor_projection.py", line 60, in <module>
+    reference=item[field]['text_reference'];chunks=[];offset=0
+              ~~~~^^^^^^^
+KeyError: 'action'
+
+thread 'repair3_monitor_corrections_have_bounded_complete_projection' (2075318) panicked at tests/client.rs:181:5:
+bounded monitoring projection failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    repair3_monitor_corrections_have_bounded_complete_projection
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 2.84s
+
+error: test failed, to rerun pass `--test client`

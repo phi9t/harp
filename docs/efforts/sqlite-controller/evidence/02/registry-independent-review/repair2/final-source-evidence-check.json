@@ -1,0 +1,14 @@
+{
+  "candidate": "cc774921be6e8e00b8de54942b56fa0fee01d56d",
+  "source_commit": "6f55bc67624b2399c3430fe2c5e003baeb4c22e0",
+  "crate_tree": "9aead302dc0826d69b91112e8e5dca228d9a90cb",
+  "source_files": 25,
+  "evidence_files": 57,
+  "evidence_only_tip": true,
+  "r1_evidence_unchanged": true,
+  "author_gate_all_zero": true,
+  "handoff_sha256": "ccc5cfac351e2a3c71b0d5f579683c83fdb0fa63e696e84da5d7e885f8ee15d0",
+  "author_evidence_manifest_sha256": "0a117f48ac07f1a814c1a82e56d5d92f704d875b302734da9538d19c2cea8da0",
+  "matching_live": 0,
+  "disposition": "TESTED_REVIEW_REJECTED"
+}

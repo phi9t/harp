@@ -1,0 +1,42 @@
+{
+  "adjudicated_at": "2026-10-05T01:30:27.656604+00:00",
+  "source": "6f2c41556a50b3ab0b74da9a7b499e458d445156",
+  "root_complete_gate": "73241 actual101/GitcompoundassertFAIL/native39PASS/47inputsunchanged",
+  "root_diagnostic_scope": "ONE test-only pair capture before unchanged original assertion/deadlines; no product edits. Shell final Python masks child exit: diagnostic child exit unrecorded/UNKNOWN, not credited as testPASS. Actual pair and AssertionError retained. Original rootgate actual101 is governing behavioral RED.",
+  "diagnostic_admission_sha256": "23a09b0c72fefd1466683aa7bb1dd1b975a1c0453b66f809b12a28c94df43d1f",
+  "diagnostic_raw_sha256": "d149bcf68dc52fa004355eb04c2cdeda9bd28b5b46c2870a11d97653bb2a2613",
+  "archive": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/normal-g4-h_uulraq.tar.gz",
+  "archive_sha256": "712a4be07c3ff958b7510f76f3ccd1d92622a82d46add86dfd50f86a7be24eb4",
+  "observed_differences": [
+    {
+      "attempt": "84ed3279-5e56-4c0c-b14a-38fda4864cc8",
+      "changed_paths": [
+        ".inspection.process.pid",
+        ".inspection.process.start_ticks"
+      ],
+      "first_pid": 1736578,
+      "second_pid": 1736605,
+      "both_exit0_waited": true
+    },
+    {
+      "attempt": "66938889-da4b-42c5-bd3b-e940848940a8",
+      "changed_paths": [
+        ".inspection.process.pid",
+        ".inspection.process.start_ticks"
+      ],
+      "first_pid": 1736587,
+      "second_pid": 1736615,
+      "both_exit0_waited": true
+    }
+  ],
+  "actual_consistency": {
+    "controller_revision": 11,
+    "filesystem_observation": "read outside the controller writer; current at observation, may subsequently change",
+    "refresh_required": false,
+    "revision_after_filesystem_read": 11
+  },
+  "verified_cause": "New normal fixture assertion compares whole independent observation records including inspector child PID/start. Actual only differences are inspection.process.pid/start_ticks; all other fields identical and revision consistency false-refresh unchanged. Distinct inspector processes are required real observation provenance, so whole-record identity equality is invalid.",
+  "ruling": "TEST ONLY permit normal comparison to exclude ONLY the two ephemeral inspector process identity fields; compare every other field exactly, keep exact two-workspace/base/candidate/dirty/ref/currentauthority/inspection exit0+waited/tool/environment assertions and visible refresh consistency. Preserve raw exact records and originaldriver/failure/fullgate. No production observation removal/truncation/ref semantics or deadline weakening.",
+  "writer_scope": "replacementsole05tree, samefinalrepair3of3; existing5controls unchanged; no newround/nativesuite/EMPTYdiagnostic reset",
+  "next": "Matched targetednormal source-bound actualEXIT/log/archive with retained originaldriver delta; full final exactsource gate independent."
+}

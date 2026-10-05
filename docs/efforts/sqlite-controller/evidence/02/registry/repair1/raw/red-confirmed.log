@@ -1,0 +1,17 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+warning: method `buffered_events` is never used
+   --> src/native_ws.rs:199:12
+    |
+ 59 | impl NativeWs {
+    | ------------- method in this implementation
+...
+199 |     pub fn buffered_events(&self) -> &[Value] {
+    |            ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `corenius-sqlite-controller` (lib) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.62s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-5ccbdc162d59f0df)
+
+running 5 tests

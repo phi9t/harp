@@ -1,0 +1,9 @@
+{
+  "original_driver_sha256": "3598d6ee29c3cb889d7af7624e075777e13bbd21964ae1dfb914d5a9c287035d",
+  "new_driver_sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299",
+  "original_failed_runs": [
+    "repair2-96-final-native-controls",
+    "repair2-97-final-native-consumer"
+  ],
+  "qualification": "96 decoded-dict TypeError;97 query helper selector TypeError; both actual101 and no behavior RED/success credit. TEST-only consumer accepts decoded original arguments or reconstructs scoped digest/byte refs and pages; query helper passes optional original protocol args; provider accepts ID+delivery descriptor match for large text while actual question_input remains exact-read tool. Original exact argument/own-response/race assertions and deadlines unchanged; no product-effect change"
+}

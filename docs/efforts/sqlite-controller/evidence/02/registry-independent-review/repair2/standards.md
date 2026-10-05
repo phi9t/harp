@@ -1,0 +1,13 @@
+Standards **PASS** for `cbe7854b59898f9750d1478d2277584c7eca7b42..6f55bc67624b2399c3430fe2c5e003baeb4c22e0`. Zero blocking documented-standard violations or new actionable baseline smells. Prior parked Primitive Obsession/projection-duplication observations remain outside this scoped repair.
+
+The three branch640 fixes are addressed from the Standards perspective:
+
+- `crates/sqlite-controller/src/codex.rs:837`, `:938`: adoption runs after existing authority/executor/app/store qualification and before empty classification. It checks the retained initial receipt's thread/turn identity, saves both turn projections together, blocks input, and treats retained acknowledgement status as uncertain until native history refreshes it.
+- `crates/sqlite-controller/src/native_ws.rs:202`: loaded-thread traversal validates identities/cursors, detects repeated cursors, bounds resource processing and shares one absolute RPC deadline. It returns explicit uncertainty rather than fabricating absence or recreating a thread.
+- `crates/sqlite-controller/src/codex.rs:292`, `:423` and `native_ws.rs:121`: retirement saves native stop disposition first, withdraws local observation, and journals qualified connection-scoped unsubscribe before external RPC. Unsupported/malformed outcomes remain unknown; actual lost acknowledgement reconciles idempotently. Bounded active-ID filtering drops retired/unscoped events and preserves exact active peers without an unbounded retired-ID set. Native calls remain outside SQLite transactions.
+
+Evidence inspected supports CONSTITUTION section5 and workflow gated step6: genuine initial-receipt RED/GREEN in both topologies; actual page2 target RED/GREEN with202 fixture-owned padding identities; retired-event RED at the unchanged queue cap followed by GREEN preserving three distinct peer frames after1,030 retired notifications. The covering run confirms final cleanup store/incarnation receipts and the same lost-ack operation. Supplemental three cursor negatives are candidly classified as transport fixtures, with no retrospective RED claimed.
+
+Seven25-file source inventories match their archives; the gate inventory matches frozen source6f55. Six focused RED/GREEN logs retain terminal namespace and service records. Failed setup/intermediate-projection runs remain disclosed in the pending handoff.
+
+This is **code-review PASS**, not qualification or acceptance. Author/root64-test gates and final evidence handoff remain pending. Reviewer ran no tests and changed no checkout. Actual model-free native evidence does not qualify paid/live Codex or downstream gateway/TUI behavior.

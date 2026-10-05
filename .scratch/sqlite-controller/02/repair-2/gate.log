@@ -1,0 +1,133 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.40s
+     Running unittests src/lib.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-38fca9f880171600)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/corenius-attempt-gate.rs (crates/sqlite-controller/target/debug/deps/corenius_attempt_gate-cbb9264626476727)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/corenius-attempt-supervisor.rs (crates/sqlite-controller/target/debug/deps/corenius_attempt_supervisor-99d8720b5cfe2706)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-9ef736948a92244c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-9478c7c09f28bb00)
+
+running 4 tests
+daemon_ready pid=1586706 socket=/data02/home/philip.yang/devx/tmp/.tmpUviacF/api.sock
+daemon_ready pid=1586707 socket=/data02/home/philip.yang/devx/tmp/.tmp9dXnn6/api.sock
+daemon_ready pid=1586708 socket=/data02/home/philip.yang/devx/tmp/.tmpj5c4bY/api.sock
+daemon_ready pid=1586709 socket=/data02/home/philip.yang/devx/tmp/.tmp9oGedY/api.sock
+alias_competitor pid=1586720 path=/data02/home/philip.yang/devx/tmp/.tmpUviacF/target.db status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+admission_barrier_observed pid=1586707 marker=/data02/home/philip.yang/devx/tmp/.tmp9dXnn6/before-commit
+owned_daemon_killed pid=1586707 status=signal: 9 (SIGKILL)
+alias_competitor pid=1586728 path=/data02/home/philip.yang/devx/tmp/.tmpUviacF/alias.db status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+owned_daemon_killed pid=1586706 status=signal: 9 (SIGKILL)
+daemon_ready pid=1586732 socket=/data02/home/philip.yang/devx/tmp/.tmp9dXnn6/api.sock
+daemon_ready pid=1586733 socket=/data02/home/philip.yang/devx/tmp/.tmpUviacF/api.sock
+test existing_database_aliases_share_process_ownership ... ok
+rollback_observed revision=2 occupied_slots=0 attempts=0 operations=0
+competing_controller pid=1586741 status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+owned_daemon_killed pid=1586708 status=signal: 9 (SIGKILL)
+daemon_ready pid=1586745 socket=/data02/home/philip.yang/devx/tmp/.tmpj5c4bY/api.sock
+test kill_during_atomic_admission_exposes_none_then_retry_exposes_all ... ok
+restart_observed revision=6 occupied_slots=1 attempt_state="unknown" pending_operation_state="prepared"
+test real_process_restart_retains_operations_and_ownership ... ok
+slow_client_queued_request_elapsed_ms=1011
+test slow_drip_client_cannot_extend_the_whole_request_deadline ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-fc82f93f994305e6)
+
+running 20 tests
+test sqlite_like_user_table_is_foreign_and_keeps_its_data ... ok
+test foreign_or_future_database_is_refused_without_import ... ok
+test own_operation_events_use_retained_attempt_identity ... ok
+test dangling_database_symlink_cannot_create_two_controller_owners ... ok
+test controller_files_have_private_permissions ... ok
+test hardlinked_database_is_refused_through_each_name ... ok
+test exclusive_lifetime_writer_lock_and_bootstrap_refusal ... ok
+test canonical_work_ref_cannot_be_admitted_under_two_aliases ... ok
+test same_task_racing_commands_admit_once ... ok
+test dispatch_credentials_and_receipts_are_not_in_public_events_or_other_attempts ... ok
+test restart_retains_journal_questions_decisions_and_unknown_capacity ... ok
+test project_scopes_and_two_global_slots_hold_across_projects ... ok
+test message_ack_reconnect_reaches_original_sender_and_recipient ... ok
+test two_slots_atomic_admission_and_scoped_replay ... ok
+test own_attempt_events_use_retained_task_identity ... ok
+test message_events_ignore_forged_task_and_preserve_peer_participants ... ok
+test lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope ... ok
+test messages_answers_and_operation_outcomes_are_retained ... ok
+test project_base_must_be_a_full_commit_oid_and_failure_is_atomic ... ok
+test answers_reconnect_to_own_attempt_and_storage_busy_is_bounded ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.54s
+
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-6c9795750c2ac521)
+
+running 15 tests
+test repair_database_symlink_target_inside_worker_toolchain_is_refused_before_open ... ok
+symlink_refused_without_target_mutation; stale_binding_and_profile_injection_denied
+test symlink_roots_and_stale_execution_bindings_are_refused ... ok
+zombie_setup_identity={"binding":{"attempt":"484c18fb-2112-4b4f-8840-e9e5a526a5fc","base":"0123456789abcdef0123456789abcdef01234567","brief":"a0fa4fdc-d4f0-4ec6-8507-736c9d6a4b23","operation":"fbc3ea59-c9d2-4519-b8f8-9870a42c6ce9","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"b1bdef4e-4748-4311-bedd-04c6e407fc3d","incarnation":"f103d37c-f7aa-4315-8e67-c5308739f931","init_start_ticks":"51131438","namespace_init":1587747,"outcome":null,"pid":1587714,"pid_namespace":4026540171,"start_ticks":"51131436","state":"running"}; log=
+cancel_before_start_tombstone={"ok":{"binding":{"attempt":"0e90abce-a704-4d3f-a673-52fcc0f8fd6d","base":"0123456789abcdef0123456789abcdef01234567","brief":"bd412ac7-01cb-454e-b12c-f889cd7ec511","operation":"4fa25a1f-2e20-49a9-ac2d-49eb1209eb49","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"430b0317-7cc8-44fe-9ae3-eafc4bfe6b65","incarnation":"a8fe86ec-2ffd-4743-9ddf-a508fa2fdcf7","init_start_ticks":null,"namespace_init":null,"outcome":"cancel tombstone: effect never started","pid":null,"pid_namespace":null,"start_ticks":null,"state":"exited"}}
+test pause_prevents_prepared_dispatch_and_cancel_overtakes_start ... ok
+decoy_kernel_stat=1587699 (python3) S 1587686 1587699 1587699 0 -1 1077936384 1734 0 0 0 2 2 0 0 20 0 1 0 51131435 20455424 2999 18446744073709551615 4321280 7158201 140730696302464 0 0 0 0 16781312 2 1 0 0 17 94 0 0 0 0 0 9731528 11035224 35790848 140730696304994 140730696306611 140730696306611 140730696306663 0
+
+owned_namespace_decoy={"binding":{"attempt":"14b9d96d-6a18-455d-9521-1cdfd710cd19","base":"0123456789abcdef0123456789abcdef01234567","brief":"0da52256-88a1-4df9-b485-cb53b22ed685","operation":"026901b1-9baa-4664-83f2-8d00a7c29216","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"50ec9788-6977-46d8-9e3f-d00617b67f5f","incarnation":"b33d566b-764c-48dc-945d-3fcfea343102","init_start_ticks":"51131435","namespace_init":1587699,"outcome":null,"pid":1587686,"pid_namespace":4026539790,"start_ticks":"51131434","state":"running"}
+lost_reply_adopted={"binding":{"attempt":"c7d91c79-ea29-4a74-ba3f-eaee73cbcafa","base":"0123456789abcdef0123456789abcdef01234567","brief":"903bd0d0-2f84-4e97-8c26-7b3dee532552","operation":"4f170549-53a0-4cd8-b4d9-75f5674ed34f","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"5559e824-148f-42b2-b9c5-ea08e22b983f","incarnation":"5dc81d56-a4ab-4551-96b5-7e6cad888578","init_start_ticks":"51131433","namespace_init":1587685,"outcome":null,"pid":1587671,"pid_namespace":4026539690,"start_ticks":"51131432","state":"running"}; unreachable_supervisor_occupied_slots=1
+test lost_start_reply_is_looked_up_and_unavailable_supervisor_keeps_capacity ... ok
+test repair_paused_dispatch_survives_first_lookup_transport_failure ... ok
+decoy_kernel_stat=1587703 (python3) S 1587688 1587703 1587703 0 -1 1077936384 1738 0 0 0 2 2 0 0 20 0 1 0 51131435 20455424 3019 18446744073709551615 4321280 7158201 140737063606864 0 0 0 0 16781312 2 1 0 0 17 214 0 0 0 0 0 9731528 11035224 43175936 140737063610722 140737063612339 140737063612339 140737063612391 0
+
+owned_descriptor_decoy={"binding":{"attempt":"12f5e057-00a7-486e-9ebd-bd7ba6fc79ff","base":"0123456789abcdef0123456789abcdef01234567","brief":"cb776abb-14e6-46b4-a08b-b89994a4f574","operation":"e6992add-d9a7-4fab-883b-db745328f9c0","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"1772c5b1-d667-4c53-90d3-b78d29c8a216","incarnation":"0c7c5b3d-9a9f-4278-b87e-36b6d8a02cc1","init_start_ticks":"51131435","namespace_init":1587703,"outcome":null,"pid":1587688,"pid_namespace":4026539912,"start_ticks":"51131434","state":"running"}
+short_normal_termination_retained_identity={"binding":{"attempt":"2c27b783-36f3-40ee-b8e4-81a37ee8fe62","base":"0123456789abcdef0123456789abcdef01234567","brief":"cc1d2bf0-21b6-46c4-a165-809af3df2ff6","operation":"688cf388-26c3-4771-a197-e37fc93e79ff","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"3101699f-eafb-42e5-9de9-35cde6b89b2b","incarnation":"9a862a69-d52a-4c0b-b19f-ed90a45ecd0a","init_start_ticks":"51131439","namespace_init":1587749,"outcome":"owned namespace process pidfd confirmed termination: exit status: 0","pid":1587709,"pid_namespace":4026540333,"start_ticks":"51131436","state":"exited"}
+test short_lived_execution_has_a_retained_terminal_identity ... ok
+actual_private_boundary_probe={"workspace_inode": 149652743, "pid": 1, "descendant": 2, "home": "/home/worker", "network": "blocked", "forbidden": ["/data02/home/philip.yang/devx/tmp/.tmpURC2Ae", "/data02/home/philip.yang/devx/tmp/.tmpURC2Ae/api.sock", "/data02/home/philip.yang/devx/tmp/.tmpURC2Ae/supervisor.sock", "/root/.ssh", "/home/philip.yang", "/workspace/.git"]}
+two_live_execution_identities a={"binding":{"attempt":"f890a67a-e2e6-4aae-b059-e3b78f06fb2a","base":"0123456789abcdef0123456789abcdef01234567","brief":"199f40e6-c152-49d1-ae11-a8c1ecec7665","operation":"d98d9492-d585-4084-977f-908e32ade65e","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"4be67668-a054-446d-b9bd-2d2d1fe298e6","incarnation":"24fe10c0-7e7a-4f3d-aebe-50cae5f2c5af","init_start_ticks":"51131439","namespace_init":1587750,"outcome":null,"pid":1587740,"pid_namespace":4026540456,"start_ticks":"51131438","state":"running"} b={"binding":{"attempt":"ec526eec-02fb-444e-96a8-d13e9c21e198","base":"0123456789abcdef0123456789abcdef01234567","brief":"01472d8b-6aca-44f5-bb96-69e0c697dffe","operation":"24917122-a8de-4f2e-9cf0-72c01b9a9998","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"3e65ec58-51c0-44e6-95da-6cd3182e0c1a","incarnation":"24fe10c0-7e7a-4f3d-aebe-50cae5f2c5af","init_start_ticks":"51131441","namespace_init":1587761,"outcome":null,"pid":1587760,"pid_namespace":4026540540,"start_ticks":"51131440","state":"running"}
+supervisor_restart_uncertain_retained_identity={"binding":{"attempt":"fd02ccbd-d91d-4e85-8b7b-090fab8e2b32","base":"0123456789abcdef0123456789abcdef01234567","brief":"82012d6a-72ef-4830-abfa-0c4b502b1fa4","operation":"877fe3a9-290e-42b5-80b1-da242c32268a","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"97efdc7a-aef5-4090-9703-e37088e18e48","incarnation":"2969412c-e02a-4bec-bb2b-76512f9ab658","init_start_ticks":"51131435","namespace_init":1587701,"outcome":"supervisor ownership lost; PID reconstruction refused","pid":1587687,"pid_namespace":4026539836,"start_ticks":"51131434","state":"unknown"}; cancelled_unknown_occupied_slots=1
+test supervisor_restart_refuses_pid_adoption_and_retains_revoked_capacity ... ok
+qualification_reply={"error":"namespace init owned monitor lineage mismatch"}; real_decoy_pidfd_ready=false
+repair_zombie_thread_and_descendants_confirmed={"binding":{"attempt":"484c18fb-2112-4b4f-8840-e9e5a526a5fc","base":"0123456789abcdef0123456789abcdef01234567","brief":"a0fa4fdc-d4f0-4ec6-8507-736c9d6a4b23","operation":"fbc3ea59-c9d2-4519-b8f8-9870a42c6ce9","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"b1bdef4e-4748-4311-bedd-04c6e407fc3d","incarnation":"f103d37c-f7aa-4315-8e67-c5308739f931","init_start_ticks":"51131438","namespace_init":1587747,"outcome":"owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)","pid":1587714,"pid_namespace":4026540171,"start_ticks":"51131436","state":"exited"}
+test repair_zombie_init_leader_with_live_thread_cannot_release_early ... ok
+qualification_reply={"error":"provisional pidfd kernel target mismatch"}; real_decoy_pidfd_ready=false
+repair_setup_failure_disposed_identity={"binding":{"attempt":"953c271b-2776-469a-a3fa-639975caf3e9","base":"0123456789abcdef0123456789abcdef01234567","brief":"c0130d83-a85e-4355-8ea5-0f76b8515d7e","operation":"209605ef-94cc-41e2-a62c-a7ab5ecc4e38","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"d2aaf168-281a-44d3-acc6-12e26a07a7be","incarnation":"51250230-cce5-46e0-a5f5-e600ca619246","init_start_ticks":null,"namespace_init":null,"outcome":"monitor exited without retained whole-process identity","pid":1587710,"pid_namespace":null,"start_ticks":"51131436","state":"unknown"}; owned_children=0; occupied_slots=1
+qualification_private_namespace_disposed={"cgroup-namespace":4026540091,"child-pid":1587889,"ipc-namespace":4026540089,"mnt-namespace":4026540042,"net-namespace":4026540325,"pid-namespace":4026540090,"uts-namespace":4026540088}
+test repair_setup_failure_disposes_owned_children_even_with_unknown_record ... ok
+repair_delayed_short_terminal_identity={"binding":{"attempt":"7c6b9fee-0b42-4b1c-9499-28b13110f3b9","base":"0123456789abcdef0123456789abcdef01234567","brief":"42323038-8b41-4d19-8aaa-462552bf7bd0","operation":"7861deaf-1fa8-49cf-accc-4d40524d058c","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"a35b52bc-b04c-4174-8e30-d5f82cbfb55c","incarnation":"485b8068-990f-4d63-a834-c456fd8a673e","init_start_ticks":"51131439","namespace_init":1587748,"outcome":"owned namespace process pidfd confirmed termination: exit status: 0","pid":1587715,"pid_namespace":4026540252,"start_ticks":"51131436","state":"exited"}
+qualification_disposed_identity={"binding":{"attempt":"fb774428-acbc-4cc1-a58f-6fdf67ab2065","base":"0123456789abcdef0123456789abcdef01234567","brief":"f7219712-43aa-424c-9b19-c3e3e18c6a78","operation":"55043101-e4ff-4722-928e-0f1e48f40ab5","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"fe7b101c-ddf2-4958-b4d6-143b43d43653","incarnation":"e19a1e0e-7787-4257-9d3a-d7e98a97f318","init_start_ticks":null,"namespace_init":null,"outcome":"monitor exited without retained whole-process identity","pid":1587888,"pid_namespace":null,"start_ticks":"51131455","state":"unknown"}; decoy_alive=true; owned_children=0
+test repair_short_exit_during_delayed_identity_sampling_is_confirmed ... ok
+test repair2_another_namespace_init_cannot_qualify_as_owned_child ... ok
+qualification_private_namespace_disposed={"cgroup-namespace":4026540072,"child-pid":1587900,"ipc-namespace":4026539990,"mnt-namespace":4026539977,"net-namespace":4026540164,"pid-namespace":4026540071,"uts-namespace":4026539979}
+qualification_disposed_identity={"binding":{"attempt":"f193b1da-af83-4af2-b8cc-eba9485264ce","base":"0123456789abcdef0123456789abcdef01234567","brief":"df7a38ef-8cdc-4b5c-8e23-bb2f036f2375","operation":"46f42dcb-2bd0-4e3c-93df-0cf208f4ae31","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"a14468d9-fc6c-4d16-ae15-d951da60b2cf","incarnation":"407a7105-1b8a-45ad-a6f3-0cfae2f6f976","init_start_ticks":null,"namespace_init":null,"outcome":"monitor exited without retained whole-process identity","pid":1587898,"pid_namespace":null,"start_ticks":"51131457","state":"unknown"}; decoy_alive=true; owned_children=0
+test repair2_descriptor_target_mismatch_is_never_signal_authority ... ok
+host_namespace_worker_pids=[1587750, 1587828]
+controller_restart_adopted_same_handles; cancellation_observed_removed_host_descendants=[1587750, 1587828]
+test independently_supervised_workers_survive_restart_and_cancel_descendants ... ok
+autonomous_admission_cancel_observed_through_controller_only="{\"binding\":{\"project\":\"p\",\"attempt\":\"dabb2dfb-6cf3-414e-af0e-129d247b0a09\",\"operation\":\"920beab7-b596-48fc-85bf-d9613967bbd2\",\"scope_epoch\":1,\"base\":\"0123456789abcdef0123456789abcdef01234567\",\"brief\":\"2659835f-d93b-4bf5-af92-39ab0f79046d\"},\"handle\":\"4f59a19f-a8b8-4780-a424-2c3124a1f428\",\"incarnation\":\"b89a9474-f129-4132-bc98-f19e07141e2d\",\"boot_id\":\"6f48f645-3b26-40c9-93fb-db4190c7629b\",\"pid\":1587864,\"start_ticks\":\"51131453\",\"namespace_init\":1587878,\"init_start_ticks\":\"51131454\",\"pid_namespace\":4026539693,\"state\":\"exited\",\"outcome\":\"owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)\"}"
+test configured_controller_autonomously_drains_admission_and_cancellation ... ok
+repair_delayed_sampling_terminal_identity={"binding":{"attempt":"0897a2f4-9019-40e4-9ff6-1cfb7612ac2e","base":"0123456789abcdef0123456789abcdef01234567","brief":"972be8e3-6c90-4e63-9a2d-b713654c8c94","operation":"e6785f05-044e-4113-969e-881e54409046","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"27afd17d-ad26-465e-b22e-306d895370c9","incarnation":"e858d41e-e129-4d09-b776-dddfe750bc26","init_start_ticks":"51131437","namespace_init":1587739,"outcome":"owned namespace process pidfd confirmed termination: exit status: 0","pid":1587707,"pid_namespace":4026540045,"start_ticks":"51131435","state":"exited"}
+test repair_sampling_barrier_precedes_workload_and_preserves_short_exit ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+   Doc-tests corenius_sqlite_controller
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

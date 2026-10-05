@@ -1,0 +1,417 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-5ccbdc162d59f0df)
+
+running 1 test
+test configured_native_topologies_are_isolated_and_controller_owned has been running for over 60 seconds
+actual_bound_registry shared {"bindings": [{"attempt": "b76aa810-85b4-4c24-b8e8-5bc0d32ff983", "authority_epoch": 1, "document": {"environment_id": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "executor": {"auth_ref": "native:062893a5-e54d-4539-b9e3-5f7cb4afdad9", "control_endpoint": "/tmp/cnr-3h17ii1d/t-exec/b76aa810-85b4-4c24-b8e8-5bc0d32ff983/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-3h17ii1d/t-exec/b76aa810-85b4-4c24-b8e8-5bc0d32ff983/native.sock", "incarnation": "278fa6d083049cdbfed3f03969f2a2b52930f1079b8b6aff144cd206d5c89362", "kind": "exec", "own_executor_only": false, "pid_namespace": 4026539641, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-3h17ii1d/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": null, "kind": "exec", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": false, "provider_socket": null, "transport_root": "/tmp/cnr-3h17ii1d/t-exec"}, "runtime_pid": 3136758, "runtime_start": "51885895", "store_id": "78e5579e-f5a4-484e-93e2-1ac719e7283e", "store_identity": "31:3266928", "workspace_generation": "062893a5-e54d-4539-b9e3-5f7cb4afdad9", "workspace_identity": "31:3266909"}, "executor_execution": {"binding": {"attempt": "b76aa810-85b4-4c24-b8e8-5bc0d32ff983", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "09a5f8b4-f0c7-4c3e-9829-a5019e5f586f", "operation": "ce43095f-114d-4795-ad1b-c0a1a130b89b", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "062893a5-e54d-4539-b9e3-5f7cb4afdad9", "incarnation": "05108ea4-99af-4457-a7af-b07a8ddc0dc0", "init_start_ticks": "51885863", "namespace_init": 3136745, "native_store": "78e5579e-f5a4-484e-93e2-1ac719e7283e", "outcome": null, "pid": 3136744, "pid_namespace": 4026539641, "start_ticks": "51885863", "state": "running"}, "native_activity": [{"emittedAtMs": 1791103279691, "method": "remoteControl/status/changed", "params": {"environmentId": null, "installationId": "e0e15b67-2791-48a1-8b56-7bec78e73281", "serverName": "n116-077-207", "status": "disabled"}}, {"emittedAtMs": 1791103284709, "method": "thread/started", "params": {"thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103284, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-224f-7323-8156-3bd006e25e17", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-41-19-01a10613-224f-7323-8156-3bd006e25e17.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103284, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-224f-7323-8156-3bd006e25e17", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103284}}}, {"emittedAtMs": 1791103284709, "method": "warning", "params": {"message": "Under-development features enabled: code_mode. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/worker/.codex/config.toml.", "threadId": "01a10613-224f-7323-8156-3bd006e25e17"}}, {"emittedAtMs": 1791103284763, "method": "deprecationNotice", "params": {"details": null, "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`."}}], "native_turns": [{"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-35e8-7f41-8fef-29980611cd22", "items": [], "itemsView": "full", "startedAt": 1791103284, "status": "inProgress"}], "observed_environments": [{"cwd": "/workspace", "environmentId": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "recovery_state": "remote_validated", "server_execution": {"binding": {"attempt": "feea5b1c-889d-4ad2-bfe4-179cafabcc4c", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "09a5f8b4-f0c7-4c3e-9829-a5019e5f586f", "operation": "22f33f74-e56f-40b5-8156-99fe1a0678ef", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "cb207874-8c09-4e6c-87f6-308d11892885", "incarnation": "8b7b2f16-f290-4e81-8543-0a9b8dd17257", "init_start_ticks": "51885917", "namespace_init": 3137202, "native_store": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "outcome": null, "pid": 3137201, "pid_namespace": 4026539869, "start_ticks": "51885917", "state": "running"}, "server_id": "native", "server_incarnation": "8d545f5bd9f89d5ce5f5b2d639d6a38d1dc9c75109d31ab6d3f9cbe66b7ffe2a", "server_store": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "thread_id": "01a10613-224f-7323-8156-3bd006e25e17", "turn_id": "01a10613-35e8-7f41-8fef-29980611cd22", "ui_input_ready": true}, "id": "worker:b76aa810-85b4-4c24-b8e8-5bc0d32ff983:1", "role": "attempt", "state": "bound"}, {"attempt": "e97fb7fe-d7a3-474c-b24f-e4cb27e7e034", "authority_epoch": 1, "document": {"environment_id": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "executor": {"auth_ref": "native:f889674a-d39d-456f-927d-04341c1e22d8", "control_endpoint": "/tmp/cnr-3h17ii1d/t-exec/e97fb7fe-d7a3-474c-b24f-e4cb27e7e034/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-3h17ii1d/t-exec/e97fb7fe-d7a3-474c-b24f-e4cb27e7e034/native.sock", "incarnation": "0aefd7ad0b581cb41125f6b6cba06d3b6639691ad9f3ecabefaab983771741d3", "kind": "exec", "own_executor_only": false, "pid_namespace": 4026539785, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-3h17ii1d/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": null, "kind": "exec", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": false, "provider_socket": null, "transport_root": "/tmp/cnr-3h17ii1d/t-exec"}, "runtime_pid": 3136759, "runtime_start": "51885895", "store_id": "26de4d17-14cb-4100-8126-6d364ffbb859", "store_identity": "31:3266930", "workspace_generation": "f889674a-d39d-456f-927d-04341c1e22d8", "workspace_identity": "31:3266920"}, "executor_execution": {"binding": {"attempt": "e97fb7fe-d7a3-474c-b24f-e4cb27e7e034", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "23cb8c18-f55a-4c46-804a-f25e4c625268", "operation": "ce474a51-d6c4-43ca-8722-dba1148f0bab", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "f889674a-d39d-456f-927d-04341c1e22d8", "incarnation": "05108ea4-99af-4457-a7af-b07a8ddc0dc0", "init_start_ticks": "51885865", "namespace_init": 3136747, "native_store": "26de4d17-14cb-4100-8126-6d364ffbb859", "outcome": null, "pid": 3136746, "pid_namespace": 4026539785, "start_ticks": "51885864", "state": "running"}, "native_activity": [{"emittedAtMs": 1791103284763, "method": "thread/status/changed", "params": {"status": {"activeFlags": [], "type": "active"}, "threadId": "01a10613-224f-7323-8156-3bd006e25e17"}}, {"emittedAtMs": 1791103284763, "method": "turn/started", "params": {"threadId": "01a10613-224f-7323-8156-3bd006e25e17", "turn": {"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-35e8-7f41-8fef-29980611cd22", "items": [], "itemsView": "notLoaded", "startedAt": 1791103284, "status": "inProgress"}}}, {"emittedAtMs": 1791103284773, "method": "item/started", "params": {"item": {"clientId": "c4992cfc-71a0-4db7-8aed-ebd7e31330e8", "content": [{"text": "TASK_A MODEL_FREE_ACTUAL_PROTOCOL", "text_elements": [], "type": "text"}], "id": "01a10613-3624-7a53-b325-df46f80970a2", "type": "userMessage"}, "startedAtMs": 1791103284773, "threadId": "01a10613-224f-7323-8156-3bd006e25e17", "turnId": "01a10613-35e8-7f41-8fef-29980611cd22"}}, {"emittedAtMs": 1791103284774, "method": "item/completed", "params": {"completedAtMs": 1791103284773, "item": {"clientId": "c4992cfc-71a0-4db7-8aed-ebd7e31330e8", "content": [{"text": "TASK_A MODEL_FREE_ACTUAL_PROTOCOL", "text_elements": [], "type": "text"}], "id": "01a10613-3624-7a53-b325-df46f80970a2", "type": "userMessage"}, "threadId": "01a10613-224f-7323-8156-3bd006e25e17", "turnId": "01a10613-35e8-7f41-8fef-29980611cd22"}}, {"emittedAtMs": 1791103289844, "method": "thread/started", "params": {"thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103289, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-364c-7c51-8727-6e38ac0c54ef", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-41-24-01a10613-364c-7c51-8727-6e38ac0c54ef.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103289, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-364c-7c51-8727-6e38ac0c54ef", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103289}}}, {"emittedAtMs": 1791103289844, "method": "warning", "params": {"message": "Under-development features enabled: code_mode. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/worker/.codex/config.toml.", "threadId": "01a10613-364c-7c51-8727-6e38ac0c54ef"}}, {"emittedAtMs": 1791103289893, "method": "deprecationNotice", "params": {"details": null, "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`."}}], "native_turns": [{"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-49f7-7641-a28a-208f34570401", "items": [], "itemsView": "full", "startedAt": 1791103289, "status": "inProgress"}], "observed_environments": [{"cwd": "/workspace", "environmentId": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "recovery_state": "remote_validated", "server_execution": {"binding": {"attempt": "feea5b1c-889d-4ad2-bfe4-179cafabcc4c", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "09a5f8b4-f0c7-4c3e-9829-a5019e5f586f", "operation": "22f33f74-e56f-40b5-8156-99fe1a0678ef", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "cb207874-8c09-4e6c-87f6-308d11892885", "incarnation": "8b7b2f16-f290-4e81-8543-0a9b8dd17257", "init_start_ticks": "51885917", "namespace_init": 3137202, "native_store": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "outcome": null, "pid": 3137201, "pid_namespace": 4026539869, "start_ticks": "51885917", "state": "running"}, "server_id": "native", "server_incarnation": "8d545f5bd9f89d5ce5f5b2d639d6a38d1dc9c75109d31ab6d3f9cbe66b7ffe2a", "server_store": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "thread_id": "01a10613-364c-7c51-8727-6e38ac0c54ef", "turn_id": "01a10613-49f7-7641-a28a-208f34570401", "ui_input_ready": true}, "id": "worker:e97fb7fe-d7a3-474c-b24f-e4cb27e7e034:1", "role": "attempt", "state": "bound"}], "configured": true, "operations": [{"binding": "worker:b76aa810-85b4-4c24-b8e8-5bc0d32ff983:1", "id": "b3740fb2-1fb8-4979-a756-4f2c0e130405", "intent": {"auth_ref": "native:062893a5-e54d-4539-b9e3-5f7cb4afdad9", "environmentId": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "execServerUrl": "ws://127.0.0.1:45557/?corenius_start=51885895", "executor_incarnation": "278fa6d083049cdbfed3f03969f2a2b52930f1079b8b6aff144cd206d5c89362"}, "kind": "environment/add", "observation": {"registered": true}, "state": "confirmed"}, {"binding": "worker:e97fb7fe-d7a3-474c-b24f-e4cb27e7e034:1", "id": "73bf619f-890b-43df-8839-a1ac546de5e5", "intent": {"auth_ref": "native:f889674a-d39d-456f-927d-04341c1e22d8", "environmentId": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "execServerUrl": "ws://127.0.0.1:33523/?corenius_start=51885895", "executor_incarnation": "0aefd7ad0b581cb41125f6b6cba06d3b6639691ad9f3ecabefaab983771741d3"}, "kind": "environment/add", "observation": {"registered": true}, "state": "confirmed"}, {"binding": "worker:b76aa810-85b4-4c24-b8e8-5bc0d32ff983:1", "id": "b0f283db-389a-47cb-8beb-f1584f47dffa", "intent": {"approvalPolicy": "never", "cwd": "/workspace", "environments": [{"cwd": "/workspace", "environmentId": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "sandbox": "danger-full-access"}, "kind": "thread/start", "observation": {"activePermissionProfile": null, "approvalPolicy": "never", "approvalsReviewer": "user", "cwd": "/workspace", "disabledPluginIds": [], "instructionSources": [], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "multiAgentMode": "explicitRequestOnly", "reasoningEffort": null, "runtimeWorkspaceRoots": ["/workspace"], "sandbox": {"type": "dangerFullAccess"}, "serviceTier": null, "thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103284, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-224f-7323-8156-3bd006e25e17", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-41-19-01a10613-224f-7323-8156-3bd006e25e17.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103284, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-224f-7323-8156-3bd006e25e17", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103284}}, "state": "confirmed"}, {"binding": "worker:b76aa810-85b4-4c24-b8e8-5bc0d32ff983:1", "id": "a58e26d4-e116-4a2f-b5b4-e4d406855068", "intent": {"clientUserMessageId": "c4992cfc-71a0-4db7-8aed-ebd7e31330e8", "environments": [{"cwd": "/workspace", "environmentId": "executor-b76aa810-85b4-4c24-b8e8-5bc0d32ff983-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "input": [{"text": "TASK_A MODEL_FREE_ACTUAL_PROTOCOL", "text_elements": [], "type": "text"}], "threadId": "01a10613-224f-7323-8156-3bd006e25e17"}, "kind": "turn/start", "observation": {"turn": {"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-35e8-7f41-8fef-29980611cd22", "items": [], "itemsView": "notLoaded", "startedAt": null, "status": "inProgress"}}, "state": "confirmed"}, {"binding": "worker:e97fb7fe-d7a3-474c-b24f-e4cb27e7e034:1", "id": "e581f14b-6d90-4dd7-bf94-cfdc3b107192", "intent": {"approvalPolicy": "never", "cwd": "/workspace", "environments": [{"cwd": "/workspace", "environmentId": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "sandbox": "danger-full-access"}, "kind": "thread/start", "observation": {"activePermissionProfile": null, "approvalPolicy": "never", "approvalsReviewer": "user", "cwd": "/workspace", "disabledPluginIds": [], "instructionSources": [], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "multiAgentMode": "explicitRequestOnly", "reasoningEffort": null, "runtimeWorkspaceRoots": ["/workspace"], "sandbox": {"type": "dangerFullAccess"}, "serviceTier": null, "thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103289, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-364c-7c51-8727-6e38ac0c54ef", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-41-24-01a10613-364c-7c51-8727-6e38ac0c54ef.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103289, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-364c-7c51-8727-6e38ac0c54ef", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103289}}, "state": "confirmed"}, {"binding": "worker:e97fb7fe-d7a3-474c-b24f-e4cb27e7e034:1", "id": "38bc1ee4-3d9b-4d3c-b695-b8b31b45be74", "intent": {"clientUserMessageId": "c155342e-b99b-486b-bd0a-5bff8bf73d17", "environments": [{"cwd": "/workspace", "environmentId": "executor-e97fb7fe-d7a3-474c-b24f-e4cb27e7e034-51885895", "runtimeWorkspaceRoots": ["/workspace"]}], "input": [{"text": "TASK_B MODEL_FREE_ACTUAL_PROTOCOL", "text_elements": [], "type": "text"}], "threadId": "01a10613-364c-7c51-8727-6e38ac0c54ef"}, "kind": "turn/start", "observation": {"turn": {"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-49f7-7641-a28a-208f34570401", "items": [], "itemsView": "notLoaded", "startedAt": null, "status": "inProgress"}}, "state": "confirmed"}], "servers": [{"document": {"effect_binding": {"attempt": "feea5b1c-889d-4ad2-bfe4-179cafabcc4c", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "09a5f8b4-f0c7-4c3e-9829-a5019e5f586f", "operation": "22f33f74-e56f-40b5-8156-99fe1a0678ef", "project": "p", "scope_epoch": 1}, "execution": {"binding": {"attempt": "feea5b1c-889d-4ad2-bfe4-179cafabcc4c", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "09a5f8b4-f0c7-4c3e-9829-a5019e5f586f", "operation": "22f33f74-e56f-40b5-8156-99fe1a0678ef", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "cb207874-8c09-4e6c-87f6-308d11892885", "incarnation": "8b7b2f16-f290-4e81-8543-0a9b8dd17257", "init_start_ticks": "51885917", "namespace_init": 3137202, "native_store": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "outcome": null, "pid": 3137201, "pid_namespace": 4026539869, "start_ticks": "51885917", "state": "running"}, "runtime": {"auth_ref": "native:cb207874-8c09-4e6c-87f6-308d11892885", "control_endpoint": "/tmp/cnr-3h17ii1d/t-app/feea5b1c-889d-4ad2-bfe4-179cafabcc4c/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-3h17ii1d/t-app/feea5b1c-889d-4ad2-bfe4-179cafabcc4c/native.sock", "incarnation": "8d545f5bd9f89d5ce5f5b2d639d6a38d1dc9c75109d31ab6d3f9cbe66b7ffe2a", "kind": "app", "own_executor_only": false, "pid_namespace": 4026539869, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-3h17ii1d/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": "/tmp/cnr-3h17ii1d/t-exec", "kind": "app", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": false, "provider_socket": "/tmp/cnr-3h17ii1d/provider.sock", "transport_root": "/tmp/cnr-3h17ii1d/t-app"}, "runtime_pid": 3137210, "runtime_start": "51885947", "store_id": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "store_identity": "31:3266965", "workspace_generation": "cb207874-8c09-4e6c-87f6-308d11892885", "workspace_identity": "31:3266955"}, "schema_digest": "e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455", "topology": "shared"}, "id": "native", "state": "qualified"}]}
+native_current_authority_and_selector_guards shared
+actual_native_effects shared TASK_A {"pid_namespace": "pid:[4026539641]", "net_namespace": "net:[4026539687]", "host_and_authority_absent": true, "host_tcp_blocked": true}
+actual_native_effects shared TASK_B {"pid_namespace": "pid:[4026539785]", "net_namespace": "net:[4026539787]", "host_and_authority_absent": true, "host_tcp_blocked": true}
+controller_native_connection_reconciled shared
+native_restart_restored shared {"thread_id": "01a10613-224f-7323-8156-3bd006e25e17", "server_store": "04d30d7d-a54d-4812-b0e7-eca21f0a71b2", "server_incarnation_changed": true, "remote_restored": true}
+native_lead_no_worker_slot shared
+controller_owned_cancellation_confirmed shared
+owned_fixture_resources [{"name": "workers", "pid": 3135696, "start_stat": "3135696 (corenius-attemp) R 3135683 3135656 3135656 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51884213 2068480 1 18446744073709551615 94363156634528 94363157795936 140729851670768 0 0 0 0 0 0 0 0 0 17 162 0 0 0 0 0 94363157865912 94363157868448 94363161022464 140729851678328 140729851678517 140729851678517 140729851678585 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-3h17ii1d/workers.json", "/tmp/cnr-3h17ii1d/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 3136140, "start_stat": "3136140 (corenius-attemp) R 3135683 3135656 3135656 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51885031 2068480 1 18446744073709551615 94795421862816 94795423024224 140720344961344 0 0 0 0 0 0 0 0 0 17 166 0 0 0 0 0 94795423094200 94795423096736 94795436486656 140720344964712 140720344964913 140720344964913 140720344964985 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-3h17ii1d/controlplanes.json", "/tmp/cnr-3h17ii1d/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 3136740, "start_stat": "3136740 (corenius-sqlite) R 3135683 3135656 3135656 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51885836 4526080 1 18446744073709551615 94362223866640 94362226992624 140731337513392 0 0 0 0 0 0 0 0 0 17 54 0 0 0 0 0 94362227113176 94362227137664 94362231504896 140731337518441 140731337518628 140731337518628 140731337518970 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-3h17ii1d/state.db", "/tmp/cnr-3h17ii1d/controller.sock"], "exit": -9}, {"name": "controller-restarted", "pid": 3138367, "start_stat": "3138367 (corenius-sqlite) R 3135683 3135656 3135656 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51887107 4526080 1 18446744073709551615 94056386777872 94056389903856 140723508695424 0 0 0 0 0 0 0 0 0 17 58 0 0 0 0 0 94056390024408 94056390048896 94056392192000 140723508702569 140723508702756 140723508702756 140723508703098 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-3h17ii1d/state.db", "/tmp/cnr-3h17ii1d/controller.sock"], "exit": -9}]
+owned_log controller-restarted.stderr ive event "thread/status/changed"
+native event "turn/completed"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native lead reconcile: native ownership lookup: "No such file or directory (os error 2)"
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/add
+native RPC received environment/add
+native RPC send environment/status
+native RPC received environment/status
+native lead reconcile: remote executor not ready: {"status":"pending"}
+native RPC send initialize
+native RPC received initialize
+native RPC send thread/resume
+native event "remoteControl/status/changed"
+native event "deprecationNotice"
+native RPC received thread/resume
+native RPC send environment/status
+native event "thread/tokenUsage/updated"
+native event "thread/goal/cleared"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send thread/resume
+native event "deprecationNotice"
+native RPC received thread/resume
+native RPC send environment/status
+native event "thread/tokenUsage/updated"
+native event "thread/goal/cleared"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/start
+native RPC received thread/start
+native RPC send turn/start
+native event "thread/started"
+native event "warning"
+native RPC received turn/start
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native event "thread/status/changed"
+native event "turn/started"
+native event "item/started"
+native event "item/completed"
+native event "item/started"
+native event "item/completed"
+native event "thread/tokenUsage/updated"
+native event "account/rateLimits/updated"
+native event "thread/status/changed"
+native event "turn/completed"
+native event "thread/environment/disconnected"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+
+owned_log controller.stderr : native ownership lookup: "No such file or directory (os error 2)"
+native reconcile b76aa810-85b4-4c24-b8e8-5bc0d32ff983: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile e97fb7fe-d7a3-474c-b24f-e4cb27e7e034: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile b76aa810-85b4-4c24-b8e8-5bc0d32ff983: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile e97fb7fe-d7a3-474c-b24f-e4cb27e7e034: native ownership lookup: "No such file or directory (os error 2)"
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/add
+native event "remoteControl/status/changed"
+native RPC received environment/add
+native RPC send environment/status
+native RPC received environment/status
+native reconcile b76aa810-85b4-4c24-b8e8-5bc0d32ff983: remote executor not ready: {"status":"pending"}
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/add
+native event "remoteControl/status/changed"
+native RPC received environment/add
+native RPC send environment/status
+native RPC received environment/status
+native reconcile e97fb7fe-d7a3-474c-b24f-e4cb27e7e034: remote executor not ready: {"status":"pending"}
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/status
+native event "remoteControl/status/changed"
+native RPC received environment/status
+native RPC send thread/start
+native RPC received thread/start
+native RPC send turn/start
+native event "thread/started"
+native event "warning"
+native RPC received turn/start
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native event "thread/status/changed"
+native event "turn/started"
+native event "item/started"
+native event "item/completed"
+native RPC received environment/status
+native RPC send thread/start
+native RPC received thread/start
+native RPC send turn/start
+native event "thread/started"
+native event "warning"
+native RPC received turn/start
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native event "thread/status/changed"
+native event "turn/started"
+native event "item/started"
+native event "item/completed"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send turn/steer
+native RPC received turn/steer
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51885947", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+{"native_service": {"kind": "app", "pid": 325, "start_ticks": "51887142", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51887374", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51885895", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51885895", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+actual_bound_registry separate {"bindings": [{"attempt": "fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "authority_epoch": 1, "document": {"environment_id": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "executor": {"auth_ref": "native:dee60cf9-9c64-429e-97ff-a48601c007da", "control_endpoint": "/tmp/cnr-tyotk22r/t-exec/fdfd1eae-5b75-49a0-9e37-52cf54f3b000/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-tyotk22r/t-exec/fdfd1eae-5b75-49a0-9e37-52cf54f3b000/native.sock", "incarnation": "3988844d73d124bce38d862391cf4b6d412ac92ef30c129bf555ddc2cad0fcd9", "kind": "exec", "own_executor_only": false, "pid_namespace": 4026539641, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-tyotk22r/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": null, "kind": "exec", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": false, "provider_socket": null, "transport_root": "/tmp/cnr-tyotk22r/t-exec"}, "runtime_pid": 3140779, "runtime_start": "51889710", "store_id": "f53f938e-0f07-4b07-8796-6b92faee7a27", "store_identity": "31:3267194", "workspace_generation": "dee60cf9-9c64-429e-97ff-a48601c007da", "workspace_identity": "31:3267175"}, "executor_execution": {"binding": {"attempt": "fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "26dec5c4-7280-4cd0-87de-27e22d3b97a1", "operation": "1f3a5fc2-dce9-4ede-98ad-fcd4cce6aaad", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "dee60cf9-9c64-429e-97ff-a48601c007da", "incarnation": "719a929d-40e1-4da8-b448-3f984e80e0b7", "init_start_ticks": "51889679", "namespace_init": 3140763, "native_store": "f53f938e-0f07-4b07-8796-6b92faee7a27", "outcome": null, "pid": 3140762, "pid_namespace": 4026539641, "start_ticks": "51889678", "state": "running"}, "native_activity": [{"emittedAtMs": 1791103317871, "method": "remoteControl/status/changed", "params": {"environmentId": null, "installationId": "1dc65f96-cf51-4d44-8f1e-5955ae7aa05c", "serverName": "n116-077-207", "status": "disabled"}}, {"emittedAtMs": 1791103322891, "method": "thread/started", "params": {"thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103322, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-b773-7ca1-9145-7ab0af07fe8a", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-41-57-01a10613-b773-7ca1-9145-7ab0af07fe8a.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103322, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-b773-7ca1-9145-7ab0af07fe8a", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103322}}}, {"emittedAtMs": 1791103322891, "method": "warning", "params": {"message": "Under-development features enabled: code_mode. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/worker/.codex/config.toml.", "threadId": "01a10613-b773-7ca1-9145-7ab0af07fe8a"}}, {"emittedAtMs": 1791103322945, "method": "deprecationNotice", "params": {"details": null, "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`."}}, {"emittedAtMs": 1791103322945, "method": "thread/status/changed", "params": {"status": {"activeFlags": [], "type": "active"}, "threadId": "01a10613-b773-7ca1-9145-7ab0af07fe8a"}}], "native_turns": [{"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-cb0d-7710-81d3-1c8ea009f55f", "items": [], "itemsView": "full", "startedAt": 1791103322, "status": "inProgress"}], "observed_environments": [{"cwd": "/workspace", "environmentId": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "recovery_state": "remote_validated", "server_execution": {"binding": {"attempt": "fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "26dec5c4-7280-4cd0-87de-27e22d3b97a1", "operation": "35cde8db-cb28-4dd3-a948-ec0ec989e72e", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "999f3034-d521-4eee-ae3b-dad5f23b8d68", "incarnation": "dc844d48-eb2b-4104-ae68-6b5748a30e5e", "init_start_ticks": "51889733", "namespace_init": 3141222, "native_store": "076b955c-c281-422c-95f1-7b1b48b4ce40", "outcome": null, "pid": 3141221, "pid_namespace": 4026539869, "start_ticks": "51889732", "state": "running"}, "server_id": "native:fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "server_incarnation": "f8d6bc10e6aa913b9102f3ea68468cb8a4dbacb453fed292998a731e7f238053", "server_store": "076b955c-c281-422c-95f1-7b1b48b4ce40", "thread_id": "01a10613-b773-7ca1-9145-7ab0af07fe8a", "turn_id": "01a10613-cb0d-7710-81d3-1c8ea009f55f", "ui_input_ready": true}, "id": "worker:fdfd1eae-5b75-49a0-9e37-52cf54f3b000:1", "role": "attempt", "state": "bound"}, {"attempt": "0ba3d2b6-c43d-481c-82ab-6c440a256c11", "authority_epoch": 1, "document": {"environment_id": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "executor": {"auth_ref": "native:f7fbb393-7cdb-4571-9962-93fbb0155798", "control_endpoint": "/tmp/cnr-tyotk22r/t-exec/0ba3d2b6-c43d-481c-82ab-6c440a256c11/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-tyotk22r/t-exec/0ba3d2b6-c43d-481c-82ab-6c440a256c11/native.sock", "incarnation": "f171b754245c467de9b2b5e36cdcbaacc7600178071392066b522b87464e7b5c", "kind": "exec", "own_executor_only": false, "pid_namespace": 4026539785, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-tyotk22r/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": null, "kind": "exec", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": false, "provider_socket": null, "transport_root": "/tmp/cnr-tyotk22r/t-exec"}, "runtime_pid": 3140780, "runtime_start": "51889710", "store_id": "79204d48-ff79-454f-92f5-8addac94a7fb", "store_identity": "31:3267195", "workspace_generation": "f7fbb393-7cdb-4571-9962-93fbb0155798", "workspace_identity": "31:3267186"}, "executor_execution": {"binding": {"attempt": "0ba3d2b6-c43d-481c-82ab-6c440a256c11", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "88391232-7233-4ec9-b245-0e7f249ded8f", "operation": "5ebe9c89-de98-4a8a-8ff3-62d294cc6f1d", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "f7fbb393-7cdb-4571-9962-93fbb0155798", "incarnation": "719a929d-40e1-4da8-b448-3f984e80e0b7", "init_start_ticks": "51889680", "namespace_init": 3140765, "native_store": "79204d48-ff79-454f-92f5-8addac94a7fb", "outcome": null, "pid": 3140764, "pid_namespace": 4026539785, "start_ticks": "51889679", "state": "running"}, "native_activity": [{"emittedAtMs": 1791103322991, "method": "remoteControl/status/changed", "params": {"environmentId": null, "installationId": "aa7e1198-421f-4b86-92cf-0b405e8a67f3", "serverName": "n116-077-207", "status": "disabled"}}, {"emittedAtMs": 1791103328009, "method": "thread/started", "params": {"thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103328, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-cb74-7991-b9ff-094c9520a4ec", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-42-02-01a10613-cb74-7991-b9ff-094c9520a4ec.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103328, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-cb74-7991-b9ff-094c9520a4ec", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103328}}}, {"emittedAtMs": 1791103328009, "method": "warning", "params": {"message": "Under-development features enabled: code_mode. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /home/worker/.codex/config.toml.", "threadId": "01a10613-cb74-7991-b9ff-094c9520a4ec"}}, {"emittedAtMs": 1791103328063, "method": "deprecationNotice", "params": {"details": null, "summary": "Full-history hydration is deprecated for paginated threads; omit `includeTurns` or set it to `false`, then page with `thread/turns/list` and `thread/items/list`."}}], "native_turns": [{"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-df0b-7c93-920b-c5d8bd0f959f", "items": [], "itemsView": "full", "startedAt": 1791103328, "status": "inProgress"}], "observed_environments": [{"cwd": "/workspace", "environmentId": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "recovery_state": "remote_validated", "server_execution": {"binding": {"attempt": "0ba3d2b6-c43d-481c-82ab-6c440a256c11", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "88391232-7233-4ec9-b245-0e7f249ded8f", "operation": "e21fdb3f-1c77-47e1-b297-5882387ef4f2", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "6ca64b92-6378-4ead-8f77-2fff14722e76", "incarnation": "dc844d48-eb2b-4104-ae68-6b5748a30e5e", "init_start_ticks": "51889734", "namespace_init": 3141226, "native_store": "0f86744c-b8f0-4a23-8706-099084c8f5f7", "outcome": null, "pid": 3141224, "pid_namespace": 4026539953, "start_ticks": "51889733", "state": "running"}, "server_id": "native:0ba3d2b6-c43d-481c-82ab-6c440a256c11", "server_incarnation": "64ff95281afc78e482513f1dafb320cc7685b3ac575c596e0900935987072fd1", "server_store": "0f86744c-b8f0-4a23-8706-099084c8f5f7", "thread_id": "01a10613-cb74-7991-b9ff-094c9520a4ec", "turn_id": "01a10613-df0b-7c93-920b-c5d8bd0f959f", "ui_input_ready": true}, "id": "worker:0ba3d2b6-c43d-481c-82ab-6c440a256c11:1", "role": "attempt", "state": "bound"}], "configured": true, "operations": [{"binding": "worker:fdfd1eae-5b75-49a0-9e37-52cf54f3b000:1", "id": "628b49fa-cdf0-4257-a78d-e1199b1137b0", "intent": {"auth_ref": "native:dee60cf9-9c64-429e-97ff-a48601c007da", "environmentId": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "execServerUrl": "ws://127.0.0.1:44789/?corenius_start=51889710", "executor_incarnation": "3988844d73d124bce38d862391cf4b6d412ac92ef30c129bf555ddc2cad0fcd9"}, "kind": "environment/add", "observation": {"registered": true}, "state": "confirmed"}, {"binding": "worker:0ba3d2b6-c43d-481c-82ab-6c440a256c11:1", "id": "c3fc06b7-fca1-44eb-9002-c8f43ae4c32b", "intent": {"auth_ref": "native:f7fbb393-7cdb-4571-9962-93fbb0155798", "environmentId": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "execServerUrl": "ws://127.0.0.1:41615/?corenius_start=51889710", "executor_incarnation": "f171b754245c467de9b2b5e36cdcbaacc7600178071392066b522b87464e7b5c"}, "kind": "environment/add", "observation": {"registered": true}, "state": "confirmed"}, {"binding": "worker:fdfd1eae-5b75-49a0-9e37-52cf54f3b000:1", "id": "1c63cf9e-3f2d-464b-ae87-17e73cb04837", "intent": {"approvalPolicy": "never", "cwd": "/workspace", "environments": [{"cwd": "/workspace", "environmentId": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "sandbox": "danger-full-access"}, "kind": "thread/start", "observation": {"activePermissionProfile": null, "approvalPolicy": "never", "approvalsReviewer": "user", "cwd": "/workspace", "disabledPluginIds": [], "instructionSources": [], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "multiAgentMode": "explicitRequestOnly", "reasoningEffort": null, "runtimeWorkspaceRoots": ["/workspace"], "sandbox": {"type": "dangerFullAccess"}, "serviceTier": null, "thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103322, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-b773-7ca1-9145-7ab0af07fe8a", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-41-57-01a10613-b773-7ca1-9145-7ab0af07fe8a.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103322, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-b773-7ca1-9145-7ab0af07fe8a", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103322}}, "state": "confirmed"}, {"binding": "worker:fdfd1eae-5b75-49a0-9e37-52cf54f3b000:1", "id": "08b93e98-0651-46a3-b7f1-f90a5934d3ca", "intent": {"clientUserMessageId": "78ed05be-37ed-4adc-b006-85e1a8b09808", "environments": [{"cwd": "/workspace", "environmentId": "executor-fdfd1eae-5b75-49a0-9e37-52cf54f3b000-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "input": [{"text": "TASK_A MODEL_FREE_ACTUAL_PROTOCOL", "text_elements": [], "type": "text"}], "threadId": "01a10613-b773-7ca1-9145-7ab0af07fe8a"}, "kind": "turn/start", "observation": {"turn": {"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-cb0d-7710-81d3-1c8ea009f55f", "items": [], "itemsView": "notLoaded", "startedAt": null, "status": "inProgress"}}, "state": "confirmed"}, {"binding": "worker:0ba3d2b6-c43d-481c-82ab-6c440a256c11:1", "id": "d4f4e5f7-59e9-4954-9dad-93c5586fb048", "intent": {"approvalPolicy": "never", "cwd": "/workspace", "environments": [{"cwd": "/workspace", "environmentId": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "sandbox": "danger-full-access"}, "kind": "thread/start", "observation": {"activePermissionProfile": null, "approvalPolicy": "never", "approvalsReviewer": "user", "cwd": "/workspace", "disabledPluginIds": [], "instructionSources": [], "model": "gpt-6-sol", "modelProvider": "corenius-relay", "multiAgentMode": "explicitRequestOnly", "reasoningEffort": null, "runtimeWorkspaceRoots": ["/workspace"], "sandbox": {"type": "dangerFullAccess"}, "serviceTier": null, "thread": {"agentNickname": null, "agentRole": null, "canAcceptDirectInput": true, "cliVersion": "0.159.3", "createdAt": 1791103328, "cwd": "/workspace", "daybreakEnabled": null, "environments": [{"cwd": "/workspace", "environmentId": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "ephemeral": false, "extra": null, "forkedFromId": null, "gitInfo": null, "historyMode": "paginated", "id": "01a10613-cb74-7991-b9ff-094c9520a4ec", "model": "gpt-6-sol", "modelProvider": "corenius-relay", "name": null, "originator": "corenius-controller", "parentThreadId": null, "path": "/home/worker/.codex/sessions/2026/10/04/rollout-2026-10-04T08-42-02-01a10613-cb74-7991-b9ff-094c9520a4ec.jsonl", "preview": "", "projectId": null, "reasoningEffort": null, "recencyAt": 1791103328, "section": null, "sectionEnteredAt": null, "sessionId": "01a10613-cb74-7991-b9ff-094c9520a4ec", "source": "vscode", "status": {"type": "idle"}, "threadSource": null, "turns": [], "updatedAt": 1791103328}}, "state": "confirmed"}, {"binding": "worker:0ba3d2b6-c43d-481c-82ab-6c440a256c11:1", "id": "3c4f109c-9616-4d9f-9b3f-18204317fec8", "intent": {"clientUserMessageId": "6bd1528a-7f54-4fb8-b360-6991c6cfbffb", "environments": [{"cwd": "/workspace", "environmentId": "executor-0ba3d2b6-c43d-481c-82ab-6c440a256c11-51889710", "runtimeWorkspaceRoots": ["/workspace"]}], "input": [{"text": "TASK_B MODEL_FREE_ACTUAL_PROTOCOL", "text_elements": [], "type": "text"}], "threadId": "01a10613-cb74-7991-b9ff-094c9520a4ec"}, "kind": "turn/start", "observation": {"turn": {"completedAt": null, "durationMs": null, "error": null, "id": "01a10613-df0b-7c93-920b-c5d8bd0f959f", "items": [], "itemsView": "notLoaded", "startedAt": null, "status": "inProgress"}}, "state": "confirmed"}], "servers": [{"document": {"effect_binding": {"attempt": "fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "26dec5c4-7280-4cd0-87de-27e22d3b97a1", "operation": "35cde8db-cb28-4dd3-a948-ec0ec989e72e", "project": "p", "scope_epoch": 1}, "execution": {"binding": {"attempt": "fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "26dec5c4-7280-4cd0-87de-27e22d3b97a1", "operation": "35cde8db-cb28-4dd3-a948-ec0ec989e72e", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "999f3034-d521-4eee-ae3b-dad5f23b8d68", "incarnation": "dc844d48-eb2b-4104-ae68-6b5748a30e5e", "init_start_ticks": "51889733", "namespace_init": 3141222, "native_store": "076b955c-c281-422c-95f1-7b1b48b4ce40", "outcome": null, "pid": 3141221, "pid_namespace": 4026539869, "start_ticks": "51889732", "state": "running"}, "runtime": {"auth_ref": "native:999f3034-d521-4eee-ae3b-dad5f23b8d68", "control_endpoint": "/tmp/cnr-tyotk22r/t-app/fdfd1eae-5b75-49a0-9e37-52cf54f3b000/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-tyotk22r/t-app/fdfd1eae-5b75-49a0-9e37-52cf54f3b000/native.sock", "incarnation": "f8d6bc10e6aa913b9102f3ea68468cb8a4dbacb453fed292998a731e7f238053", "kind": "app", "own_executor_only": true, "pid_namespace": 4026539869, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-tyotk22r/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": "/tmp/cnr-tyotk22r/t-exec", "kind": "app", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": true, "provider_socket": "/tmp/cnr-tyotk22r/provider.sock", "transport_root": "/tmp/cnr-tyotk22r/t-app"}, "runtime_pid": 3141259, "runtime_start": "51889763", "store_id": "076b955c-c281-422c-95f1-7b1b48b4ce40", "store_identity": "31:3267243", "workspace_generation": "999f3034-d521-4eee-ae3b-dad5f23b8d68", "workspace_identity": "31:3267221"}, "schema_digest": "e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455", "topology": "separate"}, "id": "native:fdfd1eae-5b75-49a0-9e37-52cf54f3b000", "state": "qualified"}, {"document": {"effect_binding": {"attempt": "0ba3d2b6-c43d-481c-82ab-6c440a256c11", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "88391232-7233-4ec9-b245-0e7f249ded8f", "operation": "e21fdb3f-1c77-47e1-b297-5882387ef4f2", "project": "p", "scope_epoch": 1}, "execution": {"binding": {"attempt": "0ba3d2b6-c43d-481c-82ab-6c440a256c11", "base": "0123456789abcdef0123456789abcdef01234567", "brief": "88391232-7233-4ec9-b245-0e7f249ded8f", "operation": "e21fdb3f-1c77-47e1-b297-5882387ef4f2", "project": "p", "scope_epoch": 1}, "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b", "handle": "6ca64b92-6378-4ead-8f77-2fff14722e76", "incarnation": "dc844d48-eb2b-4104-ae68-6b5748a30e5e", "init_start_ticks": "51889734", "namespace_init": 3141226, "native_store": "0f86744c-b8f0-4a23-8706-099084c8f5f7", "outcome": null, "pid": 3141224, "pid_namespace": 4026539953, "start_ticks": "51889733", "state": "running"}, "runtime": {"auth_ref": "native:6ca64b92-6378-4ead-8f77-2fff14722e76", "control_endpoint": "/tmp/cnr-tyotk22r/t-app/0ba3d2b6-c43d-481c-82ab-6c440a256c11/control.sock", "controlplane_cwd": "/workspace", "endpoint": "/tmp/cnr-tyotk22r/t-app/0ba3d2b6-c43d-481c-82ab-6c440a256c11/native.sock", "incarnation": "64ff95281afc78e482513f1dafb320cc7685b3ac575c596e0900935987072fd1", "kind": "app", "own_executor_only": true, "pid_namespace": 4026539953, "pins": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "config": {"path": "/tmp/cnr-tyotk22r/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "executor_root": "/tmp/cnr-tyotk22r/t-exec", "kind": "app", "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444"}, "own_executor_only": true, "provider_socket": "/tmp/cnr-tyotk22r/provider.sock", "transport_root": "/tmp/cnr-tyotk22r/t-app"}, "runtime_pid": 3141258, "runtime_start": "51889763", "store_id": "0f86744c-b8f0-4a23-8706-099084c8f5f7", "store_identity": "31:3267241", "workspace_generation": "6ca64b92-6378-4ead-8f77-2fff14722e76", "workspace_identity": "31:3267233"}, "schema_digest": "e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455", "topology": "separate"}, "id": "native:0ba3d2b6-c43d-481c-82ab-6c440a256c11", "state": "qualified"}]}
+native_current_authority_and_selector_guards separate
+actual_native_effects separate TASK_A {"pid_namespace": "pid:[4026539641]", "net_namespace": "net:[4026539687]", "host_and_authority_absent": true, "host_tcp_blocked": true}
+actual_native_effects separate TASK_B {"pid_namespace": "pid:[4026539785]", "net_namespace": "net:[4026539787]", "host_and_authority_absent": true, "host_tcp_blocked": true}
+controller_native_connection_reconciled separate
+native_restart_restored separate {"thread_id": "01a10613-b773-7ca1-9145-7ab0af07fe8a", "server_store": "076b955c-c281-422c-95f1-7b1b48b4ce40", "server_incarnation_changed": true, "remote_restored": true}
+native_lead_no_worker_slot separate
+controller_owned_cancellation_confirmed separate
+owned_fixture_resources [{"name": "workers", "pid": 3139361, "start_stat": "3139361 (corenius-attemp) R 3135683 3135656 3135656 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51888037 2068480 1 18446744073709551615 94661405932448 94661407093856 140729069044960 0 0 0 0 0 0 0 0 0 17 144 0 0 0 0 0 94661407163832 94661407166368 94661426991104 140729069051512 140729069051701 140729069051701 140729069051769 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-tyotk22r/workers.json", "/tmp/cnr-tyotk22r/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 3140386, "start_stat": "3140386 (corenius-attemp) R 3135683 3135656 3135656 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51888842 2068480 1 18446744073709551615 94464950848416 94464952009824 140732157000928 0 0 0 0 0 0 0 0 0 17 146 0 0 0 0 0 94464952079800 94464952082336 94464975237120 140732157005416 140732157005617 140732157005617 140732157005689 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-tyotk22r/controlplanes.json", "/tmp/cnr-tyotk22r/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 3140757, "start_stat": "3140757 (corenius-sqlite) R 3135683 3135656 3135656 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51889652 4526080 1 18446744073709551615 94508194759440 94508197885424 140726067383984 0 0 0 0 0 0 0 0 0 17 36 0 0 0 0 0 94508198005976 94508198030464 94508223655936 140726067387753 140726067387940 140726067387940 140726067388282 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-tyotk22r/state.db", "/tmp/cnr-tyotk22r/controller.sock"], "exit": -9}, {"name": "controller-restarted", "pid": 3143058, "start_stat": "3143058 (corenius-sqlite) R 3135683 3135656 3135656 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51890924 4526080 1 18446744073709551615 94533123457808 94533126583792 140734450727360 0 0 0 0 0 0 0 0 0 17 125 0 0 0 0 0 94533126704344 94533126728832 94533153280000 140734450728297 140734450728484 140734450728484 140734450728826 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-tyotk22r/state.db", "/tmp/cnr-tyotk22r/controller.sock"], "exit": -9}]
+owned_log controller-restarted.stderr  thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native lead reconcile: native ownership lookup: "No such file or directory (os error 2)"
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native lead reconcile: native ownership lookup: "No such file or directory (os error 2)"
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native lead reconcile: failed to fill whole buffer
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/add
+native event "remoteControl/status/changed"
+native RPC received environment/add
+native RPC send environment/status
+native RPC received environment/status
+native lead reconcile: remote executor not ready: {"status":"pending"}
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/status
+native event "remoteControl/status/changed"
+native RPC received environment/status
+native RPC send thread/start
+native RPC received thread/start
+native RPC send turn/start
+native event "thread/started"
+native event "warning"
+native RPC received turn/start
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native event "thread/status/changed"
+native event "turn/started"
+native event "item/started"
+native event "item/completed"
+native event "item/started"
+native event "item/completed"
+native event "thread/tokenUsage/updated"
+native event "account/rateLimits/updated"
+native event "thread/status/changed"
+native event "turn/completed"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+
+owned_log controller.stderr 0-9e37-52cf54f3b000: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 0ba3d2b6-c43d-481c-82ab-6c440a256c11: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile fdfd1eae-5b75-49a0-9e37-52cf54f3b000: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 0ba3d2b6-c43d-481c-82ab-6c440a256c11: native ownership lookup: "No such file or directory (os error 2)"
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/add
+native event "remoteControl/status/changed"
+native RPC received environment/add
+native RPC send environment/status
+native RPC received environment/status
+native reconcile fdfd1eae-5b75-49a0-9e37-52cf54f3b000: remote executor not ready: {"status":"pending"}
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/add
+native event "remoteControl/status/changed"
+native RPC received environment/add
+native RPC send environment/status
+native RPC received environment/status
+native reconcile 0ba3d2b6-c43d-481c-82ab-6c440a256c11: remote executor not ready: {"status":"pending"}
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/status
+native event "remoteControl/status/changed"
+native RPC received environment/status
+native RPC send thread/start
+native RPC received thread/start
+native RPC send turn/start
+native event "thread/started"
+native event "warning"
+native RPC received turn/start
+native RPC send thread/read
+native event "deprecationNotice"
+native event "thread/status/changed"
+native RPC received thread/read
+native RPC send initialize
+native RPC received initialize
+native RPC send environment/status
+native event "remoteControl/status/changed"
+native RPC received environment/status
+native RPC send thread/start
+native RPC received thread/start
+native RPC send turn/start
+native event "thread/started"
+native event "warning"
+native RPC received turn/start
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native event "turn/started"
+native event "item/started"
+native event "item/completed"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native event "thread/status/changed"
+native event "turn/started"
+native event "item/started"
+native event "item/completed"
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+native RPC send turn/steer
+native RPC received turn/steer
+native RPC send environment/status
+native RPC received environment/status
+native RPC send thread/read
+native event "deprecationNotice"
+native RPC received thread/read
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51891221", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51889763", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51889763", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+{"native_service": {"kind": "app", "pid": 315, "start_ticks": "51890960", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51891184", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51889710", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51889710", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+test configured_native_topologies_are_isolated_and_controller_owned ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 77.56s
+

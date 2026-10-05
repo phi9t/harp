@@ -1,0 +1,49 @@
+{
+  "verified_at": "2026-10-04T07:26:17Z",
+  "origin": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-lead-routing-lt5kx2vz",
+  "all_origin_files_verified": 135,
+  "external_aliases_to_pinned_binary": [
+    {
+      "path": "codex/tmp/arg0/codex-arg035j5yq/apply_patch",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "codex/tmp/arg0/codex-arg035j5yq/applypatch",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "codex/tmp/arg0/codex-arg035j5yq/codex-execve-wrapper",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "codex/tmp/arg0/codex-arg035j5yq/codex-linux-sandbox",
+      "target": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    }
+  ],
+  "metadata_sha256": {
+    "readiness.md": "fb211ce5bb4efa071fe704a522cfcc49c8b20335ed96f88584ffbbfcdda740af",
+    "tool-pins.json": "b5c8247dd293d68f6b97ca39565cfdc9061c63fbb6e205aab71b9c5d2c6eda03",
+    "manifest.json": "3ca07932384c8fb1b785e5e60a6716d8529b6924a9cda018b2b355494aeab1a9",
+    "oracle-results.json": "7d3cc5d40809e4d3afce07e0f562b3a979ee1156b534a7a2dc8bedd82a86c7f2",
+    "resources.json": "b03962956c77f86791e656d1c96749c909147b630d955d77ad2790a609564786",
+    "verify.py": "8821efa525f115ff281e39cd5065583fd375388e34b2d73222b061a388bef3df"
+  },
+  "retained_oracles": 15,
+  "owned_processes_absent": 2,
+  "classification": "MODEL_FREE_ACTUAL_NATIVE_ROUTING_PRIMITIVES_ONLY",
+  "not_qualified": [
+    "product controller authorization/gateway",
+    "private networking/credential handling",
+    "live model/account qualification"
+  ],
+  "critical_constraints": [
+    "Native capability is server-wide; unsubscribed clients can answer dynamic tools.",
+    "Filter TUI history/list/events and title-helper creation; reject unapproved runtime mutations and tool replies.",
+    "Runtime transport acceptance differs from explicit lead ack/resolution.",
+    "Reconcile durable command/authority before returning replayed tool result."
+  ]
+}

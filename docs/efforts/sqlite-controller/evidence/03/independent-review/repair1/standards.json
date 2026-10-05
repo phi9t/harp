@@ -1,0 +1,31 @@
+{
+  "axis": "Standards",
+  "verdict": "PASS",
+  "base": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "source": "4d5fbff0323f27c6dcb30aec5cf3df7a839511e0",
+  "merge_base": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "scope": "exact ticket03 repair1 delta only",
+  "reviewer": "/root/sqlite03_repair1_standards",
+  "findings": [],
+  "actionable_findings": 0,
+  "worst_severity": null,
+  "prior_deferred_heuristic": {
+    "severity": "LOW",
+    "kind": "possible Primitive Obsession / captured-source Value type-design",
+    "disposition": "unchanged/deferred; not reopened"
+  },
+  "source_check": {
+    "checkout": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check",
+    "head": "4d5fbff0323f27c6dcb30aec5cf3df7a839511e0",
+    "working_tree_clean": true,
+    "source_files_checked": 29,
+    "source_hashes_match_frozen_manifest": true
+  },
+  "verification": "read-only static review and source/input hashing; no tests executed",
+  "limits": [
+    "No acceptance decision",
+    "No full current native-suite or live qualification",
+    "Original root native failure attribution remains incomplete",
+    "Native cleanup642 remains ticket04 requirement; final assembled whole gate remains ticket06 requirement"
+  ]
+}

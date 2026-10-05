@@ -1,6 +1,6 @@
 # Controller-first controlled trial
 
-Status: owner-requested goal and qualification contract; not implemented or executed.
+Status: owner-requested qualification contract adopted; ticket01 storage qualified. Assembled deterministic integrations and live Codex trial pending.
 Priority: highest, within the retained local baseline. Source read: a21316f; baseline spec commits9d90222/d18e413. This refines SPEC.md and ticket06; it does not authorize wider production claims.
 
 ## Goal

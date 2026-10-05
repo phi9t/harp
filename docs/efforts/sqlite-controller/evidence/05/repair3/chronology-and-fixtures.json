@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-10-05T01:55:12.561531+00:00",
+  "historical_gap_correction": "Preserved pre-source matrix v2 typo122\u2013126. Canonical unreviewed historical04 gap is122\u20131262. No historical coverage credit added.",
+  "phase_owner_fallback": "Matt owners unavailable; canonical crosswalk and approved root replacement brief govern. Systematic diagnosis/receiving-review/TDD/verification used; no repeated design approval, no subagents.",
+  "changed_fixtures": {
+    "001\u2192002": "Only wire-call logging added; same assertions.",
+    "004\u2192005": "Initial test expected correction fields at top-level; schema retains full correction document. Follow exact document text_reference, reconstruct UTF8 and check all80 fields, digest/bytes. Budget assertion from original003 unchanged.",
+    "008\u2192011": "Replace unsupported upstream PATCH status with existing POST actions/close protocol; production approval/source assertions unchanged.",
+    "011\u2192012": "Use existing valid >=40char closure message; match closed-source current digest/revision/version and assert specific closed refusal.",
+    "normal": "Root ruling allows excluding only inspection.process.pid/start_ticks from independent observer equality; retains exact all other fields, exit0/waited and refresh_required false. Full original root73241FAIL101 retained; rootdiagnostic childexitUNKNOWN not relabeled.",
+    "006": "Unused Kata test files edited during Git run. Before fullmap retained, explicit limited Git scope; no aftermap/backfill claim.",
+    "UI_RED_seam": "cfg(fault-injection) scheduling-only hook after saved UI record; actual independent public report_progress creates revision conflict; normal production behavior unchanged before target RED."
+  },
+  "source_retention": "001\u2013006 have prelaunch maps/archives but no aftermaps.007onward paired maps;013format intentionally changes formatting only. Final source must equal rootsealed49 pins."
+}

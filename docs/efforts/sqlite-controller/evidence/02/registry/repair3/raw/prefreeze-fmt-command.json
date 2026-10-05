@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cargo",
+    "fmt",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--check"
+  ],
+  "exit": 0,
+  "seconds": 0.23,
+  "started_at": "2026-10-04T12:53:51.463698+00:00",
+  "source_unchanged": true
+}

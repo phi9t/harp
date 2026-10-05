@@ -1,0 +1,19 @@
+{
+  "command": [
+    "env",
+    "CORENIUS_TEST_CONTROL_CENTER=1",
+    "CORENIUS_TEST_CORRECTION_AUTHORITY=1",
+    "CORENIUS_TEST_RETAIN_RAW=1",
+    "python3",
+    "crates/sqlite-controller/tests/support/native_registry.py",
+    ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+  ],
+  "started_utc": "2026-10-05T03:25:21.957344+00:00",
+  "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "pid": 158091,
+  "start_ticks": "58630225",
+  "exit": 0,
+  "seconds": 75.11345558101311,
+  "finished_utc": "2026-10-05T03:26:37.070808+00:00",
+  "log_sha256": "e8c0f2f61f8678978bad3763350e4242812843407fa520ba9f4dd3aeaffd7bdb"
+}

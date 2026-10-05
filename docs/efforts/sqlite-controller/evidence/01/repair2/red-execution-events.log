@@ -1,0 +1,37 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.74s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-71954cf30dfe09a5)
+
+running 4 tests
+test restart_retains_journal_questions_decisions_and_unknown_capacity ... ok
+test own_attempt_events_use_retained_task_identity ... FAILED
+test own_operation_events_use_retained_attempt_identity ... FAILED
+test answers_reconnect_to_own_attempt_and_storage_busy_is_bounded ... ok
+
+failures:
+
+---- own_attempt_events_use_retained_task_identity stdout ----
+
+thread 'own_attempt_events_use_retained_task_identity' (1803454) panicked at tests/public.rs:786:9:
+assertion `left == right` failed: own attempt observation missing from reconnect
+  left: Null
+ right: Number(6)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- own_operation_events_use_retained_attempt_identity stdout ----
+
+thread 'own_operation_events_use_retained_attempt_identity' (1803455) panicked at tests/public.rs:805:9:
+assertion `left == right` failed: own operation transition missing from reconnect
+  left: Null
+ right: Number(6)
+
+
+failures:
+    own_attempt_events_use_retained_task_identity
+    own_operation_events_use_retained_attempt_identity
+
+test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.52s
+
+error: test failed, to rerun pass `--test public`
+
+# Recorded command exit status: 101

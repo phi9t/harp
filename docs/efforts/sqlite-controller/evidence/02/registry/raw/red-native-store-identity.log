@@ -1,0 +1,33 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-09d8e44e34ad1918)
+
+running 1 test
+actual_private_native_initialize {'id': 1, 'result': {'userAgent': 'corenius_private_profile/0.159.3 (Debian 12.0.0; x86_64) unknown (corenius_private_profile; 0.1)', 'codexHome': '/home/worker/.codex', 'platformFamily': 'unix', 'platformOs': 'linux'}}
+native_qualified_observation {'auth_ref': 'native:e10190f6-c2b0-478a-b095-af07b5b18630', 'control_endpoint': '/tmp/cnp-zfpd53hh/transport/802d058a-0566-48d2-ab8b-76d464d33763/control.sock', 'controlplane_cwd': '/workspace', 'endpoint': '/tmp/cnp-zfpd53hh/transport/802d058a-0566-48d2-ab8b-76d464d33763/native.sock', 'incarnation': '7db70c31a6c19b0d7cade148232283858ab6b7b2320b31fef8a15404bf183f2f', 'kind': 'app', 'own_executor_only': False, 'pid_namespace': 4026539641, 'pins': {'binary': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex', 'sha256': '8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479'}, 'catalog': {'path': '/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json', 'sha256': '262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6'}, 'companion': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host', 'sha256': 'fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5'}, 'config': {'path': '/tmp/cnp-zfpd53hh/runtime.toml', 'sha256': '4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660'}, 'executor_root': None, 'kind': 'app', 'launcher': {'path': '/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py', 'sha256': '16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444'}, 'own_executor_only': False, 'provider_socket': '/tmp/cnp-zfpd53hh/provider.sock', 'transport_root': '/tmp/cnp-zfpd53hh/transport'}, 'runtime_pid': 2830468, 'runtime_start': '51746556', 'store_id': '429647ce-175c-4036-ae65-cd6911cc1dbf', 'workspace_generation': 'e10190f6-c2b0-478a-b095-af07b5b18630', 'workspace_identity': '31:3261733'}
+native_owned_output {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51746556", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+
+
+thread 'pinned_native_services_use_supervised_private_network_profiles' (2829993) panicked at tests/codex.rs:61:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_profile.py", line 56, in <module>
+    assert 'error' in replaced,'replacement native thread store must revoke qualification despite same execution UUID'
+           ^^^^^^^^^^^^^^^^^^^
+AssertionError: replacement native thread store must revoke qualification despite same execution UUID
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test pinned_native_services_use_supervised_private_network_profiles ... FAILED
+
+failures:
+
+failures:
+    pinned_native_services_use_supervised_private_network_profiles
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 9.03s
+
+error: test failed, to rerun pass `--test codex`

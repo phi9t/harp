@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "CORENIUS_TEST_GIT_MODES=attempt-progress",
+    "python3",
+    "crates/sqlite-controller/tests/support/git_protocol.py",
+    ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+  ],
+  "started_utc": "2026-10-05T03:25:21.956761+00:00",
+  "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "pid": 158090,
+  "start_ticks": "58630225",
+  "exit": 0,
+  "seconds": 6.416924350894988,
+  "finished_utc": "2026-10-05T03:25:28.373685+00:00",
+  "log_sha256": "fb641a39e256306a90fb98b5a6b0aeff1ef4ade8f9dcd2922dde346cc8449c01"
+}

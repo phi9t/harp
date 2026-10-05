@@ -1,0 +1,5 @@
+# Ticket01 acceptance
+
+Accepted 2026-10-04T05:14:35Z: exact candidate15ae62c, after three bounded repair rounds. Root independently ran20 public and4 real daemon/process tests, fmt and strict Clippy in a separate owned checkout. All11 source hashes match committed bytes. Standards and Spec independently PASS. Original rejections and every RED/GREEN are preserved. Full branch634's only remaining ownership finding was repaired and independently scoped re-reviewed; branch635 found no issues in the exact fix. Complete assembled branch review remains required before final physical source landing.
+
+This accepts storage only: atomic admission and two occupied slots, authenticated/revision-guarded idempotent commands, scoped reconnect events/messages, effective WAL/FULL/foreign keys, exclusive lifetime ownership, all-or-none process interruption and restart retention. Runtime execution evidence, physical Git candidate/verification/landing, Kata, dashboard, backup/restore and live Codex qualification remain tickets02–06. No mainline movement or live qualification is claimed.

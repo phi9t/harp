@@ -1,6 +1,6 @@
 # Local controller and SQLite milestone
 
-Status: owner-selected baseline; implementation and independent qualification pending.
+Status: adopted highest-priority baseline; design critique PASS; ticket01 storage accepted; ticket02 process core qualified; amended runtime registry/topology phase executing. Assembled and live qualification pending.
 Source read: a21316f. Owner selected controller + SQLite after the two-worker design discussion. This spec supersedes the earlier larger first-release roadmap and the initial SQLite draft that deferred Kata. Kata is included as the work ledger. Git is the required initial workspace/landing backend; jj qualification is explicitly tracked behind the same workspace contract. Historical evidence and the longer-term vision remain preserved.
 
 ## Goal
@@ -63,6 +63,10 @@ Both interfaces use the same commands, events and durable projections. Views sho
 
 Behavioral proof through public controller APIs and real on-disk SQLite/Git/process effects: duplicate assignment/commands, two-worker concurrency, simultaneous submissions/landing, stale-base reintegration, superseded grants, exact-candidate evidence, cancellation races, crash boundaries before/after dispatch and ref update, dashboard event replay, lead replacement and backup restore refusal/reconciliation. Isolation probes attempt forbidden filesystem, process, credential and API access. Process-kill tests prove process recovery; power-loss durability needs separate storage fault qualification. No live-runtime guarantees inferred from model-free fixtures.
 
+## Controller-first qualification
+
+The owner amendment at f775734 is binding: [CONTROLLED-TRIAL.md](CONTROLLED-TRIAL.md) requires deterministic real SQLite/Git/Kata/runtime qualification before the dedicated live Codex trial. Live qualification uses a new session, an independent outer harness and structured controller plus independently observed process/ref evidence. Fixture success is not live Codex qualification.
+
 ## Execution sequence
 
 01 storage and public command seam -> 02 supervised attempt recovery. Ticket03 Kata protocol and ticket04 Git workspace/landing proceed after01 (execution-dependent checks also require02); ticket05 lead/control center consumes their public seams. Ticket06 assembled proof requires01–05. Ticket07 jj qualification is tracked separately and does not delay a fully Git-backed baseline. Preserve and reuse suitable domain/runtime code after inspection; do not mechanically port the complete PostgreSQL/Temporal kernel or maintain multiple authoritative stores.
@@ -82,3 +86,15 @@ Filesystem specs/tasks are explicit versioned source artifacts: repository/stora
 Kata exposes user-facing execution summaries such as assigned/running/blocked/submitted/landed, mapped explicitly from controller transitions. SQLite owns low-level attempt/turn/operation state; Kata is the synchronized visible task ledger, not a second scheduler or permission source. Define the concrete status mapping against the qualified Kata API, retain controller event/revision and acknowledged Kata revision, and show pending synchronization or drift. External Kata edits are proposals for reconciliation; task closed does not mean accepted/landed or process stopped. This resolves the owner's reference to execution states in Kata without introducing conflicting authority.
 
 Controller workspace inventory records private repository/worktree kind, path, owning attempt, base, current candidate, branch/bookmark refs, dirty state, live process status, retention and cleanup disposition. One writer per mutable workspace; workers may perform bounded local edits/commits but cannot mutate shared refs. Controller provisions/materializes workspaces, checks cleanliness and exact base, preserves candidate objects/evidence, serializes landing and performs recoverable cleanup only after observed termination. Git first and jj qualification share this contract. Untracked files/dirty work cannot be silently discarded. Never rebase, force-push or delete shared branches; exclusively owned disposable refs need explicit safe retirement rules. Provide inventory/drift diagnostics and exact owned-resource cleanup; hygiene is retained provenance and controlled lifecycle, not indiscriminate deletion.
+
+## Capped runtime cleanup routing
+
+[Root execution ruling](decisions/01-registry-cleanup-cap-routing.md) retains the final registry repair3 source and unresolved branch642 liveness boundary without accepting full02. Independent03 Kata work proceeds after01. Ticket04 consumes the already-qualified02 supervised core, depends on01/03 for execution, and must implement/prove the linked pre-unsubscribe restart correction in its existing cleanup/hygiene scope before full02/04 acceptance. Native retirement, replacement-lead completion, destructive runtime-dependent cleanup and assembled/live release remain blocked until that proof passes. No baseline requirement or existing accepted status is relaxed.
+
+## Owner832e769: incremental worker supervision
+
+Adopted owner commit832e76947f64e853092c0ea34bd9c314da6015f0; exact [observer design](evidence/05/worker-monitoring/owner/SPEC.md), [initial review](evidence/05/worker-monitoring/owner/initial-review.md) and source manifest are retained. This refines the existing baseline, not a second scheduler. Controller execution authority, sole coordination ownership, exclusive04 writer, accepted statuses and three-round repair caps remain unchanged.
+
+Operational checkpoints seal the earliest20 completed visible commands/public messages/peer activities,10minutes, or compaction/assignment/handoff boundary; review may occur mid-turn. Keep ingestion, contiguous historical review, live-tail review and intervention dispatch/ack/resolution distinct. Use stable source/turn/item identities, deduplicate canonical completed items, preserve byte/ordinal/digest cursors and visible-input retention; exclude private reasoning and credentials. Reports map every step to admitted intent/the nine04 findings, public rationale or explicit unknown, exact source-bound outcomes, unresolved evidence and next discriminating test. Healthy receipts stay quiet; findings remain advisory until an authenticated coordinator adjudicates them. No repeated nudges or repair-count renewal across tickets.
+
+Product ingestion/cursors, immutable bounded batch receipts, coverage gaps, hypothesis/finding/evidence views and policy-gated correction delivery belong in05;06 qualifies the recurring supervised runner and retained corpus/recovery/isolation/duplicate/overlap/truncation/compaction/retention negatives. Adopt the detailed owner design under existing independent gates. No continuous unattended coverage claim before actual runner implementation and qualification. Current manual bootstrap is root-owned scratch, does not write the owner's monitor.sqlite or any Codex state, and is not deployed product functionality.

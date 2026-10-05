@@ -1,0 +1,45 @@
+{
+  "id": "05-sourceae4-branch651-adjudication",
+  "recorded_at": "2026-10-04T23:03:06.736616+00:00",
+  "coordinator": "/root",
+  "source": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+  "evidence_tip": "655c86ee9a212878b1c921c34dee55dee5066c3c",
+  "branch_job": 651,
+  "branch_result_sha256": "f9aae558d805dc6928d75e982937f5b0acb9adfd35cdd039b38952c3fc5b826a",
+  "status": "accepted for independent scoped behavioral qualification; not source repair admission or acceptance",
+  "controls": [
+    {
+      "id": "05-R1-B651-1",
+      "source_lines": [
+        "native_ui.rs:402",
+        "codex.rs:1353"
+      ],
+      "observed_code": "Confirmed history reconciliation stores internal turn_id metadata; native UI saved codex_turn returns observation unchanged.",
+      "required": "Native-compatible turn/start response after lost ACK/current binding reconciliation, exact correlated turn, no duplicate operation or unsafe retry.",
+      "next_discriminating_test": "Actual caller/reconciliation/UI retry reports response schema plus operation count and current authority."
+    },
+    {
+      "id": "05-R1-B651-2",
+      "source_lines": [
+        "native_ui.rs:305",
+        "native_ui.rs:308"
+      ],
+      "observed_code": "Expected current-turn validation runs before retained-command identity/arguments lookup.",
+      "required": "Exact saved steer retry returns original compatible receipt/result when current turn changed; new admission stale/foreign and changed args remain no-effect; current authority/binding mandatory.",
+      "next_discriminating_test": "Create a confirmed native steer, advance observed turn, retry identical stable request versus changed/new-stale negative, inspect actual effects/counts."
+    },
+    {
+      "id": "05-R1-B651-3",
+      "source_lines": [
+        "control.rs:354"
+      ],
+      "observed_code": "Question projection SELECT returns full all-history question text without pagination or byte bound.",
+      "required": "Dashboard/MCP/lead context remain bounded/readable with accumulated valid large questions; exact full text retrievable through authorized durable refs/pages, no truncation/deletion/history loss.",
+      "next_discriminating_test": "Real public client/controller with70valid65536B questions and exact measured response bytes/transport result; own/foreign/observer access controls preserved."
+    }
+  ],
+  "reviews": "Final Spec PASS remains immutable scoped prior6 repairs/original4controls; new addendum requested from independent Spec and running Standards.",
+  "root_gate": "80070 positively owned oldae4 immutable full regression continues uninterrupted; no terminal verdict yet",
+  "caps": "05repair1/3 retained;02/04exhausted3/3unchanged; repair2 not admitted yet",
+  "reasoning": "Private reasoning excluded; code paths and public structured evidence only"
+}

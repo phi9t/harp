@@ -1,0 +1,61 @@
+{
+  "axis": "Standards",
+  "verdict": "PASS",
+  "base": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+  "source_head": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "source_tree": "515866a8e129069ccc9216ea64c444311574255d",
+  "reviewed_at": "2026-10-04T14:24:23.282041+00:00",
+  "hard_documented_violations": [],
+  "heuristic_findings": [
+    {
+      "id": "H1",
+      "severity": "LOW",
+      "category": "possible Primitive Obsession",
+      "hard_violation": false,
+      "blocking": false,
+      "file": "crates/sqlite-controller/src/kata.rs",
+      "line": 634,
+      "related_lines": [
+        316,
+        337,
+        642,
+        714,
+        720,
+        722,
+        1193
+      ],
+      "standard": "Fowler smell baseline only; no binding requirement to use typed internal DTOs",
+      "quote": "source[\"revision\"].as_i64().ok_or(\"Kata source revision missing\")?",
+      "trigger": "Changing the admitted source manifest shape requires coordinated changes in capture, retention, observation and context projections.",
+      "outcome": "Loose Value indexing makes inconsistent fields detectable at runtime rather than compile time; no present behavioral defect is established.",
+      "recommendation": "Consider an internal CapturedSource/SourceArtifact type serialized at the existing public JSON seam once the contract stabilizes.",
+      "qualification": "Public JSON and generic query conventions are inherited; this is a maintenance suggestion, not an automatic failure."
+    }
+  ],
+  "tooling_enforced_checks": "Not re-reviewed as manual style findings; retained fmt/clippy output indexed.",
+  "standards_sources": [
+    "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/CONSTITUTION.md",
+    "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/AGENTS.md",
+    "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/docs/agents/agentic-engineering.md",
+    "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/docs/agents/domain.md",
+    "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/docs/agents/skill-orchestration.md",
+    "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/CONTEXT.md",
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/agents/evidence-bound-method.md"
+  ],
+  "documented_standard_assessment": [
+    "CONSTITUTION section5 behavioral proof: actual pinned daemon, genuine unsupported-command/boundary REDs and later public GREENs retained; negative runs preserved.",
+    "AGENTS one-writer and read-only boundaries: review makes no source changes; implementation source is frozen while author retains evidence.",
+    "agentic-engineering gates6/7: public seam/provenance inspected; this report provides only the independent Standards axis, not root acceptance.",
+    "Domain IntentRevision/WorkRef distinctions: immutable admitted bytes and composite deployment/project/item identities survive current/proposed updates; no closure-as-acceptance inference observed.",
+    "Capped cleanup uncertainty is visible in execution summaries, comments and participant context, including native binding/operation projections."
+  ],
+  "limits": [
+    "Read-only Standards review; no test reruns or runtime/credential/ref mutations.",
+    "Fresh root full final gate and author evidence-only handoff were absent at this review cut; root owns their later acceptance.",
+    "Initial broader 69-test receipt predates four final file changes; final 40-test receipt and formatter/clippy pins match frozen source. Do not present the initial 69 as a fresh full gate of this source.",
+    "Actual Kata daemon/metadata/comment/process evidence is fixture-scoped. observe_attempt running is a storage-fixture report; no model-worker/native cleanup/live qualification is inferred.",
+    "Full02 remains unaccepted. Ticket04 owns the pre-unsubscribe restart correction and native retirement/replacement-lead runtime completion.",
+    "Configured schema remains version1/2 with an additive kata-v1 extension; README openly excludes old-binary downgrade qualification. No global migration/restore/production qualification claimed."
+  ],
+  "evidence_index": "/data02/home/philip.yang/devx/tmp/corenius-sqlite03-standards-7srg74ud/evidence-index.json"
+}

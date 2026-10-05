@@ -1,0 +1,404 @@
+{
+  "axis": "Spec",
+  "code_verdict": "PASS",
+  "scope": "Four original findings and important repair-delta regressions only",
+  "base": "2dcc4ec34bf7bdd74a6759bcd2f743361083e01c",
+  "head": "61855127702745ae66f588b43f441968213dad01",
+  "crate_tree": "b5af1eb96bc93ac8c90db34891693def2437efa7",
+  "reviewed_at": "2026-10-04T10:47:07.198825+00:00",
+  "original_findings": [
+    {
+      "id": "F1",
+      "original_severity": "P1",
+      "title": "Atomic later-turn receipt and binding adoption",
+      "disposition": "ADDRESSED",
+      "locations": [
+        "crates/sqlite-controller/src/codex.rs:859",
+        "crates/sqlite-controller/src/codex.rs:1002"
+      ],
+      "requirement": "SPEC.md:46,48,76,78",
+      "reason": "Both ACK and history receipt commit operation, turn_id and typed current_turn in one SQLite transaction. Exact-cut snapshots, restart, one matching client message, and public interruption of the real current turn cover both topologies."
+    },
+    {
+      "id": "F2",
+      "original_severity": "P1",
+      "title": "Native-store receipt startup namespace",
+      "disposition": "ADDRESSED",
+      "locations": [
+        "crates/sqlite-controller/src/supervisor.rs:341",
+        "crates/sqlite-controller/src/supervisor.rs:382"
+      ],
+      "requirement": "SPEC.md:16,46",
+      "reason": "Strict receipt namespace validates operation/execution/generation and filesystem shape, links to execution, preserves symlink rejection. Canceled records reopen; previously live records reopen unknown, retain capacity and refuse duplicate start/input. Corrupt generation and receipt symlink controls refuse startup."
+    },
+    {
+      "id": "F3",
+      "original_severity": "P2",
+      "title": "Empty persisted thread adoption",
+      "disposition": "ADDRESSED",
+      "locations": [
+        "crates/sqlite-controller/src/codex.rs:717"
+      ],
+      "requirement": "SPEC.md:46,76,78",
+      "reason": "Uses exact confirmed creation receipt plus matching qualified app incarnation and actual loaded-thread listing, then existing configure/first-turn path. Actual post-binding exit79 recovers same thread. Owned-app replacement leaves unknown, no replacement thread/first turn, both slots held."
+    },
+    {
+      "id": "F4",
+      "original_severity": "P2",
+      "title": "Shared event delivery by exact thread",
+      "disposition": "ADDRESSED",
+      "locations": [
+        "crates/sqlite-controller/src/native_ws.rs:202",
+        "crates/sqlite-controller/src/codex.rs:1338"
+      ],
+      "requirement": "SPEC.md:76,80",
+      "reason": "Targeted retain/drain preserves foreign-thread notifications and discards unscoped notifications; existing1024-message/4MiB-frame bounds remain. Native B received frames survive A draining and match public B projection. Separate topology is positive control."
+    }
+  ],
+  "new_important_findings": [],
+  "gate_verdict": "FAIL / incomplete overall qualification",
+  "gate_detail": "Author full locked/offline invocation exited101. Unit1 passed; codex integration16 passed/1failed at unknown_native_start_refuses_new_turn_until_reconciled, native_registry.py:397 waiting for later lead thread. Subsequent suites did not complete. Minimal startup/readiness diagnosis and root independent gate are separate; pending changes excluded from this frozen code verdict.",
+  "evidence": {
+    "focused": "red-frames.log:0passed6failed -> green-focused-fixture-corrected.log:6passed0failed",
+    "typed_projection": "red-typed-projection.log:0passed2failed -> green-typed-projection.log:2passed0failed",
+    "changed_incarnation": "green-empty-incarnation-negative-final.log:1passed, runs both modes; supplemental negative control, not manufactured RED",
+    "source": "25 final inventory entries match exact frozen Git blobs; five contemporaneous source archives each25 hashes verified",
+    "resources": "Focused, typed, negative logs retain48+14+7 whole-namespace-terminated receipts; review launched no services and did no cleanup",
+    "logs_directory": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair1",
+    "handoff": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/docs/efforts/sqlite-controller/evidence/02/registry/repair1/handoff.md"
+  },
+  "limits": [
+    "No tests rerun by this reviewer, as explicitly required.",
+    "Evidence is MODEL_FREE_ACTUAL_PROTOCOL, not paid/live/provider/TUI/05/06 qualification.",
+    "Missing loaded identity is source-guarded; actual changed-incarnation refusal was tested.",
+    "Event projection is a bounded activity snapshot, not durable gateway delivery.",
+    "Supervisor live-record restart fixture deliberately disposes owned processes; it proves unknown/no PID reconstruction, not fresh survival qualification.",
+    "No general baseline review, authority expansion, checkout modifications, credentials, upstream calls, tmux, cleanup or subagents."
+  ],
+  "independent_retained_log_checks": [
+    {
+      "kind": "received_native_frames_in_B_projection",
+      "log": "red-frames.log",
+      "topology": "shared",
+      "received_line": 261,
+      "projection_line": 262,
+      "received_count": 4,
+      "all_received_in_B": false,
+      "received_thread_ids": [
+        "01a1065c-ac9a-7ed1-b373-207002ea5c79"
+      ]
+    },
+    {
+      "kind": "received_native_frames_in_B_projection",
+      "log": "red-frames.log",
+      "topology": "separate",
+      "received_line": 292,
+      "projection_line": 293,
+      "received_count": 4,
+      "all_received_in_B": true,
+      "received_thread_ids": [
+        "01a1065d-1fd2-73d2-a0a4-f2edb1fc6bf6"
+      ]
+    },
+    {
+      "kind": "received_native_frames_in_B_projection",
+      "log": "green-focused-fixture-corrected.log",
+      "topology": "shared",
+      "received_line": 254,
+      "projection_line": 255,
+      "received_count": 4,
+      "all_received_in_B": true,
+      "received_thread_ids": [
+        "01a1066a-519e-7c90-99fe-fd31a055bd52"
+      ]
+    },
+    {
+      "kind": "received_native_frames_in_B_projection",
+      "log": "green-focused-fixture-corrected.log",
+      "topology": "separate",
+      "received_line": 332,
+      "projection_line": 333,
+      "received_count": 4,
+      "all_received_in_B": true,
+      "received_thread_ids": [
+        "01a1066a-c5f1-7ca3-b908-02245b424994"
+      ]
+    },
+    {
+      "kind": "received_native_frames_in_B_projection",
+      "log": "gate-tests.log",
+      "topology": "shared",
+      "received_line": 1206,
+      "projection_line": 1207,
+      "received_count": 4,
+      "all_received_in_B": true,
+      "received_thread_ids": [
+        "01a1067d-a6e4-7e42-b79e-0ec563867114"
+      ]
+    },
+    {
+      "kind": "received_native_frames_in_B_projection",
+      "log": "gate-tests.log",
+      "topology": "separate",
+      "received_line": 1285,
+      "projection_line": 1286,
+      "received_count": 4,
+      "all_received_in_B": true,
+      "received_thread_ids": [
+        "01a1067e-1ba5-7513-b2f5-fc3f4e2f88f3"
+      ]
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "red-typed-projection.log",
+      "line": 13,
+      "topology": "shared",
+      "all_three_ids_equal": false,
+      "value": {
+        "receipt": {
+          "operation": "38d0191f-5121-4f29-aff3-608e4a768129",
+          "thread_id": "01a1066f-f4aa-7123-a1cf-16ccf87cdb2e",
+          "turn_id": "01a10670-2824-7673-bb59-9616fac9ab8f"
+        },
+        "turn_id": "01a10670-2824-7673-bb59-9616fac9ab8f",
+        "current_turn": {
+          "id": "01a10670-2535-7c00-a491-f302c30b09ca",
+          "native_status": "completed",
+          "source": "typed_native_history",
+          "state": "terminal"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "red-typed-projection.log",
+      "line": 58,
+      "topology": "shared",
+      "all_three_ids_equal": false,
+      "value": {
+        "receipt": {
+          "operation": "5fd1abf4-b263-4a43-90b3-68089a1dfb06",
+          "thread_id": "01a1066f-f485-7881-9c76-d04e1e27f506",
+          "turn_id": "01a10670-27ff-7c31-b1da-2f0d1bdf7181"
+        },
+        "turn_id": "01a10670-27ff-7c31-b1da-2f0d1bdf7181",
+        "current_turn": {
+          "id": "01a10670-2511-70f1-8b8c-455be4de5b13",
+          "native_status": "completed",
+          "source": "typed_native_history",
+          "state": "terminal"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "red-typed-projection.log",
+      "line": 106,
+      "topology": "separate",
+      "all_three_ids_equal": false,
+      "value": {
+        "receipt": {
+          "operation": "84ed3752-6ca1-4ba2-95f8-39db89b1cd9e",
+          "thread_id": "01a10670-7151-7702-831b-35ad8935c548",
+          "turn_id": "01a10670-a593-77e3-ab96-89df7af45455"
+        },
+        "turn_id": "01a10670-a593-77e3-ab96-89df7af45455",
+        "current_turn": {
+          "id": "01a10670-a2c0-7ee2-baaa-cf0a98b88265",
+          "native_status": "completed",
+          "source": "typed_native_history",
+          "state": "terminal"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "red-typed-projection.log",
+      "line": 180,
+      "topology": "separate",
+      "all_three_ids_equal": false,
+      "value": {
+        "receipt": {
+          "operation": "bbdeae22-5283-46bb-be1d-ea866df5b900",
+          "thread_id": "01a10670-7416-7be0-afbd-c3f5cc247890",
+          "turn_id": "01a10670-a849-72f3-82e0-4931a6ee7f0f"
+        },
+        "turn_id": "01a10670-a849-72f3-82e0-4931a6ee7f0f",
+        "current_turn": {
+          "id": "01a10670-a572-7700-96fd-07ddc0982cf3",
+          "native_status": "completed",
+          "source": "typed_native_history",
+          "state": "terminal"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "green-typed-projection.log",
+      "line": 14,
+      "topology": "shared",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "946e06f4-8b08-4b73-a918-73a5d28ee328",
+          "thread_id": "01a10671-844c-7fd2-b453-81cb9ffe244b",
+          "turn_id": "01a10671-b7bd-7271-a80e-7c90f94eafa4"
+        },
+        "turn_id": "01a10671-b7bd-7271-a80e-7c90f94eafa4",
+        "current_turn": {
+          "id": "01a10671-b7bd-7271-a80e-7c90f94eafa4",
+          "native_status": "inProgress",
+          "source": "native_acknowledgement",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "green-typed-projection.log",
+      "line": 60,
+      "topology": "shared",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "d9785023-0ccd-4920-a103-f4128b38f07e",
+          "thread_id": "01a10671-83da-7960-9c46-a666b2d3f441",
+          "turn_id": "01a10671-b85d-7813-a5be-35eaab74315e"
+        },
+        "turn_id": "01a10671-b85d-7813-a5be-35eaab74315e",
+        "current_turn": {
+          "id": "01a10671-b85d-7813-a5be-35eaab74315e",
+          "native_status": "inProgress",
+          "source": "typed_native_history",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "green-typed-projection.log",
+      "line": 111,
+      "topology": "separate",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "2350c10f-7e55-44de-a3e4-c406bd1f11ac",
+          "thread_id": "01a10672-066a-7163-918c-b106d6965d9a",
+          "turn_id": "01a10672-3973-7c20-beff-34134df07481"
+        },
+        "turn_id": "01a10672-3973-7c20-beff-34134df07481",
+        "current_turn": {
+          "id": "01a10672-3973-7c20-beff-34134df07481",
+          "native_status": "inProgress",
+          "source": "native_acknowledgement",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "green-typed-projection.log",
+      "line": 164,
+      "topology": "separate",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "f0287dbc-2681-4f46-82e3-bc445991cde0",
+          "thread_id": "01a10672-08cf-7e00-b22f-44b262731fa6",
+          "turn_id": "01a10672-3cfb-76c0-9117-e02b3a855dae"
+        },
+        "turn_id": "01a10672-3cfb-76c0-9117-e02b3a855dae",
+        "current_turn": {
+          "id": "01a10672-3cfb-76c0-9117-e02b3a855dae",
+          "native_status": "inProgress",
+          "source": "typed_native_history",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "gate-tests.log",
+      "line": 1023,
+      "topology": "shared",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "3f383c49-1734-4f8e-86fd-72d7ec72d5db",
+          "thread_id": "01a1067c-b2ff-78c0-9e65-8bcf3d21602c",
+          "turn_id": "01a1067c-e679-7ab2-8ca4-e04adfdcac91"
+        },
+        "turn_id": "01a1067c-e679-7ab2-8ca4-e04adfdcac91",
+        "current_turn": {
+          "id": "01a1067c-e679-7ab2-8ca4-e04adfdcac91",
+          "native_status": "inProgress",
+          "source": "typed_native_history",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "gate-tests.log",
+      "line": 1157,
+      "topology": "separate",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "4e64a11d-7013-4507-9f50-15157de4edea",
+          "thread_id": "01a1067d-358d-7012-a3e0-eb0574c5b3b9",
+          "turn_id": "01a1067d-69c5-7c42-9f01-262ff07606f2"
+        },
+        "turn_id": "01a1067d-69c5-7c42-9f01-262ff07606f2",
+        "current_turn": {
+          "id": "01a1067d-69c5-7c42-9f01-262ff07606f2",
+          "native_status": "inProgress",
+          "source": "typed_native_history",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "gate-tests.log",
+      "line": 1243,
+      "topology": "shared",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "0d0a1549-5be8-4f74-a41b-884d909cd198",
+          "thread_id": "01a1067d-b913-74b2-bace-5d4b18aeda2e",
+          "turn_id": "01a1067d-ed93-7bd0-a2b6-f0fdaf12063e"
+        },
+        "turn_id": "01a1067d-ed93-7bd0-a2b6-f0fdaf12063e",
+        "current_turn": {
+          "id": "01a1067d-ed93-7bd0-a2b6-f0fdaf12063e",
+          "native_status": "inProgress",
+          "source": "native_acknowledgement",
+          "state": "active"
+        }
+      }
+    },
+    {
+      "kind": "crash_cut_turn_ids",
+      "log": "gate-tests.log",
+      "line": 1331,
+      "topology": "separate",
+      "all_three_ids_equal": true,
+      "value": {
+        "receipt": {
+          "operation": "c2ac61f8-4f1c-4221-9c48-910188dad12a",
+          "thread_id": "01a1067e-3b90-74f3-945c-5a402295e2b2",
+          "turn_id": "01a1067e-6fb4-7a51-a2e9-7d5d9e067214"
+        },
+        "turn_id": "01a1067e-6fb4-7a51-a2e9-7d5d9e067214",
+        "current_turn": {
+          "id": "01a1067e-6fb4-7a51-a2e9-7d5d9e067214",
+          "native_status": "inProgress",
+          "source": "native_acknowledgement",
+          "state": "active"
+        }
+      }
+    }
+  ]
+}

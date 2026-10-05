@@ -1,0 +1,73 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-5ccbdc162d59f0df)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 3331952, "start_stat": "3331952 (corenius-attemp) R 3331946 3331926 3331926 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 52043158 2068480 1 18446744073709551615 93967638418640 93967639580048 140724772858736 0 0 0 0 0 0 0 0 0 17 100 0 0 0 0 0 93967639650032 93967639652568 93967656873984 140724772863608 140724772863797 140724772863797 140724772863865 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-bo2wvmm6/workers.json", "/tmp/cnr-bo2wvmm6/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 3332386, "start_stat": "3332386 (corenius-attemp) R 3331946 3331926 3331926 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 52044000 2068480 1 18446744073709551615 94083739817168 94083740978576 140723593631552 0 0 0 0 0 0 0 0 0 17 104 0 0 0 0 0 94083741048560 94083741051096 94083767209984 140723593637480 140723593637681 140723593637681 140723593637753 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-bo2wvmm6/controlplanes.json", "/tmp/cnr-bo2wvmm6/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 3332630, "start_stat": "3332630 (corenius-sqlite) R 3331946 3331926 3331926 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 52044802 4583424 1 18446744073709551615 94078152244800 94078155417312 140722648666000 0 0 0 0 0 0 0 0 0 17 103 0 0 0 0 0 94078155540800 94078155565280 94078160748544 140722648673514 140722648673701 140722648673701 140722648674170 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-bo2wvmm6/state.db", "/tmp/cnr-bo2wvmm6/controller.sock"], "exit": 79}, {"name": "controller-confirm-restarted", "pid": 3333624, "start_stat": "3333624 (corenius-sqlite) R 3331946 3331926 3331926 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 52045470 4583424 1 18446744073709551615 94493858369088 94493861541600 140735177240160 0 0 0 0 0 0 0 0 0 17 206 0 0 0 0 0 94493861665088 94493861689568 94493885108224 140735177247978 140735177248165 140735177248165 140735177248634 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-bo2wvmm6/state.db", "/tmp/cnr-bo2wvmm6/controller.sock"], "exit": -9}]
+owned_log controller-confirm-restarted.stderr ode":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native RPC refused: {"code":-32600,"message":"no rollout found for thread id 01a1062b-63e1-74d2-afe0-9d8ba7e5eb2a"}
+
+owned_log controller.stderr native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c34893a9-6103-42b9-ac15-9d933b3341d2: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c34893a9-6103-42b9-ac15-9d933b3341d2: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c34893a9-6103-42b9-ac15-9d933b3341d2: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c34893a9-6103-42b9-ac15-9d933b3341d2: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile feb4dc89-5000-407a-abec-77c3f703bf95: remote executor not ready: {"status":"pending"}
+native reconcile c34893a9-6103-42b9-ac15-9d933b3341d2: remote executor not ready: {"status":"pending"}
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "52044912", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52044860", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52044860", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+
+thread 'durable_native_confirmation_survives_crash_before_binding_adoption' (3331945) panicked at tests/codex.rs:140:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 256, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 108, in run
+    registry=wait(bound,30)
+             ^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 22, in wait
+    raise AssertionError('behavior deadline')
+AssertionError: behavior deadline
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test durable_native_confirmation_survives_crash_before_binding_adoption ... FAILED
+
+failures:
+
+failures:
+    durable_native_confirmation_survives_crash_before_binding_adoption
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 47.30s
+
+error: test failed, to rerun pass `--test codex`

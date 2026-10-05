@@ -1,0 +1,38 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.78s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 5 tests
+
+thread 'repair_paused_dispatch_survives_first_lookup_transport_failure' (45910) panicked at tests/runtime.rs:534:5:
+transient supervisor failure cannot authorize a paused start
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair_paused_dispatch_survives_first_lookup_transport_failure ... FAILED
+
+thread 'repair_sampling_barrier_precedes_workload_and_preserves_short_exit' (45911) panicked at tests/runtime.rs:576:5:
+workload executed before durable identity qualification
+
+thread '<unnamed>' (45930) panicked at tests/runtime.rs:46:33:
+called `Result::unwrap()` on an `Err` value: Error("EOF while parsing a value", line: 1, column: 0)
+test repair_sampling_barrier_precedes_workload_and_preserves_short_exit ... FAILED
+
+thread 'repair_setup_failure_disposes_owned_children_even_with_unknown_record' (45912) panicked at tests/runtime.rs:604:5:
+postspawn failure left live owned children: 45932 
+test repair_setup_failure_disposes_owned_children_even_with_unknown_record ... FAILED
+test repair_zombie_init_leader_with_live_thread_cannot_release_early ... ok
+
+thread 'repair_database_symlink_target_inside_worker_toolchain_is_refused_before_open' (45909) panicked at tests/runtime.rs:718:5:
+controller served a database target visible inside worker /usr mount
+test repair_database_symlink_target_inside_worker_toolchain_is_refused_before_open ... FAILED
+
+failures:
+
+failures:
+    repair_database_symlink_target_inside_worker_toolchain_is_refused_before_open
+    repair_paused_dispatch_survives_first_lookup_transport_failure
+    repair_sampling_barrier_precedes_workload_and_preserves_short_exit
+    repair_setup_failure_disposes_owned_children_even_with_unknown_record
+
+test result: FAILED. 1 passed; 4 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.51s
+
+error: test failed, to rerun pass `--test runtime`

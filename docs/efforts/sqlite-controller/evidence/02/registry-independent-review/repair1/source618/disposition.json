@@ -1,0 +1,10 @@
+{
+  "candidate_source": "61855127702745ae66f588b43f441968213dad01",
+  "status": "ORIGINAL_FINDINGS_ADDRESSED_STARTUP_RACE_UNRESOLVED",
+  "standards": "PASS scoped original repair delta",
+  "spec": "PASS scoped four original findings",
+  "root_gate": "57 tests, fmt, strict clippy and normal locked offline build passed; bytes unchanged",
+  "author_gate": "FAILED16/17native integration; subsequent test suites not run. Existing unknown-start case timed out at later lead native executor registration. Unchanged-source focused rerun passed87.45s. Real failed evidence retained by author.",
+  "scope": "Intermediate frozen-source proof, not accepted ticket02 or live qualification. Startup readiness regression/fix/new finalgate required. Reports retain their exact reporting-time limits; root gate finished later.",
+  "resources": "275 exact log-declared identity observations; zero matching identities currently present; no broad scan or cleanup."
+}

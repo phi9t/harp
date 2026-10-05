@@ -1,0 +1,118 @@
+{
+  "axis": "Spec",
+  "verdict": "FAIL",
+  "base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "requirements_manifest_sha256": "14251b6b21eccc1f9d5db8f9e7c4fe967ed67cc2e5cd44673f9d35794389e198",
+  "source_archive_sha256": "1ac746e19232d36ccaf13eb2b00c8cb308e0843fd185165f1d866c9ffb0755e2",
+  "root_owns_acceptance": true,
+  "runtime_tests_compilation_provider_calls_executed_by_reviewer": false,
+  "read_only_checkouts": true,
+  "findings": [
+    {
+      "id": "SPEC-04-1",
+      "severity": "Important",
+      "priority": "P1",
+      "title": "Revalidate lead authority when admitting the protected-ref effect",
+      "file": "crates/sqlite-controller/src/git.rs",
+      "lines": [
+        847,
+        859,
+        867,
+        904,
+        916,
+        919,
+        457
+      ],
+      "requirement": {
+        "file": "docs/efforts/sqlite-controller/SPEC.md",
+        "line": 30,
+        "quote": "Mutating commands authenticate a scoped principal and check expected revision/current authority."
+      },
+      "behavior": "A lead land request is authenticated and generically journaled in dispatch. land_candidate checks accepted/current candidate, drops the database lock for evidence/import/head, then creates the actionable protected-ref intent without any Principal or epoch check. replace_lead can complete in that interval because it does not take git_effect_gate. The superseded lead request still reaches CAS; dispatch reauthentication only rejects the response after confirm_landing has changed the ref and task.",
+      "repair": "Carry actor identity into land admission; atomically validate current authority and exact candidate/proof while committing the fully authorized immutable broker effect intent. A correctly admitted effect may survive later lead replacement. Add a public barrier control proving replacement before this admission prevents the ref effect, while replacement after it permits properly journaled recovery.",
+      "basis": "Static control-flow inference; not executed by reviewer."
+    },
+    {
+      "id": "SPEC-04-2",
+      "severity": "Important",
+      "priority": "P1",
+      "title": "Publish recovered landing disposition exactly once",
+      "file": "crates/sqlite-controller/src/git.rs",
+      "lines": [
+        949,
+        957,
+        963,
+        1030,
+        1032,
+        490,
+        501,
+        512
+      ],
+      "requirement": {
+        "file": "docs/efforts/sqlite-controller/SPEC.md",
+        "line": 20,
+        "quote": "Controller publishes progress and disposition through idempotent journaled synchronization."
+      },
+      "behavior": "At the tested after_ref_update crash point, startup recover calls confirm_landing, updates project base/task to landed and confirms the operation. It does not increment project revision, append a landing event, enqueue a Kata effect, or retain the command receipt. These actions occur only in normal dispatch. With the worker already exited and no original-client retry, event consumers and Kata remain at the prior disposition indefinitely; confirmed operations are no longer recovered. The existing crash oracle checks SQLite/ref identity, not publication.",
+      "repair": "Make confirmation and recovered disposition publication one idempotent durable transition, or retain a publication-pending operation that recovery drains independent of the old client grant. Prove after-ref-update restart with no client retry produces one landing event/revision and one retryable Kata disposition, including lead replacement.",
+      "basis": "Static control-flow inference supported by existing crash fixture source; not executed by reviewer."
+    },
+    {
+      "id": "SPEC-04-3",
+      "severity": "Important",
+      "priority": "P2",
+      "title": "Prevent a live worker grant from reopening a landed task",
+      "file": "crates/sqlite-controller/src/git.rs",
+      "lines": [
+        713,
+        738,
+        740,
+        954
+      ],
+      "requirement": {
+        "file": "docs/efforts/sqlite-controller/SPEC.md",
+        "lines": [
+          20,
+          36,
+          40,
+          54
+        ],
+        "quote": "Attempt grants permit own brief, messages, progress and submission, not acceptance or landing."
+      },
+      "behavior": "Landing leaves the attempt running and its submission epoch intact. A subsequent capture_candidate using the same grant, even with the same commit, passes the task guard because only aborted is excluded. It replaces current_candidate and writes state=submitted over landed, superseding the candidate referenced by the authorized acceptance while the protected ref remains landed. The normal fixture itself lands before stopping its worker, so this requires no timing race. Repeating accept_candidate on a landed candidate similarly writes accepted.",
+      "repair": "Enforce task lifecycle preconditions under the publication transaction so landed tasks cannot be reopened by capture/accept/repeated stale land commands. Preserve immutable prior evidence and require an explicitly authorized new task/rework transition for further work. Add a public post-landing live-worker submission refusal and ensure task/ref/current-candidate remain unchanged.",
+      "basis": "Static transition inference; not executed by reviewer."
+    }
+  ],
+  "linked642": {
+    "verdict": "PASS within inspected scoped source/evidence",
+    "source_contract": "Fresh cleanup_stop_observation selected only when retained unsubscribe is absent; original turn_shutdown preserved. Existing pending intent equality fences logical ID/connection/store/incarnation. Actual current final turn/store/incarnation qualification remains required.",
+    "evidence": [
+      "native-restart-red.log: 0/2 pass, 45.01s; failure retained",
+      "native-restart-green.log: first oracle failure retained, no credit",
+      "native-restart-green2.log: 2/2 pass, 30.93s",
+      "frozen-native.log: 2/2 pass, 35.13s; native Git candidate/verifier plus current-turn restart cleanup",
+      "frozen-pending-controls.log: 3/3 pass, 122.95s; same-operation retry, connection mismatch, incarnation mismatch"
+    ],
+    "termination": "Native oracle checks original terminal receipt equality, one confirmed unsubscribe with new incarnation, snapshot attempt exited, and previously qualified executor namespace pidfd termination."
+  },
+  "positive_coverage": [
+    "Complete isolated per-attempt Git repositories provisioned by actual TrustedWorkspacePreparer",
+    "Immutable exact candidate/base/tree/brief/report/artifact binding; separate fixed-suite OS verifier; authorized exact acceptance",
+    "C/D at B, C landing, stale D, fresh private D2 at C and combined fresh proof",
+    "Before/after-ref crash reconciliation and unexplained divergence refusal",
+    "Dirty/untracked retention, identity/stopped-execution checks, durable retention-before-removal and same-operation cleanup retry",
+    "Boundary-private tmpfs capture transport; nofollow regular bounded bundle descriptor; outside sentinel/artifact denial; capture cancellation publication refusal",
+    "Mechanism capability declarations preserve per-binding pending/unknown/stopped projections and historical evidence"
+  ],
+  "qualification_limits": [
+    "Root complete current gate and final acceptance remain root responsibilities; unfinished gates are not implementation findings.",
+    "Read-only /usr and pinned selected executables are explicitly not a hermetic dependency image; do not infer complete environment reproducibility.",
+    "Hostile clean filter positively executes final bundle symlink replacement. Its additional /scratch/ancestor symlink is created and asserted but is not an ancestor traversed by capture, so label alone does not prove an ancestor-traversal attack.",
+    "No new test/runtime/provider/model calls used by this reviewer; all runtime claims refer to recorded evidence.",
+    "Ticket05/06, live model trial, full backup/release, jj07 qualification, PostgreSQL and Temporal not required here. Accepted01/03 and historical02 stop status remain unchanged."
+  ],
+  "evidence_index": "/data02/home/philip.yang/devx/tmp/sqlite04-spec-review-b299ed3ef921/evidence-index.json",
+  "evidence_index_sha256": "6d00d354525c37716212a2e7522efddd009cb565f26b276c2d2855661ec691ac"
+}

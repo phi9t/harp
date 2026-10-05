@@ -1,0 +1,92 @@
+{
+  "axis": "Spec",
+  "verdict": "FAIL",
+  "scope": {
+    "base": "cbe7854b59898f9750d1478d2277584c7eca7b42",
+    "tip": "6f55bc67624b2399c3430fe2c5e003baeb4c22e0",
+    "crate_tree": "9aead302dc0826d69b91112e8e5dca228d9a90cb"
+  },
+  "original_findings": [
+    {
+      "id": "branch640-1",
+      "verdict": "ADDRESSED",
+      "reason": "Confirmed initial turn receipt is adopted before empty classification, after store/current actor qualification; exact thread checked and typed current_turn saved.",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:833",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:839",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:938"
+      ],
+      "evidence": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-initial-corrected.log:9",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-initial-corrected.log:53"
+      ]
+    },
+    {
+      "id": "branch640-2",
+      "verdict": "ADDRESSED",
+      "reason": "Actual loaded pages follow cursors under one deadline and finite IDs/page bounds; malformed/repeated cursors fail closed.",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/native_ws.rs:202"
+      ],
+      "evidence": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-pagination.log:31",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-pagination.log:86",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/covering-pagination-negatives.log:9"
+      ]
+    },
+    {
+      "id": "branch640-3",
+      "verdict": "NOT ADDRESSED",
+      "reason": "Reservoir defect and ordinary lost-ack retirement path are fixed; required durable disposition/retry contract remains incomplete because R2-S2 overwrites terminal evidence and abandons pending unsubscribe. R2-S1 independently loses active events.",
+      "evidence": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-retired-events.log:9",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair2/green-retired-events.log:10"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "R2-S1",
+      "severity": "P2 / medium",
+      "title": "Allow the exact recovered creation identity before consuming native events",
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:873",
+      "related_locations": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:1445",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/native_ws.rs:300"
+      ],
+      "requirements": [
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:78",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:80"
+      ],
+      "analysis": "Crash after confirmed thread/start but before saving binding leaves document.thread_id null. Initial connection retain_threads and allow_thread omit it. configure_thread adopts the exact confirmed identity at1451 but never updates the receive allowlist. Subsequent turn/start and thread/read consume and permanently discard notifications for this valid current binding. A later bind cycle permits future events but cannot restore discarded ones.",
+      "fix": "After validating/adopting the exact creation receipt, allow its thread before any further RPC. Cover recovered first-turn notification delivery.",
+      "validation": "Source traced independently; no new runtime reproduction. Existing creation recovery fixture checks identities, not delivery at this boundary."
+    },
+    {
+      "id": "R2-S2",
+      "severity": "P2 / medium",
+      "title": "Preserve terminal evidence and pending cleanup across retirement retries",
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:292",
+      "related_locations": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:283",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:439",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:371"
+      ],
+      "requirements": [
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:46",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:48",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:54"
+      ],
+      "analysis": "An unsubscribe error leaves state revoking. The next pass unconditionally repeats shutdown_turn and overwrites its saved terminal receipt. A later native lookup/history error replaces confirmed termination with unknown and omits store/incarnation. retire_subscription then returns Ok(unknown) at439-444; the binding can reach revoked at371 and is excluded by the next selection at258 while an earlier unsubscribe operation remains unknown. This loses retained observed disposition and automatic reconciliation of that pending cleanup.",
+      "fix": "Keep confirmed stop disposition immutable across cleanup retries, record later failures separately, and independently qualify/reconcile the connection-scoped unsubscribe before finishing retirement. Cover lost unsubscribe acknowledgement followed by failed history read.",
+      "validation": "Source traced independently; GREEN lost-ack fixture retries with successful stop/history qualification and does not exercise the failure sequence."
+    }
+  ],
+  "evidence_integrity": "Eight retained 25-entry archives match their manifests. Gate manifest matches all25 frozen tip files. Genuine RED/GREEN and setup failures retain distinct chronology; three native covering tests plus two inherited process tests and three declared transport-negative tests pass in supplied logs. No integrity mismatch found.",
+  "limitations": [
+    "Full frozen64 author/root gate results pending and evidence-only handoff not accepted by this review.",
+    "No tests launched; findings are source proofs, not newly reproduced runtime failures.",
+    "Prior unchanged qualification is retained, not requalified. No live/provider/downstream03-06 or whole-ticket acceptance.",
+    "No checkout mutation, native/test process creation or cleanup, credentials/upstream access, tmux or subagents. Only these external review artifacts were written."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "decision_id": "05-repair1-initial-confirm-measurement",
+  "coordinator": "/root",
+  "decided_at": "2026-10-04T22:25:34.080630+00:00",
+  "authority": "owner-authorized baseline implementation; sole coordination owner",
+  "actor": "/root/sqlite05_control_center_author",
+  "round": "05 repair1/3",
+  "status": "authorized_pending_actor_ack_and_qualification",
+  "original_source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+  "probe": {
+    "record": "repair1-61-replay-initial-order-red.json",
+    "record_sha256": "f7b6a89d13cdd2ff0a9394dfdbd34c82dee64512be92f057a2885932c64d8176",
+    "log_sha256": "7996ad0d28635246dfcfc6973016b64bc7e2b459c4a811349aa1203cc97c5988",
+    "source_archive_sha256": "974b4503861e38f1313523b17a2c9184f55b1fc1e3e8b1da76b23f4ee1186d54",
+    "actual_exit": 101,
+    "before_after_43_source_inputs": "identical",
+    "shared_first_snapshot_exact_turn_items": [],
+    "shared_later_exact_turn_and_client_seconds": 0.04298637202009559,
+    "separate": "original first snapshot already matched"
+  },
+  "authorized_change": "Test-driver measurement only: wait for the original exact matching turn ID plus original exact clientUserMessageId predicate within the same original 10-second bound, retaining the final assertion. Preserve original first snapshot and diagnosis separately; no runtime logic or ownership fences changed for this measurement. Require exact driver-only delta and both-topology focused execution plus independent review.",
+  "limits": [
+    "No historical full-gate causal conclusion from this run",
+    "No runtime timeout extension",
+    "No rerun or reset of exhausted02/04 caps",
+    "Original60/61/62 records and frozen source stay immutable",
+    "Source changes only after current positively owned test terminal",
+    "All six05 production repairs remain independently required"
+  ],
+  "native60_correction": {
+    "visible_steps": [
+      317,
+      318
+    ],
+    "actual": "interrupt genuinely RED both; start replay positive with active-state coverage unproved, not replay RED",
+    "actor_ack": "received;61 and62 independently reproduce active replay null-ID defect both",
+    "status": "advisory correction acknowledged; no false replay credit"
+  },
+  "private_reasoning": "excluded"
+}

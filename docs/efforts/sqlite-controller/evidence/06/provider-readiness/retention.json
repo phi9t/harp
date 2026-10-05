@@ -1,0 +1,20 @@
+{
+  "origin": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-live-relay-readiness-5u659ldu",
+  "source_read": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "verified_manifest_records": 41,
+  "declared_external_binary_aliases": [
+    "codex/tmp/arg0/codex-arg0lNtTZK/apply_patch",
+    "codex/tmp/arg0/codex-arg0lNtTZK/applypatch",
+    "codex/tmp/arg0/codex-arg0lNtTZK/codex-execve-wrapper",
+    "codex/tmp/arg0/codex-arg0lNtTZK/codex-linux-sandbox"
+  ],
+  "readiness_sha256": "d2b65bfff0a06131cdfa5496b19228e81c3fae878f792633f03b67c1cb390e2c",
+  "observed_owned_pids_absent": [
+    2970323,
+    2922857
+  ],
+  "recorded_oracles": 13,
+  "inference_calls": 0,
+  "evidence_class": "MODEL_FREE_ACTUAL_PINNED_INTERNAL_PROXY_PRIMITIVE_NOT_PRODUCT_BOUNDARY_OR_LIVE",
+  "retention": "Original raw files and owned fixture roots retained; canonical report/pins/hash manifest/resources copied byte-identically. Root rechecked hashes, recorded oracles and PID absence without rerunning or modifying frozen fixture."
+}

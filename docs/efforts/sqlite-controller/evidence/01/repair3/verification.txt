@@ -1,0 +1,31 @@
+Base/source before correction:ed85fe9ed7df6390d53584cbe3d0917b32593471
+Final normal repair round3/3. Whole-branch634 rejection retained unchanged.
+All listed commands terminal. Raw logs followed by wrapper-recorded exit status.
+
+Behavioral RED before production correction, status101:
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public dangling_database
+  red-dangling-ownership.log: competing controller succeeds through both names
+  while the first owner is still alive:alias=true,target=true.
+
+Focused GREEN/compatibility, each status0:
+- Same dangling_database command, green-dangling-ownership.log.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public hardlinked_database
+  green-hardlink-ownership.log:both hardlink names refused; normal ownership returns after unlinking alias.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test process existing_database_aliases -- --nocapture
+  green-process-aliases.log:owned daemon excludes competing processes through
+  both target/alias names, then restart through alias retains revision2.
+
+Final exact-source validation, each status0:
+- cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml -- --check
+  fmt-final.log.
+- cargo clippy --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --all-targets --all-features -- -D warnings
+  clippy-final.log.
+- sh tools/agents/checks.d/70-sqlite-controller.sh
+  expands cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture
+  test-final.log:24/24 (20 public +4 daemon/process), including all prior21 tests.
+- git diff --check; staged source/evidence inspection and final source manifest verification.
+
+branch634 JSON/Markdown copies checked byte-for-byte against root's exact files;
+hashes retained in tested-source.json. No historical candidate/evidence rewrite,
+legacy service matrix, downstream integration or paid/live model execution.
+Independent fresh reviews remain root-owned and pending.

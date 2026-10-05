@@ -1,7 +1,10 @@
-# 01 — Durable local controller storage
+# 01 durable-controller-storage: Durable local controller storage
 
-Status: open
-Blocked by: none
+Type: task
+Status: resolved
+Owner: sqlite-controller-01
+Blocked by:
+Claimed:
 Route: gated architectural work
 Spec: ../SPEC.md
 
@@ -24,3 +27,17 @@ Visible red-green public API proof against real temporary SQLite databases: two 
 ## Handoff
 
 Owner implementation lead must claim an isolated worktree before edits, reconcile this new milestone with its existing work, and sequence dependent tickets from SPEC. No inherited worker ownership may be overridden silently.
+
+## Acceptance
+
+- [x] Real SQLite public commands enforce two occupied slots, same-task racing admission, scoped authorization and replay/mismatch/revision checks.
+- [x] Interrupted admission is all-or-none; restart retains pending operations, occupied capacity, questions and decisions.
+- [x] Effective WAL, synchronous FULL and foreign keys are validated; independent Standards/Spec and branch review pass.
+
+## Comments
+
+- 2026-10-04T03:53:26Z codex-design: Adopted owner commits9d90222/d18e413/f775734; normalized tracker fields without changing required scope. Controller-first sequencing is binding; Matt route fallback uses the repository crosswalk.
+- 2026-10-04T03:53:26Z sqlite-controller-01: claimed until 2026-10-05T03:53:26Z
+
+- 2026-10-04T05:14:35Z codex-design: Accepted exact15ae62c after independent Standards/Spec and scoped branch635 repair review, root24-test/fmt/clippy proof. See ../evidence/01/root-verification/acceptance.md; historical rejected candidates retained. Storage qualification only; source mainline unchanged.
+- 2026-10-04T05:14:35Z sqlite-controller-01: resolved

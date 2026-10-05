@@ -1,0 +1,26 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.41s
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-b82c9322483fdbbb)
+
+running 1 test
+test slow_drip_client_cannot_extend_the_whole_request_deadline ... FAILED
+
+failures:
+
+---- slow_drip_client_cannot_extend_the_whole_request_deadline stdout ----
+daemon_ready pid=1659764 socket=/data02/home/philip.yang/devx/tmp/.tmpUFdFpc/api.sock
+slow_client_queued_request_elapsed_ms=2402
+
+thread 'slow_drip_client_cannot_extend_the_whole_request_deadline' (1659763) panicked at tests/process.rs:230:5:
+drip feed extended whole-request deadline: 2.402805217s
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    slow_drip_client_cannot_extend_the_whole_request_deadline
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 2.42s
+
+error: test failed, to rerun pass `--test process`
+
+# Recorded command exit status: 101

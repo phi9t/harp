@@ -1,0 +1,196 @@
+{
+  "base": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+  "source": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "evidence_only_tip": "40d4805ce34d74521f3473b7f8ad2b9f7451d0c2",
+  "crate_tree": "4c28fbaa64b62ca00b49f72481876a4ef52e1bf2",
+  "archives": [
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-green-before.json",
+      "manifest_sha256": "10bd440fa1475ff718496ad988e3a2c0250257bb7f43c0ae2e3aab4d0069105a",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-green-source.tar.gz",
+      "archive_sha256": "d3baaf92f1ec2bdb754cecc9268a2e864ff5856988de97e5e90cd64f0ffbe591",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/full-tests-after.json",
+      "manifest_sha256": "825bc2906962298ed9c2f9cc1289ca6bbc71a0f6e3af0fb62bce6367162e2306",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/full-tests-after-source.tar.gz",
+      "archive_sha256": "3d5a691b307258ae2665f272c97d5c21ab43b1af39294e4328ac36d5ee35ace3",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/alias-red-before.json",
+      "manifest_sha256": "98ec46b40ebe667d4bead73b15df4fb4aabe3caf64c6495f3671d7dba4a0386c",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/alias-red-before-source.tar.gz",
+      "archive_sha256": "45940888c9528115aa300a6117f1e42a8dc736577624799171032ff5458e1f3d",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/unlinked-regression-red-before.json",
+      "manifest_sha256": "7d0411035dcab0e13ca134f1ece8b188472ef5f3bba5c237283deca5123188d3",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/unlinked-regression-red-before-source.tar.gz",
+      "archive_sha256": "40bd1e93f36b59eb0dab5e6aab2701dddfa2be61fb92f429131fd1f8f03e5ea1",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-covering2-before.json",
+      "manifest_sha256": "53356183dee9d09096fc4ec1a8483e392861052752d00e7f7dd7fa2520b1efb7",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-covering2-before-source.tar.gz",
+      "archive_sha256": "02029b8a301beb6a553214e3ddee0a66af033c485a76d53b9b1f49c9b4d0afdf",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-covering2-after.json",
+      "manifest_sha256": "849a9512498a6d876b201792e7649d2a311f805988c6b4b70ac697670d0fd9cc",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-covering2-after-source.tar.gz",
+      "archive_sha256": "8baecbc893f2a4ba0bd34dd102d3af56945a212932c85586c070781a59948c3f",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-terminal-after.json",
+      "manifest_sha256": "2d41531160c2419db07dfa5c67e473f1730379763e726da4e831614084ca9a7b",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-terminal-after-source.tar.gz",
+      "archive_sha256": "81f66baef3adbb4185f23e1c37e2b228f23b4042d313264d3a863c904664dc9c",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "manifest": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/frozen-source.json",
+      "manifest_sha256": "dcca16e1fbb5f66300afabeca039e28520674d5457b62a985b686f9fdde42bea",
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/frozen-source-source.tar.gz",
+      "archive_sha256": "aae03b0ae4ce664ff10fa452a42ec7b7a0005de65a6e6119069ff6807e94bacc",
+      "entries": 29,
+      "mismatches": []
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-red-source.tar",
+      "archive_sha256": "79297a0eec5b41bb3a4e16c876e8573705fcf96c34ae9670864c13c5c91ad8dd",
+      "entries": 25,
+      "base_commit_mismatches": []
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/common-review-lens.md",
+      "sha256": "6c6bc7729d14a34df571eb472bdf2777da0a494f9ef1419b5a4090d507ee4afe"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/spec-lens.md",
+      "sha256": "172782fe50d09f5ff75395f6f27c7b529f2c521215fb397ca74e533c59314ece"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/review-package.txt",
+      "sha256": "6a9dd66e9d964baaa36cfb21b557ec10dfab02077ff07ea7e13bfc695e4f38f4"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/briefs/03-kata-participant-protocol.md",
+      "sha256": "764af3af602e01259ee2aa388c09637a2e0b7cc53f0bb2e547b4ff327ee35043"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md",
+      "sha256": "57a25de6d827a5a364d41e748ea08d6b8196a81790238128ec65ed58d656cdd6"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/tickets/03-kata-participant-protocol.md",
+      "sha256": "85a185f6b8261cd374d2c5aaad5ed9b9e6474fdfa506fe36c79bb204cc9fd3ee"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/decisions/01-registry-cleanup-cap-routing.md",
+      "sha256": "94ce40ca7ef4a5fd40d171798f8b759ec67725050be92da700586f1c4df105b8"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/docs/efforts/sqlite-controller/evidence/03/handoff.md",
+      "sha256": "cbb0e8ef6e7a58becedfa377a19d10c873a411c0d7634d7e35ddc1789349c461"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/docs/efforts/sqlite-controller/evidence/03/verification.json",
+      "sha256": "ab656b01fd3424ce0d0bbe07d63d81c561f5e51cccdf7f3654784b24a045851a"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-red-before.json",
+      "sha256": "c27d7b6496b4a9c885a374784488a7c55451690edfd7b1ab9dc736103d3e46aa"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-red.log",
+      "sha256": "9541e0c97d11135df3d8a7f57640ac08a3692ad60c203528b44685739a964223"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-red-confirmation.log",
+      "sha256": "9f35fa62d20cb988a7388be50c594189e7f9f24a95dcf13561dab513a0d30d7e"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/pinned-green.log",
+      "sha256": "96593a5d48b613797f0ca7c4ea9d7fc1f2eb1773ecb6a125599ec9fd9a755143"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/alias-red.log",
+      "sha256": "6f148edf5cd088b28ff5b68294b7d83a100258894ec78f7ff4a9681c63b12b12"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/unlinked-regression-red.log",
+      "sha256": "f00a5c0de79209d5eb00f14aeaa513656ebd540a41c564853678b116783cf4db"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-covering2.log",
+      "sha256": "34e7e58b4186d7d6e978837e6142c3bf3a08ca7fa13cc804e6bf1ef4f10b70d7"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/clean-parent-before.json",
+      "sha256": "688695b9e7dbff26f7155dac672dcbd41dc644c6a041c6e2feeed7db554875e2"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/clean-parent-green.log",
+      "sha256": "3e7cfcf76f6234dd19dd1c615c2240d22a3cc4484b33992ad3bb30afa97544a9"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/full-tests.log",
+      "sha256": "044abbacdd8c9fef7dfdf24b2474532aee6b2d43a37cfa63cdad58a1d3db8a93"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-clippy.log",
+      "sha256": "d5f919a425bd43bf26043626108ad392e69247d3e5f97dc6bb573756e630cc7a"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/final-build.log",
+      "sha256": "99f71393b9903dca098310bb446022a4bdee195ea9996f351a787195555210a6"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/k3-blaaf0by/qualification.json",
+      "sha256": "2e24a0d37914a79aece340b38272eda4b867c196cfe3d0fe684f3bbd2d409715"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/c/.scratch/k3-wcbhpl3b/qualification.json",
+      "sha256": "104a00933db7f725e0d47ec0190711e5923c0861f68a6ac5a0f1be465f56915b"
+    }
+  ],
+  "checks": {
+    "frozen_commit_mismatches": [],
+    "worktree_mismatches": [],
+    "final_before_after_equal": true,
+    "full_gate_to_final_changed_files": [
+      "crates/sqlite-controller/README.md",
+      "crates/sqlite-controller/src/kata.rs",
+      "crates/sqlite-controller/src/kata_schema.sql",
+      "crates/sqlite-controller/tests/support/kata_protocol.py"
+    ],
+    "evidence_only_product_delta": [],
+    "pinned_pair_driver_sha256": "5ab9468644594e690ced0c1517b4c670fe6777fb49d4b5a3d319803341eef6b8",
+    "pinned_green_driver_sha256": "5ab9468644594e690ced0c1517b4c670fe6777fb49d4b5a3d319803341eef6b8",
+    "final_driver_sha256": "a13da2b0d8e26b4929ff4b11e253801465807065d096036c223ce3183cfde9f3"
+  },
+  "runtime_pin": {
+    "Kata_source": "b70a4306464e319701df30a3b92860289613b15a",
+    "api": "0.24.0",
+    "fixture_recorded_binary_sha256": "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6"
+  }
+}

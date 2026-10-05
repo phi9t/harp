@@ -1,0 +1,195 @@
+{
+  "captured_at": "2026-10-04T18:14:37.111666+00:00",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "tree": "d2df74745f883262d81e53b83cab177328e87408",
+  "completed_visible_gates": [
+    {
+      "name": "gate-affected",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "git",
+        "--test",
+        "kata",
+        "--test",
+        "process",
+        "--test",
+        "public",
+        "--test",
+        "runtime",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T17:53:27.275577+00:00",
+      "ended": "2026-10-04T17:56:10.287984+00:00",
+      "elapsed_seconds": 163.01239493803587,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-affected.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-build-last",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--locked",
+        "--offline"
+      ],
+      "started": "2026-10-04T18:11:28.131994+00:00",
+      "ended": "2026-10-04T18:11:31.431955+00:00",
+      "elapsed_seconds": 3.299952339963056,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-build-last.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-clippy",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started": "2026-10-04T18:10:26.106897+00:00",
+      "ended": "2026-10-04T18:10:28.955403+00:00",
+      "elapsed_seconds": 2.8484973220620304,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-clippy.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-default",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T18:05:47.772028+00:00",
+      "ended": "2026-10-04T18:08:44.369963+00:00",
+      "elapsed_seconds": 176.59793246909976,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-default.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-fmt",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--check"
+      ],
+      "started": "2026-10-04T18:10:14.258921+00:00",
+      "ended": "2026-10-04T18:10:14.697312+00:00",
+      "elapsed_seconds": 0.43837933405302465,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-fmt.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-native",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "ticket04_",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T17:57:38.379996+00:00",
+      "ended": "2026-10-04T17:58:50.433315+00:00",
+      "elapsed_seconds": 72.0533109799726,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-native.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-pending-controls",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "repair3_",
+        "--",
+        "--nocapture",
+        "--test-threads=2",
+        "--skip",
+        "repair3_adopted_thread_delivers_received_first_turn_notifications"
+      ],
+      "started": "2026-10-04T18:01:37.381321+00:00",
+      "ended": "2026-10-04T18:03:40.609393+00:00",
+      "elapsed_seconds": 123.22806078207213,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-pending-controls.log",
+      "environment": {}
+    }
+  ],
+  "peer_reports": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair1/standards.md",
+      "sha256": "3b04034941e9cace74e81c40b7206ec6e3e2cb0636a98d9da025dca84760677e"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair1/standards.json",
+      "sha256": "db958f16e061dd0480cfb6ac3f319870ed4f63717c5486247aba48ffc0b657cd"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair1/branch-646.md",
+      "sha256": "e4396f2f95bea1d6e765e72f05e99b9e10bf360acb2567b2cf23436fa5b394ff"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair1/branch-646.json",
+      "sha256": "11d1166dd1926441131abf1b4d2e7944a1a5ea265a85445f1af33d8dc81dd194"
+    }
+  ],
+  "nine_finding_matrix_sha256": "5646728658535ca85589c13f9038d356d71096fb13f50543c341c5cbfc10f499",
+  "coordination": "Root owns monitoring cursor/coverage ledger; this is the evidence/handoff boundary checkpoint, private reasoning excluded. SOURCE unchanged; no product patch before authorized repair2 brief.",
+  "acceptance": "withheld"
+}
