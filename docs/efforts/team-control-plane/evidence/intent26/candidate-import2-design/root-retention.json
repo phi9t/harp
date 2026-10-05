@@ -1,0 +1,22 @@
+{
+  "recorded_utc": "2026-10-04T00:35:53.737570+00:00",
+  "proposal_sha256": "2f70354c577fcf42085b52b543ae0d14997f9035066de7e1db44ebffb40555a5",
+  "records": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/candidate-import2-design/report.md",
+      "sha256": "03cec184f0ccfd18b098bfe5c2b607e18aab49cd8567502bf3af1266a1d0c780",
+      "bytes": 3335
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/candidate-import2-design/metadata.json",
+      "sha256": "befabb0a1633db9a889f93670a91232db44df4648550fb6d903a9772f8f397f5",
+      "bytes": 11150
+    }
+  ],
+  "design_verdict": "PASS",
+  "implementation_allocation_granted_by_review": false,
+  "original_allocation1_rejections_preserved": true,
+  "source_integrated": false,
+  "root_gates_run": false,
+  "ticket_accepted": false
+}

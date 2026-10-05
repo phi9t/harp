@@ -1,0 +1,1967 @@
+--- a/crates/team-control-plane/README.md
++++ b/crates/team-control-plane/README.md
+@@ -310,3 +310,29 @@
+ closed for v2 until exact Owner admission. Migration never upgrades a v1 proof or
+ invents an original Attempt. Durable scopes, Kata API/event qualification, Plan
+ interpretation and v0.2 assembled recovery remain later tickets.
++
++### Accepted work and later research
++
++Current v2 closure derives from the exact task, current IntentRevision and immutable
++accepted outcome subject. Both production and expressly admitted negative research
++close that work. Contract reads distinguish `current_accepted`, historical
++`accepted` subjects, inert `legacy_accepted`, the raw migration `admission_open`
++flag, and effective `fresh_grant_eligible` contract eligibility.
++
++Completed work refuses new or cached consequential proposals, verification,
++artifact mutations, strategy/dependency changes, task mailbox mutations and fresh
++dispatch. Authenticated exact acceptance receipts remain immutable inspection,
++including after an authorized amendment. Re-keying an old proof never accepts the
++new intent. An authorized later-work admission fences generation immediately;
++assignment advances it again. Physical inspection, Stop, logs, Release and usage
++reconciliation retain their existing current-actor authority and original effect
++attribution. Task-ID waits are attention only; typed dependencies require exact
++revalidation. Cancellation and unknown usage never refund cumulative admissions.
++
++A research verifier Episode requires the exact admitted research contract and an
++independent current verifier. Its immutable captured input and supervised manifest
++pin intent, acceptance, policy, suite and environment before execution. Source
++amendments invalidate those dispatch pins. This path does not create a production
++candidate, report, or production verification binding. Production continues to
++require its immutable candidate and current measured gate. Research acceptance
++continues to validate its admitted evidence contract separately.
+--- a/crates/team-control-plane/src/admission.rs
++++ b/crates/team-control-plane/src/admission.rs
+@@ -217,7 +217,10 @@
+             let task = load_task(tx, *task_id).await?;
+             revision(envelope, task.revision)?;
+             generation(envelope, task.generation)?;
+-            if task.status == "accepted" {
++            if crate::contracts::lifecycle::current(tx, *task_id)
++                .await?
++                .completed()
++            {
+                 return Err(err(ErrorCode::DependencyUnmet));
+             }
+             let attempt = tx
+--- a/crates/team-control-plane/src/artifacts.rs
++++ b/crates/team-control-plane/src/artifacts.rs
+@@ -378,7 +378,10 @@
+         crate::kernel::task_dispatch_enabled(&tx, envelope.task).await?;
+         // An authenticated Owner may inspect its immutable Accept receipt;
+         // cached Worker/Verifier work must not revive a terminal Task.
+-        if task.status == "accepted" && !matches!(envelope.command, ArtifactCommand::Accept { .. })
++        if crate::contracts::lifecycle::current(&tx, envelope.task)
++            .await?
++            .completed()
++            && !matches!(envelope.command, ArtifactCommand::Accept { .. })
+         {
+             return Err(err(ErrorCode::StaleRevision));
+         }
+@@ -400,7 +403,7 @@
+    if let ArtifactCommand::Verify { verification } = &envelope.command {
+        self.verify_execution_report(&tx,envelope.task,actor.principal,verification).await?;
+    }
+-   if result.accepted { self.verify_evidence(&tx,result.candidate_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?,result.report_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?).await?; }
++   if result.accepted { self.verify_accepted_evidence(&tx,result.candidate_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?,result.report_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?).await?; }
+    tx.commit().await?; return Ok(result);
+   }
+         tx.batch_execute("SAVEPOINT artifact_mutation").await?;
+@@ -524,6 +527,31 @@
+         candidate_id: &str,
+         report_id: &str,
+     ) -> Result<(Candidate, Verification, Uuid)> {
++        self.verify_evidence_at(tx, candidate_id, report_id, false)
++            .await
++    }
++    /// Immutable accepted history is inspectable after amendment. This exception
++    /// is bound to an actual accepted subject, never an old successful report alone.
++    pub(crate) async fn verify_accepted_evidence(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        candidate_id: &str,
++        report_id: &str,
++    ) -> Result<(Candidate, Verification, Uuid)> {
++        let accepted: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM contract_outcomes o JOIN contract_proofs p ON p.id=o.proof_id WHERE o.outcome='production' AND p.evidence->>'candidate'=$1 AND p.evidence->>'report'=$2) OR EXISTS(SELECT 1 FROM events WHERE kind='task.accept' AND payload->'result'->>'candidate_id'=$1 AND payload->'result'->>'report_id'=$2 AND payload->'result'->>'accepted'='true')", &[&candidate_id,&report_id]).await?.get(0);
++        if !accepted {
++            return Err(err(ErrorCode::DependencyUnmet));
++        }
++        self.verify_evidence_at(tx, candidate_id, report_id, true)
++            .await
++    }
++    async fn verify_evidence_at(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        candidate_id: &str,
++        report_id: &str,
++        historical: bool,
++    ) -> Result<(Candidate, Verification, Uuid)> {
+         let row=tx.query_opt("SELECT c.candidate,r.verification,r.verifier,c.task_id FROM artifact_candidates c JOIN artifact_reports r ON r.candidate_id=c.id WHERE c.id=$1 AND r.id=$2",&[&candidate_id,&report_id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+         let candidate: Candidate = decode(row.get(0))?;
+         let report: Verification = decode(row.get(1))?;
+@@ -534,7 +562,7 @@
+         for check in &report.checks {
+             self.store.read(&check.logs)?;
+         }
+-        self.verify_execution_report(tx, row.get(3), row.get(2), &report)
++        self.verify_execution_report_at(tx, row.get(3), row.get(2), &report, historical)
+             .await?;
+         Ok((candidate, report, row.get(2)))
+     }
+@@ -546,6 +574,17 @@
+         task: Uuid,
+         verifier: Uuid,
+         report: &Verification,
++    ) -> Result<()> {
++        self.verify_execution_report_at(tx, task, verifier, report, false)
++            .await
++    }
++    async fn verify_execution_report_at(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        task: Uuid,
++        verifier: Uuid,
++        report: &Verification,
++        historical: bool,
+     ) -> Result<()> {
+         crate::kernel::schema(tx).await?;
+         let Some(requirement) = tx
+@@ -561,8 +600,10 @@
+             return Err(err(ErrorCode::DependencyUnmet));
+         }
+         let policy = load_policy(tx, task).await?;
+-        validate_candidate(&report.candidate, &load_task(tx, task).await?, &policy)?;
+-        validate_report(report, &policy)?;
++        if !historical {
++            validate_candidate(&report.candidate, &load_task(tx, task).await?, &policy)?;
++            validate_report(report, &policy)?;
++        }
+         for check in &report.checks {
+             let bytes = self.store.read(&check.logs)?;
+             let evidence: serde_json::Value =
+@@ -570,7 +611,7 @@
+             let claimed = &evidence["trusted_monitor_result"];
+             let execution: Uuid = serde_json::from_value(claimed["execution"].clone())
+                 .map_err(|_| err(ErrorCode::DependencyUnmet))?;
+-            let row=tx.query_opt("SELECT r.result,w.manifest FROM kernel_execution_results r JOIN supervised_workspaces w ON w.id=r.execution_id JOIN episode_executions x ON x.execution_id=w.id JOIN mailbox_episodes e ON e.id=x.episode_id JOIN credentials c ON c.id=x.credential_id JOIN tasks t ON t.id=x.task_id WHERE r.execution_id=$1 AND x.task_id=$2 AND x.principal_id=$3 AND x.role='verifier' AND x.recovery_epoch=$4 AND w.state IN ('stopped','deleting','released') AND e.task_generation=t.generation AND c.principal_id=x.principal_id AND c.role=x.role AND c.mission_id=x.mission_id AND c.task_id=x.task_id AND c.generation=e.task_generation AND c.recovery_epoch=$4", &[&execution,&task,&verifier,&self.broker.epoch]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++            let row=tx.query_opt("SELECT r.result,w.manifest FROM kernel_execution_results r JOIN supervised_workspaces w ON w.id=r.execution_id JOIN episode_executions x ON x.execution_id=w.id JOIN mailbox_episodes e ON e.id=x.episode_id JOIN credentials c ON c.id=x.credential_id JOIN tasks t ON t.id=x.task_id WHERE r.execution_id=$1 AND x.task_id=$2 AND x.principal_id=$3 AND x.role='verifier' AND x.recovery_epoch=$4 AND w.state IN ('stopped','deleting','released') AND e.task_generation=$5 AND ($6 OR e.task_generation=t.generation) AND c.principal_id=x.principal_id AND c.role=x.role AND c.mission_id=x.mission_id AND c.task_id=x.task_id AND c.generation=e.task_generation AND c.recovery_epoch=$4", &[&execution,&task,&verifier,&self.broker.epoch,&report.candidate.generation,&historical]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+             let stored: serde_json::Value = row.get(0);
+             if claimed != &stored {
+                 return Err(err(ErrorCode::DependencyUnmet));
+@@ -606,8 +647,9 @@
+                 || manifest.verification_policy.as_ref().is_none_or(|bound| {
+                     bound.suite != report.suite
+                         || bound.environment != report.environment
+-                        || bound.suite != policy.suite
+-                        || bound.environment != policy.environment
++                        || (!historical
++                            && (bound.suite != policy.suite
++                                || bound.environment != policy.environment))
+                 })
+                 || result.argv != check.command
+                 || result.completion != crate::supervisor::CompletionProvenance::MonitorWait
+@@ -660,7 +702,10 @@
+         task: &TaskBinding,
+         fault: ReferenceFault,
+     ) -> Result<ArtifactResult> {
+-        if task.status == "accepted" {
++        if crate::contracts::lifecycle::current(tx, envelope.task)
++            .await?
++            .completed()
++        {
+             return Err(err(ErrorCode::StaleRevision));
+         }
+         let mut result = ArtifactResult {
+--- a/crates/team-control-plane/src/contracts.rs
++++ b/crates/team-control-plane/src/contracts.rs
+@@ -7,7 +7,7 @@
+ use uuid::Uuid;
+ mod authority;
+ mod dependencies;
+-mod lifecycle;
++pub(crate) mod lifecycle;
+ pub(crate) use dependencies::fresh_grant;
+ mod outcomes;
+ mod strategy;
+@@ -80,6 +80,8 @@
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+ #[serde(tag = "kind", deny_unknown_fields)]
++// Preserve the established Rust command shape as well as the serialized API.
++#[allow(clippy::large_enum_variant)]
+ pub enum Command {
+     #[serde(rename = "dependency.revalidate")]
+     RevalidateDependency {
+@@ -238,6 +240,20 @@
+         actor.scope(mission, Some(envelope.task))?;
+         authority::authorize(&tx, &actor, &envelope, mission).await?;
+         outcomes::mutation_enabled(&tx, &envelope).await?;
++        // Accepted receipt inspection is the only outcome-mutation cache exception.
++        // Intent admission has its own bounded later-work authority; source proposals
++        // remain inert attention. Neither is permission to dispatch completed work.
++        let completed = lifecycle::current(&tx, envelope.task).await?.completed();
++        if completed
++            && !matches!(
++                envelope.command,
++                Command::AdmitIntent { .. }
++                    | Command::ProposeSource { .. }
++                    | Command::AcceptOutcome { .. }
++            )
++        {
++            return Err(err(ErrorCode::DependencyUnmet));
++        }
+         let family = envelope.command.family();
+         let digest = crate::validation::digest(&envelope)?;
+         if let Some(row)=tx.query_opt("SELECT argument_digest,disposition,result,task_id FROM contract_commands WHERE principal_id=$1 AND family=$2 AND key=$3",&[&actor.principal,&family,&envelope.key]).await? {
+@@ -251,6 +267,9 @@
+             outcomes::replay(&tx,&envelope,&value,artifacts).await?;
+             tx.commit().await?;
+             return Ok(value);
++        }
++        if completed && matches!(envelope.command, Command::AcceptOutcome { .. }) {
++            return Err(err(ErrorCode::StaleRevision));
+         }
+         tx.batch_execute("SAVEPOINT contract_mutation").await?;
+         let revision: i64 = tx
+@@ -357,18 +376,16 @@
+                         &[&envelope.task],
+                     )
+                     .await?
++                    && row.get::<_, String>(0) != work_id
+                 {
+-                    if row.get::<_, String>(0) != work_id {
+-                        return Err(err(ErrorCode::IdempotencyConflict));
+-                    }
++                    return Err(err(ErrorCode::IdempotencyConflict));
+                 }
+                 if let Some(row) = tx
+                     .query_opt("SELECT task_id FROM contract_work WHERE id=$1", &[&work_id])
+                     .await?
++                    && row.get::<_, Uuid>(0) != envelope.task
+                 {
+-                    if row.get::<_, Uuid>(0) != envelope.task {
+-                        return Err(err(ErrorCode::IdempotencyConflict));
+-                    }
++                    return Err(err(ErrorCode::IdempotencyConflict));
+                 }
+                 tx.execute("INSERT INTO contract_work(id,task_id,work,mission_id) VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING",&[&work_id,&envelope.task,&serde_json::to_value(work).map_err(|_|err(ErrorCode::InvalidArgument))?,&mission]).await?;
+                 let source_id = crate::validation::digest(&(&work_id, source))?;
+@@ -378,10 +395,9 @@
+                         &[&work_id, &source.revision],
+                     )
+                     .await?
++                    && row.get::<_, String>(0) != source_id
+                 {
+-                    if row.get::<_, String>(0) != source_id {
+-                        return Err(err(ErrorCode::IdempotencyConflict));
+-                    }
++                    return Err(err(ErrorCode::IdempotencyConflict));
+                 }
+                 tx.execute("INSERT INTO contract_sources(id,work_id,source_revision,source) VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING",&[&source_id,&work_id,&source.revision,&serde_json::to_value(source).map_err(|_|err(ErrorCode::InvalidArgument))?]).await?;
+                 let acceptance_id = crate::validation::digest(&intent.acceptance)?;
+@@ -453,7 +469,13 @@
+             .query_one("SELECT clock_timestamp()::text", &[])
+             .await?
+             .get(0);
+-        let result = json!({"schema_version":2,"snapshot_time":time,"revision":current.as_ref().map_or(0,|r|r.get::<_,i64>(0)),"current_intent":current.as_ref().map(|r|r.get::<_,String>(1)),"current_plan":current.as_ref().and_then(|r|r.get::<_,Option<String>>(2)),"admission_open":current.as_ref().is_some_and(|r|r.get::<_,bool>(3)),"intents":intents,"sources":sources,"plans":plans,"accepted":accepted,"dependencies":dependencies,"work":work});
++        let lifecycle = lifecycle::current(&tx, task).await?;
++        let eligible = match dependencies::fresh_grant(&tx, task).await {
++            Ok(()) => true,
++            Err(error) if error.code == ErrorCode::DependencyUnmet => false,
++            Err(error) => return Err(error),
++        };
++        let result = json!({"schema_version":2,"snapshot_time":time,"current_accepted":lifecycle.accepted,"legacy_accepted":lifecycle.legacy_accepted,"fresh_grant_eligible":eligible,"revision":current.as_ref().map_or(0,|r|r.get::<_,i64>(0)),"current_intent":current.as_ref().map(|r|r.get::<_,String>(1)),"current_plan":current.as_ref().and_then(|r|r.get::<_,Option<String>>(2)),"admission_open":current.as_ref().is_some_and(|r|r.get::<_,bool>(3)),"intents":intents,"sources":sources,"plans":plans,"accepted":accepted,"dependencies":dependencies,"work":work});
+         tx.commit().await?;
+         Ok(result)
+     }
+--- a/crates/team-control-plane/src/contracts/authority.rs
++++ b/crates/team-control-plane/src/contracts/authority.rs
+@@ -94,15 +94,14 @@
+             // preserved even when the immutable original Intent predates it.
+             dependencies::preserve(tx, envelope.task, &intent.dependencies).await?;
+         }
+-        Command::AdmitPlan { plan } => {
++        Command::AdmitPlan { plan }
+             if plan
+                 .allowed_effects
+                 .iter()
+                 .any(|e| !delegation.effects.contains(e))
+-                || !strategy::within(&plan.resources, &delegation.resources)
+-            {
+-                return Err(err(ErrorCode::Unauthorized));
+-            }
++                || !strategy::within(&plan.resources, &delegation.resources) =>
++        {
++            return Err(err(ErrorCode::Unauthorized));
+         }
+         _ => {}
+     }
+--- a/crates/team-control-plane/src/contracts/dependencies.rs
++++ b/crates/team-control-plane/src/contracts/dependencies.rs
+@@ -131,13 +131,15 @@
+     Ok(json!({"schema_version":2,"disposition":"applied","revision":revision+1,"revalidation":id}))
+ }
+ pub(crate) async fn fresh_grant(tx: &Transaction<'_>, task: Uuid) -> Result<()> {
++    lifecycle::require_open(tx, task).await?;
++    crate::kernel::task_dispatch_enabled(tx, task).await?;
+     let Some(row)=tx.query_opt("SELECT c.admission_open,i.intent,t.spec_digest FROM contract_current c JOIN contract_intents i ON i.id=c.intent_id JOIN tasks t ON t.id=c.task_id WHERE c.task_id=$1",&[&task]).await? else {return Ok(());};
+     let intent: IntentRevision =
+         serde_json::from_value(row.get(1)).map_err(|_| err(ErrorCode::TemporarilyUnavailable))?;
+     if !row.get::<_, bool>(0) || row.get::<_, String>(2) != intent.legacy_spec_digest {
+         return Err(err(ErrorCode::DependencyUnmet));
+     }
+-    let closed:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM contract_dependencies d JOIN contract_work w ON w.id=d.prerequisite_work JOIN contract_current c ON c.task_id=w.task_id WHERE d.task_id=$1 AND (d.disposition<>'active' OR d.intent_id<>c.intent_id)) OR EXISTS(SELECT 1 FROM contract_outcomes o JOIN contract_current c ON c.intent_id=o.intent_id WHERE c.task_id=$1)",&[&task]).await?.get(0);
++    let closed:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM contract_dependencies d JOIN contract_work w ON w.id=d.prerequisite_work JOIN contract_current c ON c.task_id=w.task_id WHERE d.task_id=$1 AND (d.disposition<>'active' OR d.intent_id<>c.intent_id))",&[&task]).await?.get(0);
+     if closed {
+         return Err(err(ErrorCode::DependencyUnmet));
+     }
+--- a/crates/team-control-plane/src/contracts/lifecycle.rs
++++ b/crates/team-control-plane/src/contracts/lifecycle.rs
+@@ -42,6 +42,43 @@
+     Ok(())
+ }
+ 
++/// Closure of the exact admitted work. Legacy acceptance remains an inert
++/// historical case; only the typed outcome supplies a v2 accepted subject.
++#[derive(Serialize)]
++pub(crate) struct CurrentWork {
++    pub(crate) accepted: Option<Value>,
++    pub(crate) legacy_accepted: bool,
++    pub(crate) cancelled: bool,
++}
++impl CurrentWork {
++    pub(crate) fn completed(&self) -> bool {
++        self.accepted.is_some() || self.legacy_accepted
++    }
++    pub(crate) fn terminal(&self) -> bool {
++        self.completed() || self.cancelled
++    }
++}
++pub(crate) async fn current(tx: &Transaction<'_>, task: Uuid) -> Result<CurrentWork> {
++    let row = tx.query_opt(
++        "SELECT t.status, to_jsonb(o) FROM tasks t LEFT JOIN contract_current c ON c.task_id=t.id LEFT JOIN contract_outcomes o ON o.task_id=t.id AND o.intent_id=c.intent_id WHERE t.id=$1",
++        &[&task],
++    ).await?.ok_or_else(||err(ErrorCode::NotFound))?;
++    let status: String = row.get(0);
++    let accepted: Option<Value> = row.get(1);
++    Ok(CurrentWork {
++        legacy_accepted: status == "accepted" && accepted.is_none(),
++        accepted,
++        cancelled: status == "cancelled",
++    })
++}
++
++pub(crate) async fn require_open(tx: &Transaction<'_>, task: Uuid) -> Result<()> {
++    if current(tx, task).await?.terminal() {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    Ok(())
++}
++
+ pub(super) async fn amend(
+     tx: &Transaction<'_>,
+     actor: &auth::Actor,
+@@ -49,14 +86,14 @@
+     next_intent: &str,
+ ) -> Result<()> {
+     let row = tx.query_opt(
+-        "SELECT t.status,t.revision,t.generation,t.spec_digest,c.intent_id,EXISTS(SELECT 1 FROM contract_outcomes o WHERE o.task_id=t.id AND o.intent_id=c.intent_id AND o.outcome='production') FROM tasks t JOIN contract_current c ON c.task_id=t.id WHERE t.id=$1",
++        "SELECT t.status,t.revision,t.generation,t.spec_digest,c.intent_id,EXISTS(SELECT 1 FROM contract_outcomes o WHERE o.task_id=t.id AND o.intent_id=c.intent_id) FROM tasks t JOIN contract_current c ON c.task_id=t.id WHERE t.id=$1",
+         &[&envelope.task],
+     ).await?;
+     let Some(row) = row else {
+         // Mapping historical v1 acceptance alone admits no new execution.
+         return Ok(());
+     };
+-    if row.get::<_, String>(0) != "accepted" {
++    if !current(tx, envelope.task).await?.completed() {
+         return Ok(());
+     }
+     // A later explicit Owner amendment can start new work after a historical
+@@ -76,3 +113,50 @@
+     tx.execute("INSERT INTO events(id,aggregate_kind,aggregate_id,sequence,version,principal_id,transaction_id,kind,payload) VALUES($1,'task',$2,$3,1,$4,txid_current(),'task.intent.amend',$5)",&[&Uuid::new_v4(),&envelope.task,&revision,&actor.principal,&payload]).await?;
+     Ok(())
+ }
++
++/// Exact research authority captured in the immutable input/manifest. It is not
++/// a production candidate, report or production verification binding.
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct ResearchVerification {
++    pub intent: String,
++    pub acceptance: String,
++    pub verifier: Uuid,
++    pub policy: String,
++    pub suite: String,
++    pub environment: String,
++}
++pub(crate) async fn research_verification(
++    tx: &Transaction<'_>,
++    task: Uuid,
++) -> Result<Option<ResearchVerification>> {
++    let Some(row) = tx.query_opt("SELECT c.intent_id,i.acceptance_id,i.intent FROM contract_current c JOIN contract_intents i ON i.id=c.intent_id WHERE c.task_id=$1", &[&task]).await? else {return Ok(None);};
++    let intent: IntentRevision =
++        serde_json::from_value(row.get(2)).map_err(|_| err(ErrorCode::TemporarilyUnavailable))?;
++    if intent.acceptance.outcome != Outcome::InvestigationComplete {
++        return Ok(None);
++    }
++    Ok(Some(ResearchVerification {
++        intent: row.get(0),
++        acceptance: row.get(1),
++        verifier: intent.acceptance.verifier,
++        policy: intent.acceptance.policy,
++        suite: intent.acceptance.suite,
++        environment: intent.acceptance.environment,
++    }))
++}
++pub(crate) async fn research_input(
++    tx: &Transaction<'_>,
++    input: Uuid,
++    expected: &ResearchVerification,
++) -> Result<()> {
++    let packet: Value = tx
++        .query_one("SELECT packet FROM mailbox_inputs WHERE id=$1", &[&input])
++        .await?
++        .get(0);
++    if packet["task"]["research_verification"]
++        != serde_json::to_value(expected).map_err(|_| err(ErrorCode::InvalidArgument))?
++    {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    Ok(())
++}
+--- a/crates/team-control-plane/src/contracts/outcomes.rs
++++ b/crates/team-control-plane/src/contracts/outcomes.rs
+@@ -143,6 +143,7 @@
+                 actor.principal,
+                 &evidence,
+                 service(artifacts)?,
++                false,
+             )
+             .await?;
+             production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+@@ -210,6 +211,7 @@
+                     verifier,
+                     &evidence,
+                     service(artifacts)?,
++                    false,
+                 )
+                 .await?;
+                 production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+@@ -365,6 +367,7 @@
+     verifier: Uuid,
+     evidence: &Value,
+     artifacts: &ArtifactService,
++    historical: bool,
+ ) -> Result<()> {
+     if current.2.acceptance.outcome != Outcome::Production {
+         return Err(err(ErrorCode::DependencyUnmet));
+@@ -386,9 +389,15 @@
+         &bound.get::<_, String>(4),
+         current,
+     )?;
+-    let (subject, verification, origin) = artifacts.verify_evidence(tx, candidate, report).await?;
++    let (subject, verification, origin) = if historical {
++        artifacts
++            .verify_accepted_evidence(tx, candidate, report)
++            .await?
++    } else {
++        artifacts.verify_evidence(tx, candidate, report).await?
++    };
+     let acceptance = &current.2.acceptance;
+-    let exact:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id WHERE a.task_id=$1 AND a.candidate_id=$2 AND c.implementer<>$3)",&[&task,&candidate,&verifier]).await?.get(0);
++    let exact:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM artifact_candidates c WHERE c.task_id=$1 AND c.id=$2 AND c.implementer<>$3 AND ($4 OR EXISTS(SELECT 1 FROM artifact_current a WHERE a.task_id=$1 AND a.candidate_id=c.id)))",&[&task,&candidate,&verifier,&historical]).await?.get(0);
+     if !exact
+         || origin != verifier
+         || subject.spec_digest != current.2.legacy_spec_digest
+@@ -433,6 +442,55 @@
+     };
+     if let Some(proof) = proof {
+         let row=tx.query_opt("SELECT verifier,outcome,evidence,intent_id,acceptance_id FROM contract_proofs WHERE id=$1 AND task_id=$2",&[&proof,&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++        // Only an exact applied AcceptOutcome command may inspect its immutable
++        // accepted subject after a later amendment. A new key still goes through
++        // apply/current intent checks; cached verifier work is never this exception.
++        if matches!(envelope.command, Command::AcceptOutcome { .. }) {
++            let accepted: bool = tx.query_one(
++                "SELECT EXISTS(SELECT 1 FROM contract_outcomes WHERE task_id=$1 AND proof_id=$2 AND subject=$3 AND intent_id=$4 AND outcome=$5)",
++                &[&envelope.task,&proof,&receipt["subject"].as_str(),&row.get::<_,String>(3),&row.get::<_,String>(1)],
++            ).await?.get(0);
++            if accepted {
++                let intent = tx
++                    .query_one(
++                        "SELECT acceptance_id,intent FROM contract_intents WHERE id=$1",
++                        &[&row.get::<_, String>(3)],
++                    )
++                    .await?;
++                let historical = (
++                    row.get::<_, String>(3),
++                    intent.get::<_, String>(0),
++                    serde_json::from_value(intent.get(1))
++                        .map_err(|_| err(ErrorCode::TemporarilyUnavailable))?,
++                );
++                if row.get::<_, String>(4) != historical.1 {
++                    return Err(err(ErrorCode::DependencyUnmet));
++                }
++                if row.get::<_, String>(1) == "production" {
++                    production_evidence(
++                        tx,
++                        envelope.task,
++                        &historical,
++                        row.get(0),
++                        &row.get(2),
++                        service(artifacts)?,
++                        true,
++                    )
++                    .await?;
++                } else {
++                    research_evidence(
++                        tx,
++                        envelope.task,
++                        &historical,
++                        row.get(0),
++                        &row.get(2),
++                        service(artifacts)?,
++                    )
++                    .await?;
++                }
++                return Ok(());
++            }
++        }
+         let current = strategy::current(tx, envelope.task).await?;
+         if row.get::<_, String>(3) != current.0 || row.get::<_, String>(4) != current.1 {
+             return Err(err(ErrorCode::StaleRevision));
+@@ -455,6 +513,7 @@
+                 row.get(0),
+                 &evidence,
+                 service(artifacts)?,
++                false,
+             )
+             .await?;
+         } else {
+--- a/crates/team-control-plane/src/kernel.rs
++++ b/crates/team-control-plane/src/kernel.rs
+@@ -163,6 +163,7 @@
+             .ok_or_else(|| err(ErrorCode::DependencyUnmet))?
+             .get(0);
+         actor.scope(mission, Some(task))?;
++        crate::contracts::lifecycle::require_open(&tx, task).await?;
+         tx.execute("INSERT INTO kernel_verification_requirements(task_id,recovery_epoch,by_principal) VALUES($1,$2,$3) ON CONFLICT DO NOTHING", &[&task,&self.broker.epoch,&actor.principal]).await?;
+         tx.commit().await?;
+         Ok(())
+@@ -366,14 +367,14 @@
+     tx: &tokio_postgres::Transaction<'_>,
+     attempt: uuid::Uuid,
+ ) -> Result<()> {
+-    if tx
++    let row = tx
+         .query_one(
+-            "SELECT a.desired_cancel OR t.status IN ('accepted','cancelled') FROM attempts a JOIN tasks t ON t.id=a.task_id WHERE a.id=$1",
++            "SELECT desired_cancel,task_id FROM attempts WHERE id=$1",
+             &[&attempt],
+         )
+-        .await?
+-        .get::<_, bool>(0)
+-    {
++        .await?;
++    crate::contracts::lifecycle::require_open(tx, row.get(1)).await?;
++    if row.get::<_, bool>(0) {
+         return Err(crate::domain::err(crate::ErrorCode::DependencyUnmet));
+     }
+     Ok(())
+--- a/crates/team-control-plane/src/mailbox.rs
++++ b/crates/team-control-plane/src/mailbox.rs
+@@ -463,24 +463,31 @@
+         }
+         // Task-scoped credentials remain valid for historical reads; they do
+         // not authorize further mailbox mutations once the Task is terminal.
+-        if let Some(task) = actor.task
+-            && tx
+-                .query_one(
+-                    "SELECT status IN ('accepted','cancelled') FROM tasks WHERE id=$1",
+-                    &[&task],
++        if let Some(task) = actor.task {
++            crate::contracts::lifecycle::require_open(&tx, task).await?;
++        }
++        let target: Option<Uuid> = match &e.command {
++            MailboxCommand::PrepareDelivery { episode, .. }
++            | MailboxCommand::BindRuntimeTurn { episode, .. } => tx
++                .query_opt(
++                    "SELECT task_id FROM mailbox_episodes WHERE id=$1",
++                    &[episode],
+                 )
+                 .await?
+-                .get::<_, bool>(0)
+-        {
+-            return Err(err(ErrorCode::DependencyUnmet));
+-        }
+-        if let MailboxCommand::PrepareDelivery { episode, .. }
+-        | MailboxCommand::BindRuntimeTurn { episode, .. } = &e.command
+-        {
+-            let terminal:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes e JOIN tasks t ON t.id=e.task_id WHERE e.id=$1 AND t.status IN ('accepted','cancelled'))", &[episode]).await?.get(0);
+-            if terminal {
+-                return Err(err(ErrorCode::DependencyUnmet));
+-            }
++                .and_then(|r| r.get(0)),
++            MailboxCommand::RequestApproval { task, .. } => *task,
++            MailboxCommand::GrantApproval { request, .. }
++            | MailboxCommand::ConsumeApproval { request, .. } => tx
++                .query_opt(
++                    "SELECT task_id FROM mailbox_approval_requests WHERE id=$1",
++                    &[request],
++                )
++                .await?
++                .and_then(|r| r.get(0)),
++            _ => None,
++        };
++        if let Some(task) = target {
++            crate::contracts::lifecycle::require_open(&tx, task).await?;
+         }
+         let (family, mission) = match &e.command {
+             MailboxCommand::CaptureInput { mission, .. } => ("episode.input_capture", *mission),
+@@ -1079,7 +1086,7 @@
+                 }
+             }
+             for dependency in dependencies {
+-                let dependency_row = tx
++                let _dependency_row = tx
+                     .query_opt(
+                         "SELECT status FROM tasks WHERE id=$1 AND mission_id=$2",
+                         &[dependency, &mission],
+@@ -1088,7 +1095,9 @@
+                     .ok_or_else(|| err(ErrorCode::Unauthorized))?;
+                 if let Some(task) = task
+                     && tx.query_opt("SELECT dependency_id FROM dependencies WHERE task_id=$1 AND dependency_id=$2",&[&task,dependency]).await?.is_none(){return Err(err(ErrorCode::Unauthorized));}
+-                let satisfied = dependency_row.get::<_, String>(0) == "accepted";
++                let satisfied = crate::contracts::lifecycle::current(tx, *dependency)
++                    .await?
++                    .completed();
+                 tx.execute("INSERT INTO mailbox_waits(episode_id,kind,reference_id,workflow_id,satisfied) VALUES($1,'task',$2,$3,$4) ON CONFLICT DO NOTHING",&[&episode,dependency,&workflow,&satisfied]).await?;
+             }
+             tx.execute("INSERT INTO mailbox_checkpoints(id,episode_id,principal_id,checkpoint,executions) VALUES($1,$2,$3,$4,$5)",&[&checkpoint.id,&episode,&actor.principal,&serde_json::to_value(checkpoint).map_err(|_|invalid())?,&serde_json::to_value(executions).map_err(|_|invalid())?]).await?;
+@@ -1318,7 +1327,32 @@
+             if tx.query_opt("SELECT id FROM mailbox_episodes WHERE principal_id=$1 AND state IN ('admitted','active','outcome_unknown','quarantined')", &[&actor.principal]).await?.is_some() {
+                 return Err(err(ErrorCode::DependencyUnmet));
+             }
+-            if actor.role == Role::Verifier {
++            let research = if let Some(task) = task {
++                crate::contracts::lifecycle::research_verification(tx, task).await?
++            } else {
++                None
++            };
++            if actor.role == Role::Verifier
++                && let Some(research) = &research
++            {
++                let is_worker: bool = tx
++                    .query_one(
++                        "SELECT EXISTS(SELECT 1 FROM attempts WHERE id=$1 AND worker_id=$2)",
++                        &[&attempt, &actor.principal],
++                    )
++                    .await?
++                    .get(0);
++                if research.verifier != actor.principal || is_worker {
++                    return Err(err(ErrorCode::Unauthorized));
++                }
++                crate::contracts::lifecycle::research_input(
++                    tx,
++                    input_packet.ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
++                    research,
++                )
++                .await?;
++            }
++            if actor.role == Role::Verifier && research.is_none() {
+                 let verification=tx.query_opt("SELECT p.verifier,c.implementer,t.status FROM tasks t JOIN artifact_policies p ON p.task_id=t.id JOIN artifact_current a ON a.task_id=t.id JOIN artifact_candidates c ON c.id=a.candidate_id WHERE t.id=$1", &[&task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+                 if verification.get::<_, Uuid>(0) != actor.principal
+                     || verification.get::<_, Uuid>(1) == actor.principal
+@@ -1775,9 +1809,19 @@
+     schema(tx).await?;
+     // Timer-driven Activity observation repairs a lost acceptance hint using
+     // canonical PostgreSQL status, without creating a second scheduler.
+-    let changed=tx.query("UPDATE mailbox_waits w SET satisfied=true FROM mailbox_episodes e,tasks t WHERE w.episode_id=e.id AND w.workflow_id=$1 AND e.recovery_epoch=$2 AND w.kind='task' AND w.reference_id=t.id AND t.status='accepted' AND NOT w.satisfied RETURNING w.episode_id,w.reference_id", &[&reference.workflow_id,&epoch]).await?;
+-    for row in &changed {
+-        tx.execute("INSERT INTO mailbox_wait_satisfactions(episode_id,kind,reference_id,evidence_id) VALUES($1,'task',$2,$2) ON CONFLICT DO NOTHING", &[&row.get::<_,Uuid>(0),&row.get::<_,Uuid>(1)]).await?;
++    let pending=tx.query("SELECT w.episode_id,w.reference_id FROM mailbox_waits w JOIN mailbox_episodes e ON e.id=w.episode_id WHERE w.workflow_id=$1 AND e.recovery_epoch=$2 AND w.kind='task' AND NOT w.satisfied", &[&reference.workflow_id,&epoch]).await?;
++    let mut changed = Vec::new();
++    for row in pending {
++        let task: Uuid = row.get(1);
++        if crate::contracts::lifecycle::current(tx, task)
++            .await?
++            .completed()
++        {
++            let episode: Uuid = row.get(0);
++            tx.execute("UPDATE mailbox_waits SET satisfied=true WHERE episode_id=$1 AND kind='task' AND reference_id=$2", &[&episode,&task]).await?;
++            tx.execute("INSERT INTO mailbox_wait_satisfactions(episode_id,kind,reference_id,evidence_id) VALUES($1,'task',$2,$2) ON CONFLICT DO NOTHING", &[&episode,&task]).await?;
++            changed.push(episode);
++        }
+     }
+     if !changed.is_empty() {
+         wake(tx, &reference.workflow_id).await?;
+@@ -1892,11 +1936,17 @@
+     limit: i64,
+ ) -> Result<serde_json::Value> {
+     let mission_data:serde_json::Value=tx.query_opt("SELECT jsonb_build_object('id',id,'objective',objective,'repository',git_repository,'commit',git_commit,'path',git_path,'input_digest',input_digest,'policy',jsonb_build_object('capacity',capacity,'max_attempts',max_attempts,'max_episodes',max_episodes,'max_repairs',max_repairs,'episode_deadline_seconds',deadline_seconds)) FROM missions WHERE id=$1", &[&mission]).await?.ok_or_else(||err(ErrorCode::NotFound))?.get(0);
+-    let task_data = if let Some(task) = actor.task {
++    let mut task_data = if let Some(task) = actor.task {
+         tx.query_one("SELECT jsonb_build_object('id',t.id,'generation',t.generation,'approved_digest',t.approved_digest,'spec',(SELECT to_jsonb(s) FROM task_specs s WHERE s.task_id=t.id AND s.digest=t.approved_digest),'spec_revision',(SELECT sequence FROM events e WHERE e.aggregate_kind='task' AND e.aggregate_id=t.id AND e.kind='task.admit' AND e.payload->>'spec_digest'=t.approved_digest ORDER BY sequence DESC LIMIT 1),'candidate',(SELECT candidate_id FROM artifact_current WHERE task_id=t.id)) FROM tasks t WHERE t.id=$1 AND t.mission_id=$2", &[&task,&mission]).await?.get::<_,serde_json::Value>(0)
+     } else {
+         serde_json::Value::Null
+     };
++    if let Some(task) = actor.task {
++        task_data["research_verification"] = serde_json::to_value(
++            crate::contracts::lifecycle::research_verification(tx, task).await?,
++        )
++        .map_err(|_| invalid())?;
++    }
+     let lead = actor.role == Role::Lead;
+     let messages=tx.query("SELECT to_jsonb(m) FROM mailbox_messages m WHERE m.mission_id=$1 AND NOT EXISTS(SELECT 1 FROM mailbox_resolutions x WHERE x.message_id=m.id) AND NOT EXISTS(SELECT 1 FROM mailbox_acknowledgments a JOIN mailbox_presentations p ON p.id=a.presentation_id WHERE p.message_id=m.id AND a.principal_id=$2) AND (EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND (r.principal_id=$2 OR (r.lead_seat AND $3))) OR ($3 AND m.kind='question' AND m.sender_lead_generation IS NOT NULL)) ORDER BY CASE WHEN m.attention='critical' THEN 0 ELSE 1 END,m.created_at,m.id LIMIT $4", &[&mission,&actor.principal,&lead,&(limit+1)]).await?;
+     let more = messages.len() > limit as usize;
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -95,6 +95,8 @@
+     #[serde(default)]
+     pub verification_policy: Option<VerificationPolicy>,
+     #[serde(default)]
++    pub research_verification: Option<crate::contracts::lifecycle::ResearchVerification>,
++    #[serde(default)]
+     pub input: Option<EpisodeInput>,
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+@@ -284,7 +286,30 @@
+     if cancelled {
+         return Ok(false);
+     }
+-    let terminal: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM tasks t WHERE t.status IN ('accepted','cancelled') AND (t.id=(SELECT task_id FROM episode_executions WHERE execution_id=$1) OR t.id=(SELECT a.task_id FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1)))", &[&id]).await?.get(0);
++    let target: Option<Uuid> = tx.query_one("SELECT coalesce(x.task_id,a.task_id) FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id LEFT JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1", &[&id]).await?.get(0);
++    let manifest: WorkspaceManifest = decode(
++        tx.query_one(
++            "SELECT manifest FROM supervised_workspaces WHERE id=$1",
++            &[&id],
++        )
++        .await?
++        .get(0),
++    )?;
++    if let Some(research) = &manifest.research_verification
++        && crate::contracts::lifecycle::research_verification(tx, target.ok_or_else(invalid)?)
++            .await?
++            .as_ref()
++            != Some(research)
++    {
++        return Ok(false);
++    }
++    let terminal = if let Some(task) = target {
++        crate::contracts::lifecycle::current(tx, task)
++            .await?
++            .terminal()
++    } else {
++        false
++    };
+     let task: Option<Uuid> = tx.query_one(
+         "SELECT CASE WHEN x.role='worker' THEN x.task_id WHEN x.execution_id IS NULL THEN a.task_id END FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id LEFT JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1",
+         &[&id],
+@@ -531,9 +556,26 @@
+                 return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+             }
+         }
+-        if role == "verifier" && source.is_none() {
+-            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+-        }
++        let research_verification = if role == "verifier" && source.is_none() {
++            let research =
++                crate::contracts::lifecycle::research_verification(&tx, task.ok_or_else(invalid)?)
++                    .await?
++                    .ok_or_else(|| crate::domain::err(ErrorCode::DependencyUnmet))?;
++            if research.verifier != actor.principal
++                || row.get::<_, Option<Uuid>>(19) == Some(actor.principal)
++            {
++                return Err(crate::domain::err(ErrorCode::Unauthorized));
++            }
++            crate::contracts::lifecycle::research_input(
++                &tx,
++                row.get::<_, Option<Uuid>>(7).ok_or_else(invalid)?,
++                &research,
++            )
++            .await?;
++            Some(research)
++        } else {
++            None
++        };
+         let mut verification_policy = None;
+         if let Some((candidate, bytes)) = &source {
+             if !matches!(role.as_str(), "worker" | "verifier")
+@@ -617,6 +659,7 @@
+             log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
+             candidate: source.as_ref().map(|s| s.0.clone()),
+             verification_policy,
++            research_verification,
+             input: Some(EpisodeInput {
+                 id: row.get::<_, Option<Uuid>>(7).ok_or_else(invalid)?,
+                 digest: row.get(6),
+@@ -793,6 +836,7 @@
+             log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
+             candidate: None,
+             verification_policy: None,
++            research_verification: None,
+             input: None,
+         };
+         tx.execute("INSERT INTO supervised_workspaces(id,attempt_id,manifest,state) VALUES($1,$2,$3,'registered')",&[&id,&attempt,&json(&manifest)?]).await?;
+--- a/crates/team-control-plane/tests/intent_contracts.rs
++++ b/crates/team-control-plane/tests/intent_contracts.rs
+@@ -97,7 +97,27 @@
+     }
+     async fn finish(self) {
+         self.server.abort();
+-        self.fixture.finish().await;
++        // Retain uncertain fixtures, including usage unknown after a physical
++        // effect. Fixture.finish is filesystem/schema disposal, never Stop proof.
++        let (db, connection) = tokio_postgres::connect(&self.fixture.dsn, tokio_postgres::NoTls)
++            .await
++            .unwrap();
++        tokio::spawn(async move { connection.await.unwrap() });
++        let unknown:bool=db.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations WHERE state IN ('dispatching','outcome_unknown','quarantined') OR (state IN ('confirmed','failed_known') AND COALESCE(usage->>'kind','unknown')<>'measured_zero')) OR EXISTS(SELECT 1 FROM episode_runtime_operations WHERE state IN ('dispatching','outcome_unknown','quarantined') OR (state IN ('confirmed','failed_known') AND COALESCE(usage->>'kind','unknown')<>'measured_zero'))", &[]).await.unwrap().get(0);
++        if unknown {
++            println!(
++                "fixture_retained_unknown {}",
++                json!({"root":self.fixture.root,"dsn":self.fixture.dsn,"fixture_finish":false,"reason":"unresolved runtime usage/effect retained"})
++            );
++        } else {
++            let root = self.fixture.root.clone();
++            let dsn = self.fixture.dsn.clone();
++            self.fixture.finish().await;
++            println!(
++                "fixture_disposal {}",
++                json!({"root":root,"dsn":dsn,"root_exists":root.exists(),"fixture_finish":true,"independent_shutdown_claim":false})
++            );
++        }
+     }
+     async fn legacy_task(&self, task: Uuid) -> Value {
+         let response = self
+@@ -224,7 +244,7 @@
+ }
+ 
+ #[tokio::test]
+-async fn cancellation_fences_acceptance_replay_and_preserves_historical_outcome() {
++async fn completed_research_refuses_cancellation_and_preserves_exact_acceptance_receipt() {
+     cancelled_outcome_case(CancelledOutcome::Replay).await;
+ }
+ 
+@@ -294,6 +314,18 @@
+         .json()
+         .await
+         .unwrap();
++    if matches!(scenario, CancelledOutcome::Replay) {
++        let refused=api.v1("cannot-cancel-accepted",legacy_before["revision"].as_i64().unwrap(),None,json!({"kind":"cancel_attempt","task_id":api.fixture.task,"attempt_id":api.fixture.attempt,"reason":"completed work cannot be cancelled"})).await;
++        assert_eq!(refused.1["code"], "dependency_unmet");
++        assert_eq!(
++            api.post(&token, &mutation).await.0,
++            200,
++            "authenticated exact acceptance inspection survives refused cancellation"
++        );
++        assert_eq!(api.snapshot().await["accepted"], before["accepted"]);
++        api.finish().await;
++        return;
++    }
+     api.cancel_attempt(api.fixture.task, api.fixture.attempt)
+         .await;
+     let result = api.post(&token, &mutation).await;
+@@ -538,23 +570,34 @@
+         result.1
+     }
+     async fn accept_research(&self, intent: &Value, start: i64, key: &str) -> Value {
++        self.accept_research_as(intent, start, key, "assembled-worker", "assembled-verifier")
++            .await
++    }
++    async fn accept_research_as(
++        &self,
++        intent: &Value,
++        start: i64,
++        key: &str,
++        worker: &str,
++        verifier: &str,
++    ) -> Value {
+         let evidence = self
+             .upload(
+-                "assembled-worker",
++                worker,
+                 b"retained investigation: no feasible candidate under admitted constraints",
+             )
+             .await;
+         let proposal=self.command(&format!("{key}-proposal"),start,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}));
+-        let proposed = self.post("assembled-worker", &proposal).await;
++        let proposed = self.post(worker, &proposal).await;
+         assert_eq!(proposed.0, 200, "worker proposal: {}", proposed.1);
+         assert_eq!(proposed.1["disposition"], "proposed");
+         let verification=self.command(&format!("{key}-verify"),start,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
+         assert_eq!(
+-            self.post("assembled-worker", &verification).await.0,
++            self.post(worker, &verification).await.0,
+             401,
+             "worker cannot manufacture verified outcome"
+         );
+-        let verified = self.post("assembled-verifier", &verification).await;
++        let verified = self.post(verifier, &verification).await;
+         assert_eq!(
+             verified.0, 200,
+             "independent research verification: {}",
+@@ -565,7 +608,7 @@
+             start + 1,
+             json!({"kind":"outcome.accept","proof":verified.1["proof"]}),
+         );
+-        assert_eq!(self.post("assembled-worker", &accept).await.0, 401);
++        assert_eq!(self.post(worker, &accept).await.0, 401);
+         let accepted = self.post(&self.fixture.owner, &accept).await;
+         assert_eq!(accepted.0, 200, "owner research acceptance: {}", accepted.1);
+         assert_eq!(accepted.1["outcome"], "investigation_complete");
+@@ -577,6 +620,16 @@
+ async fn negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert() {
+     let api = Api::new().await;
+     let intent = api.research_intent("research", 0, "research-r1").await;
++    let evaluator_evidence = api
++        .upload(
++            "assembled-worker",
++            b"unpromoted evaluator before acceptance",
++        )
++        .await;
++    let evaluator=api.post("assembled-worker", &api.command("unpromoted-evaluator",1,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evaluator_evidence,"negative":true,"evaluator_change":true}))).await;
++    assert_eq!(evaluator.0, 200);
++    let forbidden=api.post("assembled-verifier",&api.command("unpromoted-evaluator-proof",1,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":evaluator.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}))).await;
++    assert_eq!(forbidden.1["code"], "dependency_unmet");
+     let accepted = api.accept_research(&intent, 1, "research").await;
+     let snapshot = api.snapshot().await;
+     assert_eq!(snapshot["accepted"][0]["subject"], accepted["subject"]);
+@@ -600,15 +653,10 @@
+         .await;
+     let proposal=api.command("evaluator-proposal",3,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":true}));
+     let proposed = api.post("assembled-worker", &proposal).await;
+-    assert_eq!(proposed.0, 200);
++    assert_eq!(proposed.1["code"], "dependency_unmet");
+     assert_eq!(
+         api.snapshot().await["accepted"].as_array().unwrap().len(),
+         1
+-    );
+-    let verify=api.command("do-not-promote-evaluator",3,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
+-    assert_eq!(
+-        api.post("assembled-verifier", &verify).await.1["code"],
+-        "dependency_unmet"
+     );
+     api.finish().await;
+ }
+@@ -889,7 +937,42 @@
+         api.finish().await;
+         return;
+     }
+-    let new_accept = api.accept_research(&amended, 4, "amended").await;
++    let ready = api.legacy_task(api.fixture.task).await;
++    assert_eq!(ready["data"]["generation"], 2);
++    for (role, principal, token) in [
++        ("worker", api.fixture.worker, "research-worker-g3"),
++        ("verifier", api.fixture.verifier, "research-verifier-g3"),
++    ] {
++        assert_eq!(api.v1(&format!("renew-{role}"),0,None,json!({"kind":"grant_credential","credential_id":Uuid::new_v4(),"principal_id":principal,"role":role,"mission_id":api.fixture.mission,"task_id":api.fixture.task,"generation":3,"token_hash":token_hash(token),"expires_in_seconds":300})).await.0,200);
++    }
++    let assigned=api.v1("research-renew-attempt",ready["revision"].as_i64().unwrap(),Some(2),json!({"kind":"assign_attempt","task_id":api.fixture.task,"worker_id":api.fixture.worker})).await;
++    assert_eq!(assigned.0, 200);
++    let supervisor = api.fixture.supervisor().await;
++    let workspace = supervisor
++        .create_attempt(
++            "research-worker-g3",
++            serde_json::from_value(assigned.1["attempt_id"].clone()).unwrap(),
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    supervisor
++        .cancel("research-worker-g3", workspace.id)
++        .await
++        .unwrap();
++    supervisor
++        .release("research-worker-g3", workspace.id)
++        .await
++        .unwrap();
++    let new_accept = api
++        .accept_research_as(
++            &amended,
++            4,
++            "amended",
++            "research-worker-g3",
++            "research-verifier-g3",
++        )
++        .await;
+     let mut revalidate=api.command("revalidate",2,json!({"kind":"dependency.revalidate","intent":admitted.1["intent"],"dependencies":[{"work":work,"intent":amended["intent"],"accepted_subject":new_accept["subject"],"policy":"suite-v2"}]}));
+     revalidate["task"] = json!(dependent);
+     let mut stale_revalidation = revalidate.clone();
+@@ -1185,7 +1268,8 @@
+ }
+ 
+ #[tokio::test]
+-async fn explicit_production_intent_amendment_requires_fresh_generation_and_revalidation() {
++async fn lifecycle_explicit_production_intent_amendment_requires_fresh_generation_and_revalidation()
++{
+     measured_acceptance_case(true, false, Some(AmendmentCase::Fresh)).await;
+ }
+ 
+@@ -1407,7 +1491,7 @@
+             api.finish().await;
+             println!(
+                 "measured_fixture_cleanup {}",
+-                json!({"root":owned_root,"root_exists":owned_root.exists(),"fixture_finish":true,"namespace_stopped":measured.namespace_stopped,"released_executions":[execution.id]})
++                json!({"root":owned_root,"root_exists":owned_root.exists(),"fixture_finish":!owned_root.exists(),"namespace_stopped":measured.namespace_stopped,"released_executions":[execution.id]})
+             );
+             assert_eq!(
+                 completed.0, 200,
+@@ -1676,9 +1760,9 @@
+             fresh_accepted
+         );
+         assert_eq!(
+-            api.post("assembled-verifier", &fresh_proof_request).await,
+-            fresh_proof,
+-            "exact accepted proof receipt remains an attributable read"
++            api.post("assembled-verifier", &fresh_proof_request).await.1["code"],
++            "dependency_unmet",
++            "cached Verifier commands cannot mutate accepted work; exact Owner acceptance remains inspectable"
+         );
+         assert_eq!(
+             api.post("assembled-verifier", &proof).await.1["code"],
+@@ -1718,7 +1802,7 @@
+         api.finish().await;
+         println!(
+             "measured_fixture_cleanup {}",
+-            json!({"root":owned_root,"fixture_finish":true,"root_exists":owned_root.exists(),"namespace_stopped":measured.namespace_stopped && fresh_measured.namespace_stopped,"released_executions":[execution.id,fresh_execution.id]})
++            json!({"root":owned_root,"fixture_finish":!owned_root.exists(),"root_exists":owned_root.exists(),"namespace_stopped":measured.namespace_stopped && fresh_measured.namespace_stopped,"released_executions":[execution.id,fresh_execution.id]})
+         );
+         return;
+     }
+@@ -1749,7 +1833,7 @@
+         api.finish().await;
+         println!(
+             "measured_fixture_cleanup {}",
+-            json!({"root":owned_root,"root_exists":owned_root.exists(),"fixture_finish":true,"namespace_stopped":measured.namespace_stopped,"released_executions":[execution.id]})
++            json!({"root":owned_root,"root_exists":owned_root.exists(),"fixture_finish":!owned_root.exists(),"namespace_stopped":measured.namespace_stopped,"released_executions":[execution.id]})
+         );
+         assert_eq!(
+             completed.0,
+@@ -1918,9 +2002,9 @@
+             json!({"kind":"outcome.accept","proof":old["proof_id"]}),
+         );
+         assert_eq!(
+-            api.post(&api.fixture.owner, &historical).await.1["code"],
+-            "stale_revision",
+-            "a historical accepted receipt cannot confer authority on later Intent work"
++            api.post(&api.fixture.owner, &historical).await.1["subject"],
++            old["subject"],
++            "exact accepted receipt remains immutable inspection after amendment"
+         );
+         let rekey = api.command(
+             "old-proof-new-amendment-key",
+@@ -2809,3 +2893,6 @@
+     );
+     api.finish().await;
+ }
++
++#[path = "support/outcome_lifecycle.rs"]
++mod outcome_lifecycle;
+--- /dev/null
++++ b/crates/team-control-plane/tests/support/outcome_lifecycle.rs
+@@ -0,0 +1,905 @@
++// Included by intent_contracts: public HTTP behavior against the same real fixtures.
++use super::*;
++
++#[tokio::test]
++async fn lifecycle_acceptance_and_amendment_serialize_with_public_grants_and_mutations() {
++    let api = Api::new().await;
++    let intent = api.research_intent("race-research", 0, "race-r1").await;
++    // This fixture checks transaction ordering; measured evidence is exercised
++    // independently by the full two-generation research lifecycle below.
++    let evidence = api
++        .upload("assembled-worker", b"ordering fixture research evidence")
++        .await;
++    let proposed=api.post("assembled-worker",&api.command("race-proposal",1,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}))).await;
++    assert_eq!(proposed.0, 200);
++    let verified=api.post("assembled-verifier",&api.command("race-proof",1,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}))).await;
++    assert_eq!(verified.0, 200);
++    let accept = api.command(
++        "race-accept",
++        2,
++        json!({"kind":"outcome.accept","proof":verified.1["proof"]}),
++    );
++    let capture = json!({"kind":"capture_input","mission":api.fixture.mission,"id":Uuid::new_v4(),"attempt":api.fixture.attempt,"purpose":"implementation","limit":4});
++    let (accepted, granted) = tokio::join!(
++        api.post(&api.fixture.owner, &accept),
++        api.mail("assembled-worker", "race-input", capture.clone())
++    );
++    assert_eq!(accepted.0, 200);
++    assert!(granted.0 == 200 || granted.1["code"] == "dependency_unmet");
++    assert_eq!(
++        api.mail("assembled-worker", "race-input", capture).await.1["code"],
++        "dependency_unmet"
++    );
++    let before = api.legacy_task(api.fixture.task).await;
++    let mut snapshot = api.snapshot().await;
++    snapshot.as_object_mut().unwrap().remove("snapshot_time");
++    assert_eq!(api.post(&api.fixture.owner, &accept).await, accepted);
++    let mut changed = accept.clone();
++    changed["command"]["proof"] =
++        json!("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
++    assert_eq!(
++        api.post(&api.fixture.owner, &changed).await.1["code"],
++        "idempotency_conflict"
++    );
++    let mut inspected = api.snapshot().await;
++    inspected.as_object_mut().unwrap().remove("snapshot_time");
++    assert_eq!(inspected, snapshot);
++    let source=api.command("race-old-worker",3,json!({"kind":"source.propose","work":api.admission("x",0)["command"]["work"],"source":api.admission("x",0)["command"]["source"]}));
++    let (amended, old_mutation) = tokio::join!(
++        api.research_intent("race-amend", 3, "race-r2"),
++        api.post("assembled-worker", &source)
++    );
++    assert!(old_mutation.0 == 200 || old_mutation.1["code"] == "stale_generation");
++    assert_eq!(
++        api.post("assembled-worker", &source).await.1["code"],
++        "stale_generation"
++    );
++    let after = api.legacy_task(api.fixture.task).await;
++    assert_eq!(after["data"]["generation"], 2);
++    assert_eq!(after["data"]["attempts"], before["data"]["attempts"]);
++    assert_eq!(
++        after["data"]["reservations"],
++        before["data"]["reservations"]
++    );
++    assert_eq!(
++        api.research_intent("race-amend", 3, "race-r2").await,
++        amended
++    );
++    let mut replayed_task = api.legacy_task(api.fixture.task).await;
++    replayed_task
++        .as_object_mut()
++        .unwrap()
++        .remove("snapshot_time");
++    let mut stored_task = after.clone();
++    stored_task.as_object_mut().unwrap().remove("snapshot_time");
++    assert_eq!(replayed_task, stored_task);
++    println!(
++        "lifecycle_transaction_ordering {}",
++        json!({"accepted":accepted,"concurrent_grant":granted,"amended":amended,"concurrent_old_mutation":old_mutation,"before":before,"after":after})
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn lifecycle_research_terminal_commands_and_current_projection() {
++    let api = Api::new().await;
++    let intent = api.research_intent("terminal", 0, "terminal-r1").await;
++    let plan = json!({"schema_version":1,"interpreter_version":"declarative-v1","intent":intent["intent"],"acceptance":intent["acceptance"],"allowed_effects":["read"],"resources":{"attempts":8,"episodes":8,"repairs":3,"execution_seconds":30},"max_repairs":3,"steps":[{"id":"inspect","kind":"action","depends_on":[],"join":"all","effects":["read"],"max_iterations":1}]});
++    let admitted_plan = api
++        .post(
++            &api.fixture.owner,
++            &api.command("terminal-plan", 1, json!({"kind":"plan.admit","plan":plan})),
++        )
++        .await;
++    assert_eq!(admitted_plan.0, 200);
++    let input = Uuid::new_v4();
++    let capture = json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"implementation","limit":4});
++    assert_eq!(
++        api.mail("assembled-worker", "terminal-input", capture.clone())
++            .await
++            .0,
++        200
++    );
++    let packet = team_control_plane::mailbox::MailboxService::new(api.fixture.broker.clone())
++        .record(
++            "assembled-worker",
++            team_control_plane::mailbox::RecordKind::Input,
++            input,
++        )
++        .await
++        .unwrap();
++    let episode = Uuid::new_v4();
++    let admission = json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]});
++    assert_eq!(
++        api.mail("assembled-worker", "terminal-episode", admission.clone())
++            .await
++            .0,
++        200
++    );
++    let accepted = api.accept_research(&intent, 2, "terminal").await;
++    let before = api.snapshot().await;
++    let mut failures = Vec::new();
++    let proof = before["accepted"][0]["proof_id"].clone();
++    let receipt = api.command(
++        "terminal-accept",
++        3,
++        json!({"kind":"outcome.accept","proof":proof}),
++    );
++    assert_eq!(
++        api.post(&api.fixture.owner, &receipt).await,
++        (200, accepted.clone())
++    );
++    let evidence = api
++        .upload(
++            "assembled-worker",
++            b"physical log bytes remain storable after acceptance",
++        )
++        .await;
++    let mutations=vec![
++      ("assembled-worker".to_owned(),api.command("new-proposal",4,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}))),
++      (api.fixture.owner.clone(),api.command("new-accept",4,receipt["command"].clone())),
++      (api.fixture.owner.clone(),api.command("terminal-plan",1,json!({"kind":"plan.admit","plan":plan}))),
++      (api.fixture.owner.clone(),api.command("terminal-revalidate",4,json!({"kind":"dependency.revalidate","intent":intent["intent"],"dependencies":[]}))),
++    ];
++    for (token, command) in mutations {
++        let result = api.post(&token, &command).await;
++        if result.0 != 409 {
++            failures.push(json!({"command":command,"result":result}));
++        }
++    }
++    for (key, command) in [("terminal-input", capture), ("terminal-episode", admission)] {
++        let r = api.mail("assembled-worker", key, command).await;
++        if r.0 != 409 {
++            failures.push(json!({"key":key,"result":r}));
++        }
++    }
++    for command in [
++        json!({"kind":"prepare_delivery","id":Uuid::new_v4(),"message":Uuid::new_v4(),"episode":episode,"required_decision":null,"required_approval":null}),
++        json!({"kind":"bind_runtime_turn","episode":episode,"start_operation":Uuid::new_v4(),"runtime_turn":"terminal-turn"}),
++    ] {
++        let r = api
++            .mail(
++                &api.fixture.owner,
++                &Uuid::new_v4().to_string(),
++                command.clone(),
++            )
++            .await;
++        if r.1["code"] != "dependency_unmet" {
++            failures.push(json!({"target_guard":command,"result":r}));
++        }
++    }
++    let policy = team_control_plane::kernel::Kernel::new(api.fixture.broker.clone())
++        .require_supervised_verification(&api.fixture.owner, api.fixture.task)
++        .await;
++    if policy.is_ok() {
++        failures.push(json!("verification policy activation admitted"));
++    }
++    let task = api.legacy_task(api.fixture.task).await;
++    let cancelled=api.v1("terminal-cancel",task["revision"].as_i64().unwrap(),None,json!({"kind":"cancel_attempt","task_id":api.fixture.task,"attempt_id":api.fixture.attempt,"reason":"must refuse accepted work"})).await;
++    if cancelled.1["code"] != "dependency_unmet" {
++        failures.push(json!({"cancel":cancelled}));
++    }
++    if before["current_accepted"]["subject"] != accepted["subject"]
++        || before["fresh_grant_eligible"] != false
++    {
++        failures.push(json!({"projection":before}));
++    }
++    println!(
++        "lifecycle_terminal_observations {}",
++        json!({"failures":failures,"snapshot":before})
++    );
++    assert!(
++        failures.is_empty(),
++        "terminal lifecycle failures: {failures:?}"
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn lifecycle_research_amendment_fences_before_assignment_and_preserves_receipt() {
++    let api = Api::new().await;
++    let intent = api.research_intent("amend", 0, "amend-r1").await;
++    let accepted = api.accept_research(&intent, 1, "amend").await;
++    let old = api.snapshot().await;
++    let before = api.legacy_task(api.fixture.task).await;
++    let amended = api.research_intent("amend-next", 3, "amend-r2").await;
++    let after = api.legacy_task(api.fixture.task).await;
++    let source=api.command("fenced-worker",4,json!({"kind":"source.propose","work":api.admission("x",0)["command"]["work"],"source":api.admission("x",0)["command"]["source"]}));
++    let worker = api.post("assembled-worker", &source).await;
++    let verify=api.command("fenced-verifier",4,json!({"kind":"research.verify","intent":amended["intent"],"acceptance":amended["acceptance"],"proposal":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
++    let verifier = api.post("assembled-verifier", &verify).await;
++    let receipt = api.command(
++        "amend-accept",
++        2,
++        json!({"kind":"outcome.accept","proof":old["accepted"][0]["proof_id"]}),
++    );
++    let replay = api.post(&api.fixture.owner, &receipt).await;
++    println!(
++        "lifecycle_amendment_observations {}",
++        json!({"before":before,"after":after,"worker":worker,"verifier":verifier,"replay":replay})
++    );
++    assert_eq!(
++        after["data"]["generation"], 2,
++        "accepted research immediately fences original generation"
++    );
++    assert_eq!(worker.1["code"], "stale_generation");
++    assert_eq!(verifier.1["code"], "stale_generation");
++    assert_eq!(replay, (200, accepted));
++    assert_eq!(after["data"]["attempts"], before["data"]["attempts"]);
++    assert_eq!(
++        after["data"]["reservations"],
++        before["data"]["reservations"]
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn lifecycle_research_wait_is_attention_and_historical_satisfaction_survives_amendment() {
++    use team_control_plane::{mailbox, temporal};
++    let api = Api::new().await;
++    let intent = api.research_intent("wait-intent", 0, "wait-r1").await;
++    let bridge = temporal::Bridge::new(api.fixture.broker.clone());
++    let workflow = bridge
++        .register(
++            &api.fixture.owner,
++            temporal::AggregateKind::Mission,
++            api.fixture.mission,
++            0,
++        )
++        .await
++        .unwrap();
++    let episode = api.fixture.lead_episode("waiting-lead").await;
++    let yielded=api.mail("assembled-lead","wait-for-research",json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"Attention only; exact dependent authority is separate","artifacts":[]},"questions":[],"dependencies":[api.fixture.task],"executions":[]})).await;
++    assert_eq!(yielded.0, 200, "{yielded:?}");
++    let before = serde_json::to_value(
++        bridge
++            .progress(&api.fixture.owner, &workflow)
++            .await
++            .unwrap(),
++    )
++    .unwrap();
++    assert_eq!(before["mailbox_attention"][0]["satisfied"], false);
++    api.accept_research(&intent, 1, "wait").await;
++    let accepted = serde_json::to_value(
++        bridge
++            .progress(&api.fixture.owner, &workflow)
++            .await
++            .unwrap(),
++    )
++    .unwrap();
++    api.research_intent("wait-amend", 3, "wait-r2").await;
++    let after = serde_json::to_value(
++        bridge
++            .progress(&api.fixture.owner, &workflow)
++            .await
++            .unwrap(),
++    )
++    .unwrap();
++    let record = mailbox::MailboxService::new(api.fixture.broker.clone())
++        .record(&api.fixture.owner, mailbox::RecordKind::Episode, episode)
++        .await
++        .unwrap();
++    println!(
++        "lifecycle_wait_attention {}",
++        json!({"before":before,"accepted":accepted,"after":after,"lead_episode":record})
++    );
++    assert_eq!(
++        accepted["mailbox_attention"][0]["satisfied"], true,
++        "research acceptance wakes bare task waits"
++    );
++    assert_eq!(
++        after["mailbox_attention"][0]["satisfied"], true,
++        "recorded satisfaction remains historical"
++    );
++    assert!(record["attempt_id"].is_null());
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn lifecycle_research_artifact_and_cached_result_mutations_refuse() {
++    let api = Api::new().await;
++    let intent = api.research_intent("cached", 0, "cached-r1").await;
++    let evidence = api
++        .upload(
++            "assembled-worker",
++            b"retained investigation: no feasible candidate under admitted constraints",
++        )
++        .await;
++    let proposal=api.command("cached-proposal",1,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}));
++    let proposed = api.post("assembled-worker", &proposal).await;
++    assert_eq!(proposed.0, 200);
++    let proposed_id = proposed.1["proposal"].clone();
++    let accepted = api.accept_research(&intent, 1, "cached").await;
++    let old_proposal = api.post("assembled-worker", &proposal).await;
++    let verify=api.command("cached-verify",1,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed_id,"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
++    let old_verify = api.post("assembled-verifier", &verify).await;
++    let configure=api.artifact_request("configure-completed-research",json!({"kind":"configure","verifier":api.fixture.verifier,"lead_acceptance":true,"base":api.fixture.base,"suite":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","mandatory_commands":[["true"]]})).await;
++    let configured = api.artifact_response(&api.fixture.owner, &configure).await;
++    println!(
++        "lifecycle_cached_mutations {}",
++        json!({"proposal":old_proposal,"verify":old_verify,"artifact":configured,"accepted":accepted})
++    );
++    assert_eq!(
++        (old_proposal.0, old_verify.0, configured.0),
++        (409, 409, 409)
++    );
++    api.finish().await;
++}
++
++async fn measured_research_round(
++    api: &Api,
++    intent: &Value,
++    revision: i64,
++    attempt: Uuid,
++    worker: &str,
++    verifier: &str,
++    label: &str,
++) -> Value {
++    use team_control_plane::{mailbox, supervisor, temporal};
++    let mailbox = mailbox::MailboxService::new(api.fixture.broker.clone());
++    let supervisor = api.fixture.supervisor().await;
++    temporal::Bridge::new(api.fixture.broker.clone())
++        .register(
++            &api.fixture.owner,
++            temporal::AggregateKind::Task,
++            api.fixture.task,
++            0,
++        )
++        .await
++        .unwrap();
++    // Both roles have their own bounded input and Episode. The verifier reads
++    // the admitted base independently, without any production candidate.
++    let mut measured_evidence = None;
++    for (token, purpose) in [(worker, "implementation"), (verifier, "verification")] {
++        let input = Uuid::new_v4();
++        let episode = Uuid::new_v4();
++        let capture = json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":attempt,"purpose":purpose,"limit":4});
++        assert_eq!(
++            api.mail(token, &format!("{label}-{purpose}-input"), capture)
++                .await
++                .0,
++            200
++        );
++        let packet = mailbox
++            .record(token, mailbox::RecordKind::Input, input)
++            .await
++            .unwrap();
++        let admission = json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":attempt,"purpose":purpose,"input_packet":input,"input_digest":packet["digest"]});
++        if purpose == "verification" {
++            assert_eq!(
++                api.mail(worker, &format!("{label}-wrong-role"), admission.clone())
++                    .await
++                    .0,
++                401
++            );
++        }
++        let admitted = api
++            .mail(
++                token,
++                &format!("{label}-{purpose}-episode"),
++                admission.clone(),
++            )
++            .await;
++        assert_eq!(
++            admitted.0, 200,
++            "exact research contract authorizes bounded {purpose} without production candidate: {admitted:?}"
++        );
++        assert_eq!(
++            api.mail(token, &format!("{label}-{purpose}-episode"), admission)
++                .await,
++            admitted
++        );
++        let execution = supervisor
++            .create_episode(token, episode, vec![], supervisor::CreateFault::None)
++            .await
++            .unwrap();
++        let command = vec![
++            "/bin/sh".to_owned(),
++            "-c".into(),
++            "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
++                .into(),
++        ];
++        supervisor
++            .start(token, execution.id, command, 10)
++            .await
++            .unwrap();
++        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
++        let measured = loop {
++            if let Some(result) = supervisor.result(token, execution.id).await.unwrap() {
++                break result;
++            }
++            assert!(std::time::Instant::now() < deadline);
++            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
++        };
++        assert_eq!(measured.exit_code, Some(0));
++        assert!(measured.namespace_stopped);
++        assert!(measured.candidate.is_none());
++        let view = supervisor.inspect(token, execution.id).await.unwrap();
++        let output = std::fs::read(&view.manifest.log_path).unwrap();
++        assert_eq!(artifacts::sha256(&output), measured.logs);
++        let bytes=serde_json::to_vec(&json!({"trusted_monitor_result":measured,"output":String::from_utf8(output).unwrap(),"intent":intent["intent"],"acceptance":intent["acceptance"]})).unwrap();
++        let evidence = api.upload(worker, &bytes).await;
++        supervisor
++            .release(&api.fixture.owner, execution.id)
++            .await
++            .unwrap();
++        let released = supervisor
++            .inspect(&api.fixture.owner, execution.id)
++            .await
++            .unwrap();
++        assert_eq!(released.state, supervisor::ExecutionState::Released);
++        assert!(!released.manifest.path.exists());
++        println!(
++            "lifecycle_measured_research {}",
++            json!({"round":label,"purpose":purpose,"execution":execution.id,"manifest":view.manifest,"measurement":measured,"artifact":evidence,"artifact_bytes":bytes,"released":released})
++        );
++        let yielded=api.mail(token,&format!("{label}-{purpose}-yield"),json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"Measured local investigation finished; no active effects","artifacts":[]},"questions":[],"dependencies":[],"executions":[]})).await;
++        assert_eq!(
++            yielded.0, 200,
++            "released Episode may yield before acceptance: {yielded:?}"
++        );
++        if purpose == "verification" {
++            measured_evidence = Some(evidence);
++        }
++    }
++    let evidence = measured_evidence.unwrap();
++    let proposal=api.command(&format!("{label}-proposal"),revision,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}));
++    let proposed = api.post(worker, &proposal).await;
++    assert_eq!(proposed.0, 200);
++    let verification=api.command(&format!("{label}-proof"),revision,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
++    let verified = api.post(verifier, &verification).await;
++    assert_eq!(verified.0, 200);
++    let accept = api.command(
++        &format!("{label}-accept"),
++        revision + 1,
++        json!({"kind":"outcome.accept","proof":verified.1["proof"]}),
++    );
++    let accepted = api.post(&api.fixture.owner, &accept).await;
++    assert_eq!(accepted.0, 200);
++    assert_eq!(api.post(&api.fixture.owner, &accept).await, accepted);
++    assert_eq!(
++        api.post(worker, &proposal).await.1["code"],
++        "dependency_unmet"
++    );
++    assert_eq!(
++        api.post(verifier, &verification).await.1["code"],
++        "dependency_unmet"
++    );
++    let service = artifacts::ArtifactService::open(
++        api.fixture.broker.clone(),
++        &api.fixture.root.join("artifacts"),
++    )
++    .await
++    .unwrap();
++    assert!(
++        service
++            .snapshot(&api.fixture.owner, api.fixture.task)
++            .await
++            .unwrap()
++            .candidate
++            .is_none()
++    );
++    assert!(api.snapshot().await["current_accepted"]["subject"] == accepted.1["subject"]);
++    accepted.1
++}
++
++#[tokio::test]
++async fn lifecycle_research_verifier_uses_exact_contract_without_production_candidate() {
++    use team_control_plane::*;
++    let api = Api::measured().await;
++    let first = api
++        .research_intent("measured-research", 0, "measured-r1")
++        .await;
++    let accepted = measured_research_round(
++        &api,
++        &first,
++        1,
++        api.fixture.attempt,
++        "assembled-worker",
++        "assembled-verifier",
++        "first-research",
++    )
++    .await;
++    let before = api.legacy_task(api.fixture.task).await;
++    let budget = api.mission_accounting().await;
++    let dependent = Uuid::new_v4();
++    let dependent_worker = Uuid::new_v4();
++    let spec = json!({"objective":"requires exact investigation","input":{"repository":api.fixture.root.join("store"),"commit":api.fixture.base,"path":"SPEC.md","digest":"881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3"},"dependencies":[],"acceptance":["exact research subject"],"deliverables":["src/result"],"write_scope":["src"]});
++    assert_eq!(api.v1("research-dependent-create",0,None,json!({"kind":"create_task","id":dependent,"mission_id":api.fixture.mission,"spec":spec})).await.0,200);
++    let digest = api.legacy_task(dependent).await["data"]["spec_digest"].clone();
++    assert_eq!(
++        api.v1(
++            "research-dependent-admit",
++            1,
++            None,
++            json!({"kind":"admit_task","task_id":dependent,"spec_digest":digest})
++        )
++        .await
++        .0,
++        200
++    );
++    let mut dep = api.admission("research-dependent-intent", 0);
++    dep["task"] = json!(dependent);
++    dep["command"]["work"]["item"] = json!("research-dependent");
++    dep["command"]["intent"]["legacy_spec_digest"] = digest;
++    dep["command"]["intent"]["dependencies"] = json!([{"work":api.admission("x",0)["command"]["work"],"intent":first["intent"],"accepted_subject":accepted["subject"],"policy":"suite-v2"}]);
++    let dep_admitted = api.post(&api.fixture.owner, &dep).await;
++    assert_eq!(dep_admitted.0, 200);
++    let amended = api
++        .research_intent("measured-amendment", 3, "measured-r2")
++        .await;
++    let ready = api.legacy_task(api.fixture.task).await;
++    assert_eq!(ready["data"]["generation"], 2);
++    assert_eq!(ready["data"]["attempts"], before["data"]["attempts"]);
++    assert_eq!(ready["data"]["operations"], before["data"]["operations"]);
++    assert_eq!(
++        ready["data"]["reservations"],
++        before["data"]["reservations"]
++    );
++    assert_eq!(
++        api.mission_accounting().await["admitted_attempts"],
++        budget["admitted_attempts"]
++    );
++    for token in ["assembled-worker", "assembled-verifier"] {
++        let stale=api.post(token,&api.command("stale-before-assignment",4,json!({"kind":"source.propose","work":api.admission("x",0)["command"]["work"],"source":api.admission("x",0)["command"]["source"]}))).await;
++        assert_eq!(stale.1["code"], "stale_generation");
++    }
++    let old_accept = api.command(
++        "first-research-accept",
++        2,
++        json!({"kind":"outcome.accept","proof":accepted["proof"]}),
++    );
++    assert_eq!(
++        api.post(&api.fixture.owner, &old_accept).await,
++        (200, accepted.clone())
++    );
++    assert_eq!(
++        api.post(
++            &api.fixture.owner,
++            &api.command("old-proof-new-key", 4, old_accept["command"].clone())
++        )
++        .await
++        .1["code"],
++        "stale_revision"
++    );
++    assert_eq!(
++        api.contract_read(dependent).await["dependencies"][0]["disposition"],
++        "suspended"
++    );
++    for (principal, role, token) in [
++        (api.fixture.worker, "worker", "fresh-research-worker"),
++        (api.fixture.verifier, "verifier", "fresh-research-verifier"),
++    ] {
++        assert_eq!(api.v1(&format!("fresh-{role}"),0,None,json!({"kind":"grant_credential","credential_id":Uuid::new_v4(),"principal_id":principal,"role":role,"mission_id":api.fixture.mission,"task_id":api.fixture.task,"generation":3,"token_hash":token_hash(token),"expires_in_seconds":300})).await.0,200);
++    }
++    let assigned=api.v1("fresh-research-assignment",ready["revision"].as_i64().unwrap(),Some(2),json!({"kind":"assign_attempt","task_id":api.fixture.task,"worker_id":api.fixture.worker})).await;
++    assert_eq!(assigned.0, 200);
++    assert_eq!(assigned.1["generation"], 3);
++    let attempt: Uuid = serde_json::from_value(assigned.1["attempt_id"].clone()).unwrap();
++    assert_ne!(attempt, api.fixture.attempt);
++    let fresh = measured_research_round(
++        &api,
++        &amended,
++        4,
++        attempt,
++        "fresh-research-worker",
++        "fresh-research-verifier",
++        "second-research",
++    )
++    .await;
++    assert_ne!(fresh["subject"], accepted["subject"]);
++    assert_ne!(fresh["proof"], accepted["proof"]);
++    let blocked = api
++        .v1(
++            "research-dependent-still-blocked",
++            2,
++            None,
++            json!({"kind":"assign_attempt","task_id":dependent,"worker_id":dependent_worker}),
++        )
++        .await;
++    assert_eq!(blocked.1["code"], "dependency_unmet");
++    let mut revalidate=api.command("research-dependent-revalidation",2,json!({"kind":"dependency.revalidate","intent":dep_admitted.1["intent"],"dependencies":[{"work":api.admission("x",0)["command"]["work"],"intent":amended["intent"],"accepted_subject":fresh["subject"],"policy":"suite-v2"}]}));
++    revalidate["task"] = json!(dependent);
++    let revalidated = api.post(&api.fixture.owner, &revalidate).await;
++    assert_eq!(revalidated.0, 200);
++    assert_eq!(api.post(&api.fixture.owner, &revalidate).await, revalidated);
++    assert_eq!(
++        api.contract_read(dependent).await["fresh_grant_eligible"],
++        true
++    );
++    assert_eq!(
++        api.snapshot().await["accepted"].as_array().unwrap().len(),
++        2
++    );
++    println!(
++        "lifecycle_research_completed {}",
++        json!({"old":accepted,"fresh":fresh,"before":before,"amended":ready,"final":api.legacy_task(api.fixture.task).await,"budget_before":budget,"budget_after":api.mission_accounting().await,"dependent":api.contract_read(dependent).await})
++    );
++    api.finish().await;
++}
++
++// Same file-backed, zero-model physical runtime used by mailbox_delivery.rs.
++struct DeliveryRuntime {
++    root: std::path::PathBuf,
++    identity: team_control_plane::gateway::RuntimeIdentity,
++}
++impl team_control_plane::gateway::RuntimeAdapter for DeliveryRuntime {
++    fn identity(&self) -> team_control_plane::gateway::RuntimeIdentity {
++        self.identity.clone()
++    }
++    fn inspect(&self) -> team_control_plane::gateway::CapabilityProfile {
++        team_control_plane::gateway::CapabilityProfile {
++            start: true,
++            steer: true,
++            observe: true,
++            authoritative_effect_inventory: true,
++            ..Default::default()
++        }
++    }
++    fn execute(
++        &mut self,
++        intent: &team_control_plane::gateway::Intent,
++        _thread: Option<&str>,
++    ) -> team_control_plane::gateway::RuntimeReply {
++        let output = std::process::Command::new("python3")
++            .arg(concat!(
++                env!("CARGO_MANIFEST_DIR"),
++                "/tests/fixtures/mailbox_runtime.py"
++            ))
++            .arg(&self.root)
++            .arg("start")
++            .arg(json!({"intent":intent}).to_string())
++            .output()
++            .unwrap();
++        assert!(output.status.success());
++        let reply: Value = serde_json::from_slice(&output.stdout).unwrap();
++        team_control_plane::gateway::RuntimeReply::Confirmed {
++            thread_id: Some(reply["thread_id"].as_str().unwrap().into()),
++            effect_id: reply["effect_id"].as_str().unwrap().into(),
++        }
++    }
++    fn observe(
++        &mut self,
++        _: &team_control_plane::gateway::Intent,
++        _: Option<&str>,
++    ) -> team_control_plane::gateway::Observation {
++        team_control_plane::gateway::Observation::Inconclusive(
++            "No model-usage inference from native turn state".into(),
++        )
++    }
++    fn confirmed_start_turn(
++        &self,
++        intent: &team_control_plane::gateway::Intent,
++        reply: &team_control_plane::gateway::RuntimeReply,
++    ) -> Option<String> {
++        if intent.kind == team_control_plane::gateway::OperationKind::Start
++            && let team_control_plane::gateway::RuntimeReply::Confirmed { effect_id, .. } = reply
++        {
++            let state: Value =
++                serde_json::from_slice(&std::fs::read(self.root.join("turn.json")).unwrap())
++                    .unwrap();
++            assert_eq!(state["turn"], *effect_id);
++            Some(effect_id.clone())
++        } else {
++            None
++        }
++    }
++}
++#[tokio::test]
++async fn lifecycle_owner_cached_delivery_and_runtime_binding_target_completed_research() {
++    use team_control_plane::{gateway::*, mailbox, temporal};
++    let api = Api::new().await;
++    let intent = api
++        .research_intent("owner-target", 0, "owner-target-r1")
++        .await;
++    let input = Uuid::new_v4();
++    let episode = Uuid::new_v4();
++    assert_eq!(api.mail("assembled-worker","owner-target-input",json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"implementation","limit":4})).await.0,200);
++    let packet = mailbox::MailboxService::new(api.fixture.broker.clone())
++        .record("assembled-worker", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    let gateway = Gateway::new(api.fixture.broker.clone());
++    let binding = Uuid::new_v4();
++    let start = Uuid::new_v4();
++    let root = api.fixture.root.join("owner-target-native");
++    std::fs::create_dir(&root).unwrap();
++    let identity = RuntimeIdentity {
++        runtime_kind: "conditional-subprocess-fault".into(),
++        runtime_version: "v1".into(),
++        deployment: "owned-fixture".into(),
++        thread_store: root.to_str().unwrap().into(),
++        endpoint: "local-subprocess".into(),
++        environment: "disposable".into(),
++    };
++    let mut runtime = DeliveryRuntime {
++        root: root.clone(),
++        identity: identity.clone(),
++    };
++    gateway
++        .bind(
++            &api.fixture.owner,
++            binding,
++            api.fixture.admission,
++            &identity,
++            Some("owned-thread"),
++            1,
++        )
++        .await
++        .unwrap();
++    let start_intent = Intent {
++        id: start,
++        admission_id: api.fixture.admission,
++        binding_id: binding,
++        generation: 1,
++        kind: OperationKind::Start,
++        arguments: json!({"input_digest":packet["digest"],"input_packet":input,"input":packet["packet"]}),
++    };
++    gateway
++        .prepare(&api.fixture.owner, start_intent.clone())
++        .await
++        .unwrap();
++    let started = gateway
++        .dispatch(&api.fixture.owner, start, &mut runtime)
++        .await
++        .unwrap();
++    assert_eq!(started.state, OperationState::Confirmed);
++    let state: Value =
++        serde_json::from_slice(&std::fs::read(root.join("turn.json")).unwrap()).unwrap();
++    temporal::Bridge::new(api.fixture.broker.clone())
++        .register(
++            &api.fixture.owner,
++            temporal::AggregateKind::Task,
++            api.fixture.task,
++            0,
++        )
++        .await
++        .unwrap();
++    assert_eq!(api.mail("assembled-worker","owner-target-episode",json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]})).await.0,200);
++    let bind = json!({"kind":"bind_runtime_turn","episode":episode,"start_operation":start,"runtime_turn":state["turn"]});
++    assert_eq!(
++        api.mail(&api.fixture.owner, "owner-target-bind", bind.clone())
++            .await
++            .0,
++        200
++    );
++    let message = Uuid::new_v4();
++    assert_eq!(api.mail(&api.fixture.owner,"owner-target-message",json!({"kind":"send","mission":api.fixture.mission,"id":message,"recipients":[api.fixture.worker],"message_kind":"notice","text":"Exact admitted constraint","reply_to":null,"attention":"normal","artifacts":[]})).await.0,200);
++    let delivery = json!({"kind":"prepare_delivery","id":Uuid::new_v4(),"message":message,"episode":episode,"required_decision":null,"required_approval":null});
++    assert_eq!(
++        api.mail(
++            &api.fixture.owner,
++            "owner-target-delivery",
++            delivery.clone()
++        )
++        .await
++        .0,
++        200
++    );
++    api.accept_research(&intent, 1, "owner-target").await;
++    let bound = api
++        .mail(&api.fixture.owner, "owner-target-bind", bind)
++        .await;
++    let delivered = api
++        .mail(&api.fixture.owner, "owner-target-delivery", delivery)
++        .await;
++    let cache = gateway.prepare(&api.fixture.owner, start_intent).await;
++    let retained = gateway.read(&api.fixture.owner, start).await.unwrap();
++    let complete = std::process::Command::new("python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/fixtures/mailbox_runtime.py"
++        ))
++        .arg(&root)
++        .arg("complete")
++        .output()
++        .unwrap();
++    assert!(complete.status.success());
++    let stopped: Value =
++        serde_json::from_slice(&std::fs::read(root.join("turn.json")).unwrap()).unwrap();
++    assert!(stopped["turn"].is_null());
++    println!(
++        "lifecycle_owner_targets {}",
++        json!({"bind":bound,"delivery":delivered,"cache":cache,"retained":retained,"native_turn_stopped":stopped,"root":root,"unknown_usage_retained":true})
++    );
++    assert_eq!(
++        (bound.1["code"].clone(), delivered.1["code"].clone()),
++        (json!("dependency_unmet"), json!("dependency_unmet"))
++    );
++    assert_eq!(
++        cache.unwrap_err().code,
++        team_control_plane::ErrorCode::DependencyUnmet
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn lifecycle_research_verifier_must_be_independent_of_attempt_worker() {
++    use team_control_plane::{mailbox, token_hash};
++    let api = Api::measured().await;
++    let mut request = api.admission("nonindependent-research", 0);
++    request["command"]["intent"]["acceptance"]["outcome"] = json!("investigation_complete");
++    request["command"]["intent"]["acceptance"]["allow_negative"] = json!(true);
++    request["command"]["intent"]["acceptance"]["verifier"] = json!(api.fixture.worker);
++    assert_eq!(api.post(&api.fixture.owner, &request).await.0, 200);
++    assert_eq!(api.v1("same-principal-verifier",0,None,json!({"kind":"grant_credential","credential_id":Uuid::new_v4(),"principal_id":api.fixture.worker,"role":"verifier","mission_id":api.fixture.mission,"task_id":api.fixture.task,"generation":1,"token_hash":token_hash("same-principal-verifier"),"expires_in_seconds":300})).await.0,200);
++    let input = Uuid::new_v4();
++    assert_eq!(api.mail("same-principal-verifier","nonindependent-input",json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"verification","limit":4})).await.0,200);
++    let packet = mailbox::MailboxService::new(api.fixture.broker.clone())
++        .record("same-principal-verifier", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    let admitted=api.mail("same-principal-verifier","nonindependent-episode",json!({"kind":"admit_episode","mission":api.fixture.mission,"id":Uuid::new_v4(),"attempt":api.fixture.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]})).await;
++    assert_eq!(
++        admitted.0, 401,
++        "a second role credential cannot make the Attempt worker independent: {admitted:?}"
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn lifecycle_research_source_amendment_refuses_old_input_and_old_prepared_execution() {
++    use team_control_plane::{mailbox, supervisor};
++    let api = Api::measured().await;
++    api.research_intent("research-source", 0, "source-r1").await;
++    let input = Uuid::new_v4();
++    assert_eq!(api.mail("assembled-verifier","before-source-input",json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"verification","limit":4})).await.0,200);
++    let mailbox = mailbox::MailboxService::new(api.fixture.broker.clone());
++    let packet = mailbox
++        .record("assembled-verifier", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    api.research_intent("research-source-amend", 1, "source-r2")
++        .await;
++    let stale=api.mail("assembled-verifier","stale-source-input",json!({"kind":"admit_episode","mission":api.fixture.mission,"id":Uuid::new_v4(),"attempt":api.fixture.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]})).await;
++    assert_eq!(stale.1["code"], "stale_revision");
++    let fresh_input = Uuid::new_v4();
++    let episode = Uuid::new_v4();
++    assert_eq!(api.mail("assembled-verifier","after-source-input",json!({"kind":"capture_input","mission":api.fixture.mission,"id":fresh_input,"attempt":api.fixture.attempt,"purpose":"verification","limit":4})).await.0,200);
++    let fresh = mailbox
++        .record(
++            "assembled-verifier",
++            mailbox::RecordKind::Input,
++            fresh_input,
++        )
++        .await
++        .unwrap();
++    assert_eq!(api.mail("assembled-verifier","fresh-source-episode",json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"verification","input_packet":fresh_input,"input_digest":fresh["digest"]})).await.0,200);
++    let supervisor = api.fixture.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-verifier",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    api.research_intent("research-source-amend-again", 2, "source-r3")
++        .await;
++    let start = supervisor
++        .start("assembled-verifier", execution.id, vec!["true".into()], 10)
++        .await;
++    assert_eq!(
++        start.unwrap_err().code,
++        team_control_plane::ErrorCode::StaleGeneration
++    );
++    assert_eq!(
++        api.legacy_task(api.fixture.task).await["data"]["generation"],
++        1,
++        "unaccepted source changes retain original Attempt attribution"
++    );
++    supervisor
++        .cancel(&api.fixture.owner, execution.id)
++        .await
++        .unwrap();
++    supervisor
++        .release(&api.fixture.owner, execution.id)
++        .await
++        .unwrap();
++    println!(
++        "lifecycle_source_only_cleanup {}",
++        json!({"execution":execution.id,"released":supervisor.inspect(&api.fixture.owner,execution.id).await.unwrap(),"no_dispatch":true})
++    );
++    api.finish().await;
++}

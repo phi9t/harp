@@ -1,0 +1,461 @@
+[
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 270,
+    "execution": "000c655f-2c2c-4d2b-acb7-9858deecbf9a",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/568e6be7aac48cc291994c4ea1168a5531c5bd2a4438ca193d0c4971d665b7c5",
+      "sha256": "568e6be7aac48cc291994c4ea1168a5531c5bd2a4438ca193d0c4971d665b7c5",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "6309b814f38ce2011457f4f027a50e51c5fb667ecc979c79e2542c882960477b",
+        "base": "6758fef17b606b1980c75b5dc2d854bb1ba08ff0",
+        "commit": "43a2b8a103ead6b7f62058745a226d8110ec7412",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "7588edb32ef50cad93f095e1046d140afb56965b3b85daedfe90604b2f477a15",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2563318,
+        "pid": 2563318,
+        "start_ticks": 48732513
+      },
+      "execution": "000c655f-2c2c-4d2b-acb7-9858deecbf9a",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "5ba6c93e-8546-4d45-8610-40fcc099970c",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 287,
+    "execution": "09b16a65-b9d5-469c-9bc7-72a17d524ac7",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/3de1e379337857b7e9bd1fa9b48951f975959fe6681996f80f473246b0e58e2d",
+      "sha256": "3de1e379337857b7e9bd1fa9b48951f975959fe6681996f80f473246b0e58e2d",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "6309b814f38ce2011457f4f027a50e51c5fb667ecc979c79e2542c882960477b",
+        "base": "6758fef17b606b1980c75b5dc2d854bb1ba08ff0",
+        "commit": "43a2b8a103ead6b7f62058745a226d8110ec7412",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "7588edb32ef50cad93f095e1046d140afb56965b3b85daedfe90604b2f477a15",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2568027,
+        "pid": 2568027,
+        "start_ticks": 48735672
+      },
+      "execution": "09b16a65-b9d5-469c-9bc7-72a17d524ac7",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "5ba6c93e-8546-4d45-8610-40fcc099970c",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 304,
+    "execution": "930dafc3-6679-4152-8045-4858be9e04bf",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/16fef1a4a845f7b1b43d55476cb63f3ae07cfff1910cf517727000b4d58aa7cc",
+      "sha256": "16fef1a4a845f7b1b43d55476cb63f3ae07cfff1910cf517727000b4d58aa7cc",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "fbccbebc9dc399331d960cf624d2e56ef8f5ebfebf5ba82acc81a992dcf2adc0",
+        "base": "0f25983704faf13268e0d4a797d0f57b6c139f55",
+        "commit": "6c381398f91d4aa39a64709f8a09216eb00a900f",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "5ffe6d48db7b149c11b5bc1525dffe9534b264f74055abc2ba13ea7727f8842e",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2568535,
+        "pid": 2568535,
+        "start_ticks": 48735757
+      },
+      "execution": "930dafc3-6679-4152-8045-4858be9e04bf",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "181606e6-af7f-4c7c-a7b6-4978d51f33b0",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 329,
+    "execution": "31c42537-57ee-457d-a3f7-ecdfc07041e4",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/61f7ff5e2875894929b70ffcedb41e8ba95542255905f71376c809e36f6ae146",
+      "sha256": "61f7ff5e2875894929b70ffcedb41e8ba95542255905f71376c809e36f6ae146",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "aa588ed42a9c4a4a74381e551b906d64b4e4b12af74a2d3bf9afccfac6dbc6e9",
+        "base": "0f25983704faf13268e0d4a797d0f57b6c139f55",
+        "commit": "f04c138cd6d21b9883ebdc86ffec8d237a35edd1",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 3,
+        "risks": [],
+        "spec_digest": "5ffe6d48db7b149c11b5bc1525dffe9534b264f74055abc2ba13ea7727f8842e",
+        "spec_revision": 2,
+        "tree": "168995ed30ad947ff005655c74c27122780ef302"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2571986,
+        "pid": 2571986,
+        "start_ticks": 48738956
+      },
+      "execution": "31c42537-57ee-457d-a3f7-ecdfc07041e4",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "181606e6-af7f-4c7c-a7b6-4978d51f33b0",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 344,
+    "execution": "f00a4027-52e7-4ee6-b780-b32668a09f01",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/d551af4f1db6af09c5eadd5f4e3f240e4c787d71611fb183dcf6b773c8882a87",
+      "sha256": "d551af4f1db6af09c5eadd5f4e3f240e4c787d71611fb183dcf6b773c8882a87",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "afec4f19ff9435fc21cacf94983ad8da3a7909ed5f634b43d6b6f8cfd0b0594c",
+        "base": "f3ab5f552621b51f15e1a4fee91fc4f3c69c413e",
+        "commit": "c7075f8db22451a92b8be115e0648583ec8aa522",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "5d8cab926ed9986b9cd77f26812abdf3291476b55100f3457bfe521d2bba6ac2",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2572614,
+        "pid": 2572614,
+        "start_ticks": 48739041
+      },
+      "execution": "f00a4027-52e7-4ee6-b780-b32668a09f01",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "d4f75012-d1fd-46f7-8369-eb0f61431164",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 378,
+    "execution": "aa77f00b-5a23-4cf0-9630-4006a6db4064",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/743a83c6eda79436e08ee6261ec6e514f272189f6c3dcdd5a8f7b32e28568cd3",
+      "sha256": "743a83c6eda79436e08ee6261ec6e514f272189f6c3dcdd5a8f7b32e28568cd3",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "a4f3f5b99848a860544678aa5def7b4efa54243c3a5ec176a31fa75e56e577c1",
+        "base": "f3ab5f552621b51f15e1a4fee91fc4f3c69c413e",
+        "commit": "2219a80e57e40dfc13a20c505f7a1ed13f8fc925",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 3,
+        "risks": [],
+        "spec_digest": "5d8cab926ed9986b9cd77f26812abdf3291476b55100f3457bfe521d2bba6ac2",
+        "spec_revision": 2,
+        "tree": "168995ed30ad947ff005655c74c27122780ef302"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2577302,
+        "pid": 2577302,
+        "start_ticks": 48742254
+      },
+      "execution": "aa77f00b-5a23-4cf0-9630-4006a6db4064",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "d4f75012-d1fd-46f7-8369-eb0f61431164",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 623,
+    "execution": "e3bbaed6-c1ae-4b16-90c1-fc091bd0e900",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/3f2621a82cad9ee615620d3354cff077bad57a62e7d003f610e530c11907a0f9",
+      "sha256": "3f2621a82cad9ee615620d3354cff077bad57a62e7d003f610e530c11907a0f9",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "52ff4041ae935ef82be8f96b87d095d421c5ef6537e48f729a3c668243a060d6",
+        "base": "abbf9e45a4fc642bed25b10f4eff666b0c95fe4e",
+        "commit": "19c4679da17f82d98f7af30c4e1e2e3af6b31f4d",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "695f3de2f75e8ee7226f6dd6b73adcca772c8376529462008680c4066ba8c1c9",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2579694,
+        "pid": 2579694,
+        "start_ticks": 48743176
+      },
+      "execution": "e3bbaed6-c1ae-4b16-90c1-fc091bd0e900",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "960ddf26-c38e-446f-8411-c85d9ea92dec",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 649,
+    "execution": "9df08634-cc65-4c50-abe3-ecf7bfed54c5",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/a9c3eb4631922d54275eeeb5a74c4475aff80a81acb9df23d60c67391110837f",
+      "sha256": "a9c3eb4631922d54275eeeb5a74c4475aff80a81acb9df23d60c67391110837f",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "ce2ee56c1618110b3ef376a436a70fabc6263816c562865bb937af4fe7198c52",
+        "base": "28da98dc5c70a64466c65f6178a9928efaa83c0f",
+        "commit": "4a38bba62d48316c7c3291af24682535c87be294",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "88d0b16c0e334eb8a41945aa5ba20857a5b46726b488217d0f3a9483531e46fb",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2580213,
+        "pid": 2580213,
+        "start_ticks": 48743328
+      },
+      "execution": "9df08634-cc65-4c50-abe3-ecf7bfed54c5",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "5a7bb702-5a82-4d90-8bbc-d3ee42698972",
+      "signal": null
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 663,
+    "execution": "9a45e135-35fc-450b-9f92-301f3c532410",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/89a80e74a734f12b6c8c1a6e429098c5f762974afb8ee6bc2ec3a37cfe218fc6",
+      "sha256": "89a80e74a734f12b6c8c1a6e429098c5f762974afb8ee6bc2ec3a37cfe218fc6",
+      "bytes": 986
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17
+    },
+    "trusted_monitor_result": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+      ],
+      "candidate": {
+        "artifact": "34bfa01a86fc3f7e3a5c9ebe9d3f6ccc401236b8bba99931d100eae808205384",
+        "base": "ab72b1c825978fe7b84d52125c3560afa43728dc",
+        "commit": "d65bfed98de232ffe0955c5311f949dabb252e31",
+        "deliverables": [
+          "src/result"
+        ],
+        "generation": 1,
+        "risks": [],
+        "spec_digest": "75a485c52572ab8ea4c3c785956b883f8bdfaca73dad1a61e22e2d633f52d73e",
+        "spec_revision": 2,
+        "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+      },
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2580585,
+        "pid": 2580585,
+        "start_ticks": 48743413
+      },
+      "execution": "9a45e135-35fc-450b-9f92-301f3c532410",
+      "exit_code": 0,
+      "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "namespace_stopped": true,
+      "recovery_epoch": "09b4e3e7-32da-433a-bcdc-3ad8cc17ae22",
+      "signal": null
+    }
+  }
+]

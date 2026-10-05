@@ -1,0 +1,79 @@
+{
+  "genuine_pre_fix_red": "post-reservation-assertion-red.log.txt",
+  "earlier_error_observation": "post-reservation-red.log.txt",
+  "final_green": {
+    "log": "final-green.log.txt",
+    "tests": 17,
+    "exit_code": 0
+  },
+  "post_review_semantic_negatives": [
+    {
+      "control": "duplicate",
+      "test": "test_durable_boundary_and_duplicate_refusal",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "da3b697b73d1dc3b88ddd2dc6c652914341feea0ab1fdb1a9c793e8173e649c4",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    },
+    {
+      "control": "concurrent",
+      "test": "test_concurrent_operation_executes_once",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "da3b697b73d1dc3b88ddd2dc6c652914341feea0ab1fdb1a9c793e8173e649c4",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    },
+    {
+      "control": "changed-input",
+      "test": "test_changed_case_grant_and_source_refuse",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "edaeae02e4c589e58b6d34a10098d24ab1b27128cd095a57808982fbdbf9d7d9",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    },
+    {
+      "control": "write-fault",
+      "test": "test_failed_write_spends_reservation_without_execution",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "e88ea07449bd8b1e88ac87decbf7dea5f5334ec18ff760efb7dcf8d5bb1c058e",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    },
+    {
+      "control": "fsync-fault",
+      "test": "test_fsync_failure_never_execute",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "871b811c51cd2489249ba4dc5bc999f3273b8fbce3240cf26b311a8022664113",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    },
+    {
+      "control": "short-write",
+      "test": "test_short_writes_complete_and_fsync_precedes_executor",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "0da5f7148965d9205b95908767423ad33d5e8ef28594f4ff24c594bae20fc06f",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    },
+    {
+      "control": "exception",
+      "test": "test_timeout_and_exception_are_retained_unknown_without_retry",
+      "failures": 1,
+      "errors": 0,
+      "unsafe_source_sha256": "1397c3d21586cf17bd33745f2b2b9661d4225ef379c7803358b17c7568fee1e6",
+      "classification": "post-review-semantic-negative-not-original-TDD-red"
+    }
+  ],
+  "chronological_tdd_gap": "Original seven durable slices were implemented before their retained RED controls. Later semantic negatives do not change this history.",
+  "faults": [
+    "start write/fsync",
+    "pre-dispatch directory/output fsync",
+    "post-dispatch output fsync",
+    "executor timeout/exception",
+    "partial terminal write",
+    "terminal fsync",
+    "final directory fsync",
+    "persistent terminal-storage failure"
+  ],
+  "actual_physical_launch_count": 0
+}

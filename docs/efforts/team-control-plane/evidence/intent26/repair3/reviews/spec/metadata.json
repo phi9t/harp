@@ -1,0 +1,498 @@
+{
+  "read_only_verification": true,
+  "author_head": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "canonical_head": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+  "hashed_reference_count": 989,
+  "unique_hashed_reference_count": 864,
+  "source_postimages_verified": [
+    "crates/team-control-plane/README.md",
+    "crates/team-control-plane/migrations/0008.sql",
+    "crates/team-control-plane/migrations/0009.sql",
+    "crates/team-control-plane/src/admission.rs",
+    "crates/team-control-plane/src/artifacts.rs",
+    "crates/team-control-plane/src/contracts.rs",
+    "crates/team-control-plane/src/contracts/authority.rs",
+    "crates/team-control-plane/src/contracts/dependencies.rs",
+    "crates/team-control-plane/src/contracts/lifecycle.rs",
+    "crates/team-control-plane/src/contracts/outcomes.rs",
+    "crates/team-control-plane/src/contracts/strategy.rs",
+    "crates/team-control-plane/src/domain.rs",
+    "crates/team-control-plane/src/episode_runtime.rs",
+    "crates/team-control-plane/src/gateway.rs",
+    "crates/team-control-plane/src/http.rs",
+    "crates/team-control-plane/src/lib.rs",
+    "crates/team-control-plane/src/mailbox.rs",
+    "crates/team-control-plane/src/storage.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/tests/intent_contracts.rs"
+  ],
+  "source_patch_reconstructed": [
+    "crates/team-control-plane/README.md",
+    "crates/team-control-plane/src/admission.rs",
+    "crates/team-control-plane/src/artifacts.rs",
+    "crates/team-control-plane/src/domain.rs",
+    "crates/team-control-plane/src/episode_runtime.rs",
+    "crates/team-control-plane/src/gateway.rs",
+    "crates/team-control-plane/src/http.rs",
+    "crates/team-control-plane/src/lib.rs",
+    "crates/team-control-plane/src/mailbox.rs",
+    "crates/team-control-plane/src/storage.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/migrations/0008.sql",
+    "crates/team-control-plane/migrations/0009.sql",
+    "crates/team-control-plane/src/contracts.rs",
+    "crates/team-control-plane/src/contracts/authority.rs",
+    "crates/team-control-plane/src/contracts/dependencies.rs",
+    "crates/team-control-plane/src/contracts/lifecycle.rs",
+    "crates/team-control-plane/src/contracts/outcomes.rs",
+    "crates/team-control-plane/src/contracts/strategy.rs",
+    "crates/team-control-plane/tests/intent_contracts.rs"
+  ],
+  "repair_patch_reconstructed": [
+    "crates/team-control-plane/README.md",
+    "crates/team-control-plane/migrations/0009.sql",
+    "crates/team-control-plane/src/contracts.rs",
+    "crates/team-control-plane/src/contracts/lifecycle.rs",
+    "crates/team-control-plane/src/contracts/strategy.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/tests/intent_contracts.rs"
+  ],
+  "failures": [],
+  "raw_final_test_summaries": [
+    [
+      "ok",
+      "9",
+      "0"
+    ],
+    [
+      "ok",
+      "11",
+      "0"
+    ],
+    [
+      "ok",
+      "4",
+      "0"
+    ],
+    [
+      "ok",
+      "21",
+      "0"
+    ],
+    [
+      "ok",
+      "16",
+      "0"
+    ],
+    [
+      "ok",
+      "1",
+      "0"
+    ],
+    [
+      "ok",
+      "2",
+      "0"
+    ],
+    [
+      "ok",
+      "3",
+      "0"
+    ],
+    [
+      "ok",
+      "20",
+      "0"
+    ]
+  ],
+  "tests_executed_by_reviewer": false,
+  "final_input_count": 56,
+  "final_input_mismatch": [],
+  "reviewed_classifications": [
+    {
+      "name": "red-plan-source-ceilings",
+      "classification": "genuine_behavioral_red_lead_source_pointer_reset_200_vs409_or401",
+      "exit_code": 101
+    },
+    {
+      "name": "red-production-amendment",
+      "classification": "fixture_strict_JSON_grant_principal_vs_principal_id400",
+      "exit_code": 101
+    },
+    {
+      "name": "red-production-amendment-2",
+      "classification": "genuine_behavioral_red_accepted_task_stranded_assignment409_vs200",
+      "exit_code": 101
+    },
+    {
+      "name": "green-plan-source-ceilings",
+      "classification": "historical_delegated_green_with_provisional_Owner_exception_superseded",
+      "exit_code": 0
+    },
+    {
+      "name": "red-amendment-retirement",
+      "classification": "implementation_SQL_events_envelope_correction503_before_consumer",
+      "exit_code": 101
+    },
+    {
+      "name": "red-amendment-retirement-2",
+      "classification": "fixture_expected_worker401_but_correct_stale_generation409",
+      "exit_code": 101
+    },
+    {
+      "name": "red-amendment-retirement-3",
+      "classification": "genuine_behavioral_red_unique_task_attempt_second_assignment503",
+      "exit_code": 101
+    },
+    {
+      "name": "red-amendment-retirement-4",
+      "classification": "fixture_legacy_attempt_allocation_has_no_persisted_episode_result_timeout",
+      "exit_code": 101
+    },
+    {
+      "name": "red-amendment-retirement-5",
+      "classification": "fixture_original_verifier_credential_stale_after_generation3",
+      "exit_code": 101
+    },
+    {
+      "name": "red-amendment-retirement-6",
+      "classification": "genuine_behavioral_red_expired_stopped_released_old_episode_refuses_fresh_admission409",
+      "exit_code": 101
+    },
+    {
+      "name": "green-production-amendment",
+      "classification": "historical_lifecycle_green_fresh_measured_candidate_binding_report_proof_and_dependency_revalidation",
+      "exit_code": 0
+    },
+    {
+      "name": "green-amendment-controls",
+      "classification": "fixture_expected_binding_error_correction_and_provisional_Owner_test_contract_change_1pass3fail",
+      "exit_code": 101
+    },
+    {
+      "name": "green-expanded-contract-controls",
+      "classification": "historical_20pass1fail_old_generation_Gateway_read_fenced_after_negative_retirement_control",
+      "exit_code": 101
+    },
+    {
+      "name": "green-unresolved-retirement-control",
+      "classification": "green_exact_original_attempt_controlled_synthetic_effect_unknown_refuses_retirement",
+      "exit_code": 0
+    },
+    {
+      "name": "red-owner-plan-ceilings",
+      "classification": "genuine_behavioral_red_all_six_Owner_source_pointer_reset_expansions200_vs409_or401_after_canonical_clarification",
+      "exit_code": 101
+    },
+    {
+      "name": "green-all-caller-plan-ceilings",
+      "classification": "green_final_all_caller_six_dimensions_refusal_unchanged_narrower_positive",
+      "exit_code": 0
+    },
+    {
+      "name": "green-final-repair3-compatibility",
+      "classification": "final_green87_exact56_run_inputs",
+      "exit_code": 0
+    }
+  ],
+  "research_amendment_raw_sequence": [
+    {
+      "line": 78,
+      "family": "outcome.accept",
+      "key": "prerequisite-accept",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 79,
+      "family": "outcome.accept",
+      "key": "prerequisite-accept",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "81a3e82a401fd20acc150e16dbf794fb361cd8bb1350c89cad5420c7ec3d149d",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "5f5dd31bd4727970c5d4bb5aac2c3ac934c542b2ec1dc8b030dd1aa99b1b76a1"
+      },
+      "status": 200,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 82,
+      "family": "intent.admit",
+      "key": "supersede",
+      "result": {
+        "acceptance": "c9d5453051e0415e86831fb14cf35a732c6351e3773b239d29b56df76cee4fea",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "edf8d98ac79c0efe5b5dc0df868d6480c7c44add2950db2c8e77ee6a8087e101",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      },
+      "status": 200,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 83,
+      "family": "outcome.propose",
+      "key": "amended-proposal",
+      "result": {
+        "disposition": "proposed",
+        "proposal": "161533d11da15595b33e071ac4d29a9964e1f39cbaaee009a24eac2aa0724a11",
+        "revision": 4,
+        "schema_version": 2
+      },
+      "status": 200,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 84,
+      "family": "research.verify",
+      "key": "amended-verify",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 85,
+      "family": "research.verify",
+      "key": "amended-verify",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "91f9fbd2282a7efe016a406d781e260850702501bee19f85c33b8c59314befc2",
+        "revision": 5,
+        "schema_version": 2
+      },
+      "status": 200,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 86,
+      "family": "outcome.accept",
+      "key": "amended-accept",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 87,
+      "family": "outcome.accept",
+      "key": "amended-accept",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "91f9fbd2282a7efe016a406d781e260850702501bee19f85c33b8c59314befc2",
+        "revision": 6,
+        "schema_version": 2,
+        "subject": "2cfa8660f81599d5eac7af108d8d0ff8dcfa1860d3e3a5ee8ef07d2afba2215f"
+      },
+      "status": 200,
+      "task": "d441e0f1-2e69-4d2b-8682-e9d2931bd4e5"
+    },
+    {
+      "line": 134,
+      "family": "outcome.accept",
+      "key": "prerequisite-accept",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "9b53f962-ca8d-40ac-b5d3-11afb8e214fd"
+    },
+    {
+      "line": 135,
+      "family": "outcome.accept",
+      "key": "prerequisite-accept",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "bc54931335cb83cb4709f3716f4a655e79a5e0afbc6dca49c82bf926faf74c36",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "723daca317b019921ce55410bc757a41e7b8823ad4469b51a6c725dd504a01f5"
+      },
+      "status": 200,
+      "task": "9b53f962-ca8d-40ac-b5d3-11afb8e214fd"
+    },
+    {
+      "line": 138,
+      "family": "intent.admit",
+      "key": "supersede",
+      "result": {
+        "acceptance": "0b359446e90d01f47dacf77b1e2c0c397b8b20d79330456668fa9df995819389",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "7200f8cffd9f207643934847084cdb3ba9a433a7a88cb78a83a9174d9af39a53",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      },
+      "status": 200,
+      "task": "9b53f962-ca8d-40ac-b5d3-11afb8e214fd"
+    },
+    {
+      "line": 408,
+      "family": "outcome.accept",
+      "key": "prerequisite-accept",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 409,
+      "family": "outcome.accept",
+      "key": "prerequisite-accept",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "ada7c30eebffd8dd876409a9ca028191f84a4a77da9a9a697a55a224d8b1da96",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "035460ca2cb1b6af8f51c0f537a804d0d1e29fc0976f5dd1857b235df8306f8c"
+      },
+      "status": 200,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 412,
+      "family": "intent.admit",
+      "key": "supersede",
+      "result": {
+        "acceptance": "b0d2c2feaea91d20a2493d5240bb54e47f787ed26ca67cfb0202bd1cd39e9df5",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "7b087b61c81e391013bc36cc742e8d1cd2113ec0a1763497505d0e32b5dd6302",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      },
+      "status": 200,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 413,
+      "family": "outcome.propose",
+      "key": "amended-proposal",
+      "result": {
+        "disposition": "proposed",
+        "proposal": "77f519d93519fb5683656da1aa4338002c4de156a956c501e7f9eccc6b79f743",
+        "revision": 4,
+        "schema_version": 2
+      },
+      "status": 200,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 414,
+      "family": "research.verify",
+      "key": "amended-verify",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 415,
+      "family": "research.verify",
+      "key": "amended-verify",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "abd6dc8fe6660efe4f715e607e2f0b1fb32f48a0d5dad00a9b4834bad8d605b0",
+        "revision": 5,
+        "schema_version": 2
+      },
+      "status": 200,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 416,
+      "family": "outcome.accept",
+      "key": "amended-accept",
+      "result": {
+        "code": "unauthorized"
+      },
+      "status": 401,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    },
+    {
+      "line": 417,
+      "family": "outcome.accept",
+      "key": "amended-accept",
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "abd6dc8fe6660efe4f715e607e2f0b1fb32f48a0d5dad00a9b4834bad8d605b0",
+        "revision": 6,
+        "schema_version": 2,
+        "subject": "2308d3e129f8b97f6972dee95547848bd828787d9681b43301020027a736c254"
+      },
+      "status": 200,
+      "task": "7869dcec-6ead-4a35-b07e-fec9bdd4aac4"
+    }
+  ],
+  "raw_public_record_count": 1418,
+  "raw_public_record_line_mismatches": [],
+  "verdict": "REJECT",
+  "blocking_findings": [
+    {
+      "priority": "P1",
+      "title": "Accepted research Intent amendment does not fence old task generation",
+      "requirement": "docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md:15",
+      "source": [
+        "crates/team-control-plane/src/contracts/lifecycle.rs:51",
+        "crates/team-control-plane/src/contracts/outcomes.rs:245",
+        "crates/team-control-plane/src/storage.rs:326"
+      ],
+      "recorded_evidence": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt:79"
+    }
+  ],
+  "canonical_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "author_root": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+  "fixed_base": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "review_limits": [
+    "No tests or runtime launches",
+    "No repository/Git writes",
+    "Only own report and metadata under assigned /tmp directory",
+    "Recorded counts are not independently measured runtime evidence",
+    "No subagents"
+  ],
+  "policy_reads": [
+    "CONSTITUTION.md",
+    "AGENTS.md",
+    "CONTEXT.md",
+    "docs/agents/domain.md",
+    "docs/agents/agentic-engineering.md"
+  ],
+  "spec_reads": [
+    "docs/efforts/team-control-plane/SPEC.md",
+    "docs/efforts/team-control-plane/v02-reconciliation.md",
+    "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+    "docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+    "docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+    "docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md"
+  ],
+  "frozen_pins": {
+    "author-freeze.json": "00a20c878225c296d2cb1dc96c2cf710d12eeb20c30eed779533a5f0428ec980",
+    "source-manifest.json": "8d8ed8761b19d8a3f3b424033303deaf2ec39174ab98f634ad65688f08a8d2cd",
+    "source.patch": "f660449f3212bef2f803c86bef285e8bc38600571e45c8ccfb0ed116212b8778",
+    "repair.patch": "36736c44bd278024402b9ada1ae850360ab09c6543cb22db23c69b4564ec3bda",
+    "public-proof-index.json": "d931d9c1d6390f12c07f312d3d6d24a3b2230a4fa614ac5c67cc67cb458b7c1c",
+    "report.md": "bebd97f91df7533309ad381f3fc9073a083b3b3cb7f41b41c9fd1a1450ff30ce"
+  },
+  "review_report_sha256": "f357f4eef0fd37cf5e72438497f9f465dd876390204976e2c41112a98679a4b7",
+  "completed_utc": "2026-10-03T22:43:59.471700+00:00"
+}

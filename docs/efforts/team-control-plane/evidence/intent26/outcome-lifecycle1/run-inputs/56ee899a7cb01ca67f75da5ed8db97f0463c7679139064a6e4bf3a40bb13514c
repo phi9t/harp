@@ -1,0 +1,17 @@
+import sys, pathlib, hashlib, json, subprocess, time, os
+root=pathlib.Path.cwd(); ev=root/'docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1'; ledger=ev/'runs.jsonl'
+old=[json.loads(x) for x in ledger.read_text().splitlines()] if ledger.exists() else []
+count=sum(x['kind']=='test' for x in old); spent=sum(x['seconds'] for x in old)
+name,kind,*args=sys.argv[1:]; assert kind in ['test','fmt','clippy']; assert count<10 or kind!='test'; assert spent<3600
+inputs={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((root/'crates/team-control-plane').rglob('*')) if p.is_file() and '/target/' not in str(p)}
+inputs[str(pathlib.Path(__file__))]=hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()
+env=dict(os.environ,CARGO_TARGET_DIR='/tmp/corenius-target-intent26-outcome-lifecycle1',CARGO_BUILD_JOBS='2',RUST_TEST_THREADS='1',CARGO_NET_OFFLINE='true')
+cmd=['cargo',kind,'--manifest-path','crates/team-control-plane/Cargo.toml']+args
+record={'name':name,'kind':kind,'command':cmd,'test_launch':count+(kind=='test'),'prior_seconds':spent,'inputs':inputs,'start':time.time(),'env':{k:env[k] for k in ['CARGO_TARGET_DIR','CARGO_BUILD_JOBS','RUST_TEST_THREADS','CARGO_NET_OFFLINE']}}
+(ev/(name+'.start.json')).write_text(json.dumps(record,indent=2)+'\n')
+with (ev/(name+'.log')).open('wb') as log:
+ try: result=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,env=env,timeout=min(1800,3600-spent)); code=result.returncode
+ except subprocess.TimeoutExpired: code=124
+record.update(exit_code=code,seconds=time.time()-record['start']);record['log_sha256']=hashlib.sha256((ev/(name+'.log')).read_bytes()).hexdigest()
+with ledger.open('a') as f:f.write(json.dumps(record)+'\n')
+print(json.dumps({k:v for k,v in record.items() if k!='inputs'}));sys.exit(code)

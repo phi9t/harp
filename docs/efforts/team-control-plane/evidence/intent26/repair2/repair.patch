@@ -1,0 +1,500 @@
+diff --git a/crates/team-control-plane/README.md b/crates/team-control-plane/README.md
+index 179e5b3..ed4a5e8 100644
+--- a/crates/team-control-plane/README.md
++++ b/crates/team-control-plane/README.md
+@@ -269,7 +269,11 @@ require supervised verification and its ArtifactService policy must match.
+ independent trusted monitor measurements against that binding. Owner or a
+ bounded current delegated lead uses `outcome.accept`. Existing v1 candidate and
+ verification formats and IDs remain intact; an old v1 PASS or acceptance alone
+-cannot acquire a v2 binding.
++cannot acquire a v2 binding. Fresh production proof and acceptance also require
++`verifying` and the exact latest candidate verification report. A later failed
++gate suspends older proofs; only a new eligible postfailure execution/report can
++restore acceptance. Cached receipts for the exact already accepted proof remain
++inspectable without issuing fresh authority or replacing their evidence.
+ Fresh legacy ArtifactService Accept refuses mapped work. Unmapped v1 acceptance
+ and exact historical accepted receipts retain their identities without writing
+ a fresh v2 accepted outcome.
+diff --git a/crates/team-control-plane/src/artifacts.rs b/crates/team-control-plane/src/artifacts.rs
+index cff0c4a..5f6089f 100644
+--- a/crates/team-control-plane/src/artifacts.rs
++++ b/crates/team-control-plane/src/artifacts.rs
+@@ -498,6 +498,26 @@ impl ArtifactService {
+         }
+         Ok(verification_revision)
+     }
++    /// Fresh production consumes the current gate. Artifact Verify admits a
++    /// successful gate after failure only with a postfailure execution; selecting
++    /// that exact latest report also prevents older proofs from regaining authority
++    /// when a later fresh report clears the failure. Historical reads stay separate.
++    pub(crate) async fn verify_production_gate(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        task: Uuid,
++        candidate: &str,
++        report: &str,
++    ) -> Result<()> {
++        let eligible: bool = tx.query_one(
++            "SELECT EXISTS(SELECT 1 FROM tasks t JOIN artifact_current a ON a.task_id=t.id WHERE t.id=$1 AND t.status='verifying' AND a.candidate_id=$2 AND $3=(SELECT e.payload->'result'->>'report_id' FROM events e WHERE e.aggregate_kind='task' AND e.aggregate_id=t.id AND e.kind='verification.submit' AND e.payload->'result'->>'candidate_id'=a.candidate_id ORDER BY e.sequence DESC LIMIT 1))",
++            &[&task, &candidate, &report],
++        ).await?.get(0);
++        if !eligible {
++            return Err(err(ErrorCode::DependencyUnmet));
++        }
++        Ok(())
++    }
+     pub(crate) async fn verify_evidence(
+         &self,
+         tx: &tokio_postgres::Transaction<'_>,
+diff --git a/crates/team-control-plane/src/contracts.rs b/crates/team-control-plane/src/contracts.rs
+index 92295aa..f723b20 100644
+--- a/crates/team-control-plane/src/contracts.rs
++++ b/crates/team-control-plane/src/contracts.rs
+@@ -246,7 +246,7 @@ impl ContractService {
+                 if strategy::current(&tx,envelope.task).await?.0!=*intent {return Err(err(ErrorCode::StaleRevision));}
+                 dependencies::validate(&tx,envelope.task,dependencies).await?;
+             }
+-            outcomes::replay(&tx,&envelope,artifacts).await?;
++            outcomes::replay(&tx,&envelope,&value,artifacts).await?;
+             tx.commit().await?;
+             return Ok(value);
+         }
+diff --git a/crates/team-control-plane/src/contracts/outcomes.rs b/crates/team-control-plane/src/contracts/outcomes.rs
+index 6bafd38..dd8384c 100644
+--- a/crates/team-control-plane/src/contracts/outcomes.rs
++++ b/crates/team-control-plane/src/contracts/outcomes.rs
+@@ -145,6 +145,7 @@ pub(super) async fn apply(
+                 service(artifacts)?,
+             )
+             .await?;
++            production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+             persist_proof(
+                 tx,
+                 actor,
+@@ -211,6 +212,7 @@ pub(super) async fn apply(
+                     service(artifacts)?,
+                 )
+                 .await?;
++                production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+             } else {
+                 research_evidence(
+                     tx,
+@@ -337,6 +339,25 @@ async fn research_evidence(
+     )?;
+     Ok(())
+ }
++async fn production_gate(
++    tx: &Transaction<'_>,
++    task: Uuid,
++    evidence: &Value,
++    artifacts: &ArtifactService,
++) -> Result<()> {
++    artifacts
++        .verify_production_gate(
++            tx,
++            task,
++            evidence["candidate"]
++                .as_str()
++                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
++            evidence["report"]
++                .as_str()
++                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
++        )
++        .await
++}
+ async fn production_evidence(
+     tx: &Transaction<'_>,
+     task: Uuid,
+@@ -398,10 +419,16 @@ async fn production_evidence(
+ pub(super) async fn replay(
+     tx: &Transaction<'_>,
+     envelope: &Envelope,
++    receipt: &Value,
+     artifacts: Option<&ArtifactService>,
+ ) -> Result<()> {
+     let proof = match &envelope.command {
+         Command::AcceptOutcome { proof } => Some(proof.as_str()),
++        Command::VerifyProduction { .. } => Some(
++            receipt["proof"]
++                .as_str()
++                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
++        ),
+         _ => None,
+     };
+     if let Some(proof) = proof {
+@@ -411,12 +438,22 @@ pub(super) async fn replay(
+             return Err(err(ErrorCode::StaleRevision));
+         }
+         if row.get::<_, String>(1) == "production" {
++            let evidence: Value = row.get(2);
++            // A cached receipt for this exact accepted proof is inspection, not
++            // a fresh grant. A historical, unaccepted PASS still faces the gate.
++            let accepted: bool = tx.query_one(
++                "SELECT EXISTS(SELECT 1 FROM contract_outcomes o JOIN tasks t ON t.id=o.task_id JOIN artifact_current a ON a.task_id=t.id WHERE o.task_id=$1 AND o.proof_id=$2 AND o.intent_id=$3 AND o.outcome='production' AND t.status='accepted' AND a.candidate_id=$4 AND a.accepted_report=$5)",
++                &[&envelope.task, &proof, &current.0, &evidence["candidate"].as_str(), &evidence["report"].as_str()],
++            ).await?.get(0);
++            if !accepted {
++                production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
++            }
+             production_evidence(
+                 tx,
+                 envelope.task,
+                 &current,
+                 row.get(0),
+-                &row.get(2),
++                &evidence,
+                 service(artifacts)?,
+             )
+             .await?;
+diff --git a/crates/team-control-plane/tests/intent_contracts.rs b/crates/team-control-plane/tests/intent_contracts.rs
+index 59ec2d7..3d57f54 100644
+--- a/crates/team-control-plane/tests/intent_contracts.rs
++++ b/crates/team-control-plane/tests/intent_contracts.rs
+@@ -1058,17 +1058,26 @@ async fn prerequisite_supersession_case(scenario: PrerequisiteCase) {
+ #[tokio::test]
+ async fn production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement()
+  {
+-    measured_acceptance_case(true).await;
++    measured_acceptance_case(true, false).await;
+ }
+ 
+ #[tokio::test]
+ async fn unmapped_legacy_acceptance_and_historical_receipt_are_preserved_after_mapping() {
+-    measured_acceptance_case(false).await;
++    measured_acceptance_case(false, false).await;
+ }
+ 
+-async fn measured_acceptance_case(mapped_before_verification: bool) {
++#[tokio::test]
++async fn failed_current_gate_fences_historical_v2_proof_and_requires_postfailure_measurement() {
++    measured_acceptance_case(true, true).await;
++}
++
++async fn measured_acceptance_case(mapped_before_verification: bool, later_failure: bool) {
+     use team_control_plane::*;
+     let api = Api::measured().await;
++    println!(
++        "measured_fixture {}",
++        json!({"root":api.fixture.root,"task":api.fixture.task,"epoch":api.fixture.epoch})
++    );
+     let command = vec![
+         "/bin/sh",
+         "-c",
+@@ -1188,7 +1197,19 @@ async fn measured_acceptance_case(mapped_before_verification: bool) {
+     )
+     .unwrap();
+     let logs = api.upload("assembled-verifier", &evidence).await;
+-    let verified=api.artifact("assembled-verifier","measured-verification",json!({"kind":"verify","verification":{"candidate":candidate,"suite":request["command"]["intent"]["acceptance"]["suite"],"environment":request["command"]["intent"]["acceptance"]["environment"],"checks":[{"command":command,"exit_code":0,"logs":logs}],"resolved_decisions":true}})).await;
++    println!(
++        "measured_gate_bytes {}",
++        json!({"execution":execution.id,"logs":logs,"artifact_bytes":evidence})
++    );
++    let pass = json!({"kind":"verify","verification":{"candidate":candidate,"suite":request["command"]["intent"]["acceptance"]["suite"],"environment":request["command"]["intent"]["acceptance"]["environment"],"checks":[{"command":command,"exit_code":0,"logs":logs}],"resolved_decisions":true}});
++    let initial_verify = api
++        .artifact_request("measured-verification", pass.clone())
++        .await;
++    let initial_verified = api
++        .artifact_response("assembled-verifier", &initial_verify)
++        .await;
++    assert_eq!(initial_verified.0, 200);
++    let verified = initial_verified.1.clone();
+     let legacy = api.artifact_request("legacy-accept",json!({"kind":"accept","candidate_id":submitted["candidate_id"],"report_id":verified["report_id"]})).await;
+     if !mapped_before_verification {
+         let accepted = api.artifact_response(&api.fixture.owner, &legacy).await;
+@@ -1263,18 +1284,286 @@ async fn measured_acceptance_case(mapped_before_verification: bool) {
+     assert_eq!(api.snapshot().await["accepted"], json!([]));
+     let proven = api.post("assembled-verifier", &proof).await;
+     assert_eq!(proven.0, 200, "real measured v2 proof: {}", proven.1);
+-    let accepted = api
+-        .post(
+-            &api.fixture.owner,
+-            &api.command(
+-                "accept-production",
+-                3,
+-                json!({"kind":"outcome.accept","proof":proven.1["proof"]}),
+-            ),
+-        )
+-        .await;
++    let accept = api.command(
++        "accept-production",
++        3,
++        json!({"kind":"outcome.accept","proof":proven.1["proof"]}),
++    );
++    if later_failure {
++        let mut failed = pass.clone();
++        // The independent check remains the exact measured successful process.
++        // Only the verifier's unresolved decision disposition changes.
++        failed["verification"]["resolved_decisions"] = json!(false);
++        let failure = api
++            .artifact("assembled-verifier", "unresolved-current-gate", failed)
++            .await;
++        let before = service
++            .snapshot(&api.fixture.owner, api.fixture.task)
++            .await
++            .unwrap();
++        assert_eq!(before.status, "repair_required");
++        let refused = api.post(&api.fixture.owner, &accept).await;
++        let after = service
++            .snapshot(&api.fixture.owner, api.fixture.task)
++            .await
++            .unwrap();
++        let outcome = api.snapshot().await;
++        println!(
++            "public_current_gate {}",
++            json!({"failure":failure,"previous_proof":proven.1,"artifact_status":after.status,"accepted":outcome["accepted"],"reports":after.reports})
++        );
++        assert_eq!(
++            refused.0, 409,
++            "an older measured PASS/proof must not bypass the current failed decision gate: {}",
++            refused.1
++        );
++        assert_eq!(refused.1["code"], "dependency_unmet");
++        assert_eq!(after.status, "repair_required");
++        assert_eq!(outcome["accepted"], json!([]));
++        assert_eq!(
++            api.post("assembled-verifier", &proof).await.1["code"],
++            "dependency_unmet",
++            "cached proof cannot regain fresh authority after failure"
++        );
++        let old_proof_rekey = api.command("old-report-new-proof-key", 3, proof["command"].clone());
++        assert_eq!(
++            api.post("assembled-verifier", &old_proof_rekey).await.1["code"],
++            "dependency_unmet"
++        );
++        let old_report_rekey = api
++            .artifact_request("old-report-new-verify-key", pass.clone())
++            .await;
++        let rekey = api
++            .artifact_response("assembled-verifier", &old_report_rekey)
++            .await;
++        assert_eq!(
++            rekey.0, 409,
++            "the old execution cannot clear failure under a new Verify key"
++        );
++        assert_eq!(rekey.1["code"], "dependency_unmet");
++        assert_eq!(
++            api.artifact_response("assembled-verifier", &initial_verify)
++                .await,
++            initial_verified,
++            "old Verify receipt remains a read without clearing the gate"
++        );
++        assert_eq!(
++            service
++                .snapshot(&api.fixture.owner, api.fixture.task)
++                .await
++                .unwrap()
++                .status,
++            "repair_required"
++        );
++        supervisor
++            .release("assembled-verifier", execution.id)
++            .await
++            .unwrap();
++        let expiring = mailbox
++            .record("assembled-verifier", mailbox::RecordKind::Episode, episode)
++            .await
++            .unwrap();
++        let expiry_wait = std::time::Instant::now();
++        // This fixture has no workflow registration. Let actual authority expire;
++        // public admission retires the prior independently stopped/released Episode.
++        tokio::time::sleep(std::time::Duration::from_secs(31)).await;
++        let expiry_elapsed = expiry_wait.elapsed().as_millis();
++        let fresh_input = Uuid::new_v4();
++        let fresh_episode = Uuid::new_v4();
++        mailbox.execute("assembled-verifier", assembled::mail(api.fixture.epoch, "capture-postfailure-verifier", json!({"kind":"capture_input","mission":api.fixture.mission,"id":fresh_input,"attempt":api.fixture.attempt,"purpose":"verification","limit":4}))).await.unwrap();
++        let fresh_packet = mailbox
++            .record(
++                "assembled-verifier",
++                mailbox::RecordKind::Input,
++                fresh_input,
++            )
++            .await
++            .unwrap();
++        mailbox.execute("assembled-verifier", assembled::mail(api.fixture.epoch, "admit-postfailure-verifier", json!({"kind":"admit_episode","mission":api.fixture.mission,"id":fresh_episode,"attempt":api.fixture.attempt,"purpose":"verification","input_packet":fresh_input,"input_digest":fresh_packet["digest"]}))).await.unwrap();
++        let retired = mailbox
++            .record("assembled-verifier", mailbox::RecordKind::Episode, episode)
++            .await
++            .unwrap();
++        let fresh_admission = mailbox
++            .record(
++                "assembled-verifier",
++                mailbox::RecordKind::Episode,
++                fresh_episode,
++            )
++            .await
++            .unwrap();
++        println!(
++            "public_episode_expiry {}",
++            json!({"before":expiring,"after":retired,"fresh":fresh_admission,"elapsed_wait_millis":expiry_elapsed,"failure_revision":failure["revision"]})
++        );
++        assert_eq!(retired["state"], "completed");
++        assert!(
++            fresh_admission["admitted_task_revision"].as_i64().unwrap()
++                >= failure["revision"].as_i64().unwrap()
++        );
++        let fresh_binding = api.post("assembled-verifier", &api.command("bind-postfailure-verifier", 3, json!({"kind":"verification.bind","episode":fresh_episode,"intent":admitted["intent"],"acceptance":admitted["acceptance"],"policy":"suite-v2","environment":request["command"]["intent"]["acceptance"]["environment"]}))).await;
++        assert_eq!(
++            fresh_binding.0, 200,
++            "fresh exact contract binding precedes allocation: {}",
++            fresh_binding.1
++        );
++        let fresh_execution = supervisor
++            .create_episode_from_candidate(
++                "assembled-verifier",
++                fresh_episode,
++                &service,
++                supervisor::CreateFault::None,
++            )
++            .await
++            .unwrap();
++        supervisor
++            .start(
++                "assembled-verifier",
++                fresh_execution.id,
++                command.iter().map(|s| s.to_string()).collect(),
++                10,
++            )
++            .await
++            .unwrap();
++        let fresh_deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
++        let fresh_measured = loop {
++            if let Some(result) = supervisor
++                .result("assembled-verifier", fresh_execution.id)
++                .await
++                .unwrap()
++            {
++                break result;
++            }
++            assert!(std::time::Instant::now() < fresh_deadline);
++            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
++        };
++        assert_ne!(fresh_measured.execution, measured.execution);
++        assert_eq!(fresh_measured.exit_code, Some(0));
++        assert!(fresh_measured.namespace_stopped);
++        println!(
++            "independent_measured_subject {}",
++            json!({"phase":"postfailure","binding":fresh_binding.1,"candidate":candidate,"measured_result":fresh_measured})
++        );
++        let fresh_view = supervisor
++            .inspect("assembled-verifier", fresh_execution.id)
++            .await
++            .unwrap();
++        let fresh_output = std::fs::read(&fresh_view.manifest.log_path).unwrap();
++        assert_eq!(fresh_output, b"independent gate\n");
++        let fresh_bytes = serde_json::to_vec(&json!({"trusted_monitor_result":fresh_measured,"output":String::from_utf8(fresh_output).unwrap()})).unwrap();
++        let fresh_logs = api.upload("assembled-verifier", &fresh_bytes).await;
++        println!(
++            "measured_gate_bytes {}",
++            json!({"execution":fresh_execution.id,"logs":fresh_logs,"artifact_bytes":fresh_bytes})
++        );
++        let mut fresh_pass = pass;
++        fresh_pass["verification"]["checks"][0]["logs"] = json!(fresh_logs);
++        let fresh_verified = api
++            .artifact("assembled-verifier", "fresh-postfailure-report", fresh_pass)
++            .await;
++        assert_ne!(fresh_verified["report_id"], verified["report_id"]);
++        assert_eq!(
++            service
++                .snapshot(&api.fixture.owner, api.fixture.task)
++                .await
++                .unwrap()
++                .status,
++            "verifying"
++        );
++        let fresh_proof_request = api.command("fresh-postfailure-proof", 4, json!({"kind":"production.verify","binding":fresh_binding.1["binding"],"candidate":submitted["candidate_id"],"report":fresh_verified["report_id"]}));
++        let fresh_proof = api.post("assembled-verifier", &fresh_proof_request).await;
++        assert_eq!(
++            fresh_proof.0, 200,
++            "eligible postfailure evidence produces a new proof: {}",
++            fresh_proof.1
++        );
++        let obsolete = api.command(
++            "old-proof-after-fresh-gate",
++            5,
++            json!({"kind":"outcome.accept","proof":proven.1["proof"]}),
++        );
++        assert_eq!(
++            api.post(&api.fixture.owner, &obsolete).await.1["code"],
++            "dependency_unmet",
++            "clearing the gate cannot reinterpret old completed verification"
++        );
++        let old_after_fresh =
++            api.command("old-report-after-fresh-gate", 5, proof["command"].clone());
++        assert_eq!(
++            api.post("assembled-verifier", &old_after_fresh).await.1["code"],
++            "dependency_unmet"
++        );
++        assert_eq!(api.snapshot().await["accepted"], json!([]));
++        let fresh_accept = api.command(
++            "accept-fresh-postfailure-proof",
++            5,
++            json!({"kind":"outcome.accept","proof":fresh_proof.1["proof"]}),
++        );
++        let fresh_accepted = api.post(&api.fixture.owner, &fresh_accept).await;
++        assert_eq!(
++            fresh_accepted.0, 200,
++            "fresh measured and bound proof accepts: {}",
++            fresh_accepted.1
++        );
++        assert_eq!(
++            api.post(&api.fixture.owner, &fresh_accept).await,
++            fresh_accepted
++        );
++        assert_eq!(
++            api.post("assembled-verifier", &fresh_proof_request).await,
++            fresh_proof,
++            "exact accepted proof receipt remains an attributable read"
++        );
++        assert_eq!(
++            api.post("assembled-verifier", &proof).await.1["code"],
++            "dependency_unmet",
++            "an unaccepted older proof does not inherit the new acceptance"
++        );
++        let final_read = service
++            .snapshot(&api.fixture.owner, api.fixture.task)
++            .await
++            .unwrap();
++        assert_eq!(final_read.status, "accepted");
++        for report in &after.reports {
++            assert!(
++                final_read
++                    .reports
++                    .iter()
++                    .any(|r| serde_json::to_value(r).unwrap()
++                        == serde_json::to_value(report).unwrap()),
++                "immutable older measured reports remain inspectable"
++            );
++        }
++        let final_outcomes = api.snapshot().await;
++        assert_eq!(final_outcomes["accepted"].as_array().unwrap().len(), 1);
++        assert_eq!(
++            final_outcomes["accepted"][0]["proof_id"],
++            fresh_proof.1["proof"]
++        );
++        println!(
++            "public_current_gate {}",
++            json!({"phase":"postfailure_accepted","artifact_status":final_read.status,"accepted":final_outcomes["accepted"],"reports":final_read.reports})
++        );
++        supervisor
++            .release("assembled-verifier", fresh_execution.id)
++            .await
++            .unwrap();
++        let owned_root = api.fixture.root.clone();
++        api.finish().await;
++        println!(
++            "measured_fixture_cleanup {}",
++            json!({"root":owned_root,"fixture_finish":true,"root_exists":owned_root.exists(),"namespace_stopped":measured.namespace_stopped && fresh_measured.namespace_stopped,"released_executions":[execution.id,fresh_execution.id]})
++        );
++        return;
++    }
++    let accepted = api.post(&api.fixture.owner, &accept).await;
+     assert_eq!(accepted.0, 200);
+     assert_eq!(accepted.1["outcome"], "production");
++    assert_eq!(
++        api.post(&api.fixture.owner, &accept).await,
++        accepted,
++        "successful exact acceptance receipt remains idempotent"
++    );
+     let read = service
+         .snapshot(&api.fixture.owner, api.fixture.task)
+         .await

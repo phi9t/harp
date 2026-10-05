@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "verdict": "PASS",
+  "kind": "independent read-only design and proof-disposition critique",
+  "blocking_findings": [],
+  "canonical_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "canonical_head": "e283eaf654d3369e3c1eeab84dadc7d22956195b",
+  "frozen_author_root": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1",
+  "frozen_author_base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "pins": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "path": "CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "path": "CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "path": "docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+    },
+    {
+      "path": "docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "path": "docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "89629bf159859e4a6bc678385bc64555f50890ee362b8bc26d3e4828e7a634c0"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261004-intent26-candidate-import-repair-proposal.md",
+      "sha256": "2f70354c577fcf42085b52b543ae0d14997f9035066de7e1db44ebffb40555a5"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "sha256": "ef466fbab46183da3033ff76bdf332dceb85445a2f0d4502b4ae5d69976a184c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+      "sha256": "1d233a5f8a20732dc936801487ddc3a121f6410c264361d5ea7588289049edf0"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/seal.json",
+      "sha256": "d2b0ed5e5fcc81ae0b61de0bbcbf754823c41d2035b805ba81f27d11f1c18d73"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-manifest.json",
+      "sha256": "f867229a30cdce7e1efc9d881c7f1404a330ec925329bd8c1e5fa3da69a6572c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/standards/report.md",
+      "sha256": "282c51e9eacfbec59223846c34fb061e60f3dba17975c7a79ef1d6027763d336"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/standards/metadata.json",
+      "sha256": "0d51e96a0ab9fb0a2a1c4083d8781cf86e0b8fe5bc1fae79ccf8197470b4c7b1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/spec/report.md",
+      "sha256": "5ad740091ed9cec51111111f25b6385b28bd4aa7a76ab9a5b4a6ab3db6214811"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/spec/metadata.json",
+      "sha256": "3f41b47beed55577e10f8d7ea6dd6fd78b46231670673415a8574fffa12b718b"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/owner-target-proof.json",
+      "sha256": "b34e9d240bebd370a5fd91bf563f03413f546ed739f0b2b4a7fe77423b01ad41"
+    }
+  ],
+  "selected_live_frozen_source_pairs": [
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "author_sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "snapshot_path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/supervisor.rs",
+      "snapshot_sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "manifest_sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "matches": true
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "author_sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "snapshot_path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts/lifecycle.rs",
+      "snapshot_sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "manifest_sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "matches": true
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "author_sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "snapshot_path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/artifacts.rs",
+      "snapshot_sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "manifest_sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "matches": true
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "author_sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "snapshot_path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/mailbox.rs",
+      "snapshot_sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "manifest_sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "matches": true
+    }
+  ],
+  "reasoning_coordinates": [
+    {
+      "question": "F1",
+      "path": "docs/efforts/team-control-plane/decisions/20261004-intent26-candidate-import-repair-proposal.md",
+      "lines": [
+        36,
+        59
+      ],
+      "reasoning": "Shared authority independent of candidate source; identical pins; absent-binding refusal; conflicting policy refusal; preservation boundaries."
+    },
+    {
+      "question": "F1",
+      "tree": "frozen author",
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "lines": [
+        477,
+        599
+      ],
+      "reasoning": "Public candidate route supplies Some; source.is_none skips research validation. Other candidate checks alone cannot detect source-only R2."
+    },
+    {
+      "question": "F1",
+      "tree": "frozen author",
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "lines": [
+        280,
+        304
+      ],
+      "reasoning": "Current optional-pin-only dispatch check misses None; preserve Some-to-None refusal while closing missing-pin path. Classify role/target and historical research input, not pin presence alone."
+    },
+    {
+      "question": "F1",
+      "tree": "frozen author",
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "lines": [
+        942,
+        966
+      ],
+      "reasoning": "Fresh start calls dispatch guard before execution; authority check must remain here independently of preparation."
+    },
+    {
+      "question": "F1",
+      "tree": "frozen author",
+      "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "lines": [
+        117,
+        161
+      ],
+      "reasoning": "Existing typed immutable research binding captures intent, acceptance, verifier, policy, suite, environment; input comparison and exact Option comparison supply needed model."
+    },
+    {
+      "question": "F1",
+      "tree": "frozen author",
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "lines": [
+        740,
+        777
+      ],
+      "reasoning": "Genuine research-task candidate submission is possible; fixture must exercise it rather than fabricate evidence."
+    },
+    {
+      "question": "S1",
+      "path": "docs/efforts/team-control-plane/decisions/20261004-intent26-candidate-import-repair-proposal.md",
+      "lines": [
+        16,
+        34
+      ],
+      "reasoning": "Express retrospective-proof exception solely for exact unchanged guard, immutable prior REJECT, genuine RED for all newly changed behavior."
+    },
+    {
+      "question": "S1",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/standards/report.md",
+      "lines": [
+        1,
+        11
+      ],
+      "reasoning": "Important chronology breach; final correctness not disproven; separate explicit disposition required."
+    },
+    {
+      "question": "S1",
+      "path": "docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "lines": [
+        3,
+        7
+      ],
+      "reasoning": "Necessary repairs/review cycles authorized; bounded assignment history and honest evidence still mandatory."
+    },
+    {
+      "question": "bounds",
+      "path": "docs/efforts/team-control-plane/decisions/20261004-intent26-candidate-import-repair-proposal.md",
+      "lines": [
+        63,
+        93
+      ],
+      "reasoning": "Explicit new allocation, finite budget, one conformance pass, no automatic repair, real seams and retained unknown effects."
+    }
+  ],
+  "inferences": [
+    "Existing research binding plus shared preparation validation and fail-closed fresh-start comparison are sufficient; implementation remains unverified.",
+    "Type-transition refusal is an application of exact input/binding authority, not authorization for new material transitions.",
+    "Specific unchanged-guard retrospective proof disposition is coherent under full-goal authority without rewriting prior nonconformance."
+  ],
+  "proof_reliance": "Chronology and retained 96-test runtime results are attributed to pinned prior reviews/evidence; this critique did not reproduce them.",
+  "review_limits": [
+    "No implementation or acceptance authority granted.",
+    "No tests/Cargo/PostgreSQL/Temporal/providers/runtime/container commands or archived script execution.",
+    "No repository/Git mutation, subagents, repeated 320-record audit or accepted-kernel rehydration.",
+    "Only requested report.md and metadata.json written."
+  ],
+  "report": {
+    "path": "/tmp/corenius-intent26-candidate-import-design-critique-20261004/report.md",
+    "sha256": "03cec184f0ccfd18b098bfe5c2b607e18aab49cd8567502bf3af1266a1d0c780",
+    "word_count": 419
+  }
+}

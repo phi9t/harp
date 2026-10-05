@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/tmp/corenius-controller-git-reader-proof-20261003/audit.py"
+  ],
+  "audit_script_sha256": "3550d95269bc8a426e243fb571da6cac7444c210086c94a07c708dc232f6e46d",
+  "exit_code": 0,
+  "stderr": "audit-run.stderr.log",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout": "audit-run.stdout.log",
+  "stdout_sha256": "6265331632c27fb731f18e52dacd7f4c16dd0f56e948ffcfba605eedb8860c67"
+}

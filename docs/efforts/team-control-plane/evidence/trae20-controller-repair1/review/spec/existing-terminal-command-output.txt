@@ -1,0 +1,14 @@
+test_existing_terminal_preserved_and_new_refusal_retained (__main__.ExistingTerminalRefusal.test_existing_terminal_preserved_and_new_refusal_retained) ... FAIL
+
+======================================================================
+FAIL: test_existing_terminal_preserved_and_new_refusal_retained (__main__.ExistingTerminalRefusal.test_existing_terminal_preserved_and_new_refusal_retained)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing_terminal_repro.py", line 31, in test_existing_terminal_preserved_and_new_refusal_retained
+    self.assertTrue((self.out/'uncertainty.json').exists(), 'healthy storage must retain new hash-bound refusal separately from prior terminal')
+AssertionError: False is not true : healthy storage must retain new hash-bound refusal separately from prior terminal
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

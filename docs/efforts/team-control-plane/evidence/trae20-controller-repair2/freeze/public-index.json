@@ -1,0 +1,128 @@
+{
+  "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "iteration": 2,
+  "status": "frozen-unaccepted-no-admission",
+  "records": [
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/coverage.json",
+      "sha256": "35cc3aa2593ea883c4f74281c9ba7bc381866c351c0f69e8d09bbaa24eb306f0",
+      "bytes": 793
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/final-green.log.txt",
+      "sha256": "636205ae8b095ea79ca17937f18da1dd2449c08fa4924eda6da4e35e471eebcc",
+      "bytes": 119
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/git-base-full.patch",
+      "sha256": "3888efd5606191a5df21b2fac7a227c2f70844c6410041be27c8544e8f8e2f57",
+      "bytes": 30539
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/repair1-to-repair2.patch",
+      "sha256": "ee9d9efef249a0d774bd21204b888602cfe516769ed18734e726f8e7de1efec0",
+      "bytes": 7342
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/review-inputs/0-20261003-trae-controller-review2-repair.md",
+      "sha256": "7e7fe81fdc697bde08b9bac190ca45be3d3e53353503727c47da6689cadab2f4",
+      "bytes": 2510
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/review-inputs/1-report.md",
+      "sha256": "b68858383f16f5985174dac5ed8fbedbf4ababcd5ff5e740f503539250377ff9",
+      "bytes": 2976
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/review-inputs/2-root-disposition.json",
+      "sha256": "433c1218db36ee45edd3aaa20bc52c44a8ff45547162f716b9a9a9d676fe7a3a",
+      "bytes": 17939
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/frozen-green.log.txt",
+      "sha256": "8f59db20ee02b3c9163a5d5760ba8dc9124c35f9cace8effe7f5566c01e5c698",
+      "bytes": 119
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/handoff.md",
+      "sha256": "2b03ac268de2167bf43dcd66f4f700205797e296727143e4d71a7f2efa92e25d",
+      "bytes": 1618
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/microplan.md",
+      "sha256": "02435ccdff5471cac8c2e0d2b1e5cb3402b9f0e4009788bef660466f3cea5847",
+      "bytes": 287
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/occupied-uncertainty-red.log.txt",
+      "sha256": "4da448e9157452193a6d581f4f68b75c5e5d6974c55af16acb42d1e1f744de90",
+      "bytes": 854
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/planned-case.json",
+      "sha256": "d2b01c7c711ddcdc4619dc8e1493aaf09d4057aa1fa8fc68caff8860731c7227",
+      "bytes": 1282
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/preimages/test_trae_case_control.py",
+      "sha256": "b9651c45c5c56bacbc2ce04d9a4aa22d74cbf5d02bf4bcdae5a73ddb3782560f",
+      "bytes": 15971
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/preimages/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/prior-terminal-green.log.txt",
+      "sha256": "c346f1228fe88f4ab3cb336ffa610dc3a34ec7c7bb7d05df7a1c222f2d928881",
+      "bytes": 98
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/prior-terminal-red.log.txt",
+      "sha256": "b476f5bff09a50c47e910c597469d3209373b26f74b0f7baa1e857428b42eb33",
+      "bytes": 912
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/runs.jsonl",
+      "sha256": "dbdeb58c9bb1faa9b55823696a766cd747b39c1f973ec165e34a28a3df1ec1e1",
+      "bytes": 244
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/terminal-handles.json",
+      "sha256": "2058e2503bfc8128568f6d26b4cbb1e10fe7649ea2673d4f7672a1ddb0d80e0f",
+      "bytes": 762
+    },
+    {
+      "path": "tools/probes/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "path": "tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    }
+  ],
+  "source_paths": [
+    "tools/probes/trae_case_control.py",
+    "tools/probes/test_trae_case_control.py"
+  ],
+  "repair1_index_sha256": "7900c6b77da61c09286061d3a939030722451d6fe09635ad462d07e86e535771",
+  "unchanged_historical_sources": {
+    "tools/probes/trae_namespace_supervisor.py": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+    "tools/probes/trae_namespace_fixture.py": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+    "tools/probes/test_trae_namespace.py": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2"
+  },
+  "physical_launch_count": 0
+}

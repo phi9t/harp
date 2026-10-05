@@ -1,0 +1,314 @@
+{
+  "authority": "root review2 current-gate decision retained as input; full-goal bounded repair authorization; no reset",
+  "checks": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/checks.json"
+  },
+  "cleanup_records": {
+    "bytes": 15634,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/cleanup-records.json",
+    "sha256": "24b948e4a097059cc7c542bf3a53b5c8c93ab287e8750d6a03b55bff2df83ff5"
+  },
+  "excluded_proof_paths": [
+    "ignored scratch/build/cache/targets",
+    "physical temporary origins are provenance with durable byte archives"
+  ],
+  "freeze_harness_snapshot": {
+    "bytes": 13093,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/snapshots/f001b5b0e2b0948f3607871519a0864a8bbb72ecf95f93128c98f7f127d14ab0.txt",
+    "sha256": "f001b5b0e2b0948f3607871519a0864a8bbb72ecf95f93128c98f7f127d14ab0"
+  },
+  "ledger": {
+    "bytes": 35848,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/runs.jsonl",
+    "sha256": "2f4b1895b7b50a3aaf8b5b0260df41fd68dd1a5fe8f62fe9c5e2cec431842742"
+  },
+  "measured_evidence": {
+    "bytes": 22813,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/measured-evidence-index.json",
+    "sha256": "7d7b9d9e45bfc586c02da2b0189781da5d130997a7a82ffa397d80acad600c62"
+  },
+  "pending": [
+    "fresh independent Standards/Spec axes",
+    "root independent verification and fixed-range branch gate"
+  ],
+  "public_record_count": 262,
+  "public_records": {
+    "bytes": 282806,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/public-records.jsonl",
+    "sha256": "d511ff2d77521452ab95c156fbf53becaa8284fea7bb4ac2cf409c46252eb4b8"
+  },
+  "repair1_archive_map": {
+    "bytes": 108042,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/repair1-archive-map.json",
+    "sha256": "d5465051f33b2aa77de320534389d3f4b62548ae3279e1916849b5675a655462"
+  },
+  "repair_patch": {
+    "bytes": 23086,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/repair.patch",
+    "sha256": "f0c7d0b372e2df3ef42df8a9ba38814c8595243eb3dec0ef7f1de7efbfdc5155"
+  },
+  "report": {
+    "bytes": 5704,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/report.md",
+    "sha256": "af58d5397986caecf9a90e1c831346041c1512516b0f478b85e70e43e42fb63b"
+  },
+  "resource_slot": "released after final terminal82/82; no subsequent Cargo/PG invocation",
+  "retained_setup_fixture": {
+    "bytes": 20884,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/retained-setup-fixture.json",
+    "sha256": "9bc2c10c5403a43fdab914fcde41416e6566227610ac494dcefb1373d58c3df0"
+  },
+  "run_harness_snapshot": {
+    "bytes": 1535,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/snapshots/917f11c3646f73fd78412f5c869dc446d78748eb5c9587a5e4ad4b10188bdd3f.txt",
+    "sha256": "917f11c3646f73fd78412f5c869dc446d78748eb5c9587a5e4ad4b10188bdd3f"
+  },
+  "run_source_deltas": {
+    "bytes": 74382,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/run-source-deltas.json",
+    "sha256": "8537dc1018f16d3cac425ecd05f386c3bba081ca328c29e136bb86506a4c1550"
+  },
+  "runs": [
+    {
+      "archive": {
+        "bytes": 12568,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/red-current-gate.log.txt",
+        "sha256": "d52fcbcf22083e8665d40c367dd85a2dd326ca5111e526e5d974b692fe61bbdd"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "failed_current_gate_fences_historical_v2_proof_and_requires_postfailure_measurement",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "behavioral_red_200_vs409",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 1,
+      "name": "red-current-gate",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 11114,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-current-gate.log.txt",
+        "sha256": "72f236e25d2fee9bd99ceedec32d225a22c228201149755cfb8075ecdc516849"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "failed_current_gate_fences_historical_v2_proof_and_requires_postfailure_measurement",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 2,
+      "name": "green-current-gate",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 12284,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-postfailure-controls.log.txt",
+        "sha256": "64f5493eb4ca6b3e6caf355c9ab80361c91872dc6532ed6eb06b1cb04044889a"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "failed_current_gate_fences_historical_v2_proof_and_requires_postfailure_measurement",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "fixture_setup_no_workflow_for_yield",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 3,
+      "name": "green-postfailure-controls",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 25178,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-postfailure-controls-expiry.log.txt",
+        "sha256": "4051c1e80208c34c2244bf35800bee86cb625f8bb5390819940538b6ab56ef23"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "failed_current_gate_fences_historical_v2_proof_and_requires_postfailure_measurement",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 4,
+      "name": "green-postfailure-controls-expiry",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 124441,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-final-repair2-compatibility.log.txt",
+        "sha256": "b384c7f0ad903ed65fb3e0f6ab9a92c1ce3cf388e05e855ac8f9f11fbba21364"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--lib",
+        "--test",
+        "artifacts",
+        "--test",
+        "kernel",
+        "--test",
+        "mailbox",
+        "--test",
+        "mailbox_delivery",
+        "--test",
+        "mailbox_artifacts",
+        "--test",
+        "supervisor",
+        "--test",
+        "gateway",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 5,
+      "name": "green-final-repair2-compatibility",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 11,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 4,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 16,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 16,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 2,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 3,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 20,
+          "result": "ok"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "scope": "repair2 public HTTP/PostgreSQL measured ArtifactService current-gate evidence; independent root review pending",
+  "source_manifest": {
+    "bytes": 28383,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/source-manifest.json",
+    "sha256": "515683ced809cfce776415efb077b6fc4b46b1cd03ebaa1b36e1a8553f7a9b1e"
+  },
+  "source_patch": {
+    "bytes": 171274,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/source.patch",
+    "sha256": "feb91bd77d23765530948b6891420156642f097dcf1cfcd42662b9b5be7a7345"
+  }
+}

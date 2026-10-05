@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T20:04:03.249683+00:00",
+  "axes": {
+    "spec": "no new blocker",
+    "standards": "no new blocker; historical TDD deviation retained"
+  },
+  "accepted": false,
+  "active_source_integrated": true,
+  "source_postimages": {
+    "tools/probes/trae_case_control.py": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+    "tools/probes/test_trae_case_control.py": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75"
+  },
+  "physical_admission": false,
+  "pending": [
+    "root exact-source pure checks",
+    "production Git-reader positive",
+    "assembled repository/branch gates before landing"
+  ],
+  "original_chronology_and_physical_provenance": "unchanged; no original TDD compliance or physicalcase conformance upgrade",
+  "records": [
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/base-reconstruction/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/base-reconstruction/tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/base-reconstruction/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/base-reconstruction/tools/probes/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/final-fixture/tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/final-fixture/tools/probes/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture-command.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/final-fixture-command.json",
+      "sha256": "314f920353452c879f50c0e3a5f493eebd859104f44971158ce162495580b6e0",
+      "bytes": 802
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture-output.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/final-fixture-output.txt",
+      "sha256": "42ed191c0bf71163393607962282120ee8669d8b126d8e2291d200ae17e9e312",
+      "bytes": 3480
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/metadata.json",
+      "sha256": "d3123f429fe95e234a10bcca702ac218dc9b06ec05270b39f68b5cdd86dc0d5b",
+      "bytes": 67338
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/repair1-fixture/tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/repair1-fixture/tools/probes/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture-command.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/repair1-fixture-command.json",
+      "sha256": "5ecbb82aec7f9c42f1cfbcd1429515b23ee7767badc5238f84738652d3a8a6c6",
+      "bytes": 905
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture-output.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/repair1-fixture-output.txt",
+      "sha256": "dc7dfb6637a5b0159cde3cbbebf5fe5799722da5b4d137bbfddff2a9ed71c7db",
+      "bytes": 1146
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-reconstruction/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/repair1-reconstruction/tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-reconstruction/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/repair1-reconstruction/tools/probes/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/report.md",
+      "sha256": "5e4bd681b9b4be84f517c585af2d28cbfc3b481da254983fdfdcafb6c2830d09",
+      "bytes": 3447
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/round0-verification.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/round0-verification.json",
+      "sha256": "e4731d4f74664ad06682b0864bfeda7a38495eed7c1452037732da5ed0ff8972",
+      "bytes": 8547
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/verification.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/verification.json",
+      "sha256": "2a15f05b0cf1820ba3b7013177191530d1d5e8ba2760ec0e7de48505c7e5397b",
+      "bytes": 50064
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/verify.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/verify.py",
+      "sha256": "1b280825232e99db1104020157412473f7bb6cb77e346abce726be75ac3bdc9b",
+      "bytes": 8817
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/proof-index.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/spec/proof-index.json",
+      "sha256": "bff08152277e59755ebb812801aa95eab53f9862824e038c006ff4b354ab9fdb",
+      "bytes": 49652
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/final20/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/final20/tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/final20/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/final20/tools/probes/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/final20.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/final20.log.txt",
+      "sha256": "c6df6fbdff10ec2ca03fa76d457c23b8c2a8d2feff6772aabc6ff0fcfa4ec6eb",
+      "bytes": 3480
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/independent-hashes.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/independent-hashes.json",
+      "sha256": "2af181d9b6abd4b63ee128a6be1115a77484da3489659f30cd7d59ec19ac4b7d",
+      "bytes": 34164
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/independent-test-runs.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/independent-test-runs.json",
+      "sha256": "3eb55219e665f7281e96d8592a30934e3cacfde09ad6c999a0019113757888b6",
+      "bytes": 1728
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/metadata.json",
+      "sha256": "788519a92a28b953be8b4e46a6c733b88d442519254c914182ba834a83d832a9",
+      "bytes": 6129
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/repair1-red/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/repair1-red/tools/probes/test_trae_case_control.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/repair1-red/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/repair1-red/tools/probes/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/repair1-red.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/repair1-red.log.txt",
+      "sha256": "465171b920344c3307e2515b9cf5efe4a6121862716bb5c1ab115067781cbc4f",
+      "bytes": 2101
+    },
+    {
+      "origin": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/review/standards/report.md",
+      "sha256": "dc3bb728dc21fd4e5962df665af22481318c69ad3f0ce95d88c0b7aff250a38a",
+      "bytes": 2952
+    }
+  ]
+}

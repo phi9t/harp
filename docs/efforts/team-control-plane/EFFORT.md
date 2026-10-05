@@ -9,7 +9,7 @@ The prior candidate-import2 author is terminal and its checkout remains frozen d
 Actual active coordination: /root on codex/sqlite-controller-execution. Actual01 implementation writer: /root/sqlite01_storage_author, sole worktree corenius-sqlite01-storage, branch sqlite01/storage at basecf52c11055be09298e6ecc1353e5901e45726551. Two worker slots in the product are separate from these development agents. Baseline has no PostgreSQL/Temporal/financial-budget dependency. Fixtures qualify the controller first; a NEW dedicated live Codex tmux trial is a later required proof. The user authorizes implementation/commits/gated FF-only landing. Previous user sessions are preserved.
 
 Status: parked by owner priority supersession; retained historical work is unfinished.
-Base: main at `264756edd550225449202b6f20ac4b560808d14e`
+Base: main at `a21316f74672f55f3c22eff94f93ce1511b51822`
 Lead: replaceable Codex implementation coordinator
 
 ## Current execution contract
@@ -25,14 +25,36 @@ ExecutionScopes, independently supervised jobs and a stable per-scope Plan
 interpreter. [The reconciliation](v02-reconciliation.md), [PLAN.md](PLAN.md)
 and tickets26–32 define the additional work and preserve earlier evidence.
 
-Ticket26 is being implemented in its own worktree. jj19's final history-export
-repair passed both independent review axes, imported regressions, the root
-repository gate and wholebranch631; evaluation is accepted and exact-tip gated
-landing is next. One fixed offline namespace cleanup
+Ticket26 repair1 has Standards PASS and Spec REJECT: an older production proof
+can bypass a newer failed verification. The four round0 consumer repairs conform.
+Bounded repair2 reproduced the acceptance bypass through real HTTP/PostgreSQL;
+its expanded freshness/replay regression and82 compatibility tests pass, with
+final freeze and both independent review axes passing. Root imported the exact18
+reviewed core postimages; fresh root focused regression,20 controller tests and the full repository gate
+pass. Wholebranch632 nevertheless rejects accepted-intent reexecution and Plan
+ceiling preservation across source amendment. The final bounded repair3 is
+assigned in the original author tree, with actual RED required before edits.
+The candidate is committed but unaccepted and unlanded. All rejected
+snapshots and exact reviews remain retained.
+jj19's final history-export repair passed both independent review axes, imported
+regressions, the root repository gate and wholebranch631. The bounded evaluation
+landed by gated fast-forward at the main commit above; backend25 remains separate.
+One fixed offline namespace cleanup
 case has independently verified terminal0 cleanup measurements; full conformance
 is partial because original prelaunch controller ordering remains unverified.
-It does not admit a Trae or paid provider launch. Historical quarantines and
-spent budgets remain recorded. [STATE.md](STATE.md) and the
+It does not admit a Trae or paid provider launch. The future offline controller's
+repair1 output-collision gap is repaired in a separately frozen repair2. Both
+independent axes have no new blocker; root integrated the two exact reviewed
+postimages at `16c15c8` and its20 pure tests pass. The real default Git-reader
+fixture passed at its execution origin with one recording callback and no
+physical case execution. The retained archive's original auditor fails after
+relocation because it conflates execution origin with archive storage. A separate
+portable auditor passes the moved-archive check and retains all181 original
+records. Spec has no blocker; Standards rejects the four refusal controls
+skipped during RED, so its test-first qualification remains partial and the
+helper is retained as unaccepted evidence. Assembled repository/branch gates
+remain before landing the controller preparation.
+Historical quarantines and spent budgets remain recorded. [STATE.md](STATE.md) and the
 [completion audit](completion-audit.md) carry current progress.
 
 ## Preserved discovery and execution history

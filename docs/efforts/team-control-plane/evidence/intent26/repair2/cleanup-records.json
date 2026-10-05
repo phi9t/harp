@@ -1,0 +1,323 @@
+{
+  "observations": [
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "2125776745ec09d579d83cd8bbba00fc2b039a740a4c4ca383bfe174614826ec",
+      "run": "red-current-gate",
+      "source_line": 6,
+      "source_line_sha256": "227d1f0aa7c95f7d09c0051c780d3f6290151c66547ae8be3c636a24273b1339",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/red-current-gate.log.txt",
+      "value": {
+        "epoch": "4dc464a1-b191-4c6d-9850-5ee238131291",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-e6f7006e-fd60-4574-9b90-a5ff86517b01",
+        "task": "42ad9ab2-5851-4215-90ce-988d8b6cd537"
+      }
+    },
+    {
+      "marker": "measured_fixture_cleanup",
+      "payload_sha256": "c1ce0766b77c91ef7105196d18f51ee54339af70dc487d144b37c1c3aa4a2ae4",
+      "run": "red-current-gate",
+      "source_line": 22,
+      "source_line_sha256": "45d8500349cd079c08c0063c85332a0ac7448ac7d02e21eb4e2b579040e50175",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/red-current-gate.log.txt",
+      "value": {
+        "fixture_finish": true,
+        "namespace_stopped": true,
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-e6f7006e-fd60-4574-9b90-a5ff86517b01",
+        "root_exists": false
+      }
+    },
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "7d35c64fb1a5920a2412bbae4405911f945dc72084db9c3eeef6067f04480712",
+      "run": "green-current-gate",
+      "source_line": 6,
+      "source_line_sha256": "6446c9dca584bc7852441158205964166795eca999de1a7e3717e7cdba3088be",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-current-gate.log.txt",
+      "value": {
+        "epoch": "90b4cae3-6f53-4f8b-8774-2d9ba73e1661",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-f9cd09a0-0fcb-4e70-8ddb-d2dd23a5f04f",
+        "task": "007d7d23-4ff0-4bd5-b9ee-3a1dcdd3fded"
+      }
+    },
+    {
+      "marker": "measured_fixture_cleanup",
+      "payload_sha256": "9c1e1e100789a1317ed343ed5d39afb5f70faf16c23a6b7abbbfdc1b01f40a2c",
+      "run": "green-current-gate",
+      "source_line": 22,
+      "source_line_sha256": "4474578cf2b7603c05e008005583a907d0448aa4083b7c7ed362d9d2b2a104f1",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-current-gate.log.txt",
+      "value": {
+        "fixture_finish": true,
+        "namespace_stopped": true,
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-f9cd09a0-0fcb-4e70-8ddb-d2dd23a5f04f",
+        "root_exists": false
+      }
+    },
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "df37b481eb29ac6377bf458edd30519a7e8d171040831216cccf36b859072509",
+      "run": "green-postfailure-controls",
+      "source_line": 6,
+      "source_line_sha256": "fd2f81b5787155833fda5cdd4f7ffae57593810b1231febd46d4706f2b01c0b2",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-postfailure-controls.log.txt",
+      "value": {
+        "epoch": "f7d44357-d2d1-48fd-b116-0aca3f29131a",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-6d22fd79-db4a-41a3-8137-44f8f1b9b58b",
+        "task": "c19011b2-432a-4e4c-9124-6c98cda5a326"
+      }
+    },
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "74dec27ff78e41847fa9fe1a38d562e72eeb3b7d73280aa2b1bb243aa26e1145",
+      "run": "green-postfailure-controls-expiry",
+      "source_line": 6,
+      "source_line_sha256": "28e1fb81f914a40bc28bcae77911c017214741e8b2e517e81bd332ca0a946d47",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-postfailure-controls-expiry.log.txt",
+      "value": {
+        "epoch": "0bc41cc5-5af1-46d9-969d-0c83de861527",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-cb5ae005-2b10-4dc3-a8ed-3de18b743646",
+        "task": "adb5ff8a-1761-42a4-b6a4-f405160d6591"
+      }
+    },
+    {
+      "marker": "public_episode_expiry",
+      "payload_sha256": "8240e3cf9472046fa8b523e96ad019186a585bb0be9e02deab245fec0b6d08ed",
+      "run": "green-postfailure-controls-expiry",
+      "source_line": 26,
+      "source_line_sha256": "df7249ec814120677a67f352cbb7a0e173986810680fc869aac29268366dcc12",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-postfailure-controls-expiry.log.txt",
+      "value": {
+        "after": {
+          "admitted_task_revision": 5,
+          "attempt_id": "eca37290-926f-4354-8562-2cce9f25ccd9",
+          "deadline": "2026-10-03T20:46:49.757342+00:00",
+          "event_digest": "c689e0863c768733fb6fc3944be2691a4d1432f54564cad41292a5e18451f970",
+          "id": "b52e9d6f-ef03-41e7-ae52-dff94e9e7c37",
+          "input_digest": "8de4d7ab10c989412534f3c570e525fdf3822c12560528979fc6fbb31f172c38",
+          "input_packet": "f5fcddbe-598c-4398-a3d1-a697d0318bcf",
+          "input_provenance": "broker_captured",
+          "lead_generation": null,
+          "mission_id": "02f354ac-0036-428f-aad0-55414a5b2fe9",
+          "owned_capacity": true,
+          "principal_id": "3e70e105-5780-47bd-b89f-b57e692a7fbb",
+          "purpose": "verification",
+          "recovery_epoch": "0bc41cc5-5af1-46d9-969d-0c83de861527",
+          "role": "verifier",
+          "start_operation": null,
+          "state": "completed",
+          "task_generation": 1,
+          "task_id": "adb5ff8a-1761-42a4-b6a4-f405160d6591",
+          "turn_id": null
+        },
+        "before": {
+          "admitted_task_revision": 5,
+          "attempt_id": "eca37290-926f-4354-8562-2cce9f25ccd9",
+          "deadline": "2026-10-03T20:46:49.757342+00:00",
+          "event_digest": "c689e0863c768733fb6fc3944be2691a4d1432f54564cad41292a5e18451f970",
+          "id": "b52e9d6f-ef03-41e7-ae52-dff94e9e7c37",
+          "input_digest": "8de4d7ab10c989412534f3c570e525fdf3822c12560528979fc6fbb31f172c38",
+          "input_packet": "f5fcddbe-598c-4398-a3d1-a697d0318bcf",
+          "input_provenance": "broker_captured",
+          "lead_generation": null,
+          "mission_id": "02f354ac-0036-428f-aad0-55414a5b2fe9",
+          "owned_capacity": true,
+          "principal_id": "3e70e105-5780-47bd-b89f-b57e692a7fbb",
+          "purpose": "verification",
+          "recovery_epoch": "0bc41cc5-5af1-46d9-969d-0c83de861527",
+          "role": "verifier",
+          "start_operation": null,
+          "state": "admitted",
+          "task_generation": 1,
+          "task_id": "adb5ff8a-1761-42a4-b6a4-f405160d6591",
+          "turn_id": null
+        },
+        "elapsed_wait_millis": 31001,
+        "failure_revision": 7,
+        "fresh": {
+          "admitted_task_revision": 7,
+          "attempt_id": "eca37290-926f-4354-8562-2cce9f25ccd9",
+          "deadline": "2026-10-03T20:47:21.248917+00:00",
+          "event_digest": "12fbc03d3ee3f36ef7149ed1b33fe86b9ba27e331f8a4e2249ff01349bb23b54",
+          "id": "520db8ae-eb30-49ff-bec2-be1632375968",
+          "input_digest": "d74162bedc98b604f81a0067547eadece39c7b286cbcffe4e0706d03653ea8a1",
+          "input_packet": "97781b53-3f2c-484c-bec5-052c63e0dc19",
+          "input_provenance": "broker_captured",
+          "lead_generation": null,
+          "mission_id": "02f354ac-0036-428f-aad0-55414a5b2fe9",
+          "owned_capacity": true,
+          "principal_id": "3e70e105-5780-47bd-b89f-b57e692a7fbb",
+          "purpose": "verification",
+          "recovery_epoch": "0bc41cc5-5af1-46d9-969d-0c83de861527",
+          "role": "verifier",
+          "start_operation": null,
+          "state": "admitted",
+          "task_generation": 1,
+          "task_id": "adb5ff8a-1761-42a4-b6a4-f405160d6591",
+          "turn_id": null
+        }
+      }
+    },
+    {
+      "marker": "measured_fixture_cleanup",
+      "payload_sha256": "beb42c26847af80fa481783ef3a96baad5fef2b5fcab8e4356fe10ed8b8a0a20",
+      "run": "green-postfailure-controls-expiry",
+      "source_line": 39,
+      "source_line_sha256": "ab1b8b8180d7a832353b63da71d40f065fd4e321cae3b97d68a1b4b61594b620",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-postfailure-controls-expiry.log.txt",
+      "value": {
+        "fixture_finish": true,
+        "namespace_stopped": true,
+        "released_executions": [
+          "a2a018f0-8aac-4481-a00d-92ac57a0fcfe",
+          "bb69ae95-f345-4c7d-bab5-871a28b45d29"
+        ],
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-cb5ae005-2b10-4dc3-a8ed-3de18b743646",
+        "root_exists": false
+      }
+    },
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "2d32c0a2a753747391828759953e799db5576d03fa46dbe25731355ab03fe309",
+      "run": "green-final-repair2-compatibility",
+      "source_line": 151,
+      "source_line_sha256": "1d9c5609649daa89d4413e0a232bf06cb7bb55f0d17bd39244607732528f118c",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-final-repair2-compatibility.log.txt",
+      "value": {
+        "epoch": "c3281655-e199-4af7-9f97-ff4fa55d1861",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-b29cad6c-c4a0-4708-b59c-50338bf6b323",
+        "task": "a99f52a0-1084-4295-87ca-af96d9cc0ebf"
+      }
+    },
+    {
+      "marker": "public_episode_expiry",
+      "payload_sha256": "5a639cc305848d1843b0b36adb584e79f757525235887127afabef1b79c32d76",
+      "run": "green-final-repair2-compatibility",
+      "source_line": 171,
+      "source_line_sha256": "e1aa79716fefe006e8b469206d72e5c4b125e21419308f87702423dcc37a245e",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-final-repair2-compatibility.log.txt",
+      "value": {
+        "after": {
+          "admitted_task_revision": 5,
+          "attempt_id": "79aacc43-7f1f-4294-869b-72a155fe6bab",
+          "deadline": "2026-10-03T20:48:24.804124+00:00",
+          "event_digest": "0e6583ff15037be4f51d50df4ede4315270f2ced39466feb8cf32da1b9113ccc",
+          "id": "57aa9c0c-ef4c-4ec8-b2a2-417dea0ee28b",
+          "input_digest": "18a4a2aa4f17ac35ae383337a30b860337dc5f9e06890e84b5d744f9e2354402",
+          "input_packet": "78d59ed0-b422-4816-b6db-c319c8a22cb5",
+          "input_provenance": "broker_captured",
+          "lead_generation": null,
+          "mission_id": "f212a54e-644f-4f0b-8016-6f005fff5e04",
+          "owned_capacity": true,
+          "principal_id": "80cef815-e7b9-4d12-9437-fc8596e8f6cd",
+          "purpose": "verification",
+          "recovery_epoch": "c3281655-e199-4af7-9f97-ff4fa55d1861",
+          "role": "verifier",
+          "start_operation": null,
+          "state": "completed",
+          "task_generation": 1,
+          "task_id": "a99f52a0-1084-4295-87ca-af96d9cc0ebf",
+          "turn_id": null
+        },
+        "before": {
+          "admitted_task_revision": 5,
+          "attempt_id": "79aacc43-7f1f-4294-869b-72a155fe6bab",
+          "deadline": "2026-10-03T20:48:24.804124+00:00",
+          "event_digest": "0e6583ff15037be4f51d50df4ede4315270f2ced39466feb8cf32da1b9113ccc",
+          "id": "57aa9c0c-ef4c-4ec8-b2a2-417dea0ee28b",
+          "input_digest": "18a4a2aa4f17ac35ae383337a30b860337dc5f9e06890e84b5d744f9e2354402",
+          "input_packet": "78d59ed0-b422-4816-b6db-c319c8a22cb5",
+          "input_provenance": "broker_captured",
+          "lead_generation": null,
+          "mission_id": "f212a54e-644f-4f0b-8016-6f005fff5e04",
+          "owned_capacity": true,
+          "principal_id": "80cef815-e7b9-4d12-9437-fc8596e8f6cd",
+          "purpose": "verification",
+          "recovery_epoch": "c3281655-e199-4af7-9f97-ff4fa55d1861",
+          "role": "verifier",
+          "start_operation": null,
+          "state": "admitted",
+          "task_generation": 1,
+          "task_id": "a99f52a0-1084-4295-87ca-af96d9cc0ebf",
+          "turn_id": null
+        },
+        "elapsed_wait_millis": 31001,
+        "failure_revision": 7,
+        "fresh": {
+          "admitted_task_revision": 7,
+          "attempt_id": "79aacc43-7f1f-4294-869b-72a155fe6bab",
+          "deadline": "2026-10-03T20:48:56.282712+00:00",
+          "event_digest": "5143235b6de28fe217f7c05a30fdbd7e81206cccc1b1c3cc4b302a3c8194e9ad",
+          "id": "5ca7fa34-4106-4761-9e72-daad18a165cc",
+          "input_digest": "5299ddcb9112251df71f70ca11ed9ae513c34c2410e6b45b649cd186033e6c20",
+          "input_packet": "17ca4265-eb8c-4cf9-8a54-bf445dfd93c8",
+          "input_provenance": "broker_captured",
+          "lead_generation": null,
+          "mission_id": "f212a54e-644f-4f0b-8016-6f005fff5e04",
+          "owned_capacity": true,
+          "principal_id": "80cef815-e7b9-4d12-9437-fc8596e8f6cd",
+          "purpose": "verification",
+          "recovery_epoch": "c3281655-e199-4af7-9f97-ff4fa55d1861",
+          "role": "verifier",
+          "start_operation": null,
+          "state": "admitted",
+          "task_generation": 1,
+          "task_id": "a99f52a0-1084-4295-87ca-af96d9cc0ebf",
+          "turn_id": null
+        }
+      }
+    },
+    {
+      "marker": "measured_fixture_cleanup",
+      "payload_sha256": "fec42371cded32ad3c5a54dfb6602b9c45dfa04fc717238230ab133355aa32dd",
+      "run": "green-final-repair2-compatibility",
+      "source_line": 184,
+      "source_line_sha256": "2103ad8c9b9b175293e722d895253a740b4f0386c44a42e554498674a631de4e",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-final-repair2-compatibility.log.txt",
+      "value": {
+        "fixture_finish": true,
+        "namespace_stopped": true,
+        "released_executions": [
+          "07eb3708-549b-47d3-84e4-db7a7eb7ff95",
+          "360c8d8f-7bc8-4b9b-9cda-8a45f91c3be3"
+        ],
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-b29cad6c-c4a0-4708-b59c-50338bf6b323",
+        "root_exists": false
+      }
+    },
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "e5e1efd9b3d17f08606db2300755ee4a07e2a5b63c8b8cb208b1d5119c527626",
+      "run": "green-final-repair2-compatibility",
+      "source_line": 237,
+      "source_line_sha256": "08a7df59c42683b976961952da284e4920ed7cc4c55f0cf97813f8b1ffdc3a2e",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-final-repair2-compatibility.log.txt",
+      "value": {
+        "epoch": "08e86126-b5b7-4544-9419-5d7c806f5e7c",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-cd60e10b-44bc-423a-9689-eb0409b5482a",
+        "task": "b60622aa-48b8-4b69-a42a-a26e8504150d"
+      }
+    },
+    {
+      "marker": "measured_fixture",
+      "payload_sha256": "c03afd8c0cc4b596230cd02282b05923c635a95d5f6d79dfa2b0c9e13ec7ad74",
+      "run": "green-final-repair2-compatibility",
+      "source_line": 262,
+      "source_line_sha256": "715405d703059eb03f55f8836a10539ce7b6a85f2559f069527da40d1ace7240",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair2/green-final-repair2-compatibility.log.txt",
+      "value": {
+        "epoch": "c0360e68-5d0f-46d7-8dd1-ebca0c35efc0",
+        "root": "/data02/home/philip.yang/devx/tmp/kernel16-9c03e2d7-7c7e-442f-a592-8985e34bca3d",
+        "task": "848f7c6e-6ccd-47fa-898a-74d5498ba03c"
+      }
+    }
+  ],
+  "original_repair1_fixtures": "Original59/72 file maps and owned paths remain retained and unchanged; checked separately.",
+  "postgres": "Each run completes through existing run-postgres.sh EXIT trap; final separate Docker prefix inventory records no retained fixture container. This is distinct from measured namespace stop, Supervisor release, or Fixture.finish.",
+  "retained_setup_fixture": {
+    "bytes": 20884,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/retained-setup-fixture.json",
+    "sha256": "9bc2c10c5403a43fdab914fcde41416e6566227610ac494dcefb1373d58c3df0"
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,2838 @@
+diff --git a/crates/team-control-plane/README.md b/crates/team-control-plane/README.md
+index b6b9be8..f2f1351 100644
+--- a/crates/team-control-plane/README.md
++++ b/crates/team-control-plane/README.md
+@@ -225,3 +225,56 @@ Takeover securely classifies retained raw `.log` files without a size limit or
+ whole-file allocation. Native JSON receipts and bootstrap `.info` metadata retain
+ the 1 MiB bound; unsafe files, incomplete inventory and active work still refuse
+ transfer.
++
++
++## Exact admitted v2 contracts
++
++`POST /v2/contracts/commands` accepts strict schema2 JSON with `key`,
++`expected_revision`, `recovery_epoch`, `task` and a tagged `command`.
++`GET /v2/contracts/tasks/{task}` authenticates the same bearer and returns
++canonical source snapshots, full WorkRef, immutable Intent/Acceptance/Plan
++identities, current revisions, dependency dispositions and accepted subjects.
++WorkRef namespaces include ledger, deployment, tenant, project and immutable item.
++The broker retains source bytes, their SHA256 and exact source revision; source
++availability is an explicit admitted input. A `source.propose` event retains an
++inert proposal and cannot change admitted work or satisfy a dependency.
++
++`intent.admit`, `plan.admit` and `dependency.revalidate` require Owner authority
++unless an Owner has explicitly admitted `delegation.admit` for the exact work,
++mission, current lead principal and RoleEpoch, permitted command families and
++effects, cumulative intent/plan ceilings, resource ceilings and expiry. The
++transaction rechecks authentication, current role and delegation on replay.
++Intent changes and declarative strategy changes have separate immutable IDs.
++Plans have a known schema/interpreter version, stable step IDs, explicit DAG
++edges/joins, effect allowlists, finite loops and repair/resource ceilings.
++Plan replacement preserves completed steps and cannot increase a previously
++admitted ceiling. This API stores and validates plans; ticket29 owns execution.
++
++Dependencies bind exact prerequisite WorkRef, IntentRevision, accepted subject
++and policy. Broker admission of a superseding prerequisite suspends fresh
++Attempt/Worker Episode/workspace/gateway-operation grants. It retains previous
++operation receipts and reconciliation. Revalidation requires a new current exact
++accepted subject; reading or replaying an old receipt cannot reopen admission.
++
++Production has a separate exact proof seam. An authenticated independent verifier
++uses `verification.bind` before its Episode has an allocated execution, pinning
++IntentRevision, AcceptanceContract, policy and environment. The task must already
++require supervised verification and its ArtifactService policy must match.
++`production.verify` then checks the actual ArtifactService candidate/report and
++independent trusted monitor measurements against that binding. Owner or a
++bounded current delegated lead uses `outcome.accept`. Existing v1 candidate and
++verification formats and IDs remain intact; an old v1 PASS or acceptance alone
++cannot acquire a v2 binding.
++
++Workers may use `outcome.propose` to retain immutable evidence. A contract that
++expressly allows negative research can use separate `research.verify` and
++`outcome.accept` commands to recognize `investigation_complete`. The verifier
++must differ from the proposer; evidence remains referenced through normal
++ArtifactService collection. Evaluator-change proposals remain unpromoted and
++cannot satisfy this contract. Workers cannot verify or accept their proposals.
++
++Migration0008 is additive. Legacy specifications and original nullable
++Role/Episode/Attempt provenance stay unchanged; legacy mappings remain explicitly
++closed for v2 until exact Owner admission. Migration never upgrades a v1 proof or
++invents an original Attempt. Durable scopes, Kata API/event qualification, Plan
++interpretation and v0.2 assembled recovery remain later tickets.
+diff --git a/crates/team-control-plane/src/admission.rs b/crates/team-control-plane/src/admission.rs
+index d873288..7c2ed62 100644
+--- a/crates/team-control-plane/src/admission.rs
++++ b/crates/team-control-plane/src/admission.rs
+@@ -252,6 +252,7 @@ pub(crate) async fn apply(
+             Some(task.mission)
+         }
+         Command::AssignAttempt { task_id, worker_id } => {
++            crate::contracts::fresh_grant(tx, *task_id).await?;
+             let task = load_task(tx, *task_id).await?;
+             actor.scope(task.mission, Some(*task_id))?;
+             if !matches!(actor.role, Role::Owner | Role::Lead) {
+diff --git a/crates/team-control-plane/src/artifacts.rs b/crates/team-control-plane/src/artifacts.rs
+index d4c45d3..93d3a49 100644
+--- a/crates/team-control-plane/src/artifacts.rs
++++ b/crates/team-control-plane/src/artifacts.rs
+@@ -439,7 +439,7 @@ impl ArtifactService {
+         tx.commit().await?;
+         result
+     }
+-    async fn reference(
++    pub(crate) async fn reference(
+         &self,
+         tx: &tokio_postgres::Transaction<'_>,
+         digest: &str,
+@@ -498,7 +498,7 @@ impl ArtifactService {
+         }
+         Ok(verification_revision)
+     }
+-    async fn verify_evidence(
++    pub(crate) async fn verify_evidence(
+         &self,
+         tx: &tokio_postgres::Transaction<'_>,
+         candidate_id: &str,
+diff --git a/crates/team-control-plane/src/domain.rs b/crates/team-control-plane/src/domain.rs
+index 9c2887c..658c10e 100644
+--- a/crates/team-control-plane/src/domain.rs
++++ b/crates/team-control-plane/src/domain.rs
+@@ -3,6 +3,7 @@ use uuid::Uuid;
+ #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+ #[serde(rename_all = "snake_case")]
+ pub enum ErrorCode {
++    ArtifactMissing,
+     Unauthorized,
+     StaleRevision,
+     StaleGeneration,
+diff --git a/crates/team-control-plane/src/gateway.rs b/crates/team-control-plane/src/gateway.rs
+index d62b699..f1eaa91 100644
+--- a/crates/team-control-plane/src/gateway.rs
++++ b/crates/team-control-plane/src/gateway.rs
+@@ -417,6 +417,13 @@ impl Gateway {
+             tx.commit().await?;
+             return Ok(op);
+         }
++        if intent.kind != OperationKind::Cancel {
++            let task: Uuid = tx
++                .query_one("SELECT task_id FROM attempts WHERE id=$1", &[&attempt])
++                .await?
++                .get(0);
++            crate::contracts::fresh_grant(&tx, task).await?;
++        }
+         let binding = tx
+             .query_opt(
+                 "SELECT attempt_id,thread_id FROM gateway_bindings WHERE id=$1",
+diff --git a/crates/team-control-plane/src/http.rs b/crates/team-control-plane/src/http.rs
+index 2cc7015..2d54024 100644
+--- a/crates/team-control-plane/src/http.rs
++++ b/crates/team-control-plane/src/http.rs
+@@ -11,6 +11,8 @@ use uuid::Uuid;
+ pub fn router(broker: Broker) -> Router {
+     Router::new()
+         .route("/mcp", post(crate::mcp::http))
++        .route("/v2/contracts/commands", post(contract_command))
++        .route("/v2/contracts/tasks/{task}", get(contract_snapshot))
+         .route("/v1/artifacts/commands", post(artifact_command))
+         .route("/v1/artifacts/objects", post(artifact_publish))
+         .route("/v1/artifacts/tasks/{task}", get(artifact_snapshot))
+@@ -36,6 +38,34 @@ pub fn router(broker: Broker) -> Router {
+         )
+         .with_state(Arc::new(broker))
+ }
++async fn contract_command(
++    artifacts: Option<Extension<crate::artifacts::ArtifactService>>,
++    State(broker): State<Arc<Broker>>,
++    headers: HeaderMap,
++    body: std::result::Result<
++        Json<crate::contracts::Envelope>,
++        axum::extract::rejection::JsonRejection,
++    >,
++) -> Result<Json<serde_json::Value>> {
++    let token = bearer(&headers)?;
++    let Json(envelope) = body.map_err(|_| Error {
++        code: ErrorCode::InvalidArgument,
++    })?;
++    crate::contracts::ContractService::new((*broker).clone())
++        .execute(token, envelope, artifacts.as_ref().map(|s| &s.0))
++        .await
++        .map(Json)
++}
++async fn contract_snapshot(
++    State(broker): State<Arc<Broker>>,
++    headers: HeaderMap,
++    Path(task): Path<Uuid>,
++) -> Result<Json<serde_json::Value>> {
++    crate::contracts::ContractService::new((*broker).clone())
++        .snapshot(bearer(&headers)?, task)
++        .await
++        .map(Json)
++}
+ /// Optional artifact transport shares the supplied service and caller's bearer;
+ /// the base router remains usable with a named unconfigured-service failure.
+ pub fn router_with_artifacts(
+diff --git a/crates/team-control-plane/src/lib.rs b/crates/team-control-plane/src/lib.rs
+index 5fb84c3..bffb10f 100644
+--- a/crates/team-control-plane/src/lib.rs
++++ b/crates/team-control-plane/src/lib.rs
+@@ -9,6 +9,7 @@ pub use domain::*;
+ pub use storage::{Broker, migrate};
+ 
+ pub mod artifacts;
++pub mod contracts;
+ pub mod gateway;
+ 
+ pub mod temporal;
+diff --git a/crates/team-control-plane/src/mailbox.rs b/crates/team-control-plane/src/mailbox.rs
+index d27a6d8..ae1f938 100644
+--- a/crates/team-control-plane/src/mailbox.rs
++++ b/crates/team-control-plane/src/mailbox.rs
+@@ -1280,6 +1280,7 @@ impl MailboxService {
+                 task_generation = Some(row.get::<_, i64>(1));
+                 admitted_task_revision = Some(row.get::<_, i64>(6));
+                 actor.scope(row.get(4), task)?;
++                crate::contracts::fresh_grant(tx, row.get(0)).await?;
+                 if row.get::<_, Uuid>(4) != mission
+                     || row.get::<_, Uuid>(3) != self.broker.epoch
+                     || row.get::<_, i64>(1) != row.get::<_, i64>(5)
+diff --git a/crates/team-control-plane/src/storage.rs b/crates/team-control-plane/src/storage.rs
+index 1d626fc..c5310e1 100644
+--- a/crates/team-control-plane/src/storage.rs
++++ b/crates/team-control-plane/src/storage.rs
+@@ -67,6 +67,7 @@ pub async fn migrate(dsn: &str) -> Result<()> {
+     crate::supervisor::migrate(&tx).await?;
+     crate::mailbox::migrate(&tx).await?;
+     crate::kernel::migrate(&tx).await?;
++    crate::contracts::migrate(&tx).await?;
+     tx.commit().await?;
+     Ok(())
+ }
+@@ -107,6 +108,7 @@ impl Broker {
+         schema(&tx).await?;
+         crate::mailbox::schema(&tx).await?;
+         crate::kernel::schema(&tx).await?;
++        crate::contracts::schema(&tx).await?;
+         tx.commit().await?;
+         Ok(Self {
+             dsn: dsn.into(),
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+index 96a2658..0d3c313 100644
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -573,6 +573,9 @@ impl Supervisor {
+         if paused {
+             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+         }
++        if let Some(task) = task {
++            crate::contracts::fresh_grant(&tx, task).await?;
++        }
+         let id = Uuid::new_v4();
+         let path = self.root.join(id.to_string());
+         let store = fs::canonicalize(row.get::<_, String>(15)).map_err(|_| invalid())?;
+@@ -750,6 +753,7 @@ impl Supervisor {
+             return Err(crate::domain::err(ErrorCode::StaleGeneration));
+         }
+         crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
++        crate::contracts::fresh_grant(&tx, task).await?;
+         crate::artifacts::implementation_enabled(&tx, task, self.broker.epoch).await?;
+         if tx
+             .query_opt(
+diff --git a/crates/team-control-plane/migrations/0008.sql b/crates/team-control-plane/migrations/0008.sql
+new file mode 100644
+index 0000000..ac07660
+--- /dev/null
++++ b/crates/team-control-plane/migrations/0008.sql
+@@ -0,0 +1,99 @@
++-- Additive v2 contracts. The old specifications, subjects, proof IDs, grants,
++-- counters and optional original provenance are never rewritten or upgraded.
++CREATE TABLE contract_schema_version(version integer PRIMARY KEY CHECK(version=2));
++INSERT INTO contract_schema_version VALUES(2);
++CREATE TABLE contract_legacy_bindings(
++ task_id uuid NOT NULL REFERENCES tasks, spec_digest text NOT NULL,
++ original_spec jsonb NOT NULL, disposition text NOT NULL CHECK(disposition='explicit_mapping_required'),
++ PRIMARY KEY(task_id,spec_digest), FOREIGN KEY(task_id,spec_digest) REFERENCES task_specs(task_id,digest)
++);
++INSERT INTO contract_legacy_bindings SELECT task_id,digest,to_jsonb(s),'explicit_mapping_required' FROM task_specs s;
++CREATE TABLE contract_work(
++ id text PRIMARY KEY CHECK(id ~ '^[0-9a-f]{64}$'), task_id uuid NOT NULL UNIQUE REFERENCES tasks,
++ work jsonb NOT NULL UNIQUE, mission_id uuid NOT NULL REFERENCES missions
++);
++CREATE TABLE contract_sources(
++ id text PRIMARY KEY CHECK(id ~ '^[0-9a-f]{64}$'), work_id text NOT NULL REFERENCES contract_work,
++ source_revision text NOT NULL, source jsonb NOT NULL, UNIQUE(work_id,source_revision)
++);
++CREATE TABLE contract_acceptance(
++ id text PRIMARY KEY CHECK(id ~ '^[0-9a-f]{64}$'), contract jsonb NOT NULL
++);
++CREATE TABLE contract_intents(
++ id text PRIMARY KEY CHECK(id ~ '^[0-9a-f]{64}$'), work_id text NOT NULL REFERENCES contract_work,
++ source_id text NOT NULL REFERENCES contract_sources, acceptance_id text NOT NULL REFERENCES contract_acceptance,
++ admitted_version bigint NOT NULL CHECK(admitted_version>0), intent jsonb NOT NULL,
++ principal_id uuid NOT NULL, recovery_epoch uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
++ UNIQUE(work_id,admitted_version)
++);
++CREATE TABLE contract_current(
++ task_id uuid PRIMARY KEY REFERENCES tasks, revision bigint NOT NULL CHECK(revision>0),
++ intent_id text NOT NULL REFERENCES contract_intents, plan_id text, admission_open boolean NOT NULL
++);
++CREATE TABLE contract_commands(
++ principal_id uuid NOT NULL, family text NOT NULL, key text NOT NULL, argument_digest text NOT NULL,
++ task_id uuid NOT NULL REFERENCES tasks, disposition text NOT NULL CHECK(disposition IN ('applied','rejected')),
++ result jsonb NOT NULL, recorded_at timestamptz NOT NULL DEFAULT clock_timestamp(), PRIMARY KEY(principal_id,family,key)
++);
++CREATE TABLE contract_proposals(
++ id text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, principal_id uuid NOT NULL,
++ proposal jsonb NOT NULL, recovery_epoch uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT clock_timestamp()
++);
++CREATE TABLE contract_delegations(
++ id uuid PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, mission_id uuid NOT NULL REFERENCES missions,
++ principal_id uuid NOT NULL, role_epoch bigint NOT NULL CHECK(role_epoch>0), work_id text NOT NULL REFERENCES contract_work,
++ delegation jsonb NOT NULL, by_principal uuid NOT NULL, recovery_epoch uuid NOT NULL, expires_at timestamptz NOT NULL
++);
++CREATE TABLE contract_plans(
++ id text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, intent_id text NOT NULL REFERENCES contract_intents,
++ acceptance_id text NOT NULL REFERENCES contract_acceptance, admitted_version bigint NOT NULL CHECK(admitted_version>0),
++ plan jsonb NOT NULL, principal_id uuid NOT NULL, recovery_epoch uuid NOT NULL, UNIQUE(task_id,admitted_version)
++);
++ALTER TABLE contract_current ADD CONSTRAINT contract_current_plan FOREIGN KEY(plan_id) REFERENCES contract_plans;
++CREATE TABLE contract_completed_steps(
++ task_id uuid NOT NULL REFERENCES tasks, plan_id text NOT NULL REFERENCES contract_plans,
++ step_id text NOT NULL, step jsonb NOT NULL, PRIMARY KEY(task_id,step_id)
++);
++CREATE TABLE contract_verification_bindings(
++ id text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, episode_id uuid NOT NULL UNIQUE REFERENCES mailbox_episodes,
++ intent_id text NOT NULL REFERENCES contract_intents, acceptance_id text NOT NULL REFERENCES contract_acceptance,
++ verifier uuid NOT NULL, policy text NOT NULL, environment text NOT NULL, recovery_epoch uuid NOT NULL,
++ created_at timestamptz NOT NULL DEFAULT clock_timestamp()
++);
++CREATE TABLE contract_proofs(
++ id text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, intent_id text NOT NULL REFERENCES contract_intents,
++ acceptance_id text NOT NULL REFERENCES contract_acceptance, verifier uuid NOT NULL,
++ outcome text NOT NULL CHECK(outcome IN ('production','investigation_complete')), evidence jsonb NOT NULL,
++ created_at timestamptz NOT NULL DEFAULT clock_timestamp()
++);
++CREATE TABLE contract_outcomes(
++ subject text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, intent_id text NOT NULL REFERENCES contract_intents,
++ proof_id text NOT NULL REFERENCES contract_proofs, outcome text NOT NULL CHECK(outcome IN ('production','investigation_complete')),
++ policy text NOT NULL, by_principal uuid NOT NULL, recovery_epoch uuid NOT NULL,
++ created_at timestamptz NOT NULL DEFAULT clock_timestamp(), UNIQUE(task_id,intent_id)
++);
++CREATE TABLE contract_dependencies(
++ task_id uuid NOT NULL REFERENCES tasks, prerequisite_work text NOT NULL REFERENCES contract_work,
++ intent_id text NOT NULL REFERENCES contract_intents, accepted_subject text NOT NULL REFERENCES contract_outcomes,
++ policy text NOT NULL, disposition text NOT NULL CHECK(disposition IN ('active','suspended')),
++ PRIMARY KEY(task_id,prerequisite_work)
++);
++CREATE TABLE contract_dependency_revalidations(
++ id text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, intent_id text NOT NULL REFERENCES contract_intents,
++ dependencies jsonb NOT NULL, principal_id uuid NOT NULL, recovery_epoch uuid NOT NULL,
++ created_at timestamptz NOT NULL DEFAULT clock_timestamp()
++);
++CREATE TRIGGER immutable_contract_legacy BEFORE UPDATE OR DELETE ON contract_legacy_bindings FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_work BEFORE UPDATE OR DELETE ON contract_work FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_sources BEFORE UPDATE OR DELETE ON contract_sources FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_acceptance BEFORE UPDATE OR DELETE ON contract_acceptance FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_intents BEFORE UPDATE OR DELETE ON contract_intents FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_commands BEFORE UPDATE OR DELETE ON contract_commands FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_proposals BEFORE UPDATE OR DELETE ON contract_proposals FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_delegations BEFORE UPDATE OR DELETE ON contract_delegations FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_plans BEFORE UPDATE OR DELETE ON contract_plans FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_completed BEFORE UPDATE OR DELETE ON contract_completed_steps FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_bindings BEFORE UPDATE OR DELETE ON contract_verification_bindings FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_proofs BEFORE UPDATE OR DELETE ON contract_proofs FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_outcomes BEFORE UPDATE OR DELETE ON contract_outcomes FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_contract_revalidations BEFORE UPDATE OR DELETE ON contract_dependency_revalidations FOR EACH ROW EXECUTE FUNCTION immutable_record();
+diff --git a/crates/team-control-plane/src/contracts.rs b/crates/team-control-plane/src/contracts.rs
+new file mode 100644
+index 0000000..4c6e339
+--- /dev/null
++++ b/crates/team-control-plane/src/contracts.rs
+@@ -0,0 +1,516 @@
++//! Exact admitted work and strategy, independent of mutable planning sources.
++//! PostgreSQL serializes authorization, revision checking, replay and mutation.
++use crate::{Broker, ErrorCode, Result, Role, auth, domain::err, storage};
++use serde::{Deserialize, Serialize};
++use serde_json::{Value, json};
++use tokio_postgres::Transaction;
++use uuid::Uuid;
++mod authority;
++mod dependencies;
++pub(crate) use dependencies::fresh_grant;
++mod outcomes;
++mod strategy;
++pub use authority::Delegation;
++pub use strategy::{PlanRevision, Step};
++
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct WorkRef {
++    pub ledger: String,
++    pub deployment: String,
++    pub tenant: String,
++    pub project: String,
++    pub item: String,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct SourceSnapshot {
++    pub adapter: String,
++    pub locator: String,
++    pub revision: String,
++    pub availability: String,
++    pub snapshot: Vec<u8>,
++    pub digest: String,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Resources {
++    pub attempts: i64,
++    pub episodes: i64,
++    pub repairs: i64,
++    pub execution_seconds: i64,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(rename_all = "snake_case")]
++pub enum Outcome {
++    Production,
++    InvestigationComplete,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct AcceptanceContract {
++    pub outcome: Outcome,
++    pub allow_negative: bool,
++    pub criteria: Vec<String>,
++    pub verifier: Uuid,
++    pub policy: String,
++    pub suite: String,
++    pub environment: String,
++    pub mandatory_commands: Vec<Vec<String>>,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Dependency {
++    pub work: WorkRef,
++    pub intent: String,
++    pub accepted_subject: String,
++    pub policy: String,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct IntentRevision {
++    pub objective: String,
++    pub constraints: Vec<String>,
++    pub allowed_effects: Vec<String>,
++    pub resources: Resources,
++    pub acceptance: AcceptanceContract,
++    pub dependencies: Vec<Dependency>,
++    pub legacy_spec_digest: String,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(tag = "kind", deny_unknown_fields)]
++pub enum Command {
++    #[serde(rename = "dependency.revalidate")]
++    RevalidateDependency {
++        intent: String,
++        dependencies: Vec<Dependency>,
++    },
++    #[serde(rename = "outcome.propose")]
++    ProposeOutcome {
++        intent: String,
++        evidence: String,
++        negative: bool,
++        evaluator_change: bool,
++    },
++    #[serde(rename = "verification.bind")]
++    BindVerification {
++        episode: Uuid,
++        intent: String,
++        acceptance: String,
++        policy: String,
++        environment: String,
++    },
++    #[serde(rename = "production.verify")]
++    VerifyProduction {
++        binding: String,
++        candidate: String,
++        report: String,
++    },
++    #[serde(rename = "research.verify")]
++    VerifyResearch {
++        intent: String,
++        acceptance: String,
++        proposal: String,
++        policy: String,
++        environment: String,
++    },
++    #[serde(rename = "outcome.accept")]
++    AcceptOutcome { proof: String },
++    #[serde(rename = "delegation.admit")]
++    AdmitDelegation { delegation: Delegation },
++    #[serde(rename = "plan.admit")]
++    AdmitPlan { plan: PlanRevision },
++    #[serde(rename = "intent.admit")]
++    AdmitIntent {
++        work: WorkRef,
++        source: SourceSnapshot,
++        intent: IntentRevision,
++    },
++    #[serde(rename = "source.propose")]
++    ProposeSource {
++        work: WorkRef,
++        source: SourceSnapshot,
++    },
++}
++impl Command {
++    fn family(&self) -> &'static str {
++        match self {
++            Self::RevalidateDependency { .. } => "dependency.revalidate",
++            Self::ProposeOutcome { .. } => "outcome.propose",
++            Self::BindVerification { .. } => "verification.bind",
++            Self::VerifyProduction { .. } => "production.verify",
++            Self::VerifyResearch { .. } => "research.verify",
++            Self::AcceptOutcome { .. } => "outcome.accept",
++            Self::AdmitDelegation { .. } => "delegation.admit",
++            Self::AdmitPlan { .. } => "plan.admit",
++            Self::AdmitIntent { .. } => "intent.admit",
++            Self::ProposeSource { .. } => "source.propose",
++        }
++    }
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++pub struct Envelope {
++    pub schema_version: u32,
++    pub key: String,
++    pub expected_revision: i64,
++    pub recovery_epoch: Uuid,
++    pub task: Uuid,
++    pub command: Command,
++}
++pub(crate) async fn migrate(tx: &Transaction<'_>) -> Result<()> {
++    if !tx
++        .query_one(
++            "SELECT to_regclass('contract_schema_version') IS NOT NULL",
++            &[],
++        )
++        .await?
++        .get::<_, bool>(0)
++    {
++        tx.batch_execute(include_str!("../migrations/0008.sql"))
++            .await?;
++    }
++    schema(tx).await
++}
++pub(crate) async fn schema(tx: &Transaction<'_>) -> Result<()> {
++    let rows = tx
++        .query("SELECT version FROM contract_schema_version", &[])
++        .await?;
++    if rows.len() != 1 || rows[0].get::<_, i32>(0) != 2 {
++        return Err(err(ErrorCode::IncompatibleSchema));
++    }
++    Ok(())
++}
++#[derive(Clone)]
++pub struct ContractService {
++    broker: Broker,
++}
++impl ContractService {
++    pub fn new(broker: Broker) -> Self {
++        Self { broker }
++    }
++    pub async fn execute(
++        &self,
++        token: &str,
++        envelope: Envelope,
++        artifacts: Option<&crate::artifacts::ArtifactService>,
++    ) -> Result<Value> {
++        if envelope.schema_version != 2
++            || envelope.key.is_empty()
++            || envelope.key.len() > 256
++            || envelope.expected_revision < 0
++        {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        if envelope.recovery_epoch != self.broker.epoch {
++            return Err(err(ErrorCode::Unauthorized));
++        }
++        let mut client = storage::client(&self.broker.dsn).await?;
++        let tx = client.transaction().await?;
++        storage::lock(&tx).await?;
++        schema(&tx).await?;
++        storage::active(&tx, self.broker.epoch).await?;
++        let actor = auth::authenticate(&tx, token, self.broker.epoch).await?;
++        storage::validate_actor_generation(&tx, &actor).await?;
++        let mission: Uuid = tx
++            .query_opt(
++                "SELECT mission_id FROM tasks WHERE id=$1",
++                &[&envelope.task],
++            )
++            .await?
++            .ok_or_else(|| err(ErrorCode::NotFound))?
++            .get(0);
++        actor.scope(mission, Some(envelope.task))?;
++        authority::authorize(&tx, &actor, &envelope, mission).await?;
++        let family = envelope.command.family();
++        let digest = crate::validation::digest(&envelope)?;
++        if let Some(row)=tx.query_opt("SELECT argument_digest,disposition,result,task_id FROM contract_commands WHERE principal_id=$1 AND family=$2 AND key=$3",&[&actor.principal,&family,&envelope.key]).await? {
++            if row.get::<_,String>(0)!=digest || row.get::<_,Uuid>(3)!=envelope.task { return Err(err(ErrorCode::IdempotencyConflict)); }
++            let value:Value=row.get(2);
++            if row.get::<_,String>(1)=="rejected" { return Err(serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?); }
++            if let Command::RevalidateDependency{intent,dependencies}=&envelope.command {
++                if strategy::current(&tx,envelope.task).await?.0!=*intent {return Err(err(ErrorCode::StaleRevision));}
++                dependencies::validate(&tx,envelope.task,dependencies).await?;
++            }
++            outcomes::replay(&tx,&envelope,artifacts).await?;
++            tx.commit().await?;
++            return Ok(value);
++        }
++        tx.batch_execute("SAVEPOINT contract_mutation").await?;
++        let revision: i64 = tx
++            .query_opt(
++                "SELECT revision FROM contract_current WHERE task_id=$1",
++                &[&envelope.task],
++            )
++            .await?
++            .map_or(0, |r| r.get(0));
++        let outcome = if envelope.expected_revision != revision {
++            Err(err(ErrorCode::StaleRevision))
++        } else {
++            self.apply(&tx, &actor, &envelope, mission, revision, artifacts)
++                .await
++        };
++        let (disposition, value, result) = match outcome {
++            Ok(value) => ("applied", value.clone(), Ok(value)),
++            Err(error) => {
++                if matches!(
++                    error.code,
++                    ErrorCode::Unauthorized
++                        | ErrorCode::TemporarilyUnavailable
++                        | ErrorCode::IncompatibleSchema
++                ) {
++                    return Err(error);
++                }
++                tx.batch_execute("ROLLBACK TO SAVEPOINT contract_mutation")
++                    .await?;
++                (
++                    "rejected",
++                    serde_json::to_value(&error).map_err(|_| err(ErrorCode::InvalidArgument))?,
++                    Err(error),
++                )
++            }
++        };
++        tx.execute("INSERT INTO contract_commands(principal_id,family,key,argument_digest,task_id,disposition,result) VALUES($1,$2,$3,$4,$5,$6,$7)",&[&actor.principal,&family,&envelope.key,&digest,&envelope.task,&disposition,&value]).await?;
++        tx.commit().await?;
++        result
++    }
++    async fn apply(
++        &self,
++        tx: &Transaction<'_>,
++        actor: &auth::Actor,
++        envelope: &Envelope,
++        mission: Uuid,
++        revision: i64,
++        artifacts: Option<&crate::artifacts::ArtifactService>,
++    ) -> Result<Value> {
++        match &envelope.command {
++            Command::RevalidateDependency {
++                intent,
++                dependencies,
++            } => {
++                dependencies::revalidate(tx, actor, envelope, revision, intent, dependencies).await
++            }
++            Command::ProposeOutcome { .. }
++            | Command::BindVerification { .. }
++            | Command::VerifyProduction { .. }
++            | Command::VerifyResearch { .. }
++            | Command::AcceptOutcome { .. } => {
++                outcomes::apply(tx, actor, envelope, revision, artifacts).await
++            }
++            Command::AdmitDelegation { delegation } => {
++                authority::admit(tx, actor, envelope, mission, revision, delegation).await
++            }
++            Command::AdmitPlan { plan } => {
++                strategy::admit(tx, actor, envelope, revision, plan).await
++            }
++            Command::AdmitIntent {
++                work,
++                source,
++                intent,
++            } => {
++                validate_work(work)?;
++                validate_source(source)?;
++                validate_intent(intent)?;
++                if source.adapter != work.ledger {
++                    return Err(err(ErrorCode::InvalidArgument));
++                }
++                let legacy = tx
++                    .query_one(
++                        "SELECT spec_digest FROM tasks WHERE id=$1",
++                        &[&envelope.task],
++                    )
++                    .await?
++                    .get::<_, String>(0);
++                if intent.legacy_spec_digest != legacy {
++                    return Err(err(ErrorCode::StaleRevision));
++                }
++                let policy=tx.query_one("SELECT max_attempts,max_episodes,max_repairs,deadline_seconds FROM missions WHERE id=$1",&[&mission]).await?;
++                if intent.resources.attempts > policy.get::<_, i64>(0)
++                    || intent.resources.episodes > policy.get::<_, i64>(1)
++                    || intent.resources.repairs > policy.get::<_, i64>(2)
++                    || intent.resources.execution_seconds > policy.get::<_, i64>(3)
++                {
++                    return Err(err(ErrorCode::BudgetExhausted));
++                }
++                dependencies::validate(tx, envelope.task, &intent.dependencies).await?;
++                authority::check_limit(tx, actor, envelope, true).await?;
++                let work_id = crate::validation::digest(work)?;
++                if let Some(row) = tx
++                    .query_opt(
++                        "SELECT id FROM contract_work WHERE task_id=$1",
++                        &[&envelope.task],
++                    )
++                    .await?
++                {
++                    if row.get::<_, String>(0) != work_id {
++                        return Err(err(ErrorCode::IdempotencyConflict));
++                    }
++                }
++                if let Some(row) = tx
++                    .query_opt("SELECT task_id FROM contract_work WHERE id=$1", &[&work_id])
++                    .await?
++                {
++                    if row.get::<_, Uuid>(0) != envelope.task {
++                        return Err(err(ErrorCode::IdempotencyConflict));
++                    }
++                }
++                tx.execute("INSERT INTO contract_work(id,task_id,work,mission_id) VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING",&[&work_id,&envelope.task,&serde_json::to_value(work).map_err(|_|err(ErrorCode::InvalidArgument))?,&mission]).await?;
++                let source_id = crate::validation::digest(&(&work_id, source))?;
++                if let Some(row) = tx
++                    .query_opt(
++                        "SELECT id FROM contract_sources WHERE work_id=$1 AND source_revision=$2",
++                        &[&work_id, &source.revision],
++                    )
++                    .await?
++                {
++                    if row.get::<_, String>(0) != source_id {
++                        return Err(err(ErrorCode::IdempotencyConflict));
++                    }
++                }
++                tx.execute("INSERT INTO contract_sources(id,work_id,source_revision,source) VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING",&[&source_id,&work_id,&source.revision,&serde_json::to_value(source).map_err(|_|err(ErrorCode::InvalidArgument))?]).await?;
++                let acceptance_id = crate::validation::digest(&intent.acceptance)?;
++                tx.execute("INSERT INTO contract_acceptance(id,contract) VALUES($1,$2) ON CONFLICT DO NOTHING",&[&acceptance_id,&serde_json::to_value(&intent.acceptance).map_err(|_|err(ErrorCode::InvalidArgument))?]).await?;
++                let id = crate::validation::digest(&(&work_id, &source_id, intent))?;
++                if tx
++                    .query_opt("SELECT id FROM contract_intents WHERE id=$1", &[&id])
++                    .await?
++                    .is_some()
++                {
++                    return Err(err(ErrorCode::StaleRevision));
++                }
++                let admitted_version: i64 = tx
++                    .query_one(
++                        "SELECT count(*)+1 FROM contract_intents WHERE work_id=$1",
++                        &[&work_id],
++                    )
++                    .await?
++                    .get(0);
++                tx.execute("INSERT INTO contract_intents(id,work_id,source_id,acceptance_id,admitted_version,intent,principal_id,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8)",&[&id,&work_id,&source_id,&acceptance_id,&admitted_version,&serde_json::to_value(intent).map_err(|_|err(ErrorCode::InvalidArgument))?,&actor.principal,&self.broker.epoch]).await?;
++                dependencies::replace(tx, envelope.task, &intent.dependencies).await?;
++                dependencies::supersede(tx, &work_id, &id).await?;
++                let next = revision + 1;
++                tx.execute("INSERT INTO contract_current(task_id,revision,intent_id,admission_open) VALUES($1,$2,$3,true) ON CONFLICT(task_id) DO UPDATE SET revision=$2,intent_id=$3,plan_id=NULL,admission_open=true",&[&envelope.task,&next,&id]).await?;
++                Ok(
++                    json!({"schema_version":2,"disposition":"applied","revision":next,"intent":id,"acceptance":acceptance_id,"work":work_id,"admitted_version":admitted_version}),
++                )
++            }
++            Command::ProposeSource { work, source } => {
++                if !matches!(actor.role, Role::Owner | Role::Lead | Role::Worker) {
++                    return Err(err(ErrorCode::Unauthorized));
++                }
++                validate_work(work)?;
++                let proposal = json!({"work":work,"source":source});
++                let id = crate::validation::digest(&(envelope.task, actor.principal, &proposal))?;
++                tx.execute("INSERT INTO contract_proposals(id,task_id,principal_id,proposal,recovery_epoch) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING",&[&id,&envelope.task,&actor.principal,&proposal,&self.broker.epoch]).await?;
++                Ok(
++                    json!({"schema_version":2,"disposition":"proposed","revision":revision,"proposal":id}),
++                )
++            }
++        }
++    }
++    pub async fn snapshot(&self, token: &str, task: Uuid) -> Result<Value> {
++        let mut client = storage::client(&self.broker.dsn).await?;
++        let tx = client.transaction().await?;
++        storage::lock(&tx).await?;
++        schema(&tx).await?;
++        storage::active(&tx, self.broker.epoch).await?;
++        let actor = auth::authenticate(&tx, token, self.broker.epoch).await?;
++        storage::validate_actor_generation(&tx, &actor).await?;
++        let mission: Uuid = tx
++            .query_opt("SELECT mission_id FROM tasks WHERE id=$1", &[&task])
++            .await?
++            .ok_or_else(|| err(ErrorCode::NotFound))?
++            .get(0);
++        actor.scope(mission, Some(task))?;
++        let current=tx.query_opt("SELECT revision,intent_id,plan_id,admission_open FROM contract_current WHERE task_id=$1",&[&task]).await?;
++        let intents=tx.query("SELECT jsonb_build_object('id',i.id,'admitted_version',i.admitted_version,'source',i.source_id,'acceptance',i.acceptance_id,'intent',i.intent) FROM contract_intents i JOIN contract_work w ON w.id=i.work_id WHERE w.task_id=$1 ORDER BY i.admitted_version",&[&task]).await?.into_iter().map(|r|r.get::<_,Value>(0)).collect::<Vec<_>>();
++        let sources=tx.query("SELECT s.source FROM contract_sources s JOIN contract_work w ON w.id=s.work_id WHERE w.task_id=$1 ORDER BY s.source_revision",&[&task]).await?.into_iter().map(|r|r.get::<_,Value>(0)).collect::<Vec<_>>();
++        let plans=tx.query("SELECT jsonb_build_object('id',id,'admitted_version',admitted_version,'plan',plan) FROM contract_plans WHERE task_id=$1 ORDER BY admitted_version",&[&task]).await?.into_iter().map(|r|r.get::<_,Value>(0)).collect::<Vec<_>>();
++        let accepted=tx.query("SELECT to_jsonb(o) FROM contract_outcomes o WHERE task_id=$1 ORDER BY created_at,subject",&[&task]).await?.into_iter().map(|r|r.get::<_,Value>(0)).collect::<Vec<_>>();
++        let dependencies=tx.query("SELECT jsonb_build_object('work',w.work,'intent',d.intent_id,'accepted_subject',d.accepted_subject,'policy',d.policy,'disposition',d.disposition) FROM contract_dependencies d JOIN contract_work w ON w.id=d.prerequisite_work WHERE d.task_id=$1 ORDER BY d.prerequisite_work",&[&task]).await?.into_iter().map(|r|r.get::<_,Value>(0)).collect::<Vec<_>>();
++        let work = tx
++            .query_opt("SELECT work FROM contract_work WHERE task_id=$1", &[&task])
++            .await?
++            .map(|r| r.get::<_, Value>(0));
++        let time: String = tx
++            .query_one("SELECT clock_timestamp()::text", &[])
++            .await?
++            .get(0);
++        let result = json!({"schema_version":2,"snapshot_time":time,"revision":current.as_ref().map_or(0,|r|r.get::<_,i64>(0)),"current_intent":current.as_ref().map(|r|r.get::<_,String>(1)),"current_plan":current.as_ref().and_then(|r|r.get::<_,Option<String>>(2)),"admission_open":current.as_ref().is_some_and(|r|r.get::<_,bool>(3)),"intents":intents,"sources":sources,"plans":plans,"accepted":accepted,"dependencies":dependencies,"work":work});
++        tx.commit().await?;
++        Ok(result)
++    }
++}
++fn text(s: &str) -> bool {
++    !s.trim().is_empty() && s.len() <= 8192 && !s.contains('\0')
++}
++fn digest(s: &str) -> bool {
++    s.len() == 64
++        && s.bytes()
++            .all(|c| c.is_ascii_digit() || (b'a'..=b'f').contains(&c))
++}
++fn unique(items: &[String]) -> bool {
++    let mut values = std::collections::BTreeSet::new();
++    items.iter().all(|s| text(s) && values.insert(s))
++}
++fn validate_work(work: &WorkRef) -> Result<()> {
++    if ![
++        &work.ledger,
++        &work.deployment,
++        &work.tenant,
++        &work.project,
++        &work.item,
++    ]
++    .into_iter()
++    .all(|s| text(s))
++        || !["git", "kata"].contains(&work.ledger.as_str())
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    Ok(())
++}
++fn validate_source(source: &SourceSnapshot) -> Result<()> {
++    if source.availability != "available" || source.snapshot.is_empty() {
++        return Err(err(ErrorCode::ArtifactMissing));
++    }
++    if source.snapshot.len() > 1024 * 1024
++        || !text(&source.locator)
++        || !text(&source.revision)
++        || !digest(&source.digest)
++        || crate::artifacts::sha256(&source.snapshot) != source.digest
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    Ok(())
++}
++fn validate_intent(intent: &IntentRevision) -> Result<()> {
++    let acceptance = &intent.acceptance;
++    if !text(&intent.objective)
++        || !unique(&intent.constraints)
++        || intent.allowed_effects.is_empty()
++        || !unique(&intent.allowed_effects)
++        || intent
++            .allowed_effects
++            .iter()
++            .any(|e| !["read", "write", "execute", "submit", "verify"].contains(&e.as_str()))
++        || !digest(&intent.legacy_spec_digest)
++        || intent.resources.attempts <= 0
++        || intent.resources.episodes <= 0
++        || intent.resources.repairs < 0
++        || intent.resources.execution_seconds <= 0
++        || acceptance.criteria.is_empty()
++        || !unique(&acceptance.criteria)
++        || !text(&acceptance.policy)
++        || !digest(&acceptance.suite)
++        || !digest(&acceptance.environment)
++        || (acceptance.outcome == Outcome::Production && acceptance.allow_negative)
++        || acceptance.mandatory_commands.is_empty()
++        || acceptance
++            .mandatory_commands
++            .iter()
++            .any(|c| c.is_empty() || c.iter().any(|s| !text(s)))
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    Ok(())
++}
+diff --git a/crates/team-control-plane/src/contracts/authority.rs b/crates/team-control-plane/src/contracts/authority.rs
+new file mode 100644
+index 0000000..208b7ac
+--- /dev/null
++++ b/crates/team-control-plane/src/contracts/authority.rs
+@@ -0,0 +1,201 @@
++//! Explicit current-lead delegation. Authentication alone conveys no admission.
++use super::*;
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++pub struct Delegation {
++    pub id: Uuid,
++    pub principal: Uuid,
++    pub role_epoch: i64,
++    pub work: WorkRef,
++    pub families: Vec<String>,
++    pub effects: Vec<String>,
++    pub max_intents: i64,
++    pub max_plans: i64,
++    pub resources: Resources,
++    pub expires_in_seconds: i64,
++}
++async fn admitted(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    mission: Uuid,
++) -> Result<Delegation> {
++    let family = envelope.command.family();
++    let rows=tx.query("SELECT d.delegation FROM contract_delegations d JOIN mission_leads l ON l.mission_id=d.mission_id AND l.principal_id=d.principal_id AND l.generation=d.role_epoch JOIN contract_work w ON w.id=d.work_id WHERE d.task_id=$1 AND d.mission_id=$2 AND d.principal_id=$3 AND d.recovery_epoch=$4 AND d.expires_at>clock_timestamp() AND w.task_id=$1 ORDER BY d.expires_at DESC",&[&envelope.task,&mission,&actor.principal,&envelope.recovery_epoch]).await?;
++    for row in rows {
++        let delegation: Delegation = serde_json::from_value(row.get(0))
++            .map_err(|_| err(ErrorCode::TemporarilyUnavailable))?;
++        if delegation.families.iter().any(|f| f == family) {
++            return Ok(delegation);
++        }
++    }
++    Err(err(ErrorCode::Unauthorized))
++}
++pub(super) async fn authorize(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    mission: Uuid,
++) -> Result<()> {
++    if matches!(
++        envelope.command,
++        Command::ProposeOutcome { .. }
++            | Command::BindVerification { .. }
++            | Command::VerifyProduction { .. }
++            | Command::VerifyResearch { .. }
++    ) {
++        return outcomes::authorize(tx, actor, envelope).await;
++    }
++    if matches!(envelope.command, Command::ProposeSource { .. }) {
++        return Ok(());
++    }
++    if actor.role == Role::Owner {
++        return Ok(());
++    }
++    if actor.role != Role::Lead || matches!(envelope.command, Command::AdmitDelegation { .. }) {
++        return Err(err(ErrorCode::Unauthorized));
++    }
++    let delegation = admitted(tx, actor, envelope, mission).await?;
++    let (_, _, current) = strategy::current(tx, envelope.task).await?;
++    let counts=tx.query_one("SELECT (SELECT count(*) FROM contract_intents i JOIN contract_work w ON w.id=i.work_id WHERE w.task_id=$1),(SELECT count(*) FROM contract_plans WHERE task_id=$1)",&[&envelope.task]).await?;
++    // A replay is still a current authority decision. Owner amendments may
++    // exceed an earlier delegation, but they cannot silently enlarge it.
++    if counts.get::<_, i64>(0) > delegation.max_intents
++        || counts.get::<_, i64>(1) > delegation.max_plans
++        || !strategy::within(&current.resources, &delegation.resources)
++        || current
++            .allowed_effects
++            .iter()
++            .any(|e| !delegation.effects.contains(e))
++    {
++        return Err(err(ErrorCode::Unauthorized));
++    }
++    match &envelope.command {
++        Command::AdmitIntent { work, intent, .. } => {
++            // Outcome, acceptance and authority expansion always need Owner.
++            if work != &delegation.work
++                || intent.objective != current.objective
++                || intent.acceptance != current.acceptance
++                || intent.legacy_spec_digest != current.legacy_spec_digest
++                || current
++                    .constraints
++                    .iter()
++                    .any(|c| !intent.constraints.contains(c))
++                || intent.allowed_effects.iter().any(|e| {
++                    !current.allowed_effects.contains(e) || !delegation.effects.contains(e)
++                })
++                || !strategy::within(&intent.resources, &current.resources)
++                || !strategy::within(&intent.resources, &delegation.resources)
++            {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++        }
++        Command::AdmitPlan { plan } => {
++            if plan
++                .allowed_effects
++                .iter()
++                .any(|e| !delegation.effects.contains(e))
++                || !strategy::within(&plan.resources, &delegation.resources)
++            {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++        }
++        _ => {}
++    }
++    Ok(())
++}
++pub(super) async fn check_limit(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    intent: bool,
++) -> Result<()> {
++    if actor.role == Role::Owner {
++        return Ok(());
++    }
++    let mission: Uuid = tx
++        .query_one(
++            "SELECT mission_id FROM tasks WHERE id=$1",
++            &[&envelope.task],
++        )
++        .await?
++        .get(0);
++    let delegation = admitted(tx, actor, envelope, mission).await?;
++    let count: i64 = if intent {
++        tx.query_one("SELECT count(*) FROM contract_intents i JOIN contract_work w ON w.id=i.work_id WHERE w.task_id=$1",&[&envelope.task]).await?.get(0)
++    } else {
++        tx.query_one(
++            "SELECT count(*) FROM contract_plans WHERE task_id=$1",
++            &[&envelope.task],
++        )
++        .await?
++        .get(0)
++    };
++    if count
++        >= if intent {
++            delegation.max_intents
++        } else {
++            delegation.max_plans
++        }
++    {
++        return Err(err(ErrorCode::BudgetExhausted));
++    }
++    Ok(())
++}
++pub(super) async fn admit(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    mission: Uuid,
++    revision: i64,
++    delegation: &Delegation,
++) -> Result<Value> {
++    actor.owner()?;
++    let (_, _, intent) = strategy::current(tx, envelope.task).await?;
++    validate_work(&delegation.work)?;
++    let work_id = crate::validation::digest(&delegation.work)?;
++    if delegation.role_epoch <= 0
++        || delegation.max_intents < 1
++        || delegation.max_plans < 1
++        || !(1..=86400).contains(&delegation.expires_in_seconds)
++        || delegation.families.is_empty()
++        || !unique(&delegation.families)
++        || delegation.families.iter().any(|f| {
++            ![
++                "intent.admit",
++                "plan.admit",
++                "dependency.revalidate",
++                "outcome.accept",
++            ]
++            .contains(&f.as_str())
++        })
++        || !unique(&delegation.effects)
++        || delegation
++            .effects
++            .iter()
++            .any(|e| !intent.allowed_effects.contains(e))
++        || !strategy::within(&delegation.resources, &intent.resources)
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    if !tx.query_one("SELECT EXISTS(SELECT 1 FROM contract_work w JOIN mission_leads l ON l.mission_id=w.mission_id WHERE w.id=$1 AND w.task_id=$2 AND l.principal_id=$3 AND l.generation=$4)",&[&work_id,&envelope.task,&delegation.principal,&delegation.role_epoch]).await?.get::<_,bool>(0) {return Err(err(ErrorCode::StaleGeneration));}
++    if tx
++        .query_opt(
++            "SELECT id FROM contract_delegations WHERE id=$1",
++            &[&delegation.id],
++        )
++        .await?
++        .is_some()
++    {
++        return Err(err(ErrorCode::IdempotencyConflict));
++    }
++    tx.execute("INSERT INTO contract_delegations(id,task_id,mission_id,principal_id,role_epoch,work_id,delegation,by_principal,recovery_epoch,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,clock_timestamp()+($10::bigint*interval '1 second'))",&[&delegation.id,&envelope.task,&mission,&delegation.principal,&delegation.role_epoch,&work_id,&serde_json::to_value(delegation).map_err(|_|err(ErrorCode::InvalidArgument))?,&actor.principal,&envelope.recovery_epoch,&delegation.expires_in_seconds]).await?;
++    tx.execute(
++        "UPDATE contract_current SET revision=$2 WHERE task_id=$1",
++        &[&envelope.task, &(revision + 1)],
++    )
++    .await?;
++    Ok(
++        json!({"schema_version":2,"disposition":"applied","revision":revision+1,"delegation":delegation.id}),
++    )
++}
+diff --git a/crates/team-control-plane/src/contracts/dependencies.rs b/crates/team-control-plane/src/contracts/dependencies.rs
+new file mode 100644
+index 0000000..d856044
+--- /dev/null
++++ b/crates/team-control-plane/src/contracts/dependencies.rs
+@@ -0,0 +1,121 @@
++//! Exact prerequisite proofs suspend fresh grants only on Broker admission.
++//! Previously recorded operations retain their receipts and reconciliation seam.
++use super::*;
++pub(super) async fn validate(
++    tx: &Transaction<'_>,
++    task: Uuid,
++    dependencies: &[Dependency],
++) -> Result<()> {
++    if dependencies.len() > 128 {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    let mut seen = std::collections::BTreeSet::new();
++    for dependency in dependencies {
++        validate_work(&dependency.work)?;
++        let work = crate::validation::digest(&dependency.work)?;
++        if !seen.insert(work.clone())
++            || !digest(&dependency.intent)
++            || !digest(&dependency.accepted_subject)
++            || !text(&dependency.policy)
++        {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        let row=tx.query_opt("SELECT w.task_id,o.intent_id,o.policy,c.intent_id FROM contract_work w JOIN contract_outcomes o ON o.task_id=w.task_id JOIN contract_current c ON c.task_id=w.task_id WHERE w.id=$1 AND o.subject=$2",&[&work,&dependency.accepted_subject]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++        let prerequisite: Uuid = row.get(0);
++        if prerequisite == task
++            || row.get::<_, String>(1) != dependency.intent
++            || row.get::<_, String>(3) != dependency.intent
++            || row.get::<_, String>(2) != dependency.policy
++        {
++            return Err(err(ErrorCode::DependencyUnmet));
++        }
++        let cycle:bool=tx.query_one("WITH RECURSIVE reachable(task_id) AS (SELECT $1::uuid UNION SELECT w.task_id FROM reachable r JOIN contract_dependencies d ON d.task_id=r.task_id JOIN contract_work w ON w.id=d.prerequisite_work) SELECT EXISTS(SELECT 1 FROM reachable WHERE task_id=$2)",&[&prerequisite,&task]).await?.get(0);
++        if cycle {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++    }
++    Ok(())
++}
++pub(super) async fn replace(
++    tx: &Transaction<'_>,
++    task: Uuid,
++    dependencies: &[Dependency],
++) -> Result<()> {
++    tx.execute(
++        "DELETE FROM contract_dependencies WHERE task_id=$1",
++        &[&task],
++    )
++    .await?;
++    for dependency in dependencies {
++        let work = crate::validation::digest(&dependency.work)?;
++        tx.execute("INSERT INTO contract_dependencies(task_id,prerequisite_work,intent_id,accepted_subject,policy,disposition) VALUES($1,$2,$3,$4,$5,'active')",&[&task,&work,&dependency.intent,&dependency.accepted_subject,&dependency.policy]).await?;
++    }
++    Ok(())
++}
++pub(super) async fn supersede(tx: &Transaction<'_>, work: &str, intent: &str) -> Result<()> {
++    // No source event/proposal calls this. Historical outcome and receipt rows
++    // stay immutable, even while their dependency projections become suspended.
++    let changed=tx.query("UPDATE contract_dependencies SET disposition='suspended' WHERE prerequisite_work=$1 AND intent_id<>$2 AND disposition='active' RETURNING task_id",&[&work,&intent]).await?;
++    for row in changed {
++        tx.execute(
++            "UPDATE contract_current SET revision=revision+1 WHERE task_id=$1",
++            &[&row.get::<_, Uuid>(0)],
++        )
++        .await?;
++    }
++    Ok(())
++}
++pub(super) async fn revalidate(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    revision: i64,
++    intent: &str,
++    dependencies: &[Dependency],
++) -> Result<Value> {
++    let (current, _, _) = strategy::current(tx, envelope.task).await?;
++    if current != intent {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    let old = tx
++        .query(
++            "SELECT prerequisite_work,policy FROM contract_dependencies WHERE task_id=$1",
++            &[&envelope.task],
++        )
++        .await?;
++    if old.len() != dependencies.len() {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    for dependency in dependencies {
++        let work = crate::validation::digest(&dependency.work)?;
++        if !old
++            .iter()
++            .any(|r| r.get::<_, String>(0) == work && r.get::<_, String>(1) == dependency.policy)
++        {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++    }
++    validate(tx, envelope.task, dependencies).await?;
++    let id = crate::validation::digest(&(envelope.task, intent, dependencies, revision))?;
++    tx.execute("INSERT INTO contract_dependency_revalidations(id,task_id,intent_id,dependencies,principal_id,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6)",&[&id,&envelope.task,&intent,&serde_json::to_value(dependencies).map_err(|_|err(ErrorCode::InvalidArgument))?,&actor.principal,&envelope.recovery_epoch]).await?;
++    replace(tx, envelope.task, dependencies).await?;
++    tx.execute(
++        "UPDATE contract_current SET revision=$2 WHERE task_id=$1",
++        &[&envelope.task, &(revision + 1)],
++    )
++    .await?;
++    Ok(json!({"schema_version":2,"disposition":"applied","revision":revision+1,"revalidation":id}))
++}
++pub(crate) async fn fresh_grant(tx: &Transaction<'_>, task: Uuid) -> Result<()> {
++    let Some(row)=tx.query_opt("SELECT c.admission_open,i.intent,t.spec_digest FROM contract_current c JOIN contract_intents i ON i.id=c.intent_id JOIN tasks t ON t.id=c.task_id WHERE c.task_id=$1",&[&task]).await? else {return Ok(());};
++    let intent: IntentRevision =
++        serde_json::from_value(row.get(1)).map_err(|_| err(ErrorCode::TemporarilyUnavailable))?;
++    if !row.get::<_, bool>(0) || row.get::<_, String>(2) != intent.legacy_spec_digest {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    let closed:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM contract_dependencies d JOIN contract_work w ON w.id=d.prerequisite_work JOIN contract_current c ON c.task_id=w.task_id WHERE d.task_id=$1 AND (d.disposition<>'active' OR d.intent_id<>c.intent_id)) OR EXISTS(SELECT 1 FROM contract_outcomes o JOIN contract_current c ON c.intent_id=o.intent_id WHERE c.task_id=$1)",&[&task]).await?.get(0);
++    if closed {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    Ok(())
++}
+diff --git a/crates/team-control-plane/src/contracts/outcomes.rs b/crates/team-control-plane/src/contracts/outcomes.rs
+new file mode 100644
+index 0000000..b6f649d
+--- /dev/null
++++ b/crates/team-control-plane/src/contracts/outcomes.rs
+@@ -0,0 +1,423 @@
++//! v2 proof bindings retain v1 ArtifactService identities. Production requires
++//! a pre-execution exact binding and the existing independent monitor evidence.
++use super::*;
++use crate::artifacts::ArtifactService;
++
++fn service(service: Option<&ArtifactService>) -> Result<&ArtifactService> {
++    service.ok_or_else(|| err(ErrorCode::TemporarilyUnavailable))
++}
++fn expected(
++    intent: &str,
++    acceptance: &str,
++    policy: &str,
++    environment: &str,
++    current: &(String, String, IntentRevision),
++) -> Result<()> {
++    if intent != current.0
++        || acceptance != current.1
++        || policy != current.2.acceptance.policy
++        || environment != current.2.acceptance.environment
++    {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    Ok(())
++}
++pub(super) async fn authorize(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++) -> Result<()> {
++    match &envelope.command {
++        Command::ProposeOutcome { .. } => {
++            if !matches!(actor.role, Role::Owner | Role::Lead | Role::Worker) {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++        }
++        Command::BindVerification { .. }
++        | Command::VerifyProduction { .. }
++        | Command::VerifyResearch { .. } => {
++            let (_, _, intent) = strategy::current(tx, envelope.task).await?;
++            if actor.role != Role::Verifier || actor.principal != intent.acceptance.verifier {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++        }
++        _ => return Err(err(ErrorCode::Unauthorized)),
++    }
++    Ok(())
++}
++pub(super) async fn apply(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    revision: i64,
++    artifacts: Option<&ArtifactService>,
++) -> Result<Value> {
++    let current = strategy::current(tx, envelope.task).await?;
++    match &envelope.command {
++        Command::ProposeOutcome {
++            intent,
++            evidence,
++            negative,
++            evaluator_change,
++        } => {
++            if intent != &current.0 {
++                return Err(err(ErrorCode::StaleRevision));
++            }
++            service(artifacts)?
++                .reference(tx, evidence, crate::artifacts::ReferenceFault::None)
++                .await?;
++            let proposal = json!({"intent":intent,"evidence":evidence,"negative":negative,"evaluator_change":evaluator_change});
++            let id = crate::validation::digest(&(envelope.task, actor.principal, &proposal))?;
++            tx.execute("INSERT INTO contract_proposals(id,task_id,principal_id,proposal,recovery_epoch) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING",&[&id,&envelope.task,&actor.principal,&proposal,&envelope.recovery_epoch]).await?;
++            Ok(
++                json!({"schema_version":2,"disposition":"proposed","revision":revision,"proposal":id}),
++            )
++        }
++        Command::BindVerification {
++            episode,
++            intent,
++            acceptance,
++            policy,
++            environment,
++        } => {
++            expected(intent, acceptance, policy, environment, &current)?;
++            if current.2.acceptance.outcome != Outcome::Production {
++                return Err(err(ErrorCode::DependencyUnmet));
++            }
++            let bound_contract = &current.2.acceptance;
++            let stored_policy=tx.query_opt("SELECT verifier,suite,environment,mandatory_commands FROM artifact_policies WHERE task_id=$1",&[&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++            if stored_policy.get::<_, Uuid>(0) != bound_contract.verifier
++                || stored_policy.get::<_, String>(1) != bound_contract.suite
++                || stored_policy.get::<_, String>(2) != bound_contract.environment
++                || stored_policy.get::<_, Value>(3)
++                    != serde_json::to_value(&bound_contract.mandatory_commands)
++                        .map_err(|_| err(ErrorCode::InvalidArgument))?
++            {
++                return Err(err(ErrorCode::StaleRevision));
++            }
++            // Binding a finished or already allocated episode would wrap an old
++            // v1 proof. Bind before any independently measured execution exists.
++            let eligible:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes e JOIN tasks t ON t.id=e.task_id JOIN kernel_verification_requirements r ON r.task_id=t.id WHERE e.id=$1 AND e.task_id=$2 AND e.principal_id=$3 AND e.role='verifier' AND e.purpose='verification' AND e.state='admitted' AND e.task_generation=t.generation AND e.recovery_epoch=$4 AND r.recovery_epoch=$4 AND e.deadline>clock_timestamp() AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND NOT EXISTS(SELECT 1 FROM contract_verification_bindings b WHERE b.episode_id=e.id))",&[&episode,&envelope.task,&actor.principal,&envelope.recovery_epoch]).await?.get(0);
++            if !eligible {
++                return Err(err(ErrorCode::DependencyUnmet));
++            }
++            let id = crate::validation::digest(&(
++                envelope.task,
++                episode,
++                intent,
++                acceptance,
++                policy,
++                environment,
++                actor.principal,
++                envelope.recovery_epoch,
++            ))?;
++            tx.execute("INSERT INTO contract_verification_bindings(id,task_id,episode_id,intent_id,acceptance_id,verifier,policy,environment,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",&[&id,&envelope.task,episode,intent,acceptance,&actor.principal,policy,environment,&envelope.recovery_epoch]).await?;
++            bump(tx, envelope.task, revision).await?;
++            Ok(
++                json!({"schema_version":2,"disposition":"applied","revision":revision+1,"binding":id}),
++            )
++        }
++        Command::VerifyProduction {
++            binding,
++            candidate,
++            report,
++        } => {
++            let evidence = json!({"binding":binding,"candidate":candidate,"report":report});
++            production_evidence(
++                tx,
++                envelope.task,
++                &current,
++                actor.principal,
++                &evidence,
++                service(artifacts)?,
++            )
++            .await?;
++            persist_proof(
++                tx,
++                actor,
++                envelope,
++                revision,
++                &current,
++                "production",
++                evidence,
++            )
++            .await
++        }
++        Command::VerifyResearch {
++            intent,
++            acceptance,
++            proposal,
++            policy,
++            environment,
++        } => {
++            expected(intent, acceptance, policy, environment, &current)?;
++            let evidence = json!({"proposal":proposal});
++            research_evidence(
++                tx,
++                envelope.task,
++                &current,
++                actor.principal,
++                &evidence,
++                service(artifacts)?,
++            )
++            .await?;
++            persist_proof(
++                tx,
++                actor,
++                envelope,
++                revision,
++                &current,
++                "investigation_complete",
++                evidence,
++            )
++            .await
++        }
++        Command::AcceptOutcome { proof } => {
++            let row=tx.query_opt("SELECT intent_id,acceptance_id,verifier,outcome,evidence FROM contract_proofs WHERE id=$1 AND task_id=$2",&[proof,&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++            let intent: String = row.get(0);
++            let acceptance: String = row.get(1);
++            let verifier: Uuid = row.get(2);
++            let outcome: String = row.get(3);
++            let evidence: Value = row.get(4);
++            if intent != current.0
++                || acceptance != current.1
++                || verifier != current.2.acceptance.verifier
++            {
++                return Err(err(ErrorCode::StaleRevision));
++            }
++            if actor.principal == verifier {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++            if outcome == "production" {
++                production_evidence(
++                    tx,
++                    envelope.task,
++                    &current,
++                    verifier,
++                    &evidence,
++                    service(artifacts)?,
++                )
++                .await?;
++            } else {
++                research_evidence(
++                    tx,
++                    envelope.task,
++                    &current,
++                    verifier,
++                    &evidence,
++                    service(artifacts)?,
++                )
++                .await?;
++            }
++            if tx
++                .query_opt(
++                    "SELECT subject FROM contract_outcomes WHERE task_id=$1 AND intent_id=$2",
++                    &[&envelope.task, &current.0],
++                )
++                .await?
++                .is_some()
++            {
++                return Err(err(ErrorCode::StaleRevision));
++            }
++            let subject = crate::validation::digest(&(
++                envelope.task,
++                &current.0,
++                &current.1,
++                proof,
++                &outcome,
++                &current.2.acceptance.policy,
++            ))?;
++            tx.execute("INSERT INTO contract_outcomes(subject,task_id,intent_id,proof_id,outcome,policy,by_principal,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8)",&[&subject,&envelope.task,&current.0,proof,&outcome,&current.2.acceptance.policy,&actor.principal,&envelope.recovery_epoch]).await?;
++            if outcome == "production" {
++                let report = evidence["report"]
++                    .as_str()
++                    .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
++                tx.execute(
++                    "UPDATE artifact_current SET accepted_report=$2 WHERE task_id=$1",
++                    &[&envelope.task, &report],
++                )
++                .await?;
++                let legacy_revision:i64=tx.query_one("UPDATE tasks SET status='accepted',revision=revision+1 WHERE id=$1 RETURNING revision",&[&envelope.task]).await?.get(0);
++                let event = Uuid::new_v4();
++                tx.execute("INSERT INTO events(id,aggregate_kind,aggregate_id,sequence,version,principal_id,transaction_id,kind,payload) VALUES($1,'task',$2,$3,1,$4,txid_current(),'task.accept.v2',$5)",&[&event,&envelope.task,&legacy_revision,&actor.principal,&json!({"intent":current.0,"acceptance":current.1,"proof":proof,"subject":subject})]).await?;
++            }
++            bump(tx, envelope.task, revision).await?;
++            Ok(
++                json!({"schema_version":2,"disposition":"applied","revision":revision+1,"subject":subject,"proof":proof,"outcome":outcome}),
++            )
++        }
++        _ => Err(err(ErrorCode::InvalidArgument)),
++    }
++}
++async fn bump(tx: &Transaction<'_>, task: Uuid, revision: i64) -> Result<()> {
++    tx.execute(
++        "UPDATE contract_current SET revision=$2 WHERE task_id=$1",
++        &[&task, &(revision + 1)],
++    )
++    .await?;
++    Ok(())
++}
++async fn persist_proof(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    revision: i64,
++    current: &(String, String, IntentRevision),
++    outcome: &str,
++    evidence: Value,
++) -> Result<Value> {
++    let id = crate::validation::digest(&(
++        envelope.task,
++        &current.0,
++        &current.1,
++        actor.principal,
++        outcome,
++        &evidence,
++    ))?;
++    if tx
++        .query_opt("SELECT id FROM contract_proofs WHERE id=$1", &[&id])
++        .await?
++        .is_some()
++    {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    tx.execute("INSERT INTO contract_proofs(id,task_id,intent_id,acceptance_id,verifier,outcome,evidence) VALUES($1,$2,$3,$4,$5,$6,$7)",&[&id,&envelope.task,&current.0,&current.1,&actor.principal,&outcome,&evidence]).await?;
++    bump(tx, envelope.task, revision).await?;
++    Ok(
++        json!({"schema_version":2,"disposition":"applied","revision":revision+1,"proof":id,"outcome":outcome}),
++    )
++}
++async fn research_evidence(
++    tx: &Transaction<'_>,
++    task: Uuid,
++    current: &(String, String, IntentRevision),
++    verifier: Uuid,
++    evidence: &Value,
++    artifacts: &ArtifactService,
++) -> Result<()> {
++    if current.2.acceptance.outcome != Outcome::InvestigationComplete {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    let proposal = evidence["proposal"]
++        .as_str()
++        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
++    let row = tx
++        .query_opt(
++            "SELECT principal_id,proposal FROM contract_proposals WHERE id=$1 AND task_id=$2",
++            &[&proposal, &task],
++        )
++        .await?
++        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
++    let body: Value = row.get(1);
++    if row.get::<_, Uuid>(0) == verifier
++        || verifier != current.2.acceptance.verifier
++        || body["intent"] != current.0
++        || body["evaluator_change"] != false
++        || (body["negative"] == true && !current.2.acceptance.allow_negative)
++    {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    artifacts.store().read(
++        body["evidence"]
++            .as_str()
++            .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
++    )?;
++    Ok(())
++}
++async fn production_evidence(
++    tx: &Transaction<'_>,
++    task: Uuid,
++    current: &(String, String, IntentRevision),
++    verifier: Uuid,
++    evidence: &Value,
++    artifacts: &ArtifactService,
++) -> Result<()> {
++    if current.2.acceptance.outcome != Outcome::Production {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    let binding = evidence["binding"]
++        .as_str()
++        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
++    let candidate = evidence["candidate"]
++        .as_str()
++        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
++    let report = evidence["report"]
++        .as_str()
++        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
++    let bound=tx.query_opt("SELECT b.episode_id,b.intent_id,b.acceptance_id,b.policy,b.environment FROM contract_verification_bindings b JOIN kernel_verification_requirements r ON r.task_id=b.task_id WHERE b.id=$1 AND b.task_id=$2 AND b.verifier=$3 AND b.recovery_epoch=(SELECT active_epoch FROM deployment) AND r.recovery_epoch=b.recovery_epoch",&[&binding,&task,&verifier]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++    expected(
++        &bound.get::<_, String>(1),
++        &bound.get::<_, String>(2),
++        &bound.get::<_, String>(3),
++        &bound.get::<_, String>(4),
++        current,
++    )?;
++    let (subject, verification, origin) = artifacts.verify_evidence(tx, candidate, report).await?;
++    let acceptance = &current.2.acceptance;
++    let exact:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id WHERE a.task_id=$1 AND a.candidate_id=$2 AND c.implementer<>$3)",&[&task,&candidate,&verifier]).await?.get(0);
++    if !exact
++        || origin != verifier
++        || subject.spec_digest != current.2.legacy_spec_digest
++        || verification.suite != acceptance.suite
++        || verification.environment != acceptance.environment
++        || !verification.resolved_decisions
++        || !subject.risks.is_empty()
++        || verification.checks.iter().any(|c| c.exit_code != 0)
++        || acceptance
++            .mandatory_commands
++            .iter()
++            .any(|c| !verification.checks.iter().any(|check| &check.command == c))
++    {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    let episode: Uuid = bound.get(0);
++    for check in &verification.checks {
++        let bytes = artifacts.store().read(&check.logs)?;
++        let measured: Value =
++            serde_json::from_slice(&bytes).map_err(|_| err(ErrorCode::DependencyUnmet))?;
++        let execution: Uuid =
++            serde_json::from_value(measured["trusted_monitor_result"]["execution"].clone())
++                .map_err(|_| err(ErrorCode::DependencyUnmet))?;
++        if !tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=$1 AND x.episode_id=$2 AND x.task_id=$3 AND x.principal_id=$4 AND x.role='verifier')",&[&execution,&episode,&task,&verifier]).await?.get::<_,bool>(0) {return Err(err(ErrorCode::DependencyUnmet));}
++    }
++    Ok(())
++}
++pub(super) async fn replay(
++    tx: &Transaction<'_>,
++    envelope: &Envelope,
++    artifacts: Option<&ArtifactService>,
++) -> Result<()> {
++    let proof = match &envelope.command {
++        Command::AcceptOutcome { proof } => Some(proof.as_str()),
++        _ => None,
++    };
++    if let Some(proof) = proof {
++        let row=tx.query_opt("SELECT verifier,outcome,evidence,intent_id,acceptance_id FROM contract_proofs WHERE id=$1 AND task_id=$2",&[&proof,&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++        let current = strategy::current(tx, envelope.task).await?;
++        if row.get::<_, String>(3) != current.0 || row.get::<_, String>(4) != current.1 {
++            return Err(err(ErrorCode::StaleRevision));
++        }
++        if row.get::<_, String>(1) == "production" {
++            production_evidence(
++                tx,
++                envelope.task,
++                &current,
++                row.get(0),
++                &row.get(2),
++                service(artifacts)?,
++            )
++            .await?;
++        } else {
++            research_evidence(
++                tx,
++                envelope.task,
++                &current,
++                row.get(0),
++                &row.get(2),
++                service(artifacts)?,
++            )
++            .await?;
++        }
++    }
++    Ok(())
++}
+diff --git a/crates/team-control-plane/src/contracts/strategy.rs b/crates/team-control-plane/src/contracts/strategy.rs
+new file mode 100644
+index 0000000..7193fec
+--- /dev/null
++++ b/crates/team-control-plane/src/contracts/strategy.rs
+@@ -0,0 +1,175 @@
++//! Declarative Plan admission only; this module never evaluates or runs code.
++use super::*;
++use std::collections::{BTreeMap, BTreeSet};
++
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Step {
++    pub id: String,
++    pub kind: String,
++    pub depends_on: Vec<String>,
++    pub join: String,
++    pub effects: Vec<String>,
++    pub max_iterations: i64,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct PlanRevision {
++    pub schema_version: u32,
++    pub interpreter_version: String,
++    pub intent: String,
++    pub acceptance: String,
++    pub allowed_effects: Vec<String>,
++    pub resources: Resources,
++    pub max_repairs: i64,
++    pub steps: Vec<Step>,
++}
++pub(super) fn within(actual: &Resources, limit: &Resources) -> bool {
++    actual.attempts > 0
++        && actual.episodes > 0
++        && actual.repairs >= 0
++        && actual.execution_seconds > 0
++        && actual.attempts <= limit.attempts
++        && actual.episodes <= limit.episodes
++        && actual.repairs <= limit.repairs
++        && actual.execution_seconds <= limit.execution_seconds
++}
++pub(super) async fn current(
++    tx: &Transaction<'_>,
++    task: Uuid,
++) -> Result<(String, String, IntentRevision)> {
++    let row=tx.query_opt("SELECT i.id,i.acceptance_id,i.intent FROM contract_current c JOIN contract_intents i ON i.id=c.intent_id WHERE c.task_id=$1 AND c.admission_open",&[&task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++    Ok((
++        row.get(0),
++        row.get(1),
++        serde_json::from_value(row.get(2)).map_err(|_| err(ErrorCode::TemporarilyUnavailable))?,
++    ))
++}
++fn validate(plan: &PlanRevision) -> Result<()> {
++    if plan.schema_version != 1
++        || plan.interpreter_version != "declarative-v1"
++        || plan.steps.is_empty()
++        || plan.steps.len() > 128
++        || plan.allowed_effects.is_empty()
++        || !unique(&plan.allowed_effects)
++        || plan.max_repairs < 0
++        || plan.max_repairs > plan.resources.repairs
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    let mut steps = BTreeMap::new();
++    for step in &plan.steps {
++        if !text(&step.id)
++            || step.id.len() > 128
++            || steps.insert(&step.id, step).is_some()
++            || !["action", "join", "loop", "repair"].contains(&step.kind.as_str())
++            || !["all", "any"].contains(&step.join.as_str())
++            || !unique(&step.depends_on)
++            || !unique(&step.effects)
++            || step
++                .effects
++                .iter()
++                .any(|e| !plan.allowed_effects.contains(e))
++            || step.max_iterations <= 0
++            || step.max_iterations > 128
++            || (step.kind != "loop" && step.max_iterations != 1)
++            || (step.kind == "repair" && plan.max_repairs == 0)
++            || (step.kind == "join" && (step.depends_on.is_empty() || !step.effects.is_empty()))
++        {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++    }
++    let mut completed = BTreeSet::new();
++    loop {
++        let before = completed.len();
++        for step in &plan.steps {
++            if step.depends_on.iter().any(|id| !steps.contains_key(id)) {
++                return Err(err(ErrorCode::InvalidArgument));
++            }
++            if step.depends_on.iter().all(|id| completed.contains(id)) {
++                completed.insert(step.id.clone());
++            }
++        }
++        if completed.len() == plan.steps.len() {
++            return Ok(());
++        }
++        if completed.len() == before {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++    }
++}
++pub(super) async fn admit(
++    tx: &Transaction<'_>,
++    actor: &auth::Actor,
++    envelope: &Envelope,
++    revision: i64,
++    plan: &PlanRevision,
++) -> Result<Value> {
++    validate(plan)?;
++    let (intent_id, acceptance_id, intent) = current(tx, envelope.task).await?;
++    if plan.intent != intent_id || plan.acceptance != acceptance_id {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    if plan
++        .allowed_effects
++        .iter()
++        .any(|e| !intent.allowed_effects.contains(e))
++    {
++        return Err(err(ErrorCode::Unauthorized));
++    }
++    if !within(&plan.resources, &intent.resources) {
++        return Err(err(ErrorCode::BudgetExhausted));
++    }
++    if let Some(row)=tx.query_opt("SELECT p.plan FROM contract_current c JOIN contract_plans p ON p.id=c.plan_id WHERE c.task_id=$1",&[&envelope.task]).await? {
++        let previous:PlanRevision=serde_json::from_value(row.get(0)).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?;
++        if !within(&plan.resources,&previous.resources) || plan.max_repairs>previous.max_repairs {return Err(err(ErrorCode::BudgetExhausted));}
++        if plan.allowed_effects.iter().any(|e|!previous.allowed_effects.contains(e)) {return Err(err(ErrorCode::Unauthorized));}
++    }
++    // All earlier consumed steps survive strategy replacement. Their meaning
++    // cannot depend on the latest plan or on a replaced interpreter.
++    for row in tx
++        .query(
++            "SELECT step_id,step FROM contract_completed_steps WHERE task_id=$1",
++            &[&envelope.task],
++        )
++        .await?
++    {
++        let id: String = row.get(0);
++        let stored: Value = row.get(1);
++        if plan
++            .steps
++            .iter()
++            .find(|s| s.id == id)
++            .and_then(|s| serde_json::to_value(s).ok())
++            .as_ref()
++            != Some(&stored)
++        {
++            return Err(err(ErrorCode::StaleRevision));
++        }
++    }
++    authority::check_limit(tx, actor, envelope, false).await?;
++    let id = crate::validation::digest(&(envelope.task, plan))?;
++    if tx
++        .query_opt("SELECT id FROM contract_plans WHERE id=$1", &[&id])
++        .await?
++        .is_some()
++    {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    let version: i64 = tx
++        .query_one(
++            "SELECT count(*)+1 FROM contract_plans WHERE task_id=$1",
++            &[&envelope.task],
++        )
++        .await?
++        .get(0);
++    tx.execute("INSERT INTO contract_plans(id,task_id,intent_id,acceptance_id,admitted_version,plan,principal_id,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8)",&[&id,&envelope.task,&intent_id,&acceptance_id,&version,&serde_json::to_value(plan).map_err(|_|err(ErrorCode::InvalidArgument))?,&actor.principal,&envelope.recovery_epoch]).await?;
++    tx.execute(
++        "UPDATE contract_current SET revision=$2,plan_id=$3 WHERE task_id=$1",
++        &[&envelope.task, &(revision + 1), &id],
++    )
++    .await?;
++    Ok(
++        json!({"schema_version":2,"disposition":"applied","revision":revision+1,"plan":id,"admitted_version":version}),
++    )
++}
+diff --git a/crates/team-control-plane/tests/intent_contracts.rs b/crates/team-control-plane/tests/intent_contracts.rs
+new file mode 100644
+index 0000000..d92540b
+--- /dev/null
++++ b/crates/team-control-plane/tests/intent_contracts.rs
+@@ -0,0 +1,1022 @@
++//! Public JSON contract tests: removing admission or its immutable persistence
++//! must fail observable HTTP results and durable reads on real PostgreSQL.
++#[allow(dead_code)]
++#[path = "support/assembled.rs"]
++mod assembled;
++use assembled::Fixture;
++use serde_json::{Value, json};
++use team_control_plane::{artifacts, http};
++use uuid::Uuid;
++
++struct Api {
++    fixture: Fixture,
++    client: reqwest::Client,
++    url: String,
++    server: tokio::task::JoinHandle<()>,
++}
++impl Api {
++    fn command(&self, key: &str, revision: i64, command: Value) -> Value {
++        json!({"schema_version":2,"key":key,"expected_revision":revision,"recovery_epoch":self.fixture.epoch,"task":self.fixture.task,"command":command})
++    }
++    async fn new() -> Self {
++        let fixture = Fixture::without_requirement().await;
++        println!(
++            "postgres_fixture {}",
++            json!({"dsn":std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),"epoch":fixture.epoch})
++        );
++        Self::from_fixture(fixture).await
++    }
++    async fn measured() -> Self {
++        Self::from_fixture(Fixture::new().await).await
++    }
++    async fn from_fixture(fixture: Fixture) -> Self {
++        let service = artifacts::ArtifactService::open(
++            fixture.broker.clone(),
++            &fixture.root.join("artifacts"),
++        )
++        .await
++        .unwrap();
++        let router = http::router_with_artifacts(fixture.broker.clone(), service);
++        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
++        let url = format!("http://{}", listener.local_addr().unwrap());
++        let server = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
++        Self {
++            fixture,
++            client: reqwest::Client::new(),
++            url,
++            server,
++        }
++    }
++    fn admission(&self, key: &str, revision: i64) -> Value {
++        let snapshot = b"produce exact src/result";
++        json!({"schema_version":2,"key":key,"expected_revision":revision,
++            "recovery_epoch":self.fixture.epoch,"task":self.fixture.task,
++            "command":{"kind":"intent.admit",
++                "work":{"ledger":"git","deployment":"fixture-deployment","tenant":"fixture-tenant","project":"fixture-project","item":"26"},
++                "source":{"adapter":"git","locator":self.fixture.root.join("store/SPEC.md"),"revision":self.fixture.base,"availability":"available","snapshot":snapshot,"digest":"881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3"},
++                "intent":{"objective":"produce exact result","constraints":["owned fixture only"],"allowed_effects":["read","write"],
++                    "resources":{"attempts":8,"episodes":8,"repairs":3,"execution_seconds":30},
++                    "acceptance":{"outcome":"production","allow_negative":false,"criteria":["independent exact verification"],"verifier":self.fixture.verifier,"policy":"suite-v2","suite":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","mandatory_commands":[["true"]]},
++                    "dependencies":[],"legacy_spec_digest":self.fixture.spec}}})
++    }
++    async fn post(&self, token: &str, body: &Value) -> (u16, Value) {
++        let response = self
++            .client
++            .post(format!("{}/v2/contracts/commands", self.url))
++            .bearer_auth(token)
++            .json(body)
++            .send()
++            .await
++            .unwrap();
++        let status = response.status().as_u16();
++        let bytes = response.bytes().await.unwrap();
++        let value = serde_json::from_slice(&bytes)
++            .unwrap_or_else(|_| json!({"unparsed":String::from_utf8_lossy(&bytes)}));
++        println!(
++            "public_contract_response {}",
++            json!({"key":body["key"],"family":body["command"]["kind"],"task":body["task"],"status":status,"result":value})
++        );
++        (status, value)
++    }
++    async fn snapshot(&self) -> Value {
++        let response = self
++            .client
++            .get(format!(
++                "{}/v2/contracts/tasks/{}",
++                self.url, self.fixture.task
++            ))
++            .bearer_auth(&self.fixture.owner)
++            .send()
++            .await
++            .unwrap();
++        assert_eq!(response.status().as_u16(), 200);
++        response.json().await.unwrap()
++    }
++    async fn finish(self) {
++        self.server.abort();
++        self.fixture.finish().await;
++    }
++}
++
++#[tokio::test]
++async fn additive_upgrade_preserves_exact_legacy_specs_and_nullable_original_provenance() {
++    use team_control_plane::*;
++    let api = Api::new().await;
++    let lead_episode = api.fixture.lead_episode("legacy-null-attempt").await;
++    let supervisor = api.fixture.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-lead",
++            lead_episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let (db, connection) = tokio_postgres::connect(&api.fixture.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { connection.await.unwrap() });
++    let original:Value=db.query_one("SELECT jsonb_build_object('specs',(SELECT jsonb_agg(to_jsonb(s) ORDER BY digest) FROM task_specs s),'workspace',(SELECT to_jsonb(w) FROM supervised_workspaces w WHERE w.id=$1),'episode',(SELECT to_jsonb(e) FROM mailbox_episodes e WHERE e.id=$2),'execution',(SELECT to_jsonb(x) FROM episode_executions x WHERE x.execution_id=$1))",&[&execution.id,&lead_episode]).await.unwrap().get(0);
++    assert!(original["workspace"]["attempt_id"].is_null());
++    assert!(original["execution"]["attempt_id"].is_null());
++    assert!(original["episode"]["attempt_id"].is_null());
++    // Reconstruct an owned legacy deployment: only the empty v2 tables are
++    // removed. All actual original v1 provenance is retained unchanged.
++    db.batch_execute("DROP TABLE contract_schema_version,contract_legacy_bindings,contract_current,contract_work,contract_sources,contract_acceptance,contract_intents,contract_commands,contract_proposals,contract_delegations,contract_plans,contract_completed_steps,contract_verification_bindings,contract_proofs,contract_outcomes,contract_dependencies,contract_dependency_revalidations CASCADE").await.unwrap();
++    migrate(&api.fixture.dsn).await.unwrap();
++    migrate(&api.fixture.dsn).await.unwrap();
++    let retained:Value=db.query_one("SELECT jsonb_build_object('specs',(SELECT jsonb_agg(to_jsonb(s) ORDER BY digest) FROM task_specs s),'workspace',(SELECT to_jsonb(w) FROM supervised_workspaces w WHERE w.id=$1),'episode',(SELECT to_jsonb(e) FROM mailbox_episodes e WHERE e.id=$2),'execution',(SELECT to_jsonb(x) FROM episode_executions x WHERE x.execution_id=$1))",&[&execution.id,&lead_episode]).await.unwrap().get(0);
++    assert_eq!(
++        retained, original,
++        "migration must preserve every exact legacy binding and absent original Attempt"
++    );
++    let mapping:Value=db.query_one("SELECT jsonb_build_object('original_spec',original_spec,'disposition',disposition) FROM contract_legacy_bindings WHERE task_id=$1 AND spec_digest=$2",&[&api.fixture.task,&api.fixture.spec]).await.unwrap().get(0);
++    assert_eq!(mapping["original_spec"], original["specs"][0]);
++    assert_eq!(mapping["disposition"], "explicit_mapping_required");
++    let closed = api.snapshot().await;
++    assert_eq!(closed["admission_open"], false);
++    assert_eq!(closed["intents"], json!([]));
++    let mut ambiguous = api.admission("wrong-legacy-binding", 0);
++    ambiguous["command"]["intent"]["legacy_spec_digest"] =
++        json!("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
++    assert_eq!(
++        api.post(&api.fixture.owner, &ambiguous).await.1["code"],
++        "stale_revision"
++    );
++    assert_eq!(api.snapshot().await["admission_open"], false);
++    let admitted = api
++        .post(&api.fixture.owner, &api.admission("explicit-mapping", 0))
++        .await;
++    assert_eq!(admitted.0, 200);
++    assert!(
++        db.execute("UPDATE contract_intents SET intent='{}'::jsonb", &[])
++            .await
++            .is_err()
++    );
++    assert!(
++        db.execute("DELETE FROM contract_sources", &[])
++            .await
++            .is_err()
++    );
++    supervisor
++        .cancel("assembled-lead", execution.id)
++        .await
++        .unwrap();
++    supervisor
++        .reconcile("assembled-lead", execution.id)
++        .await
++        .unwrap();
++    supervisor
++        .release("assembled-lead", execution.id)
++        .await
++        .unwrap();
++    println!("migration_original_provenance {}", original);
++    api.finish().await;
++}
++
++impl Api {
++    async fn upload(&self, token: &str, bytes: &[u8]) -> String {
++        let digest = artifacts::sha256(bytes);
++        let response = self
++            .client
++            .post(format!("{}/v1/artifacts/objects", self.url))
++            .bearer_auth(token)
++            .json(&json!({"task":self.fixture.task,"digest":digest,"bytes":bytes}))
++            .send()
++            .await
++            .unwrap();
++        assert_eq!(
++            response.status().as_u16(),
++            200,
++            "real immutable evidence publication"
++        );
++        digest
++    }
++    async fn artifact(&self, token: &str, key: &str, command: Value) -> Value {
++        let snapshot: Value = self
++            .client
++            .get(format!(
++                "{}/v1/artifacts/tasks/{}",
++                self.url, self.fixture.task
++            ))
++            .bearer_auth(&self.fixture.owner)
++            .send()
++            .await
++            .unwrap()
++            .json()
++            .await
++            .unwrap();
++        let response=self.client.post(format!("{}/v1/artifacts/commands",self.url)).bearer_auth(token).json(&json!({"key":key,"task":self.fixture.task,"expected_revision":snapshot["revision"],"generation":1,"recovery_epoch":self.fixture.epoch,"command":command})).send().await.unwrap();
++        let status = response.status().as_u16();
++        let value: Value = response.json().await.unwrap();
++        assert_eq!(status, 200, "ArtifactService {key}: {value}");
++        value
++    }
++    async fn research_intent(&self, key: &str, revision: i64, source_revision: &str) -> Value {
++        let mut request = self.admission(key, revision);
++        request["command"]["source"]["revision"] = json!(source_revision);
++        request["command"]["intent"]["acceptance"]["outcome"] = json!("investigation_complete");
++        request["command"]["intent"]["acceptance"]["allow_negative"] = json!(true);
++        let result = self.post(&self.fixture.owner, &request).await;
++        assert_eq!(result.0, 200, "research admission: {}", result.1);
++        result.1
++    }
++    async fn accept_research(&self, intent: &Value, start: i64, key: &str) -> Value {
++        let evidence = self
++            .upload(
++                "assembled-worker",
++                b"retained investigation: no feasible candidate under admitted constraints",
++            )
++            .await;
++        let proposal=self.command(&format!("{key}-proposal"),start,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}));
++        let proposed = self.post("assembled-worker", &proposal).await;
++        assert_eq!(proposed.0, 200, "worker proposal: {}", proposed.1);
++        assert_eq!(proposed.1["disposition"], "proposed");
++        let verification=self.command(&format!("{key}-verify"),start,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
++        assert_eq!(
++            self.post("assembled-worker", &verification).await.0,
++            401,
++            "worker cannot manufacture verified outcome"
++        );
++        let verified = self.post("assembled-verifier", &verification).await;
++        assert_eq!(
++            verified.0, 200,
++            "independent research verification: {}",
++            verified.1
++        );
++        let accept = self.command(
++            &format!("{key}-accept"),
++            start + 1,
++            json!({"kind":"outcome.accept","proof":verified.1["proof"]}),
++        );
++        assert_eq!(self.post("assembled-worker", &accept).await.0, 401);
++        let accepted = self.post(&self.fixture.owner, &accept).await;
++        assert_eq!(accepted.0, 200, "owner research acceptance: {}", accepted.1);
++        assert_eq!(accepted.1["outcome"], "investigation_complete");
++        accepted.1
++    }
++}
++
++#[tokio::test]
++async fn negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert() {
++    let api = Api::new().await;
++    let intent = api.research_intent("research", 0, "research-r1").await;
++    let accepted = api.accept_research(&intent, 1, "research").await;
++    let snapshot = api.snapshot().await;
++    assert_eq!(snapshot["accepted"][0]["subject"], accepted["subject"]);
++    assert_eq!(snapshot["accepted"][0]["outcome"], "investigation_complete");
++    let service = artifacts::ArtifactService::open(
++        api.fixture.broker.clone(),
++        &api.fixture.root.join("artifacts"),
++    )
++    .await
++    .unwrap();
++    assert!(
++        service
++            .collect(&api.fixture.owner, std::time::Duration::ZERO)
++            .await
++            .unwrap()
++            .is_empty(),
++        "admitted research evidence must survive ordinary ArtifactService collection"
++    );
++    let evidence = api
++        .upload("assembled-worker", b"proposed evaluator change, unpromoted")
++        .await;
++    let proposal=api.command("evaluator-proposal",3,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":true}));
++    let proposed = api.post("assembled-worker", &proposal).await;
++    assert_eq!(proposed.0, 200);
++    assert_eq!(
++        api.snapshot().await["accepted"].as_array().unwrap().len(),
++        1
++    );
++    let verify=api.command("do-not-promote-evaluator",3,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
++    assert_eq!(
++        api.post("assembled-verifier", &verify).await.1["code"],
++        "dependency_unmet"
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt() {
++    use team_control_plane::*;
++    let api = Api::new().await;
++    let prerequisite = api.research_intent("prerequisite", 0, "research-r1").await;
++    let accepted = api.accept_research(&prerequisite, 1, "prerequisite").await;
++    let dependent = Uuid::new_v4();
++    let spec = TaskSpec {
++        objective: "dependent fixture".into(),
++        input: GitInput {
++            repository: api.fixture.root.join("store").to_str().unwrap().into(),
++            commit: api.fixture.base.clone(),
++            path: "SPEC.md".into(),
++            digest: "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3".into(),
++        },
++        dependencies: vec![],
++        acceptance: vec!["exact proof".into()],
++        deliverables: vec!["src/result".into()],
++        write_scope: vec!["src".into()],
++    };
++    api.fixture
++        .broker
++        .execute(
++            &api.fixture.owner,
++            assembled::envelope(
++                api.fixture.epoch,
++                "dependent-task",
++                0,
++                Command::CreateTask {
++                    id: dependent,
++                    mission_id: api.fixture.mission,
++                    spec,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let legacy = api
++        .fixture
++        .broker
++        .snapshot(&api.fixture.owner, SnapshotQuery::Task(dependent))
++        .await
++        .unwrap()
++        .data["spec_digest"]
++        .as_str()
++        .unwrap()
++        .to_owned();
++    api.fixture
++        .broker
++        .execute(
++            &api.fixture.owner,
++            assembled::envelope(
++                api.fixture.epoch,
++                "dependent-admit",
++                1,
++                Command::AdmitTask {
++                    task_id: dependent,
++                    spec_digest: legacy.clone(),
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let work = api.admission("unused", 0)["command"]["work"].clone();
++    let dependency = json!({"work":work,"intent":prerequisite["intent"],"accepted_subject":accepted["subject"],"policy":"suite-v2"});
++    let mut request = api.admission("dependent-intent", 0);
++    request["task"] = json!(dependent);
++    request["command"]["work"]["item"] = json!("dependent");
++    request["command"]["intent"]["legacy_spec_digest"] = json!(legacy);
++    request["command"]["intent"]["dependencies"] = json!([dependency]);
++    let admitted = api.post(&api.fixture.owner, &request).await;
++    assert_eq!(
++        admitted.0, 200,
++        "exact prerequisite dependency: {}",
++        admitted.1
++    );
++    let prior = api
++        .fixture
++        .broker
++        .snapshot(&api.fixture.owner, SnapshotQuery::Task(api.fixture.task))
++        .await
++        .unwrap();
++    assert_eq!(
++        prior.data["operations"][0]["id"],
++        api.fixture.admission.to_string()
++    );
++    let mut event=api.command("unadmitted-edit",3,json!({"kind":"source.propose","work":work,"source":api.admission("x",0)["command"]["source"]}));
++    event["command"]["source"]["revision"] = json!("mutable-kata-edit");
++    assert_eq!(api.post("assembled-worker", &event).await.0, 200);
++    let read = |task| format!("{}/v2/contracts/tasks/{task}", api.url);
++    let active: Value = api
++        .client
++        .get(read(dependent))
++        .bearer_auth(&api.fixture.owner)
++        .send()
++        .await
++        .unwrap()
++        .json()
++        .await
++        .unwrap();
++    assert_eq!(active["dependencies"][0]["disposition"], "active");
++    let amended = api.research_intent("supersede", 3, "research-r2").await;
++    let suspended: Value = api
++        .client
++        .get(read(dependent))
++        .bearer_auth(&api.fixture.owner)
++        .send()
++        .await
++        .unwrap()
++        .json()
++        .await
++        .unwrap();
++    assert_eq!(suspended["dependencies"][0]["disposition"], "suspended");
++    assert_eq!(
++        suspended["revision"], 2,
++        "authoritative dependency disposition change must invalidate stale aggregate revisions"
++    );
++    let worker = Uuid::new_v4();
++    api.fixture
++        .broker
++        .execute(
++            &api.fixture.owner,
++            assembled::envelope(
++                api.fixture.epoch,
++                "dependent-worker",
++                0,
++                Command::GrantCredential {
++                    credential_id: Uuid::new_v4(),
++                    principal_id: worker,
++                    role: Role::Worker,
++                    mission_id: Some(api.fixture.mission),
++                    task_id: Some(dependent),
++                    generation: Some(1),
++                    token_hash: token_hash("dependent-worker"),
++                    expires_in_seconds: 300,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let grant = json!({"schema_version":1,"key":"suspended-grant","expected_revision":2,"expected_generation":null,"recovery_epoch":api.fixture.epoch,"command":{"kind":"assign_attempt","task_id":dependent,"worker_id":worker}});
++    let response = api
++        .client
++        .post(format!("{}/v1/commands", api.url))
++        .bearer_auth(&api.fixture.owner)
++        .json(&grant)
++        .send()
++        .await
++        .unwrap();
++    assert_eq!(response.status().as_u16(), 409);
++    assert_eq!(
++        response.json::<Value>().await.unwrap()["code"],
++        "dependency_unmet"
++    );
++    let retained = api
++        .fixture
++        .broker
++        .snapshot(&api.fixture.owner, SnapshotQuery::Task(api.fixture.task))
++        .await
++        .unwrap();
++    assert_eq!(retained.data["operations"], prior.data["operations"]);
++    let new_accept = api.accept_research(&amended, 4, "amended").await;
++    let mut revalidate=api.command("revalidate",2,json!({"kind":"dependency.revalidate","intent":admitted.1["intent"],"dependencies":[{"work":work,"intent":amended["intent"],"accepted_subject":new_accept["subject"],"policy":"suite-v2"}]}));
++    revalidate["task"] = json!(dependent);
++    let mut stale_revalidation = revalidate.clone();
++    stale_revalidation["key"] = json!("stale-dependent-revision");
++    stale_revalidation["expected_revision"] = json!(1);
++    assert_eq!(
++        api.post(&api.fixture.owner, &stale_revalidation).await.1["code"],
++        "stale_revision"
++    );
++    let revalidated = api.post(&api.fixture.owner, &revalidate).await;
++    assert_eq!(
++        revalidated.0, 200,
++        "explicit exact revalidation: {}",
++        revalidated.1
++    );
++    let mut grant = grant;
++    grant["key"] = json!("current-grant");
++    let response = api
++        .client
++        .post(format!("{}/v1/commands", api.url))
++        .bearer_auth(&api.fixture.owner)
++        .json(&grant)
++        .send()
++        .await
++        .unwrap();
++    assert_eq!(
++        response.status().as_u16(),
++        200,
++        "current dependency control"
++    );
++    let receipt: Value = response.json().await.unwrap();
++    let attempt = receipt["attempt_id"].clone();
++    let _third = api
++        .research_intent("supersede-again", 6, "research-r3")
++        .await;
++    let cached = api
++        .client
++        .post(format!("{}/v1/commands", api.url))
++        .bearer_auth(&api.fixture.owner)
++        .json(&grant)
++        .send()
++        .await
++        .unwrap();
++    assert_eq!(
++        cached.status().as_u16(),
++        200,
++        "earlier exact dependent grant receipt stays reconcilable after supersession"
++    );
++    assert_eq!(cached.json::<Value>().await.unwrap(), receipt);
++    let retained = api
++        .fixture
++        .broker
++        .snapshot(&api.fixture.owner, SnapshotQuery::Task(dependent))
++        .await
++        .unwrap();
++    assert_eq!(
++        retained.data["operations"][0]["id"],
++        receipt["operation_id"]
++    );
++    let input = Uuid::new_v4();
++    let episode = Uuid::new_v4();
++    let capture = json!({"schema_version":1,"key":"dependent-input","recovery_epoch":api.fixture.epoch,"command":{"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":attempt,"purpose":"implementation","limit":4}});
++    let response = api
++        .client
++        .post(format!("{}/v1/mailbox/commands", api.url))
++        .bearer_auth("dependent-worker")
++        .json(&capture)
++        .send()
++        .await
++        .unwrap();
++    assert_eq!(response.status().as_u16(), 200);
++    let packet: Value = api
++        .client
++        .get(format!("{}/v1/mailbox/records/input/{input}", api.url))
++        .bearer_auth("dependent-worker")
++        .send()
++        .await
++        .unwrap()
++        .json()
++        .await
++        .unwrap();
++    let episode_request = json!({"schema_version":1,"key":"suspended-episode","recovery_epoch":api.fixture.epoch,"command":{"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]}});
++    let response = api
++        .client
++        .post(format!("{}/v1/mailbox/commands", api.url))
++        .bearer_auth("dependent-worker")
++        .json(&episode_request)
++        .send()
++        .await
++        .unwrap();
++    assert_eq!(
++        response.status().as_u16(),
++        409,
++        "suspended dependency must block fresh Worker Episode"
++    );
++    assert_eq!(
++        response.json::<Value>().await.unwrap()["code"],
++        "dependency_unmet"
++    );
++    let old_revalidation = api.post(&api.fixture.owner, &revalidate).await;
++    assert_eq!(
++        old_revalidation.1["code"], "dependency_unmet",
++        "cached revalidation cannot acquire current authority for superseded prerequisite"
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement()
++ {
++    use team_control_plane::*;
++    let api = Api::measured().await;
++    let command = vec![
++        "/bin/sh",
++        "-c",
++        "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'",
++    ];
++    let mut request = api.admission("production-intent", 0);
++    request["command"]["intent"]["acceptance"]["mandatory_commands"] = json!([command]);
++    let admitted = api.post(&api.fixture.owner, &request).await;
++    assert_eq!(admitted.0, 200);
++    api.artifact(&api.fixture.owner,"policy",json!({"kind":"configure","verifier":api.fixture.verifier,"lead_acceptance":false,"base":api.fixture.base,"suite":request["command"]["intent"]["acceptance"]["suite"],"environment":request["command"]["intent"]["acceptance"]["environment"],"mandatory_commands":[command]})).await;
++    let store = api.fixture.root.join("store");
++    std::fs::write(store.join("src/result"), b"exact result\n").unwrap();
++    assembled::git(&store, &["add", "src/result"]);
++    assembled::git(
++        &store,
++        &[
++            "-c",
++            "user.name=Fixture",
++            "-c",
++            "user.email=fixture@example.invalid",
++            "commit",
++            "-qm",
++            "candidate",
++        ],
++    );
++    let commit = assembled::git(&store, &["rev-parse", "HEAD"]);
++    let tree = assembled::git(&store, &["rev-parse", "HEAD^{tree}"]);
++    let bundle = api.fixture.root.join("candidate.bundle");
++    assembled::git(
++        &store,
++        &["bundle", "create", bundle.to_str().unwrap(), "HEAD"],
++    );
++    let artifact = api
++        .upload("assembled-worker", &std::fs::read(bundle).unwrap())
++        .await;
++    let candidate = json!({"commit":commit,"tree":tree,"base":api.fixture.base,"spec_digest":api.fixture.spec,"spec_revision":2,"generation":1,"artifact":artifact,"deliverables":["src/result"],"risks":[]});
++    let submitted = api
++        .artifact(
++            "assembled-worker",
++            "candidate",
++            json!({"kind":"submit","candidate":candidate}),
++        )
++        .await;
++    let input = Uuid::new_v4();
++    let episode = Uuid::new_v4();
++    let mailbox = mailbox::MailboxService::new(api.fixture.broker.clone());
++    mailbox.execute("assembled-verifier",assembled::mail(api.fixture.epoch,"capture-verifier",json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"verification","limit":4}))).await.unwrap();
++    let packet = mailbox
++        .record("assembled-verifier", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    mailbox.execute("assembled-verifier",assembled::mail(api.fixture.epoch,"admit-verifier",json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
++    let binding=api.command("bind-fresh-verifier",1,json!({"kind":"verification.bind","episode":episode,"intent":admitted.1["intent"],"acceptance":admitted.1["acceptance"],"policy":"suite-v2","environment":request["command"]["intent"]["acceptance"]["environment"]}));
++    let bound = api.post("assembled-verifier", &binding).await;
++    assert_eq!(bound.0, 200, "exact binding before execution: {}", bound.1);
++    let service = artifacts::ArtifactService::open(
++        api.fixture.broker.clone(),
++        &api.fixture.root.join("artifacts"),
++    )
++    .await
++    .unwrap();
++    let supervisor = api.fixture.supervisor().await;
++    let execution = supervisor
++        .create_episode_from_candidate(
++            "assembled-verifier",
++            episode,
++            &service,
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    supervisor
++        .start(
++            "assembled-verifier",
++            execution.id,
++            command.iter().map(|s| s.to_string()).collect(),
++            10,
++        )
++        .await
++        .unwrap();
++    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
++    let measured = loop {
++        if let Some(result) = supervisor
++            .result("assembled-verifier", execution.id)
++            .await
++            .unwrap()
++        {
++            break result;
++        }
++        assert!(std::time::Instant::now() < deadline);
++        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
++    };
++    println!(
++        "independent_measured_subject {}",
++        json!({"binding":bound.1,"candidate":candidate,"measured_result":measured})
++    );
++    assert_eq!(measured.exit_code, Some(0));
++    assert!(measured.namespace_stopped);
++    let view = supervisor
++        .inspect("assembled-verifier", execution.id)
++        .await
++        .unwrap();
++    let output = std::fs::read(&view.manifest.log_path).unwrap();
++    assert_eq!(output, b"independent gate\n");
++    let evidence = serde_json::to_vec(
++        &json!({"trusted_monitor_result":measured,"output":String::from_utf8(output).unwrap()}),
++    )
++    .unwrap();
++    let logs = api.upload("assembled-verifier", &evidence).await;
++    let verified=api.artifact("assembled-verifier","measured-verification",json!({"kind":"verify","verification":{"candidate":candidate,"suite":request["command"]["intent"]["acceptance"]["suite"],"environment":request["command"]["intent"]["acceptance"]["environment"],"checks":[{"command":command,"exit_code":0,"logs":logs}],"resolved_decisions":true}})).await;
++    let proof=api.command("exact-production-proof",2,json!({"kind":"production.verify","binding":bound.1["binding"],"candidate":submitted["candidate_id"],"report":verified["report_id"]}));
++    assert_eq!(api.post("assembled-worker", &proof).await.0, 401);
++    let mut fabricated = proof.clone();
++    fabricated["key"] = json!("nonexistent-proof-is-inert");
++    fabricated["command"]["report"] =
++        json!("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
++    assert_eq!(
++        api.post("assembled-verifier", &fabricated).await.0,
++        404,
++        "fabricated report identity cannot manufacture verified production"
++    );
++    assert_eq!(api.snapshot().await["accepted"], json!([]));
++    let proven = api.post("assembled-verifier", &proof).await;
++    assert_eq!(proven.0, 200, "real measured v2 proof: {}", proven.1);
++    let accepted = api
++        .post(
++            &api.fixture.owner,
++            &api.command(
++                "accept-production",
++                3,
++                json!({"kind":"outcome.accept","proof":proven.1["proof"]}),
++            ),
++        )
++        .await;
++    assert_eq!(accepted.0, 200);
++    assert_eq!(accepted.1["outcome"], "production");
++    let read = service
++        .snapshot(&api.fixture.owner, api.fixture.task)
++        .await
++        .unwrap();
++    assert_eq!(serde_json::to_value(read.candidate).unwrap(), candidate);
++    assert_eq!(read.status, "accepted");
++    let late=api.command("old-v1-pass-cannot-rebind",4,json!({"kind":"verification.bind","episode":episode,"intent":admitted.1["intent"],"acceptance":admitted.1["acceptance"],"policy":"suite-v2","environment":request["command"]["intent"]["acceptance"]["environment"]}));
++    assert_eq!(
++        api.post("assembled-verifier", &late).await.1["code"],
++        "dependency_unmet"
++    );
++    supervisor
++        .release("assembled-verifier", execution.id)
++        .await
++        .unwrap();
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn current_lead_requires_explicit_bounded_delegation_even_on_replay() {
++    let api = Api::new().await;
++    let admitted = api
++        .post(&api.fixture.owner, &api.admission("owner-intent", 0))
++        .await;
++    assert_eq!(admitted.0, 200);
++    let mut amended = api.admission("lead-amend", 1);
++    amended["command"]["source"]["revision"] = json!("revision-2");
++    // A bounded lead may revise source evidence without expanding the outcome.
++    assert_eq!(api.post("assembled-lead", &amended).await.0, 401);
++    assert_eq!(api.post("assembled-worker", &amended).await.0, 401);
++    let replacement = json!({"schema_version":1,"key":"activate-lead","recovery_epoch":api.fixture.epoch,"command":{"kind":"replace_lead","mission":api.fixture.mission,"expected_generation":0,"credential_id":Uuid::new_v4(),"principal":api.fixture.lead,"token_hash":team_control_plane::token_hash("current-lead"),"expires_in_seconds":300}});
++    let response = api
++        .client
++        .post(format!("{}/v1/mailbox/commands", api.url))
++        .bearer_auth(&api.fixture.owner)
++        .json(&replacement)
++        .send()
++        .await
++        .unwrap();
++    assert_eq!(
++        response.status().as_u16(),
++        200,
++        "activate current lead: {}",
++        response.text().await.unwrap()
++    );
++    let delegation=api.command("delegate",1,json!({"kind":"delegation.admit","delegation":{"id":Uuid::new_v4(),"principal":api.fixture.lead,"role_epoch":1,"work":amended["command"]["work"],"families":["intent.admit","plan.admit","dependency.revalidate","outcome.accept"],"effects":["read","write"],"max_intents":2,"max_plans":2,"resources":{"attempts":8,"episodes":8,"repairs":3,"execution_seconds":30},"expires_in_seconds":1}}));
++    let result = api.post(&api.fixture.owner, &delegation).await;
++    assert_eq!(
++        result.0, 200,
++        "explicit delegation must be admitted: {}",
++        result.1
++    );
++    amended["expected_revision"] = json!(2);
++    let allowed = api.post("current-lead", &amended).await;
++    assert_eq!(
++        allowed.0, 200,
++        "bounded current source amendment: {}",
++        allowed.1
++    );
++    assert_eq!(api.post("current-lead", &amended).await, allowed);
++    let mut owner_amend = api.admission("owner-third-intent", 3);
++    owner_amend["command"]["source"]["revision"] = json!("owner-revision-3");
++    assert_eq!(api.post(&api.fixture.owner, &owner_amend).await.0, 200);
++    assert_eq!(
++        api.post("current-lead", &amended).await.0,
++        401,
++        "cached result must recheck delegation cumulative intent ceiling after Owner amendment"
++    );
++    tokio::time::sleep(std::time::Duration::from_millis(1100)).await;
++    assert_eq!(
++        api.post("current-lead", &amended).await.0,
++        401,
++        "expired delegation must reject cached result"
++    );
++    assert_eq!(api.snapshot().await["intents"].as_array().unwrap().len(), 3);
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning() {
++    let api = Api::new().await;
++    let admitted = api
++        .post(&api.fixture.owner, &api.admission("intent", 0))
++        .await
++        .1;
++    let plan = json!({"schema_version":1,"interpreter_version":"declarative-v1","intent":admitted["intent"],"acceptance":admitted["acceptance"],"allowed_effects":["read","write"],"resources":{"attempts":8,"episodes":8,"repairs":3,"execution_seconds":30},"max_repairs":3,"steps":[{"id":"inspect","kind":"action","depends_on":[],"join":"all","effects":["read"],"max_iterations":1},{"id":"produce","kind":"action","depends_on":["inspect"],"join":"all","effects":["write"],"max_iterations":1}]});
++    let request = api.command("plan", 1, json!({"kind":"plan.admit","plan":plan}));
++    let result = api.post(&api.fixture.owner, &request).await;
++    assert_eq!(result.0, 200, "valid strategy admission: {}", result.1);
++    assert_eq!(api.post(&api.fixture.owner, &request).await, result);
++    for (key, path, value, code) in [
++        (
++            "duplicate",
++            "/steps/1/id",
++            json!("inspect"),
++            "invalid_argument",
++        ),
++        (
++            "cycle",
++            "/steps/0/depends_on",
++            json!(["produce"]),
++            "invalid_argument",
++        ),
++        (
++            "missing",
++            "/steps/1/depends_on",
++            json!(["missing"]),
++            "invalid_argument",
++        ),
++        (
++            "unbounded",
++            "/steps/1/max_iterations",
++            json!(0),
++            "invalid_argument",
++        ),
++        (
++            "effect-expansion",
++            "/allowed_effects",
++            json!(["read", "write", "execute"]),
++            "unauthorized",
++        ),
++        (
++            "budget-expansion",
++            "/resources/attempts",
++            json!(9),
++            "budget_exhausted",
++        ),
++        (
++            "acceptance-change",
++            "/acceptance",
++            json!("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"),
++            "stale_revision",
++        ),
++    ] {
++        let mut invalid = plan.clone();
++        *invalid.pointer_mut(path).unwrap() = value;
++        let response = api
++            .post(
++                &api.fixture.owner,
++                &api.command(key, 2, json!({"kind":"plan.admit","plan":invalid})),
++            )
++            .await;
++        assert_eq!(response.1["code"], code, "{key}: {response:?}");
++    }
++    let (db, connection) = tokio_postgres::connect(&api.fixture.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { connection.await.unwrap() });
++    // Fixture for the later interpreter's immutable completion record; no effect
++    // or PASS is manufactured here. Admission must respect already retained IDs.
++    db.execute("INSERT INTO contract_completed_steps(task_id,plan_id,step_id,step) VALUES($1,$2,'inspect',$3)",&[&api.fixture.task,&result.1["plan"].as_str().unwrap(),&plan["steps"][0]]).await.unwrap();
++    let mut changed = plan.clone();
++    changed["steps"][0]["effects"] = json!(["write"]);
++    let response = api
++        .post(
++            &api.fixture.owner,
++            &api.command(
++                "reinterpret-completed",
++                2,
++                json!({"kind":"plan.admit","plan":changed}),
++            ),
++        )
++        .await;
++    assert_eq!(response.1["code"], "stale_revision");
++    let mut revised = plan;
++    revised["steps"].as_array_mut().unwrap().push(json!({"id":"review","kind":"action","depends_on":["produce"],"join":"all","effects":["read"],"max_iterations":1}));
++    assert_eq!(
++        api.post(
++            &api.fixture.owner,
++            &api.command(
++                "new-strategy",
++                2,
++                json!({"kind":"plan.admit","plan":revised})
++            )
++        )
++        .await
++        .0,
++        200
++    );
++    assert_eq!(api.snapshot().await["plans"].as_array().unwrap().len(), 2);
++    let state = api
++        .fixture
++        .broker
++        .snapshot(
++            &api.fixture.owner,
++            team_control_plane::SnapshotQuery::Task(api.fixture.task),
++        )
++        .await
++        .unwrap();
++    assert_eq!(state.data["generation"], 1);
++    assert_eq!(state.data["attempt_count"], 1);
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias() {
++    let api = Api::new().await;
++    let admission = api.admission("intent", 0);
++    let first = api.post(&api.fixture.owner, &admission).await;
++    assert_eq!(first.0, 200);
++    let mut source = admission["command"]["source"].clone();
++    source["revision"] = json!("unadmitted-event");
++    source["availability"] = json!("deleted");
++    let proposal = api.command(
++        "source-event",
++        1,
++        json!({"kind":"source.propose","work":admission["command"]["work"],"source":source}),
++    );
++    assert_eq!(
++        api.post("assembled-worker", &proposal).await.1["disposition"],
++        "proposed"
++    );
++    assert_eq!(api.snapshot().await["current_intent"], first.1["intent"]);
++    let mut missing = admission.clone();
++    missing["key"] = json!("missing");
++    missing["expected_revision"] = json!(1);
++    missing["command"]["source"] = source;
++    assert_eq!(
++        api.post(&api.fixture.owner, &missing).await.1["code"],
++        "artifact_missing"
++    );
++    let mut collision = admission.clone();
++    collision["key"] = json!("rewrite-source-revision");
++    collision["expected_revision"] = json!(1);
++    collision["command"]["source"]["locator"] = json!("other-source");
++    assert_eq!(
++        api.post(&api.fixture.owner, &collision).await.1["code"],
++        "idempotency_conflict"
++    );
++    let other = Api::new().await;
++    let mut namespaced = other.admission("other-deployment", 0);
++    namespaced["command"]["work"]["deployment"] = json!("another-deployment");
++    let second = other.post(&other.fixture.owner, &namespaced).await;
++    assert_eq!(second.0, 200);
++    assert_ne!(first.1["work"], second.1["work"]);
++    assert_ne!(first.1["intent"], second.1["intent"]);
++    other.finish().await;
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload() {
++    let api = Api::new().await;
++    let request = api.admission("exact-intent", 0);
++    let (status, admitted) = api.post(&api.fixture.owner, &request).await;
++    assert_eq!(status, 200, "missing broker admission behavior: {admitted}");
++    assert_eq!(admitted["disposition"], "applied");
++    assert_eq!(admitted["revision"], 1);
++    assert_eq!(
++        api.post(&api.fixture.owner, &request).await,
++        (200, admitted.clone())
++    );
++    let snapshot = api.snapshot().await;
++    assert_eq!(snapshot["revision"], 1);
++    assert_eq!(snapshot["work"], request["command"]["work"]);
++    assert_eq!(snapshot["intents"].as_array().unwrap().len(), 1);
++    assert_eq!(
++        snapshot["sources"][0]["snapshot"],
++        json!(b"produce exact src/result")
++    );
++    assert_eq!(snapshot["sources"][0]["revision"], json!(api.fixture.base));
++    let mut changed = request.clone();
++    changed["command"]["intent"]["objective"] = json!("different objective");
++    let (status, error) = api.post(&api.fixture.owner, &changed).await;
++    assert_eq!(status, 409);
++    assert_eq!(error["code"], "idempotency_conflict");
++    changed["key"] = json!("stale-intent");
++    let (status, error) = api.post(&api.fixture.owner, &changed).await;
++    assert_eq!(status, 409);
++    assert_eq!(error["code"], "stale_revision");
++    assert_eq!(api.snapshot().await["intents"].as_array().unwrap().len(), 1);
++    std::fs::remove_file(api.fixture.root.join("store/SPEC.md")).unwrap();
++    assert_eq!(
++        api.snapshot().await["sources"][0]["snapshot"],
++        json!(b"produce exact src/result")
++    );
++    api.finish().await;
++}
++
++#[tokio::test]
++async fn plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling() {
++    let api = Api::new().await;
++    let admitted = api
++        .post(&api.fixture.owner, &api.admission("intent", 0))
++        .await
++        .1;
++    let mut plan = json!({"schema_version":1,"interpreter_version":"declarative-v1","intent":admitted["intent"],"acceptance":admitted["acceptance"],"allowed_effects":["read"],"resources":{"attempts":2,"episodes":2,"repairs":1,"execution_seconds":10},"max_repairs":1,"steps":[{"id":"inspect","kind":"action","depends_on":[],"join":"all","effects":["read"],"max_iterations":1}]});
++    assert_eq!(
++        api.post(
++            &api.fixture.owner,
++            &api.command("bounded-plan", 1, json!({"kind":"plan.admit","plan":plan}))
++        )
++        .await
++        .0,
++        200
++    );
++    plan["resources"]["attempts"] = json!(3);
++    assert_eq!(
++        api.post(
++            &api.fixture.owner,
++            &api.command(
++                "expand-plan-budget",
++                2,
++                json!({"kind":"plan.admit","plan":plan})
++            )
++        )
++        .await
++        .1["code"],
++        "budget_exhausted"
++    );
++    api.finish().await;
++}

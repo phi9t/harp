@@ -1,0 +1,1102 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T20:33:09.905220+00:00",
+  "source_read_commit": "16c15c86e9391939d5e6b5fc6c026e6a3a09fde1",
+  "scope": "real default Git-reader binding and recording boundary only",
+  "root_readonly_audit": "exit0,176 artifacts,132 rawlogs,10 complete synthetic bundle objects; no controller invocation by auditor",
+  "physical_admission": false,
+  "runtime_qualification": false,
+  "original_chronology_PARTIAL_quarantine_budgets": "unchanged",
+  "archive_extension_policy": "original artifact names retained; archive-local .gitignore makes published .log outputs normally Git selectable without modifying bytes",
+  "pending": [
+    "assembled repository and branch gates before landing preparation"
+  ],
+  "records": [
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/audit-run.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit-run.json",
+      "sha256": "0bc628e2236ec5d886e03e2341bb18635028965d1260626113e276f6d0c9f84e",
+      "bytes": 468
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/audit-run.stderr.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit-run.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/audit-run.stdout.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit-run.stdout.log",
+      "sha256": "6265331632c27fb731f18e52dacd7f4c16dd0f56e948ffcfba605eedb8860c67",
+      "bytes": 1025
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/audit.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py",
+      "sha256": "3550d95269bc8a426e243fb571da6cac7444c210086c94a07c708dc232f6e46d",
+      "bytes": 13435
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/authority-and-scope.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/authority-and-scope.json",
+      "sha256": "aa937b604f937a4f6d6337b4f7a4ae07597531daa11fe64d9a632110565cb611",
+      "bytes": 873
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/commands.jsonl",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/commands.jsonl",
+      "sha256": "63ba66261b49c0d10b7750c0da87cbab08e1c7585e6e671bd73d7b8227fa64f7",
+      "bytes": 30908
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/control-inputs/changed-case.bytes",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/control-inputs/changed-case.bytes",
+      "sha256": "259ff21481d25426a9a0585808f60c05ac721489be05325c5840f2c26ed848c3",
+      "bytes": 424
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/control-inputs/changed-grant.bytes",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/control-inputs/changed-grant.bytes",
+      "sha256": "9da645ab94d2c9cf2bec48f6983951c17afefb0c2b03484a7d1a33bcc89b8cbe",
+      "bytes": 848
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/control-inputs/changed-source.bytes",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/control-inputs/changed-source.bytes",
+      "sha256": "e23464e2f76b1169c6ba749e1be28f4861f0b9cbe59f254f1a4e8561ce055028",
+      "bytes": 9506
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fixture/fixtures/case.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fixture/fixtures/case.json",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fixture/fixtures/grant.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fixture/fixtures/grant.json",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fixture/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fixture/tools/probes/trae_case_control.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fixture-identities.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fixture-identities.json",
+      "sha256": "d7c0dc0fd03757ad99c3946bb0439448bd3b8aa5d899e6f87663f9082e29d9dc",
+      "bytes": 1124
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fixture-objects.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fixture-objects.txt",
+      "sha256": "a43d69164b02f3995103f0882036de825521c280b264821fedf7aeb724114ed3",
+      "bytes": 513
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fixture-only.bundle",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fixture-only.bundle",
+      "sha256": "028466abe6de9fa412db7949e336cee971ef7e15bc1a6d6b5a7c032c5777c269",
+      "bytes": 4516
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/fsync-events.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/fsync-events.json",
+      "sha256": "e65e082d870ebc536ef3b07c4832db9cfebd64694d58bf8f3556ea44c1e342db",
+      "bytes": 1384
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/git-environment.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/git-environment.json",
+      "sha256": "d2be8086ff598d6071dd9b0dcd2b4a67a4e0d5e90fa0322c62b802c8f3d0096e",
+      "bytes": 685
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/abbreviated-grant-commit.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/abbreviated-grant-commit.json",
+      "sha256": "62ee98cc715739c30261fc86694d9d8f5d3d31d9400e11e3cc098c40d470c405",
+      "bytes": 220
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/blob-as-grant-commit.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/blob-as-grant-commit.json",
+      "sha256": "048d80e86f4c76c8450066e0d4c65055f2655c4f55151251626540002a7282a3",
+      "bytes": 213
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/changed-case.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/changed-case.json",
+      "sha256": "2e813d4f01d0bb9643ef9c86dbf732081713a470ace28799da7e691841dd9b39",
+      "bytes": 215
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/changed-grant.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/changed-grant.json",
+      "sha256": "47ccc06e3873c6ad304621fdcd9bca33db4c137718cac0b4062df3d37d67056a",
+      "bytes": 216
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/changed-source.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/changed-source.json",
+      "sha256": "91ede5e515007119525437795e192d348b48574304b7cf8e2d6c88d49050a98b",
+      "bytes": 217
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/duplicate-default-git-reader.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/duplicate-default-git-reader.json",
+      "sha256": "202a9ba8db93cf01a1cd798a745862e78ae4021310493e9e561876f5a196a3c9",
+      "bytes": 734
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/positive-default-git-reader.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/positive-default-git-reader.json",
+      "sha256": "41c99d566611d0816e6b72936ecd0e7a3b75e0178e95c70c1b73ed768208224b",
+      "bytes": 682
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/stale-source-commit-as-grant.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/stale-source-commit-as-grant.json",
+      "sha256": "06223378cbe474fe25a7d5a5af9ec1154decd1815d51d4cd359cf2a17b988eee",
+      "bytes": 397
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/unknown-grant-commit.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/unknown-grant-commit.json",
+      "sha256": "a69de39c9ab06548b4a8b0cb2188af495e50618b0fd6b8b983f70150483c11bb",
+      "bytes": 379
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/wrong-operation.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/wrong-operation.json",
+      "sha256": "dfbc3a4bc02250211a2820e838382c92bcf5476600f48a149698e10fc5a08e50",
+      "bytes": 208
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/outcomes/wrong-output-binding.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/outcomes/wrong-output-binding.json",
+      "sha256": "b1b2593da087ce5dcafe5cbc32d89c03b0d1103fbf84215822dfb048e63a66be",
+      "bytes": 698
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/pre-run-freeze.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/pre-run-freeze.json",
+      "sha256": "b35529f426d0a514b947ee3d605a4e81c9c903f2dc85c39f302b6fde418d3eb2",
+      "bytes": 455
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/preimages/reviewed-source.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/preimages/reviewed-source.py",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/preimages/reviewed-tests.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/preimages/reviewed-tests.py",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/proof-result.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/proof-result.json",
+      "sha256": "268638007fd5bcf4ca54c4cfa742220d064425d84a9914c96139b2f0848aec0d",
+      "bytes": 969
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/proof-run.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/proof-run.json",
+      "sha256": "1fa075fb01a6f48346e846d634a169dc00c06881cf72d8df2460021ab6873ebb",
+      "bytes": 468
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/proof-run.stderr.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/proof-run.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/proof-run.stdout.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/proof-run.stdout.log",
+      "sha256": "35f3b3680a7f4615d57c2d237d11eff79a6db17bf752b0bd290280a15df3cf74",
+      "bytes": 19853
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/proof.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/proof.py",
+      "sha256": "da54eb975f50f4ec35498c11122801460f813e71fc7673e93099ac8b8e63eaf1",
+      "bytes": 18288
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/001.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/001.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/001.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/001.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/002.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/002.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/002.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/002.stdout",
+      "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+      "bytes": 19935
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/003.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/003.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/003.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/003.stdout",
+      "sha256": "ca5ad2e1f1097a84815ded3828d73b46186fae5c696fc69f29fedccc9cb9f106",
+      "bytes": 101
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/004.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/004.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/004.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/004.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/005.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/005.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/005.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/005.stdout",
+      "sha256": "929a6577467facee4995712ba518364de11a3f92e4a255813deb21d1e6e717da",
+      "bytes": 176
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/006.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/006.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/006.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/006.stdout",
+      "sha256": "372f330823750d21006e04bba45764d209ae8bbb7eedfcb94af02b133a87d77a",
+      "bytes": 41
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/007.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/007.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/007.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/007.stdout",
+      "sha256": "372f330823750d21006e04bba45764d209ae8bbb7eedfcb94af02b133a87d77a",
+      "bytes": 41
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/008.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/008.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/008.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/008.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/009.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/009.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/009.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/009.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/010.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/010.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/010.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/010.stdout",
+      "sha256": "137ac79a7f1389fb90829c20e32dd8e035591592a7d07d3d22b92a10a43ba17b",
+      "bytes": 191
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/011.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/011.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/011.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/011.stdout",
+      "sha256": "902b0bfe8b08aba555b294d82dd35707433badfeef250ca69abf5f23c84424cf",
+      "bytes": 41
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/012.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/012.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/012.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/012.stdout",
+      "sha256": "fb8bceba6f4f6dbab8aebcee34f7bb2a46d50c48dff51c693a2c54939e37e441",
+      "bytes": 82
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/013.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/013.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/013.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/013.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/014.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/014.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/014.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/014.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/015.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/015.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/015.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/015.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/016.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/016.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/016.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/016.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/017.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/017.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/017.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/017.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/018.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/018.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/018.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/018.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/019.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/019.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/019.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/019.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/020.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/020.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/020.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/020.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/021.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/021.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/021.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/021.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/022.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/022.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/022.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/022.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/023.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/023.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/023.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/023.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/024.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/024.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/024.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/024.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/025.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/025.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/025.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/025.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/026.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/026.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/026.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/026.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/027.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/027.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/027.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/027.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/028.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/028.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/028.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/028.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/029.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/029.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/029.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/029.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/030.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/030.stderr",
+      "sha256": "67d826a3b9b8f370d53e141a3f9492ab8970d73f41ab311995cb89a664380227",
+      "bytes": 104
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/030.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/030.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/031.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/031.stderr",
+      "sha256": "93051ef5e7bf1424b70ed514d3f012953c936894eec9c3018251c6cfb674dd83",
+      "bytes": 47
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/031.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/031.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/032.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/032.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/032.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/032.stdout",
+      "sha256": "5235e85e96136b935d08b17cecaa9632d21bde6ce1887a39b3ae32e1136ee79e",
+      "bytes": 41
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/033.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/033.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/033.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/033.stdout",
+      "sha256": "bc103b4a84971ef6459b294a2b98568a2bfb72cded09d4acd1e16366a401f95b",
+      "bytes": 5
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/034.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/034.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/034.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/034.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/035.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/035.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/035.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/035.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/036.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/036.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/036.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/036.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/037.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/037.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/037.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/037.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/038.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/038.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/038.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/038.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/039.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/039.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/039.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/039.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/040.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/040.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/040.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/040.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/041.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/041.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/041.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/041.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/042.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/042.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/042.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/042.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/043.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/043.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/043.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/043.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/044.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/044.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/044.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/044.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/045.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/045.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/045.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/045.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/046.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/046.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/046.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/046.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/047.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/047.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/047.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/047.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/048.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/048.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/048.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/048.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/049.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/049.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/049.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/049.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/050.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/050.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/050.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/050.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/051.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/051.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/051.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/051.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/052.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/052.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/052.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/052.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/053.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/053.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/053.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/053.stdout",
+      "sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+      "bytes": 847
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/054.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/054.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/054.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/054.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/055.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/055.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/055.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/055.stdout",
+      "sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+      "bytes": 423
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/056.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/056.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/056.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/056.stdout",
+      "sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "bytes": 7
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/057.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/057.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/057.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/057.stdout",
+      "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+      "bytes": 9505
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/058.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/058.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/058.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/058.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/059.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/059.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/059.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/059.stdout",
+      "sha256": "8639269061dbf7cac40aa6fe08025ae27068b795cb6a595d587674fea81b9f25",
+      "bytes": 65
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/060.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/060.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/060.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/060.stdout",
+      "sha256": "5fa4571849f7b0ecd6a9f3a579af19bc1b27eac803528822d44d30cb05494c50",
+      "bytes": 82
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/061.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/061.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/061.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/061.stdout",
+      "sha256": "b14d68538e06e2030422abbf12ac5cc1c2740d387dba7b7b570cf5f407acfe75",
+      "bytes": 73
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/062.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/062.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/062.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/062.stdout",
+      "sha256": "a43d69164b02f3995103f0882036de825521c280b264821fedf7aeb724114ed3",
+      "bytes": 513
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/063.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/063.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/063.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/063.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/064.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/064.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/064.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/064.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/065.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/065.stderr",
+      "sha256": "47ba3ca509234cd40eeffe812d2167d75838f6b55c746e65799c0b04ecd27165",
+      "bytes": 79
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/065.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/065.stdout",
+      "sha256": "dd45edd9436d0f0ceafac11839eed97aac9f90ed0f3f9c7aff821763a945a5ca",
+      "bytes": 226
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/066.stderr",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/066.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/rawlogs/066.stdout",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/rawlogs/066.stdout",
+      "sha256": "8db1fa80bfabc75b4a589c50f662fadc30313f85dc193d8b2c3c31a5b9aee558",
+      "bytes": 111
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/record-hashes-after-duplicate.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/record-hashes-after-duplicate.json",
+      "sha256": "a7b5e9729c9269bb23b0b93a828cb6a0b6de9c57fcc6b6b97759ece5f589f925",
+      "bytes": 335
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/record-hashes-before-duplicate.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/record-hashes-before-duplicate.json",
+      "sha256": "a7b5e9729c9269bb23b0b93a828cb6a0b6de9c57fcc6b6b97759ece5f589f925",
+      "bytes": 335
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/recording-callback.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/recording-callback.json",
+      "sha256": "d6e42ad882267db30820fc63639172da8765246586a5d559d7928131b4d0c6d1",
+      "bytes": 298
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/records/operation/started.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/records/operation/started.json",
+      "sha256": "3b1f0a406db3da3409837308b23105974efe39bc845555044907db8a37b4748f",
+      "bytes": 615
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/records/operation/stderr.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/records/operation/stderr.log.txt",
+      "sha256": "acd3ed079e30eb0e91e318d6a110ae211d7a3553255761f3ba2cf25b920e8a36",
+      "bytes": 36
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/records/operation/stdout.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/records/operation/stdout.log.txt",
+      "sha256": "2250995928d37f60ce9b75ffa7a59a5b0dc1487a55f4054bcfa2c96779d70f22",
+      "bytes": 40
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/records/operation/terminal.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/records/operation/terminal.json",
+      "sha256": "2c7adfc12b873a7b1c6ef06569128b7b87c5af23bc57b5a4447ed6997a414cb4",
+      "bytes": 545
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/report.md",
+      "sha256": "5e082ff83fddbf1e98a70f0a5626c3d9ff985f8a1c7e21ab5a4c03d7703bc1e0",
+      "bytes": 5977
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/public-index.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/public-index.json",
+      "sha256": "ec747dd26eb3729e7cfd593a7e2be21595c647af2e18f70ebaac3ecf4b226fc7",
+      "bytes": 29579
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/freeze.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/freeze.json",
+      "sha256": "f3cf98a41b724453c3fa3beebdecf5b667a96ce4ed105bcd7f05c727f7115fdb",
+      "bytes": 4322
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/final-validation.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/final-validation.json",
+      "sha256": "e630cf207f1fc4e41ec27e8c6b3ef2267e1ad68366fb5b5b9f71ca0148edb17b",
+      "bytes": 596
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/final-validation.stdout.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/final-validation.stdout.log",
+      "sha256": "f6bd12e80377ba2c45e6d36d3cbc80166baaf0c21afedc953b10a9c2df7e3e0a",
+      "bytes": 1024
+    },
+    {
+      "origin": "/tmp/corenius-controller-git-reader-proof-20261003/final-validation.stderr.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/final-validation.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ]
+}

@@ -1,0 +1,497 @@
+//! v2 proof bindings retain v1 ArtifactService identities. Production requires
+//! a pre-execution exact binding and the existing independent monitor evidence.
+use super::*;
+use crate::artifacts::ArtifactService;
+
+fn service(service: Option<&ArtifactService>) -> Result<&ArtifactService> {
+    service.ok_or_else(|| err(ErrorCode::TemporarilyUnavailable))
+}
+fn expected(
+    intent: &str,
+    acceptance: &str,
+    policy: &str,
+    environment: &str,
+    current: &(String, String, IntentRevision),
+) -> Result<()> {
+    if intent != current.0
+        || acceptance != current.1
+        || policy != current.2.acceptance.policy
+        || environment != current.2.acceptance.environment
+    {
+        return Err(err(ErrorCode::StaleRevision));
+    }
+    Ok(())
+}
+pub(super) async fn authorize(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    envelope: &Envelope,
+) -> Result<()> {
+    match &envelope.command {
+        Command::ProposeOutcome { .. } => {
+            if !matches!(actor.role, Role::Owner | Role::Lead | Role::Worker) {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+        }
+        Command::BindVerification { .. }
+        | Command::VerifyProduction { .. }
+        | Command::VerifyResearch { .. } => {
+            let (_, _, intent) = strategy::current(tx, envelope.task).await?;
+            if actor.role != Role::Verifier || actor.principal != intent.acceptance.verifier {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+        }
+        _ => return Err(err(ErrorCode::Unauthorized)),
+    }
+    Ok(())
+}
+pub(super) async fn mutation_enabled(tx: &Transaction<'_>, envelope: &Envelope) -> Result<()> {
+    if matches!(
+        envelope.command,
+        Command::ProposeOutcome { .. }
+            | Command::BindVerification { .. }
+            | Command::VerifyProduction { .. }
+            | Command::VerifyResearch { .. }
+            | Command::AcceptOutcome { .. }
+    ) {
+        crate::kernel::task_dispatch_enabled(tx, envelope.task).await?;
+    }
+    Ok(())
+}
+pub(super) async fn apply(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    envelope: &Envelope,
+    revision: i64,
+    artifacts: Option<&ArtifactService>,
+) -> Result<Value> {
+    let current = strategy::current(tx, envelope.task).await?;
+    match &envelope.command {
+        Command::ProposeOutcome {
+            intent,
+            evidence,
+            negative,
+            evaluator_change,
+        } => {
+            if intent != &current.0 {
+                return Err(err(ErrorCode::StaleRevision));
+            }
+            service(artifacts)?
+                .reference(tx, evidence, crate::artifacts::ReferenceFault::None)
+                .await?;
+            let proposal = json!({"intent":intent,"evidence":evidence,"negative":negative,"evaluator_change":evaluator_change});
+            let id = crate::validation::digest(&(envelope.task, actor.principal, &proposal))?;
+            tx.execute("INSERT INTO contract_proposals(id,task_id,principal_id,proposal,recovery_epoch) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING",&[&id,&envelope.task,&actor.principal,&proposal,&envelope.recovery_epoch]).await?;
+            Ok(
+                json!({"schema_version":2,"disposition":"proposed","revision":revision,"proposal":id}),
+            )
+        }
+        Command::BindVerification {
+            episode,
+            intent,
+            acceptance,
+            policy,
+            environment,
+        } => {
+            expected(intent, acceptance, policy, environment, &current)?;
+            if current.2.acceptance.outcome != Outcome::Production {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let bound_contract = &current.2.acceptance;
+            let stored_policy=tx.query_opt("SELECT verifier,suite,environment,mandatory_commands FROM artifact_policies WHERE task_id=$1",&[&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+            if stored_policy.get::<_, Uuid>(0) != bound_contract.verifier
+                || stored_policy.get::<_, String>(1) != bound_contract.suite
+                || stored_policy.get::<_, String>(2) != bound_contract.environment
+                || stored_policy.get::<_, Value>(3)
+                    != serde_json::to_value(&bound_contract.mandatory_commands)
+                        .map_err(|_| err(ErrorCode::InvalidArgument))?
+            {
+                return Err(err(ErrorCode::StaleRevision));
+            }
+            // Binding a finished or already allocated episode would wrap an old
+            // v1 proof. Bind before any independently measured execution exists.
+            let eligible:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes e JOIN tasks t ON t.id=e.task_id JOIN kernel_verification_requirements r ON r.task_id=t.id WHERE e.id=$1 AND e.task_id=$2 AND e.principal_id=$3 AND e.role='verifier' AND e.purpose='verification' AND e.state='admitted' AND e.task_generation=t.generation AND e.recovery_epoch=$4 AND r.recovery_epoch=$4 AND e.deadline>clock_timestamp() AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND NOT EXISTS(SELECT 1 FROM contract_verification_bindings b WHERE b.episode_id=e.id))",&[&episode,&envelope.task,&actor.principal,&envelope.recovery_epoch]).await?.get(0);
+            if !eligible {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let id = crate::validation::digest(&(
+                envelope.task,
+                episode,
+                intent,
+                acceptance,
+                policy,
+                environment,
+                actor.principal,
+                envelope.recovery_epoch,
+            ))?;
+            tx.execute("INSERT INTO contract_verification_bindings(id,task_id,episode_id,intent_id,acceptance_id,verifier,policy,environment,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",&[&id,&envelope.task,episode,intent,acceptance,&actor.principal,policy,environment,&envelope.recovery_epoch]).await?;
+            bump(tx, envelope.task, revision).await?;
+            Ok(
+                json!({"schema_version":2,"disposition":"applied","revision":revision+1,"binding":id}),
+            )
+        }
+        Command::VerifyProduction {
+            binding,
+            candidate,
+            report,
+        } => {
+            let evidence = json!({"binding":binding,"candidate":candidate,"report":report});
+            production_evidence(
+                tx,
+                envelope.task,
+                &current,
+                actor.principal,
+                &evidence,
+                service(artifacts)?,
+                false,
+            )
+            .await?;
+            production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+            persist_proof(
+                tx,
+                actor,
+                envelope,
+                revision,
+                &current,
+                "production",
+                evidence,
+            )
+            .await
+        }
+        Command::VerifyResearch {
+            intent,
+            acceptance,
+            proposal,
+            policy,
+            environment,
+        } => {
+            expected(intent, acceptance, policy, environment, &current)?;
+            let evidence = json!({"proposal":proposal});
+            research_evidence(
+                tx,
+                envelope.task,
+                &current,
+                actor.principal,
+                &evidence,
+                service(artifacts)?,
+            )
+            .await?;
+            persist_proof(
+                tx,
+                actor,
+                envelope,
+                revision,
+                &current,
+                "investigation_complete",
+                evidence,
+            )
+            .await
+        }
+        Command::AcceptOutcome { proof } => {
+            let row=tx.query_opt("SELECT intent_id,acceptance_id,verifier,outcome,evidence FROM contract_proofs WHERE id=$1 AND task_id=$2",&[proof,&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+            let intent: String = row.get(0);
+            let acceptance: String = row.get(1);
+            let verifier: Uuid = row.get(2);
+            let outcome: String = row.get(3);
+            let evidence: Value = row.get(4);
+            if intent != current.0
+                || acceptance != current.1
+                || verifier != current.2.acceptance.verifier
+            {
+                return Err(err(ErrorCode::StaleRevision));
+            }
+            if actor.principal == verifier {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if outcome == "production" {
+                production_evidence(
+                    tx,
+                    envelope.task,
+                    &current,
+                    verifier,
+                    &evidence,
+                    service(artifacts)?,
+                false,
+                )
+                .await?;
+                production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+            } else {
+                research_evidence(
+                    tx,
+                    envelope.task,
+                    &current,
+                    verifier,
+                    &evidence,
+                    service(artifacts)?,
+                )
+                .await?;
+            }
+            if tx
+                .query_opt(
+                    "SELECT subject FROM contract_outcomes WHERE task_id=$1 AND intent_id=$2",
+                    &[&envelope.task, &current.0],
+                )
+                .await?
+                .is_some()
+            {
+                return Err(err(ErrorCode::StaleRevision));
+            }
+            let subject = crate::validation::digest(&(
+                envelope.task,
+                &current.0,
+                &current.1,
+                proof,
+                &outcome,
+                &current.2.acceptance.policy,
+            ))?;
+            tx.execute("INSERT INTO contract_outcomes(subject,task_id,intent_id,proof_id,outcome,policy,by_principal,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8)",&[&subject,&envelope.task,&current.0,proof,&outcome,&current.2.acceptance.policy,&actor.principal,&envelope.recovery_epoch]).await?;
+            if outcome == "production" {
+                let report = evidence["report"]
+                    .as_str()
+                    .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+                tx.execute(
+                    "UPDATE artifact_current SET accepted_report=$2 WHERE task_id=$1",
+                    &[&envelope.task, &report],
+                )
+                .await?;
+                let legacy_revision:i64=tx.query_one("UPDATE tasks SET status='accepted',revision=revision+1 WHERE id=$1 RETURNING revision",&[&envelope.task]).await?.get(0);
+                let event = Uuid::new_v4();
+                tx.execute("INSERT INTO events(id,aggregate_kind,aggregate_id,sequence,version,principal_id,transaction_id,kind,payload) VALUES($1,'task',$2,$3,1,$4,txid_current(),'task.accept.v2',$5)",&[&event,&envelope.task,&legacy_revision,&actor.principal,&json!({"intent":current.0,"acceptance":current.1,"proof":proof,"subject":subject})]).await?;
+            }
+            bump(tx, envelope.task, revision).await?;
+            Ok(
+                json!({"schema_version":2,"disposition":"applied","revision":revision+1,"subject":subject,"proof":proof,"outcome":outcome}),
+            )
+        }
+        _ => Err(err(ErrorCode::InvalidArgument)),
+    }
+}
+async fn bump(tx: &Transaction<'_>, task: Uuid, revision: i64) -> Result<()> {
+    tx.execute(
+        "UPDATE contract_current SET revision=$2 WHERE task_id=$1",
+        &[&task, &(revision + 1)],
+    )
+    .await?;
+    Ok(())
+}
+async fn persist_proof(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    envelope: &Envelope,
+    revision: i64,
+    current: &(String, String, IntentRevision),
+    outcome: &str,
+    evidence: Value,
+) -> Result<Value> {
+    let id = crate::validation::digest(&(
+        envelope.task,
+        &current.0,
+        &current.1,
+        actor.principal,
+        outcome,
+        &evidence,
+    ))?;
+    if tx
+        .query_opt("SELECT id FROM contract_proofs WHERE id=$1", &[&id])
+        .await?
+        .is_some()
+    {
+        return Err(err(ErrorCode::StaleRevision));
+    }
+    tx.execute("INSERT INTO contract_proofs(id,task_id,intent_id,acceptance_id,verifier,outcome,evidence) VALUES($1,$2,$3,$4,$5,$6,$7)",&[&id,&envelope.task,&current.0,&current.1,&actor.principal,&outcome,&evidence]).await?;
+    bump(tx, envelope.task, revision).await?;
+    Ok(
+        json!({"schema_version":2,"disposition":"applied","revision":revision+1,"proof":id,"outcome":outcome}),
+    )
+}
+async fn research_evidence(
+    tx: &Transaction<'_>,
+    task: Uuid,
+    current: &(String, String, IntentRevision),
+    verifier: Uuid,
+    evidence: &Value,
+    artifacts: &ArtifactService,
+) -> Result<()> {
+    if current.2.acceptance.outcome != Outcome::InvestigationComplete {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    let proposal = evidence["proposal"]
+        .as_str()
+        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+    let row = tx
+        .query_opt(
+            "SELECT principal_id,proposal FROM contract_proposals WHERE id=$1 AND task_id=$2",
+            &[&proposal, &task],
+        )
+        .await?
+        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+    let body: Value = row.get(1);
+    if row.get::<_, Uuid>(0) == verifier
+        || verifier != current.2.acceptance.verifier
+        || body["intent"] != current.0
+        || body["evaluator_change"] != false
+        || (body["negative"] == true && !current.2.acceptance.allow_negative)
+    {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    artifacts.store().read(
+        body["evidence"]
+            .as_str()
+            .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
+    )?;
+    Ok(())
+}
+async fn production_gate(
+    tx: &Transaction<'_>,
+    task: Uuid,
+    evidence: &Value,
+    artifacts: &ArtifactService,
+) -> Result<()> {
+    artifacts
+        .verify_production_gate(
+            tx,
+            task,
+            evidence["candidate"]
+                .as_str()
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
+            evidence["report"]
+                .as_str()
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
+        )
+        .await
+}
+async fn production_evidence(
+    tx: &Transaction<'_>,
+    task: Uuid,
+    current: &(String, String, IntentRevision),
+    verifier: Uuid,
+    evidence: &Value,
+    artifacts: &ArtifactService,
+    historical: bool,
+) -> Result<()> {
+    if current.2.acceptance.outcome != Outcome::Production {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    let binding = evidence["binding"]
+        .as_str()
+        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+    let candidate = evidence["candidate"]
+        .as_str()
+        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+    let report = evidence["report"]
+        .as_str()
+        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+    let bound=tx.query_opt("SELECT b.episode_id,b.intent_id,b.acceptance_id,b.policy,b.environment FROM contract_verification_bindings b JOIN kernel_verification_requirements r ON r.task_id=b.task_id WHERE b.id=$1 AND b.task_id=$2 AND b.verifier=$3 AND b.recovery_epoch=(SELECT active_epoch FROM deployment) AND r.recovery_epoch=b.recovery_epoch",&[&binding,&task,&verifier]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+    expected(
+        &bound.get::<_, String>(1),
+        &bound.get::<_, String>(2),
+        &bound.get::<_, String>(3),
+        &bound.get::<_, String>(4),
+        current,
+    )?;
+    let (subject, verification, origin) = artifacts.verify_evidence(tx, candidate, report).await?;
+    let acceptance = &current.2.acceptance;
+    let exact:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM artifact_candidates c WHERE c.task_id=$1 AND c.id=$2 AND c.implementer<>$3 AND ($4 OR EXISTS(SELECT 1 FROM artifact_current a WHERE a.task_id=$1 AND a.candidate_id=c.id)))",&[&task,&candidate,&verifier,&historical]).await?.get(0);
+    if !exact
+        || origin != verifier
+        || subject.spec_digest != current.2.legacy_spec_digest
+        || verification.suite != acceptance.suite
+        || verification.environment != acceptance.environment
+        || !verification.resolved_decisions
+        || !subject.risks.is_empty()
+        || verification.checks.iter().any(|c| c.exit_code != 0)
+        || acceptance
+            .mandatory_commands
+            .iter()
+            .any(|c| !verification.checks.iter().any(|check| &check.command == c))
+    {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    let episode: Uuid = bound.get(0);
+    for check in &verification.checks {
+        let bytes = artifacts.store().read(&check.logs)?;
+        let measured: Value =
+            serde_json::from_slice(&bytes).map_err(|_| err(ErrorCode::DependencyUnmet))?;
+        let execution: Uuid =
+            serde_json::from_value(measured["trusted_monitor_result"]["execution"].clone())
+                .map_err(|_| err(ErrorCode::DependencyUnmet))?;
+        if !tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=$1 AND x.episode_id=$2 AND x.task_id=$3 AND x.principal_id=$4 AND x.role='verifier')",&[&execution,&episode,&task,&verifier]).await?.get::<_,bool>(0) {return Err(err(ErrorCode::DependencyUnmet));}
+    }
+    Ok(())
+}
+pub(super) async fn replay(
+    tx: &Transaction<'_>,
+    envelope: &Envelope,
+    receipt: &Value,
+    artifacts: Option<&ArtifactService>,
+) -> Result<()> {
+    let proof = match &envelope.command {
+        Command::AcceptOutcome { proof } => Some(proof.as_str()),
+        Command::VerifyProduction { .. } => Some(
+            receipt["proof"]
+                .as_str()
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?,
+        ),
+        _ => None,
+    };
+    if let Some(proof) = proof {
+        let row=tx.query_opt("SELECT verifier,outcome,evidence,intent_id,acceptance_id FROM contract_proofs WHERE id=$1 AND task_id=$2",&[&proof,&envelope.task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+        // Only an exact applied AcceptOutcome command may inspect its immutable
+        // accepted subject after a later amendment. A new key still goes through
+        // apply/current intent checks; cached verifier work is never this exception.
+        if matches!(envelope.command, Command::AcceptOutcome { .. }) {
+            let accepted: bool = tx.query_one(
+                "SELECT EXISTS(SELECT 1 FROM contract_outcomes WHERE task_id=$1 AND proof_id=$2 AND subject=$3 AND intent_id=$4 AND outcome=$5)",
+                &[&envelope.task,&proof,&receipt["subject"].as_str(),&row.get::<_,String>(3),&row.get::<_,String>(1)],
+            ).await?.get(0);
+            if accepted {
+                let intent = tx.query_one("SELECT acceptance_id,intent FROM contract_intents WHERE id=$1", &[&row.get::<_,String>(3)]).await?;
+                let historical = (row.get::<_,String>(3),intent.get::<_,String>(0),serde_json::from_value(intent.get(1)).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?);
+                if row.get::<_,String>(4) != historical.1 { return Err(err(ErrorCode::DependencyUnmet)); }
+                if row.get::<_,String>(1) == "production" {
+                    production_evidence(tx,envelope.task,&historical,row.get(0),&row.get(2),service(artifacts)?,true).await?;
+                } else {
+                    research_evidence(tx,envelope.task,&historical,row.get(0),&row.get(2),service(artifacts)?).await?;
+                }
+                return Ok(());
+            }
+        }
+        let current = strategy::current(tx, envelope.task).await?;
+        if row.get::<_, String>(3) != current.0 || row.get::<_, String>(4) != current.1 {
+            return Err(err(ErrorCode::StaleRevision));
+        }
+        if row.get::<_, String>(1) == "production" {
+            let evidence: Value = row.get(2);
+            // A cached receipt for this exact accepted proof is inspection, not
+            // a fresh grant. A historical, unaccepted PASS still faces the gate.
+            let accepted: bool = tx.query_one(
+                "SELECT EXISTS(SELECT 1 FROM contract_outcomes o JOIN tasks t ON t.id=o.task_id JOIN artifact_current a ON a.task_id=t.id WHERE o.task_id=$1 AND o.proof_id=$2 AND o.intent_id=$3 AND o.outcome='production' AND t.status='accepted' AND a.candidate_id=$4 AND a.accepted_report=$5)",
+                &[&envelope.task, &proof, &current.0, &evidence["candidate"].as_str(), &evidence["report"].as_str()],
+            ).await?.get(0);
+            if !accepted {
+                production_gate(tx, envelope.task, &evidence, service(artifacts)?).await?;
+            }
+            production_evidence(
+                tx,
+                envelope.task,
+                &current,
+                row.get(0),
+                &evidence,
+                service(artifacts)?,
+                false,
+            )
+            .await?;
+        } else {
+            research_evidence(
+                tx,
+                envelope.task,
+                &current,
+                row.get(0),
+                &row.get(2),
+                service(artifacts)?,
+            )
+            .await?;
+        }
+    }
+    Ok(())
+}

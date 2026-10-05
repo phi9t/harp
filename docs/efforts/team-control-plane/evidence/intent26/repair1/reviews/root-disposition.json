@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T20:30:10.478594+00:00",
+  "accepted": false,
+  "active_core_source_integrated": false,
+  "axes": {
+    "standards": "PASS, historical Data Clumps nonblocking",
+    "spec": "REJECT, one Important static current-failed-gate finding"
+  },
+  "root_static_confirmation": "production_evidence and AcceptOutcome omit latest failed-verification/task-disposition boundary; legacy Verify enforces postfailure freshness",
+  "behavioral_reproduction": "not yet run; required before repair2 source edit",
+  "records": [
+    {
+      "origin": "/tmp/corenius-intent26-repair1-spec-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair1/reviews/spec/report.md",
+      "sha256": "569c9a1ee004dec7e9ca6d41e30604990f748dcd3feb6283915079043e8a0456",
+      "bytes": 2778
+    },
+    {
+      "origin": "/tmp/corenius-intent26-repair1-spec-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair1/reviews/spec/metadata.json",
+      "sha256": "574dc72a779d355fa80a7e73e912c299d6c5a21f923c61558e02a1bb62edb80d",
+      "bytes": 40562
+    },
+    {
+      "origin": "/tmp/corenius-intent26-repair1-standards-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair1/reviews/standards/report.md",
+      "sha256": "d7eefac6660c8ccaacd723cba4e5c3e6a5523f4595dc53147589d738bfe8710f",
+      "bytes": 2684
+    },
+    {
+      "origin": "/tmp/corenius-intent26-repair1-standards-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair1/reviews/standards/metadata.json",
+      "sha256": "16531b090f3d5a374d6c59d86d1ce0ee2b3f669566219e16dce33976b9666385",
+      "bytes": 122438
+    }
+  ]
+}

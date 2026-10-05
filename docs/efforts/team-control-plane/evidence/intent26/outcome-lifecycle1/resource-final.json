@@ -1,0 +1,318 @@
+{
+  "observed_at": 1791072484.8732288,
+  "postgres_stop": {
+    "command": [
+      "docker",
+      "stop",
+      "--time",
+      "15",
+      "corenius-intent26-outcome-lifecycle1-pg"
+    ],
+    "exit_code": 0,
+    "seconds": 0.43077731132507324,
+    "container_id": "df4430a4c93a644a5029ca46559557923cf52bc69a05ebe9003f79161dfc97a0",
+    "container_name": "/corenius-intent26-outcome-lifecycle1-pg",
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-03T23:10:40.218343835Z",
+      "FinishedAt": "2026-10-04T00:08:04.544758514Z"
+    },
+    "mounts_retained": [
+      {
+        "Type": "volume",
+        "Name": "440ee68b6570c4a4a151b47aaa79636d79ba746248a39a9ef51bc83e02806728",
+        "Source": "/data00/docker/volumes/440ee68b6570c4a4a151b47aaa79636d79ba746248a39a9ef51bc83e02806728/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "Driver": "local",
+        "Mode": "",
+        "RW": true,
+        "Propagation": ""
+      }
+    ]
+  },
+  "resource_slot": "released; no Cargo/test/PostgreSQL running under this author; private target/container/volume retained without deletion",
+  "test_launches": 10,
+  "cumulative_compile_test_fmt_lint_seconds": 1045.9441862106323,
+  "matching_fixture_processes_before_stop": [],
+  "recorded_fixture_roots": 137,
+  "recorded_roots_still_present": 17,
+  "retained_schemas": 137,
+  "retained_workspace_states": {
+    "released": 55,
+    "ready": 3,
+    "starting": 5,
+    "quarantined": 3
+  },
+  "unresolved_runtime_rows": [
+    {
+      "schema": "assembled_vertical_01b61ff4b7ed4edcae9c9e3029cf2601",
+      "table": "gateway_operations",
+      "id": "47f9a1bd-8bfd-4b40-b6ef-5e1d6a0c71d5",
+      "state": "outcome_unknown",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "assembled_vertical_1924e10607f441c8a1f3a208d9a213d0",
+      "table": "gateway_operations",
+      "id": "49093850-ef97-4da7-9fc9-092d59a46433",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "assembled_vertical_1c23c6172a054db1be203ef486d34db0",
+      "table": "gateway_operations",
+      "id": "b8e0df03-8f1d-4090-9b70-26f40b3e55ed",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "assembled_vertical_89541a1bf3d34ea6a08a76af59451ac8",
+      "table": "gateway_operations",
+      "id": "2172823f-467e-4780-927a-053f641d2563",
+      "state": "outcome_unknown",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "assembled_vertical_8d922a2d8c114e3bbd06b735a56c9f1b",
+      "table": "gateway_operations",
+      "id": "2a71a1fa-5d38-4856-a8e3-985e18c70f9b",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "assembled_vertical_9c502aea61574727a8b426f84e15e109",
+      "table": "gateway_operations",
+      "id": "83be10e7-f22f-46c0-ad19-cdd58f4b7090",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "assembled_vertical_9e974d2e7365458781d79853c3bb3482",
+      "table": "gateway_operations",
+      "id": "a6cbe2c1-8a01-4bee-90b7-86c519e21deb",
+      "state": "outcome_unknown",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_035a9a4cf5394127b62dae5113a791ce",
+      "table": "gateway_operations",
+      "id": "29e30583-65c8-42d9-9566-5cb85f8802cc",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_035a9a4cf5394127b62dae5113a791ce",
+      "table": "gateway_operations",
+      "id": "d71ca2f2-d57b-426f-9aac-2f8e39da7e07",
+      "state": "failed_known",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_36d8c602dced4833809dd58cd9acac5a",
+      "table": "gateway_operations",
+      "id": "1bfa7372-4e36-4732-96c6-976562b0b890",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_4085650fcf86421db5cefa86af6db309",
+      "table": "gateway_operations",
+      "id": "2e68d23e-f34e-4df4-aab8-613a3bec3b2b",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_4085650fcf86421db5cefa86af6db309",
+      "table": "gateway_operations",
+      "id": "c24d1f54-f539-4f06-b7ce-4a95c7cf3f72",
+      "state": "outcome_unknown",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_6525b0ed5e4347f0b645a9248137b48d",
+      "table": "gateway_operations",
+      "id": "7e421196-9fc6-4646-9cb1-52f562dc6126",
+      "state": "failed_known",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_6525b0ed5e4347f0b645a9248137b48d",
+      "table": "gateway_operations",
+      "id": "d24de75f-da50-4d7b-9e53-9e812d64d1e1",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_6ea5575b1663493ab1d4740ce29fc99c",
+      "table": "gateway_operations",
+      "id": "4c168a5e-06bc-4011-ae08-84069f1e6531",
+      "state": "failed_known",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_6ea5575b1663493ab1d4740ce29fc99c",
+      "table": "gateway_operations",
+      "id": "bcd6cc0a-f8cd-4f92-ab27-3127bb7e32b0",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_757e0d8cd7a347959cf1b10dc580a10f",
+      "table": "gateway_operations",
+      "id": "4a04c5bf-ece7-48cf-b49e-3f7bdfeab5e3",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_757e0d8cd7a347959cf1b10dc580a10f",
+      "table": "gateway_operations",
+      "id": "d8a375b9-2c14-4211-bdd6-f8b67928e8f0",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_7604187413be460c9b8998a099b0bdc8",
+      "table": "gateway_operations",
+      "id": "ece09cc7-0a23-4869-a84c-ea404fedcaa2",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_88fb9c3f361e44fe9b8f1342e9fc3924",
+      "table": "gateway_operations",
+      "id": "6434dfb0-6dba-416e-9d36-c6061dbf67e3",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_a6e19eeb05a54007a178b29b47f4e300",
+      "table": "gateway_operations",
+      "id": "f9139de4-a074-435b-b813-bc550080bd3f",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_af1a7901fafe42f881705d7c00f11174",
+      "table": "gateway_operations",
+      "id": "66dccac3-030b-4bfd-a751-77fbf4fafd4a",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_af1a7901fafe42f881705d7c00f11174",
+      "table": "gateway_operations",
+      "id": "f7c9bd33-4efd-4c46-acf4-565cc225c26f",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_c3df350fdb13420393631cbb72a1b6c1",
+      "table": "gateway_operations",
+      "id": "f02d3b72-46b2-4ac2-a468-2ca92e9b770f",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_cf9636aea3ee4b119002ad013aebdfa0",
+      "table": "gateway_operations",
+      "id": "326ba0af-1304-485d-9969-c271ab110020",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_d17f50aaec054c42adf8a5e4ae8fcedb",
+      "table": "gateway_operations",
+      "id": "0420a2e4-a336-4d56-93b9-c7ba08ecbddf",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_d17f50aaec054c42adf8a5e4ae8fcedb",
+      "table": "gateway_operations",
+      "id": "0aa75bc4-5c7a-4cab-a1d9-79e866edd5d3",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_e443390440eb4c738cb547e76f0e977d",
+      "table": "gateway_operations",
+      "id": "1db1ed3f-22d7-41ad-8509-c34b2409011d",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    },
+    {
+      "schema": "mailbox_delivery_e443390440eb4c738cb547e76f0e977d",
+      "table": "gateway_operations",
+      "id": "ddbac482-e20a-4124-933c-670ef3e0877b",
+      "state": "confirmed",
+      "usage": {
+        "kind": "unknown"
+      }
+    }
+  ],
+  "cleanup_limit": "No failed/unknown fixture row or filesystem cleanup performed. Fixture.finish is not independent physical stop. Native turn files and process absence do not reconcile usage. All original attribution/reservations retained in dumps/volume."
+}

@@ -1,0 +1,373 @@
+{
+  "axis": "Spec",
+  "status": "BLOCKED",
+  "material_findings": [
+    {
+      "rank": "P1",
+      "id": "existing-terminal-refusal-not-retained",
+      "type": "missing-contract-behavior",
+      "source_lines": [
+        131,
+        132,
+        159,
+        163,
+        167,
+        174
+      ],
+      "decision_lines": [
+        13,
+        14,
+        15,
+        18
+      ]
+    }
+  ],
+  "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "root_commit_read": "93263309bac03e1898a14b2d65df0a921a94c21f",
+  "author_commit_read": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "required_reads": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-launch-controller-provenance-repair.md",
+      "sha256": "5ac1c12b289b58eb6f199d1a26dfefe5d2cbd79d7594a3c004fc274c1957397a",
+      "bytes": 2064
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-controller-review1-repair.md",
+      "sha256": "d9ee974e52e4c312bde606c015344b08cf08dcc1e5e73285b021de906d0e7d37",
+      "bytes": 2119
+    }
+  ],
+  "public_index": {
+    "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/public-index.json",
+    "sha256": "7900c6b77da61c09286061d3a939030722451d6fe09635ad462d07e86e535771",
+    "bytes": 10008
+  },
+  "indexed_records_verified": 39,
+  "active_sources": [
+    {
+      "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py",
+      "sha256": "b9651c45c5c56bacbc2ce04d9a4aa22d74cbf5d02bf4bcdae5a73ddb3782560f",
+      "bytes": 15971
+    }
+  ],
+  "patches": [
+    {
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/git-base-full.patch",
+      "sha256": "e0767b0bc152c42e15484a13248f32e1dafc615e36cfa27cb08d18653ef8880c",
+      "bytes": 25699
+    },
+    {
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/round0-to-repair1.patch",
+      "sha256": "384fe520583591fef020413e5baf6850601ec529e4a9019cd994c64656d704c7",
+      "bytes": 15711
+    }
+  ],
+  "patch_validation": {
+    "full_patch_exactly_reconstructs_active_sources_from_absent_paths_at_fixed_base": true,
+    "repair_patch_exactly_transforms_retained_round0_preimages_to_active_sources": true,
+    "paths": [
+      "tools/probes/trae_case_control.py",
+      "tools/probes/test_trae_case_control.py"
+    ]
+  },
+  "round0": {
+    "index": {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-round0/public-index.json",
+      "sha256": "afe65998efa61e5b0d8157ed4ef6bdba6962c791eb85ee3edf29740dc5d4f7fa",
+      "bytes": 2676
+    },
+    "disposition": {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-round0/root-retention-and-disposition.json",
+      "sha256": "caaeeba8e167cee709930fdae56af42c373ae0983b1c997b888b1c950c4dc181",
+      "bytes": 3771
+    },
+    "retained_records_verified": 11,
+    "author_original_scratch_and_preimages_match": true,
+    "reviews": [
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-round0/review/standards/report.md",
+        "sha256": "a4ca5d5f5ec0524b2bea86913c595e91036eafd550208823d1849a7ecde25b46",
+        "bytes": 2670
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-round0/review/spec/report.md",
+        "sha256": "3ed20849818529d16b2d4955fc26ddd69e51c3a8bd7af0af8f4fbc9adbace8f4",
+        "bytes": 2690
+      }
+    ],
+    "freeze_review_copies_match": true
+  },
+  "behavioral_verification": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 /tmp/corenius-trae-controller-repair1-spec-review-20261003/verify.py",
+    "exit_code": 0,
+    "final_tests": 17,
+    "final_tests_pass": true,
+    "post_review_unsafe_controls_assertion_failures": 7,
+    "unsafe_controls_errors": 0,
+    "in_memory_preimage_replay_is_semantic_control": true,
+    "exact_preimage_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/tmp/corenius-trae-controller-repair1-spec-review-20261003/round0-fixture/tools/probes python3 -m unittest test_trae_case_control.DurableControllerBehavior.test_post_reservation_input_change_retains_hash_bound_refusal",
+    "exact_preimage_exit_code": 1,
+    "exact_preimage_regression_assertion_failures": 1,
+    "existing_terminal_command": "PYTHONDONTWRITEBYTECODE=1 python3 /tmp/corenius-trae-controller-repair1-spec-review-20261003/existing_terminal_repro.py",
+    "existing_terminal_exit_code": 1,
+    "existing_terminal_assertion_failures": 1,
+    "scope": "pure recording-executor fixtures in independently copied sources; temp files only in reviewer-owned directory"
+  },
+  "existing_terminal_reproduction": {
+    "observation": {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/observation.json",
+      "sha256": "f177e21f1f6c6b7d8cffd2de561ac4ed11484e701401fa047eba7a5224a6befb",
+      "bytes": 3547
+    },
+    "executor_calls": 0,
+    "prior_terminal_unchanged": true,
+    "started_spent": true,
+    "uncertainty_created": false,
+    "source_sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+    "retained_inputs_outputs": [
+      {
+        "original_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/.scratch/tmpl4mq2s1l/case.json",
+        "retained_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/case.json",
+        "sha256": "6371a4bca91528f56e6ea4304ff246ebbb55ab7a2df0b9981d72deaf9907875d",
+        "bytes": 239
+      },
+      {
+        "original_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/.scratch/tmpl4mq2s1l/grant.json",
+        "retained_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/grant.json",
+        "sha256": "1fac0b9e32292251636e0c80f27fb3d18be6956ec9b5c60ba944e26d2b72f183",
+        "bytes": 698
+      },
+      {
+        "original_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/.scratch/tmpl4mq2s1l/operation/started.json",
+        "retained_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/started.json",
+        "sha256": "c9477e065c52351e9135ebae5782344d22ac6595088900141735fcf4daece8e7",
+        "bytes": 537
+      },
+      {
+        "original_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/.scratch/tmpl4mq2s1l/operation/stderr.log.txt",
+        "retained_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/stderr.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "original_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/.scratch/tmpl4mq2s1l/operation/stdout.log.txt",
+        "retained_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/stdout.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "original_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/.scratch/tmpl4mq2s1l/operation/terminal.json",
+        "retained_path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/terminal.json",
+        "sha256": "ad3f702455fd3631b5fad4dde699983613a88abc5691ee1a932b966250cf341a",
+        "bytes": 24
+      }
+    ]
+  },
+  "limitations": [
+    "Original seven durable slices lack retained chronological TDD RED; post-review semantic controls do not alter history.",
+    "Exact-source preimage replay corroborates the retained genuine author RED; independent replay is not a new assertion of author execution ordering.",
+    "All positives inject offline committed readers; production Git-positive execution unproved.",
+    "No default physical executor or independently enforced deadline/descendant containment qualified.",
+    "Ancestor replacement/concurrent hostile source mutation remains unqualified; sole-writer frozen inputs assumed.",
+    "Sources and repair1 evidence are not integrated or admitted.",
+    "Original physicalresult1 prelaunch provenance remains PARTIAL; budgets spent; quarantine unchanged."
+  ],
+  "prohibited_operations_performed": {
+    "author_root_writes": 0,
+    "git_mutations": 0,
+    "trae_launches": 0,
+    "namespace_launches": 0,
+    "provider_requests": 0,
+    "service_model_launches": 0,
+    "cargo_pg_temporal": 0,
+    "historical_case_reruns": 0,
+    "sureal_inspection": 0
+  },
+  "report": {
+    "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/report.md",
+    "sha256": "b68858383f16f5985174dac5ed8fbedbf4ababcd5ff5e740f503539250377ff9",
+    "bytes": 2976
+  },
+  "review_artifacts": [
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/command-output.txt",
+      "sha256": "de54d56813404619119c287cb06a5e6172d8b1a9c88fb614b5118c39d50876e0",
+      "bytes": 1705
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/command.txt",
+      "sha256": "7d3429736a80eb49379f60345fca4ad11ee9f7b62b3b913ad72de721fc1b087c",
+      "bytes": 103
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/exact-preimage-command.txt",
+      "sha256": "577c26199cdb5cf79d82ae07313c6069164c87453faf537ff7776a8e9b5feedf",
+      "bytes": 255
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/exact-preimage-red.log.txt",
+      "sha256": "6d75ad35f61fd63e1895fb4fa297a05e7a12d9af6050984d78380ab8fc1d45a7",
+      "bytes": 847
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-command-output.txt",
+      "sha256": "f63e60eb4154c31d66b07b40efe9ad48af5f39c39a8c5276e606832090e7b9b1",
+      "bytes": 1038
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-command.txt",
+      "sha256": "daa527d41768e6f413c704fca256eec2e15c7fe6734954cd88576fa5d3919e71",
+      "bytes": 120
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-observation.json",
+      "sha256": "770631f05adfff0fb5ecf86c91e71a4a44f611ec11cd73437f3f01cacd8a02f3",
+      "bytes": 905
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/case.json",
+      "sha256": "6371a4bca91528f56e6ea4304ff246ebbb55ab7a2df0b9981d72deaf9907875d",
+      "bytes": 239
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/grant.json",
+      "sha256": "1fac0b9e32292251636e0c80f27fb3d18be6956ec9b5c60ba944e26d2b72f183",
+      "bytes": 698
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/observation.json",
+      "sha256": "f177e21f1f6c6b7d8cffd2de561ac4ed11484e701401fa047eba7a5224a6befb",
+      "bytes": 3547
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/started.json",
+      "sha256": "c9477e065c52351e9135ebae5782344d22ac6595088900141735fcf4daece8e7",
+      "bytes": 537
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-reproduction/terminal.json",
+      "sha256": "ad3f702455fd3631b5fad4dde699983613a88abc5691ee1a932b966250cf341a",
+      "bytes": 24
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing-terminal-retention-regression.log.txt",
+      "sha256": "0d45871c11cb2f61da759f7c99bb2b0884082130f2dce3bf5e08c08455d10be6",
+      "bytes": 1021
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/existing_terminal_repro.py",
+      "sha256": "4652033965b38be84347a46bad1302907c89056d010276d0018e72de535401d5",
+      "bytes": 2117
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/tools/probes/test_trae_case_control.py",
+      "sha256": "b9651c45c5c56bacbc2ce04d9a4aa22d74cbf5d02bf4bcdae5a73ddb3782560f",
+      "bytes": 15971
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/tools/probes/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-final-green.log.txt",
+      "sha256": "0439f47c7152cc36e44c20e86ccfbb9ccbda434246f25abfdeb829a9b10ef3aa",
+      "bytes": 2906
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-post-reservation-red.log.txt",
+      "sha256": "aa63f7d4c3d92ef0af16722043238507a31e4afbbe3157dbdfe0af9f02338290",
+      "bytes": 1023
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-proof-summary.json",
+      "sha256": "5db05330bc227c17d012618f30051890d0a6de782b42a3a95d720b7fb28bbcb2",
+      "bytes": 1978
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-changed-input.log.txt",
+      "sha256": "9e1061d04b4338d12cadf298345518ffdbe5a20d9f403903a57392ad187c803f",
+      "bytes": 837
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-concurrent.log.txt",
+      "sha256": "b40b7984caa97488820428f6053ee959590c29ac397bb2f8179cb62048e47664",
+      "bytes": 821
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-duplicate.log.txt",
+      "sha256": "fac1e919b8b807f9a5c35a8c7b99778d812c8edc1eecd40abca018bdacc63d6b",
+      "bytes": 847
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-exception.log.txt",
+      "sha256": "8963836241e8084f47b82dea758dba30ae5707236928e30b3ae503f12bff9091",
+      "bytes": 960
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-fsync-fault.log.txt",
+      "sha256": "ee4818947bb21db7a8d8aac47356e47016e7b58fd3e6c5c681455a65b8989180",
+      "bytes": 792
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-short-write.log.txt",
+      "sha256": "163fd4dfefa5e29f98cc261c16787a24b0829273cdf75ba34f2b8f35b36de056",
+      "bytes": 910
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/independent-semantic-write-fault.log.txt",
+      "sha256": "bc550d1974bc892fa2a26d59d297320cbf2a640507ec2d317e8ee227ff7b9bce",
+      "bytes": 902
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/report.md",
+      "sha256": "b68858383f16f5985174dac5ed8fbedbf4ababcd5ff5e740f503539250377ff9",
+      "bytes": 2976
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/round0-fixture/tools/probes/test_trae_case_control.py",
+      "sha256": "b9651c45c5c56bacbc2ce04d9a4aa22d74cbf5d02bf4bcdae5a73ddb3782560f",
+      "bytes": 15971
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/round0-fixture/tools/probes/trae_case_control.py",
+      "sha256": "21fc6e726595a523f2f7ee5de11e6c9ab0de403c9c9ee15e8d2cb8903da2778f",
+      "bytes": 7366
+    },
+    {
+      "path": "/tmp/corenius-trae-controller-repair1-spec-review-20261003/verify.py",
+      "sha256": "275f4ad94a97c5793fb9556320375c17459654d6adb79124c67f423dcb41cf23",
+      "bytes": 3460
+    }
+  ]
+}

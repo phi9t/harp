@@ -1,0 +1,166 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.65s
+     Running unittests src/lib.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 9 tests
+test supervisor::observation_tests::foreign_or_unproven_observer_frames_cannot_classify_original_pids ... ok
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::membership_errors_retain_structured_provenance_and_disappearance_semantics ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+test supervisor::observation_tests::only_certified_original_whole_group_finalization_proves_exit ... ok
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+test supervisor::observation_tests::whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority ... ok
+test temporal::wait_wire_tests::typed_same_uuid_preserves_both_protocols_through_rollover_payload ... ok
+test temporal::wait_wire_tests::v1_admission_wait_roundtrips_without_changing_wire_shape ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/gateway.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/gateway-344beed7e3e5d6d2)
+
+running 4 tests
+test durable_gateway_contract ... 
+thread 'tokio-rt-worker' (4067752) panicked at tests/support/gateway_fault.rs:86:13:
+fixture crash before RPC
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tokio-rt-worker' (4067752) panicked at tests/support/gateway_fault.rs:106:13:
+fixture controller crash after external effect
+
+thread 'tokio-rt-worker' (4067752) panicked at tests/support/gateway_fault.rs:86:13:
+fixture crash before RPC
+
+thread 'tokio-rt-worker' (4067753) panicked at tests/support/gateway_fault.rs:106:13:
+fixture controller crash after external effect
+ok
+test fault_runtime_creates_an_effect_for_every_repeated_mutation_rpc ... ok
+test fault_runtime_surfaces_unexpected_subprocess_failure ... 
+thread 'fault_runtime_surfaces_unexpected_subprocess_failure' (4068305) panicked at tests/support/gateway_fault.rs:57:9:
+unexpected fault-runtime subprocess exit: exit status: 1
+ok
+test gateway_crash_child ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.48s
+
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 9 tests
+test additive_upgrade_preserves_exact_legacy_specs_and_nullable_original_provenance ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"a67117ee-2d98-435a-bb6a-4b14312b4cac"}
+public_contract_response {"family":"intent.admit","key":"wrong-legacy-binding","result":{"code":"stale_revision"},"status":409,"task":"39c72931-a477-4593-8119-45aa645f80fc"}
+public_contract_response {"family":"intent.admit","key":"explicit-mapping","result":{"acceptance":"e9992985cb0430b67ab036b9b0f92dcac72fb4da2376ab2d6208cb10274f25ad","admitted_version":1,"disposition":"applied","intent":"44cce2b5827bd884634da4f64f64d56684c728a2585b4208a655646f12cfea5d","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"39c72931-a477-4593-8119-45aa645f80fc"}
+migration_original_provenance {"episode":{"admitted_task_revision":null,"attempt_id":null,"deadline":"2026-10-03T18:58:31.099763+00:00","event_digest":"5a0aaa5350050b501930ca6d9f7d65463d23bd17b659595b438ad64a00483dfa","id":"4ba79f1b-67e8-4ab0-bbea-fdc5a6bb15a8","input_digest":"c3521e78162246e37eb64fa933d56eb70f78041fdb933883df8dd305a007957e","input_packet":"11d079f8-8add-42e5-8cff-d852d8cb2a3d","lead_generation":0,"mission_id":"50a754c8-f6e1-4d73-aae5-5939612421e1","owned_capacity":true,"principal_id":"49d229a4-9584-4042-9c2b-54a486e49a2f","purpose":"planning","recovery_epoch":"a67117ee-2d98-435a-bb6a-4b14312b4cac","role":"lead","start_operation":null,"state":"admitted","task_generation":null,"task_id":null,"turn_id":null},"execution":{"attempt_id":null,"capacity_released":false,"credential_id":"b2bb0424-6a81-40b7-aeb0-14b8474bcae8","episode_id":"4ba79f1b-67e8-4ab0-bbea-fdc5a6bb15a8","execution_id":"3ce4376f-fc80-4aba-99df-d01f5abffb3e","input_digest":"c3521e78162246e37eb64fa933d56eb70f78041fdb933883df8dd305a007957e","mission_id":"50a754c8-f6e1-4d73-aae5-5939612421e1","owns_capacity":true,"principal_id":"49d229a4-9584-4042-9c2b-54a486e49a2f","recovery_epoch":"a67117ee-2d98-435a-bb6a-4b14312b4cac","role":"lead","task_id":null},"specs":[{"acceptance":["exact executed independent gate"],"created_at":"2026-10-03T18:58:01.01868+00:00","deliverables":["src/result"],"dependencies":[],"digest":"3442bdba0c595219bf558c876cb334e70bfbbf934c0a7a4132fc34384b33fda9","git_commit":"6ca2ae30d11cd645b63716425569141d3ae27176","git_path":"SPEC.md","git_repository":"/data02/home/philip.yang/devx/tmp/kernel16-fb9689c7-328e-4829-ba3f-544de14d5551/store","input_digest":"881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3","objective":"produce immutable src/result","task_id":"39c72931-a477-4593-8119-45aa645f80fc","write_scope":["src"]}],"workspace":{"argv":null,"attempt_id":null,"controller":null,"created_at":"2026-10-03T18:58:01.111372+00:00","deadline":null,"desired_cancel":false,"id":"3ce4376f-fc80-4aba-99df-d01f5abffb3e","init_process":null,"launcher":null,"manifest":{"attempt":null,"base":"6ca2ae30d11cd645b63716425569141d3ae27176","candidate":null,"episode":"4ba79f1b-67e8-4ab0-bbea-fdc5a6bb15a8","generation":0,"input":{"digest":"c3521e78162246e37eb64fa933d56eb70f78041fdb933883df8dd305a007957e","id":"11d079f8-8add-42e5-8cff-d852d8cb2a3d"},"log_path":"/data02/home/philip.yang/devx/tmp/kernel16-fb9689c7-328e-4829-ba3f-544de14d5551/workspaces/.execution-logs/3ce4376f-fc80-4aba-99df-d01f5abffb3e.log","mission":"50a754c8-f6e1-4d73-aae5-5939612421e1","path":"/data02/home/philip.yang/devx/tmp/kernel16-fb9689c7-328e-4829-ba3f-544de14d5551/workspaces/3ce4376f-fc80-4aba-99df-d01f5abffb3e","recovery_epoch":"a67117ee-2d98-435a-bb6a-4b14312b4cac","scopes":[],"spec_digest":"881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3","store":"/data02/home/philip.yang/devx/tmp/kernel16-fb9689c7-328e-4829-ba3f-544de14d5551/store","task":null,"verification_policy":null,"write_scope":[]},"members":[],"quarantine_reason":null,"state":"ready"}}
+ok
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"c3929680-473f-4644-857c-c0b80f666895"}
+public_contract_response {"family":"intent.admit","key":"prerequisite","result":{"acceptance":"244182cfe6f7437df692196b2f9d0426ea04f5fefef03a0be35e9a7e20b473ad","admitted_version":1,"disposition":"applied","intent":"518620b047b73c8fee781fdca3652198ebeeeafb5b3b9eab91bc23db4eba624d","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"outcome.propose","key":"prerequisite-proposal","result":{"disposition":"proposed","proposal":"01c4c705fd9420c55910ac6b74a069cf06a64467c98b7a8365259e292af643ac","revision":1,"schema_version":2},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"research.verify","key":"prerequisite-verify","result":{"code":"unauthorized"},"status":401,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"research.verify","key":"prerequisite-verify","result":{"disposition":"applied","outcome":"investigation_complete","proof":"118686de93c8caa565ca2de5464ecea3ee345ce27fe94b0b767f4dc38ae34d0f","revision":2,"schema_version":2},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"outcome.accept","key":"prerequisite-accept","result":{"code":"unauthorized"},"status":401,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"outcome.accept","key":"prerequisite-accept","result":{"disposition":"applied","outcome":"investigation_complete","proof":"118686de93c8caa565ca2de5464ecea3ee345ce27fe94b0b767f4dc38ae34d0f","revision":3,"schema_version":2,"subject":"bc93eb53110824a907b55b810d85366b6f0d3a75bff1b6977fabe1745a81752b"},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"intent.admit","key":"dependent-intent","result":{"acceptance":"3124a7c5ba97b26d485756a0e84a6807f553f80d0175724716e4a02af44b9059","admitted_version":1,"disposition":"applied","intent":"afdf405da3f93cba39cb925ab13d6556485140c92f5675d7d9a16e87807127f6","revision":1,"schema_version":2,"work":"35f22b4712993f6131816fdcc16dba72d60e20d6389cbe4a3b87aa934c9700fc"},"status":200,"task":"0c1d05c4-d5fd-4b6e-833c-b3be26506f19"}
+public_contract_response {"family":"source.propose","key":"unadmitted-edit","result":{"disposition":"proposed","proposal":"50b671cb10bc45effc4066d2c0e4af7c46507260d7bf1c6738e8ca5bcb026aa5","revision":3,"schema_version":2},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"intent.admit","key":"supersede","result":{"acceptance":"244182cfe6f7437df692196b2f9d0426ea04f5fefef03a0be35e9a7e20b473ad","admitted_version":2,"disposition":"applied","intent":"cbc7a103f87718470a61cc8ff16e62b4f05644c9c5b54162e897bca55d5f4618","revision":4,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"outcome.propose","key":"amended-proposal","result":{"disposition":"proposed","proposal":"ace4f68557ebfa0deca6155fe62f2ad7a5bf5ac37821ca63c2e180b23f059792","revision":4,"schema_version":2},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"research.verify","key":"amended-verify","result":{"code":"unauthorized"},"status":401,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"research.verify","key":"amended-verify","result":{"disposition":"applied","outcome":"investigation_complete","proof":"79a6120b2217f32116941567f97a5922a21baa6d536dc7732c9baf7bee00895c","revision":5,"schema_version":2},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"outcome.accept","key":"amended-accept","result":{"code":"unauthorized"},"status":401,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"outcome.accept","key":"amended-accept","result":{"disposition":"applied","outcome":"investigation_complete","proof":"79a6120b2217f32116941567f97a5922a21baa6d536dc7732c9baf7bee00895c","revision":6,"schema_version":2,"subject":"b316363476dffee17747bc21eb31d77223e2d06497330df5e0fbbda64cf9d1aa"},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"dependency.revalidate","key":"stale-dependent-revision","result":{"code":"stale_revision"},"status":409,"task":"0c1d05c4-d5fd-4b6e-833c-b3be26506f19"}
+public_contract_response {"family":"dependency.revalidate","key":"revalidate","result":{"disposition":"applied","revalidation":"b3a8187a1d54f9550e78aeb310e6cdaae5a0ddb5c613fdd7ca86c74200fd2167","revision":3,"schema_version":2},"status":200,"task":"0c1d05c4-d5fd-4b6e-833c-b3be26506f19"}
+public_contract_response {"family":"intent.admit","key":"supersede-again","result":{"acceptance":"244182cfe6f7437df692196b2f9d0426ea04f5fefef03a0be35e9a7e20b473ad","admitted_version":3,"disposition":"applied","intent":"1c8521f2c722836bff7f08d0ddf7483fdfb3a9d461979f5f1e5c554aaa2f8a99","revision":7,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"64f190ee-da20-4100-9a3d-e9ee1778140b"}
+public_contract_response {"family":"dependency.revalidate","key":"revalidate","result":{"code":"dependency_unmet"},"status":409,"task":"0c1d05c4-d5fd-4b6e-833c-b3be26506f19"}
+ok
+test current_lead_requires_explicit_bounded_delegation_even_on_replay ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"bcc3dfcb-5302-4208-9f2a-a73f89fdf1e3"}
+public_contract_response {"family":"intent.admit","key":"owner-intent","result":{"acceptance":"7ae013778b7b8febcb48064e49fd283e44aa269f27143be43dab4c090d9480cb","admitted_version":1,"disposition":"applied","intent":"978651b7479b078dbbf922b77fe9ed69723a49cc9487a16eb0f16f3b33cf5936","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"code":"unauthorized"},"status":401,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"code":"unauthorized"},"status":401,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"delegation.admit","key":"delegate","result":{"delegation":"c7a1821c-7e12-4f95-8ce7-408cb3d24cdd","disposition":"applied","revision":2,"schema_version":2},"status":200,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"acceptance":"7ae013778b7b8febcb48064e49fd283e44aa269f27143be43dab4c090d9480cb","admitted_version":2,"disposition":"applied","intent":"0cd028ad2b531f8507cc26bfbcbbba21f79644383c9403513586f2d89770df95","revision":3,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"acceptance":"7ae013778b7b8febcb48064e49fd283e44aa269f27143be43dab4c090d9480cb","admitted_version":2,"disposition":"applied","intent":"0cd028ad2b531f8507cc26bfbcbbba21f79644383c9403513586f2d89770df95","revision":3,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"owner-third-intent","result":{"acceptance":"7ae013778b7b8febcb48064e49fd283e44aa269f27143be43dab4c090d9480cb","admitted_version":3,"disposition":"applied","intent":"9181cfbe38d253cef33bceef970e2d76a6e374b60f8c2fc040aaa25d9c7833d1","revision":4,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"code":"unauthorized"},"status":401,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"code":"unauthorized"},"status":401,"task":"68690f3a-5748-4256-9507-fc10dde45f83"}
+ok
+test exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"e9ce7d23-26ad-4325-bb4d-a9485b1211af"}
+public_contract_response {"family":"intent.admit","key":"exact-intent","result":{"acceptance":"11135cf1a237f531c75c659f439cc61f37a272f700dea4c1bf22a073d0213d1b","admitted_version":1,"disposition":"applied","intent":"97e1fd79c2ecb1d0d6fe6cf7be94ce638bb9984efafc08f389a06129d11b50a5","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"aff53a64-7c51-4b42-82af-38257607c056"}
+public_contract_response {"family":"intent.admit","key":"exact-intent","result":{"acceptance":"11135cf1a237f531c75c659f439cc61f37a272f700dea4c1bf22a073d0213d1b","admitted_version":1,"disposition":"applied","intent":"97e1fd79c2ecb1d0d6fe6cf7be94ce638bb9984efafc08f389a06129d11b50a5","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"aff53a64-7c51-4b42-82af-38257607c056"}
+public_contract_response {"family":"intent.admit","key":"exact-intent","result":{"code":"idempotency_conflict"},"status":409,"task":"aff53a64-7c51-4b42-82af-38257607c056"}
+public_contract_response {"family":"intent.admit","key":"stale-intent","result":{"code":"stale_revision"},"status":409,"task":"aff53a64-7c51-4b42-82af-38257607c056"}
+ok
+test negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"6b17232e-2f84-443a-9c11-9973f4dddbef"}
+public_contract_response {"family":"intent.admit","key":"research","result":{"acceptance":"311c3d463b5498d05b5a63c9f9356a8d083fabfa3c23b42fc91ceb0b224ab5ea","admitted_version":1,"disposition":"applied","intent":"151c0499823008acf8fb19cc697e1bfc39687ceaf45295895c764832968d6244","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"outcome.propose","key":"research-proposal","result":{"disposition":"proposed","proposal":"d7ef6fa590777a2738518c924f8ab5d8250361b9fa2809bf61d219db6be6e923","revision":1,"schema_version":2},"status":200,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"research.verify","key":"research-verify","result":{"code":"unauthorized"},"status":401,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"research.verify","key":"research-verify","result":{"disposition":"applied","outcome":"investigation_complete","proof":"762848b189abdb7e406e0b995d0c372412299deaa365dc4ec1c9327e336140d7","revision":2,"schema_version":2},"status":200,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"outcome.accept","key":"research-accept","result":{"code":"unauthorized"},"status":401,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"outcome.accept","key":"research-accept","result":{"disposition":"applied","outcome":"investigation_complete","proof":"762848b189abdb7e406e0b995d0c372412299deaa365dc4ec1c9327e336140d7","revision":3,"schema_version":2,"subject":"209bc37b660b8198182afb105856609739f8492b10e298bd81d60cdeb60969aa"},"status":200,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"outcome.propose","key":"evaluator-proposal","result":{"disposition":"proposed","proposal":"6c76bb7de34cffdd87ae764ccabd67ec27d916b58d7e879f42d4565778bd17b6","revision":3,"schema_version":2},"status":200,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+public_contract_response {"family":"research.verify","key":"do-not-promote-evaluator","result":{"code":"dependency_unmet"},"status":409,"task":"d5676352-0a73-4426-a12e-e197f31d8fee"}
+ok
+test plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"f287ea85-bc5f-4240-8a1b-c47a92aa3b3b"}
+public_contract_response {"family":"intent.admit","key":"intent","result":{"acceptance":"aaae4901422569c672609bee54dc70a1df58b4eaa07521b1756e25de3ba2491a","admitted_version":1,"disposition":"applied","intent":"c71ff3d3ee5a93f1293824e51e20b2993007fccbb72160fb65538fd7b903c790","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"485af5e5-e66d-4ec5-96c9-37507e69c895"}
+public_contract_response {"family":"plan.admit","key":"bounded-plan","result":{"admitted_version":1,"disposition":"applied","plan":"2a03a19a993a1d63e4e17f1e8dc5189f1a53105058f3861018e8166445e2b659","revision":2,"schema_version":2},"status":200,"task":"485af5e5-e66d-4ec5-96c9-37507e69c895"}
+public_contract_response {"family":"plan.admit","key":"expand-plan-budget","result":{"code":"budget_exhausted"},"status":409,"task":"485af5e5-e66d-4ec5-96c9-37507e69c895"}
+ok
+test plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"23a474b5-5f70-44ba-8aa2-f9c51acfd2d3"}
+public_contract_response {"family":"intent.admit","key":"intent","result":{"acceptance":"72ca0e1dd50a734705ba0b8ac41fc9a31641757e63a7b7b832d0997610d0c4a2","admitted_version":1,"disposition":"applied","intent":"7d90045068e5acc175ee464d26f4b1784238ebb1fd64f3258140df4010779cb0","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"plan","result":{"admitted_version":1,"disposition":"applied","plan":"13e7e3c9dd731e80e4c756dc4fd9ab3fe5ffa987486943bd0a085a829c45282b","revision":2,"schema_version":2},"status":200,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"plan","result":{"admitted_version":1,"disposition":"applied","plan":"13e7e3c9dd731e80e4c756dc4fd9ab3fe5ffa987486943bd0a085a829c45282b","revision":2,"schema_version":2},"status":200,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"duplicate","result":{"code":"invalid_argument"},"status":400,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"cycle","result":{"code":"invalid_argument"},"status":400,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"missing","result":{"code":"invalid_argument"},"status":400,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"unbounded","result":{"code":"invalid_argument"},"status":400,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"effect-expansion","result":{"code":"unauthorized"},"status":401,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"budget-expansion","result":{"code":"budget_exhausted"},"status":409,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"acceptance-change","result":{"code":"stale_revision"},"status":409,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"reinterpret-completed","result":{"code":"stale_revision"},"status":409,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+public_contract_response {"family":"plan.admit","key":"new-strategy","result":{"admitted_version":2,"disposition":"applied","plan":"fbf233755f68eae197a119cee415560d404d5018c94204ecb23050f3a6574a3c","revision":3,"schema_version":2},"status":200,"task":"f8e9ce21-d645-4d04-b449-2b21509e440f"}
+ok
+test production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement ... public_contract_response {"family":"intent.admit","key":"production-intent","result":{"acceptance":"2db05e7c1975e57e04ceca47e88ca02890aca54409548d56b7187483e76c4834","admitted_version":1,"disposition":"applied","intent":"a9787f3d0d6fef40fb4c5e526a466e1181b175d945a0834cea9b0555507dfef7","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+public_contract_response {"family":"verification.bind","key":"bind-fresh-verifier","result":{"binding":"36f8ddc76aaa822247cb8001f5b9ea9559a8fd80e86d29817274853c7ae4c7bf","disposition":"applied","revision":2,"schema_version":2},"status":200,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+independent_measured_subject {"binding":{"binding":"36f8ddc76aaa822247cb8001f5b9ea9559a8fd80e86d29817274853c7ae4c7bf","disposition":"applied","revision":2,"schema_version":2},"candidate":{"artifact":"13a07bd84467b337369b51ac2c67cbf4286540b625f2deead5296c354ce59aa1","base":"f52435cc243304475b860e7b66007c13ee731020","commit":"9d0cfe7e8d9198da4fe6da98d63c36fffe6bcaf4","deliverables":["src/result"],"generation":1,"risks":[],"spec_digest":"72a6c104eedc4501a401c6852c8ba447f75a1fbd5f1d0fad7e302d0da07c55ba","spec_revision":2,"tree":"6d16bf3ee03167041bec09645d29ab82b19e4791"},"measured_result":{"argv":["/bin/sh","-c","test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"],"candidate":{"artifact":"13a07bd84467b337369b51ac2c67cbf4286540b625f2deead5296c354ce59aa1","base":"f52435cc243304475b860e7b66007c13ee731020","commit":"9d0cfe7e8d9198da4fe6da98d63c36fffe6bcaf4","deliverables":["src/result"],"generation":1,"risks":[],"spec_digest":"72a6c104eedc4501a401c6852c8ba447f75a1fbd5f1d0fad7e302d0da07c55ba","spec_revision":2,"tree":"6d16bf3ee03167041bec09645d29ab82b19e4791"},"completion":{"kind":"monitor_wait"},"controller":{"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","namespace":"pid:[4026531836]","namespace_pid":4068857,"pid":4068857,"start_ticks":46946535},"execution":"3faba4d9-d261-4a6d-9166-c8925c8bd3f7","exit_code":0,"logs":"655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70","namespace_stopped":true,"recovery_epoch":"79c35884-2c59-48e4-b3fd-78026b543976","signal":null}}
+public_contract_response {"family":"production.verify","key":"exact-production-proof","result":{"code":"unauthorized"},"status":401,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+public_contract_response {"family":"production.verify","key":"nonexistent-proof-is-inert","result":{"code":"not_found"},"status":404,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+public_contract_response {"family":"production.verify","key":"exact-production-proof","result":{"disposition":"applied","outcome":"production","proof":"a7290c9c2c33d354448b09af5e671d4da9b8a671fa04a48914ef861e2cb44911","revision":3,"schema_version":2},"status":200,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+public_contract_response {"family":"outcome.accept","key":"accept-production","result":{"disposition":"applied","outcome":"production","proof":"a7290c9c2c33d354448b09af5e671d4da9b8a671fa04a48914ef861e2cb44911","revision":4,"schema_version":2,"subject":"b09c02740957c70407a2aebc721fa81114686e405f7b1267551ad9988e598ae6"},"status":200,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+public_contract_response {"family":"verification.bind","key":"old-v1-pass-cannot-rebind","result":{"code":"dependency_unmet"},"status":409,"task":"9d70537c-f9a4-4d03-a3d2-b16081db939b"}
+ok
+test source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias ... postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"ca60428c-91fe-4846-95c2-74c0320f460f"}
+public_contract_response {"family":"intent.admit","key":"intent","result":{"acceptance":"2bfd97d7ec89980fe43960937e1889e638229d886115c1c871ce11de109ef8bb","admitted_version":1,"disposition":"applied","intent":"3754d1b1d6c8f7b3719fc9f2333ccc93cfa16ff9ae79c7dfd0eff10ab9b4ae5f","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"c6b31eb9-4608-4b2f-8186-27e8bb9e3200"}
+public_contract_response {"family":"source.propose","key":"source-event","result":{"disposition":"proposed","proposal":"7d52194866a5b98b73150336eb9960d7587d29a949ecc55b918c1345bdb867a2","revision":1,"schema_version":2},"status":200,"task":"c6b31eb9-4608-4b2f-8186-27e8bb9e3200"}
+public_contract_response {"family":"intent.admit","key":"missing","result":{"code":"artifact_missing"},"status":409,"task":"c6b31eb9-4608-4b2f-8186-27e8bb9e3200"}
+public_contract_response {"family":"intent.admit","key":"rewrite-source-revision","result":{"code":"idempotency_conflict"},"status":409,"task":"c6b31eb9-4608-4b2f-8186-27e8bb9e3200"}
+postgres_fixture {"dsn":"host=127.0.0.1 port=10712 user=probe dbname=probe","epoch":"49971bf1-f526-4679-9f07-6f00143e7b5f"}
+public_contract_response {"family":"intent.admit","key":"other-deployment","result":{"acceptance":"df8afabe8fe09456e96da04e0041e12c5bd4050214a9b40ea62ad213616307ea","admitted_version":1,"disposition":"applied","intent":"a95e17740104247d237b9847e5f4ec0f3c93ce8de5a3b77c882b851cbf6cc17d","revision":1,"schema_version":2,"work":"5c351e6cb37f959750ac86c81b95098078417ac7bfbe91d0443718774093be23"},"status":200,"task":"3b654e52-2fcc-4fc8-8ba6-b22ff4fb9ec0"}
+ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.04s
+
+     Running tests/kernel.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/kernel-a8df179696d69707)
+
+running 16 tests
+test a_cached_command_never_restores_wider_authority ... ok
+test admission_is_durable_atomic_and_idempotent ... ok
+test authority_expiry_scopes_generations_and_epoch_rotation ... ok
+test command_snapshots_respect_task_scopes ... ok
+test dependencies_change_spec_digest_and_retain_immutable_history ... ok
+test dependencies_validation_and_immutable_approval ... ok
+test distinct_assignments_capacity_and_cumulative_budget ... ok
+test episode_budget_and_competing_capacity_are_independent_limits ... ok
+test event_sequences_have_typed_aggregate_namespaces ... ok
+test http_auth_forged_fields_and_reconnect ... ok
+test missing_resource_rejection_stays_rejected_after_resource_appears ... ok
+test rejected_command_is_durable_and_cannot_be_reused ... ok
+test rejected_snapshot_retains_its_original_task_scope ... ok
+test rollback_at_every_admission_write_stage ... ok
+test schema_and_transport_fail_closed ... ok
+test token_expires_while_waiting_for_the_transaction_lock ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.69s
+
+     Running tests/mailbox.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/mailbox-62f37e5d50b24a27)
+
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s
+

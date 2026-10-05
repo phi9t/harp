@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T19:40:10.828384+00:00",
+  "retention_commit": "7691a1fc00f3f2b16ea043f9058dee510eabb148",
+  "dehydration_commit": "93263309bac03e1898a14b2d65df0a921a94c21f",
+  "tracker_lint_exit_code": 0,
+  "rehydrate_exit_code": 0,
+  "rehydrate_drift": "none",
+  "metadata_whitespace_check_exit_code": 0,
+  "raw_archive_whitespace_check_exit_code": 2,
+  "raw_archive_whitespace_warning_locations": [
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-admission-2.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-api-compatibility.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-authority-plan-2.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-dependencies.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-final-contract-revisions.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-final-public.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/green-retention-grants-ceilings.log.txt",
+    "docs/efforts/team-control-plane/evidence/intent26/round0/source.patch",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-root-tests/landing.log.txt",
+    "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/round0-to-repair1.patch"
+  ],
+  "interpretation": "Raw proof bytes retain their original terminal whitespace and are validated by exact hash; source/prose metadata whitespace is checked separately. Initial cached check emitted those warnings; commit retained original proof rather than normalizing evidence. No active implementation source changed in this handoff."
+}

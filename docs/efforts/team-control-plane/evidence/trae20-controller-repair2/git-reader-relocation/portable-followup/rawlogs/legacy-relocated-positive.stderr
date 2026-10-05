@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py", line 271, in <module>
+    main()
+  File "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py", line 217, in main
+    require(c['argv'][1:3] == ['-C', str(P / 'fixture')], 'Git command outside fixture')
+  File "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py", line 15, in require
+    raise AssertionError(message)
+AssertionError: Git command outside fixture

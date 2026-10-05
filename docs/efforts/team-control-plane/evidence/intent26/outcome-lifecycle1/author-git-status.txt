@@ -1,0 +1,16 @@
+ M crates/team-control-plane/README.md
+ M crates/team-control-plane/src/admission.rs
+ M crates/team-control-plane/src/artifacts.rs
+ M crates/team-control-plane/src/contracts.rs
+ M crates/team-control-plane/src/contracts/authority.rs
+ M crates/team-control-plane/src/contracts/dependencies.rs
+ M crates/team-control-plane/src/contracts/outcomes.rs
+ M crates/team-control-plane/src/contracts/strategy.rs
+ M crates/team-control-plane/src/kernel.rs
+ M crates/team-control-plane/src/mailbox.rs
+ M crates/team-control-plane/src/supervisor.rs
+ M crates/team-control-plane/tests/intent_contracts.rs
+?? crates/team-control-plane/migrations/0009.sql
+?? crates/team-control-plane/src/contracts/lifecycle.rs
+?? crates/team-control-plane/tests/support/outcome_lifecycle.rs
+?? docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/

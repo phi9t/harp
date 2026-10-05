@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-04T00:11:28.979630+00:00",
+  "author": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1",
+  "root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "root_head_before_retention": "80728185101b8f7920fac3b15f8b3f515713ac2a",
+  "author_base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "author_seal_sha256": "d2b0ed5e5fcc81ae0b61de0bbcbf754823c41d2035b805ba81f27d11f1c18d73",
+  "author_selected_records_checked": 320,
+  "records_including_seal": 321,
+  "copied": 321,
+  "reused_identical": 0,
+  "all22_root_preimages_checked": [
+    {
+      "path": "crates/team-control-plane/README.md",
+      "root_sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5",
+      "candidate_sha256": "9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0008.sql",
+      "root_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "candidate_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0009.sql",
+      "root_sha256": null,
+      "candidate_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d"
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "root_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "candidate_sha256": "06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6"
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "root_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "candidate_sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts.rs",
+      "root_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf",
+      "candidate_sha256": "e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/authority.rs",
+      "root_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "candidate_sha256": "ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "root_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "candidate_sha256": "7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "root_sha256": null,
+      "candidate_sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "root_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "candidate_sha256": "c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "root_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+      "candidate_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48"
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "root_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "candidate_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+    },
+    {
+      "path": "crates/team-control-plane/src/episode_runtime.rs",
+      "root_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "candidate_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "root_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "candidate_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "root_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "candidate_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+    },
+    {
+      "path": "crates/team-control-plane/src/kernel.rs",
+      "root_sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "candidate_sha256": "305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a"
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "root_sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "candidate_sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "root_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "candidate_sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6"
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "root_sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "candidate_sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "root_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+      "candidate_sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6"
+    },
+    {
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "root_sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264",
+      "candidate_sha256": "fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4"
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/outcome_lifecycle.rs",
+      "root_sha256": null,
+      "candidate_sha256": "7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad"
+    }
+  ],
+  "final_live_and_archived_inputs_checked": 59,
+  "raw_run_hashes_checked": 18,
+  "top_level_test_launches": 10,
+  "final_author_tests": 96,
+  "final_log_sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+  "observations_previously_checked_against_raw_lines": 2487,
+  "measured_research_bindings_previously_checked": 16,
+  "decompressed_dump_batches_checked": 14,
+  "retained_schemas": 137,
+  "retained_dump_raw_bytes": 31075965,
+  "dedicated_postgres_stopped_observed": {
+    "container_id": "df4430a4c93a644a5029ca46559557923cf52bc69a05ebe9003f79161dfc97a0",
+    "running": false,
+    "exit_code": 0
+  },
+  "resource_slot_released": true,
+  "remaining_unknown_runtime_rows": 29,
+  "retained_fixture_roots": 17,
+  "cleanup_limits": "No failed/unknown fixture row or filesystem cleanup performed. Fixture.finish is not independent physical stop. Native turn files and process absence do not reconcile usage. All original attribution/reservations retained in dumps/volume.",
+  "source_integrated": false,
+  "root_cargo_postgres_gates_run": false,
+  "conformance_pending": true,
+  "ticket_accepted": false,
+  "landed": false
+}

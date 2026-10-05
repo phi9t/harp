@@ -1,0 +1,126 @@
+{
+  "base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "status": "rejected repair3 baseline only",
+  "checks": [
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "bytes": 20872,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0009.sql",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458,
+      "preimage_present": false
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts.rs",
+      "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "bytes": 23071,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "bytes": 3892,
+      "preimage_present": false
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "bytes": 127057,
+      "preimage_present": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+      "bytes": 117514,
+      "preimage_present": true
+    }
+  ]
+}

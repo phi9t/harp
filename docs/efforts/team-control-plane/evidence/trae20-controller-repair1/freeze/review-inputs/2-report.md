@@ -1,0 +1,13 @@
+Status: BLOCKED for controller completion; no physical admission.
+
+Commit read: base `4b3d2634d85b62f21d97ab9c41b0d50b282d89ae`; authority decision at `c5162e3`. Static review only; no tests, namespace, services, providers, or Git mutations.
+
+1. **Blocking documented-standard breach: retained behavioral proof is incomplete.** `docs/agents/agentic-engineering.md` §4.6 and `docs/agents/skill-orchestration.md` require each behavior slice to visibly fail before implementation and pass afterward. The frozen evidence contains one meaningful red for missing control against `unsafe-red-source.py`, followed by an eight-test green. No retained red demonstrates the seven durable-control slices in `test_trae_case_control.py:49–115` (duplicate/concurrent admission, changed inputs, write/fsync, short writes, terminal exception). This establishes a proof gap, not that those behaviors failed.
+
+2. **Blocking contract breach: post-reservation errors are returned without retained terminal uncertainty.** The authority decision requires “Terminal output and uncertainty are retained.” `trae_case_control.py:130–135` can reject changed inputs after all four records have been durably reserved; `:148–149` then returns the error without writing the open `terminal.json`. This leaves it empty even when storage is healthy. The tests do not exercise post-reservation mutation or finalization faults. A spent started record prevents retry but does not preserve the returned reason. Filesystem faults can legitimately prevent persistence; that limitation does not explain the healthy-storage path.
+
+**Completion qualification:** All 11 indexed sizes/hashes match; the authoritative patch reconstructs exactly the two new files. The three historical namespace source hashes match the frozen planned case. Sources and scratch evidence have no ordinary Git retention mapping in this author tree. Before claiming durable completion, retain source, patch, index, case, logs, and handoff through ordinary Git paths with an explicit original-path/hash mapping, per workflow “Efforts: durable record and scratch.” This candidate deliberately remains unadmitted.
+
+**Safety qualification:** Exclusive creation, checked writes, owner/mode checks, and pre-executor file/directory fsyncs are present; no default executor, retry, or grant expansion was found. Path validation uses resolve-then-open with leaf-only `O_NOFOLLOW`; ancestor replacement and post-check immutability are unproved. Injected readers/recording executors qualify pure decisions only. Passed timeout is not physical enforcement; the historical result remains PARTIAL.
+
+No material baseline smell identified.

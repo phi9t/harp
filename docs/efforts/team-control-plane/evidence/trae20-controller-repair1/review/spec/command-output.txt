@@ -1,0 +1,10 @@
+{"label": "independent-final-green", "tests": 17, "failures": 0, "errors": 0, "output_sha256": "0439f47c7152cc36e44c20e86ccfbb9ccbda434246f25abfdeb829a9b10ef3aa"}
+{"label": "independent-post-reservation-red", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "aa63f7d4c3d92ef0af16722043238507a31e4afbbe3157dbdfe0af9f02338290"}
+{"label": "independent-semantic-duplicate", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "fac1e919b8b807f9a5c35a8c7b99778d812c8edc1eecd40abca018bdacc63d6b"}
+{"label": "independent-semantic-concurrent", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "b40b7984caa97488820428f6053ee959590c29ac397bb2f8179cb62048e47664"}
+{"label": "independent-semantic-changed-input", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "9e1061d04b4338d12cadf298345518ffdbe5a20d9f403903a57392ad187c803f"}
+{"label": "independent-semantic-write-fault", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "bc550d1974bc892fa2a26d59d297320cbf2a640507ec2d317e8ee227ff7b9bce"}
+{"label": "independent-semantic-fsync-fault", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "ee4818947bb21db7a8d8aac47356e47016e7b58fd3e6c5c681455a65b8989180"}
+{"label": "independent-semantic-short-write", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "163fd4dfefa5e29f98cc261c16787a24b0829273cdf75ba34f2b8f35b36de056"}
+{"label": "independent-semantic-exception", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "8963836241e8084f47b82dea758dba30ae5707236928e30b3ae503f12bff9091"}
+{"label": "existing-terminal-retention-regression", "tests": 1, "failures": 1, "errors": 0, "output_sha256": "0d45871c11cb2f61da759f7c99bb2b0884082130f2dce3bf5e08c08455d10be6"}

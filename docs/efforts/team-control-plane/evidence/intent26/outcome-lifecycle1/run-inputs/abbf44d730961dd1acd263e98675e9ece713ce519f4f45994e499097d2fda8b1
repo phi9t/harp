@@ -1,0 +1,70 @@
+// Included by intent_contracts: public HTTP behavior against the same real fixtures.
+use super::*;
+
+#[tokio::test]
+async fn lifecycle_research_terminal_commands_and_current_projection() {
+    let api = Api::new().await;
+    let intent = api.research_intent("terminal", 0, "terminal-r1").await;
+    let plan = json!({"schema_version":1,"interpreter_version":"declarative-v1","intent":intent["intent"],"acceptance":intent["acceptance"],"allowed_effects":["read"],"resources":{"attempts":8,"episodes":8,"repairs":3,"execution_seconds":30},"max_repairs":3,"steps":[{"id":"inspect","kind":"action","depends_on":[],"join":"all","effects":["read"],"max_iterations":1}]});
+    let admitted_plan = api.post(&api.fixture.owner, &api.command("terminal-plan",1,json!({"kind":"plan.admit","plan":plan}))).await;
+    assert_eq!(admitted_plan.0,200);
+    let input=Uuid::new_v4();
+    let capture=json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"implementation","limit":4});
+    assert_eq!(api.mail("assembled-worker","terminal-input",capture.clone()).await.0,200);
+    let packet=team_control_plane::mailbox::MailboxService::new(api.fixture.broker.clone()).record("assembled-worker",team_control_plane::mailbox::RecordKind::Input,input).await.unwrap();
+    let episode=Uuid::new_v4();
+    let admission=json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]});
+    assert_eq!(api.mail("assembled-worker","terminal-episode",admission.clone()).await.0,200);
+    let accepted = api.accept_research(&intent, 2, "terminal").await;
+    let before=api.snapshot().await;
+    let mut failures=Vec::new();
+    let proof=before["accepted"][0]["proof_id"].clone();
+    let receipt=api.command("terminal-accept",3,json!({"kind":"outcome.accept","proof":proof}));
+    assert_eq!(api.post(&api.fixture.owner,&receipt).await,(200,accepted.clone()));
+    let evidence=api.upload("assembled-worker",b"physical log bytes remain storable after acceptance").await;
+    let mutations=vec![
+      ("assembled-worker".to_owned(),api.command("new-proposal",4,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}))),
+      (api.fixture.owner.clone(),api.command("new-accept",4,receipt["command"].clone())),
+      (api.fixture.owner.clone(),api.command("terminal-plan",1,json!({"kind":"plan.admit","plan":plan}))),
+      (api.fixture.owner.clone(),api.command("terminal-revalidate",4,json!({"kind":"dependency.revalidate","intent":intent["intent"],"dependencies":[]}))),
+    ];
+    for (token,command) in mutations {let result=api.post(&token,&command).await;if result.0!=409 {failures.push(json!({"command":command,"result":result}));}}
+    for (key,command) in [("terminal-input",capture),("terminal-episode",admission)] {let r=api.mail("assembled-worker",key,command).await;if r.0!=409 {failures.push(json!({"key":key,"result":r}));}}
+    for command in [json!({"kind":"prepare_delivery","id":Uuid::new_v4(),"message":Uuid::new_v4(),"episode":episode,"required_decision":null,"required_approval":null}),json!({"kind":"bind_runtime_turn","episode":episode,"start_operation":Uuid::new_v4(),"runtime_turn":"terminal-turn"})] {
+      let r=api.mail(&api.fixture.owner,&Uuid::new_v4().to_string(),command.clone()).await;
+      if r.1["code"]!="dependency_unmet" {failures.push(json!({"target_guard":command,"result":r}));}
+    }
+    let policy=team_control_plane::kernel::Kernel::new(api.fixture.broker.clone()).require_supervised_verification(&api.fixture.owner,api.fixture.task).await;
+    if policy.is_ok(){failures.push(json!("verification policy activation admitted"));}
+    let task=api.legacy_task(api.fixture.task).await;
+    let cancelled=api.v1("terminal-cancel",task["revision"].as_i64().unwrap(),None,json!({"kind":"cancel_attempt","task_id":api.fixture.task,"attempt_id":api.fixture.attempt,"reason":"must refuse accepted work"})).await;
+    if cancelled.1["code"]!="dependency_unmet" {failures.push(json!({"cancel":cancelled}));}
+    if before["current_accepted"]["subject"]!=accepted["subject"] || before["fresh_grant_eligible"]!=false {failures.push(json!({"projection":before}));}
+    println!("lifecycle_terminal_observations {}",json!({"failures":failures,"snapshot":before}));
+    assert!(failures.is_empty(),"terminal lifecycle failures: {failures:?}");
+    api.finish().await;
+}
+
+#[tokio::test]
+async fn lifecycle_research_amendment_fences_before_assignment_and_preserves_receipt() {
+    let api=Api::new().await;
+    let intent=api.research_intent("amend",0,"amend-r1").await;
+    let accepted=api.accept_research(&intent,1,"amend").await;
+    let old=api.snapshot().await;
+    let before=api.legacy_task(api.fixture.task).await;
+    let amended=api.research_intent("amend-next",3,"amend-r2").await;
+    let after=api.legacy_task(api.fixture.task).await;
+    let source=api.command("fenced-worker",4,json!({"kind":"source.propose","work":api.admission("x",0)["command"]["work"],"source":api.admission("x",0)["command"]["source"]}));
+    let worker=api.post("assembled-worker",&source).await;
+    let verify=api.command("fenced-verifier",4,json!({"kind":"research.verify","intent":amended["intent"],"acceptance":amended["acceptance"],"proposal":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
+    let verifier=api.post("assembled-verifier",&verify).await;
+    let receipt=api.command("amend-accept",2,json!({"kind":"outcome.accept","proof":old["accepted"][0]["proof_id"]}));
+    let replay=api.post(&api.fixture.owner,&receipt).await;
+    println!("lifecycle_amendment_observations {}",json!({"before":before,"after":after,"worker":worker,"verifier":verifier,"replay":replay}));
+    assert_eq!(after["data"]["generation"],2,"accepted research immediately fences original generation");
+    assert_eq!(worker.1["code"],"stale_generation");assert_eq!(verifier.1["code"],"stale_generation");
+    assert_eq!(replay,(200,accepted));
+    assert_eq!(after["data"]["attempts"],before["data"]["attempts"]);
+    assert_eq!(after["data"]["reservations"],before["data"]["reservations"]);
+    api.finish().await;
+}

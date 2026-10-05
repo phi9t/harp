@@ -1,0 +1,28 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.64s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 1 test
+test production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement ... public_contract_response {"family":"intent.admit","key":"production-intent","result":{"acceptance":"43a584ee84e71d158495734d92023c02c7f38231986cd273a5aefe5cb72c3507","admitted_version":1,"disposition":"applied","intent":"e96696b1a8caa0b2474ced47135a44d3a567f4d6bb722ebeeeaa155615053d50","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"2f3993b4-3986-47ee-8c11-a14ff115fccc"}
+public_artifact_response {"family":"configure","key":"policy","result":{"accepted":false,"candidate_id":null,"report_id":null,"revision":4},"status":200,"task":"2f3993b4-3986-47ee-8c11-a14ff115fccc"}
+public_artifact_response {"family":"submit","key":"candidate","result":{"accepted":false,"candidate_id":"8f47f712396b301c0eda09dc9cffdccd802c28041189f04e0468ba80c6ddc738","report_id":null,"revision":5},"status":200,"task":"2f3993b4-3986-47ee-8c11-a14ff115fccc"}
+public_contract_response {"family":"verification.bind","key":"bind-fresh-verifier","result":{"binding":"6184a76dc7c16d832fad820db01b7fa51c541ea2b3a21d69aa51cac0223aa5b9","disposition":"applied","revision":2,"schema_version":2},"status":200,"task":"2f3993b4-3986-47ee-8c11-a14ff115fccc"}
+independent_measured_subject {"binding":{"binding":"6184a76dc7c16d832fad820db01b7fa51c541ea2b3a21d69aa51cac0223aa5b9","disposition":"applied","revision":2,"schema_version":2},"candidate":{"artifact":"8fe5f162ea37be5adf71361c523159452423ce6983aacefbe25a79411d6e8ab1","base":"89ae071645ebcdfe71b920162ce76d3be4918d07","commit":"0a79bc77661a2af49fd526692cb169e7b9ab7e27","deliverables":["src/result"],"generation":1,"risks":[],"spec_digest":"5e54f30454d6139f4d014e477ed1a94420cad531b2c693983cd6885cc197a19f","spec_revision":2,"tree":"6d16bf3ee03167041bec09645d29ab82b19e4791"},"measured_result":{"argv":["/bin/sh","-c","test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"],"candidate":{"artifact":"8fe5f162ea37be5adf71361c523159452423ce6983aacefbe25a79411d6e8ab1","base":"89ae071645ebcdfe71b920162ce76d3be4918d07","commit":"0a79bc77661a2af49fd526692cb169e7b9ab7e27","deliverables":["src/result"],"generation":1,"risks":[],"spec_digest":"5e54f30454d6139f4d014e477ed1a94420cad531b2c693983cd6885cc197a19f","spec_revision":2,"tree":"6d16bf3ee03167041bec09645d29ab82b19e4791"},"completion":{"kind":"monitor_wait"},"controller":{"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","namespace":"pid:[4026531836]","namespace_pid":1457958,"pid":1457958,"start_ticks":47226339},"execution":"5fcaa75d-087b-4301-97ca-03ed7ad9cd0b","exit_code":0,"logs":"655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70","namespace_stopped":true,"recovery_epoch":"afb201b5-2ce2-44b0-9a0c-338ff8abab82","signal":null}}
+public_artifact_response {"family":"verify","key":"measured-verification","result":{"accepted":false,"candidate_id":"8f47f712396b301c0eda09dc9cffdccd802c28041189f04e0468ba80c6ddc738","report_id":"a10609a306789310e5fd05308c981454d91f07b43b74ad66b1ae79d59ad8522c","revision":6},"status":200,"task":"2f3993b4-3986-47ee-8c11-a14ff115fccc"}
+public_artifact_response {"family":"accept","key":"legacy-accept","result":{"accepted":true,"candidate_id":"8f47f712396b301c0eda09dc9cffdccd802c28041189f04e0468ba80c6ddc738","report_id":"a10609a306789310e5fd05308c981454d91f07b43b74ad66b1ae79d59ad8522c","revision":7},"status":200,"task":"2f3993b4-3986-47ee-8c11-a14ff115fccc"}
+
+thread 'production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement' (1457739) panicked at tests/intent_contracts.rs:923:9:
+assertion `left == right` failed: mapped legacy Accept must not bypass current v2 acceptance or delegation: {"accepted":true,"candidate_id":"8f47f712396b301c0eda09dc9cffdccd802c28041189f04e0468ba80c6ddc738","report_id":"a10609a306789310e5fd05308c981454d91f07b43b74ad66b1ae79d59ad8522c","revision":7}
+  left: 200
+ right: 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.74s
+
+error: test failed, to rerun pass `--test intent_contracts`

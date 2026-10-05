@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-10-03T17:51:09Z",
+  "Architecture": "PASS",
+  "Spec": "PASS",
+  "scope": "owner-target contract reconciliation only, no product capability acceptance",
+  "records": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/draft-review-metadata.json",
+      "sha256": "c42e9ea837a8480b2f698539d6f61319e6e1c96cfc4d593cf8d37b59ea4bf137"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/draft-review.md",
+      "sha256": "ffbe707cfdd0967761880aa94ffc984cb627c96a1f9beae16bdff3b6cc97cf70"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/metadata.json",
+      "sha256": "10b014758822c55cc8098e1ff9b0093e6d550c1b077ef6aa41f2996dac594a6f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/report.md",
+      "sha256": "0b8191b1847e59cb06255c90f88892fa2429c32a36c5e213369031cbe29a55ce"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/revised-report-metadata.json",
+      "sha256": "fa275788019ba551f47111d4d309e82d56d03a392875560e22ea435508eb16ca"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/revised-report.md",
+      "sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/spec/metadata.json",
+      "sha256": "8689ad8cf24ba9fe2eff60aea66914fe42af397ea50a5af7d49720ab962bfab2"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/v02-adoption/spec/report.md",
+      "sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349"
+    }
+  ],
+  "editorial_reconciliation": "ticket26 dangling prose cleaned; no semantic contract changes after independent PASS",
+  "implementation": "not started"
+}

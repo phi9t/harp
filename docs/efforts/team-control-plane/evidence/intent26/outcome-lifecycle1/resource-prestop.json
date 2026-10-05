@@ -1,0 +1,792 @@
+{
+  "observed_at": 1791072345.9675746,
+  "postgres": {
+    "Id": "df4430a4c93a644a5029ca46559557923cf52bc69a05ebe9003f79161dfc97a0",
+    "Name": "/corenius-intent26-outcome-lifecycle1-pg",
+    "Image": "sha256:567d5d704a3e5a4864393b623a0d50eb1b5a4ad134cdac7cf19555cb2d8ffe9e",
+    "State": {
+      "Status": "running",
+      "Running": true,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 1990849,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-03T23:10:40.218343835Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "volume",
+        "Name": "440ee68b6570c4a4a151b47aaa79636d79ba746248a39a9ef51bc83e02806728",
+        "Source": "/data00/docker/volumes/440ee68b6570c4a4a151b47aaa79636d79ba746248a39a9ef51bc83e02806728/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "Driver": "local",
+        "Mode": "",
+        "RW": true,
+        "Propagation": ""
+      }
+    ],
+    "NetworkSettings": {
+      "Bridge": "",
+      "SandboxID": "e9b2c6517f7e313ad84e9284b9a753449d28ce142bd12a8f2f77b6859f73abbc",
+      "SandboxKey": "/var/run/docker/netns/e9b2c6517f7e",
+      "Ports": {
+        "5432/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "10749"
+          }
+        ]
+      },
+      "HairpinMode": false,
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null,
+      "EndpointID": "c9d3010d3cec596e1e374fb905074aa7808dbbaefa1b75c4d518ef4d2e462f2c",
+      "Gateway": "172.17.0.1",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "IPAddress": "172.17.0.4",
+      "IPPrefixLen": 16,
+      "IPv6Gateway": "",
+      "MacAddress": "02:42:ac:11:00:04",
+      "Networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "MacAddress": "02:42:ac:11:00:04",
+          "NetworkID": "20668d663188ce745680b2f44ee15c99db93fd7dfe3cf5066aca2dab3e3bbff5",
+          "EndpointID": "c9d3010d3cec596e1e374fb905074aa7808dbbaefa1b75c4d518ef4d2e462f2c",
+          "Gateway": "172.17.0.1",
+          "IPAddress": "172.17.0.4",
+          "IPPrefixLen": 16,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DriverOpts": null,
+          "DNSNames": null
+        }
+      }
+    }
+  },
+  "inventory": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres-inventory.json",
+    "sha256": "6ca7c8723c0a0e2391b1da949db935311e9700ce09c04d17e2b2251c36bd03bf",
+    "bytes": 998694
+  },
+  "retained_dump_batches": 14,
+  "recorded_roots": [
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-0017f506-1231-4ce8-a8dd-21f964b3eed1",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-02f5a944-2430-43af-a9b3-601af1754d7d",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-037c6d30-d46b-4f34-9fe5-47823b81eb45",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-07ffc401-eb08-47ef-9f11-d293c5bf513f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-0e004fd2-e90e-44bf-a065-74839db7d488",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-130369b0-698c-41e4-af0b-e7e364faa1f2",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-1380ac7c-3e4f-4700-9871-07ddcf55b8d5",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-139e33b3-d733-4864-8dbc-04fbd6846ab6",
+      "exists": true,
+      "turn_states": [
+        {
+          "path": "/data02/home/philip.yang/devx/tmp/kernel16-139e33b3-d733-4864-8dbc-04fbd6846ab6/owner-target-native/turn.json",
+          "bytes": "{\"thread\": \"owned-thread\", \"turn\": null}"
+        }
+      ]
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-14141681-814d-47ce-b93b-2d7297ca8266",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-176a26a7-1ba5-4364-9186-aef1e87da209",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-1c35a411-a60c-4411-80f8-998134e35023",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-1c8658eb-f3ea-4c51-b816-ecc511126542",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-1f96fc66-d125-4adc-85bd-cfce152513c6",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-20f2f400-184e-4289-9099-37517fad89f4",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-21096ace-7645-41e0-9516-6863a37183eb",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-2157029d-217f-48da-8a22-fd47747f7d97",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-2337c921-856a-4bcd-8edf-907ec474890f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-23a6d5f2-36e5-4b14-96fc-a0167e987662",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-25083fc3-f216-4864-bec9-fe2b228c01fc",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-27a633d4-1cad-4836-9f2f-e3a6c76c50c3",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-27dd1d8f-7bd4-4bbd-9a4f-21bda2f67f95",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-2ccddb7c-f83f-4bb3-9f2b-d06ea061b147",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-2cf19c96-5bb1-48e6-a3de-d35a323eb95e",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-34fd16f2-6293-4c26-b35c-c72d234d0217",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-373f5e07-1f71-48ff-b5d4-03c81aaaae25",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-375c178d-ecc1-48eb-9d58-c0727b775930",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-38ed8b30-c119-481e-ba66-00388ccd2710",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-3b72cf4e-67e8-4e9b-bd57-4191d6082435",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-3e18b71e-d3bd-4c81-93cc-6f51a184a396",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-3f09b6c7-dbf9-4306-8c17-351e7bef9aea",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-40f3f0d9-5754-48df-96a8-370ff0d1fc98",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-41b23842-c208-464b-be29-8997b6e83ca1",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-46ae75e0-0706-4721-9fb8-2eda4d41244c",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4760d367-d88a-40a8-a99a-33a095b38d9c",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-48046846-83d7-477b-915b-5799c3d57196",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4e0c8138-2608-41f2-90be-f55ed1f616c8",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4f38b2d3-58ca-4043-abd9-fb825c0d1101",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-5264329a-50ab-470c-9799-6965ba40655c",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-53ec90a1-2b72-4efe-a828-0b54d4452d85",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-57a03d30-9a59-4838-ab93-6e46dcb89159",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-5b0a6321-d4b8-4714-9553-2be5e77a9227",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-5b10d88a-36e7-4dcc-ba88-f3add1cf45c9",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-5c90c424-7e1f-4472-a855-79892f1639ec",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6085b880-22ef-4d88-965d-b07ee49566c6",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-622c673e-ddeb-4506-bd55-c35a11fbacf3",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-62dd94d1-e71c-4cba-b54d-457361ad1df9",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-63535e2c-4a95-46e6-ac75-4e54981735d6",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-63b6f528-646d-43b0-92ef-8c43f6b3acb7",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6422ff3e-ddac-408c-8b8a-30e88677404a",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-667c42e7-e3dc-4d68-a091-e11fa52ccfd3",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-67f86669-79f6-4c85-97ce-ae483b918e79",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-69a53891-061a-4848-b850-ebb1826eba5a",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6bf6aeef-d910-45b6-b975-f6d989c6da0c",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6c47d648-9403-4c6b-b0b8-a4baadc4e24f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6fbe2735-ca05-4994-b06b-e91550d5738f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-767d4db3-908d-450a-a46d-01c85055cdd5",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-76988733-a7c2-45e6-9925-7a16f14c2c6a",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-799cb4d8-204d-45c3-8894-c172fd06b88f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-79bb1eaf-d2da-4efd-9df7-c4302ca66373",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7ab2ec8a-e39b-46ce-b299-8ab8eed5b07c",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7c64e86d-d3a2-49b3-a7a8-60df6236a70d",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7c7e2740-3882-46cf-b1b3-f0e9f80e4fe6",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7ce5adf7-2efb-46a8-803a-1eb1c417a627",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7e198499-8b35-4d97-9f1d-c4aaa95543ca",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7ea38d5b-178a-46c6-a742-c5e6ea72143a",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-7f22bf30-97c2-4394-876a-d7fc63bf4b5d",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-80805428-a2bd-4962-9fbd-c913dd5900f6",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-82821015-fcfd-4f7d-9b2b-a68214caab73",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-82a85374-1905-4286-871b-ebf60c1f1303",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-860be361-2f3b-4b7c-a0eb-cb2527087c64",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-8681c1b5-49fc-4be4-a878-0dfd4e02769b",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-873efa88-9182-4638-a24f-65d671629658",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-88644238-dee4-4867-beed-10c71c299331",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-8a9cc619-7b7a-4c7c-931f-7ef31a0b0fc6",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-8ae14bca-7d8f-4d30-ac76-94305010a7da",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-8b06450e-78b4-4c9c-a388-d53c6437ed07",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-8cff633c-b4a6-4437-b146-fed3467fb002",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-900dc497-3cdc-4606-9553-a2d181a53216",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-91fb4ddf-923b-46f1-ae7f-5977ea6d387c",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-92384c4f-f36e-44e5-be94-97dee1418895",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-939e5b8c-f945-4f6c-b6ef-d774a8d5a450",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-957b2b3f-e8c4-4b47-9457-be53ac5817ff",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-96b1dd74-acfb-45f1-b829-886e60bf03ef",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-98655a13-0366-4aab-b26c-93c49cc42ee5",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-9acf2f17-ca71-4a1f-899b-8f8bd05750ac",
+      "exists": true,
+      "turn_states": [
+        {
+          "path": "/data02/home/philip.yang/devx/tmp/kernel16-9acf2f17-ca71-4a1f-899b-8f8bd05750ac/owner-target-native/turn.json",
+          "bytes": "{\"thread\": \"owned-thread\", \"turn\": null}"
+        }
+      ]
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-9d4c46c2-9e7e-4a07-a216-7b2ccabb8b96",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-9ec03fa3-1d54-48db-9565-73b41063eacc",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-9fa17a06-fa54-4b72-8d12-e32bc567cef5",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-a273569d-536a-46c7-a137-7a9a8bce3791",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-a317630b-7757-40a4-a021-5682cb987f22",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-a3e21730-70d0-4e5b-8e9f-3b5581762af7",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-a7de0e84-17a3-49af-9963-ecb0b142470a",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-acb9f324-3147-4350-9026-6ad14ec43cf3",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ad716479-7458-43b9-aebc-703227369b04",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-aee86f46-02f3-4cc3-829c-68d427d02c8d",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-b302e776-d973-4dc0-9c74-0459cebb4585",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-b4e08d83-1b47-4b0a-ac98-adbd32059207",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-b729c68b-757d-4c18-a1f4-f11664e6ec3a",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ba26c6d9-6cdf-484d-845a-d56633ca6c14",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ba816268-e269-4c9d-8e30-0ad48a0180e1",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-bc97d5e8-cb36-41fc-9915-c5bd5bba298f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-bf3854f1-2b75-43d4-9534-0fd50a5f0e68",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-c2c4705d-5ccb-4cd1-948d-0de59066e4f2",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-c2e3fac2-e9cd-46cf-b5a2-5031c418190e",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-c2e5c52b-2b71-4ba1-b5be-d34d15945f3b",
+      "exists": true,
+      "turn_states": [
+        {
+          "path": "/data02/home/philip.yang/devx/tmp/kernel16-c2e5c52b-2b71-4ba1-b5be-d34d15945f3b/owner-target-native/turn.json",
+          "bytes": "{\"thread\": \"owned-thread\", \"turn\": null}"
+        }
+      ]
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-c72853ca-c6ea-4e22-86b4-4fddb1beb52e",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ca218064-c6e3-4fb7-bada-5e61bead33e7",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-cae71e02-4b08-408f-bda4-d6178797b4eb",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-cd0ca35c-bdcd-4fdc-8d04-4195c0554ea7",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-cd32d097-dcde-40e5-9187-a1f796bcc32e",
+      "exists": true,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-d0a79aa7-e762-4800-bb14-5b722c11df6d",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-d22d04ae-ff3f-4986-b38c-ee3c83c69bff",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-d3ff069d-a3c4-4329-9b36-15f60be82d56",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-d6b34ab4-680e-4a7b-afd9-43922c215528",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-d7ba6dc1-746c-4769-b6bc-95daec0a7c22",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-d7ef270f-d529-43fa-8771-15106023c66f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-db7b5cfc-749b-44ec-ad65-1b6d9572a157",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-dc8c1d0a-c9dd-46c8-8b61-2408fe5cef00",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-de0435bc-8169-4295-989b-03814366f849",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-de17f50c-b6de-4ca9-9a4b-051ab02c2b4c",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-de5881d2-d83a-41c3-8806-a38b7b3539ce",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-e4136bd0-971e-4fff-a311-6496debfb366",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-e7540352-09a1-426c-a3c7-b5494921f25c",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ec72f5d4-4db9-4e8c-b08e-5e6070787c8e",
+      "exists": true,
+      "turn_states": [
+        {
+          "path": "/data02/home/philip.yang/devx/tmp/kernel16-ec72f5d4-4db9-4e8c-b08e-5e6070787c8e/owner-target-native/turn.json",
+          "bytes": "{\"thread\": \"owned-thread\", \"turn\": null}"
+        }
+      ]
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ee485905-2c8c-4a52-a5b9-5f303512cdfe",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-eebdbdc5-2e1b-439a-a524-57ce624b23e2",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ef61b7c8-518f-420c-bfa1-5cf0e910f8a2",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-f32ea68c-6d44-436e-a194-11dee217fab5",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-f425477f-43ea-44c9-bba7-01db0f7ac60f",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-f838f7ac-66ef-4172-afbf-aa1c735375ce",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-fe82cf9e-399b-469f-8b8b-87e86efe02b0",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-fee466b3-7c85-4e6b-9916-62a80deb9f62",
+      "exists": false,
+      "turn_states": []
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-ff3d6a3b-34b2-454e-b3ee-d4418e7c66bd",
+      "exists": false,
+      "turn_states": []
+    }
+  ],
+  "matching_live_processes": [],
+  "limits": "Read-only enumeration; missing PID/path is not independent measured Stop evidence. See measured artifact bindings and raw supervisor observations."
+}

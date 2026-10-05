@@ -1,0 +1,46 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.63s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 7 tests
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... FAILED
+test current_lead_requires_explicit_bounded_delegation_even_on_replay ... ok
+test exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload ... ok
+test negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert ... FAILED
+test plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning ... ok
+test production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement ... FAILED
+test source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias ... ok
+
+failures:
+
+---- admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt stdout ----
+
+thread 'admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt' (3521530) panicked at tests/intent_contracts.rs:149:9:
+assertion `left == right` failed: worker proposal: {"code":"invalid_argument"}
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert stdout ----
+
+thread 'negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert' (3521679) panicked at tests/intent_contracts.rs:149:9:
+assertion `left == right` failed: worker proposal: {"code":"invalid_argument"}
+  left: 400
+ right: 200
+
+---- production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement stdout ----
+
+thread 'production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement' (3521736) panicked at tests/intent_contracts.rs:445:5:
+assertion `left == right` failed: exact binding before execution: {"code":"invalid_argument"}
+  left: 400
+ right: 200
+
+
+failures:
+    admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt
+    negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert
+    production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement
+
+test result: FAILED. 4 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.64s
+
+error: test failed, to rerun pass `--test intent_contracts`

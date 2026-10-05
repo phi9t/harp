@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/tmp/corenius-controller-git-reader-portability-proof-20261003/regression.py",
+    "--legacy"
+  ],
+  "exit_code": 1,
+  "expected_failure": "Old audit uses relocated artifact path as historical Git execution origin; Git command outside fixture.",
+  "stderr": "red.stderr.log",
+  "stderr_sha256": "8f20c4ff08fe182d498ce1f359abf363a308daefada74999cf163b2ad54a8010",
+  "stdout": "red.stdout.log",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "test_script_sha256": "b96d69b89df17436521e3af581adb4fa9fdb07710fd2e485645a3b1a7d3769cc"
+}

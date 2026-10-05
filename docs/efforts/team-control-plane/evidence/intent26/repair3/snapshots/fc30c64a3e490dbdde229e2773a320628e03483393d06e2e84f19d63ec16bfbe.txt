@@ -1,0 +1,18 @@
+import subprocess,os,json,time,hashlib,sys
+from pathlib import Path
+root=Path(__file__).resolve().parents[3]
+os.chdir(root)
+name=sys.argv[1]
+argv=["bash","crates/team-control-plane/tests/run-postgres.sh","--offline",*sys.argv[2:]]
+env=os.environ.copy()
+env.update(CARGO_TARGET_DIR=str(root/".scratch/team-control-plane/ticket26/target"),CARGO_NET_OFFLINE="true",CARGO_BUILD_JOBS="2",RUST_TEST_THREADS="1")
+evidence=root/"docs/efforts/team-control-plane/evidence/intent26/repair3"
+sources={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path("crates/team-control-plane").rglob("*")) if p.is_file() and ("src" in p.parts or "tests" in p.parts or "migrations" in p.parts or p.name in ["Cargo.toml","Cargo.lock"])}
+start=time.time()
+with (evidence/(name+".log.txt")).open("w") as log:
+ result=subprocess.run(argv,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1800)
+record={"name":name,"argv":argv,"cwd":str(root),"env":{k:env[k] for k in ["CARGO_TARGET_DIR","CARGO_NET_OFFLINE","CARGO_BUILD_JOBS","RUST_TEST_THREADS"]},"start_unix":start,"duration_seconds":time.time()-start,"exit_code":result.returncode,"sources":sources,"log":name+".log.txt","log_sha256":hashlib.sha256((evidence/(name+".log.txt")).read_bytes()).hexdigest()}
+with (evidence/"runs.jsonl").open("a") as ledger: ledger.write(json.dumps(record,sort_keys=True)+"\n")
+print(json.dumps({k:v for k,v in record.items() if k!="sources"},indent=2))
+print("\n".join((evidence/(name+".log.txt")).read_text().splitlines()[-40:]))
+sys.exit(result.returncode)

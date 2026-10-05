@@ -1,0 +1,278 @@
+diff --git a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/preimages/trae_case_control.py b/tools/probes/trae_case_control.py
+index 116f74ba9f4536006f27f38be7a2924f1c662b84..f7b39ee4751dc7152607a571eb6d615424b2fbcf 100644
+--- a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/preimages/trae_case_control.py
++++ b/tools/probes/trae_case_control.py
+@@ -70,6 +70,10 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+     directory = None
+     records = []
+     executed = False
++    reserved = False
++    terminal_attempted = False
++    binding = {}
++    descriptors = {}
+     try:
+         root = Path(repository).absolute()
+         reader = read_committed or committed_reader(root)
+@@ -108,6 +112,7 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+         for relative, expected in sources.items():
+             if digest(frozen(checked_path(root, relative), source_revision)) != expected:
+                 raise ValueError('source mismatch')
++        binding = {'operation_id': operation_id, 'grant_revision': grant_revision, 'grant_sha256': digest(grant_raw), 'case_sha256': digest(case_raw), 'command_sha256': digest(encoded(command)), 'sources': dict(sources)}
+         output = Path(output_directory).absolute()
+         if grant['output_directory'] != str(output):
+             raise ValueError('output mismatch')
+@@ -116,6 +121,7 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+         if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) != 0o700:
+             raise ValueError('unsafe output directory')
+         start = exclusive(directory, 'started.json')
++        reserved = True
+         try:
+             write_all(start, encoded({'operation_id': operation_id, 'grant_revision': grant_revision, 'grant_sha256': digest(grant_raw), 'case_sha256': digest(case_raw), 'command': command, 'sources': sources, 'provenance': 'injected-offline-fixture' if read_committed else 'committed-git'}))
+             os.fsync(start)
+@@ -125,6 +131,7 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+         for name in ('stdout.log.txt', 'stderr.log.txt', 'terminal.json'):
+             fd = exclusive(directory, name)
+             records.append(fd)
++            descriptors[name] = fd
+             os.fsync(fd)
+         os.fsync(directory)
+         # Recheck frozen inputs after durable reservation; failure remains spent.
+@@ -136,17 +143,36 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+         executed = True
+         try:
+             code = executor({'command': command, 'timeout_seconds': 30, 'stdout_fd': records[0], 'stderr_fd': records[1], 'operation_id': operation_id})
+-            terminal = {'status': 'terminal', 'exit_code': code, 'executed': True}
++            if type(code) is not int:
++                raise ValueError('executor did not supply integer terminal exit')
++            terminal = {**binding, 'status': 'terminal', 'exit_code': code, 'executed': True}
+         except Exception as error:
+-            terminal = {'status': 'unknown', 'error': type(error).__name__ + ': ' + str(error), 'executed': True}
++            terminal = {**binding, 'status': 'unknown', 'error': type(error).__name__ + ': ' + str(error), 'executed': True}
+         for fd in records[:2]:
+             os.fsync(fd)
++        terminal_attempted = True
+         write_all(records[2], encoded(terminal))
+         os.fsync(records[2])
+         os.fsync(directory)
+         return terminal
+     except Exception as error:
+-        return {'status': 'unknown' if executed else 'refused', 'executed': executed, 'error': type(error).__name__ + ': ' + str(error)}
++        failure = {**binding, 'status': 'unknown' if executed else 'refused', 'executed': executed, 'error': type(error).__name__ + ': ' + str(error)}
++        if reserved:
++            # Never rewrite partial or possibly durable terminal bytes. Retain a
++            # separate uncertainty record if terminal persistence was attempted.
++            name = 'uncertainty.json' if terminal_attempted else 'terminal.json'
++            try:
++                fd = descriptors.get(name)
++                if fd is None:
++                    fd = exclusive(directory, name)
++                    records.append(fd)
++                    descriptors[name] = fd
++                write_all(fd, encoded(failure))
++                os.fsync(fd)
++                os.fsync(directory)
++            except Exception as retention_error:
++                failure['retention_error'] = type(retention_error).__name__ + ': ' + str(retention_error)
++        return failure
+     finally:
+         for fd in records:
+             os.close(fd)
+diff --git a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/preimages/test_trae_case_control.py b/tools/probes/test_trae_case_control.py
+index 2110e5ce8551ae69e48f6fc61d78e3f75146f35a..43286dfb38b65a160cfc7546cb31a147f431e35e 100644
+--- a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/preimages/test_trae_case_control.py
++++ b/tools/probes/test_trae_case_control.py
+@@ -102,7 +102,7 @@ class DurableControllerBehavior(unittest.TestCase):
+             self.assertGreaterEqual(len(syncs), 6)
+             return self.record(invocation)
+         with patch('trae_case_control.os.write', side_effect=short), patch('trae_case_control.os.fsync', side_effect=sync):
+-            self.assertEqual(self.run_controller(execute)['exit_code'], 0)
++            self.assertEqual(self.run_controller(execute).get('exit_code'), 0)
+ 
+     def test_timeout_and_exception_are_retained_unknown_without_retry(self):
+         def failure(invocation):
+@@ -113,3 +113,185 @@ class DurableControllerBehavior(unittest.TestCase):
+         self.assertEqual(json.loads((self.out/'terminal.json').read_text()), result)
+         self.assertFalse(self.run_controller()['executed'])
+         self.assertEqual(len(self.calls), 1)
++
++    def test_post_reservation_input_change_retains_hash_bound_refusal(self):
++        grant_key = ('a'*40, self.grant.relative_to(self.root).as_posix())
++        reads = 0
++        def reader(revision, path):
++            nonlocal reads
++            if (revision, path) == grant_key:
++                reads += 1
++                if reads == 2:
++                    self.case.write_bytes(self.case.read_bytes()+b' ')
++            return self.frozen[(revision, path)]
++        result = run_case(case_path=self.case, grant_path=self.grant, grant_revision='a'*40, operation_id='fixture-operation', repository=self.root, output_directory=self.out, executor=self.record, read_committed=reader)
++        self.assertFalse(result['executed'])
++        self.assertEqual(self.calls, [])
++        terminal_bytes = (self.out/'terminal.json').read_bytes()
++        self.assertTrue(terminal_bytes, 'healthy-storage refusal must retain terminal bytes')
++        retained = json.loads(terminal_bytes)
++        self.assertEqual(retained, result)
++        started = json.loads((self.out/'started.json').read_text())
++        self.assertEqual(retained['operation_id'], started['operation_id'])
++        self.assertEqual(retained['case_sha256'], started['case_sha256'])
++        self.assertEqual(retained['grant_sha256'], started['grant_sha256'])
++        self.assertEqual(retained['command_sha256'], self.control.digest(self.control.encoded(started['command'])))
++
++    def test_changed_command_with_updated_case_digest_is_refused(self):
++        case = json.loads(self.case.read_bytes())
++        case['command']['argv'] = ['/changed-recording-only']
++        self.case.write_bytes(self.control.encoded(case))
++        grant = json.loads(self.grant.read_bytes())
++        grant['case_sha256'] = self.control.digest(self.case.read_bytes())
++        self.grant.write_bytes(self.control.encoded(grant))
++        self.frozen[('a'*40, self.case.relative_to(self.root).as_posix())] = self.case.read_bytes()
++        self.frozen[('a'*40, self.grant.relative_to(self.root).as_posix())] = self.grant.read_bytes()
++        result = self.run_controller()
++        self.assertFalse(result['executed'])
++        self.assertIn('command mismatch', result['error'])
++        self.assertEqual(self.calls, [])
++
++    def test_later_output_and_directory_fsync_faults_retain_refusal(self):
++        import os
++        from unittest.mock import patch
++        original = os.fsync
++        # Pure fixture outputs are separate operations; no runtime retry occurs.
++        for fail_at in (2, 3, 4, 5, 6):
++            with self.subTest(fsync_call=fail_at):
++                self.out = self.folder / ('fsync-'+str(fail_at))
++                self.out.mkdir(mode=0o700)
++                grant = json.loads(self.grant.read_bytes())
++                grant['output_directory'] = str(self.out)
++                self.grant.write_bytes(self.control.encoded(grant))
++                self.frozen[('a'*40, self.grant.relative_to(self.root).as_posix())] = self.grant.read_bytes()
++                calls = 0
++                def fail_once(fd):
++                    nonlocal calls
++                    calls += 1
++                    if calls == fail_at:
++                        raise OSError('injected later fsync')
++                    return original(fd)
++                with patch('trae_case_control.os.fsync', side_effect=fail_once):
++                    result = self.run_controller()
++                self.assertFalse(result['executed'])
++                self.assertEqual(json.loads((self.out/'terminal.json').read_bytes()), result)
++                self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(self.calls, [])
++
++    def test_executor_exception_is_hash_bound_unknown_and_spent(self):
++        def error(invocation):
++            self.calls.append(invocation)
++            raise RuntimeError('injected executor exception')
++        result = self.run_controller(error)
++        self.assertEqual(result['status'], 'unknown')
++        self.assertEqual(result['operation_id'], 'fixture-operation')
++        self.assertEqual(result['error'], 'RuntimeError: injected executor exception')
++        self.assertEqual(json.loads((self.out/'terminal.json').read_bytes()), result)
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)
++
++    def test_terminal_write_failure_preserves_partial_and_retains_unknown(self):
++        import os
++        from unittest.mock import patch
++        original = os.write
++        failed = False
++        partial = b'{"partial":'
++        def fault(fd, data):
++            nonlocal failed
++            target = os.readlink('/proc/self/fd/'+str(fd))
++            if target.endswith('/terminal.json') and not failed:
++                failed = True
++                original(fd, partial)
++                raise OSError('injected partial terminal write')
++            return original(fd, data)
++        with patch('trae_case_control.os.write', side_effect=fault):
++            result = self.run_controller()
++        self.assertTrue(result['executed'])
++        self.assertEqual(result['status'], 'unknown')
++        self.assertEqual((self.out/'terminal.json').read_bytes(), partial)
++        self.assertEqual(json.loads((self.out/'uncertainty.json').read_bytes()), result)
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)
++
++    def test_terminal_fsync_failure_retains_separate_unknown(self):
++        import os
++        from unittest.mock import patch
++        original = os.fsync
++        seen = 0
++        def fault(fd):
++            nonlocal seen
++            if os.readlink('/proc/self/fd/'+str(fd)).endswith('/terminal.json'):
++                seen += 1
++                if seen == 2:
++                    raise OSError('injected terminal fsync')
++            return original(fd)
++        with patch('trae_case_control.os.fsync', side_effect=fault):
++            result = self.run_controller()
++        self.assertEqual(result['status'], 'unknown')
++        self.assertEqual(json.loads((self.out/'terminal.json').read_bytes())['status'], 'terminal')
++        self.assertEqual(json.loads((self.out/'uncertainty.json').read_bytes()), result)
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)
++
++    def test_final_directory_fsync_failure_retains_unknown(self):
++        import os
++        from unittest.mock import patch
++        original = os.fsync
++        count = 0
++        def fault(fd):
++            nonlocal count
++            count += 1
++            if count == 10:
++                raise OSError('injected final directory fsync')
++            return original(fd)
++        with patch('trae_case_control.os.fsync', side_effect=fault):
++            result = self.run_controller()
++        self.assertEqual(result['status'], 'unknown')
++        self.assertEqual(json.loads((self.out/'uncertainty.json').read_bytes()), result)
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)
++
++    def test_post_dispatch_output_fsync_faults_retain_unknown(self):
++        import os
++        from unittest.mock import patch
++        original = os.fsync
++        for fail_at in (7, 8):
++            with self.subTest(fsync_call=fail_at):
++                self.out = self.folder / ('post-output-'+str(fail_at))
++                self.out.mkdir(mode=0o700)
++                grant = json.loads(self.grant.read_bytes())
++                grant['output_directory'] = str(self.out)
++                self.grant.write_bytes(self.control.encoded(grant))
++                self.frozen[('a'*40, self.grant.relative_to(self.root).as_posix())] = self.grant.read_bytes()
++                count = 0
++                def fault(fd):
++                    nonlocal count
++                    count += 1
++                    if count == fail_at:
++                        raise OSError('injected output persistence failure')
++                    return original(fd)
++                with patch('trae_case_control.os.fsync', side_effect=fault):
++                    result = self.run_controller()
++                self.assertTrue(result['executed'])
++                self.assertEqual(result['status'], 'unknown')
++                self.assertEqual(json.loads((self.out/'terminal.json').read_bytes()), result)
++                self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 2)
++
++    def test_persistent_terminal_storage_fault_reports_unknown_and_stays_spent(self):
++        import os
++        from unittest.mock import patch
++        original = os.write
++        def fault(fd, data):
++            name = os.readlink('/proc/self/fd/'+str(fd))
++            if name.endswith(('/terminal.json', '/uncertainty.json')):
++                raise OSError('persistent injected terminal storage fault')
++            return original(fd, data)
++        with patch('trae_case_control.os.write', side_effect=fault):
++            result = self.run_controller()
++        self.assertTrue(result['executed'])
++        self.assertEqual(result['status'], 'unknown')
++        self.assertIn('persistent injected terminal storage fault', result['retention_error'])
++        self.assertTrue((self.out/'started.json').read_bytes())
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)

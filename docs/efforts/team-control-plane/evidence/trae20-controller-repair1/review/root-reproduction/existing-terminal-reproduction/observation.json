@@ -1,0 +1,67 @@
+{
+  "result": {
+    "operation_id": "fixture-operation",
+    "grant_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "grant_sha256": "6ba608dd9ff2c3a6c6122713f14f1e12db16cb5fafd1106817eb519ea688a7a3",
+    "case_sha256": "7ae00c1e8f159bf6b59f17a7b48e0974ca25e7f1e3ad693c39feaa9392db40d9",
+    "command_sha256": "a3eddfceab52eba5c135cf76cabd17c0a924756fe77f59e4826fa0e900f0fead",
+    "sources": {
+      "tools/probes/trae_case_control.py": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5"
+    },
+    "status": "refused",
+    "executed": false,
+    "error": "FileExistsError: [Errno 17] File exists: 'terminal.json'",
+    "retention_error": "FileExistsError: [Errno 17] File exists: 'terminal.json'"
+  },
+  "files": [
+    "started.json",
+    "stderr.log.txt",
+    "stdout.log.txt",
+    "terminal.json"
+  ],
+  "terminal_unchanged": true,
+  "prior_terminal_sha256": "ad3f702455fd3631b5fad4dde699983613a88abc5691ee1a932b966250cf341a",
+  "started_nonempty": true,
+  "executor_calls": 0,
+  "uncertainty_exists": false,
+  "input_output_mapping": [
+    {
+      "original_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/.scratch/tmpxlxy75sv/case.json",
+      "retained_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/existing-terminal-reproduction/case.json",
+      "sha256": "7ae00c1e8f159bf6b59f17a7b48e0974ca25e7f1e3ad693c39feaa9392db40d9",
+      "bytes": 305
+    },
+    {
+      "original_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/.scratch/tmpxlxy75sv/grant.json",
+      "retained_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/existing-terminal-reproduction/grant.json",
+      "sha256": "6ba608dd9ff2c3a6c6122713f14f1e12db16cb5fafd1106817eb519ea688a7a3",
+      "bytes": 764
+    },
+    {
+      "original_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/.scratch/tmpxlxy75sv/operation/started.json",
+      "retained_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/existing-terminal-reproduction/started.json",
+      "sha256": "6912c290e44c8a8a62e4731e32f86033f96e1ea68ed471d8678985908d3966f0",
+      "bytes": 603
+    },
+    {
+      "original_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/.scratch/tmpxlxy75sv/operation/stderr.log.txt",
+      "retained_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/existing-terminal-reproduction/stderr.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/.scratch/tmpxlxy75sv/operation/stdout.log.txt",
+      "retained_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/existing-terminal-reproduction/stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/.scratch/tmpxlxy75sv/operation/terminal.json",
+      "retained_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/existing-terminal-reproduction/terminal.json",
+      "sha256": "ad3f702455fd3631b5fad4dde699983613a88abc5691ee1a932b966250cf341a",
+      "bytes": 24
+    }
+  ],
+  "source_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/controller-review1-root-repro/fixture/tools/probes/trae_case_control.py",
+  "source_sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5"
+}

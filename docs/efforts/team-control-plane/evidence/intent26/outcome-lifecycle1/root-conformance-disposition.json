@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-04T00:25:56.561219+00:00",
+  "allocation": "post-architecture outcome-lifecycle1",
+  "reviewed_canonical_head": "3e4e029a2adf41abbec68c51f75badebdd9168d2",
+  "author_seal_sha256": "d2b0ed5e5fcc81ae0b61de0bbcbf754823c41d2035b805ba81f27d11f1c18d73",
+  "canonical_pins": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080
+    },
+    {
+      "path": "CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484
+    },
+    {
+      "path": "CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816
+    },
+    {
+      "path": "docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722
+    },
+    {
+      "path": "docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "ed12eca0d43145b0bc58c914b70589bb1441a0fa120f49c52e3206e93107fbd4",
+      "bytes": 8390
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "bytes": 33123
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+      "bytes": 21340
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+      "sha256": "5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5",
+      "bytes": 3465
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a",
+      "bytes": 2321
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f",
+      "bytes": 1876
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e",
+      "bytes": 6546
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+      "sha256": "1d233a5f8a20732dc936801487ddc3a121f6410c264361d5ea7588289049edf0",
+      "bytes": 5083
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "sha256": "ef466fbab46183da3033ff76bdf332dceb85445a2f0d4502b4ae5d69976a184c",
+      "bytes": 1103
+    }
+  ],
+  "review_files": [
+    {
+      "axis": "standards",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/standards/report.md",
+      "sha256": "282c51e9eacfbec59223846c34fb061e60f3dba17975c7a79ef1d6027763d336",
+      "bytes": 2691
+    },
+    {
+      "axis": "standards",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/standards/metadata.json",
+      "sha256": "0d51e96a0ab9fb0a2a1c4083d8781cf86e0b8fe5bc1fae79ccf8197470b4c7b1",
+      "bytes": 179770
+    },
+    {
+      "axis": "spec",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/spec/report.md",
+      "sha256": "5ad740091ed9cec51111111f25b6385b28bd4aa7a76ab9a5b4a6ab3db6214811",
+      "bytes": 2516
+    },
+    {
+      "axis": "spec",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reviews/spec/metadata.json",
+      "sha256": "3f41b47beed55577e10f8d7ea6dd6fd78b46231670673415a8574fffa12b718b",
+      "bytes": 104516
+    }
+  ],
+  "standards_verdict": "REJECT",
+  "standards_blocker": "S1 Important: valid Owner-target RED after guard implementation, explicit counterfactual rather than required test-first chronology. Current behavior not rejected by S1.",
+  "spec_verdict": "REJECT",
+  "spec_blocker": "F1 P1 static: research verifier candidate import bypasses current research input/pin capture and prepared-start revalidation after source-only amendment; not runtime reproduced.",
+  "allocated_conformance_pass_exhausted": true,
+  "allocated10_test_launches_exhausted": true,
+  "implementation_stopped": true,
+  "source_integrated": false,
+  "root_gates_run": false,
+  "ticket_accepted": false,
+  "landed": false,
+  "next": "Explicit root/Owner disposition under full-goal authorization before any separately bounded repair; preserve original chronology, seal, source and unresolved effects."
+}

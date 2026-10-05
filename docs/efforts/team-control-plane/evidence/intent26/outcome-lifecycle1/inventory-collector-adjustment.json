@@ -1,0 +1,10 @@
+{
+  "time": 1791072171.1657495,
+  "pid": 2608265,
+  "action": "SIGINT owned read-only collector; batch per-schema queries instead of per-table docker exec",
+  "reason": "137 retained schemas; avoid unnecessary subprocess overhead",
+  "cargo_or_source_change": false,
+  "database_mutations": false,
+  "terminal_exit_code": 130,
+  "classification": "interrupted read-only inventory collector, not a Cargo launch or behavioral RED"
+}

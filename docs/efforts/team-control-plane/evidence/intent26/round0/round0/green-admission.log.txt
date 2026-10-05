@@ -1,0 +1,14 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+error[E0599]: no variant or associated item named `ArtifactMissing` found for enum `domain::ErrorCode` in the current scope
+   --> src/contracts.rs:382:35
+    |
+382 |         return Err(err(ErrorCode::ArtifactMissing));
+    |                                   ^^^^^^^^^^^^^^^ variant or associated item not found in `domain::ErrorCode`
+    |
+   ::: src/domain.rs:5:1
+    |
+  5 | pub enum ErrorCode {
+    | ------------------ variant or associated item `ArtifactMissing` not found for this enum
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `team-control-plane` (lib) due to 1 previous error

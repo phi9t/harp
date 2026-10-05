@@ -1,0 +1,112 @@
+diff --git a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/preimages/trae_case_control.py b/tools/probes/trae_case_control.py
+index f7b39ee4751dc7152607a571eb6d615424b2fbcf..1ba8a485802848dbf9583f6a14ea29c5f212de6a 100644
+--- a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/preimages/trae_case_control.py
++++ b/tools/probes/trae_case_control.py
+@@ -120,6 +120,14 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+         info = os.fstat(directory)
+         if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) != 0o700:
+             raise ValueError('unsafe output directory')
++        # Existing uncertainty makes this output incompatible with a new case;
++        # refuse before spending a reservation or touching historical records.
++        try:
++            os.stat('uncertainty.json', dir_fd=directory, follow_symlinks=False)
++        except FileNotFoundError:
++            pass
++        else:
++            raise ValueError('prior uncertainty output refused')
+         start = exclusive(directory, 'started.json')
+         reserved = True
+         try:
+@@ -164,7 +172,15 @@ def run_case(*, case_path, grant_path, grant_revision, operation_id, repository,
+             try:
+                 fd = descriptors.get(name)
+                 if fd is None:
+-                    fd = exclusive(directory, name)
++                    try:
++                        fd = exclusive(directory, name)
++                    except FileExistsError:
++                        if name != 'terminal.json':
++                            raise
++                        # A prior terminal belongs to another record. Preserve
++                        # it and retain this spent operation separately.
++                        name = 'uncertainty.json'
++                        fd = exclusive(directory, name)
+                     records.append(fd)
+                     descriptors[name] = fd
+                 write_all(fd, encoded(failure))
+diff --git a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/preimages/test_trae_case_control.py b/tools/probes/test_trae_case_control.py
+index 43286dfb38b65a160cfc7546cb31a147f431e35e..34eb26bee08a7c3e93791f1d127b6fdadd763ae1 100644
+--- a/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/preimages/test_trae_case_control.py
++++ b/tools/probes/test_trae_case_control.py
+@@ -209,6 +209,9 @@ class DurableControllerBehavior(unittest.TestCase):
+         self.assertTrue(result['executed'])
+         self.assertEqual(result['status'], 'unknown')
+         self.assertEqual((self.out/'terminal.json').read_bytes(), partial)
++        start = json.loads((self.out/'started.json').read_bytes())
++        for key in ('operation_id', 'grant_revision', 'grant_sha256', 'case_sha256', 'sources'):
++            self.assertEqual(result[key], start[key])
+         self.assertEqual(json.loads((self.out/'uncertainty.json').read_bytes()), result)
+         self.assertFalse(self.run_controller()['executed'])
+         self.assertEqual(len(self.calls), 1)
+@@ -295,3 +298,61 @@ class DurableControllerBehavior(unittest.TestCase):
+         self.assertTrue((self.out/'started.json').read_bytes())
+         self.assertFalse(self.run_controller()['executed'])
+         self.assertEqual(len(self.calls), 1)
++
++    def test_prior_terminal_without_start_retains_new_refusal_and_spends_start(self):
++        prior = b'{"prior_operation":"historical"}\n'
++        (self.out/'terminal.json').write_bytes(prior)
++        self.assertFalse((self.out/'started.json').exists())
++        result = self.run_controller()
++        self.assertFalse(result['executed'])
++        self.assertEqual(result['status'], 'refused')
++        self.assertEqual(self.calls, [])
++        self.assertEqual((self.out/'terminal.json').read_bytes(), prior)
++        self.assertTrue((self.out/'started.json').read_bytes())
++        self.assertTrue((self.out/'uncertainty.json').exists(), 'spent reservation must retain new refusal separately from prior terminal')
++        retained = json.loads((self.out/'uncertainty.json').read_bytes())
++        self.assertEqual(retained, result)
++        start = json.loads((self.out/'started.json').read_bytes())
++        for key in ('operation_id', 'grant_revision', 'grant_sha256', 'case_sha256', 'sources'):
++            self.assertEqual(retained[key], start[key])
++        snapshot = {p.name:p.read_bytes() for p in self.out.iterdir()}
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(self.calls, [])
++        self.assertEqual({p.name:p.read_bytes() for p in self.out.iterdir()}, snapshot)
++
++    def test_output_collisions_preserve_prior_bytes_and_retain_spent_refusal(self):
++        for name in ('stdout.log.txt', 'stderr.log.txt', 'terminal.json'):
++            with self.subTest(prior_record=name):
++                self.out = self.folder / ('collision-'+name)
++                self.out.mkdir(mode=0o700)
++                grant = json.loads(self.grant.read_bytes())
++                grant['output_directory'] = str(self.out)
++                self.grant.write_bytes(self.control.encoded(grant))
++                self.frozen[('a'*40, self.grant.relative_to(self.root).as_posix())] = self.grant.read_bytes()
++                prior = b'prior evidence, never parse or overwrite\n'
++                (self.out/name).write_bytes(prior)
++                result = self.run_controller()
++                self.assertEqual(result['status'], 'refused')
++                self.assertFalse(result['executed'])
++                self.assertNotIn('retention_error', result)
++                self.assertEqual((self.out/name).read_bytes(), prior)
++                self.assertTrue((self.out/'started.json').read_bytes())
++                record = 'uncertainty.json' if name == 'terminal.json' else 'terminal.json'
++                self.assertEqual(json.loads((self.out/record).read_bytes()), result)
++                self.assertEqual(result['operation_id'], 'fixture-operation')
++                self.assertEqual(result['command_sha256'], self.control.digest(self.control.encoded(json.loads(self.case.read_bytes())['command'])))
++                snapshot = {p.name:p.read_bytes() for p in self.out.iterdir()}
++                self.assertFalse(self.run_controller()['executed'])
++                self.assertEqual(snapshot, {p.name:p.read_bytes() for p in self.out.iterdir()})
++        self.assertEqual(self.calls, [])
++
++    def test_occupied_uncertainty_output_refuses_before_reservation(self):
++        prior = {'terminal.json': b'prior-terminal', 'uncertainty.json': b'prior-uncertainty'}
++        for name, content in prior.items():
++            (self.out/name).write_bytes(content)
++        result = self.run_controller()
++        self.assertFalse(result['executed'])
++        self.assertEqual(result['status'], 'refused')
++        self.assertFalse((self.out/'started.json').exists(), 'incompatible prior uncertainty must refuse before reservation')
++        self.assertEqual({p.name:p.read_bytes() for p in self.out.iterdir()}, prior)
++        self.assertEqual(self.calls, [])

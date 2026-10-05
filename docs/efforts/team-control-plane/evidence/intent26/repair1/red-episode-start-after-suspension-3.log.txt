@@ -1,0 +1,38 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.54s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 1 test
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... postgres_fixture {"dsn":"host=127.0.0.1 port=10716 user=probe dbname=probe","epoch":"f534c804-2b7b-44f2-b7cf-835a97d59863"}
+public_contract_response {"family":"intent.admit","key":"prerequisite","result":{"acceptance":"78ee280418d152f3879401fee7f8c1eddcebca02eaa3d6bb4577369d72865c48","admitted_version":1,"disposition":"applied","intent":"7b590133a809b040f14223400fc225463a4d20a8d6e8e077b3cad2cc7dda8d59","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"outcome.propose","key":"prerequisite-proposal","result":{"disposition":"proposed","proposal":"bd455ae0e08000f920673f9221bc83a18b7503ae789bc7ed755bf2d3f4d72bf4","revision":1,"schema_version":2},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"research.verify","key":"prerequisite-verify","result":{"code":"unauthorized"},"status":401,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"research.verify","key":"prerequisite-verify","result":{"disposition":"applied","outcome":"investigation_complete","proof":"0b3e4a67db99094d620c7453ee1f78c1ac04a8bd6c0b17459b8e1ca188b4390b","revision":2,"schema_version":2},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"outcome.accept","key":"prerequisite-accept","result":{"code":"unauthorized"},"status":401,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"outcome.accept","key":"prerequisite-accept","result":{"disposition":"applied","outcome":"investigation_complete","proof":"0b3e4a67db99094d620c7453ee1f78c1ac04a8bd6c0b17459b8e1ca188b4390b","revision":3,"schema_version":2,"subject":"2fcd7d7dfce02d710635f8f35cf5832edeefbb6e88165bdf163b8ddb367cd80a"},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"intent.admit","key":"dependent-intent","result":{"acceptance":"bd63c8b394dcd73728acd26fef64cfbdcbfbc30ae44a66326bf7739233c90ec4","admitted_version":1,"disposition":"applied","intent":"4d1222c0b3f76a33983a2c82ea7faae0bba77cd36fab4255098996b88e7e34a7","revision":1,"schema_version":2,"work":"35f22b4712993f6131816fdcc16dba72d60e20d6389cbe4a3b87aa934c9700fc"},"status":200,"task":"e0957138-eaa9-4c94-b72b-c7c320b9167b"}
+public_contract_response {"family":"source.propose","key":"unadmitted-edit","result":{"disposition":"proposed","proposal":"e280afc28b819e508cd8ce0afca1f98b2f594d488f6de5a1d9c3cb008a75ab91","revision":3,"schema_version":2},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"intent.admit","key":"supersede","result":{"acceptance":"78ee280418d152f3879401fee7f8c1eddcebca02eaa3d6bb4577369d72865c48","admitted_version":2,"disposition":"applied","intent":"2b70fbe95ca0e86887be2a0d3c19e21861f70e51e45bec0071117bbdeace85e5","revision":4,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"outcome.propose","key":"amended-proposal","result":{"disposition":"proposed","proposal":"e9f83fd1f00a11a33ca6df7a5f5c4ea27b90f87d81f90427cc0d654cb7fb76a5","revision":4,"schema_version":2},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"research.verify","key":"amended-verify","result":{"code":"unauthorized"},"status":401,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"research.verify","key":"amended-verify","result":{"disposition":"applied","outcome":"investigation_complete","proof":"84c380ecb5ec99e11b82bece5c344bf9f63a004470f13b93f4083ad37bc9f6b0","revision":5,"schema_version":2},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"outcome.accept","key":"amended-accept","result":{"code":"unauthorized"},"status":401,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"outcome.accept","key":"amended-accept","result":{"disposition":"applied","outcome":"investigation_complete","proof":"84c380ecb5ec99e11b82bece5c344bf9f63a004470f13b93f4083ad37bc9f6b0","revision":6,"schema_version":2,"subject":"1a0a672e5ca6dcbc564d623f49549c3a459d04309586291735eb55c92abf253b"},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+public_contract_response {"family":"dependency.revalidate","key":"stale-dependent-revision","result":{"code":"stale_revision"},"status":409,"task":"e0957138-eaa9-4c94-b72b-c7c320b9167b"}
+public_contract_response {"family":"dependency.revalidate","key":"revalidate","result":{"disposition":"applied","revalidation":"f228eea719d4813a9dafd3bc617edce58f7ba10735aa87cd3414fb01c5d1535c","revision":3,"schema_version":2},"status":200,"task":"e0957138-eaa9-4c94-b72b-c7c320b9167b"}
+public_contract_response {"family":"intent.admit","key":"supersede-again","result":{"acceptance":"78ee280418d152f3879401fee7f8c1eddcebca02eaa3d6bb4577369d72865c48","admitted_version":3,"disposition":"applied","intent":"49e4328d02ea0dead05ee3058aa22efd83ee863873be5078ee1a5ceba1663c95","revision":7,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"92fce3c6-0916-4446-a282-d2de7535fb6d"}
+fresh_episode_start_after_suspension Ok(EpisodeOperation { id: a25ab307-cd41-4646-a525-26bf835f2cff, episode: fb494676-3533-4051-933d-35aa81fb1c90, execution: 0aa472ad-33d7-4890-8fbe-919a90db8641, state: Prepared, thread_id: None, turn_id: None, effect_id: None, usage: Unknown })
+
+thread 'admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt' (1195160) panicked at tests/intent_contracts.rs:626:25:
+called `Result::unwrap_err()` on an `Ok` value: EpisodeOperation { id: a25ab307-cd41-4646-a525-26bf835f2cff, episode: fb494676-3533-4051-933d-35aa81fb1c90, execution: 0aa472ad-33d7-4890-8fbe-919a90db8641, state: Prepared, thread_id: None, turn_id: None, effect_id: None, usage: Unknown }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.55s
+
+error: test failed, to rerun pass `--test intent_contracts`

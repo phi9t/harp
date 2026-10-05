@@ -1,0 +1,37 @@
+[
+  {
+    "name": "final20",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "-v",
+      "test_trae_case_control"
+    ],
+    "cwd": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/final20/tools/probes",
+    "controller_sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+    "test_sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "exit_code": 0,
+    "log": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/final20.log.txt",
+    "log_sha256": "c6df6fbdff10ec2ca03fa76d457c23b8c2a8d2feff6772aabc6ff0fcfa4ec6eb",
+    "scope": "public injected recording executor only; independent review reproduction, not historical development chronology"
+  },
+  {
+    "name": "repair1-red",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "-v",
+      "test_trae_case_control.DurableControllerBehavior.test_prior_terminal_without_start_retains_new_refusal_and_spends_start",
+      "test_trae_case_control.DurableControllerBehavior.test_occupied_uncertainty_output_refuses_before_reservation"
+    ],
+    "cwd": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/repair1-red/tools/probes",
+    "controller_sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+    "test_sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "exit_code": 1,
+    "log": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/repair1-red.log.txt",
+    "log_sha256": "465171b920344c3307e2515b9cf5efe4a6121862716bb5c1ab115067781cbc4f",
+    "scope": "public injected recording executor only; independent review reproduction, not historical development chronology"
+  }
+]

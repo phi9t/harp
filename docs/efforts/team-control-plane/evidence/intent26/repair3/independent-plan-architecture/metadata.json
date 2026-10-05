@@ -1,0 +1,87 @@
+{
+  "assessment": "narrow read-only architectural validity; not frozen ticket review or acceptance",
+  "utc": "2026-10-03T22:24:01.954655+00:00",
+  "root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "root_head": "d54de5a2b843553dd9b3a6a888cb28b3422f001c",
+  "author": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+  "author_head": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "author_primary_before": {
+    "crates/team-control-plane/src/contracts/strategy.rs": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f",
+    "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+    "crates/team-control-plane/tests/intent_contracts.rs": "a9fb0125bb3eb829840a4d6a3e94b4265e2c5e332f9b58a10ba96e4c2cca50e1"
+  },
+  "author_after": {
+    "crates/team-control-plane/src/contracts/strategy.rs": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f",
+    "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+    "crates/team-control-plane/tests/intent_contracts.rs": "71f87d69a2e2a1e1e85db16eb48b88be087eba807a67e06356a7af2043beaa82",
+    "crates/team-control-plane/src/contracts.rs": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955"
+  },
+  "primary_stable_before_after": false,
+  "root_read_source_sha256": {
+    "CONSTITUTION.md": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+    "AGENTS.md": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+    "docs/agents/agentic-engineering.md": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+    "docs/agents/domain.md": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+    "CONTEXT.md": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+    "docs/efforts/team-control-plane/SPEC.md": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+    "docs/efforts/team-control-plane/v02-reconciliation.md": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+    "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md": "dee0d4681654a8c1c114cdb7b9fdd7400924d32c350468524233c63913101dc4",
+    "docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md": "5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5",
+    "docs/rfcs/0002-persistent-engineering-teams.md": "f48b9e62209a88850cf0ab7db0d9ed5c7923afdc1ffea9805e5999ee13610d7f",
+    "docs/rfcs/0002-persistent-engineering-teams-design-source.md": "0924b4faf2657dcffc46cd54e4844e4827626a95d89afb84a629bfb482ba95cb",
+    "docs/rfcs/0002-persistent-engineering-teams-v02-source.md": "33b24f19a50efa958bc3978ea5b41b60fa2a39bc5faf29158c504657f3977e05",
+    "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+    "crates/team-control-plane/tests/intent_contracts.rs": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264",
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/preimages/crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/preimages/crates/team-control-plane/tests/intent_contracts.rs": "c4f2370982996de90198eec5d247a83d1f1760fcb92282d18708222eb84f697f",
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264"
+  },
+  "limits": [
+    "No code or repository writes",
+    "No Git mutations",
+    "No runtime, provider, Cargo, PostgreSQL, Temporal or test runs",
+    "No subagents"
+  ],
+  "preimage_note": "Root active strategy/tests exactly match repair2/source-snapshots. repair2/preimages/tests is earlier than repair2 and is separately pinned; current-root test is the decisive Owner refusal comparison.",
+  "report_sha256": "1f38120bc2a7dea45b7cc45b206111e05883cd796e0383e453f483be7cd9e739",
+  "initial_root_head": "eb694b2da4a0744dbb94f4d746247406c8c3634a",
+  "root_head_note": "Root advanced during read-only assessment; canonical source pins below checked against requested eb694b2.",
+  "root_sources_match_requested_commit": {
+    "CONSTITUTION.md": true,
+    "AGENTS.md": true,
+    "docs/agents/agentic-engineering.md": true,
+    "docs/agents/domain.md": true,
+    "CONTEXT.md": true,
+    "docs/efforts/team-control-plane/SPEC.md": true,
+    "docs/efforts/team-control-plane/v02-reconciliation.md": true,
+    "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md": false,
+    "docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md": true,
+    "docs/rfcs/0002-persistent-engineering-teams.md": true,
+    "docs/rfcs/0002-persistent-engineering-teams-design-source.md": true,
+    "docs/rfcs/0002-persistent-engineering-teams-v02-source.md": true,
+    "crates/team-control-plane/src/contracts/strategy.rs": true,
+    "crates/team-control-plane/tests/intent_contracts.rs": true,
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/preimages/crates/team-control-plane/src/contracts/strategy.rs": true,
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/preimages/crates/team-control-plane/tests/intent_contracts.rs": true,
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs": true,
+    "docs/efforts/team-control-plane/evidence/intent26/repair2/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs": true
+  },
+  "author_stability_note": "Tests changed once from a9fb... to 71f8... during assessment. Relevant latest test ranges reread; final report cites 71f8... lines. strategy/authority unchanged throughout.",
+  "author_final_read_before": {
+    "crates/team-control-plane/src/contracts/strategy.rs": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f",
+    "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+    "crates/team-control-plane/tests/intent_contracts.rs": "71f87d69a2e2a1e1e85db16eb48b88be087eba807a67e06356a7af2043beaa82",
+    "crates/team-control-plane/src/contracts.rs": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955"
+  },
+  "author_final_read_after": {
+    "crates/team-control-plane/src/contracts/strategy.rs": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f",
+    "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+    "crates/team-control-plane/tests/intent_contracts.rs": "71f87d69a2e2a1e1e85db16eb48b88be087eba807a67e06356a7af2043beaa82",
+    "crates/team-control-plane/src/contracts.rs": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955"
+  },
+  "final_read_stable": true,
+  "corrective_patch_status": "Parent announced conservative resolution after assessment; no corrective implementation or test run is presumed or reviewed.",
+  "ticket26_requested_commit_sha256": "76bfa8fa8f1e09a7ae9350d73eb2104f55626589b829cb42c5c09c3d08fb2d3d",
+  "ticket26_cited_contract_lines_1_to_55_unchanged": true
+}

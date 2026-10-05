@@ -1,0 +1,53 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.35s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 8 tests
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... FAILED
+test current_lead_requires_explicit_bounded_delegation_even_on_replay ... ok
+test exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload ... FAILED
+test negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert ... FAILED
+test plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling ... FAILED
+test plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning ... ok
+test production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement ... ok
+test source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias ... ok
+
+failures:
+
+---- admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt stdout ----
+
+thread 'admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt' (3574574) panicked at tests/intent_contracts.rs:395:154:
+assertion `left == right` failed: suspended dependency must block fresh Worker Episode
+  left: 200
+ right: 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload stdout ----
+
+thread 'exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload' (3574782) panicked at tests/intent_contracts.rs:774:5:
+assertion `left == right` failed
+  left: Null
+ right: Object {"deployment": String("fixture-deployment"), "item": String("26"), "ledger": String("git"), "project": String("fixture-project"), "tenant": String("fixture-tenant")}
+
+---- negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert stdout ----
+
+thread 'negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert' (3574817) panicked at tests/intent_contracts.rs:185:5:
+admitted research evidence must survive ordinary ArtifactService collection
+
+---- plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling stdout ----
+
+thread 'plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling' (3574853) panicked at tests/intent_contracts.rs:806:5:
+assertion `left == right` failed
+  left: Null
+ right: "budget_exhausted"
+
+
+failures:
+    admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt
+    exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload
+    negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert
+    plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling
+
+test result: FAILED. 4 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.21s
+
+error: test failed, to rerun pass `--test intent_contracts`

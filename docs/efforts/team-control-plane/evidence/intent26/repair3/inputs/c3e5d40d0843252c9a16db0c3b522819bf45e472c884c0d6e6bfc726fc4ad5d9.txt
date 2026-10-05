@@ -1,0 +1,23 @@
+Reviewing branch "codex/reference-design": 7 commits since a21316f74672f55f3c22eff94f93ce1511b51822
+Enqueued job 632 for a21316f..0a9760f (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: High
+- **Location**: `crates/team-control-plane/src/contracts.rs:406`
+- **Problem**: Admitting a new IntentRevision after production acceptance leaves `tasks.status='accepted'` while superseding the prerequisite and suspending dependent grants. ArtifactService rejects all fresh commands for accepted tasks, verification Episode admission rejects that status, and the production gate requires `verifying`. The new revision therefore cannot obtain an accepted subject, leaving dependents unable to revalidate.
+- **Fix**: Implement an explicit new-revision execution and verification transition that preserves historical acceptance. Add a behavioral regression covering production acceptance, amendment, fresh acceptance and dependent revalidation.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/contracts/strategy.rs:123`
+- **Problem**: Previous Plan ceilings are checked only through `contract_current.plan_id`, which `intent.admit` clears. A delegated lead authorized for both command families can amend only the source revision, then admit a Plan with larger resource/repair ceilings or additional effects up to the unchanged Intent limits. This bypasses the restrictions that would reject a direct Plan replacement.
+- **Fix**: Preserve the previous Plan’s authority ceilings across delegated source amendments independently of the current Plan pointer. Require explicit Owner authorization for expansion, and test the amendment-then-expansion sequence.
+
+## Summary
+
+The change adds v2 admitted work, dependency and acceptance contracts, plus a durable offline case controller and retained review evidence.

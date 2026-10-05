@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_prior_terminal_without_start_retains_new_refusal_and_spends_start (test_trae_case_control.DurableControllerBehavior.test_prior_terminal_without_start_retains_new_refusal_and_spends_start)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py", line 309, in test_prior_terminal_without_start_retains_new_refusal_and_spends_start
+    self.assertTrue((self.out/'uncertainty.json').exists(), 'spent reservation must retain new refusal separately from prior terminal')
+AssertionError: False is not true : spent reservation must retain new refusal separately from prior terminal
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

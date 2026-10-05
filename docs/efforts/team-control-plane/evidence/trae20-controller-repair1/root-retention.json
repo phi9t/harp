@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T19:33:27.143189+00:00",
+  "active_source_integrated": false,
+  "accepted": false,
+  "physical_admission": false,
+  "index_sha256": "7900c6b77da61c09286061d3a939030722451d6fe09635ad462d07e86e535771",
+  "scope": "offline pure controller preparation; new independent reviews pending; original chronological/physical gaps retained",
+  "records": [
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/coverage.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/coverage.json",
+      "sha256": "c81a627688c303d6a3f506c76a2d4673e62be1837f27e0c9fee9b83e427fc574",
+      "bytes": 3017
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/fault-controls-green.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/fault-controls-green.log.txt",
+      "sha256": "134d1ed77f608e44aa9e72a38c2b731e2da2ce36f9c217860eec9224314aef2e",
+      "bytes": 114
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/final-green.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/final-green.log.txt",
+      "sha256": "9bab3f91313d83c2453c10032b0f45226c0ae0e2363ac5ee1495b12b41989bc8",
+      "bytes": 116
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/final-semantic-controls.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/final-semantic-controls.log.txt",
+      "sha256": "4a40cbb0129a0c0ba8095abe1884465af1929cbd3fa8de0712e090467f11789f",
+      "bytes": 81
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/git-base-full.patch",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/git-base-full.patch",
+      "sha256": "e0767b0bc152c42e15484a13248f32e1dafc615e36cfa27cb08d18653ef8880c",
+      "bytes": 25699
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/review-inputs/0-20261003-trae-controller-review1-repair.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/review-inputs/0-20261003-trae-controller-review1-repair.md",
+      "sha256": "d9ee974e52e4c312bde606c015344b08cf08dcc1e5e73285b021de906d0e7d37",
+      "bytes": 2119
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/review-inputs/1-report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/review-inputs/1-report.md",
+      "sha256": "3ed20849818529d16b2d4955fc26ddd69e51c3a8bd7af0af8f4fbc9adbace8f4",
+      "bytes": 2690
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/review-inputs/2-report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/review-inputs/2-report.md",
+      "sha256": "a4ca5d5f5ec0524b2bea86913c595e91036eafd550208823d1849a7ecde25b46",
+      "bytes": 2670
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/round0-to-repair1.patch",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/round0-to-repair1.patch",
+      "sha256": "384fe520583591fef020413e5baf6850601ec529e4a9019cd994c64656d704c7",
+      "bytes": 15711
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/test_trae_case_control.py",
+      "sha256": "b9651c45c5c56bacbc2ce04d9a4aa22d74cbf5d02bf4bcdae5a73ddb3782560f",
+      "bytes": 15971
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/handoff.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/handoff.md",
+      "sha256": "4f7f63a72192e10fcf778b5c64d3d374d22cd0a97cfa243b3ba38cd8463d1883",
+      "bytes": 1722
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/microplan.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/microplan.md",
+      "sha256": "4a8dd1f9e5bddaabe2aca625bc1ea8447d7764ae997036c28d45cab512f29d2e",
+      "bytes": 271
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/planned-case.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/planned-case.json",
+      "sha256": "45a9962ff03745ad05540c1d1a3c0c2a413877c9a1be5becb630075ef34b59c2",
+      "bytes": 1282
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/post-reservation-assertion-red.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/post-reservation-assertion-red.log.txt",
+      "sha256": "a7ac164b4d7537f6315941f6a5103c3a7759895d4af950b8ec575c1621e5ccce",
+      "bytes": 815
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/post-reservation-green.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/post-reservation-green.log.txt",
+      "sha256": "a2f243794c6d0bb3411a92861920e8af2aa57f8f26a66b669fec6894341696f0",
+      "bytes": 107
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/post-reservation-red.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/post-reservation-red.log.txt",
+      "sha256": "cef49e8dd23e9190569a49f1f03b0bcfd554148f99144760815756bdef3284c2",
+      "bytes": 1298
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/preimages/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/preimages/test_trae_case_control.py",
+      "sha256": "7d95e1d7f44b1f0ca9d6c650ef3b5cc9b178aa020470dc336d9723149fc77239",
+      "bytes": 6689
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/preimages/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/preimages/trae_case_control.py",
+      "sha256": "21fc6e726595a523f2f7ee5de11e6c9ab0de403c9c9ee15e8d2cb8903da2778f",
+      "bytes": 7366
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/runs.jsonl",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/runs.jsonl",
+      "sha256": "4936b9fdd68bd7c7e2aa37da564970c07047c00c584dd75f428344a3b2189ff2",
+      "bytes": 250
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-changed-input-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-changed-input-negative.log.txt",
+      "sha256": "c430beb3ed51421314d90a97af2528eaf5e91ffa1a718ae8163adcd06770544a",
+      "bytes": 812
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-concurrent-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-concurrent-negative.log.txt",
+      "sha256": "84404b30becd14a64e087d3c2a7a5b0441e8a97d74166fc19d5365f27fc29f33",
+      "bytes": 796
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-controls.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-controls.log.txt",
+      "sha256": "4a40cbb0129a0c0ba8095abe1884465af1929cbd3fa8de0712e090467f11789f",
+      "bytes": 81
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-duplicate-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-duplicate-negative.log.txt",
+      "sha256": "4b5e71c93d24e4bc37f51c5c2389f451d1ea12bdb6e9f6c29280d8738106d559",
+      "bytes": 822
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-exception-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-exception-negative.log.txt",
+      "sha256": "81eaf89abda4014b4f34b63b70cdb9c3dd59f6b9f2cfe5138689f75739140ed0",
+      "bytes": 935
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-fsync-fault-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-fsync-fault-negative.log.txt",
+      "sha256": "6655bbb9e357f64a00c152aaa1e55e2d1357a2deade73a64743a9c64c46ac8e8",
+      "bytes": 767
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-negative-summary.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-negative-summary.json",
+      "sha256": "5280ada7e5d27274aae9dc21c307a20dd3ef99a57553bac5ae6eaab4bc96022f",
+      "bytes": 2158
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-short-write-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-short-write-negative.log.txt",
+      "sha256": "22d51b9d21b005b1ae9c8251163090e022015ba56aa1df8feb38769bc0d23112",
+      "bytes": 885
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic-write-fault-negative.log.txt",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic-write-fault-negative.log.txt",
+      "sha256": "e778a51dd4fca35d947049c026e9ebac7e166d666b5b72c28fa3fdde0fe752f3",
+      "bytes": 877
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/semantic_controls.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/semantic_controls.py",
+      "sha256": "df7dc3b4243e64162a7a957fd2c1e838de573a86110b8098923e8c6abbb8b159",
+      "bytes": 2901
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-changed-input.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-changed-input.py",
+      "sha256": "edaeae02e4c589e58b6d34a10098d24ab1b27128cd095a57808982fbdbf9d7d9",
+      "bytes": 7335
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-concurrent.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-concurrent.py",
+      "sha256": "da3b697b73d1dc3b88ddd2dc6c652914341feea0ab1fdb1a9c793e8173e649c4",
+      "bytes": 7367
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-duplicate.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-duplicate.py",
+      "sha256": "da3b697b73d1dc3b88ddd2dc6c652914341feea0ab1fdb1a9c793e8173e649c4",
+      "bytes": 7367
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-exception.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-exception.py",
+      "sha256": "1397c3d21586cf17bd33745f2b2b9661d4225ef379c7803358b17c7568fee1e6",
+      "bytes": 7367
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-fsync-fault.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-fsync-fault.py",
+      "sha256": "871b811c51cd2489249ba4dc5bc999f3273b8fbce3240cf26b311a8022664113",
+      "bytes": 7472
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-short-write.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-short-write.py",
+      "sha256": "0da5f7148965d9205b95908767423ad33d5e8ef28594f4ff24c594bae20fc06f",
+      "bytes": 7195
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/unsafe-semantic-write-fault.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/unsafe-semantic-write-fault.py",
+      "sha256": "e88ea07449bd8b1e88ac87decbf7dea5f5334ec18ff760efb7dcf8d5bb1c058e",
+      "bytes": 7241
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/tools/probes/trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/source-snapshots/tools/probes/trae_case_control.py",
+      "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+      "bytes": 8706
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/source-snapshots/tools/probes/test_trae_case_control.py",
+      "sha256": "b9651c45c5c56bacbc2ce04d9a4aa22d74cbf5d02bf4bcdae5a73ddb3782560f",
+      "bytes": 15971
+    },
+    {
+      "origin": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair1-20261003-v1/freeze/public-index.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair1/freeze/public-index.json",
+      "sha256": "7900c6b77da61c09286061d3a939030722451d6fe09635ad462d07e86e535771",
+      "bytes": 10008
+    }
+  ]
+}

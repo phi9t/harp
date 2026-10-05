@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-03T22:26:19.371792+00:00",
+  "assessment": "narrow static architecture; not ticket conformance or corrected-source verification",
+  "records": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/independent-plan-architecture/report.md",
+      "bytes": 3791,
+      "sha256": "1f38120bc2a7dea45b7cc45b206111e05883cd796e0383e453f483be7cd9e739"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/independent-plan-architecture/metadata.json",
+      "bytes": 7588,
+      "sha256": "a18edc8f15a985b512adb020674e92d43d2e56b48380baac6d25131f783eaaad"
+    }
+  ],
+  "disposition": "conservative original ceilings for all callers; author correction pending",
+  "accepted": false
+}

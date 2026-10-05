@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T20:42:03.411082+00:00",
+  "cwd": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py",
+    "--check-index",
+    "--check-freeze"
+  ],
+  "exit_code": 1,
+  "scope": "read-only original auditor against moved retained archive; no controller/proof.py callback or Git mutation",
+  "auditor_sha256": "3550d95269bc8a426e243fb571da6cac7444c210086c94a07c708dc232f6e46d",
+  "result": "FAIL: recorded execution origin is compared to current archive storage root",
+  "original_181_records_verified": true,
+  "original_archives_modified": false,
+  "physical_admission": false,
+  "repair": "separate portable read-only auditor, existing proof run retained unchanged",
+  "logs": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader-relocation/root-red/stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader-relocation/root-red/stderr.log.txt",
+      "sha256": "bbd22f7fd7009fa104f8b76a9f0db7cc31b67e06744120b34fc2a29c548b6e98",
+      "bytes": 765
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T22:50:09.198653+00:00",
+  "scope": "ticket26 final repair3 frozen conformance and rejection; data retention only",
+  "author_freeze": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/author-freeze.json",
+    "sha256": "00a20c878225c296d2cb1dc96c2cf710d12eeb20c30eed779533a5f0428ec980",
+    "bytes": 230464
+  },
+  "prior_root_retention": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/root-retention-and-disposition.json",
+    "sha256": "28819dca21c8b0a8f2a271a077c33384a7a4b40ebff6d4d41f1f7bcceeb23fb5",
+    "bytes": 428606
+  },
+  "reviews": {
+    "spec": {
+      "verdict": "REJECT",
+      "files": [
+        {
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/reviews/spec/report.md",
+          "sha256": "f357f4eef0fd37cf5e72438497f9f465dd876390204976e2c41112a98679a4b7",
+          "bytes": 2670
+        },
+        {
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/reviews/spec/metadata.json",
+          "sha256": "819446d084841ab794217bba7e1f726dc6769ba50bcf5ba3f018ce3cb6a3a150",
+          "bytes": 16519
+        }
+      ]
+    },
+    "standards": {
+      "verdict": "PASS",
+      "files": [
+        {
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/reviews/standards/report.md",
+          "sha256": "30560877c0159f14c6fffe5d03ab69b505db7c40091be8f094362230d1def30a",
+          "bytes": 2551
+        },
+        {
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/reviews/standards/metadata.json",
+          "sha256": "b318bbc97f930db92818da09f992b3ba9a883727f140d7d3aa77198d23919622",
+          "bytes": 409428
+        }
+      ]
+    }
+  },
+  "accepted": false,
+  "active_source_integrated": false,
+  "root_gates_run_for_repair3": false,
+  "landing_performed": false,
+  "blocking_finding": "P1: accepted research IntentRevision amendment leaves old task generation and Worker/Verifier credentials valid",
+  "repair_allocation": "existing three rounds exhausted; read-only architecture assessment in progress; no additional implementation allocation yet",
+  "preservation": "18 active root sources remain repair2; 20 repair3 postimages retained only as evidence snapshots; no counters or unknown reservations reset"
+}

@@ -12,15 +12,15 @@ Actual active coordination: /root on codex/sqlite-controller-execution. Actual01
 ```json
 {
   "base_branch": "main",
-  "base_commit": "264756edd550225449202b6f20ac4b560808d14e",
-  "dehydrated": "2026-10-03T18:15:31Z",
+  "base_commit": "a21316f74672f55f3c22eff94f93ce1511b51822",
+  "dehydrated": "2026-10-04T00:41:16Z",
   "effort": "team-control-plane",
   "runs": [],
   "worktrees": [
     {
       "branch": "codex/reference-design",
       "dirty": [],
-      "head": "e6602590767f258e99beb304533ee6a5ab4c49d3",
+      "head": "10ae64052232591b4bcf670998790093e301d1f7",
       "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
       "pushed": false
     }
@@ -31,13 +31,36 @@ Actual active coordination: /root on codex/sqlite-controller-execution. Actual01
 
 ## Where we are
 
-The user explicitly redirects this session to Corenius alone. The complete goal remains active. Main is `264756edd550225449202b6f20ac4b560808d14e`; root reference-design has captured RFC0002 through `942f037800102f3d786ac547e72f11ab928b50ae` and subsequent work awaiting integration. The accepted kernel is v1 evidence. RFC0002's owner correction selects Kata as first-class work ledger, jj as preferred worker VCS candidate to qualify, scope-owned jobs and a stable per-scope Temporal Plan interpreter. The [reconciliation](v02-reconciliation.md) and new tickets26–32 preserve old evidence and define migration, authority and qualification boundaries. Independent Architecture and adversarial Spec gates both pass; exact reviews are retained under evidence/v02-adoption/.
+The user explicitly redirects this session to Corenius alone. The complete goal remains active. Main is `a21316f74672f55f3c22eff94f93ce1511b51822`; the accepted kernel is v1 evidence and the bounded jj19 evaluation is now landed. RFC0002's owner correction selects Kata as first-class work ledger, jj as preferred worker VCS candidate to qualify, scope-owned jobs and a stable per-scope Temporal Plan interpreter. The [reconciliation](v02-reconciliation.md) and new tickets26–32 preserve old evidence and define migration, authority and qualification boundaries. Independent Architecture and adversarial Spec gates both pass; exact reviews are retained under evidence/v02-adoption/.
 
-jj19 repair3/3 has fresh independent Standards and Spec PASS. Root verified/transferred276 bound paths and integrated three exact reviewed source/report postimages, preserving213 historical evidence files and current ticket/rejection history. Its fresh imported history-export/verification-binding regressions, repository gate40945 and wholebranch631 pass exit0/no issues; exact gate/review/source bindings are retained under evidence/jj19/repair3-root-tests/. Ticket19's bounded evaluation is accepted; detached exact-tip gate/FF landing is next. This is evaluated jj behavior, not backend25 adoption or v0.2 assembly. One fixed offline cleanup case ran once with terminal0; independent adjudication passes its physical measurements but full conformance is partial because the original prelaunch controller ordering is unverified. Exact evidence and review are retained under evidence/trae20-offline-result1/. Future offline controller is frozen in the Trae20 author tree; Standards review blocks missing slice RED evidence and healthy-storage post-reservation terminal retention, while Spec reports partial test coverage. No integration or new physical launch is admitted. Runtime configuration/RPC prerequisites still need proof. All historical failed namespaces/budgets remain quarantined or spent. Sureal remains stopped and preserved.
+jj19's bounded evaluation is landed after both review axes, root regressions, wholebranch631 and detached exact-tip gate92802. Backend25 adoption remains separate. The future offline controller's exact two reviewed postimages are committed on the isolated branch at16c15c8, with20 pure tests passing. Its real default Git-reader proof passed at the execution origin;181 exact records are retained. Root reproduced the original auditor's failure on the moved archive and retained stdout/stderr/result under evidence/trae20-controller-repair2/git-reader-relocation/root-red/. A separate portable auditor passes root moved-archive verification and a contradictory-origin refusal. Spec has no blockers; Standards rejects four refusal controls skipped during RED. All37 follow-up files and both reviews are retained; helper conformance remains partial and unaccepted. Further equivalent audits are stopped. Assembled repository/branch gates remain pending. This preparation admits no physical Trae/provider launch; historical quarantines, spent budgets and partial prelaunch provenance remain unchanged.
+
+Ticket26 repair1 and repair2 remain preserved, including repair2's two conformance passes, fresh root focused/full gate70687 and wholebranch632 rejection. Final repair3 now has865 selected/seal records retained as data,20 source postimages,17 chronological runs and a source-bound final87/87 compatibility pass. It proves fresh production generations, incremental0009, event-bound historical retirement and all-caller immutable Plan ceilings. Standards PASS; Spec REJECT P1: accepted research amendments retain old Worker/Verifier generation authority. Exact reports, metadata and root rejection disposition are retained under evidence/intent26/repair3/. Passing author tests do not supersede this finding. No repair3 active code was imported, root gates run or landing performed; all18 active root sources remain repair2 at32ec033. Ticket26 stays claimed and27 remains blocked. The existing three-round allocation is exhausted. The completed read-only architecture assessment recommends a derived exact current accepted-work classification across production and research; its operation-specific proposal passes independent design critique. The exact proposal is adopted with explicit bounded post-architecture allocation1; the fresh sole writer /root/intent26_outcome_lifecycle1_author has frozen branch codex-intent26/outcome-lifecycle1 at base9d6b482. Its final bounded compatibility run passes96 tests, including30 intent contracts, after all10 allocated launches; failed/partial/counterfactual runs remain explicitly classified. Root retained320 sealed records plus seal, checked22 exact source preimages/postimages,59 final live/archived inputs,18 chronological raw-run hashes,2487 observation links,16 measured research bindings and14 decompressed database batches covering137 retained schemas. The dedicated PostgreSQL container is independently observed stopped. Seventeen fixture roots and29 unresolved runtime rows remain retained; process absence/container stop do not reconcile effects or usage. Its one conformance pass is exhausted: Standards REJECT Important S1 on late Owner-target behavioral RED, and Spec REJECT P1 F1 on candidate-import research preparation/start bypassing current intent pins after source-only amendment. Exact reports, metadata and root rejection are retained in outcome-lifecycle1/reviews/ and root-conformance-disposition.json. F1 is static and not yet runtime reproduced. Allocation1 is stopped; no active source import, root gate, acceptance or landing. Independent candidate-import repair design critique PASS settles the exact shared authority boundary and explicitly scoped inherited-guard retrospective-proof disposition. Allocation2 is adopted in decisions/20261004-intent26-candidate-import-allocation2.md: a new sole writer/worktree, at most6 tests/1800s and one fresh conformance pass. Original allocation1 remains rejected and its chronology unchanged. Fresh sole writer /root/intent26_candidate_import2_author owns codex-intent26/candidate-import2 in corenius-codex-intent26-candidate-import2 at29bd30a, with the exclusive local Cargo/PostgreSQL slot. Exact assignment is retained in candidate-import2-root-assignment.json. No allocation2 test outcome, conformance or active source integration is claimed yet.
 
 ## Next actions
 
-Finish exact-tip gated jj19 landing. Ticket26's sole writer `/root/corenius_jj19_verification_repair/intent26_implementer` owns `/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts`, branch `codex-intent26/contracts`, base `720ab7783e1b36e9e8a675f497f9c66ef2b1d87b`; final9 public tests and39 final-source compatibility tests pass after retained behavioral red-green controls. Earlier broad75-test non-Temporal pass is retained. Exact author freeze/conformance and assembly acceptance remain outstanding. Author released Cargo/PG at a terminal/cleanup boundary for detached root landing gate; source/evidence freeze may continue. Follow26→27 before independent ledger28/execution31 work;31 enables interpreter29/protected gate30, then qualified jj25 and assembly32. Live21 follows20/32; independent lead22/23 and restore24 remain required. Preserve/reconcile the future controller's reviews before further concrete admission; no rerun can repair the old controller provenance. No indefinite Kata/jj deferral can satisfy the new target.
+Allocation2's fresh sole writer /root/intent26_candidate_import2_author owns
+corenius-codex-intent26-candidate-import2 on codex-intent26/candidate-import2
+at base29bd30a. It verified all22 root/base preimages and initialized the exact
+rejected allocation1 postimages in its own tree. The worker owns the exclusive
+Cargo/PostgreSQL slot; root runs no overlapping gates. The exact physical
+assignment is evidence/intent26/candidate-import2-root-assignment.json; bounds
+and proof disposition are decisions/20261004-intent26-candidate-import-allocation2.md.
+Require actual public candidate-import RED before source correction, both
+amendment orderings, compatible/type/policy/missing-pin controls and the final
+96-test compatibility baseline plus new cases. At most6 test launches/1800s,
+then exact freeze/resource disposition and one fresh conformance pass. No
+automatic repair loop follows. Only accepted conformance permits root source
+import, focused/full gates and whole-branch review before gated FF landing.
+
+Both former author trees and their exhausted allocations remain frozen/rejected.
+Preserve original865 repair3 records and321 allocation1 selected/seal files,
+all exact reviews, chronology and unknown effects. S1's retrospective exception
+is specifically for the unchanged inherited Owner-target guard; it is not original
+chronology compliance or accepted source. All active root source remains repair2
+at32ec033; no scope27/interpreter work or downstream grant is admitted yet.
+
+Retain the portable Git-reader helper as partially qualified evidence, preserving the unchanged old freeze and all review findings. Gate the assembled controller preparation without inferring full helper conformance or runtime authority. Runtime/config/RPC qualification and concrete admission remain separate. Follow26→27, then ledger28/execution31, interpreter29/protected gate30, qualified jj25 and assembly32. Live21 follows20/32; independent lead22/23 and restore24 remain required. Sureal stays stopped and preserved.
 
 ## Open questions
 

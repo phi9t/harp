@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "frozen_at_unix": 1791072561.4255033,
+  "base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "branch": "codex-intent26/outcome-lifecycle1",
+  "writer": "intent26_outcome_lifecycle1_author",
+  "source_paths": 22,
+  "final_input_count": 59,
+  "all_final_inputs_match": true,
+  "all_source_postimages_match": true,
+  "final_tests": 96,
+  "final_intent_contract_tests": 30,
+  "test_launches": 10,
+  "test_launch_limit": 10,
+  "cumulative_seconds_including_formatting_lint": 1045.9441862106323,
+  "allocation": "single post-architecture allocation1; old rounds1-3 rejected/exhausted, no reset, no automatic repair",
+  "status": "author candidate frozen; no ticket acceptance/integration/landing; root independent conformance pending",
+  "selected_records": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-manifest.json",
+      "sha256": "f867229a30cdce7e1efc9d881c7f1404a330ec925329bd8c1e5fa3da69a6572c",
+      "bytes": 28545
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+      "bytes": 450500
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.start.json",
+      "sha256": "f6ed0b2dbe4515b90d8e9a2f5c71d462fa72bac76824b700d333a2290d1c104c",
+      "bytes": 12604
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-freeze.log",
+      "sha256": "f11dfc89fd8d76ad49766d4f8745fa2ef42c76adb89b119ff28ae4423dc816b7",
+      "bytes": 217
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-freeze.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/runs.jsonl",
+      "sha256": "434477e92cc539627f61d615bb4c04fb01b5a147f823b3219f19969e7946a0fc",
+      "bytes": 219320
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-chronology.json",
+      "sha256": "8ee567396458751ca041f92b3439f92957ce985c32239280dbb93a3da60a570a",
+      "bytes": 32681
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/baseline-verification.json",
+      "sha256": "d5f7f20e7dcbe3f84d7cad3f25b5c60bead6af812313cbba58ab6dfa8e7e698d",
+      "bytes": 4362
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/baseline-overlay.patch",
+      "sha256": "7ccb960cfbeca38aea5af449cba43414244a000169e1b5d1112fdc68988dd7a9",
+      "bytes": 59845
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base.patch",
+      "sha256": "9563f336ba5b6c9bf84bd50d04970aafad8bb5dbeaeec3e8ec25f35a01836aea",
+      "bytes": 154102
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-repair3-delta.patch",
+      "sha256": "a47703815bcbe0248548fa1314a37875f55efd1a0ecd2da8b29833cea9a6feaa",
+      "bytes": 98584
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/consumer-audit.md",
+      "sha256": "46ba082e38c6b795ecd75615c2cee93c912c7534b72b212d28d01ce41e09e612",
+      "bytes": 8829
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/handoff.md",
+      "sha256": "98aec42529b49d307be2901ac57b4851973f435bd9e3d49f5ce818b229b7f3f5",
+      "bytes": 10228
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/observation-index.json",
+      "sha256": "021a16235961561c7fdb38c5f332ac7daf35a2c025ed1bf900c878a1fe319296",
+      "bytes": 522551
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifact-bindings.json",
+      "sha256": "589c1f45e24577a8a6b248d92225cff87eb044bf434ce9a1ee8eac1b75482f63",
+      "bytes": 81955
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/production-artifact-bindings.json",
+      "sha256": "f805a5c001e15e73fe0d98add0c866b3c9ab26039c4693b4e6e160237ef719cd",
+      "bytes": 17976
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/owner-target-proof.json",
+      "sha256": "b34e9d240bebd370a5fd91bf563f03413f546ed739f0b2b4a7fe77423b01ad41",
+      "bytes": 465
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-final.json",
+      "sha256": "120ee0cd96507345cb65137959b72f70b17687eed40604f8ced9f832774f9fcd",
+      "bytes": 9236
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-prestop.json",
+      "sha256": "1333c00d6dac6f8bfda628bd65e8feaf8a8a81451958f898b946dd1015587e1a",
+      "bytes": 25355
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres-inventory.json",
+      "sha256": "6ca7c8723c0a0e2391b1da949db935311e9700ce09c04d17e2b2251c36bd03bf",
+      "bytes": 998694
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres-dumps.json",
+      "sha256": "f43a1208cd1db777a4bc96f77aad0d3aec2a1981e313b1898a31b507d5f03121",
+      "bytes": 30017
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-collection.log",
+      "sha256": "83108bb370c031b1770b4f4d9cf1f54c5bd3e9d39a8f4ccf5356520b17ec48d1",
+      "bytes": 55969
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-collection-batched.log",
+      "sha256": "33809c1540964b6d23007a05a62b671ac2e9a6c5a303bf6eb6e77d9565ea7603",
+      "bytes": 154
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/postgres-stop.log",
+      "sha256": "490204b9c2f12e6b1302b21bb2398a91d9ac3db9a5991b183abc82cf7bb27355",
+      "bytes": 40
+    }
+  ],
+  "seal_rule": "seal.json hashes every retained regular file under this evidence directory except itself; it includes this author-freeze.json. Seal hash is reported externally to avoid circular self-hash. Gitignored scratch reconstruction/raw SQL and private target binaries are path/hash attributed, not members of this evidence seal. Existing old evidence is neither copied wholesale nor modified.",
+  "resource_slot": "released per resource-final.json; stopped PostgreSQL and retained unknowns"
+}

@@ -1,0 +1,27 @@
+test_candidate_bundle_ref_refuses (__main__.ArtifactPortability.test_candidate_bundle_ref_refuses) ... skipped 'candidate controls apply only to new auditor'
+test_candidate_index_refuses (__main__.ArtifactPortability.test_candidate_index_refuses) ... skipped 'candidate controls apply only to new auditor'
+test_candidate_recorded_origin_metadata_refuses (__main__.ArtifactPortability.test_candidate_recorded_origin_metadata_refuses) ... skipped 'candidate controls apply only to new auditor'
+test_contradictory_origin_expectation_refuses (__main__.ArtifactPortability.test_contradictory_origin_expectation_refuses) ... skipped 'candidate controls apply only to new auditor'
+test_original_archive_remains_byte_exact (__main__.ArtifactPortability.test_original_archive_remains_byte_exact) ... ok
+test_relocated_archive_passes_exact_retained_bindings (__main__.ArtifactPortability.test_relocated_archive_passes_exact_retained_bindings) ... FAIL
+
+======================================================================
+FAIL: test_relocated_archive_passes_exact_retained_bindings (__main__.ArtifactPortability.test_relocated_archive_passes_exact_retained_bindings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-controller-git-reader-portability-proof-20261003/regression.py", line 44, in test_relocated_archive_passes_exact_retained_bindings
+    self.assertEqual(result.returncode, 0, result.stderr.decode())
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py", line 271, in <module>
+    main()
+  File "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py", line 217, in main
+    require(c['argv'][1:3] == ['-C', str(P / 'fixture')], 'Git command outside fixture')
+  File "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader/audit.py", line 15, in require
+    raise AssertionError(message)
+AssertionError: Git command outside fixture
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.032s
+
+FAILED (failures=1, skipped=4)

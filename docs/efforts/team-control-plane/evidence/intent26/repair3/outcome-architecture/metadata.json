@@ -1,0 +1,530 @@
+{
+  "assessment": "read-only architecture recommendation; no implementation authorization",
+  "completed_utc": "2026-10-03T22:50:52.290225+00:00",
+  "canonical_head": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+  "author_base": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "canonical_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "bytes": 2045,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "bytes": 33123,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+      "bytes": 21340,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "90accfa9ec0381bf626cba7de6ff4696e9ba2cc0c140035c1f8c4d5cfb299c88",
+      "bytes": 6017,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": false
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/27-durable-scopes.md",
+      "sha256": "49ddb1e679a7d9f72ca542ca10aa7c3efb5eb2931da426ef043951ead35a5cd2",
+      "bytes": 3403,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/31-independent-execution.md",
+      "sha256": "52dc90583dcbd5fe1fe42f8c3794168a7946e8a7160eed51db866c6aff81f928",
+      "bytes": 2973,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+      "sha256": "5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5",
+      "bytes": 3465,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a",
+      "bytes": 2321,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f",
+      "bytes": 1876,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "sha256": "ef466fbab46183da3033ff76bdf332dceb85445a2f0d4502b4ae5d69976a184c",
+      "bytes": 1103,
+      "commit_read": "0ce002b26d32df2818d1f7421ed326468b1a588a",
+      "matches_commit": true
+    }
+  ],
+  "frozen_source_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/README.md",
+      "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "bytes": 20872,
+      "logical_source": "crates/team-control-plane/README.md",
+      "manifest_sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "logical_source": "crates/team-control-plane/migrations/0008.sql",
+      "manifest_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/migrations/0009.sql",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458,
+      "logical_source": "crates/team-control-plane/migrations/0009.sql",
+      "manifest_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "logical_source": "crates/team-control-plane/src/admission.rs",
+      "manifest_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "logical_source": "crates/team-control-plane/src/artifacts.rs",
+      "manifest_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts.rs",
+      "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "bytes": 23071,
+      "logical_source": "crates/team-control-plane/src/contracts.rs",
+      "manifest_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "logical_source": "crates/team-control-plane/src/contracts/authority.rs",
+      "manifest_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "logical_source": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "manifest_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/lifecycle.rs",
+      "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "bytes": 3892,
+      "logical_source": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "manifest_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "logical_source": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "manifest_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943,
+      "logical_source": "crates/team-control-plane/src/contracts/strategy.rs",
+      "manifest_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "logical_source": "crates/team-control-plane/src/domain.rs",
+      "manifest_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "logical_source": "crates/team-control-plane/src/episode_runtime.rs",
+      "manifest_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "logical_source": "crates/team-control-plane/src/gateway.rs",
+      "manifest_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "logical_source": "crates/team-control-plane/src/http.rs",
+      "manifest_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "logical_source": "crates/team-control-plane/src/lib.rs",
+      "manifest_sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "logical_source": "crates/team-control-plane/src/mailbox.rs",
+      "manifest_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "logical_source": "crates/team-control-plane/src/storage.rs",
+      "manifest_sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "bytes": 127057,
+      "logical_source": "crates/team-control-plane/src/supervisor.rs",
+      "manifest_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+      "bytes": 117514,
+      "logical_source": "crates/team-control-plane/tests/intent_contracts.rs",
+      "manifest_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+      "snapshot_matches_manifest": true,
+      "live_matches_frozen": true
+    }
+  ],
+  "unchanged_base_source_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/kernel.rs",
+      "sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "bytes": 21853,
+      "matches_author_base": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/temporal.rs",
+      "sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "bytes": 50413,
+      "matches_author_base": true
+    }
+  ],
+  "seal_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/author-freeze.json",
+      "sha256": "00a20c878225c296d2cb1dc96c2cf710d12eeb20c30eed779533a5f0428ec980",
+      "bytes": 230464,
+      "expected_sha256": "00a20c878225c296d2cb1dc96c2cf710d12eeb20c30eed779533a5f0428ec980",
+      "matches_requested_pin": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/source-manifest.json",
+      "sha256": "8d8ed8761b19d8a3f3b424033303deaf2ec39174ab98f634ad65688f08a8d2cd",
+      "bytes": 31403
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt",
+      "sha256": "04a8e191e8f9a31e84c11e63eec06001b7337968d806fcb89cfa0e276f8a1dbe",
+      "bytes": 312412
+    },
+    {
+      "path": "/tmp/corenius-intent26-repair3-spec-review-20261003/report.md",
+      "sha256": "f357f4eef0fd37cf5e72438497f9f465dd876390204976e2c41112a98679a4b7",
+      "bytes": 2670,
+      "expected_sha256": "f357f4eef0fd37cf5e72438497f9f465dd876390204976e2c41112a98679a4b7",
+      "matches_requested_pin": true
+    },
+    {
+      "path": "/tmp/corenius-intent26-repair3-spec-review-20261003/metadata.json",
+      "sha256": "819446d084841ab794217bba7e1f726dc6769ba50bcf5ba3f018ce3cb6a3a150",
+      "bytes": 16519,
+      "expected_sha256": "819446d084841ab794217bba7e1f726dc6769ba50bcf5ba3f018ce3cb6a3a150",
+      "matches_requested_pin": true
+    }
+  ],
+  "recorded_sequence": [
+    {
+      "line": 79,
+      "sha256_including_line_ending": "f33b01997a7c89f4d7e167159336cc133fe0fad26a9de5f84c1b76421045fd89",
+      "record": "public_contract_response {\"family\":\"outcome.accept\",\"key\":\"prerequisite-accept\",\"result\":{\"disposition\":\"applied\",\"outcome\":\"investigation_complete\",\"proof\":\"81a3e82a401fd20acc150e16dbf794fb361cd8bb1350c89cad5420c7ec3d149d\",\"revision\":3,\"schema_version\":2,\"subject\":\"5f5dd31bd4727970c5d4bb5aac2c3ac934c542b2ec1dc8b030dd1aa99b1b76a1\"},\"status\":200,\"task\":\"d441e0f1-2e69-4d2b-8682-e9d2931bd4e5\"}"
+    },
+    {
+      "line": 82,
+      "sha256_including_line_ending": "18702da69c56f76887a2070398de5c6082018011134249cf57d98e51466e0b7f",
+      "record": "public_contract_response {\"family\":\"intent.admit\",\"key\":\"supersede\",\"result\":{\"acceptance\":\"c9d5453051e0415e86831fb14cf35a732c6351e3773b239d29b56df76cee4fea\",\"admitted_version\":2,\"disposition\":\"applied\",\"intent\":\"edf8d98ac79c0efe5b5dc0df868d6480c7c44add2950db2c8e77ee6a8087e101\",\"revision\":4,\"schema_version\":2,\"work\":\"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625\"},\"status\":200,\"task\":\"d441e0f1-2e69-4d2b-8682-e9d2931bd4e5\"}"
+    },
+    {
+      "line": 83,
+      "sha256_including_line_ending": "3a08f7cb6ef164acb46edc2d6f92af2a58052c84c2b51e8e31e871cee76dab2a",
+      "record": "public_contract_response {\"family\":\"outcome.propose\",\"key\":\"amended-proposal\",\"result\":{\"disposition\":\"proposed\",\"proposal\":\"161533d11da15595b33e071ac4d29a9964e1f39cbaaee009a24eac2aa0724a11\",\"revision\":4,\"schema_version\":2},\"status\":200,\"task\":\"d441e0f1-2e69-4d2b-8682-e9d2931bd4e5\"}"
+    },
+    {
+      "line": 85,
+      "sha256_including_line_ending": "470cff31496a4fdbb374c9bd4be9aad924c17a49025eaded55579be5d3d6a82f",
+      "record": "public_contract_response {\"family\":\"research.verify\",\"key\":\"amended-verify\",\"result\":{\"disposition\":\"applied\",\"outcome\":\"investigation_complete\",\"proof\":\"91f9fbd2282a7efe016a406d781e260850702501bee19f85c33b8c59314befc2\",\"revision\":5,\"schema_version\":2},\"status\":200,\"task\":\"d441e0f1-2e69-4d2b-8682-e9d2931bd4e5\"}"
+    },
+    {
+      "line": 87,
+      "sha256_including_line_ending": "147493c1ef085d5670dc00b1ce491ac7afb11ca36ce874ffe451cecb992bc0b7",
+      "record": "public_contract_response {\"family\":\"outcome.accept\",\"key\":\"amended-accept\",\"result\":{\"disposition\":\"applied\",\"outcome\":\"investigation_complete\",\"proof\":\"91f9fbd2282a7efe016a406d781e260850702501bee19f85c33b8c59314befc2\",\"revision\":6,\"schema_version\":2,\"subject\":\"2cfa8660f81599d5eac7af108d8d0ff8dcfa1860d3e3a5ee8ef07d2afba2215f\"},\"status\":200,\"task\":\"d441e0f1-2e69-4d2b-8682-e9d2931bd4e5\"}"
+    }
+  ],
+  "consumer_audit": [
+    {
+      "source": "contracts/lifecycle.rs:45-78",
+      "consumer": "amend",
+      "assessment": "Uses legacy accepted plus production-only current-outcome eligibility. Must classify exact accepted current work independently of outcome type, with separate initial legacy mapping path."
+    },
+    {
+      "source": "contracts/outcomes.rs:245-260",
+      "consumer": "accept",
+      "assessment": "Typed canonical outcome inserted for both types; production alone updates tasks/artifact_current and emits task.accept.v2. Neutral completion must not invent research candidate/report."
+    },
+    {
+      "source": "contracts/dependencies.rs:133-145",
+      "consumer": "fresh grants",
+      "assessment": "Already checks exact current contract_outcomes for both types; reuse this protection, centralize classification rather than claim it is absent."
+    },
+    {
+      "source": "admission.rs:255-301; mailbox.rs:1283; supervisor.rs:577,756; gateway.rs:425; episode_runtime.rs:391",
+      "consumer": "covered fresh-grant entry points",
+      "assessment": "These already invoke fresh_grant. Verify first-grant vs retained-operation replay order rather than put terminal rejection ahead of every historical read."
+    },
+    {
+      "source": "contracts/outcomes.rs:47-60,69-90,163-193; kernel.rs:382-397",
+      "consumer": "fresh outcome mutation gap",
+      "assessment": "mutation_enabled checks cancellation only, not accepted current work. Proposal/research verification can create new records after research acceptance; inferred statically, not runtime reproduced here."
+    },
+    {
+      "source": "artifacts.rs:381,663",
+      "consumer": "artifact mutation/replay terminal guards",
+      "assessment": "Legacy accepted excludes research completion; neutral terminal check needed for current work, with exact accepted receipt inspection retained. Production evidence rules remain production-specific."
+    },
+    {
+      "source": "mailbox.rs:465-484",
+      "consumer": "mailbox mutation/delivery terminal guards",
+      "assessment": "Task-scoped mutation and owner delivery/runtime binding derive terminality from legacy task status. Audit against neutral lifecycle without blocking authorized cleanup."
+    },
+    {
+      "source": "kernel.rs:364-380; supervisor.rs:274-300",
+      "consumer": "attempt/execution dispatch terminal guards",
+      "assessment": "Status-only terminality misses research; other entry points may refuse fresh grant, but common dispatch guard should agree. Do not equate receipt preservation with permission to launch a new effect."
+    },
+    {
+      "source": "admission.rs:209-253",
+      "consumer": "cancel/reconcile accepted guard",
+      "assessment": "Blanket legacy accepted refusal is not a safe template for cleanup; define operation-specific closure/reconciliation semantics preserving cancellation fences and unresolved reservations."
+    },
+    {
+      "source": "mailbox.rs:1080-1093,1778",
+      "consumer": "legacy task wait satisfaction",
+      "assessment": "Task-ID status waits miss research acceptance and do not pin v2 intent/subject. They are attention/wakeup only, never dependency grant authority; exact v2 dependency revalidation remains mandatory."
+    },
+    {
+      "source": "mailbox.rs:402; contracts.rs:446-456",
+      "consumer": "read projections",
+      "assessment": "Legacy candidate projection cannot represent research completion. Typed accepted history exists, but neutral current closure/eligibility is not explicit and admission_open can remain true despite accepted outcome."
+    },
+    {
+      "source": "kernel.rs:145-168",
+      "consumer": "verification policy activation",
+      "assessment": "ready/running predicate can permit post-research-accept activation. Treat as consequential current-work policy mutation, not acceptance evidence."
+    },
+    {
+      "source": "contracts/outcomes.rs:442-452",
+      "consumer": "production accepted-proof replay",
+      "assessment": "Intentionally exact production accepted candidate/report test; do not replace outcome-specific proof validation with generic completed=true."
+    },
+    {
+      "source": "supervisor.rs:1217-1298",
+      "consumer": "expired released Episode retirement",
+      "assessment": "Preserve exact immutable amendment-event witness and all physical/log/reservation/usage checks; no authority revival. Current authenticated actor retires its matching historical Episode."
+    },
+    {
+      "source": "storage.rs:326-339; migrations/0009.sql:1-6",
+      "consumer": "credential/storage fence",
+      "assessment": "Worker/Verifier generation checks and unique(task,generation) must remain; amendment fences immediately and AssignAttempt subsequently advances again."
+    },
+    {
+      "source": "temporal.rs:991-1002",
+      "consumer": "retained journal observation",
+      "assessment": "Current workflow can observe a fenced prepared gateway journal; preserve existing separation between journal inspection and physical dispatch. No interpreter work authorized."
+    }
+  ],
+  "public_seam_proof_matrix": [
+    {
+      "case": "negative research full lifecycle",
+      "seam": "actual HTTP + real PostgreSQL; existing supervised fixture only under separately assigned budget",
+      "assertions": [
+        "Admit allow_negative research; use retained, genuinely measured evidence artifact and independent verifier to accept investigation_complete.",
+        "Before amendment: refuse fresh grant and fresh outcome/artifact/mailbox mutations; current-authority history reads still expose exact old subject/proof.",
+        "Explicit authorized amendment increments generation immediately, emits exact witness, suspends dependent grant, and does not wait for AssignAttempt to fence.",
+        "Old Worker and Verifier tokens fail before assignment on propose/verify/bind/grant and cached mutation paths. Owner old proof cannot accept new intent.",
+        "Fresh bounded credentials/Attempt/Episode obtain fresh evidence and exact research proposal/proof/subject; independent verifier and authorized accepter succeed. Evidence-policy applicability must be explicit; production-only binding is not fabricated.",
+        "Compare old operation receipts, original attempts, reservations, unknown usage, monotonic consumption, candidate/report identities and actual writer exclusivity before/after; revalidate exact dependent subject explicitly."
+      ]
+    },
+    {
+      "case": "production parity",
+      "assertions": [
+        "Repeat accepted production amendment with new generation, immutable candidate, pre-execution binding, measured report and proof.",
+        "Retain latest-failed-gate and replay refusals; exact old accepted receipt inspectable without fresh authority."
+      ]
+    },
+    {
+      "case": "initial v1 mapping",
+      "assertions": [
+        "Map accepted v1 state with unchanged generation/status/spec/candidate/report/events/receipts and no fresh grant.",
+        "Later Owner amendment fences and enables bounded fresh work; delegated lead cannot use mapping-only state as accepted v2 proof."
+      ]
+    },
+    {
+      "case": "in-progress source-only amendment",
+      "assertions": [
+        "Preserve existing grant attribution and reservations; suspend dependents; refuse old-intent proof under new revision.",
+        "Do not automatically recycle Attempt/writer or classify unaccepted work as accepted; preserve all-caller prior immutable Plan ceilings after pointer reset."
+      ]
+    },
+    {
+      "case": "retirement and uncertain effects",
+      "assertions": [
+        "Before expiry, missing/mismatched amendment witness, unresolved original Attempt usage, missing stop/log/manifest evidence and unreleased capacity all refuse retirement/replacement writer.",
+        "After exact event + expiry + measured stopped/released proof, current matching principal/role retires old Episode and obtains fresh verification without refund.",
+        "Lead jobs with task/Attempt NULL retain original provenance and independent role checks; no invented Attempt."
+      ]
+    },
+    {
+      "case": "transaction/replay races",
+      "assertions": [
+        "Serialize acceptance vs fresh grant; amendment vs old mutation; assignment vs old writer release.",
+        "Idempotent replay records no second generation/event/reservation; changed payload and stale revision refuse.",
+        "Malformed migration retains fail-closed admission; no broad terminal-guard removal."
+      ]
+    },
+    {
+      "case": "legacy wait/projection",
+      "assertions": [
+        "Any newly supported research wake is attention only and does not release exact v2 dependency grant.",
+        "Historical wait satisfaction remains historical after amendment; current closure reports exact intent/outcome separately from production candidate."
+      ]
+    }
+  ],
+  "unsettled_decisions": [
+    "Derived neutral accepted-current projection vs additive persisted read projection: prefer derived from existing typed immutable outcomes; exact representation requires approved design.",
+    "Command-specific fresh mutation, receipt replay, cancellation/reconciliation and legacy wait policies must be explicit; blanket terminal guard would block legitimate old-effect reconciliation.",
+    "In-progress source-only revisions versus material unaccepted intent amendments need explicit classification; neither accepted-work transition nor new ScopeEpoch semantics should be guessed.",
+    "Existing broad Owner execution authority does not make this read-only review a new repair assignment; retain exhausted round history and bounded next-step assignment."
+  ],
+  "limits": [
+    "No runtime/provider/Cargo/PostgreSQL/Temporal/test execution",
+    "No repository/Git mutation; only own report/metadata under assigned /tmp directory",
+    "No subagents",
+    "Recorded HTTP sequence inspected, not independently reproduced",
+    "Consumer risk analysis is static; only P1 has supplied recorded sequence",
+    "No source patch reconstruction or full 865-file evidence re-audit repeated; rely on pinned independent Spec report for those claims"
+  ],
+  "report": {
+    "path": "/tmp/corenius-intent26-outcome-architecture-20261003/report.md",
+    "sha256": "610e6eb213c269e5fdbe09cdec841f75d5eca43e00fac6ac100165120e3cbd3f",
+    "bytes": 4577
+  },
+  "report_word_count": 533,
+  "canonical_advancement_note": "Canonical HEAD remained 0ce002b26d32df2818d1f7421ed326468b1a588a. Ticket26 working-tree text advanced by the 22:50:09Z root disposition comment during assessment; it was reread and pinned at SHA256 90accfa9ec0381bf626cba7de6ff4696e9ba2cc0c140035c1f8c4d5cfb299c88. Requirements are unchanged. No canonical commit match is claimed for that worktree-only append.",
+  "final_static_validation": {
+    "all_requested_seal_pins_match": true,
+    "all_20_source_snapshots_and_live_sources_match": true,
+    "report_under_600_words": true,
+    "canonical_pins_stable_since_capture": true,
+    "checked_utc": "2026-10-03T22:51:27.903870+00:00"
+  }
+}

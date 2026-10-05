@@ -1,0 +1,1877 @@
+{
+  "controlled_synthetic_effects": [
+    {
+      "attempt": "f9bfa222-2492-4281-85c7-0332d7899d28",
+      "claim": "controlled local Python file effect; no provider or shutdown inference",
+      "files": [
+        {
+          "bytes": {
+            "bytes": 130,
+            "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/d6adbb5236bbc7e12bee5d608b3df6f9b19efff95b08310137dcc1339f031715.txt",
+            "sha256": "d6adbb5236bbc7e12bee5d608b3df6f9b19efff95b08310137dcc1339f031715"
+          },
+          "name": "85553986-61f5-48a6-a36e-95d01d98ebe7.invocation"
+        },
+        {
+          "bytes": {
+            "bytes": 141,
+            "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/ce5c841f9bf1abeed97de2bd5572e169f1ed3a90b1fd80940ce5eeb819874100.txt",
+            "sha256": "ce5c841f9bf1abeed97de2bd5572e169f1ed3a90b1fd80940ce5eeb819874100"
+          },
+          "name": "85553986-61f5-48a6-a36e-95d01d98ebe7.json"
+        }
+      ],
+      "journal": {
+        "evidence": [
+          {
+            "kind": "intent_committed"
+          },
+          {
+            "controller": "76b047d4-dc9b-4df9-b974-951acdf2641a",
+            "kind": "dispatch_claimed"
+          },
+          {
+            "kind": "outcome_unknown",
+            "reason": "fixture lost acknowledgment",
+            "thread_id": "original-thread"
+          }
+        ],
+        "id": "3abb6243-478b-441f-a1b3-83debb5f6ee8",
+        "intent": {
+          "admission_id": "071f113b-84c5-4a87-898e-590014d3ef76",
+          "arguments": {
+            "prompt": "controlled synthetic file effect only"
+          },
+          "binding_id": "b638e3fa-3b0d-4eec-a322-be6d5227348f",
+          "generation": 1,
+          "id": "3abb6243-478b-441f-a1b3-83debb5f6ee8",
+          "kind": "start"
+        },
+        "state": "outcome_unknown",
+        "thread_id": "original-thread"
+      },
+      "limits": "existing bounded Python synthetic file effect only; no provider/Trae/shutdown inference",
+      "run": "green-expanded-contract-controls",
+      "source_line": 378,
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "attempt": "df8be3f5-fca1-418b-9dd8-b258f33cd5ae",
+      "claim": "controlled local Python file effect; no provider or shutdown inference",
+      "files": [
+        {
+          "bytes": {
+            "bytes": 130,
+            "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/59e73c331e9c74e860b055dbb926d9a36ed0102c8fb467efa3e169034667e900.txt",
+            "sha256": "59e73c331e9c74e860b055dbb926d9a36ed0102c8fb467efa3e169034667e900"
+          },
+          "name": "bca1bc0f-9d15-4eb7-97fb-1081823f235b.invocation"
+        },
+        {
+          "bytes": {
+            "bytes": 141,
+            "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/b8a9df45310da1b4419b4b0fbc7457310947a02074d752b3b45a3346f76984e9.txt",
+            "sha256": "b8a9df45310da1b4419b4b0fbc7457310947a02074d752b3b45a3346f76984e9"
+          },
+          "name": "bca1bc0f-9d15-4eb7-97fb-1081823f235b.json"
+        }
+      ],
+      "journal": {
+        "evidence": [
+          {
+            "kind": "intent_committed"
+          },
+          {
+            "controller": "650bbe9c-4a33-4bcd-95df-6848b5e1b1e0",
+            "kind": "dispatch_claimed"
+          },
+          {
+            "kind": "outcome_unknown",
+            "reason": "fixture lost acknowledgment",
+            "thread_id": "original-thread"
+          }
+        ],
+        "id": "8d4a5d4f-dd38-4ac4-9b33-e001000c503a",
+        "intent": {
+          "admission_id": "7310465e-6390-477b-aa21-47db1313a042",
+          "arguments": {
+            "prompt": "controlled synthetic file effect only"
+          },
+          "binding_id": "c6c58fed-fcfc-4125-b55f-8d45147cbf27",
+          "generation": 1,
+          "id": "8d4a5d4f-dd38-4ac4-9b33-e001000c503a",
+          "kind": "start"
+        },
+        "state": "outcome_unknown",
+        "thread_id": "original-thread"
+      },
+      "limits": "existing bounded Python synthetic file effect only; no provider/Trae/shutdown inference",
+      "run": "green-unresolved-retirement-control",
+      "source_line": 14,
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-unresolved-retirement-control.log.txt"
+    },
+    {
+      "attempt": "a71921f1-98dd-4cc8-9b99-975e9d1ff89c",
+      "claim": "controlled local Python file effect; no provider or shutdown inference",
+      "files": [
+        {
+          "bytes": {
+            "bytes": 141,
+            "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/2e95c290639f2b985d3601c7824312e30618da7bc0a81b71d725650f7e089681.txt",
+            "sha256": "2e95c290639f2b985d3601c7824312e30618da7bc0a81b71d725650f7e089681"
+          },
+          "name": "228f01da-1b37-4500-b533-c228aef9a9a3.json"
+        },
+        {
+          "bytes": {
+            "bytes": 130,
+            "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/94e6f8bfc049fa51d208d06e2c75caba3c0b9b2f31e8cc56999ddc23970a596c.txt",
+            "sha256": "94e6f8bfc049fa51d208d06e2c75caba3c0b9b2f31e8cc56999ddc23970a596c"
+          },
+          "name": "228f01da-1b37-4500-b533-c228aef9a9a3.invocation"
+        }
+      ],
+      "journal": {
+        "evidence": [
+          {
+            "kind": "intent_committed"
+          },
+          {
+            "controller": "61317bd7-93b1-460c-839f-5874a5451f36",
+            "kind": "dispatch_claimed"
+          },
+          {
+            "kind": "outcome_unknown",
+            "reason": "fixture lost acknowledgment",
+            "thread_id": "original-thread"
+          }
+        ],
+        "id": "d32f4acb-644e-4e5f-8311-4d42bc8df065",
+        "intent": {
+          "admission_id": "d5d04c2e-4708-4c72-af30-e18c5a39a668",
+          "arguments": {
+            "prompt": "controlled synthetic file effect only"
+          },
+          "binding_id": "3b989c3b-49f2-40fc-8b98-39e122e97a91",
+          "generation": 1,
+          "id": "d32f4acb-644e-4e5f-8311-4d42bc8df065",
+          "kind": "start"
+        },
+        "state": "outcome_unknown",
+        "thread_id": "original-thread"
+      },
+      "limits": "existing bounded Python synthetic file effect only; no provider/Trae/shutdown inference",
+      "run": "green-final-repair3-compatibility",
+      "source_line": 469,
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    }
+  ],
+  "entries": [
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264.txt",
+        "sha256": "25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264"
+      },
+      "evidence_digest": "25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264",
+      "execution": "5e396cb0-2b7e-494e-a026-4a63033105ad",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50",
+          "base": "e72dfcc4e9034dfb4ed9fe1e66494fb0e8de38f2",
+          "commit": "79a3cb533322c4671ad8ebaeb2963aa3e3b31d7c",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "a1697802f583c04a2ebb7f4e30f84766c192d97091ea57725f99b35f7ba1bbd2",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1290352,
+          "pid": 1290352,
+          "start_ticks": 47925875
+        },
+        "execution": "5e396cb0-2b7e-494e-a026-4a63033105ad",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "5cdf532e-4c8a-4876-a923-f3c2ca7d6c5f",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-production-amendment",
+      "source_line": 11,
+      "source_line_sha256": "052b9d1b6182f994eb3eea81fdcea46ec33ada06add35a6bc805b66843366e54",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-production-amendment.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/c96bbaacca1df83a737e7a25d2acbf03a53a16a7afc03edfdd09d05215e58273.txt",
+        "sha256": "c96bbaacca1df83a737e7a25d2acbf03a53a16a7afc03edfdd09d05215e58273"
+      },
+      "evidence_digest": "c96bbaacca1df83a737e7a25d2acbf03a53a16a7afc03edfdd09d05215e58273",
+      "execution": "8bc9c237-a8d8-44ef-83b9-976c382acf73",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "7a697ba37fb7499f008aea1ca681c1f34d035edd45cff754f80287fa4cd85eb4",
+          "base": "0cd1aeb264d66dcf03a448cb28d3524d812f419e",
+          "commit": "af401ddb8d3b5b2730c30f22431650c9529f6cac",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "9fa889b6453fc4495c7d62045ec10de38f6c35abb6c403ed6b24cc134ffa7263",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1299559,
+          "pid": 1299559,
+          "start_ticks": 47936912
+        },
+        "execution": "8bc9c237-a8d8-44ef-83b9-976c382acf73",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "aacfa9b5-4773-4de3-9abe-2ff95a90248a",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-production-amendment-2",
+      "source_line": 12,
+      "source_line_sha256": "e3011e1792cf595229de22330996acf01426b7ac1d870a6c82462fc57cb66c7c",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-production-amendment-2.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/070d309b26ac37fcb6378a08f816761fa04bfc56152e6ab709af7e3077a4d240.txt",
+        "sha256": "070d309b26ac37fcb6378a08f816761fa04bfc56152e6ab709af7e3077a4d240"
+      },
+      "evidence_digest": "070d309b26ac37fcb6378a08f816761fa04bfc56152e6ab709af7e3077a4d240",
+      "execution": "2dc4c464-a008-48d9-a7c9-8d6a8d05c9d2",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "8a229b0736b24c60590f38de7d639807dfa4d0d7f3d9cae4c60ee9b3806b1b9f",
+          "base": "83bec3bd10d4d9f319ad32fbe7ba259431e73c93",
+          "commit": "2f0072689077ae46ade725e3b71473c711ded425",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "07b817af9c18b62c0fda12ef8cc6530a2406b60db2946e729fbfff03d4cee459",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1371333,
+          "pid": 1371333,
+          "start_ticks": 48024329
+        },
+        "execution": "2dc4c464-a008-48d9-a7c9-8d6a8d05c9d2",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "f704abd3-5eaf-4c76-a0e1-eb7e9f4f0af9",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-amendment-retirement",
+      "source_line": 12,
+      "source_line_sha256": "524660ac63c2afc8ed3211fd03c381d7bf99f7ebc31d4bfed72ec0699d8a80c3",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-amendment-retirement.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/47f675a594f10d59f4f82591d6042da7a0efdb135a4fec2a30a7ea994e7c96e1.txt",
+        "sha256": "47f675a594f10d59f4f82591d6042da7a0efdb135a4fec2a30a7ea994e7c96e1"
+      },
+      "evidence_digest": "47f675a594f10d59f4f82591d6042da7a0efdb135a4fec2a30a7ea994e7c96e1",
+      "execution": "da1916af-fe1d-4749-9414-4d36202804fd",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "1e49a5e7fabb0529d53930f3f31b523965021ac8b52cfe6498046464bf76e806",
+          "base": "ead2b59099b17fa523233ca187e114d9c2b4eb76",
+          "commit": "c0d97dd133574f6d22a34521f4ff692ff85cdb14",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "7fc39be25cfaffb9d2fcf8e9b3db016f0d7182aee2d7fd4076bf9db90a30e32b",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1380094,
+          "pid": 1380094,
+          "start_ticks": 48030622
+        },
+        "execution": "da1916af-fe1d-4749-9414-4d36202804fd",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "c1d18bf1-094c-43a4-b9f3-e544831edd80",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-amendment-retirement-2",
+      "source_line": 12,
+      "source_line_sha256": "7deab5a719d6b3cecd476d2f4ea3d294a315c502b8a82b8225d16f3fb41d5c24",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-amendment-retirement-2.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/916c6838c4886115bc0aed0ac4ab2db4f9fe53c2f275951f8f96a85499e31c33.txt",
+        "sha256": "916c6838c4886115bc0aed0ac4ab2db4f9fe53c2f275951f8f96a85499e31c33"
+      },
+      "evidence_digest": "916c6838c4886115bc0aed0ac4ab2db4f9fe53c2f275951f8f96a85499e31c33",
+      "execution": "70ddf58d-2935-4781-9af3-4741065be635",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "439286c8a7c1dacf47d75d97f7f200b018b2834fe481c190003602f2d95eec3c",
+          "base": "15d147b9788051acd5184f43257db16a6b6b2217",
+          "commit": "f365b9aa2e62db554e8e7a311d13370357850a39",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "dfb2f9846a8ba4dfe6dff4436478336475e28ea2ffade0369ef3d581aeafb053",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1386173,
+          "pid": 1386173,
+          "start_ticks": 48035826
+        },
+        "execution": "70ddf58d-2935-4781-9af3-4741065be635",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "a547ae15-1b76-47ff-a2f7-230a4a327183",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-amendment-retirement-3",
+      "source_line": 12,
+      "source_line_sha256": "674f233659b90377af2d3fe41ad7f660ddb18455883a340a6d48ab39cf8d7764",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-amendment-retirement-3.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/08a2804a27758da33bb9e96f53024735120d22ef21ccde36336b305d189dd786.txt",
+        "sha256": "08a2804a27758da33bb9e96f53024735120d22ef21ccde36336b305d189dd786"
+      },
+      "evidence_digest": "08a2804a27758da33bb9e96f53024735120d22ef21ccde36336b305d189dd786",
+      "execution": "25422680-5568-48b1-86b0-0858adb21d01",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "9db871ed977e49e55d0187453e0b6f4fd2696aef375aaa93453fe9d397540237",
+          "base": "a905384ece78b3c354066acbd171e85b68cd0433",
+          "commit": "a732eec74d4318ed62b70f0f599796467e4bbb7d",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "aa85064247c0a2f6d2f8f4ef245959eb715a5a817b3b19a85f3cc806ebb6fd57",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1422176,
+          "pid": 1422176,
+          "start_ticks": 48082962
+        },
+        "execution": "25422680-5568-48b1-86b0-0858adb21d01",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "e44f55f5-3b2d-41c5-b2d3-b0bd35228db2",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-amendment-retirement-4",
+      "source_line": 12,
+      "source_line_sha256": "ac2fbc6d2b2753a5fb37482f9d081be0bfa7a61324d09013a2c79f56a44dfcda",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-amendment-retirement-4.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/f6e3b292d5537d92cd2c9e8b2a31a7b7ccf97727dde6bd1d64973c00d338f5cc.txt",
+        "sha256": "f6e3b292d5537d92cd2c9e8b2a31a7b7ccf97727dde6bd1d64973c00d338f5cc"
+      },
+      "evidence_digest": "f6e3b292d5537d92cd2c9e8b2a31a7b7ccf97727dde6bd1d64973c00d338f5cc",
+      "execution": "59a218ba-b90b-4e09-9cce-4d58021cdc7c",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "83f362717fdcede19f8016ff1f92e3899ffe1c3c1b0470f75367688b8f0f4488",
+          "base": "bbfd9b82e6f79ed61a9b7b7a5440b0d4ab17ebef",
+          "commit": "d0b7b4ec6510058d3a0d6c3695be337750a977eb",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "2aaf3a63fa6ea820346f81fe076cef1123dfc666f6492033078be22734f502fc",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1433398,
+          "pid": 1433398,
+          "start_ticks": 48097093
+        },
+        "execution": "59a218ba-b90b-4e09-9cce-4d58021cdc7c",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "2a2b4767-6420-4d39-b61d-492bb37e4ae8",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-amendment-retirement-5",
+      "source_line": 12,
+      "source_line_sha256": "caeecfab9beb07da0c0085911ab11644c619871d8cd744b9d34d8f58dd3d0344",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-amendment-retirement-5.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/77a21cb6715d6496c76ad0515c0f40279f7bb8129c0bcf7639bb13c2cd6222c7.txt",
+        "sha256": "77a21cb6715d6496c76ad0515c0f40279f7bb8129c0bcf7639bb13c2cd6222c7"
+      },
+      "evidence_digest": "77a21cb6715d6496c76ad0515c0f40279f7bb8129c0bcf7639bb13c2cd6222c7",
+      "execution": "1c4cab0a-11fc-4a16-a977-ad6d17b97935",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "67ff5bc23c9215ad570b27e88e4d308f2edf259a29c31eeb8e54548f25b9da25",
+          "base": "0436de0d6cf0469cf5f9bf9a76b36a9035ae3ba9",
+          "commit": "87a08b43fb44fbb7b96b53a6b0a2063319f83fb9",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "9b7b18838188c5db0809ae374245e5612c5eb8f600d52fc12038acae54c7dd0e",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1440833,
+          "pid": 1440833,
+          "start_ticks": 48106490
+        },
+        "execution": "1c4cab0a-11fc-4a16-a977-ad6d17b97935",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "620893c4-1fe1-4cea-9eee-6427b251f13f",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "red-amendment-retirement-6",
+      "source_line": 12,
+      "source_line_sha256": "64e5f1bc36ea5d842c9db7baa2ceef80a723a82c6328b6ed3cc574af2bae8b20",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/red-amendment-retirement-6.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/02cb2cdaffaa3a57433880a16346ca19874bbf2dc8defcb97ad2564b6eaec035.txt",
+        "sha256": "02cb2cdaffaa3a57433880a16346ca19874bbf2dc8defcb97ad2564b6eaec035"
+      },
+      "evidence_digest": "02cb2cdaffaa3a57433880a16346ca19874bbf2dc8defcb97ad2564b6eaec035",
+      "execution": "582b08f6-27c8-44f9-9e45-d1d9ccac840d",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "5c4a13774da1a63b3849aed1195097cb87fa2543d993d83db803f7704f295208",
+          "base": "3c5f80d88e401d727e79fa9c2efccd959fe82cc9",
+          "commit": "7b16e3a6576bcf3284ab21102f67736b95b5f1d1",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "4fe2359e87ff05c8325283a21b545e5f26d8b06e5b7b3881d5b20f23d138aa8c",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1449456,
+          "pid": 1449456,
+          "start_ticks": 48116446
+        },
+        "execution": "582b08f6-27c8-44f9-9e45-d1d9ccac840d",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "7f2700fd-6a55-438a-8f24-c99dc45f0d5b",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-production-amendment",
+      "source_line": 12,
+      "source_line_sha256": "2a44fbb6abac660b8e553c3594c6393d7df6e3ceae014328fe65a45f666f6cf3",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-production-amendment.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/b1add5488a6dd21c51a1ffbf2829cfdfe842e3f2fdc61f983eefcc9842586c98.txt",
+        "sha256": "b1add5488a6dd21c51a1ffbf2829cfdfe842e3f2fdc61f983eefcc9842586c98"
+      },
+      "evidence_digest": "b1add5488a6dd21c51a1ffbf2829cfdfe842e3f2fdc61f983eefcc9842586c98",
+      "execution": "8ff40c74-5ca0-450a-b473-39c8d07ee240",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "af51ee23f48e97275528d46cc1ea7d64b020e926fea9cb706b6ad641b072d40a",
+          "base": "3c5f80d88e401d727e79fa9c2efccd959fe82cc9",
+          "commit": "d8e62b2aca1a8b4033008939611534d7b8bf8358",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 3,
+          "risks": [],
+          "spec_digest": "4fe2359e87ff05c8325283a21b545e5f26d8b06e5b7b3881d5b20f23d138aa8c",
+          "spec_revision": 2,
+          "tree": "168995ed30ad947ff005655c74c27122780ef302"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1453627,
+          "pid": 1453627,
+          "start_ticks": 48119639
+        },
+        "execution": "8ff40c74-5ca0-450a-b473-39c8d07ee240",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "7f2700fd-6a55-438a-8f24-c99dc45f0d5b",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-production-amendment",
+      "source_line": 42,
+      "source_line_sha256": "ae289234ef761367dfb44dc509cdc8e2f1ca147d49945e1eebd28b02b9c99dd5",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-production-amendment.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/133cc5d94e4d4cf2432d8d94216fadbd1ec01517b4cce04f5b15fd192a65c6f5.txt",
+        "sha256": "133cc5d94e4d4cf2432d8d94216fadbd1ec01517b4cce04f5b15fd192a65c6f5"
+      },
+      "evidence_digest": "133cc5d94e4d4cf2432d8d94216fadbd1ec01517b4cce04f5b15fd192a65c6f5",
+      "execution": "4ab6ff0d-6555-4c24-a86e-b35a4082950b",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "33d1f668a81436b19134f6b6cded50097a86c8ac67672587bbfe2a28aa0c0c61",
+          "base": "2b6bf8fdea9ff5593872190ac6037e53f0e9b1e3",
+          "commit": "3400639ea75af3b33dd44871a9c478207425162a",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "13faeb9b43457bd0b40e04a1a42982b66141cee0f53937dfcbf54726e60a4bee",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1468547,
+          "pid": 1468547,
+          "start_ticks": 48138797
+        },
+        "execution": "4ab6ff0d-6555-4c24-a86e-b35a4082950b",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "262bfd31-7c16-4dbc-a150-6445c1a696c2",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-amendment-controls",
+      "source_line": 79,
+      "source_line_sha256": "b911be55aac630eb16cd9ff20cd1120a589525480c2c80a797216bbd484a1446",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-amendment-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/efe1a739a7faa1ab3f997f116e000f04761e21bc04c721a9d357a84f5eaf5963.txt",
+        "sha256": "efe1a739a7faa1ab3f997f116e000f04761e21bc04c721a9d357a84f5eaf5963"
+      },
+      "evidence_digest": "efe1a739a7faa1ab3f997f116e000f04761e21bc04c721a9d357a84f5eaf5963",
+      "execution": "a6033f0c-1520-4cb8-b12c-a7bd519156d5",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "de725fa7ca04f1c36071a918064a0b9fcfc5a6bd9df1b302bc30b67c00e1fdaa",
+          "base": "9ecbd9068556970abe88a85a0b1710181e5a6244",
+          "commit": "41c712dd8e94d4e808b63305284c3ab025178c57",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "ea2fdc4d2069b6cd58debfa0b992a8bde5df2d6f9d1fedadcc6f0f23079d3a6a",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1469209,
+          "pid": 1469209,
+          "start_ticks": 48138918
+        },
+        "execution": "a6033f0c-1520-4cb8-b12c-a7bd519156d5",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "eae7a167-66c6-4229-b60f-eaccb9019f89",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-amendment-controls",
+      "source_line": 118,
+      "source_line_sha256": "b4a6510813cb722d5987ce717a5baea66a3aa7a2ca2f3f8e51d3e7d0ebab67b7",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-amendment-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/558cfec243e6a8454d2c3ad46588ab82d0b8bfd8e1f4ce4126385bd9cb2da192.txt",
+        "sha256": "558cfec243e6a8454d2c3ad46588ab82d0b8bfd8e1f4ce4126385bd9cb2da192"
+      },
+      "evidence_digest": "558cfec243e6a8454d2c3ad46588ab82d0b8bfd8e1f4ce4126385bd9cb2da192",
+      "execution": "65e2c6ae-745c-4ecc-8130-5d3911cce7de",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "9b79a9d5082f11463e35f3e7bebf9384defaf5e92d3d5f7fd6e6c4f48029fe0b",
+          "base": "3e6bfe8be7ee6bc7ec6c0ea4a7d36a49a13dc462",
+          "commit": "34c76f6421d49d8cd8942f4af5ba260e72efc19a",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "f49fbf95ac061f60c2098bec777778690f5878aa7835ff78d5e54953ee8e4858",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1479351,
+          "pid": 1479351,
+          "start_ticks": 48150217
+        },
+        "execution": "65e2c6ae-745c-4ecc-8130-5d3911cce7de",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "8042b78b-e434-4678-ac1e-31e1612b886e",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 162,
+      "source_line_sha256": "f3c9f0c9349f2f226f5aecbd628472c9682395cc9bd3a2ea1147f08911cc7f6c",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/eb65f681d6cf3a759e137f6a2632063616e5c683dc2b22ab65d0785e8507c9a5.txt",
+        "sha256": "eb65f681d6cf3a759e137f6a2632063616e5c683dc2b22ab65d0785e8507c9a5"
+      },
+      "evidence_digest": "eb65f681d6cf3a759e137f6a2632063616e5c683dc2b22ab65d0785e8507c9a5",
+      "execution": "4bb8f803-a446-45d6-b6c7-1e55f0351666",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "ae4f06695621bee65e306c7c09613413d3cf5f2ae52c30c1bf56ba25b0e4029e",
+          "base": "3e6bfe8be7ee6bc7ec6c0ea4a7d36a49a13dc462",
+          "commit": "88573f9deb2990f1d46840d5f5a607458720cc85",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 3,
+          "risks": [],
+          "spec_digest": "f49fbf95ac061f60c2098bec777778690f5878aa7835ff78d5e54953ee8e4858",
+          "spec_revision": 2,
+          "tree": "168995ed30ad947ff005655c74c27122780ef302"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1481375,
+          "pid": 1481375,
+          "start_ticks": 48153408
+        },
+        "execution": "4bb8f803-a446-45d6-b6c7-1e55f0351666",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "8042b78b-e434-4678-ac1e-31e1612b886e",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 196,
+      "source_line_sha256": "286b7503c0bbde897c19def7a362b71bf2283ebf1f4dff12f6a1ca44cf2a820d",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/652fb601e4b7263f39b57aba3c8a6b77ea756e1871ec9a81f1646b8b14ab0fbe.txt",
+        "sha256": "652fb601e4b7263f39b57aba3c8a6b77ea756e1871ec9a81f1646b8b14ab0fbe"
+      },
+      "evidence_digest": "652fb601e4b7263f39b57aba3c8a6b77ea756e1871ec9a81f1646b8b14ab0fbe",
+      "execution": "b2f20b49-574f-4acd-84b3-4446bc1e4e75",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "812df1abefe9146acefc324a3ff8bf4ce80aa1578b6bfad3b1e3543bc6d49abf",
+          "base": "8867618d0651650d5472fce54ba196588458681d",
+          "commit": "acb5dd6d904d3cb14094237ae9523b02ceff3f96",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "7d03996c78c01b50a792b00c94df9f2d6391fce6d7deed7a574bd76e57bc1462",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1481757,
+          "pid": 1481757,
+          "start_ticks": 48153482
+        },
+        "execution": "b2f20b49-574f-4acd-84b3-4446bc1e4e75",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "6bef4fa5-fe68-454c-8a1f-a2216c12284e",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 213,
+      "source_line_sha256": "5525c7a248a95ada1d4227a9ea81b1b56d56c97c0e1552bf66568d4bdd998fb5",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/5816baa26b0bf35e6aa32e6b910ad63587382029db09a3bf01e72831c156bbd9.txt",
+        "sha256": "5816baa26b0bf35e6aa32e6b910ad63587382029db09a3bf01e72831c156bbd9"
+      },
+      "evidence_digest": "5816baa26b0bf35e6aa32e6b910ad63587382029db09a3bf01e72831c156bbd9",
+      "execution": "fca0430d-2023-4bd9-877c-b140fc60577a",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "812df1abefe9146acefc324a3ff8bf4ce80aa1578b6bfad3b1e3543bc6d49abf",
+          "base": "8867618d0651650d5472fce54ba196588458681d",
+          "commit": "acb5dd6d904d3cb14094237ae9523b02ceff3f96",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "7d03996c78c01b50a792b00c94df9f2d6391fce6d7deed7a574bd76e57bc1462",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1484527,
+          "pid": 1484527,
+          "start_ticks": 48156633
+        },
+        "execution": "fca0430d-2023-4bd9-877c-b140fc60577a",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "6bef4fa5-fe68-454c-8a1f-a2216c12284e",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 230,
+      "source_line_sha256": "a1a1d56f6d636dfc3fb4c6a2476c8e8c3664d36e70cfdc551ee3363b3d0debf3",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/e9263dfb8fad47de7f919c996f8dd6e50868e7673a721c37a03179ec1709daeb.txt",
+        "sha256": "e9263dfb8fad47de7f919c996f8dd6e50868e7673a721c37a03179ec1709daeb"
+      },
+      "evidence_digest": "e9263dfb8fad47de7f919c996f8dd6e50868e7673a721c37a03179ec1709daeb",
+      "execution": "ee093cee-55f6-4c0d-8902-3a66e0c01110",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "3455dc3bf662864a6cbd77a397eaf6d38b9cce0b9d02c05584ab8d2ef395a5f9",
+          "base": "2c01f81bc2e1096609bea49d6eb653ff3bf9e948",
+          "commit": "f1ef3b7ed6416252bb47c026587b958b3733c8b1",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "45e0df2efdac28ab6d3f127f4e0e4cf8151f99f3940dba8202f32360427f8edd",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1484914,
+          "pid": 1484914,
+          "start_ticks": 48156706
+        },
+        "execution": "ee093cee-55f6-4c0d-8902-3a66e0c01110",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "0eab475c-75d9-4a75-a6c0-6b15e097bcfb",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 246,
+      "source_line_sha256": "08e4a0ff2864ac1320f859a1a80c97d02f03ab9de33f3f716529066537bbb02c",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/02f272844d2d670fbe2ff5f52978e85371cf9fc5d1f2d8b73aa03662b6039679.txt",
+        "sha256": "02f272844d2d670fbe2ff5f52978e85371cf9fc5d1f2d8b73aa03662b6039679"
+      },
+      "evidence_digest": "02f272844d2d670fbe2ff5f52978e85371cf9fc5d1f2d8b73aa03662b6039679",
+      "execution": "60d2c17a-fa85-4ce9-bb67-ac2a638c5aa3",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "c3ee2b7677b030392fd374e4a13cd811f22e243ce6d269b1e5432311a06bb6f2",
+          "base": "2c01f81bc2e1096609bea49d6eb653ff3bf9e948",
+          "commit": "c5011c915ccf0086e389c91c1f10b9ab585315dc",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 3,
+          "risks": [],
+          "spec_digest": "45e0df2efdac28ab6d3f127f4e0e4cf8151f99f3940dba8202f32360427f8edd",
+          "spec_revision": 2,
+          "tree": "168995ed30ad947ff005655c74c27122780ef302"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1487631,
+          "pid": 1487631,
+          "start_ticks": 48159888
+        },
+        "execution": "60d2c17a-fa85-4ce9-bb67-ac2a638c5aa3",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "0eab475c-75d9-4a75-a6c0-6b15e097bcfb",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 271,
+      "source_line_sha256": "a15279ff82021102b5fe5a4874fcf76725e608ef35ab9ba7f52416691db4af48",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/68c7346c1ba08cd6f152e24ec26d871d4c987c1eb9d704508746e4ca9aeabdad.txt",
+        "sha256": "68c7346c1ba08cd6f152e24ec26d871d4c987c1eb9d704508746e4ca9aeabdad"
+      },
+      "evidence_digest": "68c7346c1ba08cd6f152e24ec26d871d4c987c1eb9d704508746e4ca9aeabdad",
+      "execution": "7f03141e-ce98-4c14-9554-7c393206f62f",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "60ec784d9d96c7d4e686ba25fc5e37df08738995d5a1cd8b8e697112fff27a39",
+          "base": "cbef5b7f0f983398f806863d2c92aec9e5eaa8b7",
+          "commit": "59f98c1c0da0357113ace98948ab3f3ed9afbcaf",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "e6e5c38b94a1728d3158d16876856abcdc5a1d3fde6f33f82672d36ae90f29b2",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1488296,
+          "pid": 1488296,
+          "start_ticks": 48160173
+        },
+        "execution": "7f03141e-ce98-4c14-9554-7c393206f62f",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "e7f78e27-f8a6-4ded-b9af-e235c114853b",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 340,
+      "source_line_sha256": "18aaffd04cfec3475511542a9b45ae47b78442a59c5fb45896212934bba68775",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/0ae83f5a0938a875631323e951ae1387584e7889cec9d050af77f48a65df499a.txt",
+        "sha256": "0ae83f5a0938a875631323e951ae1387584e7889cec9d050af77f48a65df499a"
+      },
+      "evidence_digest": "0ae83f5a0938a875631323e951ae1387584e7889cec9d050af77f48a65df499a",
+      "execution": "4987b540-09f5-4519-965c-227a0ca70946",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "39449b69eb074737724ed2a202e879e77ca9025600866d3f2891245839796269",
+          "base": "ceec5a9883c8b55eed62d65effd6e87b8c0ec69c",
+          "commit": "1bae64786b9a11486b1e76de0b8c45f9349c48f5",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "ab117111d6aa96d0f02f19224bc19b2b950e4d5181e85d11a9c9e7974d31c369",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1488748,
+          "pid": 1488748,
+          "start_ticks": 48160302
+        },
+        "execution": "4987b540-09f5-4519-965c-227a0ca70946",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "5c1f3883-e94a-4858-9d62-affd565184df",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 363,
+      "source_line_sha256": "9fae87b2ef877ae109cedd323f26861a7cfc750bde210bb7551035595c1a2470",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/8461a135f97b4ee9320559dbd6d942b4975e08369c6c05305594519ee7a7a7fb.txt",
+        "sha256": "8461a135f97b4ee9320559dbd6d942b4975e08369c6c05305594519ee7a7a7fb"
+      },
+      "evidence_digest": "8461a135f97b4ee9320559dbd6d942b4975e08369c6c05305594519ee7a7a7fb",
+      "execution": "57e6e554-3322-44a0-bbb6-d613879df992",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "9d3937d649154d937a7806ca831fc165fd82020c5dc42e525c2aae931df73620",
+          "base": "13485b27f12d0aceb138567af06963195e547681",
+          "commit": "bbab8da14708cff72ed479270b2aeed3bcc97110",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "a93bb126e586fb70a4b6596db48ef60e81c0b4b4e6d14a0ffcaa666b646152d3",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1489061,
+          "pid": 1489061,
+          "start_ticks": 48160371
+        },
+        "execution": "57e6e554-3322-44a0-bbb6-d613879df992",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "95657e34-2ac4-4635-b141-7e72276d1790",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-expanded-contract-controls",
+      "source_line": 376,
+      "source_line_sha256": "a695c02b1abb426a6bb79b7b3e898ec15b77c0e02eb8fe0625e85dbb96c0d824",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-expanded-contract-controls.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/d87398edb4cd0feb0d82e885e914d44668c97c9a4a9c6ae63d69dc18722aa318.txt",
+        "sha256": "d87398edb4cd0feb0d82e885e914d44668c97c9a4a9c6ae63d69dc18722aa318"
+      },
+      "evidence_digest": "d87398edb4cd0feb0d82e885e914d44668c97c9a4a9c6ae63d69dc18722aa318",
+      "execution": "07bdea92-54c9-4352-8013-69d62272db59",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "d72443525d84247b1fc0181af27b3c2ea441823b40d7b6e58e0392cf42f0780c",
+          "base": "056a388cae3ce72d3ba7685a5058e6b4f5ce730a",
+          "commit": "9a21e9ee2121f6abdc55cb7c7523ec68f1f2b2e9",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "6d601d0514beeb72e68b00b8bff48859e389215f66c192f5bdfee8341a757973",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1504916,
+          "pid": 1504916,
+          "start_ticks": 48180153
+        },
+        "execution": "07bdea92-54c9-4352-8013-69d62272db59",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "13475e00-850b-4d0a-ac06-4511f08b76f4",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-unresolved-retirement-control",
+      "source_line": 12,
+      "source_line_sha256": "7df1c642966fc7b86f6f434f8d193bd078d429d7e1e8b134def6d42b270c4d8e",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-unresolved-retirement-control.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/3775152402463bb6d8b3e3a6c344ad9afcbfa71226b6f8d9066691402820019b.txt",
+        "sha256": "3775152402463bb6d8b3e3a6c344ad9afcbfa71226b6f8d9066691402820019b"
+      },
+      "evidence_digest": "3775152402463bb6d8b3e3a6c344ad9afcbfa71226b6f8d9066691402820019b",
+      "execution": "4d442fb4-59df-47b1-82a0-e324cee8db01",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "0b3dde6336da7a3a8e777f694d8e0587fdeabd6ff8586d96b0d9103f72d04faf",
+          "base": "27a1f18839dc7a3b6a466b7da84b6b0f2b1ffc4a",
+          "commit": "d3d10781135a96ad18ea0e454fb8a17942123739",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "0487a0078704790010d97d837b42b983d30d4d521fa8867829c5f0f6573871bd",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1535267,
+          "pid": 1535267,
+          "start_ticks": 48215903
+        },
+        "execution": "4d442fb4-59df-47b1-82a0-e324cee8db01",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "7c200619-4eed-4bda-ac98-25a3b089385b",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 254,
+      "source_line_sha256": "40a6089ef1330bb975e63ef8f33e8f342954c44395a15cd705d3ffe36372a3df",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/edd7d9e3eb99cef262e0ea2559d96f890d23455418370ef251984dd3bead2cba.txt",
+        "sha256": "edd7d9e3eb99cef262e0ea2559d96f890d23455418370ef251984dd3bead2cba"
+      },
+      "evidence_digest": "edd7d9e3eb99cef262e0ea2559d96f890d23455418370ef251984dd3bead2cba",
+      "execution": "46e07a25-8350-4b1f-a745-3d96a7f1474d",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "7b2fd7e8ebbfe9877beba4a380082b14a9cd621e345371673c9f24f9cccc864c",
+          "base": "27a1f18839dc7a3b6a466b7da84b6b0f2b1ffc4a",
+          "commit": "846e6f1fd4fc486b58d736a7b01ae99c703a34ca",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 3,
+          "risks": [],
+          "spec_digest": "0487a0078704790010d97d837b42b983d30d4d521fa8867829c5f0f6573871bd",
+          "spec_revision": 2,
+          "tree": "168995ed30ad947ff005655c74c27122780ef302"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1537994,
+          "pid": 1537994,
+          "start_ticks": 48219100
+        },
+        "execution": "46e07a25-8350-4b1f-a745-3d96a7f1474d",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "7c200619-4eed-4bda-ac98-25a3b089385b",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 288,
+      "source_line_sha256": "4b4f957564aed5f38895699cd84634524f487b7b079137e64c11daae680232db",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/caf14327375429dd239b4b346fa5db13d094b1ff6b971ecf52abcee1429a529b.txt",
+        "sha256": "caf14327375429dd239b4b346fa5db13d094b1ff6b971ecf52abcee1429a529b"
+      },
+      "evidence_digest": "caf14327375429dd239b4b346fa5db13d094b1ff6b971ecf52abcee1429a529b",
+      "execution": "8169cd65-6744-43d1-b85d-00a133df0c47",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "ab39798d7fa1588e49603305f2457e7c71968e5ee5756d9e3b0c4ee3e6829d14",
+          "base": "013085714533298c05c96f4d16720dbb4652e107",
+          "commit": "9f662ae0d2a56c93fcba5ec5f4d7f8ba8218a40d",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "bd6eee2a30e5ac00e912fab18d557dbfdb89e7c522f9802b9429490f7a30076f",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1538334,
+          "pid": 1538334,
+          "start_ticks": 48219178
+        },
+        "execution": "8169cd65-6744-43d1-b85d-00a133df0c47",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "6b6fe7ec-e32e-4662-831f-15a14150d4a9",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 305,
+      "source_line_sha256": "67d21eb310b6767abdb3ef3cdb16eed70283715ead7128985ddbc11b4c3838d2",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/f80964848c2818d2dec1cb1344026387943f9ebaccae75382e7b273a8c2aa650.txt",
+        "sha256": "f80964848c2818d2dec1cb1344026387943f9ebaccae75382e7b273a8c2aa650"
+      },
+      "evidence_digest": "f80964848c2818d2dec1cb1344026387943f9ebaccae75382e7b273a8c2aa650",
+      "execution": "2338231a-8674-4621-903b-535251f4ed69",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "ab39798d7fa1588e49603305f2457e7c71968e5ee5756d9e3b0c4ee3e6829d14",
+          "base": "013085714533298c05c96f4d16720dbb4652e107",
+          "commit": "9f662ae0d2a56c93fcba5ec5f4d7f8ba8218a40d",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "bd6eee2a30e5ac00e912fab18d557dbfdb89e7c522f9802b9429490f7a30076f",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1540210,
+          "pid": 1540210,
+          "start_ticks": 48222330
+        },
+        "execution": "2338231a-8674-4621-903b-535251f4ed69",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "6b6fe7ec-e32e-4662-831f-15a14150d4a9",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 322,
+      "source_line_sha256": "b826b8b806eecd02d959af2a832823a29063fb8ee19857ef89725087d1078974",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/23ce42f6b7af517c1cd4df6b489cb1c060674280043d0e6c835da44e19b53b41.txt",
+        "sha256": "23ce42f6b7af517c1cd4df6b489cb1c060674280043d0e6c835da44e19b53b41"
+      },
+      "evidence_digest": "23ce42f6b7af517c1cd4df6b489cb1c060674280043d0e6c835da44e19b53b41",
+      "execution": "f7a66ce8-c85b-46e9-b113-c32f41f8124f",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "dc1406e255aa77c5caefcea52978581bc02cf4bfe0c8e2b34b9d4a8dafe1a181",
+          "base": "002e29c6842b9d47eded58c0e256b013e3b409fa",
+          "commit": "91fcf3ec6dcd8290cb8eb3f13ac41087596482b1",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "5087120e47441d756cc4482ecf77c6a5a58a693fb23ddf1a0880aa9787a0e4e4",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1540660,
+          "pid": 1540660,
+          "start_ticks": 48222406
+        },
+        "execution": "f7a66ce8-c85b-46e9-b113-c32f41f8124f",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "b1cb4007-53e2-40d4-9b89-d6a4e9eb0ca2",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 338,
+      "source_line_sha256": "c1932166f168aa1c5a72f19b34d7504e2d1fb60a4cd32bb28cb83efab6b20b86",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/02f31b4653260fc3689f34f4ff8a09d692cd43ff85694dd04278c95726cc5b86.txt",
+        "sha256": "02f31b4653260fc3689f34f4ff8a09d692cd43ff85694dd04278c95726cc5b86"
+      },
+      "evidence_digest": "02f31b4653260fc3689f34f4ff8a09d692cd43ff85694dd04278c95726cc5b86",
+      "execution": "1402ece9-6554-436c-970b-db768f6802a9",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "ecfd59a38bc71a006537170a6863611df2ddbeb4f18f213954335686d10ecf5a",
+          "base": "002e29c6842b9d47eded58c0e256b013e3b409fa",
+          "commit": "a23c35f7f53fb707fdaf909ac5d339be14a96592",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 3,
+          "risks": [],
+          "spec_digest": "5087120e47441d756cc4482ecf77c6a5a58a693fb23ddf1a0880aa9787a0e4e4",
+          "spec_revision": 2,
+          "tree": "168995ed30ad947ff005655c74c27122780ef302"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1547409,
+          "pid": 1547409,
+          "start_ticks": 48225591
+        },
+        "execution": "1402ece9-6554-436c-970b-db768f6802a9",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "b1cb4007-53e2-40d4-9b89-d6a4e9eb0ca2",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 363,
+      "source_line_sha256": "a336e7be6ddb8bebd07cc788603b7b8f4ca483ef45c93392f4c43be9bea8b0ef",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/0421e74e94c21149eaf3bcfc69eb666b071bad7110c1dad79296680972acd4ef.txt",
+        "sha256": "0421e74e94c21149eaf3bcfc69eb666b071bad7110c1dad79296680972acd4ef"
+      },
+      "evidence_digest": "0421e74e94c21149eaf3bcfc69eb666b071bad7110c1dad79296680972acd4ef",
+      "execution": "0ae3bfa5-f7e7-4b0c-bedf-99df71d86a3c",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "013c507c034c9617c1103563024ecf13534e0a1162aa1dd9a952cd3076207864",
+          "base": "0b57d6aeb674ccac54f4345fc3d4d4e42e6ac30d",
+          "commit": "d13cc9ddb7dc3cbc097cafc403d638cfd18b8dd0",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "ffeadf7f7dafc3145bd6b1d93f54521c6338dab107fef8ebf004a2ee55df35fb",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1548428,
+          "pid": 1548428,
+          "start_ticks": 48225885
+        },
+        "execution": "0ae3bfa5-f7e7-4b0c-bedf-99df71d86a3c",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "1ca53595-2f33-429f-b74f-b62599cbe927",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 431,
+      "source_line_sha256": "22a3292223afd3f5c746efa75a787ac2ca41ec1df9da72a09471d456f48b0218",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/86e76a4e46979c183618692f946b66975da147c0f58c0d31976841ffb00530d0.txt",
+        "sha256": "86e76a4e46979c183618692f946b66975da147c0f58c0d31976841ffb00530d0"
+      },
+      "evidence_digest": "86e76a4e46979c183618692f946b66975da147c0f58c0d31976841ffb00530d0",
+      "execution": "8bc4ea55-a1c5-48fe-86e9-33e4069ade67",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "35ebc7e72db3199f9d24a4915832c4a2702a0648c1d3f9362a9ffa347ae3a5df",
+          "base": "6c05f23a95ba40639137b24d92ca1c5149df0647",
+          "commit": "b8fc5000949cc7667dfc92b48859c2a37dcd7a16",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "7f8cf2320073c8571d704f9dd5c25d6a79a8326e529bed284e3bd7b5b3f9d447",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1548875,
+          "pid": 1548875,
+          "start_ticks": 48226019
+        },
+        "execution": "8bc4ea55-a1c5-48fe-86e9-33e4069ade67",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "2f842ec4-bcef-4930-8a9a-f0bb2283e626",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 454,
+      "source_line_sha256": "55b4a4f9786dfdf14c4e6829be9683ac4327edb44cfe7631c43e582a1d0e360b",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    },
+    {
+      "claim": "exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure",
+      "evidence_bytes": {
+        "bytes": 986,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/bb779ec209aa535456ff4f36ebe0ade37092c7dc2b22f049867b61f3db9ae163.txt",
+        "sha256": "bb779ec209aa535456ff4f36ebe0ade37092c7dc2b22f049867b61f3db9ae163"
+      },
+      "evidence_digest": "bb779ec209aa535456ff4f36ebe0ade37092c7dc2b22f049867b61f3db9ae163",
+      "execution": "6e366c17-ea84-4077-b664-55a4eed4bfbd",
+      "monitor_result": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'exact result' && printf 'independent gate\\n'"
+        ],
+        "candidate": {
+          "artifact": "09d883151979f66b3c7afcc825bda102f67f8fb2912d4f4eccf9a4df6f88881d",
+          "base": "f4fb9d4ccb2e6050ada0a66d9691ae4bf6f6db15",
+          "commit": "4c568072c015766d7fadc74f3768cfacf05e7432",
+          "deliverables": [
+            "src/result"
+          ],
+          "generation": 1,
+          "risks": [],
+          "spec_digest": "725006f204f1c55b4dccc9180dfe9228c18474e5b4260a564bf10d54f849cadf",
+          "spec_revision": 2,
+          "tree": "6d16bf3ee03167041bec09645d29ab82b19e4791"
+        },
+        "completion": {
+          "kind": "monitor_wait"
+        },
+        "controller": {
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "namespace": "pid:[4026531836]",
+          "namespace_pid": 1549285,
+          "pid": 1549285,
+          "start_ticks": 48226093
+        },
+        "execution": "6e366c17-ea84-4077-b664-55a4eed4bfbd",
+        "exit_code": 0,
+        "logs": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "namespace_stopped": true,
+        "recovery_epoch": "22ef263e-bd63-4c48-b5fd-6dccc36cde6c",
+        "signal": null
+      },
+      "output_bytes": {
+        "bytes": 17,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/snapshots/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+      },
+      "run": "green-final-repair3-compatibility",
+      "source_line": 467,
+      "source_line_sha256": "64a8d7d913514d5551c6a72edf2a8f93b07cd529543d70fcb2704b45e34e9320",
+      "source_log": "docs/efforts/team-control-plane/evidence/intent26/repair3/green-final-repair3-compatibility.log.txt"
+    }
+  ],
+  "schema_version": 1
+}

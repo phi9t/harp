@@ -1,0 +1,270 @@
+{
+  "author_tree": "/tmp/corenius-trae20-budget-repair-author",
+  "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "candidate_or_root_tree_mutations": 0,
+  "contracts": [
+    {
+      "bytes": 2064,
+      "commit": "c5162e3d053c0dcb7597e362c4b0b9c2094e0b91",
+      "committed_bytes_match": true,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-launch-controller-provenance-repair.md",
+      "sha256": "5ac1c12b289b58eb6f199d1a26dfefe5d2cbd79d7594a3c004fc274c1957397a"
+    },
+    {
+      "bytes": 1672,
+      "commit": "c5162e3d053c0dcb7597e362c4b0b9c2094e0b91",
+      "committed_bytes_match": true,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-offline-result1-partial.md",
+      "sha256": "5974961168d604c4ad2b5f480b77499f05643962baf106cb8a99535f3818e05a"
+    }
+  ],
+  "created_utc": "2026-10-03T19:02:53.809519+00:00",
+  "findings": [
+    {
+      "blocking_controller_defect_confirmed": false,
+      "kind": "partial-behavioral-proof",
+      "locations": [
+        "tools/probes/test_trae_case_control.py:63",
+        "tools/probes/test_trae_case_control.py:82",
+        ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/microplan.md:1"
+      ],
+      "requirement": "20261003-trae-launch-controller-provenance-repair.md:19-22",
+      "summary": "No direct changed-command test; injected fsync fault only reaches first file fsync; claimed terminal persistence write/fsync fault coverage absent."
+    }
+  ],
+  "freeze_index": {
+    "all_records_match": true,
+    "bytes": 2676,
+    "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/freeze/public-index.json",
+    "record_count": 11,
+    "sha256": "afe65998efa61e5b0d8157ed4ef6bdba6962c791eb85ee3edf29740dc5d4f7fa"
+  },
+  "frozen_records": [
+    {
+      "bytes": 7366,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/trae_case_control.py",
+      "sha256": "21fc6e726595a523f2f7ee5de11e6c9ab0de403c9c9ee15e8d2cb8903da2778f"
+    },
+    {
+      "bytes": 6689,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py",
+      "sha256": "7d95e1d7f44b1f0ca9d6c650ef3b5cc9b178aa020470dc336d9723149fc77239"
+    },
+    {
+      "bytes": 1074,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/handoff.md",
+      "sha256": "6728a8d316e66b5d9497363237b3331e6349a4f7205937d9c46d4b10ab2e4305"
+    },
+    {
+      "bytes": 1268,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/planned-case.json",
+      "sha256": "4caf387c09bf304597c7acab6734c52d73168f6f61233b93642d8a36cba95351"
+    },
+    {
+      "bytes": 106,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/controller-green.log.txt",
+      "sha256": "31d461d4f5ea9a76ac910ab10c6f0bdaffcf73105fffad0bef6b67b23d0e121f"
+    },
+    {
+      "bytes": 98,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/missing-control-green.log.txt",
+      "sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad"
+    },
+    {
+      "bytes": 954,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/missing-control-red.log.txt",
+      "sha256": "06a1e921fc6b675f159332c829f8a354bc827ee5fae639b1facc779598bde7bf"
+    },
+    {
+      "bytes": 215,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/runs.jsonl",
+      "sha256": "a5cf80e61f08818e3d17a04c479b7539291158a9eb808bd5dc6340be3bc327d7"
+    },
+    {
+      "bytes": 241,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/microplan.md",
+      "sha256": "f0e2d0965887d7b7c4382ddc6fde26d743d26125aa4b5331cd204fcc044ddc5c"
+    },
+    {
+      "bytes": 309,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/unsafe-red-source.py",
+      "sha256": "edfe919046717f4a4c5ecf6cf5dd30d31b09a408990ee4902928faa9f3ed9574"
+    },
+    {
+      "bytes": 14869,
+      "index_match": true,
+      "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/freeze/source.patch",
+      "sha256": "13d3b5f736aa34959928649645ef0c81bce73cbc5cafa3b316fd3fa7c80283f2"
+    }
+  ],
+  "git_mutation_count": 0,
+  "guidance_read": [
+    {
+      "bytes": 3080,
+      "path": "/tmp/corenius-trae20-budget-repair-author/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "bytes": 3484,
+      "path": "/tmp/corenius-trae20-budget-repair-author/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "bytes": 2045,
+      "path": "/tmp/corenius-trae20-budget-repair-author/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+    },
+    {
+      "bytes": 9722,
+      "path": "/tmp/corenius-trae20-budget-repair-author/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "bytes": 3080,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "bytes": 3484,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "bytes": 2816,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "bytes": 9722,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "bytes": 9818,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+    }
+  ],
+  "historical_preservation": {
+    "all_records_match": true,
+    "disposition": "PARTIAL retained; no upgrade, retry, replacement, refund or admission",
+    "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/public-index.json",
+    "record_count": 12,
+    "records": [
+      {
+        "bytes": 1295,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/started.json",
+        "sha256": "70886701467b502e24eaab9caae6788bb1a8c414e124aba7750d3fa1d027cf57"
+      },
+      {
+        "bytes": 745,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/terminal.json",
+        "sha256": "6817c400d5bf62ce62dc0faf0029014f19027cc4392ddab912dc1a383626e8e9"
+      },
+      {
+        "bytes": 894,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/author-adjudication.json",
+        "sha256": "34c88ad3d5b4727554f5f02fc185bef513c8674e7adb4196239bc8fc54f4fef3"
+      },
+      {
+        "bytes": 0,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/physical-stdout.log.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 98,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/physical-stderr.log.txt",
+        "sha256": "854504245d6014ff548d7e6ee458e3a5bc59a346ac1125215dfebb71e4098498"
+      },
+      {
+        "bytes": 1324,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/physical-noise-proof.json",
+        "sha256": "f8dcb5a5233b3c02bb7bc8fb5aba05fdf47ef90084e4bee5417dde4aba3f5fff"
+      },
+      {
+        "bytes": 2274,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/physical-noise-proof.owned.jsonl",
+        "sha256": "ed85c12eb96e8bfdf2806535b5737b11bce809ad22f463c9baaf2f9ed6a85f15"
+      },
+      {
+        "bytes": 13476,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/trae_namespace_supervisor.py",
+        "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+      },
+      {
+        "bytes": 1502,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/trae_namespace_fixture.py",
+        "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+      },
+      {
+        "bytes": 4336,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_namespace.py",
+        "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2"
+      },
+      {
+        "bytes": 1693,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/admitted-case.json",
+        "sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d"
+      },
+      {
+        "bytes": 1369,
+        "index_match": true,
+        "path": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze/admitted-public-index.json",
+        "sha256": "2d87eb20ec4418c59f800bc1a238175acd8837b2dcbca4eeee769c9c582fdfd0"
+      }
+    ],
+    "sha256": "f95d1dfa7dce996d2eb9a199cf5c87cb425afe6abb88b26a71d0e0ba7baf8ee6"
+  },
+  "patch_reconstructs_exact_sources": true,
+  "physical_launch_count": 0,
+  "preparation_limits": [
+    "planned case unadmitted",
+    "no integrated source commit or separate committed grant yet",
+    "no default CLI/runtime executor",
+    "timeout handed to injected executor; no independent enforcement",
+    "runtime/nested-isolation/native-turn-ID/terminal-observation/request-accounting remain separate future proof"
+  ],
+  "prohibited_actions_performed": [],
+  "recorded_test_evidence": {
+    "green_count": 8,
+    "green_log": "controller-green.log.txt",
+    "positive_git_reader_test_present": false,
+    "public_executor_red": "missing-control-red.log.txt fails on executor call from frozen unsafe-red-source.py",
+    "reviewer_reran_tests": false
+  },
+  "report": {
+    "bytes": 2690,
+    "sha256": "3ed20849818529d16b2d4955fc26ddd69e51c3a8bd7af0af8f4fbc9adbace8f4",
+    "word_count": 302
+  },
+  "review_axis": "Spec",
+  "reviewer": "/root/trae_controller_spec",
+  "schema_version": 1,
+  "scope": [
+    "tools/probes/trae_case_control.py",
+    "tools/probes/test_trae_case_control.py"
+  ],
+  "sources_absent_at_base": true,
+  "status": "PARTIAL_BEHAVIORAL_EVIDENCE_NO_CONFIRMED_BLOCKING_CONTROLLER_DEFECT"
+}
