@@ -32,3 +32,23 @@ clients and tmux sessions.
 
 This operator tooling remains separate from the product controller. Controller
 assignments, writer admission and corrections remain with corenius-impl.
+
+For controller, Kata and workspace detail, use
+`tools/agents/mac_state_view.py --config PATH --view controller`.
+The other views are `kata` and `workspaces`; keys 1–3 switch views.
+`--render` prints the bounded public projection. The tool reads explicit
+`controller_snapshot_path` and `kata_snapshot_path` files. It does not query a
+database, load auth or execute controller commands. Inspect the source time
+before treating a displayed state as current.
+
+To expose additional native clients, set `runtime_bindings_path` to a public
+JSON file with `observed_at` and `bindings`. Each entry contains `role`,
+`thread`, `cwd`, `endpoint` and boolean `current`. Never put grants or auth
+values in that file. Missing or stale input prevents new client admission.
+A view manager refresh is not evidence that an execution service is healthy.
+
+The installed exact-project native Kata window and fixed-deployment public
+query feed are operator-owned glue. The feed retains the last successful
+snapshot on API failure and records current availability separately in
+`public-feed-health.json` and the `state-feed` pane. It never changes tasks.
+Product UI transport and model process recovery belong to the core coordinator.

@@ -1,6 +1,6 @@
 # 03 — Kata and controller state panes
 
-Status: claimed
+Status: implemented and independently reviewed; live product recovery pending
 Blocked by: none
 Spec: ../EFFORT.md
 
@@ -41,3 +41,12 @@ product runtime publication; these tools do not bootstrap a second controller.
 Focused tests for populated state, two slots, explicit missing/unknown values,
 Kata identity/sync, malformed/stale source, secret/control exclusion and real
 terminal startup. Two-axis review, install and inspect owned panes only.
+
+## Scoped disposition — 2026-10-05
+
+Source15ba811: focused suite43/43 PASS. Independent Standards, Spec and branch
+reviews resolved the scoped findings. Dedicated operator views were installed.
+Codex0.160.0 exact native implementation/lead clients are verified. Product
+controller/API and UI gateways became unavailable; their reattachment remains
+pending core-coordinator reconciliation. No full product qualification credit.
+See ../STATE.md and ../evidence/client-update-20261005.json.

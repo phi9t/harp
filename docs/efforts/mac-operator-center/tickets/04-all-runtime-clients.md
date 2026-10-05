@@ -1,6 +1,6 @@
 # 04 — Maintain every published runtime client
 
-Status: claimed
+Status: implemented and independently reviewed; live product recovery pending
 Blocked by: none
 
 ## Owner request
@@ -33,3 +33,12 @@ Focused RED/GREEN tests: two simultaneous published workers and lead; endpoint
 identity/dedup; replacement and valid empty roster; malformed/missing/stale
 source retaining views without admission. Preserve original focused suite.
 Separate review and root-owned deployment; no live session mutations by author.
+
+## Scoped disposition — 2026-10-05
+
+Source15ba811: focused suite43/43 PASS. Independent Standards, Spec and branch
+reviews resolved the scoped findings. Dedicated operator views were installed.
+Codex0.160.0 exact native implementation/lead clients are verified. Product
+controller/API and UI gateways became unavailable; their reattachment remains
+pending core-coordinator reconciliation. No full product qualification credit.
+See ../STATE.md and ../evidence/client-update-20261005.json.
