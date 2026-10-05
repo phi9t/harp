@@ -37,6 +37,9 @@ Host-local config, installed code, manifest, deployment and verification records
 Luna's runtime reported a model-capacity error during deployment. Restart was
 requested using the same model; its observation timestamp remains the coverage
 authority. The manager's health does not imply that Luna is running.
+Restart recovered: Luna saved a fresh assessment at 03:56:06 UTC. It confirmed
+healthy operator view metadata and retained the distinction from pending product
+runtime qualification. The capacity interruption remains part of coverage history.
 
 Next: retain this operator baseline and add explicitly declared product runtime
 bindings when the core coordinator publishes them. Product baseline acceptance
