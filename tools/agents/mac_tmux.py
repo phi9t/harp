@@ -8,6 +8,7 @@ import argparse
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import fcntl
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -18,6 +19,7 @@ import subprocess
 import tempfile
 import time
 import uuid
+from urllib.parse import urlsplit
 
 OWNER = '@corenius_operator_owner'
 VIEW_OWNER = '@corenius_view_owner'
@@ -81,6 +83,8 @@ def validate_config(config):
         raise ValueError('extra_bindings must be a list')
     for extra in extras:
         binding(extra, config['endpoint'])
+    if 'runtime_bindings_path' in config:
+        text(config['runtime_bindings_path'], 'runtime_bindings_path')
 
 
 @contextmanager
@@ -133,9 +137,68 @@ class Tmux:
         self.run('set-option', '-w', '-t', window, option, value)
 
 
+def runtime_bindings(config, errors):
+    """Only the bounded public roster can admit runtime clients; errors expose no data."""
+    source = {'status': 'disabled', 'observed_at': None, 'digest': None}
+    path = config.get('runtime_bindings_path')
+    if not path:
+        return [], source
+    source['status'] = 'degraded'
+    try:
+        with Path(path).open('rb') as input_file:
+            raw = input_file.read(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise ValueError('runtime roster too large')
+        value = json.loads(raw)
+        if not isinstance(value, dict) or set(value) != {'observed_at', 'bindings'}:
+            raise ValueError('invalid public roster fields')
+        stamp = text(value['observed_at'], 'observed_at')
+        observed = datetime.fromisoformat(stamp.replace('Z', '+00:00'))
+        if observed.tzinfo is None:
+            raise ValueError('timestamp requires timezone')
+        age = (datetime.now(timezone.utc) - observed).total_seconds()
+        if age < -60:
+            raise ValueError('timestamp is in the future')
+        items = value['bindings']
+        if not isinstance(items, list) or len(items) > 256:
+            raise ValueError('invalid bindings list')
+        views = []
+        for item in items:
+            if not isinstance(item, dict) or set(item) != {'role', 'thread', 'cwd', 'endpoint', 'current'}:
+                raise ValueError('invalid public binding fields')
+            if not isinstance(item['current'], bool):
+                raise ValueError('current must be boolean')
+            if any(not isinstance(item[field], str) or len(item[field]) > 4096
+                   for field in ('role', 'thread', 'cwd', 'endpoint')):
+                raise ValueError('invalid binding text')
+            view = binding(item, None)  # A runtime endpoint never inherits a default.
+            address = urlsplit(view['endpoint'])
+            if address.username is not None or address.password is not None or address.query or address.fragment:
+                raise ValueError('credential-bearing endpoints are unsupported')
+            if address.scheme in ('ws', 'wss') and not address.hostname:
+                raise ValueError('WebSocket endpoint requires a host')
+            views.append(dict(view, current=item['current']))
+        source.update(observed_at=stamp, digest=hashlib.sha256(raw).hexdigest())
+        if age > 300:
+            source['status'] = 'stale'
+            errors.append('runtime bindings stale; prior published clients retained with unknown state')
+            return [], source
+        source['status'] = 'ok'
+        return views, source
+    except FileNotFoundError:
+        source['status'] = 'missing'
+    except (OSError, ValueError, TypeError, OverflowError, RecursionError):
+        pass
+    errors.append('runtime bindings ' + source['status'] + '; public roster unavailable or invalid')
+    return [], source
+
+
 def desired_bindings(config, errors):
-    wanted = [dict(binding(config['coordinator'], config['endpoint']), current=True)]
-    wanted.extend(dict(binding(value, config['endpoint']), current=True)
+    def sourced(view, name, **provenance):
+        return dict(view, sources=[dict(source=name, role=view['role'],
+                                        current=view['current'], **provenance)])
+    wanted = [sourced(dict(binding(config['coordinator'], config['endpoint']), current=True), 'coordinator')]
+    wanted.extend(sourced(dict(binding(value, config['endpoint']), current=True), 'extra_bindings')
                   for value in config.get('extra_bindings', []))
     current_known = False
     try:
@@ -147,19 +210,52 @@ def desired_bindings(config, errors):
         if not explicitly_empty:
             author = binding({'role': 'worker-1', 'thread': current.get('thread'),
                               'cwd': current.get('worktree')}, config['endpoint'])
-            wanted.append(dict(author, current=state.lower() not in TERMINAL_STATES, writer_state=state))
+            wanted.append(sourced(dict(author, current=state.lower() not in TERMINAL_STATES,
+                                       writer_state=state), 'implementation'))
         current_known = True
     except (OSError, ValueError, TypeError) as exc:
         errors.append('CURRENT unavailable or invalid: ' + str(exc))
+    runtime, runtime_source = runtime_bindings(config, errors)
+    wanted.extend(sourced(view, 'runtime_bindings', observed_at=runtime_source['observed_at'],
+                          digest=runtime_source['digest']) for view in runtime)
     # An operator binding can share a view with another role, but never another store.
     unique = {}
     for item in wanted:
         key = (item['endpoint'], item['thread'])
         if key not in unique:
             unique[key] = item
-        elif item['current']:
-            unique[key]['current'] = True
-    return unique, current_known
+        else:
+            unique[key]['current'] = unique[key]['current'] or item['current']
+            for source in item['sources']:
+                prior = next((old for old in unique[key]['sources']
+                              if (old['source'], old['role']) == (source['source'], source['role'])), None)
+                if prior is None:
+                    unique[key]['sources'].append(source)
+                else:
+                    prior['current'] = prior['current'] or source['current']
+    return unique, current_known, runtime_source
+
+
+def retained_sources(prior, current_known, runtime_source):
+    """Historical memberships preserve provenance, never grant client admission."""
+    retained = []
+    for source in prior.get('sources', []):
+        if not isinstance(source, dict) or source.get('source') not in {
+                'coordinator', 'extra_bindings', 'implementation', 'runtime_bindings'}:
+            continue
+        try:
+            item = {'source': source['source'], 'role': text(source.get('role'), 'source role'), 'current': False}
+            if item['source'] == 'implementation' and not current_known:
+                item['current'] = None
+            if item['source'] == 'runtime_bindings':
+                for field in ('observed_at', 'digest'):
+                    item[field] = text(source.get(field), field)
+                if runtime_source['status'] not in {'ok', 'disabled'}:
+                    item['current'] = None
+            retained.append(item)
+        except ValueError:
+            continue
+    return retained
 
 
 def window_rows(tmux, target):
@@ -247,7 +343,7 @@ def _reconcile(config, tmux_argv, runner):
             errors.append('previous manifest unavailable or invalid: ' + str(exc))
         if previous and (previous.get('session') != config['session'] or previous.get('owner') != config['owner']):
             raise ValueError('manifest owner or session differs; refusing unrelated state')
-    wanted, current_known = desired_bindings(config, errors)
+    wanted, current_known, runtime_source = desired_bindings(config, errors)
     rows = window_rows(tmux, target)
     adopt(config, tmux, rows, errors)
     if not any(r['name'] == 'overview' for r in rows):
@@ -264,12 +360,13 @@ def _reconcile(config, tmux_argv, runner):
                 errors.append('duplicate owned view retained: ' + view['thread'])
                 continue
             known[key] = dict(view, window=row['window'])
-            # Prior writer claims enrich an existing validated view; they admit none.
+            # Prior source claims enrich an existing validated view; they admit none.
             for prior in previous.get('bindings', []):
                 if (isinstance(prior, dict) and prior.get('window') == row['window']
-                        and prior.get('endpoint') == view['endpoint'] and prior.get('thread') == view['thread']
-                        and isinstance(prior.get('writer_state'), str)):
-                    known[key]['writer_state'] = prior['writer_state']
+                        and prior.get('endpoint') == view['endpoint'] and prior.get('thread') == view['thread']):
+                    if isinstance(prior.get('writer_state'), str):
+                        known[key]['writer_state'] = prior['writer_state']
+                    known[key]['sources'] = retained_sources(prior, current_known, runtime_source)
         except (ValueError, TypeError):
             errors.append('owned window has invalid binding metadata: ' + row['window'])
     for key, view in wanted.items():
@@ -302,12 +399,20 @@ def _reconcile(config, tmux_argv, runner):
         if not dead or any(value != '0' for value in dead):
             errors.append('native view exited; retained without replacement: ' + view['window'])
         desired = wanted.get(key)
+        sources = view.get('sources', [])
         if desired:
             view.update(role=desired['role'], current=desired['current'])
+            for source in desired['sources']:
+                sources = [old for old in sources if (old['source'], old['role']) != (source['source'], source['role'])]
+                sources.append(source)
             if 'writer_state' in desired:
                 view['writer_state'] = desired['writer_state']
         else:
             view['current'] = None if not current_known and view['role'] == 'worker-1' else False
+        if sources:
+            view['sources'] = sources
+            states = [source['current'] for source in sources]
+            view['current'] = True if True in states else (None if None in states else False)
         label = 'current' if view['current'] else ('unknown' if view['current'] is None else 'historical')
         tmux.set_window(view['window'], '@corenius_current', label)
         tmux.set_window(view['window'], '@corenius_role', view['role'])
@@ -315,6 +420,7 @@ def _reconcile(config, tmux_argv, runner):
         bindings.append(view)
     report = {'session': config['session'], 'owner': config['owner'],
               'observed_at': datetime.now(timezone.utc).isoformat(), 'bindings': bindings,
+              'runtime_bindings_source': runtime_source,
               'health': 'degraded' if errors else 'ok', 'errors': errors}
     atomic_manifest(manifest_path, report)
     return report

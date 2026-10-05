@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Behavior checks use disposable tmux servers and a viewer without model calls."""
 import importlib.util
+from datetime import datetime, timedelta, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -71,6 +73,185 @@ class MaintenanceTests(unittest.TestCase):
                     return rows
             time.sleep(.01)
         self.fail('fake viewer did not record launch')
+
+    def publish_runtime(self, bindings, age_seconds=0):
+        path = self.root / 'runtime.json'
+        self.config['runtime_bindings_path'] = str(path)
+        value = {'observed_at': (datetime.now(timezone.utc) - timedelta(seconds=age_seconds)).isoformat(),
+                 'bindings': bindings}
+        path.write_text(json.dumps(value))
+        return path
+
+    def runtime_worker(self, thread, role='product-worker-1', **fields):
+        return dict(role=role, thread=thread, cwd=str(self.root),
+                    endpoint=self.config['endpoint'], current=True, **fields)
+
+    def test_published_lead_and_two_product_workers_have_exact_native_clients(self):
+        self.current.write_text(json.dumps({'writer': None, 'thread': None,
+            'writer_state': 'no active implementation writer'}))
+        worker2 = str(uuid.UUID(int=20))
+        path = self.publish_runtime([
+            self.runtime_worker(THREAD2, 'product-lead'),
+            self.runtime_worker(THREAD1), self.runtime_worker(worker2, 'product-worker-2')])
+        report = self.reconcile()
+        self.assertEqual(len(report['bindings']), 3)
+        self.assertTrue(all(b['current'] is True for b in report['bindings']))
+        self.assertEqual(len(self.views()), 4)
+        source = report['runtime_bindings_source']
+        self.assertEqual(source['status'], 'ok')
+        self.assertEqual(source['digest'], hashlib.sha256(path.read_bytes()).hexdigest())
+        self.assertEqual(source['observed_at'], json.loads(path.read_text())['observed_at'])
+        lead = next(b for b in report['bindings'] if b['thread'] == THREAD2)
+        self.assertIn({'source': 'runtime_bindings', 'role': 'product-lead', 'current': True,
+                       'observed_at': source['observed_at'], 'digest': source['digest']}, lead['sources'])
+        rows = self.wait_log(4)
+        for thread in (THREAD1, THREAD2, worker2):
+            self.assertEqual(rows.count(['resume', '--remote', self.config['endpoint'],
+                                         '--include-non-interactive', thread]), 1)
+
+    def test_runtime_dedup_keeps_source_roles_and_endpoint_identity(self):
+        other = socket.socket(socket.AF_UNIX)
+        other.bind(str(self.root / 'other.sock'))
+        self.addCleanup(other.close)
+        extra = str(uuid.UUID(int=21))
+        self.config['extra_bindings'] = [{'role': 'operator-extra', 'thread': extra, 'cwd': str(self.root)}]
+        bindings = [self.runtime_worker(THREAD1), self.runtime_worker(THREAD2, 'product-lead'),
+                    self.runtime_worker(extra, 'product-worker-2'), self.runtime_worker(THREAD1)]
+        bindings.append(dict(self.runtime_worker(THREAD1), endpoint='unix://' + str(self.root / 'other.sock')))
+        self.publish_runtime(bindings)
+        report = self.reconcile()
+        self.assertEqual(len(report['bindings']), 4)
+        same_store = next(b for b in report['bindings'] if b['thread'] == THREAD1 and b['endpoint'] == self.config['endpoint'])
+        self.assertEqual({s['role'] for s in same_store['sources']}, {'worker-1', 'product-worker-1'})
+        self.assertEqual(len(same_store['sources']), 2)
+        ids = self.views()
+        self.assertEqual(len(self.reconcile()['bindings']), 4)
+        self.assertEqual(self.views(), ids)
+
+    def test_runtime_replacement_and_valid_empty_retain_historical_clients(self):
+        old, new = str(uuid.UUID(int=22)), str(uuid.UUID(int=23))
+        self.publish_runtime([self.runtime_worker(old)])
+        first = self.reconcile()
+        self.assertIn(old, [b['thread'] for b in first['bindings']])
+        ids = self.views()
+        self.publish_runtime([self.runtime_worker(new)])
+        report = self.reconcile()
+        self.assertTrue(set(ids).issubset(self.views()))
+        self.assertIs(next(b['current'] for b in report['bindings'] if b['thread'] == old), False)
+        self.assertIs(next(b['current'] for b in report['bindings'] if b['thread'] == new), True)
+        ids = self.views()
+        self.publish_runtime([])
+        report = self.reconcile()
+        self.assertEqual(report['health'], 'ok')
+        self.assertEqual(self.views(), ids)
+        self.assertTrue(all(b['current'] is False for b in report['bindings'] if b['thread'] in (old, new)))
+
+    def test_unavailable_runtime_preserves_unknown_membership_without_admission(self):
+        published, unpublished = str(uuid.UUID(int=24)), str(uuid.UUID(int=25))
+        path = self.publish_runtime([self.runtime_worker(published)])
+        first = self.reconcile()
+        self.assertIn(published, [b['thread'] for b in first['bindings']])
+        provenance = next(b for b in first['bindings'] if b['thread'] == published)['sources'][0]
+        ids = self.views()
+        for content, expected in ((None, 'missing'), ('{', 'degraded'), ('{}', 'degraded'),
+                                  (json.dumps({'observed_at': (datetime.now(timezone.utc) - timedelta(minutes=6)).isoformat(),
+                                     'bindings': [self.runtime_worker(unpublished)]}), 'stale')):
+            with self.subTest(status=expected, content=content):
+                if content is None:
+                    path.unlink()
+                else:
+                    path.write_text(content)
+                report = self.reconcile()
+                self.assertEqual(self.views(), ids)
+                self.assertEqual(report['health'], 'degraded')
+                self.assertEqual(report['runtime_bindings_source']['status'], expected)
+                prior = next(b for b in report['bindings'] if b['thread'] == published)
+                self.assertIsNone(prior['current'])
+                self.assertEqual(prior['sources'], [dict(provenance, current=None)])
+                self.assertFalse(any(b['thread'] == unpublished for b in report['bindings']))
+                self.assertIs(next(b['current'] for b in report['bindings'] if b['thread'] == THREAD1), True)
+
+    def test_invalid_public_runtime_fields_are_rejected_without_secret_output(self):
+        thread = str(uuid.UUID(int=26))
+        path = self.publish_runtime([])
+        self.reconcile()
+        ids = self.views()
+        good = self.runtime_worker(thread)
+        variants = [dict(good, grant={'token': 'SECRET_SENTINEL'}), dict(good, current=1),
+                    dict(good, thread=thread.upper()), dict(good, endpoint='ws://user:SECRET_SENTINEL@host/'),
+                    dict(good, endpoint='ws://host/?token=SECRET_SENTINEL'),
+                    {k: v for k, v in good.items() if k != 'endpoint'}]
+        # UUID(int=26) contains letters, so uppercase is noncanonical.
+        for item in variants:
+            with self.subTest(item=item):
+                self.publish_runtime([item])
+                report = self.reconcile()
+                self.assertEqual(report['health'], 'degraded')
+                self.assertEqual(self.views(), ids)
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(self.commands))
+        path.write_text(json.dumps({'observed_at': datetime.now(timezone.utc).isoformat(),
+                                    'bindings': [good], 'auth': 'SECRET_SENTINEL'}))
+        report = self.reconcile()
+        self.assertEqual(report['health'], 'degraded')
+        self.assertEqual(self.views(), ids)
+        self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
+
+    def test_source_unknown_states_are_independent_even_for_shared_roles(self):
+        product = str(uuid.UUID(int=27))
+        path = self.publish_runtime([self.runtime_worker(product, 'worker-1'),
+                                     self.runtime_worker(THREAD1, 'product-worker-2')])
+        self.reconcile()
+        self.current.unlink()
+        report = self.reconcile()
+        self.assertIs(next(b['current'] for b in report['bindings'] if b['thread'] == product), True)
+        shared = next(b for b in report['bindings'] if b['thread'] == THREAD1)
+        self.assertIs(shared['current'], True)
+        self.assertEqual({s['source']: s['current'] for s in shared['sources']},
+                         {'implementation': None, 'runtime_bindings': True})
+        self.publish_runtime([])
+        report = self.reconcile()
+        self.assertIs(next(b['current'] for b in report['bindings'] if b['thread'] == product), False)
+        self.assertIsNone(next(b['current'] for b in report['bindings'] if b['thread'] == THREAD1))
+        path.unlink()
+        report = self.reconcile()
+        self.assertIsNone(next(b['current'] for b in report['bindings'] if b['thread'] == product))
+
+    def test_runtime_false_is_not_admitted_and_true_duplicate_wins(self):
+        product = str(uuid.UUID(int=28))
+        historical = dict(self.runtime_worker(product), current=False)
+        self.publish_runtime([historical])
+        report = self.reconcile()
+        self.assertFalse(any(b['thread'] == product for b in report['bindings']))
+        self.publish_runtime([self.runtime_worker(product), historical])
+        report = self.reconcile()
+        view = next(b for b in report['bindings'] if b['thread'] == product)
+        self.assertIs(view['current'], True)
+        self.assertEqual(len(view['sources']), 1)
+
+    def test_bounded_runtime_inputs_reject_entire_roster_before_admitting_clients(self):
+        product = str(uuid.UUID(int=29))
+        path = self.publish_runtime([])
+        self.reconcile()
+        ids = self.views()
+        variants = [{'observed_at': datetime.now(timezone.utc).isoformat(),
+                     'bindings': [self.runtime_worker(product)] * 257},
+                    {'observed_at': datetime.now(timezone.utc).isoformat(),
+                     'bindings': [self.runtime_worker(product), dict(self.runtime_worker(product), role='x' * 4097)]},
+                    {'observed_at': '2036-01-01T00:00:00+00:00', 'bindings': [self.runtime_worker(product)]},
+                    {'observed_at': '2026-01-01T00:00:00', 'bindings': [self.runtime_worker(product)]}]
+        for value in variants:
+            with self.subTest(value_type='structured'):
+                path.write_text(json.dumps(value))
+                report = self.reconcile()
+                self.assertEqual(report['runtime_bindings_source']['status'], 'degraded')
+                self.assertEqual(self.views(), ids)
+        for content in (' ' * (1024 * 1024 + 1), '[' * 1000 + '0' + ']' * 1000):
+            with self.subTest(value_type='bounded'):
+                path.write_text(content)
+                report = self.reconcile()
+                self.assertEqual(report['runtime_bindings_source']['status'], 'degraded')
+                self.assertEqual(self.views(), ids)
 
     def test_repeat_and_replacement_keep_clients_and_exact_resume_boundary(self):
         first = self.reconcile()
