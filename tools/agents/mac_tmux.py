@@ -81,7 +81,8 @@ def binding(value, default_endpoint):
 
 def public_binding(item, external=False):
     fields = {'role', 'thread', 'cwd', 'endpoint'} | ({'window', 'pane'} if external else {'current'})
-    if not isinstance(item, dict) or set(item) != fields:
+    allowed = fields if external else fields | {'observed_at'}
+    if not isinstance(item, dict) or not fields <= set(item) or not set(item) <= allowed:
         raise ValueError('invalid public binding fields')
     if any(not isinstance(item[field], str) or len(item[field]) > 4096
            for field in ('role', 'thread', 'cwd', 'endpoint')):
@@ -101,6 +102,12 @@ def public_binding(item, external=False):
         if not isinstance(item['current'], bool):
             raise ValueError('current must be boolean')
         view['current'] = item['current']
+        if 'observed_at' in item:
+            observation = item['observed_at']
+            if isinstance(observation, str) and len(observation) > 4096:
+                raise ValueError('per-binding observation too large')
+            observed_time(observation)  # Evidence metadata; only the envelope gates freshness.
+            view['binding_observed_at'] = observation
     return view
 
 
@@ -331,7 +338,11 @@ def desired_bindings(config, errors):
     runtime, runtime_source = runtime_bindings(config, errors)
     runtime_provenance = {key: runtime_source[key] for key in ('observed_at', 'digest', 'projection_kind')
                           if key in runtime_source}
-    wanted.extend(sourced(view, 'runtime_bindings', **runtime_provenance) for view in runtime)
+    for view in runtime:
+        provenance = dict(runtime_provenance)
+        if 'binding_observed_at' in view:
+            provenance['binding_observed_at'] = view['binding_observed_at']
+        wanted.append(sourced(view, 'runtime_bindings', **provenance))
     # An operator binding can share a view with another role, but never another store.
     unique = {}
     for item in wanted:
@@ -367,6 +378,12 @@ def retained_sources(prior, current_known, runtime_source):
                 item['digest'] = text(source.get('digest'), 'digest')
                 if 'projection_kind' in source:
                     item['projection_kind'] = text(source['projection_kind'], 'projection_kind')
+                if 'binding_observed_at' in source:
+                    observation = source['binding_observed_at']
+                    if isinstance(observation, str) and len(observation) > 4096:
+                        raise ValueError('per-binding observation too large')
+                    observed_time(observation)
+                    item['binding_observed_at'] = observation
                 if runtime_source['status'] not in {'ok', 'disabled'}:
                     item['current'] = None
             retained.append(item)

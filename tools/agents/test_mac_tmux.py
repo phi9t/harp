@@ -456,6 +456,69 @@ class MaintenanceTests(unittest.TestCase):
                 self.assertEqual(self.views(), ids)
                 self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
 
+    def test_real_scoped_row_observation_is_evidence_under_global_admission_gate(self):
+        self.reconcile()
+        # Exact public row read from the configured coordinator snapshot; no private fields.
+        row = {'role': 'lead', 'thread': '01a10a6f-b309-7a92-854d-25092fc7a92b',
+               'endpoint': 'ws://127.0.0.1:17189', 'cwd': '/workspace', 'current': True,
+               'observed_at': 1791177266.0653453}
+        observer = self.external_observer(row['thread'])
+        self.publish_external([observer])
+        path = self.publish_runtime([])
+        envelope = {'observed_at': 1791177266.0653453,
+                    'projection_kind': 'coordinator snapshot of author public scoped roster; refresh not claimed',
+                    'bindings': [row]}
+        path.write_text(json.dumps(envelope))
+        report = self.reconcile()
+        self.assertEqual(report['runtime_bindings_source']['status'], 'stale')
+        self.assertFalse(any(b['thread'] == row['thread'] for b in report['bindings']))
+        # Only the fixture's global observation advances; old row observations do not gain a TTL.
+        envelope['observed_at'] = time.time()
+        for observation in (row['observed_at'], '2026-10-05T04:00:00+00:00'):
+            row['observed_at'] = observation
+            path.write_text(json.dumps(envelope))
+            report = self.reconcile()
+            self.assertEqual(report['health'], 'ok')
+            view = next(b for b in report['bindings'] if b['thread'] == row['thread'])
+            self.assertIs(view['managed'], False)
+            self.assertEqual(view['sources'][0]['binding_observed_at'], observation)
+            self.assertEqual(view['sources'][0]['observed_at'], envelope['observed_at'])
+            self.assertEqual(view['sources'][0]['projection_kind'], envelope['projection_kind'])
+        prior_source = view['sources'][0]
+        row['observed_at'] = True
+        path.write_text(json.dumps(envelope))
+        report = self.reconcile()
+        retained = next(b for b in report['bindings'] if b['thread'] == row['thread'])
+        self.assertIsNone(retained['current'])
+        self.assertEqual(retained['sources'], [dict(prior_source, current=None)])
+
+    def test_invalid_row_observation_and_external_row_extras_remain_rejected(self):
+        row = self.runtime_worker(str(uuid.UUID(int=90)))
+        path = self.publish_runtime([])
+        invalid = (True, float('nan'), float('inf'), 1e100, '2026-10-05T04:00:00',
+                   '2026-10-05T04:00:00.' + '0' * 4097 + '+00:00')
+        for observation in invalid:
+            with self.subTest(timestamp_type=type(observation).__name__):
+                path.write_text(json.dumps({'observed_at': time.time(),
+                    'bindings': [dict(row, observed_at=observation)]}))
+                errors = []
+                views, source = self.tool.runtime_bindings(self.config, errors)
+                self.assertEqual(views, [])
+                self.assertEqual(source['status'], 'degraded')
+                self.assertTrue(errors)
+        for extra in ({'auth': 'SECRET_SENTINEL'}, {'unexpected': True},
+                      {'endpoint': 'ws://u:SECRET_SENTINEL@host/'}):
+            path.write_text(json.dumps({'observed_at': time.time(),
+                'bindings': [dict(row, observed_at=time.time(), **extra)]}))
+            errors = []
+            views, source = self.tool.runtime_bindings(self.config, errors)
+            self.assertEqual(views, [])
+            self.assertEqual(source['status'], 'degraded')
+            self.assertNotIn('SECRET_SENTINEL', json.dumps((views, source, errors)))
+        external = {key: row[key] for key in ('role', 'thread', 'endpoint', 'cwd')}
+        with self.assertRaises(ValueError):
+            self.tool.public_binding(dict(external, window='@4', pane='%5', observed_at=time.time()), external=True)
+
     def test_positive_envelope_and_legacy_rosters_admit_valid_public_clients(self):
         for number, status in enumerate((None, 'observed', 'available', 'ok'), 50):
             with self.subTest(status=status):
