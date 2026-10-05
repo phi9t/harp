@@ -66,3 +66,13 @@ Only state-view code/tests may change. The operator owner updates private host
 config and its own view panes. Preserve all trial-* service windows. Test the
 actual envelopes and hostile unknown nested fields. No database/API/auth reads,
 model turns, new actors, acceptance changes or core repair-cap credit.
+
+## Scoped snapshot follow-up
+
+Replacement84eb5a publishes numeric epoch seconds and available/current/data
+controller snapshots, plus source_identity/items.issue Kata snapshots. Support
+these explicit shapes without changing their source time or raw-file digest.
+Reject boolean/nonfinite/out-of-range timestamps. Preserve legacy ISO sources.
+Display source availability and one-time snapshot claims separately from runtime
+liveness. Read kata_source_path for provenance/identity only; never render requests.
+No core/source-file changes or trial-window mutations are authorized by this UI slice.

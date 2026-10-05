@@ -47,13 +47,13 @@ JSON file with `observed_at` and `bindings`. Each entry contains `role`,
 values in that file. Missing or stale input prevents new client admission.
 A view manager refresh is not evidence that an execution service is healthy.
 
-The installed exact-project native Kata window and fixed-deployment public
-query feed are operator-owned glue. The feed retains the last successful
-snapshot on API failure and records current availability separately in
-`public-feed-health.json` and the `state-feed` pane. It never changes tasks.
+The installed exact-project native Kata window and public-file status feed are
+operator-owned glue. The feed reads coordinator-published files and records
+original source timestamps, digests and freshness in `public-feed-health.json`
+and the `state-feed` pane. It never changes tasks or queries service databases.
 Product UI transport and model process recovery belong to the core coordinator.
 
-Use the exact paths in `CURRENT.public_exports` as the three snapshot/roster
+Use the exact paths in `CURRENT.public_exports` as the snapshot/provenance/roster
 config paths. The coordinator owns those exports; viewers never overwrite them.
 Controller envelopes preserve unavailable status and separate last-success
 history. Kata items preserve native status and synchronized execution summaries.
@@ -66,3 +66,16 @@ Keep all `trial-*` service windows intact. Update only ownership-tagged UI panes
 An authenticated native worker endpoint needs an operator-owned launcher with
 its private UI grant. Publish or adopt its public binding after readiness;
 never put credentials in the public roster or viewer arguments.
+
+Snapshot timestamps accept finite Unix seconds or ISO dates. Controller snapshots
+may use available/current/data; Kata snapshots may use source_identity/items.issue.
+The optional kata_source_path exposes provenance only. Retained unavailable data
+and static snapshots do not establish current runtime readiness.
+
+The roster may include a bounded projection_kind and per-binding observed_at.
+For already-open scoped native clients, configure external_views_path with an
+observed_at and explicit role/thread/endpoint/cwd/window/pane bindings. Both
+sources must be fresh and the exact existing pane must match. Referenced clients
+are managed:false; the tool never changes or replaces them. External mode disables
+runtime-client launch fallback. Missing/stale references remain pending or unknown.
+Never copy a fresh observation time onto an old roster to admit a client.

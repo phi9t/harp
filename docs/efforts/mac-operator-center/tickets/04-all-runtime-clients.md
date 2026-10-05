@@ -55,3 +55,18 @@ No raw reason body enters errors. Keep native observer launch grants private.
 This adaptation changes only the view manager and focused tests. It grants no
 runtime recovery, worker admission or model-turn authority. Existing owner-created
 clients can be adopted by exact binding after authenticated transport readiness.
+
+## Existing scoped observer references
+
+Accept the bounded public roster projection_kind descriptor and finite numeric
+source timestamp. The operator may configure external_views_path containing
+explicit endpoint/thread/cwd/window/pane references to already-existing scoped
+clients. Observe these windows only; never rename, tag, respawn, kill or select
+them. Keep private launch grants outside viewer sources. Exact public identity
+and actual pane/session membership must match before reference admission.
+
+When external mode is configured, missing/stale/malformed references must not
+fall back to launching another runtime client. Owned operator clients retain
+precedence. Missing/dead external panes remain explicit without replacement.
+Prior external membership becomes unknown when runtime source is unavailable
+or stale. Original source times/digests and static-source limitations remain visible.

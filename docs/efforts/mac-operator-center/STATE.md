@@ -3,13 +3,17 @@
 Status: public-export view adapters reviewed and installed; core recovery remains coordinator-owned.
 Owner: main lead. Product implementation coordinator: corenius-impl.
 
-Current operator source: 815ba89dc18eeb349aedb6e457577ce5e4292399.
-Current verification: 49 tests PASS (27.039s), compilation/diff checks PASS,
-scoped independent Standards/Spec/branch review PASS. Installed 04:47 UTC.
-Use only corenius-team. Views read CURRENT.public_exports directly; the public
-controller/runtime exports still say unavailable. Existing trial-r2-* service
-windows are preserved. Current implementation identity comes from CURRENT,
-which names restoration writer01a10a5b at the latest 04:45 observation.
+Current operator code source: 285079c1191c90bbe427be8ea4625260b280e180.
+Installed and verified 2026-10-05 05:45 UTC in corenius-team.
+Focused evidence: 62 tests PASS before the narrow roster repair; 35 maintainer
+tests PASS after it. State/dashboard code is unchanged from the combined run.
+Compilation, diff checks and independent Standards/Spec/branch review PASS.
+Controller and Kata public snapshots are fresh. Their current trial has one
+created task and no attempts. The lead roster remains a stale static snapshot;
+external observer admission is pending. Existing scoped client @133/%143 and
+all trial windows remain intact. Core CURRENT at 05:44 records no active writer:
+immutable model-link candidate 483f1bc6 is under independent review.
+Core admissions, live retry and acceptance remain coordinator-owned.
 Earlier dated deployment details below remain history.
 
 The final operator source at e6ae1add9841a2bc0eb26a441a5b322e2db8f090
@@ -146,3 +150,38 @@ records remain managed/public-export-deployment.json and public-export-verify.js
 Root retains core admissions/effects; main lead retains UI scripts/deployment.
 Solo evidence remains retained; assembled baseline/mainline acceptance and two
 useful episode overlap/stale reintegration remain outside this view proof.
+
+## Scoped snapshots and existing observer references — 2026-10-05 05:45 UTC
+
+The installed adapters read the exact replacement 84eb5a public files. Numeric
+Unix seconds and legacy ISO timestamps retain source time and raw-file digests.
+Controller available/current/data envelopes and Kata source_identity/items.issue
+records are supported. Kata provenance is read from kata_source_path; request
+bodies are excluded. Native Kata status and execution summaries remain distinct.
+The native Kata TUI uses the exact surviving instance and replacement project.
+
+The manager can reference an existing scoped native client through the optional
+external_views_path. It validates exact public binding and actual pane/session
+membership. External mode never falls back to launching a client. It does not
+rename, tag, respawn, kill or select core panes. Private grants remain private.
+The real roster carries per-binding observed_at; independent review caught its
+initial rejection. One narrow repair preserved that field and passed re-review.
+
+The root roster retains its 05:14:26 source time and is stale. Zero external
+references are admitted. The existing @133/%143 client remains open; its presence
+is not fresh endpoint readiness or worker execution proof. Manager health remains
+degraded with those precise source limitations. Fresh controller/Kata projections
+show revision 4, one created solo task and no attempts. WorkerA/B panes remain
+status displays, not native worker clients. Provider admission failed; its bounded
+model-link repair is under coordinator-owned independent review at 483f1bc6.
+
+Installation and post-install metadata checks preserved all observed trial window,
+pane, PID and dead-state rows. Only owned operator view processes were refreshed.
+No core RPC/database/auth reads, model turns, new timer, main-lead assessment-ledger
+writes, repair-cap renewal or baseline acceptance occurred in this slice.
+
+Evidence: evidence/scoped-snapshot-adoption-20261005.json. Separate test scopes
+are retained: 62 combined tests at ae48402, then 35 maintainer tests after the narrow
+repair at 285079c. State/dashboard production code is unchanged across that repair.
+Independent Standards, Spec and branch-equivalent review passed. No mainline
+landing or full live-trial qualification is claimed.

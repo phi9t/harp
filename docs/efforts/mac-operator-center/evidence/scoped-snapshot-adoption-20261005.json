@@ -1,0 +1,80 @@
+{
+  "observed_at": "2026-10-05T05:41:31.949289+00:00",
+  "source": "285079c1191c90bbe427be8ea4625260b280e180",
+  "configured_public_paths": {
+    "controller_snapshot_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/control_center.json",
+    "kata_snapshot_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/kata.json",
+    "kata_source_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/kata_source.json",
+    "runtime_bindings_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/replacement-runtime-bindings.json"
+  },
+  "external_views_path": "/data02/home/philip.yang/.local/state/corenius/mac-team-view/01a10084-dc3a-7743-b0c1-4694d5ecc621/managed/external-native-views.json",
+  "runtime_source": {
+    "status": "stale",
+    "observed_at": 1791177266.0653453,
+    "digest": "9478c5962c355fecd3e4bde5e6c0d90503142bc8a3633ca5f0c6f4220578ab46",
+    "projection_kind": "coordinator snapshot of author public scoped roster; refresh not claimed"
+  },
+  "admissible_runtime_bindings": 0,
+  "core_window_pane_pid_liveness_unchanged": true,
+  "preserved_core_rows": [
+    "@114|trial-r2-relay|%124|1092834|1",
+    "@115|trial-r2-relay2|%125|1096628|1",
+    "@116|trial-r2-workers|%126|1096638|1",
+    "@117|trial-r2-controlplanes|%127|1099116|1",
+    "@118|trial-r2-controller|%128|1099734|1",
+    "@121|trial-84eb5a-outer|%131|1269473|1",
+    "@122|trial-84eb5a-relay|%132|1269567|0",
+    "@123|trial-84eb5a-workers|%133|1269595|0",
+    "@124|trial-84eb5a-controlplanes|%134|1270028|0",
+    "@126|trial-84eb5a-controller|%136|1270786|0",
+    "@127|trial-84eb5a-gateway|%137|1271754|0",
+    "@128|trial-84eb5a-lead|%138|1271777|0",
+    "@129|trial-84eb5a-dashboard|%139|1271786|0",
+    "@130|trial-84eb5a-workerA|%140|1271790|0",
+    "@131|trial-84eb5a-workerB|%141|1271809|0",
+    "@132|trial-84eb5a-observation|%142|1291731|1",
+    "@133|trial-84eb5a-obs-lead|%143|1291748|0",
+    "@134|trial-84eb5a-observation2|%144|1321991|0"
+  ],
+  "observer_reference": "@133/%143 existing; private grants unchanged",
+  "tests": {
+    "combined_before_narrow_repair": {
+      "count": 62,
+      "seconds": 38.987,
+      "result": "PASS",
+      "source": "ae48402"
+    },
+    "final_maintainer": {
+      "count": 35,
+      "seconds": 32.9,
+      "result": "PASS",
+      "source": "285079c"
+    },
+    "state_dashboard_unchanged_since_combined": true,
+    "compile_diff": "PASS",
+    "independent_scoped_spec_standards_branch": "PASS"
+  },
+  "installed_hashes": {
+    "mac_tmux.py": "5aae74b1abe8a0f68b21a0b3bb8b8c0cf431f8938d2c12173eb115bef803f03d",
+    "mac_state_view.py": "0ea8de81167a62a05d42094b2cec88afc378c6df129a1f2f9c8f1ed0e81ec2b0",
+    "mac_dashboard.py": "baa83654aa3e81bceb0d5d90126a523ccef23b4199f05c3d01df031208a8e319"
+  },
+  "no_core_rpc_or_db_auth_reads": true,
+  "post_install_verification": {
+    "observed_at": "2026-10-05T05:45:40.813322+00:00",
+    "manifest_observed_at": "2026-10-05T05:45:38.799420+00:00",
+    "runtime_source_status": "stale",
+    "external_source_status": "stale",
+    "external_admitted": 0,
+    "core_rows_still_unchanged": true,
+    "installed_hashes_match_source": true,
+    "coordinator_current_observed_at": "2026-10-05T05:44:15.503225+00:00",
+    "implementation_writer": null,
+    "implementation_writer_state": "No active implementation writer; two independent review axes on immutable prototype candidate",
+    "core_candidate_source": "483f1bc6e3fe1a3e03ac727afd903b84461c414b"
+  },
+  "coordinator_handoff": {
+    "queue_receipt": "01a10a99-0713-74f0-88ed-fa0a0448f048",
+    "acknowledgement": "unconfirmed"
+  }
+}
