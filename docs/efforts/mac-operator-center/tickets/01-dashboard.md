@@ -1,6 +1,6 @@
 # 01 — Team dashboard
 
-Status: claimed
+Status: reviewed and deployed (source e6ae1ad; STATE.md records evidence)
 Blocked by: none
 Spec: ../EFFORT.md
 

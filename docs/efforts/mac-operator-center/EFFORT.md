@@ -1,6 +1,6 @@
 # MAC operator center
 
-Status: active; owner-requested improvement of the existing operator views.
+Status: reviewed and deployed; STATE.md records retained evidence and limits.
 Source read: c9d78bf; live prototype corenius-team and its private team_view.py.
 
 ## Goal
