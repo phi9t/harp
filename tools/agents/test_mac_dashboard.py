@@ -118,6 +118,32 @@ class DashboardTests(unittest.TestCase):
         for name in ['CURRENT', 'Luna', 'Manifest']:
             self.assertIn(name + ': unavailable', rendered)
 
+    def test_shared_timestamp_parser_accepts_unix_instants_and_rejects_invalid_numbers(self):
+        module = self.module()
+        for value, expected in [(0, dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)),
+                                (0.125, dt.datetime(1970, 1, 1, microsecond=125000, tzinfo=dt.timezone.utc)),
+                                (-1, dt.datetime(1969, 12, 31, 23, 59, 59, tzinfo=dt.timezone.utc))]:
+            try:
+                observed = module.timestamp(value)
+            except ValueError:
+                observed = None
+            self.assertEqual(observed, expected, 'finite Unix timestamp must preserve its instant')
+        for value in [True, False, float('nan'), float('inf'), -float('inf'),
+                      1e30, -1e30, 10 ** 400, None]:
+            with self.subTest(value=repr(value)):
+                with self.assertRaises(ValueError):
+                    module.timestamp(value)
+        self.current['observed_at'] = 0.125
+        self.write_inputs()
+        _, snapshot = self.snapshot()
+        self.assertEqual(snapshot['sources']['CURRENT']['time'],
+                         dt.datetime(1970, 1, 1, microsecond=125000, tzinfo=dt.timezone.utc))
+        self.assertIn('source timestamp 0.125', '\n'.join(module.render(snapshot)))
+        self.current['observed_at'] = True
+        self.write_inputs()
+        _, snapshot = self.snapshot()
+        self.assertIn('CURRENT: unavailable', '\n'.join(module.render(snapshot)))
+
     def test_operator_roster_is_separate_and_does_not_invent_native_links(self):
         self.config['agent_roster_path'] = str(self.root / 'roster.json')
         (self.root / 'roster.json').write_text(json.dumps({'observed_at': self.stamp, 'agents': [

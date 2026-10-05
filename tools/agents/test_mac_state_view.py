@@ -255,6 +255,102 @@ class StateViewTests(unittest.TestCase):
         self.write_inputs()
         self.assertIn('Kata: unavailable', self.rendered('kata'))
 
+    def test_numeric_controller_data_envelope_renders_only_available_public_state(self):
+        self.controller = {'observed_at': 0.125, 'available': True, 'current': True,
+                           'source_commit': 'replacement-source', 'source_seam': 'controller control_center RPC',
+                           'data': self.controller, 'requests': 'HIDDEN-REQUESTS'}
+        self.controller['data'].update(auth='HIDDEN-AUTH', report_payload='HIDDEN-REPORT')
+        self.write_inputs()
+        digest = hashlib.sha256((self.root / 'controller.json').read_bytes()).hexdigest()
+        for view in ['controller', 'workspaces']:
+            text = self.rendered(view)
+            for expected in ['source timestamp 0.125', 'sha256:' + digest,
+                             'Available (export claim): True', 'Current (export claim): True',
+                             'source_commit: replacement-source', 'source_seam: controller control_center RPC']:
+                self.assertIn(expected, text)
+            self.assertNotIn('HIDDEN-', text)
+        self.assertIn('runtime-one', self.rendered('controller'))
+        self.assertIn('/work/attempt', self.rendered('workspaces'))
+        self.controller['current'] = False
+        self.write_inputs()
+        text = self.rendered('controller')
+        for expected in ['observed snapshot', 'no ongoing liveness', 'Current (export claim): False', 'runtime-one']:
+            self.assertIn(expected, text)
+        self.assertNotIn('Product controller: unavailable', text)
+        self.controller['available'] = False
+        self.write_inputs()
+        text = self.rendered('controller')
+        self.assertIn('Product controller: unavailable', text)
+        self.assertIn('Worker slot 1: unknown', text)
+        self.assertNotIn('runtime-one', text)
+        self.assertNotIn('/work/attempt', self.rendered('workspaces'))
+
+    def test_numeric_kata_issue_export_preserves_native_identity_and_separate_execution(self):
+        self.kata = {
+            'observed_at': 0.125, 'available': True, 'current': False,
+            'source_seam': 'actual Kata HTTP instance and issues GET',
+            'source_identity': {'instance_uid': 'replacement-instance', 'project_id': 3,
+                                'project_uid': 'replacement-project', 'controller_id': 'replacement-controller',
+                                'credentials': 'HIDDEN-SOURCE-CREDENTIALS'},
+            'items': [{'task': 'solo', 'issue': {'id': 4, 'uid': 'replacement-item',
+                        'project_id': 3, 'project_uid': 'replacement-project', 'revision': 1,
+                        'status': 'open', 'updated_at': '2026-10-05T05:00:34.188Z',
+                        'private_reasoning': 'HIDDEN-ISSUE-REASONING'},
+                       'corenius.execution': {'state': 'submitted', 'attempt': 'replacement-attempt',
+                                              'tool_payload': 'HIDDEN-TOOL-PAYLOAD'}},
+                      {'task': 'a', 'issue': {'id': 5, 'uid': 'second-item', 'revision': 2, 'status': 'open'},
+                       'corenius.execution': None}],
+            'requests': [{'headers': {'auth': 'HIDDEN-REQUEST-AUTH'}}]}
+        self.write_inputs()
+        text = self.rendered('kata')
+        for expected in ['Available (export claim): True', 'Current (export claim): False',
+                         'observed snapshot', 'no ongoing liveness', 'source timestamp 0.125',
+                         'actual Kata HTTP instance and issues GET', 'replacement-instance', 'project_id: 3',
+                         'replacement-project', 'replacement-controller', 'Task: solo', 'replacement-item',
+                         'Source revision: 1', 'Native Kata status: open', '2026-10-05T05:00:34.188Z',
+                         'state: submitted', 'replacement-attempt', 'second-item', 'Source revision: 2',
+                         'corenius.execution; may lag; no runtime liveness): none']:
+            self.assertIn(expected, text)
+        self.assertNotIn('Kata: unavailable', text)
+        self.assertNotIn('HIDDEN-', text)
+
+    def test_numeric_export_timestamps_reject_bool_nonfinite_and_out_of_range(self):
+        self.controller = {'observed_at': 0.125, 'available': True, 'current': True,
+                           'source_seam': 'public RPC', 'data': self.controller}
+        self.write_inputs()
+        self.assertIn('runtime-one', self.rendered('controller'))
+        for value in [True, False, float('nan'), float('inf'), -float('inf'), 1e30, -1e30, 10 ** 400]:
+            with self.subTest(value=repr(value)):
+                self.controller['observed_at'] = value
+                self.write_inputs()
+                text = self.rendered('controller')
+                self.assertIn('Product controller: unavailable', text)
+                self.assertIn('malformed', text)
+                self.assertNotIn('runtime-one', text)
+
+    def test_optional_kata_source_is_provenance_only_and_never_renders_requests(self):
+        self.config['kata_source_path'] = str(self.root / 'kata_source.json')
+        public_source = {'observed_at': 0.125, 'available': True, 'current': False,
+                         'source_seam': 'actual Kata source requests',
+                         'source_identity': {'instance_uid': 'source-instance', 'project_id': 3,
+                                             'project_uid': 'source-project', 'controller_id': 'source-controller',
+                                             'auth': 'HIDDEN-SOURCE-AUTH'},
+                         'requests': [{'body': 'HIDDEN-REQUEST-BODY', 'url': 'HIDDEN-REQUEST-URL'}]}
+        (self.root / 'kata_source.json').write_text(json.dumps(public_source))
+        self.write_inputs()
+        text = self.rendered('kata')
+        digest = hashlib.sha256((self.root / 'kata_source.json').read_bytes()).hexdigest()
+        for expected in ['Kata source provenance', 'source timestamp 0.125', 'sha256:' + digest,
+                         'source-instance', 'source-project', 'source-controller',
+                         str(self.root / 'kata_source.json'), '1970-01-01T00:00:00.125000+00:00']:
+            self.assertIn(expected, text)
+        self.assertNotIn('HIDDEN-', text)
+        self.assertNotIn('body:', text)
+        self.config['kata_source_path'] = []
+        self.write_inputs()
+        with self.assertRaises(ValueError):
+            self.module().load_config(self.root / 'config.json')
+
     def test_kata_has_exact_identity_dependencies_and_sync_without_daemon_guess(self):
         text = self.rendered('kata')
         for expected in ['kata-trial', 'trial-project', 'uid-1', 'First task',

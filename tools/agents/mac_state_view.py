@@ -75,6 +75,8 @@ NEXT.update(candidate_acceptance=[WORKSPACE], unknown_effects=[OPERATION])
 HISTORY = dict.fromkeys(('observed_at', 'state', 'cursor', 'event_cursor', 'revision',
                          'occupied_slots', 'physical_ref', 'digest'))
 WORKREF = dict.fromkeys(('origin_instance_uid', 'project_uid', 'item_uid'))
+KATA_IDENTITY = dict.fromkeys(('instance_uid', 'project_id', 'project_uid', 'controller_id'))
+KATA_ISSUE = dict.fromkeys(('id', 'uid', 'project_id', 'project_uid', 'revision', 'status', 'updated_at'))
 KATA_EXECUTION = dict.fromkeys(('state', 'task_state', 'observed_attempt_state', 'attempt',
                                 'brief', 'controller_revision', 'event_seq', 'reported_progress',
                                 'reported_progress_bytes', 'reported_progress_truncated',
@@ -93,7 +95,7 @@ def text(value):
 
 def load_config(path):
     config = dashboard_config(path)
-    for key in ('controller_snapshot_path', 'kata_snapshot_path'):
+    for key in ('controller_snapshot_path', 'kata_snapshot_path', 'kata_source_path'):
         if key in config and (not isinstance(config[key], str) or not config[key]):
             raise ValueError(key + ' must be a nonempty path')
     return config
@@ -102,6 +104,10 @@ def load_config(path):
 def validate(data, kind, config):
     if 'observed_at' in data:
         timestamp(data['observed_at'])
+    if kind in ('Product controller', 'Kata', 'Kata source'):
+        for key in ('available', 'current'):
+            if key in data and not isinstance(data[key], bool):
+                raise ValueError('wrong availability flag shape')
     lists = {'Product controller': ('workers', 'tasks', 'attempts', 'operations', 'questions',
                                    'sources', 'candidates', 'verification', 'landing_queue',
                                    'unknown_effects', 'runtime_uncertainty', 'repair_history',
@@ -120,18 +126,21 @@ def validate(data, kind, config):
         for key in ('tickets', 'focused_results'):
             if key in data and not isinstance(data[key], dict):
                 raise ValueError('wrong claim shape')
-    if kind == 'Product controller' and 'control_center' in data:
-        center = data['control_center']
+    if kind == 'Product controller' and controller_key(data):
+        center = data[controller_key(data)]
         if center is not None:
-            if not isinstance(center, dict) or 'control_center' in center:
+            if not isinstance(center, dict) or controller_key(center):
                 raise ValueError('wrong controller export shape')
             validate(center, kind, config)
         history = data.get('last_successful_observation')
         if history is not None and not isinstance(history, dict):
             raise ValueError('wrong controller history shape')
+    if kind in ('Kata', 'Kata source') and data.get('source_identity') is not None:
+        if not isinstance(data['source_identity'], dict):
+            raise ValueError('wrong Kata source identity shape')
     if kind == 'Kata':
         for item in data.get('items', []):
-            for key in ('workref', 'corenius.execution'):
+            for key in ('workref', 'issue', 'corenius.execution'):
                 if item.get(key) is not None and not isinstance(item[key], dict):
                     raise ValueError('wrong Kata item shape')
 
@@ -141,7 +150,8 @@ def load_snapshot(config, now=None):
     for kind, path in [('CURRENT', config['current_path']),
                        ('Manifest', str(pathlib.Path(config['state_dir']) / 'manifest.json')),
                        ('Product controller', config.get('controller_snapshot_path')),
-                       ('Kata', config.get('kata_snapshot_path'))]:
+                       ('Kata', config.get('kata_snapshot_path')),
+                       ('Kata source', config.get('kata_source_path'))]:
         source = {'path': path, 'data': {}, 'digest': '', 'error': '', 'time': None}
         if path is None:
             source['error'] = 'not configured'
@@ -170,11 +180,14 @@ def provenance(snapshot, kind):
         status = 'STALE (>5m)' if age > 300 else 'future timestamp; freshness unavailable' if age < -60 else 'fresh'
         status += ' | age ' + str(int(age)) + 's'
     data = source['data']
-    if not source['error'] and (data.get('status') == 'unavailable' or
-            (kind == 'Product controller' and 'control_center' in data and data['control_center'] is None)):
+    if not source['error'] and (data.get('status') == 'unavailable' or data.get('available') is False or
+            (kind == 'Product controller' and controller_key(data) and data[controller_key(data)] is None)):
         status = 'unavailable (export observation) | ' + status
+    elif not source['error'] and data.get('current') is False:
+        status = 'observed snapshot (current:false; no ongoing liveness) | ' + status
     return (kind + ': ' + status + ' | path ' + text(source['path']) +
             ' | source timestamp ' + text(source['data'].get('observed_at', 'unavailable')) +
+            (' | UTC ' + source['time'].isoformat() if source['time'] is not None else '') +
             ' | sha256:' + (source['digest'] or 'unavailable'))
 
 
@@ -229,20 +242,38 @@ def claims(label, data, key):
     return lines
 
 
+def controller_key(export):
+    if 'control_center' in export:
+        return 'control_center'
+    if 'data' in export and 'available' in export:
+        return 'data'
+    return None
+
+
 def controller_data(snapshot):
     """Select current public state only; historical success never fills missing state."""
     export = snapshot['sources']['Product controller']['data']
-    if 'control_center' not in export:
+    key = controller_key(export)
+    if key is None:
         return export
-    if export.get('status') == 'unavailable':
+    if export.get('status') == 'unavailable' or export.get('available') is False:
         return {}
-    return export['control_center'] or {}
+    return export[key] or {}
+
+
+def availability(data):
+    if 'available' not in data:
+        return []
+    return field('Available (export claim)', data, 'available') + field('Current (export claim)', data, 'current')
 
 
 def controller_export(snapshot):
     export = snapshot['sources']['Product controller']['data']
-    if 'control_center' not in export:
+    key = controller_key(export)
+    if key is None:
         return []
+    if key == 'data':
+        return availability(export) + field('source_seam', export, 'source_seam') + field('source_commit', export, 'source_commit')
     lines = field('Export status', export, 'status') + field('Export source', export, 'source')
     lines += field('deployment', export, 'deployment') + field('project', export, 'project')
     lines += field('Acceptance (export claim)', export, 'acceptance')
@@ -306,21 +337,38 @@ def native(snapshot):
 def kata(snapshot):
     data = snapshot['sources']['Kata']['data']
     lines = [provenance(snapshot, 'Kata')]
+    if snapshot['config'].get('kata_source_path'):
+        source = snapshot['sources']['Kata source']['data']
+        lines += ['', 'Kata source provenance', provenance(snapshot, 'Kata source')]
+        lines += field('Source identity', source, 'source_identity', KATA_IDENTITY)
     if 'items' in data:
-        for label, key in [('Export status', 'status'), ('Export source', 'source'),
+        lines += availability(data)
+        if 'available' in data:
+            lines += field('source_seam', data, 'source_seam')
+            lines += field('Source identity', data, 'source_identity', KATA_IDENTITY)
+        else:
+            for label, key in [('Export status', 'status'), ('Export source', 'source'),
                            ('deployment', 'deployment'), ('origin_instance_uid', 'origin_instance_uid'),
                            ('project_uid', 'project_uid'), ('Controller authority (export claim)', 'controller_authority')]:
-            lines += field(label, data, key)
+                lines += field(label, data, key)
         lines += ['Execution summaries may lag the controller; no runtime liveness claim.',
                   'Reported progress is a public source claim; display text limited to 300 chars.']
+        if data.get('available') is False:
+            return lines + ['Kata items: unavailable']
         items = data['items']
         if not items:
             lines.append('Kata items: none')
         for index, item in enumerate(items[:MAX_ITEMS], 1):
             lines += ['', 'Kata item ' + str(index)]
-            lines += field('Task', item, 'task') + field('WorkRef', item, 'workref', WORKREF)
-            lines += field('Source revision', item, 'source_revision')
-            lines += field('Native Kata status', item, 'status')
+            lines += field('Task', item, 'task')
+            if 'issue' in item:
+                lines += field('Native Kata issue', item, 'issue', KATA_ISSUE)
+                issue = item['issue'] or {}
+                lines += field('Source revision', issue, 'revision') + field('Native Kata status', issue, 'status')
+            else:
+                lines += field('WorkRef', item, 'workref', WORKREF)
+                lines += field('Source revision', item, 'source_revision')
+                lines += field('Native Kata status', item, 'status')
             lines += field('Synchronized execution (corenius.execution; may lag; no runtime liveness)',
                            item, 'corenius.execution', KATA_EXECUTION)
         if len(items) > MAX_ITEMS:

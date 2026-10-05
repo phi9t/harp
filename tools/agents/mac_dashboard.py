@@ -70,6 +70,13 @@ def load_config(path):
 
 
 def timestamp(value):
+    if not isinstance(value, bool) and isinstance(value, (int, float)):
+        try:
+            if not math.isfinite(value):
+                raise ValueError('timestamp must be finite')
+            return dt.datetime.fromtimestamp(value, dt.timezone.utc)
+        except (OverflowError, OSError, ValueError):
+            raise ValueError('timestamp must be finite and within datetime range') from None
     if not isinstance(value, str):
         raise ValueError('timestamp unavailable')
     parsed = dt.datetime.fromisoformat(value.replace('Z', '+00:00'))
