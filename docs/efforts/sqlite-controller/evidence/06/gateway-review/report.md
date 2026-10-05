@@ -1,0 +1,5 @@
+The minimal lead-scoped codex_turn gateway exposure has no blocking finding in this independent source assessment. Exactly two files change: four production lines and an83-line real Controller/SQLite regression. All50 crate files match the author handoff and remained unchanged through the independent checks.
+
+The affected nine integration tests passed with actual exit0. On the exact final test, restoring only the old gateway in my owned copy fails with gateway command scope refused (actual exit101); restoring the four-line link passes (exit0). Worker/operator refusal, foreign binding refusal, unknown-start fencing and idempotent replay are exercised. Only my owned snapshot was mutated.
+
+This supports the root-owned narrow restoration decision. Live native application is pending and is not credited by fixture tests. The original runtime binary645554ba, failed outer run, provider failure and unapplied first correction remain historical and unchanged. Baseline,05 acceptance and mainline qualification are outside this review.

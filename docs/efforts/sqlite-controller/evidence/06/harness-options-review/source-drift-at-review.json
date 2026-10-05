@@ -1,0 +1,19 @@
+{
+  "at": 1791176087.0264854,
+  "source_base": "e1a398ced81fc682672d2177f88c5b04fa51e448",
+  "snapshot_root": "/tmp/corenius-sqlite06-harness-review-vi_ol81g",
+  "current_source": [
+    {
+      "path": "tools/agents/sqlite_baseline.py",
+      "expected": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570",
+      "actual": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570",
+      "drift": false
+    },
+    {
+      "path": "tools/agents/test_sqlite_baseline.py",
+      "expected": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98",
+      "actual": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98",
+      "drift": false
+    }
+  ]
+}

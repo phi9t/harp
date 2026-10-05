@@ -1,0 +1,8 @@
+test_start_accepts_explicit_existing_session_and_pinned_reuse_options (tools.agents.test_sqlite_baseline.BaselineEntry.test_start_accepts_explicit_existing_session_and_pinned_reuse_options) ... ok
+test_reuse_kata_qualifies_instance_before_copying_private_grant (tools.agents.test_sqlite_baseline.BaselineEntry.test_reuse_kata_qualifies_instance_before_copying_private_grant) ... ok
+test_retained_entry_point_exposes_start_status_and_literal_input (tools.agents.test_sqlite_baseline.BaselineEntry.test_retained_entry_point_exposes_start_status_and_literal_input) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.639s
+
+OK

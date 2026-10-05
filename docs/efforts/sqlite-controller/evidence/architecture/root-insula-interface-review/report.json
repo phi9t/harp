@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-05T03:11:28.976590+00:00",
+  "disposition": "PROPOSAL_ONLY: additive direction compatible; explicit admission and future adapter/qualification required. No deployment readiness claim.",
+  "owner_proposal_commit": "dfe56610eab18d1f68e0b60796e9d9b5eacb8d4b",
+  "current_product_source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "current_evidence_tip": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "coordination_owner": "root01a0f51d / corenius-impl",
+  "bootstrap_owner": "mainlead01a10084 / corenius-frontier",
+  "current_status": {
+    "01_04": "accepted",
+    "04": "frozen EVID706ca8e; F4 historically resolved",
+    "05": "SOURCE7b20 / EVID43d5 frozen/quiescent, unaccepted; no authorized running implementation writer",
+    "05_findings": [
+      "Medium superseded correction queue starvation",
+      "Medium predecessor progress display"
+    ],
+    "05_repair_cap": "Sealed-input snapshot:3/3 exhausted/decision pending. Subsequent root steering reports owner authorization for one extra narrow C1/C2 round; root controls writer admission. Prior caps/history retained.",
+    "02_04_caps": "3/3 unchanged",
+    "empty_cap": "2/2 unchanged",
+    "06": "blocked behind05",
+    "assignment_update": "queued; presentation/acknowledgement UNKNOWN"
+  },
+  "findings": [
+    {
+      "id": "A1",
+      "category": "revised_admission_if_changed",
+      "topic": "Retained standalone baseline and topology",
+      "assessment": "An additive root profile and separate-server-first root qualification fit the proposal. Making roots mandatory before baseline acceptance, retiring the standalone runnable mode, or removing admitted shared-server support/proof requires explicit revised admission. A new-root shared readiness claim remains unqualified.",
+      "requirements": [
+        "SPEC.md:14-16",
+        "SPEC.md:76-78",
+        "tickets/05-lead-control-center.md:16",
+        "ROOT-INSULA.md:30,101"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S5",
+          "first_line": 203,
+          "last_line": 245
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 1009,
+          "last_line": 1037
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 1081,
+          "last_line": 1118
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "category": "revised_admission_if_changed",
+      "topic": "Ingress and monitor ownership",
+      "assessment": "A trusted relay may preserve literal tmux lead input. Replacing the specified literal-input trial with direct worker scheduling or treating terminal delivery as admission changes the accepted trial. Silent live-lead/monitor-ledger relocation or another 15-minute timer conflicts with current owner guidance; explicit migration admission and custody evidence are needed.",
+      "requirements": [
+        "CONTROLLED-TRIAL.md:18-30",
+        "SPEC.md:109-113",
+        "ROOT-INSULA.md:77-83"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S2",
+          "first_line": 27,
+          "last_line": 29
+        },
+        {
+          "evidence_id": "S8",
+          "first_line": 234,
+          "last_line": 260
+        },
+        {
+          "evidence_id": "S9",
+          "first_line": 43,
+          "last_line": 65
+        },
+        {
+          "evidence_id": "S9",
+          "first_line": 364,
+          "last_line": 386
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "category": "revised_admission_if_changed",
+      "topic": "Persisted identity and recovery semantics",
+      "assessment": "Do not relabel saved executions/stores/threads by a new root name, replay an ambiguous start, or equate new lock acquisition with stopped survivors. Existing supervisor restart deliberately records nonterminal executions unknown. Future host-root adoption/import must be explicitly admitted and qualified while preserving authority fencing and retained operation lineage.",
+      "requirements": [
+        "SPEC.md:46-50,76",
+        "ROOT-INSULA.md:34,87-93"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S1",
+          "first_line": 24,
+          "last_line": 48
+        },
+        {
+          "evidence_id": "S1",
+          "first_line": 365,
+          "last_line": 401
+        },
+        {
+          "evidence_id": "S2",
+          "first_line": 192,
+          "last_line": 222
+        },
+        {
+          "evidence_id": "S16",
+          "first_line": 1,
+          "last_line": 16
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "category": "future_adapter_and_qualification",
+      "topic": "Instance identity and independent execution recovery",
+      "assessment": "Add a deep instance lifecycle module with a closed start/inspect/stop interface; hide safe-handle directory admission, lifetime lock, image/config receipts, host launch journal and adopt-or-quarantine inside its implementation. Add immutable instance/storage identity and a root incarnation without collapsing RuntimeIncarnation, RoleEpoch, ScopeEpoch, WorkspaceGeneration, persistent store or execution identity. The host journal observes owned resources and does not write controller task state. Qualify host-supervisor death before/after acknowledgement separately from controller and root-init death.",
+      "requirements": [
+        "ROOT-INSULA.md:34,87-98",
+        "CONTEXT.md:34-76"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S1",
+          "first_line": 24,
+          "last_line": 60
+        },
+        {
+          "evidence_id": "S1",
+          "first_line": 309,
+          "last_line": 328
+        },
+        {
+          "evidence_id": "S1",
+          "first_line": 365,
+          "last_line": 401
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 25,
+          "last_line": 41
+        },
+        {
+          "evidence_id": "S18",
+          "first_line": 34,
+          "last_line": 76
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "category": "future_adapter_and_qualification",
+      "topic": "Paths, sockets, environment and runtime binding",
+      "assessment": "Construct namespace-local configuration from an admitted host-to-root projection; current canonical absolute paths, Unix path-length bound, expected transport paths, auth environment references and persisted policy identities cannot simply be copied to /state or /run. Keep role sockets/credentials selectively projected and pin image/tool/helper/mount/environment identities. Current profiles clear environment and isolate HOME/CODEX_HOME; a root plan must additionally own role XDG/tmp/cache/build/Git/Kata locations and credential renewal. Qualify restore/rebind across root incarnation and reject aliases/traversal.",
+      "requirements": [
+        "ROOT-INSULA.md:38-49,61-75,87"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S1",
+          "first_line": 730,
+          "last_line": 821
+        },
+        {
+          "evidence_id": "S3",
+          "first_line": 124,
+          "last_line": 145
+        },
+        {
+          "evidence_id": "S3",
+          "first_line": 180,
+          "last_line": 208
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 64,
+          "last_line": 76
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 229,
+          "last_line": 245
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 983,
+          "last_line": 992
+        },
+        {
+          "evidence_id": "S11",
+          "first_line": 198,
+          "last_line": 220
+        },
+        {
+          "evidence_id": "S17",
+          "first_line": 18,
+          "last_line": 23
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "category": "future_adapter_and_qualification",
+      "topic": "Separate/shared servers, all tools and networking",
+      "assessment": "Use current separate topology and own-executor check as the first root adapter. Its remote environment registration is a useful seam, not proof that every shell/filesystem/MCP/patch/helper/background path stays in the intended tool capsule. Independently qualify those paths, descriptor inheritance, denied parent/peer/root-loopback access, scoped participant identity and provider egress/renewal. Existing provider Unix-to-private-loopback forwarding needs an instance-scoped external connector; private namespaces alone supply no routing. Keep new shared-server qualification separate.",
+      "requirements": [
+        "ROOT-INSULA.md:30,61-71,75,99"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S3",
+          "first_line": 187,
+          "last_line": 208
+        },
+        {
+          "evidence_id": "S4",
+          "first_line": 44,
+          "last_line": 110
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 1081,
+          "last_line": 1118
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 1774,
+          "last_line": 1850
+        },
+        {
+          "evidence_id": "S7",
+          "first_line": 153,
+          "last_line": 170
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "category": "future_adapter_and_qualification",
+      "topic": "Host cgroup admission, survivors and storage headroom",
+      "assessment": "Current launch commands/records do not express host-owned instance/trusted/Attempt cgroup allocation, pre-fork placement or filesystem/inode quotas. Add them behind the closed host lifecycle/execution interface; retain independently owned cgroup and storage receipts. Qualify cancellation to observed subtree emptiness, survivor accounting after lock release, and A exhausting its allocation while B commits/checkpoints SQLite and retains artifacts. Current cgroup namespace option in generic capsule.py is not resource limits; its destination-prefix check is unsuitable for agent-controlled plans. Do not expose arbitrary bind or bwrap arguments.",
+      "requirements": [
+        "ROOT-INSULA.md:53,57-63,89,97-98"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S1",
+          "first_line": 24,
+          "last_line": 48
+        },
+        {
+          "evidence_id": "S1",
+          "first_line": 730,
+          "last_line": 825
+        },
+        {
+          "evidence_id": "S15",
+          "first_line": 377,
+          "last_line": 380
+        },
+        {
+          "evidence_id": "S15",
+          "first_line": 412,
+          "last_line": 431
+        }
+      ]
+    },
+    {
+      "id": "B5",
+      "category": "future_adapter_and_qualification",
+      "topic": "Private tmux and trusted operator ingress",
+      "assessment": "Add an instance-private tmux socket and incarnation-bound PTY/relay adapter. Leave TMUX/TMUX_PANE, tmux sockets, controlling-terminal descriptors and general app-server access outside participant tools. Existing UI gateway is root-local loopback plus a controller-bound principal; qualify controlled host forwarding, exact saved-thread attachment, literal bracketed-paste delivery/admission correlation, detach/reattach and isolation. Views remain disposable observers of controller-owned executions.",
+      "requirements": [
+        "CONTROLLED-TRIAL.md:18-30",
+        "ROOT-INSULA.md:77-81"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S8",
+          "first_line": 234,
+          "last_line": 260
+        },
+        {
+          "evidence_id": "S9",
+          "first_line": 43,
+          "last_line": 65
+        },
+        {
+          "evidence_id": "S9",
+          "first_line": 190,
+          "last_line": 224
+        },
+        {
+          "evidence_id": "S9",
+          "first_line": 364,
+          "last_line": 386
+        },
+        {
+          "evidence_id": "S1",
+          "first_line": 745,
+          "last_line": 824
+        }
+      ]
+    },
+    {
+      "id": "B6",
+      "category": "future_adapter_and_qualification",
+      "topic": "SQLite backup/restore and monitor continuity",
+      "assessment": "Project the complete controller persistent directory: SQLite/WAL/SHM, ownership/configuration and visible-input retention, plus separately retained Git/artifacts/runtime/monitor records. Keep WAL/FULL, controller single-writer ownership and database exclusion from workers. Qualify supported online/quiesced backup and explicit older-backup authority rotation/external-effect reconciliation; file copying or killing root is not a checkpoint. Add the Codex-first monitor adapter using pinned binding and separate ingestion/review/delivery cursors; migrate host monitor only at an explicitly admitted custody handoff with retained receipts/gaps. TraeCLI remains future.",
+      "requirements": [
+        "SPEC.md:28,46-50,96-113",
+        "ROOT-INSULA.md:38-47,83,89-93"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S10",
+          "first_line": 127,
+          "last_line": 145
+        },
+        {
+          "evidence_id": "S10",
+          "first_line": 165,
+          "last_line": 198
+        },
+        {
+          "evidence_id": "S6",
+          "first_line": 18,
+          "last_line": 50
+        },
+        {
+          "evidence_id": "S5",
+          "first_line": 1774,
+          "last_line": 1841
+        }
+      ]
+    },
+    {
+      "id": "B7",
+      "category": "future_adapter_and_qualification",
+      "topic": "Git/jj and cross-instance remote landing",
+      "assessment": "Retain the common controller-owned workspace interface with private complete Git metadata and exact Candidate identity. The current gate serializes physical landing within one controller and CAS-updates its local canonical ref. It is not cross-instance remote landing arbitration. Use separate destinations initially; any common remote target needs an independently qualified shared landing authority or conditional update/reconciliation adapter. jj remains optional ticket07 qualification; mutable change IDs cannot replace verification identity.",
+      "requirements": [
+        "SPEC.md:22-24,38-42,86",
+        "ROOT-INSULA.md:51,100"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S11",
+          "first_line": 47,
+          "last_line": 64
+        },
+        {
+          "evidence_id": "S11",
+          "first_line": 399,
+          "last_line": 453
+        },
+        {
+          "evidence_id": "S11",
+          "first_line": 949,
+          "last_line": 966
+        },
+        {
+          "evidence_id": "S12",
+          "first_line": 300,
+          "last_line": 306
+        },
+        {
+          "evidence_id": "S12",
+          "first_line": 939,
+          "last_line": 960
+        },
+        {
+          "evidence_id": "S12",
+          "first_line": 981,
+          "last_line": 1034
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "category": "compatible_control_to_preserve",
+      "topic": "Controller, source, candidate, authority and repair gates",
+      "assessment": "The proposal is compatible with sole controller authority, scoped dynamic tools, immutable brief/base/Candidate/verification bindings, expected-turn steering, unknown-capacity holds and physical FF/CAS landing. Root ownership must compose these controls rather than offer scheduler/acceptance shortcuts. Preserve accepted 01-04 and frozen04 EVID706ca8e; historical F4 is resolved. Current 05 SOURCE7b20/EVID43d5 remains unaccepted with superseded correction queue starvation and predecessor progress display; full gate PASS does not waive independent review FAIL2. The sealed snapshot retained exhausted final05 repair3/3, old02/04 caps3/3 and EMPTY2/2. After scoped review, root reported owner authorization for one extra narrow C1/C2 round; root retains writer admission, and this review changes no prior cap/history or acceptance.",
+      "requirements": [
+        "STATE.md:5,19,285,291-293",
+        "tickets/05-lead-control-center.md:41-43",
+        "SPEC.md:30,38-42,76-80"
+      ],
+      "source_refs": [
+        {
+          "evidence_id": "S2",
+          "first_line": 27,
+          "last_line": 29
+        },
+        {
+          "evidence_id": "S2",
+          "first_line": 192,
+          "last_line": 222
+        },
+        {
+          "evidence_id": "S7",
+          "first_line": 96,
+          "last_line": 170
+        },
+        {
+          "evidence_id": "S12",
+          "first_line": 981,
+          "last_line": 1034
+        },
+        {
+          "evidence_id": "S13",
+          "first_line": 1173,
+          "last_line": 1189
+        },
+        {
+          "evidence_id": "S14",
+          "first_line": 560,
+          "last_line": 578
+        }
+      ]
+    }
+  ],
+  "recommended_sequence": [
+    "Root may admit the newly owner-authorized one extra narrow 05 C1/C2 round independently of this proposal. Prioritize happy-path kickoff using existing isolation; preserve accepted work, prior caps/history, sole coordination and current live host resources.",
+    "Obtain explicit gated revised admission for an additive root profile, scope/migration decisions and blocker-linked future02/05/06 slices while retaining standalone baseline requirements. Do not expand/reopen current04.",
+    "Future02: closed instance admission/identity/host journal/cgroup/storage plan, then two-root deterministic actual-process persistence, lock-release/survivor and root/controller/supervisor fault qualification.",
+    "Future02/05: namespace-local path/socket/environment/credential adapters, separate-role servers and all-tool confinement, scoped bridges, runtime/store/thread reconnect and private tmux/operator ingress; retain shared topology support and qualify its new-root use separately.",
+    "Future05: views and Codex-first monitor adapter, current authorized writer/source/phase projections, correction lifecycle and explicitly admitted monitor custody migration; preserve existing mainlead timer and coordinator admission ownership.",
+    "Future06, only after05 acceptance and root adapter prerequisites: deterministic assembled backup/restore/isolation/recurring-monitor negatives, then fresh live Codex lead plus two overlapping workers through literal independent harness input; a second simultaneous root, stop-A/B-survival and storage containment. Separate remote destinations first.",
+    "Retain one-command supported standalone/root configuration and operating/recovery evidence. Exact Candidate acceptance, source gate, independent two-axis/branch review and final06/fresh exact-tip FF-only landing remain distinct."
+  ],
+  "context_health": {
+    "latest_request_input": "UNKNOWN",
+    "latest_request_cached_input": "UNKNOWN",
+    "latest_request_output": "UNKNOWN",
+    "context_window": "UNKNOWN",
+    "reason": "Actual latest-request telemetry is not exposed to this reviewer. Historical sealed STATE metrics and ordinary /compact text or summaries are not this review request telemetry.",
+    "thresholds": {
+      "warn_input_tokens": 100000,
+      "safe_checkpoint_input_tokens": 120000,
+      "safe_checkpoint_window_fraction": 0.5,
+      "before_next_bounded_phase_input_tokens": 150000,
+      "before_next_bounded_phase_window_fraction": 0.6,
+      "tunable": true
+    }
+  },
+  "implementation_claim": false,
+  "qualification_claim": false,
+  "evidence_index": "/data02/home/philip.yang/devx/tmp/corenius-root-insula-interface-irxje6iz/evidence-index.json",
+  "post_review_steering": {
+    "provenance": "Root collaboration message received after scoped review/artifact construction; not a sealed input change.",
+    "owner_authorization_as_reported_by_root": "One extra narrow C1/C2 round",
+    "priority": "Happy-path kickoff using existing isolation",
+    "reviewer_action": "No further architecture analysis or probes; provenance update and artifact seal only.",
+    "writer_admission_owner": "Root",
+    "implementation_or_demo_claim": false
+  }
+}

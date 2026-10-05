@@ -1,0 +1,71 @@
+{
+  "observed_at": 1791177182.043017,
+  "source": "lead-authenticated native_ui model/list on pinned installed runtime",
+  "models": [
+    {
+      "slug": "gpt-6.1-sol",
+      "listed": true,
+      "hidden": false,
+      "default": true,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-6-astra",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-6-sol",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-6-luna",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-5.6-sol",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-5.6-terra",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-5.6-luna",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    },
+    {
+      "slug": "gpt-5.5",
+      "listed": true,
+      "hidden": false,
+      "default": false,
+      "availability": null,
+      "supported_in_api": null
+    }
+  ],
+  "error": null
+}

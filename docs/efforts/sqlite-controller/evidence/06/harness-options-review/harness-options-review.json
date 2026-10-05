@@ -1,0 +1,23 @@
+{
+  "at": 1791175950.9027107,
+  "source_base": "e1a398ced81fc682672d2177f88c5b04fa51e448",
+  "source_pins": [
+    {
+      "path": "tools/agents/sqlite_baseline.py",
+      "sha256": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570"
+    },
+    {
+      "path": "tools/agents/test_sqlite_baseline.py",
+      "sha256": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98"
+    }
+  ],
+  "diff_sha256": "2181170bc5c0d9f2653ffc90ce092ae883b3140254c72d853bb52fc90d485b17",
+  "tests": {
+    "command": "python3 -m unittest tools.agents.test_sqlite_baseline",
+    "exit": 0,
+    "tests": 4
+  },
+  "red": "Missing CLI options and reuse_kata function before implementation; 1failure/1error observed",
+  "plan": "Root authorized explicit existing-session/Kata reuse/separate-build options for fresh disposable replacement; no old state/managedview writes; live soloFF then concurrent useful candidates/stale integration",
+  "ruling": "Add --target-dir so child services use manifest-pinned continuation binary instead of default historical build path. Cost if wrong: binary path drift; child service now reads exact manifest controller path."
+}

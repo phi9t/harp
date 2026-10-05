@@ -1,0 +1,13 @@
+C1/C2 product behavior passes this bounded Spec review of SOURCE `a70ddebc27b8971370af93f6be961fcf4f483990`, tree `b55b0537e7db60885cd0742e76280e49f5214826`, against EVID43d585c2 / SOURCE7b20. One non-blocking test reliability finding remains.
+
+- C1: independently rebuilt predecessor exited **1** at the starvation assertion; the candidate exited **0** in both shared and separate actual native topologies. The superseded lead was refused, stale authorization was retained without delivery, and the current correction advanced. Fresh authenticated regrant retained the correction ID and old decision, appended a new linked decision, and remained idempotent. Retained SQLite has one confirmed delivery operation per correction.
+- C2: predecessor exited **1** at the current Attempt null assertion; candidate exited **0** through real Git/SQLite, observed exit and readmission. Predecessor and operator history retained explicit Attempt/task attribution. Current progress stayed null until its own report; the revoked grant was refused.
+- Existing focused control-center negatives: **8 passed**, actual exit **0**. Unknown/active-effect retry guards and dispatch epoch fencing were inspected in source; additional crash matrices were not run.
+
+**Medium/P2, test only:** [correction_authority.py:37](/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source/crates/sqlite-controller/tests/support/correction_authority.py:37) waits solely for `presented`, although a valid explicit ACK can advance directly to `acknowledged` before polling observes presentation. Its later assertion permits both states. The real predecessor peer was acknowledged. This false-timeout risk is source-confirmed; this reviewer did not reproduce a false timeout. It does not contradict the independent production regressions.
+
+All 5,432 tracked source-file hashes and inputs remain unchanged, with clean status. All 14 fixture services, 19 captured namespaces and 11 tested command processes are terminal; PID/start/network identities and dispositions are retained. Six raw archives are hashed; no retained native operation remains prepared/applying/unknown. Initial setup failures remain immutable and separate from causal RED.
+
+No live-model, parser, unattended-monitor, baseline acceptance or happy-path demo claim follows. Original three rounds plus the one authorized extra round remain unchanged. The author's late-captured RED fixture hashes receive no retroactive runtime credit. Root retains final disposition and the subsequent disposable real-runtime trial.
+
+See [structured report](report.json), [evidence index](evidence-index.json), [commands/results](runs/), [source integrity](source-integrity.json) and [process dispositions](process-dispositions.json).

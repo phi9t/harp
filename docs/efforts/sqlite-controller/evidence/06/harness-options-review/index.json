@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "root": "/tmp/corenius-sqlite06-harness-review-vi_ol81g",
+  "files": [
+    {
+      "path": "input-pins.json",
+      "sha256": "aec068d36a07e82fb3aba99c932a05e0e7f08e0c3eb11d6a4af10f7283ab71ec",
+      "bytes": 809
+    },
+    {
+      "path": "harness-options-review.json",
+      "sha256": "fa1e51950ff09fce2fdfc71b503c306138b4e0e6f3abfd48c5ab33be4e635395",
+      "bytes": 1161
+    },
+    {
+      "path": "harness-options.diff",
+      "sha256": "2181170bc5c0d9f2653ffc90ce092ae883b3140254c72d853bb52fc90d485b17",
+      "bytes": 16370
+    },
+    {
+      "path": "diff-numstat.txt",
+      "sha256": "f7e8d3cda77f7f31bacc15e5c949664bc650b6193e2bbaf50d0eca61c1199bf8",
+      "bytes": 80
+    },
+    {
+      "path": "source-drift-at-review.json",
+      "sha256": "521dc7a93446777af74f3d2e53cf165e11846137977112210c256ab3786fec13",
+      "bytes": 698
+    },
+    {
+      "path": "focused-tests.log",
+      "sha256": "67c8d7afffc6416f9283bc66eb74f634f851dd1c45f07592055516631db3a1a4",
+      "bytes": 667
+    },
+    {
+      "path": "focused-tests.json",
+      "sha256": "755f49a027594c8d34108aafa96880bc70a1a5a80b4d0d2674df909f951f4414",
+      "bytes": 755
+    },
+    {
+      "path": "final-pins.json",
+      "sha256": "5171c8b4a21854205547ddca01a7f772786a3f020b3a68d4b613faf48f7f5c06",
+      "bytes": 2631
+    },
+    {
+      "path": "happy-path-authorized.md",
+      "sha256": "449496d6f81b0f42df995f8343c6d5733d588fbfea4786e894b8410ad2971ea9",
+      "bytes": 4546
+    },
+    {
+      "path": "receipt.json",
+      "sha256": "f9d5d8ed52e589bd9f40e76091a3dfafd24d9f6c0d3fc4333830750c3f3a72ce",
+      "bytes": 4668
+    },
+    {
+      "path": "report.json",
+      "sha256": "f5d6053c00e121d015c98dad791b65f0dade60dd84ce9b801f558ae5c3aa75de",
+      "bytes": 3738
+    },
+    {
+      "path": "report.md",
+      "sha256": "4bf8c317b2f6bbca7441f48263ec6f99865493343c6b3708dc3168e1e0e40ea1",
+      "bytes": 1862
+    },
+    {
+      "path": "snapshot/tools/agents/sqlite_baseline.py",
+      "sha256": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570",
+      "bytes": 33964
+    },
+    {
+      "path": "snapshot/tools/agents/test_sqlite_baseline.py",
+      "sha256": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98",
+      "bytes": 6194
+    }
+  ]
+}

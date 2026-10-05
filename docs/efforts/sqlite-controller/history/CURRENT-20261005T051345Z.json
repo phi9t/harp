@@ -1,0 +1,198 @@
+{
+  "version": "happy-path-4",
+  "observed_at": "2026-10-05T05:04:05.660522+00:00",
+  "coordinator": "/root",
+  "writer": "/root/sqlite06_replacement_launch",
+  "writer_state": "Sole launcher ACKed; ACTUAL new trial running in corenius-team; real lead active",
+  "thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "source": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "tickets": {
+    "01": "accepted",
+    "02": "accepted",
+    "03": "accepted",
+    "04": "accepted",
+    "05": "unaccepted; extra C1/C2 round consumed; scoped product checks pass, fixture timing finding OPEN",
+    "06": "actual disposable live happy-path running; broad qualification pending"
+  },
+  "caps": {
+    "05_prior": 3,
+    "05_extra_authorized": 1,
+    "05_extra_used": 1,
+    "02": 3,
+    "04": 3,
+    "EMPTY_diagnostics": 2
+  },
+  "next": "Observe solo exactcandidate verification/acceptance/FF; add narrow timing/nativeobserver gateways while existing outer proceeds; then actualtwo usefulworkers/staleintegration",
+  "unknowns": [
+    "original process/session disappearance cause unestablished",
+    "controller restoration and native binding reconciliation pending",
+    "concurrent useful episode overlap and stale-base reintegration unproven",
+    "baseline/mainline qualification pending"
+  ],
+  "deferred": [
+    "crash/replay/oversize/history expansion",
+    "root Insula implementation",
+    "baseline/mainline acceptance"
+  ],
+  "ack": "Explicit actor/thread/tree admission ACK; oldwriter quiescent/completed",
+  "claim": "Existing unexpired logical sqlite-controller-05 claim retained; actual actor admission/ACK bound in this projection.",
+  "mainlead_assignment_notice": {
+    "operation": "64baaff7-4f42-4611-bcb4-04b50a881494",
+    "exit": 0,
+    "state": "queued",
+    "receipt": "01a10a70-e6d3-7170-90b4-6f9e56356986",
+    "presentation": "unknown",
+    "ack": "unknown"
+  },
+  "focused_results": {
+    "C1": "Independent actual candidate PASS75.146s vs frozen baseline RED49.015s (Spec); both runtime topologies tested.",
+    "C2": "Independent actual candidate PASS6.434s vs baseline RED6.327s; current/history/task operator progress privacy checked (Spec/Standards).",
+    "fixture_issue": "Branch654 + Standards confirm Medium presented-only peer wait timing defect in correction_authority.py:37. OPEN; no repair/reset under06.",
+    "qualification": "Scoped product behavior only; reports sealing, full baseline/release still pending."
+  },
+  "pending_gates": [
+    "actual newsolo exactcandidate verificationacceptanceFF",
+    "actual two usefulepisode overlap/nativeobservers/staleintegration",
+    "fullbaseline hardening/sourcefreeze/integration/release later"
+  ],
+  "context": {
+    "action": "Fresh non-inheriting launcher after123724-token safe-boundary handoff",
+    "prior_input": 123724,
+    "prior_cached": 121600,
+    "prior_output": 2684,
+    "window": 258400,
+    "current_first_request": "pending measurement",
+    "cap_reset": false
+  },
+  "last_writer": {
+    "actor": "/root/sqlite06_restore_trial",
+    "thread": "01a10a5b-b86f-7953-a73c-059d7e05de87",
+    "state": "completed/quiescent; all4r2services exited-15; source2dirtyfiles sealed",
+    "handoff_sha256": "f440f4c404fc65afc87b4494439dd263837e45980c31ac4096e4ea4d66f5dfdd"
+  },
+  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "projection_kind": "coordinator-owned manual canonical projection; product controller projection qualification remains pending",
+  "controller_event_cursor": 114,
+  "retention": {
+    "audit_sha256": "ac23bf163615b7d95ed78ad7448f0c800eac531b535da35a43d1166e4ae3b76a",
+    "crate_inputs": 50,
+    "archives": 7,
+    "members": 1931,
+    "original_birth_ids": 32,
+    "same_birth_live": 0,
+    "unknown_reads": 0,
+    "historical_red_script_pins": "Final reproducer hash is retrospective; original logs/source binary retained; independent focused checks adjudicate cause."
+  },
+  "trial_authority": "c9 happy-path kickoff; prepare missing links now, actual model input after root scoped disposition",
+  "scoped_disposition": "evidence/05/c1c2-extra1/independent/root-disposition.json",
+  "happy_path_blocker": null,
+  "next_executable_attachment": "tmux attach -t corenius-team",
+  "next_launch": {
+    "cwd": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+    "command": "python3 tools/agents/sqlite_baseline.py start --session corenius-team --reuse-kata /tmp/cb-20261005T040926Z-c8403c/kata.json --target-dir /data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/target",
+    "state": "ACTUALstart0; newrun84eb5a live; no duplicate launch"
+  },
+  "relay": {
+    "source": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
+    "test": "c0f22e117fdf40e80c1a00ed885e7be2e46167df2795f6a08fdb7ce3b049d396",
+    "S1": "Resolved: independent3/3 privacy/routing/authority +author2/2 actualexit0; runtimecanaries0/2 retained; exacthashesunchanged.",
+    "S2": "Confirmed deadline-before-read/lateEOF bookkeeping gap; hardeningOPEN/prototype-nonblocking; strict180s wallnotproven.",
+    "actual_live_provider": "HTTP200/response.completed/gpt6-sol/26input11output2.605s, safe receipt929d0023"
+  },
+  "trial": {
+    "run": "/tmp/cb-20261005T050033Z-84eb5a",
+    "run_id": "20261005T050033Z-84eb5a",
+    "session": "corenius-team",
+    "source": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+    "source_tree": "e33f6ad0017029a0ac826356d920dd6f55ea6865",
+    "lead_thread": "01a10a6f-b309-7a92-854d-25092fc7a92b",
+    "controller_binary_sha256": "46e0613f2871bf081b2bddea3c73638f09ee93331fc7c7b9cdfa30aba9a8073c",
+    "Kata_instance": "01M45415JGMBCGXVAN68BNGFD9",
+    "Kata_project_uid": "01M456YRGAEKPQVYZM0Z2M7JA6",
+    "state": "actual dedicated windows within existingteam; lead active, worker outcomes pending",
+    "new_task_actors_for_views": false,
+    "native_product_worker_observers": "pending admitted role bindings; currentworkerA/B panes areJSONviews",
+    "baseline_qualified": false,
+    "windows": {
+      "outer": "@121/%131",
+      "relay": "@122/%132",
+      "workers": "@123/%133",
+      "controlplanes": "@124/%134",
+      "controller": "@126/%136",
+      "gateway": "@127/%137",
+      "lead": "@128/%138",
+      "dashboard": "@129/%139",
+      "workerA_status": "@130/%140",
+      "workerB_status": "@131/%141"
+    },
+    "births": {
+      "relay": [
+        1269572,
+        59201455
+      ],
+      "workers": [
+        1269620,
+        59201508
+      ],
+      "controlplanes": [
+        1270033,
+        59202410
+      ],
+      "controller": [
+        1270791,
+        59203262
+      ],
+      "gateway": [
+        1271759,
+        59204073
+      ],
+      "lead": [
+        1271813,
+        59204125
+      ],
+      "dashboard": [
+        1272031,
+        59204126
+      ]
+    }
+  },
+  "operator_session": "corenius-team",
+  "public_exports": {
+    "controller_snapshot_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/controller-snapshot.json",
+    "kata_snapshot_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/kata-snapshot.json",
+    "runtime_bindings_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/runtime-bindings.json",
+    "observed_at": "2026-10-05T04:32:24.807885+00:00",
+    "status": "controller/native unavailable; surviving Kata actual public observation"
+  },
+  "gateway_link": {
+    "base": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+    "source_pin": "ad37c0cfa87d28d484c7928e8311ccbe0bd95caf786a8b0d5df0d7a24a82e869",
+    "test_pin": "6e22c811c40718578e2901f86cb6357fa807cace082edd36b6403b63eed11570",
+    "source_status": "Exact reviewed2files committed e1a398ce; clean",
+    "author_results": "RED101/GREEN0/affected9tests0",
+    "independent_results": "Fresh affected9tests actualexit0; no scopedblockingfinding",
+    "limits": "No restored native runtime/worker application or baselinequalification proof"
+  },
+  "prior_trials": [
+    {
+      "run": "/tmp/cb-20261005T040926Z-c8403c",
+      "state": "quarantined/failed original outer",
+      "source": "173053b",
+      "ref": "ec49f779",
+      "history": "history/CURRENT-20261005T050405Z.json",
+      "solo_verified": true,
+      "two_useful_episode_overlap": false,
+      "stale_integration": false
+    }
+  ],
+  "mainlead_live_bindings_notice": {
+    "operation": "1c311b1c-d08a-466a-a86b-807616e8a8fe",
+    "exit": 0,
+    "state": "queued",
+    "receipt": "01a10a72-9c46-7b73-bc1f-9574c2efc985",
+    "presentation": "unknown",
+    "ack": "unknown"
+  }
+}

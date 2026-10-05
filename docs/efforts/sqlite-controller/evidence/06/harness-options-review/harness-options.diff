@@ -1,0 +1,280 @@
+diff --git a/tools/agents/sqlite_baseline.py b/tools/agents/sqlite_baseline.py
+index ac65863..759f74b 100644
+--- a/tools/agents/sqlite_baseline.py
++++ b/tools/agents/sqlite_baseline.py
+@@ -18,6 +18,7 @@ import subprocess
+ import sys
+ import time
+ import urllib.request
++import urllib.parse
+ import uuid
+ 
+ REPO = pathlib.Path(__file__).resolve().parents[2]
+@@ -110,6 +111,34 @@ def http(root, method, path, body=None, bootstrap=False):
+         return json.load(response)
+ 
+ 
++def reuse_kata(root, configured):
++    path = pathlib.Path(configured['path'])
++    if pin(path) != configured or path.stat().st_mode & 0o077:
++        raise RuntimeError('Kata reuse configuration pin/privacy changed')
++    config = json.loads(path.read_text())
++    origin = urllib.parse.urlparse(config['origin'])
++    if (origin.scheme != 'http' or origin.hostname != '127.0.0.1' or not origin.port
++            or origin.path or origin.query or origin.fragment or origin.username
++            or config['api_schema_version'] != '0.24.0' or config['actor'] != 'corenius-controller'):
++        raise RuntimeError('explicit pinned private loopback Kata reuse configuration required')
++    token_file = pathlib.Path(config['token_file'])
++    if not token_file.is_file() or token_file.stat().st_mode & 0o077:
++        raise RuntimeError('private Kata reuse token file required')
++    token = token_file.read_text()
++    req = urllib.request.Request(config['origin'] + '/api/v1/instance',
++                                 headers={'Authorization':'Bearer ' + token})
++    with urllib.request.urlopen(req, timeout=5) as response:
++        identity = json.load(response)
++    if (identity['instance_uid'] != config['origin_instance_uid']
++            or identity['auth']['actor'] != config['actor']):
++        raise RuntimeError('Kata reuse identity mismatch')
++    private = json.loads((root / 'private.json').read_text())
++    private['kata_port'] = origin.port
++    write(root / 'private.json', private)
++    (root / 'kata.token').write_text(token)
++    (root / 'kata.token').chmod(0o600)
++
++
+ def port():
+     with socket.socket() as stream:
+         stream.bind(('127.0.0.1', 0))
+@@ -118,8 +147,11 @@ def port():
+ 
+ def window(root, name, argv):
+     manifest = json.loads((root / 'manifest.json').read_text())
+-    return checked(['tmux','new-window','-d','-P','-F','#{pane_id}', '-t',manifest['session'],
+-                    '-n',name,shlex.join([str(a) for a in argv])], capture_output=True, text=True).stdout.strip()
++    pane = checked(['tmux','new-window','-d','-P','-F','#{pane_id}', '-t',manifest['session'],
++                    '-n',manifest.get('window_prefix','') + name,shlex.join([str(a) for a in argv])],
++                   capture_output=True, text=True).stdout.strip()
++    checked(['tmux','set-option','-w','-t',pane,'remain-on-exit','on'])
++    return pane
+ 
+ 
+ def service_window(root, name):
+@@ -144,6 +176,7 @@ def literal(root, text):
+ 
+ def service(root, name):
+     private = json.loads((root / 'private.json').read_text())
++    controller = pathlib.Path(json.loads((root / 'manifest.json').read_text())['controller']['path'])
+     env = {'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','TERM':'xterm-256color'}
+     if name == 'kata':
+         env['KATA_HOME'] = str(root / 'kata')
+@@ -156,22 +189,22 @@ def service(root, name):
+         env['CORENIUS_SUPERVISOR_TOKEN'] = private['executor'] if name == 'workers' else private['app']
+         if name == 'workers':
+             env['CORENIUS_GIT_CONFIG'] = str(root / 'git.json')
+-        argv = [CONTROLLER.parent / 'corenius-attempt-supervisor',root / (name + '.json'),root / (name + '.sock')]
++        argv = [controller.parent / 'corenius-attempt-supervisor',root / (name + '.json'),root / (name + '.sock')]
+     elif name == 'controller':
+         env.update(CORENIUS_OPERATOR_TOKEN=private['operator'], CORENIUS_SUPERVISOR_TOKEN=private['executor'],
+                    CONTROLPLANE_SECRET=private['app'], CORENIUS_SUPERVISOR_SOCKET=str(root / 'workers.sock'),
+                    CORENIUS_CODEX_CONFIG=str(root / 'native.json'), CORENIUS_GIT_CONFIG=str(root / 'git.json'),
+                    CORENIUS_KATA_CONFIG=str(root / 'kata.json'))
+-        argv = [CONTROLLER,root / 'state.db',root / 'controller.sock']
++        argv = [controller,root / 'state.db',root / 'controller.sock']
+     elif name in ['gateway','lead','dashboard']:
+         lead = json.loads((root / 'lead.json').read_text())
+         env.update(CORENIUS_CLIENT_PRINCIPAL=lead['principal'],CORENIUS_CLIENT_TOKEN=lead['token'],
+                    CORENIUS_UI_TOKEN=private['ui'])
+         if name == 'gateway':
+             env['CORENIUS_UI_AUDIT'] = str(root / 'ui-audit.jsonl')
+-            argv = [CONTROLLER,'--native-ui',root / 'controller.sock','demo','127.0.0.1:' + str(private['ui_port'])]
++            argv = [controller,'--native-ui',root / 'controller.sock','demo','127.0.0.1:' + str(private['ui_port'])]
+         elif name == 'dashboard':
+-            argv = [CONTROLLER,'--dashboard',root / 'controller.sock','demo']
++            argv = [controller,'--dashboard',root / 'controller.sock','demo']
+         else:
+             home = root / 'ui-home'
+             home.mkdir(exist_ok=True)
+@@ -213,7 +246,7 @@ def snapshot(root, name):
+     center = request(root,'control_center',{'limit':20})
+     write(root / (name + '-dashboard.json'),safe(center))
+     manifest = json.loads((root / 'manifest.json').read_text())
+-    capture = checked(['tmux','capture-pane','-p','-t',manifest['session'] + ':dashboard'],capture_output=True,text=True)
++    capture = checked(['tmux','capture-pane','-p','-t',manifest['session'] + ':' + manifest.get('window_prefix','') + 'dashboard'],capture_output=True,text=True)
+     (root / (name + '-dashboard.txt')).write_text(capture.stdout)
+     return center
+ 
+@@ -267,8 +300,9 @@ def run(root):
+         private = {key:secrets.token_hex(32) for key in ['operator','executor','app','ui','kata_bootstrap']}
+         private.update(kata_port=port(),ui_port=port())
+         write(root / 'private.json',private)
+-        (root / 'kata/config.toml').write_text('[auth]\ntoken="' + private['kata_bootstrap'] + '"\nrequire_token_identity=true\n')
+-        (root / 'kata/config.toml').chmod(0o600)
++        if not manifest.get('reuse_kata'):
++            (root / 'kata/config.toml').write_text('[auth]\ntoken="' + private['kata_bootstrap'] + '"\nrequire_token_identity=true\n')
++            (root / 'kata/config.toml').chmod(0o600)
+         git(root / 'canonical','init','--bare','--template=')
+         git(root / 'seed','init','--template=')
+         (root / 'seed/README.md').write_text('Disposable real-model happy-path repository.\n')
+@@ -333,11 +367,15 @@ def run(root):
+                                                'worker_supervisor_socket':str(root / 'workers.sock'),
+                                                'worker_auth_ref':'CORENIUS_SUPERVISOR_TOKEN',
+                                                'worker_transport_root':str(root / 't-exec'),'schema_digest':SCHEMA}]})
+-        service_window(root,'kata')
+-        wait(root,'real Kata ready',lambda:http(root,'GET','/health',bootstrap=True),30)
+-        token = http(root,'POST','/tokens',{'actor':'corenius-controller','name':'disposable-demo'},bootstrap=True)['plaintext']
+-        (root / 'kata.token').write_text(token)
+-        (root / 'kata.token').chmod(0o600)
++        if manifest.get('reuse_kata'):
++            reuse_kata(root, manifest['reuse_kata'])
++            private = json.loads((root / 'private.json').read_text())
++        else:
++            service_window(root,'kata')
++            wait(root,'real Kata ready',lambda:http(root,'GET','/health',bootstrap=True),30)
++            token = http(root,'POST','/tokens',{'actor':'corenius-controller','name':'disposable-demo'},bootstrap=True)['plaintext']
++            (root / 'kata.token').write_text(token)
++            (root / 'kata.token').chmod(0o600)
+         project = http(root,'POST','/projects',{'name':manifest['run_id']})['project']
+         items = {}
+         for task in ['solo','a','b']:
+@@ -368,7 +406,7 @@ def run(root):
+         wait(root,'scoped gateway ready',lambda:(root / 'gateway.log').exists() and 'Gateway listening' in (root / 'gateway.log').read_text(),30)
+         manifest['lead_pane'] = service_window(root,'lead')
+         write(root / 'manifest.json',manifest)
+-        checked(['tmux','resize-window','-t',manifest['session'],'-x','150','-y','45'])
++        checked(['tmux','resize-window','-t',manifest['lead_pane'],'-x','150','-y','45'])
+         service_window(root,'dashboard')
+         window(root,'workerA',['/usr/bin/python3',SELF,'_role',root,'a'])
+         window(root,'workerB',['/usr/bin/python3',SELF,'_role',root,'b'])
+@@ -426,7 +464,13 @@ def run(root):
+         raise
+ 
+ 
+-def start():
++def start(args):
++    global TARGET, CONTROLLER
++    if args.target_dir:
++        TARGET = args.target_dir.resolve()
++        CONTROLLER = TARGET / 'debug/corenius-sqlite-controller'
++    if args.session:
++        checked(['tmux','has-session','-t','=' + args.session])
+     work = REPO / '.scratch/sqlite06-happy-path'
+     work.mkdir(parents=True,exist_ok=True)
+     with (work / 'retained-build.log').open('ab') as log:
+@@ -442,15 +486,23 @@ def start():
+     run_id = time.strftime('%Y%m%dT%H%M%SZ',time.gmtime()) + '-' + uuid.uuid4().hex[:6]
+     root = pathlib.Path('/tmp/cb-' + run_id)
+     root.mkdir(mode=0o700)
+-    manifest = {'run_id':run_id,'root':str(root),'session':'corenius-baseline-' + run_id,
++    manifest = {'run_id':run_id,'root':str(root),'session':args.session or 'corenius-baseline-' + run_id,
+                 'source_commit':git(REPO,'rev-parse','HEAD'),'source_tree':git(REPO,'rev-parse','HEAD^{tree}'),
+                 'runner':pin(SELF),'relay':pin(SELF.with_name('sqlite_responses_relay.py')),'controller':pin(CONTROLLER),
+                 'codex':pin(BIN / 'codex'),'kata':pin(KATA),'launch':['python3',str(SELF),'start'],
+-                'scope':'owner c9 happy-path-first; disposable targets only; baseline remains unqualified'}
++                 'scope':'owner c9 happy-path-first; disposable targets only; baseline remains unqualified'}
++    if args.session:
++        manifest['window_prefix'] = 'trial-' + run_id[-6:] + '-'
++    if args.reuse_kata:
++        manifest['reuse_kata'] = pin(args.reuse_kata)
++    manifest['launch'] = ['python3',str(SELF),*sys.argv[1:]]
+     write(root / 'manifest.json',manifest)
+-    checked(['tmux','new-session','-d','-s',manifest['session'],'-n','outer',
+-             shlex.join(['/usr/bin/python3',str(SELF),'_run',str(root)])])
+-    checked(['tmux','set-option','-t',manifest['session'],'remain-on-exit','on'])
++    if args.session:
++        manifest['outer_pane'] = window(root,'outer',['/usr/bin/python3',SELF,'_run',root])
++    else:
++        checked(['tmux','new-session','-d','-s',manifest['session'],'-n','outer',
++                 shlex.join(['/usr/bin/python3',str(SELF),'_run',str(root)])])
++        checked(['tmux','set-option','-t',manifest['session'],'remain-on-exit','on'])
+     write(work / ('launch-' + run_id + '.json'),manifest)
+     print(json.dumps({'run':str(root),'session':manifest['session'],'attach':'tmux attach -t ' + manifest['session'],
+                       'status':'python3 ' + str(SELF) + ' status ' + str(root)}))
+@@ -459,7 +511,10 @@ def start():
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     commands = parser.add_subparsers(dest='command',required=True)
+-    commands.add_parser('start')
++    p = commands.add_parser('start')
++    p.add_argument('--session', help='use this existing tmux session with uniquely named trial windows')
++    p.add_argument('--reuse-kata', type=pathlib.Path, help='reuse this exact private Kata configuration and authenticated instance')
++    p.add_argument('--target-dir', type=pathlib.Path, help='build continuation binaries separately')
+     for name in ['status','input','_run','_service','_role']:
+         p = commands.add_parser(name)
+         p.add_argument('run',type=pathlib.Path)
+@@ -469,7 +524,7 @@ def main():
+             p.add_argument('name')
+     args = parser.parse_args()
+     if args.command == 'start':
+-        start()
++        start(args)
+     elif args.command == 'status':
+         for name in ['manifest.json','result.json','failure.json']:
+             if (args.run / name).exists():
+diff --git a/tools/agents/test_sqlite_baseline.py b/tools/agents/test_sqlite_baseline.py
+index b9529ae..b9efafb 100644
+--- a/tools/agents/test_sqlite_baseline.py
++++ b/tools/agents/test_sqlite_baseline.py
+@@ -7,9 +7,63 @@ import tempfile
+ import time
+ import uuid
+ import unittest
++import http.server
++import threading
+ 
+ 
+ class BaselineEntry(unittest.TestCase):
++    def test_start_accepts_explicit_existing_session_and_pinned_reuse_options(self):
++        script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
++        result = subprocess.run(['python3', str(script), 'start', '--help'], capture_output=True, text=True)
++        self.assertEqual(result.returncode, 0)
++        for option in ['--session', '--reuse-kata', '--target-dir']:
++            self.assertIn(option, result.stdout)
++
++    def test_reuse_kata_qualifies_instance_before_copying_private_grant(self):
++        # Ignoring the pinned instance would attach the new project to an
++        # unrelated ledger and copy its private grant before qualification.
++        script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
++        spec = importlib.util.spec_from_file_location('baseline', script)
++        baseline = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(baseline)
++        requests = []
++        identity = {'instance_uid': 'expected-instance', 'auth': {'actor': 'corenius-controller'}}
++        class Handler(http.server.BaseHTTPRequestHandler):
++            def do_GET(self):
++                requests.append(self.path)
++                body = json.dumps(identity).encode()
++                self.send_response(200)
++                self.end_headers()
++                self.wfile.write(body)
++            def log_message(self, *args):
++                pass
++        server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Handler)
++        thread = threading.Thread(target=server.serve_forever, daemon=True)
++        thread.start()
++        try:
++            with tempfile.TemporaryDirectory(prefix='cb-reuse-', dir='/tmp') as directory:
++                parent = pathlib.Path(directory)
++                root = parent / 'new'; root.mkdir(mode=0o700)
++                baseline.write(root / 'private.json', {'kata_port': 1})
++                token = parent / 'kata.token'; token.write_text('test-private-grant'); token.chmod(0o600)
++                config = parent / 'kata.json'
++                baseline.write(config, {'origin': 'http://127.0.0.1:' + str(server.server_port),
++                                        'origin_instance_uid': 'wrong-instance', 'actor': 'corenius-controller',
++                                        'api_schema_version': '0.24.0', 'token_file': str(token)})
++                with self.assertRaisesRegex(RuntimeError, 'Kata reuse identity mismatch'):
++                    baseline.reuse_kata(root, baseline.pin(config))
++                self.assertFalse((root / 'kata.token').exists())
++                value = json.loads(config.read_text()); value['origin_instance_uid'] = 'expected-instance'
++                baseline.write(config, value)
++                baseline.reuse_kata(root, baseline.pin(config))
++                self.assertEqual((root / 'kata.token').read_text(), 'test-private-grant')
++                self.assertEqual((root / 'kata.token').stat().st_mode & 0o777, 0o600)
++                self.assertEqual(json.loads((root / 'private.json').read_text())['kata_port'], server.server_port)
++                self.assertEqual(token.read_text(), 'test-private-grant')
++                self.assertEqual(requests, ['/api/v1/instance', '/api/v1/instance'])
++        finally:
++            server.shutdown(); server.server_close(); thread.join()
++
+     def test_retained_entry_point_exposes_start_status_and_literal_input(self):
+         script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
+         self.assertTrue(script.exists(), 'retained disposable tmux baseline runner missing')

@@ -1,0 +1,429 @@
+{
+  "schema": 1,
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "tree": "b55b0537e7db60885cd0742e76280e49f5214826",
+  "scope": "independent bounded SPEC C1/C2 extra1 review; baseline acceptance/live demo excluded",
+  "artifacts": [
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/archive-index.json",
+      "relative": "archive-index.json",
+      "sha256": "6eb3e969dfce51d11995312714a7c6924cd3a06b287b9de556c032ca81afba54",
+      "bytes": 2006
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/baseline-execution-pins.json",
+      "relative": "baseline-execution-pins.json",
+      "sha256": "a46c0f99f83c21d8172064aa906315f60f931431cf32319180c643f8a3d18028",
+      "bytes": 973
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/baseline-source.json",
+      "relative": "baseline-source.json",
+      "sha256": "d5ba78aeb0b3c210e59d586a5c7c961582c8b9f3dba692356961687a6047f436",
+      "bytes": 6220
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/causal-results.json",
+      "relative": "causal-results.json",
+      "sha256": "5ba41ba5f2115e4504f1ca8095f7164a5511d01361e23803d1bc9651a56b8935",
+      "bytes": 14080
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/attempt-progress-g4-scwi03ti/state.db",
+      "relative": "db-snapshots/attempt-progress-g4-scwi03ti/state.db",
+      "sha256": "ecebcfef853ac1d1a44fc652c28ae7a95f8fce2a9b8d2a64c9dd5315ec865abb",
+      "bytes": 4096
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/attempt-progress-g4-scwi03ti/state.db-shm",
+      "relative": "db-snapshots/attempt-progress-g4-scwi03ti/state.db-shm",
+      "sha256": "d06b1ca0b9b347f9d2b17e50ea153bbb70d96f1337af27f6e6bcd4385300bf61",
+      "bytes": 32768
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/attempt-progress-g4-scwi03ti/state.db-wal",
+      "relative": "db-snapshots/attempt-progress-g4-scwi03ti/state.db-wal",
+      "sha256": "7242a48fd18a2e148ebad2b49b3012a872c5250da4d3064bbd9c6877c93db80b",
+      "bytes": 1454392
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/attempt-progress-g4-t5kjyey9/state.db",
+      "relative": "db-snapshots/attempt-progress-g4-t5kjyey9/state.db",
+      "sha256": "ecebcfef853ac1d1a44fc652c28ae7a95f8fce2a9b8d2a64c9dd5315ec865abb",
+      "bytes": 4096
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/attempt-progress-g4-t5kjyey9/state.db-shm",
+      "relative": "db-snapshots/attempt-progress-g4-t5kjyey9/state.db-shm",
+      "sha256": "44cfd2b6cca9ce3b5c2e816fde0af9bbbdf81cabd41d879f15483ea6efb53fca",
+      "bytes": 32768
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/attempt-progress-g4-t5kjyey9/state.db-wal",
+      "relative": "db-snapshots/attempt-progress-g4-t5kjyey9/state.db-wal",
+      "sha256": "2a3c6d447332730cb852574924a7f6d00549c577f6700df63554387d0276f215",
+      "bytes": 1474992
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/separate-cnr-n32ggv3g/state.db",
+      "relative": "db-snapshots/separate-cnr-n32ggv3g/state.db",
+      "sha256": "ecebcfef853ac1d1a44fc652c28ae7a95f8fce2a9b8d2a64c9dd5315ec865abb",
+      "bytes": 4096
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/separate-cnr-n32ggv3g/state.db-shm",
+      "relative": "db-snapshots/separate-cnr-n32ggv3g/state.db-shm",
+      "sha256": "0890433feceb7545e3ec97b5bc5c6a24db0c658ecc09ed4cc00973097d385be3",
+      "bytes": 32768
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/separate-cnr-n32ggv3g/state.db-wal",
+      "relative": "db-snapshots/separate-cnr-n32ggv3g/state.db-wal",
+      "sha256": "87d7314e74b16b587184e0ef316a3da411b7683800ceb99715248a83f705251c",
+      "bytes": 3720392
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/shared-cnr-99us3oeq/state.db",
+      "relative": "db-snapshots/shared-cnr-99us3oeq/state.db",
+      "sha256": "ecebcfef853ac1d1a44fc652c28ae7a95f8fce2a9b8d2a64c9dd5315ec865abb",
+      "bytes": 4096
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/shared-cnr-99us3oeq/state.db-shm",
+      "relative": "db-snapshots/shared-cnr-99us3oeq/state.db-shm",
+      "sha256": "e9de974ddb3fb7f84c4d218ed946eade8381ac801b99aec4f8d6cae8c9c1ea3d",
+      "bytes": 32768
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/shared-cnr-99us3oeq/state.db-wal",
+      "relative": "db-snapshots/shared-cnr-99us3oeq/state.db-wal",
+      "sha256": "f43819bc40e4877eaa1d239e4886c09c62a362ddc1f493e72e1f682ff30f6ade",
+      "bytes": 4049992
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/shared-cnr-_a45h7d7/state.db",
+      "relative": "db-snapshots/shared-cnr-_a45h7d7/state.db",
+      "sha256": "ecebcfef853ac1d1a44fc652c28ae7a95f8fce2a9b8d2a64c9dd5315ec865abb",
+      "bytes": 4096
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/shared-cnr-_a45h7d7/state.db-shm",
+      "relative": "db-snapshots/shared-cnr-_a45h7d7/state.db-shm",
+      "sha256": "1a05cd745d708cbde6f8db86f1366b95c2d2333761281d01e3ed0ed924034657",
+      "bytes": 32768
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/db-snapshots/shared-cnr-_a45h7d7/state.db-wal",
+      "relative": "db-snapshots/shared-cnr-_a45h7d7/state.db-wal",
+      "sha256": "311d3e666aaa7adb9ae867901a27c3d716c96ef6ea79282835696455a135837b",
+      "bytes": 3617392
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/execution-pins.json",
+      "relative": "execution-pins.json",
+      "sha256": "186c9a3050a46642aec1b1b85391d16507e04d1b1844f9e4525d52bab5e8a219",
+      "bytes": 1512
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/final-binary-pins.json",
+      "relative": "final-binary-pins.json",
+      "sha256": "4d1f25bff9a80fff92cdd55f67ee46aabcb98e451ba886bc346672ef8049f9f2",
+      "bytes": 842
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixture-provenance.json",
+      "relative": "fixture-provenance.json",
+      "sha256": "1e4c635e37e60e8082fb97f88290e2fab8e125535b9a75184af4dc4fa0a46f73",
+      "bytes": 1797
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/git_protocol.py",
+      "relative": "fixtures/git_protocol.py",
+      "sha256": "bddef4e38f12e772d3dd078e768f0b3712f662b8d9019b24dc4dc6623f3c934b",
+      "bytes": 57357
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/native_registry.py",
+      "relative": "fixtures/native_registry.py",
+      "sha256": "e45163b23232a8056a10bde4c2c9749a026a6fdbb829ab1d898108dc4422ad00",
+      "bytes": 90955
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/native_short.py",
+      "relative": "fixtures/native_short.py",
+      "sha256": "6b53342f7d1dea8c2759228c26ffb519b7e07183bf130f513b987f03206e20e3",
+      "bytes": 90890
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/git-archives/attempt-progress-g4-scwi03ti.tar.gz",
+      "relative": "git-archives/attempt-progress-g4-scwi03ti.tar.gz",
+      "sha256": "13a47984a9c3c46aae48181c641caa50166783bfb93b60a13d72d2b2b6159ab3",
+      "bytes": 75496
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/git-archives/attempt-progress-g4-t5kjyey9.tar.gz",
+      "relative": "git-archives/attempt-progress-g4-t5kjyey9.tar.gz",
+      "sha256": "263634a6cbcb95d8adffe4886dcda555572a922d1506331b630842ede80d600e",
+      "bytes": 88739
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/SPEC.md",
+      "relative": "inputs/SPEC.md",
+      "sha256": "8e8b43117cb9a45aa0f7c784fec059a5c843715fb99384eb7da1b09fe3057848",
+      "bytes": 23557
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/amendment.md",
+      "relative": "inputs/amendment.md",
+      "sha256": "449496d6f81b0f42df995f8343c6d5733d588fbfea4786e894b8410ad2971ea9",
+      "bytes": 4546
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/diff.patch",
+      "relative": "inputs/diff.patch",
+      "sha256": "d25ed6b3ae4431a7fc413e2790eb5a0b98da39c83fdc7464b66857cd3ee3c8e7",
+      "bytes": 22822
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/manifest.json",
+      "relative": "inputs/manifest.json",
+      "sha256": "096e06a7b2f44e575f099c01689bcd52b6c94716056dd35c944c8b769524c7f4",
+      "bytes": 778
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/prior-review.md",
+      "relative": "inputs/prior-review.md",
+      "sha256": "4ae83c2a16195c68ca6f49c6c8b7f3ddb16784fad64b9b9612e1cc0aa30bb824",
+      "bytes": 2428
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/receipt.json",
+      "relative": "inputs/receipt.json",
+      "sha256": "f9d5d8ed52e589bd9f40e76091a3dfafd24d9f6c0d3fc4333830750c3f3a72ce",
+      "bytes": 4668
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/inputs/ticket05.md",
+      "relative": "inputs/ticket05.md",
+      "sha256": "9229e8591c4abf2bd9c469c40e14157fb6dd220121b552beb6fcc8ebe9d93eb2",
+      "bytes": 6968
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/C1-native-short.log",
+      "relative": "logs/C1-native-short.log",
+      "sha256": "38f6cbce015afee39743e08e00f217578deae2e0cb13bdf3da5357b9bc9b112f",
+      "bytes": 121857
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/C1-native.log",
+      "relative": "logs/C1-native.log",
+      "sha256": "0fe544137004c4d8774fb3887dc9873d42dc56aa83db89726bbdba4c5bbeb099",
+      "bytes": 2036
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/C2-git.log",
+      "relative": "logs/C2-git.log",
+      "sha256": "08c2a5ea55b2803fe0ed5f46ad963f7215a23dac3a0364998379785301f2d1ad",
+      "bytes": 1784
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-C1-native-short.log",
+      "relative": "logs/baseline-C1-native-short.log",
+      "sha256": "19e776561db26772d6a075641683d36968d68e8d2d51fa27b45be50bf98fe051",
+      "bytes": 46231
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-C2-git.log",
+      "relative": "logs/baseline-C2-git.log",
+      "sha256": "c914cb2e4449cee55947710019e49fb04262d7bb4e9f4fefe3bcc5380fc51d55",
+      "bytes": 2256
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-setup-build.log",
+      "relative": "logs/baseline-setup-build.log",
+      "sha256": "1734d90b0582b41583a6ba6065919dcfb6688c567d2c2344e21fb2d218225a9a",
+      "bytes": 148
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-setup-build2.log",
+      "relative": "logs/baseline-setup-build2.log",
+      "sha256": "1734d90b0582b41583a6ba6065919dcfb6688c567d2c2344e21fb2d218225a9a",
+      "bytes": 148
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-setup-build3.log",
+      "relative": "logs/baseline-setup-build3.log",
+      "sha256": "2f1e3dd12e172aec485a6b5162a341d6618d1dccc0ed0d95e63aaa9744f1ff5a",
+      "bytes": 1413
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/control-center-negatives.log",
+      "relative": "logs/control-center-negatives.log",
+      "sha256": "38e9dfb14419d5385aeabe0b2661d14c70f91e1a2222625836eadb1e1a801299",
+      "bytes": 1709
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/mount-check.log",
+      "relative": "logs/mount-check.log",
+      "sha256": "39d5016ec0c3524ce90ab51beb0eeb0ea3ec02621d7c0dc1e5dabf01eeefa796",
+      "bytes": 162
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/setup-build.log",
+      "relative": "logs/setup-build.log",
+      "sha256": "2cb80830ee20ab07f2fda98a2d846233198b9742882edfc85c0abf3ed328857d",
+      "bytes": 1408
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/mount-run.py",
+      "relative": "mount-run.py",
+      "sha256": "04c080efd4d7f9a091a7f04bdbddab35a9dfd8b38e6267034855677551507d54",
+      "bytes": 452
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/native-archives/separate-cnr-n32ggv3g.tar.gz",
+      "relative": "native-archives/separate-cnr-n32ggv3g.tar.gz",
+      "sha256": "574ee5257df3c749ef6325c4eaf6ba88b857d4fefd67ecbf1505447d36c5aea5",
+      "bytes": 1335805
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/native-archives/shared-cnr-1274kcxy.tar.gz",
+      "relative": "native-archives/shared-cnr-1274kcxy.tar.gz",
+      "sha256": "32efd7a801decd5f498ce437dfb7b872a1fb2a38e964ae5a5e5eef79e21bfabd",
+      "bytes": 1888
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/native-archives/shared-cnr-99us3oeq.tar.gz",
+      "relative": "native-archives/shared-cnr-99us3oeq.tar.gz",
+      "sha256": "8c7225c7ad2403454d830104f8f2f2331664ca74b9dd6a63fdc84eebe0dd68a4",
+      "bytes": 773934
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/native-archives/shared-cnr-_a45h7d7.tar.gz",
+      "relative": "native-archives/shared-cnr-_a45h7d7.tar.gz",
+      "sha256": "22159d6a63c61e91d542ccc4242b84c591e4a18e97c1e27ae83142527122ea8d",
+      "bytes": 623015
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/native-correction-effects.json",
+      "relative": "native-correction-effects.json",
+      "sha256": "57771bb29f9a1880cafe488a761ea8c85214a17ebfb0304c72c5a89a9025a938",
+      "bytes": 3818
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/process-dispositions.json",
+      "relative": "process-dispositions.json",
+      "sha256": "b2a88fbc7e93a4271799bafa2834b928e249a9f512582443a14f29abc8a7435e",
+      "bytes": 35942
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/report.json",
+      "relative": "report.json",
+      "sha256": "f8a60c46c2ab5973ac95fc7cb662ea9c58adb9bb3e38f5eca11d2c26d7db190a",
+      "bytes": 21668
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/report.md",
+      "relative": "report.md",
+      "sha256": "11cee58351d8f6c6d88ed9a02c6b869c1d4b29fc13b1c65888e224934ac606fc",
+      "bytes": 2758
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/run.py",
+      "relative": "run.py",
+      "sha256": "cf162f7c1b3e3559bf5737c99a08d135c83b909f350a8cad8abf63a3c9093c5c",
+      "bytes": 1820
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/C1-native-short.json",
+      "relative": "runs/C1-native-short.json",
+      "sha256": "855286da644ecefa9ae214e273c67627fb93b03f29d0583f85022d7fe7f898c2",
+      "bytes": 1195
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/C1-native.json",
+      "relative": "runs/C1-native.json",
+      "sha256": "66b822260cf6abec09886115b25786e95f4eeb1ab22c932ac8165750ae9f5102",
+      "bytes": 912
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/C2-git.json",
+      "relative": "runs/C2-git.json",
+      "sha256": "bfbd541cfbc732224bc278627925ac7e8942e2205e8472999126a72db58e2548",
+      "bytes": 903
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/baseline-C1-native-short.json",
+      "relative": "runs/baseline-C1-native-short.json",
+      "sha256": "7cb4019b633e494fc1e3e6a498c9b3371e7c05ed8b0e86442ccb874473d46f49",
+      "bytes": 1218
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/baseline-C2-git.json",
+      "relative": "runs/baseline-C2-git.json",
+      "sha256": "b25f4f29e56e54443626fe27b66a0a4b981f57c284e84ea21afd2c42bfdd5182",
+      "bytes": 1050
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/baseline-setup-build.json",
+      "relative": "runs/baseline-setup-build.json",
+      "sha256": "fb145db84ecf9d5bd0fc9a2436ae830713acad842e67be07ba75f5b7b957a36b",
+      "bytes": 968
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/baseline-setup-build2.json",
+      "relative": "runs/baseline-setup-build2.json",
+      "sha256": "ae95dabd6204c0282cb1aa8d3112257f9f1e222f113d6ba6982bf16c70ba5214",
+      "bytes": 971
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/baseline-setup-build3.json",
+      "relative": "runs/baseline-setup-build3.json",
+      "sha256": "7f779d110453888008a2cd4e8ec517a0464a55242ef7ff4b81004835edd44a18",
+      "bytes": 1093
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/control-center-negatives.json",
+      "relative": "runs/control-center-negatives.json",
+      "sha256": "b2fb452ffd9b2c7f5c19cd26630a11dd762bdc802b057ab13e85450d34783ed3",
+      "bytes": 951
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/mount-check.json",
+      "relative": "runs/mount-check.json",
+      "sha256": "dedfae711b992bf40901fe6acd127a878158cf8f5700289c2ffc9f74ad6a2a7d",
+      "bytes": 1293
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runs/setup-build.json",
+      "relative": "runs/setup-build.json",
+      "sha256": "dc8cd13c19d1486dc929e89a87d7e2cc2dfb2bfedd7e83ac6ac41471d9022e17",
+      "bytes": 876
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/setup-limitations.json",
+      "relative": "setup-limitations.json",
+      "sha256": "240005df972b30286afa28bbdc99a6d2332887bf093c1d105e81dd5aff062d57",
+      "bytes": 2383
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source-before.json",
+      "relative": "source-before.json",
+      "sha256": "ef6ca44345bbeafe1c42ff956d436c42277de7eddcb567dcea7c2cccbb6e4eb3",
+      "bytes": 910674
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source-integrity.json",
+      "relative": "source-integrity.json",
+      "sha256": "95eb81500982f5f83806d52f881f1f4554887d92117ca629b3b40daaceeca654",
+      "bytes": 388
+    }
+  ],
+  "source_hashes": "source-before.json / source-integrity.json",
+  "causal_results": "causal-results.json / runs/*.json",
+  "retained_setup_failures": "setup-limitations.json / original unchanged logs and command records",
+  "raw_archive_index": "archive-index.json",
+  "actual_process_handles": "process-dispositions.json",
+  "omitted_from_curated_index": "source checkout, exact archived base-source and build targets; source/binary identities separately pinned, no source bytes changed",
+  "self_hash_policy": "index hashes every other reviewed evidence artifact; no circular self hash"
+}

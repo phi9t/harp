@@ -1,0 +1,13 @@
+Review for job 654 (by codex)
+Tokens: 75.5k ctx (438.4k cached) · 2.5k out · ~$0.20
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: Medium
+- **Location**: `crates/sqlite-controller/tests/support/correction_authority.py:37`
+- **Problem**: The peer wait accepts only `presented`, but the fixture worker immediately acknowledges corrections. A correction can reach `acknowledged` before polling observes `presented`, or acknowledge while still `prepared`, causing a timeout despite successful delivery.
+- **Fix**: Accept both `presented` and `acknowledged`, consistent with the later assertions and other delivery waits.
+
+## Summary
+
+The change retires stale correction grants, permits fresh authorization, and attributes worker progress to the current attempt.

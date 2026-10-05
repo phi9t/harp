@@ -1,0 +1,31 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.80s
+     Running unittests src/lib.rs (.scratch/sqlite06-happy-path/model-link/target/debug/deps/corenius_sqlite_controller-11309043649fa783)
+
+running 3 tests
+
+thread 'codex::selected_model_tests::selected_model_core_command_preserves_role_and_idempotency_fences' (2026947) panicked at src/codex.rs:2306:88:
+called `Result::unwrap()` on an `Err` value: "native command arguments: unknown field `model`, expected one of `attempt`, `role`, `text`, `expected_turn`, `expected_binding`"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test codex::selected_model_tests::selected_model_core_command_preserves_role_and_idempotency_fences ... FAILED
+
+thread 'codex::selected_model_tests::selected_model_worker_initial_turn_and_thread_intents_match_configuration' (2026948) panicked at src/codex.rs:2317:178:
+called `Result::unwrap()` on an `Err` value: Error("unknown field `model`, expected one of `schema_migration`, `topology`, `transport_root`, `servers`", line: 0, column: 0)
+test codex::selected_model_tests::selected_model_worker_initial_turn_and_thread_intents_match_configuration ... FAILED
+
+thread 'codex::ui::selected_model_ui_tests::selected_model_native_ui_records_identity_and_reaches_actual_adapter' (2026949) panicked at src/native_ui.rs:500:9:
+assertion `left == right` failed
+  left: Null
+ right: "gpt-6.1-sol"
+test codex::ui::selected_model_ui_tests::selected_model_native_ui_records_identity_and_reaches_actual_adapter ... FAILED
+
+failures:
+
+failures:
+    codex::selected_model_tests::selected_model_core_command_preserves_role_and_idempotency_fences
+    codex::selected_model_tests::selected_model_worker_initial_turn_and_thread_intents_match_configuration
+    codex::ui::selected_model_ui_tests::selected_model_native_ui_records_identity_and_reaches_actual_adapter
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `--lib`

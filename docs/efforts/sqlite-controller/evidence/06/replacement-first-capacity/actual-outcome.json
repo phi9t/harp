@@ -1,0 +1,152 @@
+{
+  "observed_at": 1791176841.011542,
+  "run": "/tmp/cb-20261005T050033Z-84eb5a",
+  "source_commit": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "source_tree": "e33f6ad0017029a0ac826356d920dd6f55ea6865",
+  "manifest_sha256": "19d28a3a77ed01bc467e653bf639afa75a459f5419e92712011ccf26e8944b05",
+  "status": "blocked by external model capacity before first worker admission",
+  "baseline_qualified": false,
+  "outer_actual_exit": 1,
+  "outer_failure": {
+    "at": 1791176784.008118,
+    "class": "TimeoutError",
+    "message": "one worker exact candidate captured",
+    "exit": 1,
+    "label": "initial setup or target failure; retained, no success claim"
+  },
+  "native_first_failure": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/first-native-turn-outcome.json",
+  "native_error": {
+    "additionalDetails": null,
+    "codexErrorInfo": "serverOverloaded",
+    "message": "Selected model is at capacity. Please try a different model.",
+    "misalignment": null
+  },
+  "preservation": "All trial panes and native actor jobs retained; no retry/fallback; old namespace untouched. Owned public feed1 stopped only to narrow projection; pane retained.",
+  "panes": [
+    {
+      "window": "@121",
+      "name": "trial-84eb5a-outer",
+      "pane": "%131",
+      "pane_pid": 1269473,
+      "birth": null,
+      "dead": true,
+      "actual_exit": 1
+    },
+    {
+      "window": "@122",
+      "name": "trial-84eb5a-relay",
+      "pane": "%132",
+      "pane_pid": 1269567,
+      "birth": "59201450",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@123",
+      "name": "trial-84eb5a-workers",
+      "pane": "%133",
+      "pane_pid": 1269595,
+      "birth": "59201502",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@124",
+      "name": "trial-84eb5a-controlplanes",
+      "pane": "%134",
+      "pane_pid": 1270028,
+      "birth": "59202404",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@126",
+      "name": "trial-84eb5a-controller",
+      "pane": "%136",
+      "pane_pid": 1270786,
+      "birth": "59203257",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@127",
+      "name": "trial-84eb5a-gateway",
+      "pane": "%137",
+      "pane_pid": 1271754,
+      "birth": "59204067",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@128",
+      "name": "trial-84eb5a-lead",
+      "pane": "%138",
+      "pane_pid": 1271777,
+      "birth": "59204119",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@129",
+      "name": "trial-84eb5a-dashboard",
+      "pane": "%139",
+      "pane_pid": 1271786,
+      "birth": "59204121",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@130",
+      "name": "trial-84eb5a-workerA",
+      "pane": "%140",
+      "pane_pid": 1271790,
+      "birth": "59204122",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@131",
+      "name": "trial-84eb5a-workerB",
+      "pane": "%141",
+      "pane_pid": 1271809,
+      "birth": "59204124",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@132",
+      "name": "trial-84eb5a-observation",
+      "pane": "%142",
+      "pane_pid": 1291731,
+      "birth": null,
+      "dead": true,
+      "actual_exit": null
+    },
+    {
+      "window": "@133",
+      "name": "trial-84eb5a-obs-lead",
+      "pane": "%143",
+      "pane_pid": 1291748,
+      "birth": "59221315",
+      "dead": false,
+      "actual_exit": null
+    },
+    {
+      "window": "@134",
+      "name": "trial-84eb5a-observation2",
+      "pane": "%144",
+      "pane_pid": 1321991,
+      "birth": "59234664",
+      "dead": false,
+      "actual_exit": null
+    }
+  ],
+  "public_paths": {
+    "kata": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/kata.json",
+    "runtime_roster": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/runtime_roster.json",
+    "kata_source": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/kata_source.json",
+    "control_center": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/control_center.json"
+  },
+  "native_observers": "lead accepted native thread/read and second resume; workers await actual admission",
+  "next": "Root must resolve upstream model capacity or explicitly authorize bounded literal recovery; no automatic provider retry."
+}

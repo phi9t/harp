@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-10-05T05:27:49.333225+00:00",
+  "actor": "/root/sqlite06_model_link_author",
+  "thread": "01a10a86-8959-7022-a25a-8504f165f2a0",
+  "source": "session_meta parent01a0f51d/agent_path exact; body excluded",
+  "tree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "base": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "handoff_sha256": "7e8d8336ef4e1b787b06576c2282c979183a80adbef3cc1185d5b8f80a8d8fa0",
+  "old_actor_state": "quiescent/completed; all checks finished",
+  "ack": "explicit matched identity and all source/evidence pins",
+  "authority": "bounded model-selection GREEN, focused checks, commit/freeze; no live deploy before scoped review",
+  "caps_reset": false
+}

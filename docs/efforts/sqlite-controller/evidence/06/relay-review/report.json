@@ -1,0 +1,159 @@
+{
+  "review": "Independent sealed host-only Responses relay review",
+  "status": "FINDINGS; no unqualified relay or baseline PASS",
+  "generated": 1791173036.607532,
+  "source_commit": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "source_writer": "01a10a2b-1c44-7e11-aed9-11720d14abb0",
+  "snapshot_time": "2026-10-05T03:54:53.261513+00:00",
+  "input_pins": {
+    "sqlite_responses_relay.py": "91903578eba38db8ad56ef40e811deebcd511e4017e2a052e4b332b0a69e3a96",
+    "test_sqlite_responses_relay.py": "148377c32ef64de7381c4b73a559595d3424d408254314de1985f7a9a3bcf402",
+    "live-preflight-1.json": "929d00231c0b5d1f68a23a809c459ae2264d69581aacfc3f84c030e8ea1655ed"
+  },
+  "input_hashes_unchanged": true,
+  "standards": {
+    "status": "NO_NEW_SCOPED_STANDARDS_FINDINGS; baseline remains unqualified",
+    "new_findings": [],
+    "standards_read": [
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/CONSTITUTION.md",
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/agents/agentic-engineering.md",
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/agents/skill-orchestration.md",
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/agents/domain.md"
+    ],
+    "method": "Code-review two-axis criteria applied in this independent context; direct task prohibits further agents and broad repository reads.",
+    "limits": [
+      "This is a sealed-file review, not a branch diff or complete repository gate.",
+      "Task says Standards/branch654 has an existing TEST timing flaw. It was not re-reviewed or resolved here. Prior C1/C2 scopedPASS does not qualify that baseline."
+    ]
+  },
+  "spec": {
+    "status": "TWO_CONFIRMED_SCOPED_FINDINGS",
+    "findings": [
+      {
+        "id": "S1",
+        "priority": "Important",
+        "title": "Evidence retains caller-controlled body and header fields",
+        "source": "inputs/sqlite_responses_relay.py",
+        "lines": [
+          140,
+          141,
+          165,
+          166
+        ],
+        "requirement": "Narrow task error/report privacy; source says request/response bodies and headers may contain secrets or reasoning and retain only safe failure class.",
+        "observed": "An object-valued model body field and session_id header both enter Server.record verbatim. Independent synthetic UnixHTTP accepted the request and retained 2 of 2 runtime privacy canaries in the resulting evidence.",
+        "proof": "evidence/independent-results.json observations.evidence_privacy; independent_checks.py test_model_body_and_session_header_privacy_contract",
+        "actual_exit": 1,
+        "impact": "A caller can persist sensitive or attacker-selected body/header content into the host evidence file. Arbitrary model objects expand the retained content beyond a model identifier. No real credential was used or exposed in this review.",
+        "suggestion": "Root/sole author should remove or hash caller header fields and restrict model recording to a validated harmless identifier or fixed approved model. Do not store arbitrary objects.",
+        "adjudication": "Root remains sole correction/adjudication owner; source untouched."
+      },
+      {
+        "id": "S2",
+        "priority": "Moderate",
+        "title": "Stream wall deadline is checked only before blocking reads",
+        "source": "inputs/sqlite_responses_relay.py",
+        "lines": [
+          54,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          161,
+          162
+        ],
+        "requirement": "Narrow task stream limits; source declares STREAM_SECONDS=180 and a response wall deadline.",
+        "observed": {
+          "test_stream_seconds": 0.02,
+          "delayed_eof_seconds": 0.06,
+          "actual_request_wall_seconds": 0.06084357504732907,
+          "http_status": 200,
+          "stream_complete": true,
+          "failure_class": null
+        },
+        "proof": "evidence/deadline-results.json; deadline_check.py reduced-threshold delayed EOF assertion",
+        "actual_exit": 1,
+        "impact": "A late EOF is recorded complete after the deadline. Production overshoot of the declared 180 seconds is inferred from the unchanged 30-second upstream socket timeout; it was not measured with a real upstream or 180-second wait.",
+        "suggestion": "Root/sole author can recheck after reads and constrain each upstream read to the remaining wall budget, or document the intended softer limit. Happy-path blocking priority belongs to the owner.",
+        "adjudication": "No stream fix was attempted."
+      }
+    ],
+    "verified_synthetic_behaviors": [
+      "HTTPS constructor uses chatgpt.com, POST /backend-api/codex/responses, and a default SSL context with certificate verification and hostname checks.",
+      "All six routing negatives stay out of transport; GET is rejected.",
+      "Caller Authorization, account identity, Host, Cookie, proxy credentials, forwarded target and Location are stripped. Only three attribution headers are admitted.",
+      "Synthetic redirect statuses 301/302/303/307/308 yield local 502, no forwarded Location, one transport call.",
+      "Owned private fixture directory is 0700; actual Unix socket is 0600. HTTP/1.0 close framing and a valid fixture SSE event are received intact.",
+      "Oversized normalized headers, excessive/negative lengths, duplicate lengths, transfer encoding and truncated body are rejected. Exact 2MiB request boundary is accepted.",
+      "stream must be true and store false. Six upstream slots reject excess admission with 429.",
+      "Non-200 upstream bodies, normal input and Authorization canaries, and transport exception messages are absent from response/error evidence.",
+      "Actual 16MiB response cap cuts the synthetic oversized stream, closes response and releases slot. Reduced 0.02s repeated-read stream cap reports failure.",
+      "Synthetic auth fixture is read without rewrite; expired synthetic auth is rejected without refresh and symlink auth is rejected."
+    ]
+  },
+  "evidence_classes": {
+    "supplied_actual_preflight": {
+      "artifact": "inputs/live-preflight-1.json",
+      "sha256": "929d00231c0b5d1f68a23a809c459ae2264d69581aacfc3f84c030e8ea1655ed",
+      "source_binary_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+      "http_status": 200,
+      "terminal": "response.completed",
+      "response_status": "completed",
+      "content_type": null,
+      "actual_recorded_exit": 0,
+      "reviewer_reperformed": false,
+      "claim": "Sealed supplied record observes one provider connection with HTTP200 and response.completed. It does not prove official source/ABI assurance or the relay/team path."
+    },
+    "local_synthetic": {
+      "sealed_unit_tests": 1,
+      "sealed_unit_actual_exit": 0,
+      "independent_tests": 15,
+      "independent_passed": 14,
+      "independent_actual_exit": 1,
+      "independent_failures": [
+        "__main__.LocalChecks.test_model_body_and_session_header_privacy_contract"
+      ],
+      "independent_errors": [],
+      "deadline_actual_exit": 1,
+      "real_host_auth_read": false,
+      "real_provider_request": false
+    },
+    "later_actual_team_model_proof": {
+      "status": "NOT_IN_SCOPE; not present in sealed inputs",
+      "claim": "No actual Corenius relay/team model proof is claimed here."
+    }
+  },
+  "resources_and_quiescence": {
+    "retained_actual_process_results": [
+      "evidence/process-results.json",
+      "evidence/deadline-process.json"
+    ],
+    "all_children_reaped": true,
+    "independent_non_main_threads_remaining": [],
+    "deadline_non_main_threads_remaining": [],
+    "socket_remnants": [],
+    "run_tmp_entries_remaining": 0,
+    "stderr_nonempty_inside_synthetic_server": false
+  },
+  "privacy": {
+    "runtime_canary_values_in_report_or_stdout_stderr": false,
+    "raw_canary_artifacts_retained": false,
+    "source_files_modified": false,
+    "host_auth_read": false,
+    "real_provider_request": false,
+    "additional_agents": false,
+    "retained_initial_logs": "Safe initial stdout/stderr/process evidence preserved under private evidence directory."
+  },
+  "limits": [
+    "Source official fetch previously failed per task; installed binary pins and observed provider connection do not prove exact source or ABI assurance.",
+    "No complete product TLS/auth-refresh/catalog/root-Insula architecture review, provider response-body inspection, real credentials, live model call, or branch/test timing repair.",
+    "Main 0700 canonical owned parent gate is source-reviewed; socket mode/transport tested using a synthetic private directory. Participant credential absence is scoped to relay header stripping and no copies in reviewed source.",
+    "TLS configuration is synthetic constructor-verified; real certificate handshake and redirect server were not exercised.",
+    "HEADER_LIMIT is evaluated on parsed header names/values after Python HTTP parsing. Strict raw-wire cap and total concurrent pre-admission handler resources are not qualified.",
+    "SSE is passed through. Only valid fixture framing and closure were tested; arbitrary real upstream SSE validity/content-type, semantic response.completed recognition, and completed team behavior are not asserted.",
+    "No global process inventory was read. Quiescence covers only these synthetic serving/handler threads, reaped test children and private socket artifacts.",
+    "Owner-authorized disposable happy path can be adjudicated separately from exhaustive hardening; two confirmed findings remain unresolved in this sealed snapshot."
+  ]
+}

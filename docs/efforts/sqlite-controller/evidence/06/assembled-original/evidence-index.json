@@ -1,0 +1,191 @@
+{
+  "at": 1791174693.5039694,
+  "evidence": [
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/a536055a2ee3f29d63886baa284b06b2bfd68c9534f78beed90229ccca959929",
+      "sha256": "a536055a2ee3f29d63886baa284b06b2bfd68c9534f78beed90229ccca959929",
+      "bytes": 732,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/build_report.py",
+      "sha256": "73a402202d7c4f4f38be17ac64885b0cf419604d701979ceae7fd691570b70f2",
+      "bytes": 11428,
+      "role": "reviewer script"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/candidate-artifact-hashes.json",
+      "sha256": "d3cfedad969d1b2e3735ce42994f33a7ab6d98e5160617e06be498594c3fc030",
+      "bytes": 1094,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-checkpoint-1791174125124506053.json",
+      "sha256": "8f8fac77331f5ffb8739ae1d66f3e29937f0ddd83191ec003061207980502384",
+      "bytes": 1457,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/ea6cc1a8b30fde1a8c8dcbeae339cb60f07dad20d26d73e560de01802b3f990b",
+      "sha256": "ea6cc1a8b30fde1a8c8dcbeae339cb60f07dad20d26d73e560de01802b3f990b",
+      "bytes": 818,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/earlier-setup-failure-selected.json",
+      "sha256": "2b338db93ffe4fcea92c9b75e5dade06f6510b98b12f91e1168c647f471c6147",
+      "bytes": 183,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/exact-final-candidate-check.json",
+      "sha256": "4546afa426cfec225f9c057164e4ff58f10f6bdee1f11ef3bdd5b7f7127ad6ad",
+      "bytes": 1761,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/exact_candidate_check.py",
+      "sha256": "51dd8daca324239c85175753b69a6b39fd0b77de9695f3b306f83d302b6ebfaf",
+      "bytes": 2325,
+      "role": "reviewer script"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/ingress-public-metadata.json",
+      "sha256": "210ed3b0a187af94b132ebed2ace3002ca4a4aaebb06fc744ab1d5fd19088e23",
+      "bytes": 737,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/initial.json",
+      "sha256": "a4cca05520331c9f2632b440cf603d08fbcaa7ca36f0e024f67d630669a6c49b",
+      "bytes": 56798,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/manifest-pins.json",
+      "sha256": "57fb6f4d7756a3349943a5f510981de3f0b16f233ae87525cf1efa89931b97c2",
+      "bytes": 1776,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/manifest-public.json",
+      "sha256": "a7749ba06b082f2adc64a25d3468b0feecd2a8855644b3de59867b2415c3a778",
+      "bytes": 3800,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/metadata.json",
+      "sha256": "9dffb709f3dc949e1d8f83b61a01d60dba6325454574e8d9a4c67a18d1838f77",
+      "bytes": 37920,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/outer-observations-public.json",
+      "sha256": "96c8a326ab79a0bc0f4dc2906e4eeb4d1af66682bae7bcbb4ff1bb8b2e22e361",
+      "bytes": 1347,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/outer-original-failure.json",
+      "sha256": "2865fb5314cb8d907a5238bf77d33c6bd31bb85f9a44be865a272c6d98f010fa",
+      "bytes": 192,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/physical-ref-initial.json",
+      "sha256": "433718473f21b1bd18f9a11fb5c8e30cfcdc39f85059d205ff2dab4a77f7bdd0",
+      "bytes": 387,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/processes-after-refusal.json",
+      "sha256": "7d415eb6d308c553de876ecafbb278ac0e5fcc38311a4e7c96de7c10b95dbc74",
+      "bytes": 1828,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/processes-observed.json",
+      "sha256": "fca105c2a19401095b6c1b7e1d8dc6b804dc089371d031cfde36729a1ed53049",
+      "bytes": 1829,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/provider-terminal-error-selected.json",
+      "sha256": "8b99cb434114e1e6f300a33946cc9430a612c366d6985278be152a8b8bcd3fe3",
+      "bytes": 387,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/read_public.py",
+      "sha256": "84f075a3a9e5ae83c7d3b7579cb481134ed793790cc56f60fef2f1217687a31f",
+      "bytes": 4532,
+      "role": "reviewer script"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/recovery1-admission-preconditions.json",
+      "sha256": "6d626c820a4627e81e44700aee4c05b2f239f85c9124db030e6c81fff27122ab",
+      "bytes": 1392,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/recovery1-last-db-public-selected.json",
+      "sha256": "7e8d7a0c047cc3e4b4fae989ec31b0784794ab5c67d0adf6d3e476721982eefb",
+      "bytes": 1376,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/relay-public-intervals.json",
+      "sha256": "d32a2962d88f5b219e7bbe40ab33f052cd0db8169895cfeb345edf14d706e1bf",
+      "bytes": 36856,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/report.json",
+      "sha256": "886f6022e43f5ee7cd91648e344b3ee1fbcfbdfc1c8e39f4d3571422c1f5f1d1",
+      "bytes": 23864,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/report.md",
+      "sha256": "a1531598fbda1efe1726ff7ef9e538633962cd2882dccab27b645410d33adb7a",
+      "bytes": 2883,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/runtime-process-dispositions.json",
+      "sha256": "9bc0aa7cd8aebc96c4ec58bc626b486004b7b3f1fdfe2c5ccb2498aa666d3819",
+      "bytes": 4788,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/source-after.json",
+      "sha256": "0b6c7843852f9ff9dce58c0982d94f1a68d5cfe1fccb1132ca1b44ce6df1833b",
+      "bytes": 9996,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/source-before.json",
+      "sha256": "700fabf7fb0182e2f61c5d8ab5b0a4f98f5527059828632e43b3ed0863ca3a39",
+      "bytes": 14519,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/workspace-0a42d7cc-1d6a-4296-8aef-fde18eacdc2f.json",
+      "sha256": "7ea77402f5979c4ce87b835d6d0415fec4aeb062e289eb8cbfb7cf3f7a0dda09",
+      "bytes": 473,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/workspace-81a5f478-21ad-46a2-a25c-7cc67b425d82.json",
+      "sha256": "bb33a6614a4fefff452b19de89b42a90d9de392074acfb124e26ff32444c76de",
+      "bytes": 474,
+      "role": "selected public evidence / own verification / assessment"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/workspace-982b31f9-519e-4e84-b0e5-7fae9a6fb1d3.json",
+      "sha256": "8057e89eebfd2abec2db73308cd4b74b0889edbd03d292d1137eaf9c34b4d452",
+      "bytes": 597,
+      "role": "selected public evidence / own verification / assessment"
+    }
+  ]
+}

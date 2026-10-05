@@ -1,0 +1,69 @@
+{
+  "at": "2026-10-05T04:17:28.633620+00:00",
+  "retired_actor": "/root/sqlite06_happy_path_author",
+  "retired_thread": "01a10a2b-1c44-7e11-aed9-11720d14abb0",
+  "handoff_sha256": "4ca8cb88545c3cfa3f875921ccc72b3a73b2e856d5b03a480157ba8e3b9e908f",
+  "source": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+  "old_writer_quiescent": true,
+  "root_ack_sent": true,
+  "effects": [
+    {
+      "name": "kata",
+      "pid": 699450,
+      "recorded_start_ticks": "58894763",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "relay",
+      "pid": 699556,
+      "recorded_start_ticks": "58894818",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "workers",
+      "pid": 699592,
+      "recorded_start_ticks": "58894871",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "controlplanes",
+      "pid": 702025,
+      "recorded_start_ticks": "58895774",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "controller",
+      "pid": 704750,
+      "recorded_start_ticks": "58896781",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "gateway",
+      "pid": 706499,
+      "recorded_start_ticks": "58897700",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "dashboard",
+      "pid": 706775,
+      "recorded_start_ticks": "58897758",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "lead",
+      "pid": 706553,
+      "recorded_start_ticks": "58897754",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    }
+  ],
+  "outer_harness": "retained running; no duplicate input or launch",
+  "context": "No explicit child compaction. Fresh non-inheriting continuation after quiescence; next request metric pending."
+}

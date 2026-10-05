@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-10-05T03:46:49.247972+00:00",
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "branch_job": 654,
+  "review_exit": 0,
+  "review_sha256": "e14efbee020da7047a262db99d99b1e9baab149d7c970ff765bb783f59786ed5",
+  "fixture_finding": "C1-TEST-PEER-WAIT: presented-only prerequisite can miss acknowledged state; branch654+independentStandards confirm; open lifetime history retains extra1 consumed.",
+  "prototype_disposition": "Safe ordinary disposable prototype may proceed after source-bound report retention. This test helper is not invoked by live runner. No full05/baseline/mainline acceptance.",
+  "trial_writer": "/root/sqlite06_happy_path_author",
+  "writer_overlap": "NONE: original author final/quiescent and32 birthIDs absent before fresh worktree admission."
+}

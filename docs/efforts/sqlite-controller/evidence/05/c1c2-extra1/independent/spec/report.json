@@ -1,0 +1,470 @@
+{
+  "schema": 1,
+  "created_at": "2026-10-05T03:45:47.596208+00:00",
+  "axis": "SPEC",
+  "disposition": "SCOPED_C1_C2_PRODUCT_PASS_WITH_NONBLOCKING_TEST_FINDING",
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "tree": "b55b0537e7db60885cd0742e76280e49f5214826",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "base_tree": "115259a3f5d24ddd766ab7698c3de25f07d12e6d",
+  "before_product_source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "author_evidence_commit_reported_by_root": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "changed_paths": [
+    "crates/sqlite-controller/src/monitor.rs",
+    "crates/sqlite-controller/src/view.rs",
+    "crates/sqlite-controller/tests/codex.rs",
+    "crates/sqlite-controller/tests/git.rs",
+    "crates/sqlite-controller/tests/support/git_protocol.py",
+    "crates/sqlite-controller/tests/support/native_registry.py",
+    "crates/sqlite-controller/tests/support/correction_authority.py"
+  ],
+  "requirements": [
+    {
+      "id": "C1",
+      "status": "independent bounded actual regression PASS",
+      "before": "baseline-C1-native-short actual exit1 at starvation assertion; stale and later current corrections remained requested; peer was explicitly acknowledged; old lead API refused",
+      "after": "C1-native-short actual exit0 in shared and separate native model-free topologies; stale row dispositioned authorization-stale with no operation; later current correction presented; fresh operator grant preserved same correction ID, new decision and supersedes old decision; original old decision retained; duplicate regrant existing; exactly one confirmed native correction operation per correction in retained SQLite",
+      "public_negative_controls": "Superseded lead monitor query refused; synthetic assessment did not supply execution authority; control_center admission, observer, forged worker authority and fabricated ACK negatives passed",
+      "source_invariants": [
+        [
+          "crates/sqlite-controller/src/monitor.rs",
+          893,
+          "finding current ScopeEpoch/adjudication/criterion validated before grant"
+        ],
+        [
+          "crates/sqlite-controller/src/monitor.rs",
+          914,
+          "regrant only stale-author requested/authorization-stale grants; absent or known failed prior effect; old decision/operation lineage retained"
+        ],
+        [
+          "crates/sqlite-controller/src/monitor.rs",
+          1206,
+          "prepared/applying/unknown native turn operations fence further correction preparation"
+        ],
+        [
+          "crates/sqlite-controller/src/monitor.rs",
+          1233,
+          "stale operation must be known failed before disposition/advance"
+        ],
+        [
+          "crates/sqlite-controller/src/codex.rs",
+          1452,
+          "current principal and target epoch rechecked before external effect"
+        ],
+        [
+          "crates/sqlite-controller/src/lib.rs",
+          268,
+          "receipt arguments/epoch-scoped idempotency unchanged"
+        ]
+      ],
+      "limits": "Unknown/active-effect reconciliation and failed-operation regrant guards inspected in exact source, not exercised through additional crash/recovery matrices."
+    },
+    {
+      "id": "C2",
+      "status": "independent bounded actual regression PASS",
+      "before": "baseline-C2-git actual exit1 at fresh Attempt reported_progress null assertion",
+      "after": "C2-git actual exit0 with real private Git workspace, verified accepted candidate, observed executor exit, repair/readmission; current progress null before its own report; historic predecessor report attributed attempt scope; operator report attributed task scope; own subsequent report attributed current Attempt; old grant refused",
+      "source_invariants": [
+        [
+          "crates/sqlite-controller/src/view.rs",
+          36,
+          "history retains explicit principal, Attempt and task/Attempt scope through bounded existing page seam"
+        ],
+        [
+          "crates/sqlite-controller/src/view.rs",
+          573,
+          "latest current progress selected using retained authenticated attempt principal, exact Attempt id and task"
+        ],
+        [
+          "crates/sqlite-controller/src/lib.rs",
+          334,
+          "events retain actual authenticated principal; caller cannot forge attribution"
+        ],
+        [
+          "crates/sqlite-controller/src/lib.rs",
+          411,
+          "revoked predecessor API grant remains refused"
+        ]
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "SPEC-C1-FIXTURE-TIMING",
+      "severity": "Medium/P2",
+      "blocking_for_C1_C2_product_disposition": false,
+      "path": "crates/sqlite-controller/tests/support/correction_authority.py",
+      "line": 37,
+      "title": "Peer-positive wait rejects a valid already-acknowledged delivery",
+      "spec": "Owner monitor design line122: Show corrections as requested/presented/acknowledged/resolved; line108: authenticate acknowledgements against addressed actor and correction ID.",
+      "evidence": "The peer-positive wait tests state == presented, while subsequent positive assertion already permits presented or acknowledged. The real baseline peer was explicitly acknowledged in this independent run. If ACK occurs before the next polling read, the wait times out although the positive delivery control succeeded.",
+      "classification": "Source-confirmed oracle race; this reviewer did not reproduce the false timeout. Independent C1 causal assertions reached red on predecessor and green on candidate without changing this oracle.",
+      "recommendation": "A separately authorized test-only follow-up should accept either presented or acknowledged in that wait. Preserve every prior actual failure; do not charge this source inspection as a new implementation round."
+    }
+  ],
+  "actual_commands": [
+    {
+      "name": "C1-native-short",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--mount",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/mount-run.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/native_short.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:39:43.937622+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 303041,
+      "start_ticks": "58716423",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 0,
+      "seconds": 75.146,
+      "terminal_observed": true,
+      "tested_source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+      "tested_tree": "b55b0537e7db60885cd0742e76280e49f5214826",
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/C1-native-short.log",
+      "log_sha256": "38f6cbce015afee39743e08e00f217578deae2e0cb13bdf3da5357b9bc9b112f"
+    },
+    {
+      "name": "C1-native",
+      "argv": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/native_registry.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:35:21.586419+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 268483,
+      "start_ticks": "58690188",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 1,
+      "seconds": 9.095,
+      "terminal_observed": true,
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/C1-native.log",
+      "log_sha256": "0fe544137004c4d8774fb3887dc9873d42dc56aa83db89726bbdba4c5bbeb099"
+    },
+    {
+      "name": "C2-git",
+      "argv": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/git_protocol.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:35:21.586473+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 268482,
+      "start_ticks": "58690188",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 0,
+      "seconds": 6.434,
+      "terminal_observed": true,
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/C2-git.log",
+      "log_sha256": "08c2a5ea55b2803fe0ed5f46ad963f7215a23dac3a0364998379785301f2d1ad"
+    },
+    {
+      "name": "baseline-C1-native-short",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--mount",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/mount-run.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/native_short.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/base-target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:39:43.935832+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 303039,
+      "start_ticks": "58716423",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 1,
+      "seconds": 49.015,
+      "terminal_observed": true,
+      "tested_source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "tested_tree": "115259a3f5d24ddd766ab7698c3de25f07d12e6d",
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-C1-native-short.log",
+      "log_sha256": "19e776561db26772d6a075641683d36968d68e8d2d51fa27b45be50bf98fe051"
+    },
+    {
+      "name": "baseline-C2-git",
+      "argv": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/fixtures/git_protocol.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/base-target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:39:43.934535+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 303038,
+      "start_ticks": "58716423",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 1,
+      "seconds": 6.327,
+      "terminal_observed": true,
+      "tested_source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "tested_tree": "115259a3f5d24ddd766ab7698c3de25f07d12e6d",
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-C2-git.log",
+      "log_sha256": "c914cb2e4449cee55947710019e49fb04262d7bb4e9f4fefe3bcc5380fc51d55"
+    },
+    {
+      "name": "baseline-setup-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/base-source/crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--bins"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:36:28.101793+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 277693,
+      "start_ticks": "58696840",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 101,
+      "seconds": 0.02,
+      "terminal_observed": true,
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-setup-build.log",
+      "log_sha256": "1734d90b0582b41583a6ba6065919dcfb6688c567d2c2344e21fb2d218225a9a"
+    },
+    {
+      "name": "baseline-setup-build2",
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/base-source/crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--bins"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:37:20.641272+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 287411,
+      "start_ticks": "58702094",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 101,
+      "seconds": 0.019,
+      "terminal_observed": true,
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-setup-build2.log",
+      "log_sha256": "1734d90b0582b41583a6ba6065919dcfb6688c567d2c2344e21fb2d218225a9a"
+    },
+    {
+      "name": "baseline-setup-build3",
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/base-source/crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--bins"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:37:52.626587+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 289866,
+      "start_ticks": "58705292",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 0,
+      "seconds": 13.11,
+      "terminal_observed": true,
+      "tested_source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "tested_tree": "115259a3f5d24ddd766ab7698c3de25f07d12e6d",
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/baseline-setup-build3.log",
+      "log_sha256": "2f1e3dd12e172aec485a6b5162a341d6618d1dccc0ed0d95e63aaa9744f1ff5a"
+    },
+    {
+      "name": "control-center-negatives",
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "control_center",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:35:46.923950+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 270293,
+      "start_ticks": "58692722",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 0,
+      "seconds": 6.026,
+      "terminal_observed": true,
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/control-center-negatives.log",
+      "log_sha256": "38e9dfb14419d5385aeabe0b2661d14c70f91e1a2222625836eadb1e1a801299"
+    },
+    {
+      "name": "mount-check",
+      "argv": [
+        "unshare",
+        "--user",
+        "--map-root-user",
+        "--mount",
+        "python3",
+        "-c",
+        "import pathlib,subprocess,os,json; r=pathlib.Path(\"/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/runtime\"); subprocess.run([\"mount\",\"--bind\",str(r),\"/tmp\"],check=True); print(json.dumps({\"physical_root\":str(r),\"private_tmp_same_inode\":r.stat().st_ino==pathlib.Path(\"/tmp\").stat().st_ino,\"mount_namespace\":os.readlink(\"/proc/self/ns/mnt\")}))"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:39:00.401118+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 296312,
+      "start_ticks": "58712070",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 0,
+      "seconds": 0.033,
+      "terminal_observed": true,
+      "tested_source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+      "tested_tree": "b55b0537e7db60885cd0742e76280e49f5214826",
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/mount-check.log",
+      "log_sha256": "39d5016ec0c3524ce90ab51beb0eeb0ea3ec02621d7c0dc1e5dabf01eeefa796"
+    },
+    {
+      "name": "setup-build",
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--bins"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+      "started": "2026-10-05T03:34:23.088652+00:00",
+      "source": [
+        "a70ddebc27b8971370af93f6be961fcf4f483990",
+        "b55b0537e7db60885cd0742e76280e49f5214826"
+      ],
+      "qualification": "bounded independent SPEC review; model-free fixtures",
+      "pid": 261924,
+      "start_ticks": "58684338",
+      "net_namespace": "net:[4026531840]",
+      "actual_exit": 0,
+      "seconds": 12.997,
+      "terminal_observed": true,
+      "log": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/logs/setup-build.log",
+      "log_sha256": "2cb80830ee20ab07f2fda98a2d846233198b9742882edfc85c0abf3ed328857d"
+    }
+  ],
+  "source_integrity": {
+    "at": "2026-10-05T03:43:18.377232+00:00",
+    "head": [
+      "a70ddebc27b8971370af93f6be961fcf4f483990",
+      "b55b0537e7db60885cd0742e76280e49f5214826"
+    ],
+    "status": "",
+    "tracked_files_checked": 5432,
+    "tracked_sha256_unchanged": true,
+    "changed_files": [],
+    "inputs_unchanged": true,
+    "source_before_sha256": "ef6ca44345bbeafe1c42ff956d436c42277de7eddcb567dcea7c2cccbb6e4eb3"
+  },
+  "processes": {
+    "artifact": "process-dispositions.json",
+    "fixture_services": 14,
+    "captured_namespaces": 19,
+    "tested_command_processes": 11,
+    "same_identity_alive": 0,
+    "missing_network_identities": 0,
+    "active_handles": []
+  },
+  "effects": {
+    "artifact": "native-correction-effects.json",
+    "retained_native_prepared_applying_unknown_operations": 0,
+    "known_failures_retained": true,
+    "owned_disposable_service_teardown": "identity-bound fixture cleanup; all captured namespaces terminal",
+    "power_loss_storage_or_external_provider_effects": "not qualified; not inferred"
+  },
+  "scope_limitations": [
+    "No live model, provider entitlement, parser coverage or unattended monitoring claim. Native fixture Responses are deterministic model-free bytes.",
+    "No baseline acceptance, product/mainline landing or happy-path demonstration; root owns next disposable real Codex lead/two-worker trial.",
+    "No full native129/broad crash/history/oversize qualification rerun; control_center8 is the only additional existing focused negative suite.",
+    "Author RED fixture hashes were captured after refinements; no retroactive exact runtime pin credited. Independently rebuilt archived baseline plus independently pinned unchanged regression fixtures supply causal before/after proof here.",
+    "All initial setup/path failures and original logs are retained; two predecessor build101 results tested no product manifest and do not count as target RED.",
+    "Frozen EVID43d/SOURCE7b20 and earlier review failures/caps unchanged; original3 plus exactly ONE owner-authorized C1/C2 extra1 retained; no further repair authority.",
+    "Private fixture path/netns instrumentation only; all files resolved physically under review output root. Root-granted short runtime root /tmp/c5s-lmojtp5j was unused/empty; no live service was relocated.",
+    "Current child exact request-token telemetry unavailable; no compaction/reduction claimed; handoff closes this bounded phase."
+  ],
+  "policy": {
+    "read": [
+      "CONSTITUTION.md",
+      "AGENTS.md",
+      "docs/agents/agentic-engineering.md",
+      "docs/agents/domain.md",
+      "docs/agents/skill-orchestration.md",
+      "CONTEXT.md",
+      "bounded inputs/SPEC.md and ticket05.md passages",
+      "bounded owner monitor SPEC correction passages"
+    ],
+    "skills": "code-review SPEC axis delegated by root; verification-before-completion evidence criteria; using-superpowers subagent exemption; no extra agents; Matt route owner unavailable, repository crosswalk applied directly"
+  },
+  "output_root": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp"
+}

@@ -1,0 +1,123 @@
+{
+  "source_commit": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "input_pins_verified": true,
+  "items": [
+    {
+      "path": "deadline_check.py",
+      "sha256": "3aebb6dd7d982be4ffe3eb206d5f32097baf0ba4693f76454091b4f1fe70370f",
+      "bytes": 2673
+    },
+    {
+      "path": "evidence/deadline-pre-run-hashes.json",
+      "sha256": "3bc81874fef8b90fc564659bd484ab6e50221087d70dccaa8f4aa3ee64db52d3",
+      "bytes": 406
+    },
+    {
+      "path": "evidence/deadline-process.json",
+      "sha256": "fd8acc2b20c17da8f37b0dbed23bb13f14d067d011391f265ced4448c6827b7d",
+      "bytes": 576
+    },
+    {
+      "path": "evidence/deadline-results.json",
+      "sha256": "7f34215e51ab2c4b4600075c34db66da92a043ca7526aa2336255008d008ad6d",
+      "bytes": 633
+    },
+    {
+      "path": "evidence/deadline.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/deadline.stdout.txt",
+      "sha256": "33aa803702f865de95b3c30a761c4d2d97b700d142cb5b017d2de7b2f4d435c6",
+      "bytes": 170
+    },
+    {
+      "path": "evidence/independent-results.json",
+      "sha256": "83bfc3bdd054cb82ce6bcf01bb1ec0ebf4d09fe8d66a5df54f72382b63c829e7",
+      "bytes": 787
+    },
+    {
+      "path": "evidence/independent.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/independent.stdout.txt",
+      "sha256": "3d1c4843bdf3d5340a9a919fd121386b8ed82d1b3b7fadd6f88e570e89c276c6",
+      "bytes": 2235
+    },
+    {
+      "path": "evidence/pre-run-hashes.json",
+      "sha256": "b305fcfa33d9b491c48590a533a8f029b1b536f3b08546de1a905e3eba91b735",
+      "bytes": 598
+    },
+    {
+      "path": "evidence/process-results.json",
+      "sha256": "1741602945174c6ae25c1d6c7603a1b11a95676186db4813029d6c29e04324d1",
+      "bytes": 2810
+    },
+    {
+      "path": "evidence/sealed-unit.stderr.txt",
+      "sha256": "38d70d9adc601b50d0821387fc83a6fa1ec51d516dd197156530c1019b9286ce",
+      "bytes": 254
+    },
+    {
+      "path": "evidence/sealed-unit.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "independent_checks.py",
+      "sha256": "353e50c174d2435526adf65fcd8cdee15a1dd33ff9baa1261ac2a651de296fad",
+      "bytes": 17863
+    },
+    {
+      "path": "inputs/live-preflight-1.json",
+      "sha256": "929d00231c0b5d1f68a23a809c459ae2264d69581aacfc3f84c030e8ea1655ed",
+      "bytes": 2142
+    },
+    {
+      "path": "inputs/manifest.json",
+      "sha256": "19c67115605b9e20c21520a4b53aaa7894159586b94acb34d770dff44d483be3",
+      "bytes": 486
+    },
+    {
+      "path": "inputs/sqlite_responses_relay.py",
+      "sha256": "91903578eba38db8ad56ef40e811deebcd511e4017e2a052e4b332b0a69e3a96",
+      "bytes": 8209
+    },
+    {
+      "path": "inputs/test_sqlite_responses_relay.py",
+      "sha256": "148377c32ef64de7381c4b73a559595d3424d408254314de1985f7a9a3bcf402",
+      "bytes": 2838
+    },
+    {
+      "path": "report.json",
+      "sha256": "a87e4846806d3221621b16996959a4cbe0e43fc9d512a5c43c6d15e95d904a50",
+      "bytes": 9695
+    },
+    {
+      "path": "report.md",
+      "sha256": "a90e5f801b132414fc63db0e4041197521cc322724eecac64c42a3afa93cf7c8",
+      "bytes": 4392
+    },
+    {
+      "path": "run_checks.py",
+      "sha256": "009c671b1b8acf3030fba08e62bcf6e3b2e8c4319c1d421c944d73b1e907e7a6",
+      "bytes": 2481
+    },
+    {
+      "path": "run_deadline.py",
+      "sha256": "e55093ce3d85b39417c6d088d9dfeb07776458e37d8f13b036c8a2db01b77f17",
+      "bytes": 1510
+    },
+    {
+      "path": "write_report.py",
+      "sha256": "bca232c90dc784169c021a025654fd66c735e4e14500d566ada5ffbecb465376",
+      "bytes": 16312
+    }
+  ],
+  "self_hash": "Excluded to avoid a circular hash; report and all retained evidence are indexed.",
+  "safe_payload_policy": "No body/header canary values or real auth tokens included."
+}

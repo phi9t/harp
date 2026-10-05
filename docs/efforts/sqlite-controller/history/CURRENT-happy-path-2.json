@@ -1,0 +1,88 @@
+{
+  "version": "happy-path-2",
+  "observed_at": "2026-10-05T03:37:37.176883+00:00",
+  "coordinator": "/root",
+  "writer": null,
+  "writer_state": "no active implementation writer; scoped independent reviews running",
+  "thread": null,
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "tickets": {
+    "01": "accepted",
+    "02": "accepted",
+    "03": "accepted",
+    "04": "accepted",
+    "05": "unaccepted; one extra C1/C2 round admitted",
+    "06": "disposable happy-path kickoff authorized; hardening/release pending"
+  },
+  "caps": {
+    "05_prior": 3,
+    "05_extra_authorized": 1,
+    "05_extra_used": 1,
+    "02": 3,
+    "04": 3,
+    "EMPTY_diagnostics": 2
+  },
+  "next": "Record scoped review disposition, then admit one fresh non-inheriting trial writer from EVID864a3da6; reuse existing skeleton with host-only real provider relay, no isolation expansion.",
+  "unknowns": [
+    "live provider entitlement/connectivity untested",
+    "retained native isolation outbound profile must be configured for real provider",
+    "happy-path runner not yet present"
+  ],
+  "deferred": [
+    "crash/replay/oversize/history expansion",
+    "root Insula implementation",
+    "baseline/mainline acceptance"
+  ],
+  "ack": "Explicit actor message: sole writer /root/sqlite05_c1c2_happy_author; exact new tree/branch and one extra C1/C2 round; will seal for root review.",
+  "claim": "Existing unexpired logical sqlite-controller-05 claim retained; actual actor admission/ACK bound in this projection.",
+  "mainlead_assignment_notice": {
+    "operation": "12515150-2f26-48ea-8ea3-d2df1afe9c38",
+    "actual_exit": 0,
+    "state": "queued",
+    "presentation": "unknown",
+    "ack": "unknown",
+    "completed_at": "2026-10-05T03:16:32.301493+00:00",
+    "stdout": "Queued message 01a10a10-236c-76b0-b92f-7fa3bf7354a4 for thread 01a10084-dc3a-7743-b0c1-4694d5ecc621.\n"
+  },
+  "focused_results": {
+    "C2": "Author reports actual causal RED exit1/6.41s. Exact artifact review pending.",
+    "C1_initial": "Driver/setup assertion failed after peer advanced presented\u2192explicitACK; exit1/48.61s retained, not target RED.",
+    "C1_corrected": "Running owned exec session17937; no interruption.",
+    "production_changes": "None at last clean read-only snapshot."
+  },
+  "pending_gates": [
+    "Spec scoped actual C1/C2 verification",
+    "Standards scoped actual verification",
+    "branch654 scoped exact-source review",
+    "real disposable lead\u2192controller\u2192worker flow and two-worker overlap",
+    "later full baseline source acceptance/hardening/release gates"
+  ],
+  "context": {
+    "author_latest_observed_input": 111203,
+    "time": "2026-10-05T03:21:18.386Z",
+    "warning": "100k explicitly delivered by coordinator",
+    "compaction_control": "not exposed; actual runtime compaction unobserved in new actor",
+    "next_boundary": "owned C1 RED terminal; preserve jobs/source/repair evidence before any replacement"
+  },
+  "last_writer": {
+    "actor": "/root/sqlite05_c1c2_happy_author",
+    "thread": "01a10a0d-f18a-7641-9ca5-1cb49cb81603",
+    "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy",
+    "state": "completed/quiescent; source/evidence clean"
+  },
+  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "projection_kind": "coordinator-owned manual canonical projection; product controller projection qualification remains pending",
+  "controller_event_cursor": null,
+  "retention": {
+    "audit_sha256": "ac23bf163615b7d95ed78ad7448f0c800eac531b535da35a43d1166e4ae3b76a",
+    "crate_inputs": 50,
+    "archives": 7,
+    "members": 1931,
+    "original_birth_ids": 32,
+    "same_birth_live": 0,
+    "unknown_reads": 0,
+    "historical_red_script_pins": "Final reproducer hash is retrospective; original logs/source binary retained; independent focused checks adjudicate cause."
+  }
+}
