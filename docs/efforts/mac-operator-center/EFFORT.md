@@ -42,6 +42,14 @@ refresh_seconds, and dashboard_argv (literal argument vector).
 No secrets belong in this config. Endpoint defaults may be explicit local Unix
 sockets; desktop/native thread stores must not be silently interchanged.
 
+Optional agent_roster_path gives the dashboard a parent-owned operator roster:
+{observed_at, agents:[{name,scope,status,model,thread?,endpoint?,worktree?,ticket?}]}.
+This exposes lead-owned tooling authors and Luna without claiming product task
+assignments. Missing native bindings remain unavailable; no view is guessed.
+Optional adopt_manifest_path lets the tmux manager validate the existing
+prototype's owner, concrete endpoint/thread and window/process identity before
+adding its metadata. Preserve the old overview; the lead deploys its replacement.
+
 The current code-author binding comes from CURRENT.thread/worktree/writer_state.
 Extra bindings are explicitly operator-admitted views, not new task assignments.
 Lifecycle status and product versus implementation scope remain source-labelled.
