@@ -42,3 +42,16 @@ Codex0.160.0 exact native implementation/lead clients are verified. Product
 controller/API and UI gateways became unavailable; their reattachment remains
 pending core-coordinator reconciliation. No full product qualification credit.
 See ../STATE.md and ../evidence/client-update-20261005.json.
+
+## Public export follow-up
+
+The runtime roster may also carry strictly allowlisted status/reason fields.
+Unavailable or pending publication admits no clients, even when bindings are
+present. Preserve upstream timestamps/digests and prior unknown membership.
+Legacy shape and explicit observed/available/ok publication remain supported.
+Unknown status, auth fields, extra fields and credential endpoints fail closed.
+No raw reason body enters errors. Keep native observer launch grants private.
+
+This adaptation changes only the view manager and focused tests. It grants no
+runtime recovery, worker admission or model-turn authority. Existing owner-created
+clients can be adopted by exact binding after authenticated transport readiness.

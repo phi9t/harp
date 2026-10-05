@@ -50,3 +50,19 @@ Codex0.160.0 exact native implementation/lead clients are verified. Product
 controller/API and UI gateways became unavailable; their reattachment remains
 pending core-coordinator reconciliation. No full product qualification credit.
 See ../STATE.md and ../evidence/client-update-20261005.json.
+
+## Public export follow-up
+
+The coordinator now publishes explicit source paths through CURRENT.public_exports.
+The viewers read those files directly. Support its controller envelope with
+status/source/deployment/project/control_center and distinct last-success history.
+Support Kata items with stable workref identities and synchronized
+corenius.execution summaries. Preserve upstream timestamps and digests. An
+unavailable controller remains unavailable; Kata execution metadata is a
+recorded summary, not an independent runtime liveness observation. Strict,
+bounded field projection and legacy flat shapes remain supported.
+
+Only state-view code/tests may change. The operator owner updates private host
+config and its own view panes. Preserve all trial-* service windows. Test the
+actual envelopes and hostile unknown nested fields. No database/API/auth reads,
+model turns, new actors, acceptance changes or core repair-cap credit.

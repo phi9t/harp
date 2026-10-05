@@ -1,7 +1,16 @@
 # MAC operator center state
 
-Status: operator tools reviewed and installed; product qualification separate.
+Status: public-export view adapters reviewed and installed; core recovery remains coordinator-owned.
 Owner: main lead. Product implementation coordinator: corenius-impl.
+
+Current operator source: 815ba89dc18eeb349aedb6e457577ce5e4292399.
+Current verification: 49 tests PASS (27.039s), compilation/diff checks PASS,
+scoped independent Standards/Spec/branch review PASS. Installed 04:47 UTC.
+Use only corenius-team. Views read CURRENT.public_exports directly; the public
+controller/runtime exports still say unavailable. Existing trial-r2-* service
+windows are preserved. Current implementation identity comes from CURRENT,
+which names restoration writer01a10a5b at the latest 04:45 observation.
+Earlier dated deployment details below remain history.
 
 The final operator source at e6ae1add9841a2bc0eb26a441a5b322e2db8f090
 passed eight dashboard tests (2.195s) and fourteen tmux tests (13.080s).
@@ -103,3 +112,37 @@ Next: the core coordinator reconciles the same deployment and publishes new
 concrete product UI bindings. The operator owner then reattaches the product
 lead and both worker clients. No broad gate or new mission is required for
 these already-scoped views. Mainline landing remains pending.
+
+## Coordinator public export adoption — 2026-10-05 04:48 UTC
+
+Host config now directly references the coordinator-owned explicit controller,
+Kata and runtime-roster export files. The operator state feed reads those public
+files only; it no longer queries the controller or Kata. Source observations
+retain their original timestamps and raw-file digests. No database or auth
+reads, core admission, model turn, new timer or private assessment-ledger writes.
+
+The state renderer supports the coordinator's control_center envelope. It shows
+unavailable current state separately from cursor114 last-success history.
+Kata items show stable WorkRefs, native Kata status and recorded
+corenius.execution state separately. These summaries do not establish liveness.
+The maintainer accepts optional public status/reason. Unavailable/pending
+publication admits zero clients; prior memberships remain unknown. Unknown
+fields/status and credential endpoints still fail closed. Reason is not emitted.
+
+At04:48, upstream files remained observed04:32:24 and stale. The public runtime
+roster was unavailable/empty, so manager health was degraded with explicit source
+provenance. Core restoration had created trial-r2-* windows in corenius-team;
+this operator installation preserved all five observed service window IDs.
+Service window existence is not proof of controller or model qualification.
+Only owned manager/controller/workspace view processes were replaced.
+
+Core CURRENT now names fresh restoration actor01a10a5b-b86f-7953-a73c-059d7e05de87.
+Native view manager followed that binding and retained the prior client as
+historical. Authenticated product clients await published transport readiness
+and private launch grants; these never belong in public roster files.
+
+Evidence: evidence/public-export-adoption-20261005.json. Detailed installed
+records remain managed/public-export-deployment.json and public-export-verify.json.
+Root retains core admissions/effects; main lead retains UI scripts/deployment.
+Solo evidence remains retained; assembled baseline/mainline acceptance and two
+useful episode overlap/stale reintegration remain outside this view proof.

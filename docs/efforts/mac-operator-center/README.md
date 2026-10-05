@@ -52,3 +52,17 @@ query feed are operator-owned glue. The feed retains the last successful
 snapshot on API failure and records current availability separately in
 `public-feed-health.json` and the `state-feed` pane. It never changes tasks.
 Product UI transport and model process recovery belong to the core coordinator.
+
+Use the exact paths in `CURRENT.public_exports` as the three snapshot/roster
+config paths. The coordinator owns those exports; viewers never overwrite them.
+Controller envelopes preserve unavailable status and separate last-success
+history. Kata items preserve native status and synchronized execution summaries.
+The roster permits optional public `status` and bounded `reason` fields.
+`unavailable` or `pending` admits no clients; `observed`, `available` or `ok`
+permits validated bindings. The manager does not print reason text. Legacy
+flat projections and the original roster shape remain supported.
+
+Keep all `trial-*` service windows intact. Update only ownership-tagged UI panes.
+An authenticated native worker endpoint needs an operator-owned launcher with
+its private UI grant. Publish or adopt its public binding after readiness;
+never put credentials in the public roster or viewer arguments.
