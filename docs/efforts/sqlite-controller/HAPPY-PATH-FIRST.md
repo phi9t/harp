@@ -62,3 +62,19 @@ Report **happy path demonstrated** only after actual execution succeeds.
 Keep **baseline qualified** separate until the broader required checks pass.
 Then return to known edge cases and hardening against the retained baseline spec.
 No new architecture project or unrelated documentation work precedes the demo.
+
+## Kickoff after the repair hold
+
+The owner instructed: "proceed to kick it off running things" after the exact
+C1/C2 hold was reported. This authorizes ONE additional narrow repair and
+re-review round for those two findings, followed by the live happy-path trial.
+The coordinator retains sole writer admission and integration ownership.
+
+Start from frozen SOURCE7b20a886576c125c634913edadc4bb6f8c115352 and retained
+EVID43d585c27055081d267e54ed6a1a1860d5c8b455. C1 is correction starvation after
+lead replacement. C2 is predecessor progress shown as the current attempt.
+Retain all earlier repair counts and review evidence; no general cap reset.
+Use a fresh, isolated writer and focused actual regressions for these findings.
+Report their independent disposition, then launch the disposable real-runtime
+demonstration described above. Defer unrelated fault expansion to hardening.
+Further non-convergence requires a new bounded decision rather than silent retries.
