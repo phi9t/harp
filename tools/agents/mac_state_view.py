@@ -211,14 +211,23 @@ def controller(snapshot):
     # The official projection orders workers by occupied slot, but does not
     # necessarily export physical slot IDs. Never infer an ID from array order.
     workers = data.get('workers', [])
-    for slot in (0, 1):
-        worker = next((w for w in workers if w.get('slot',
-                      w.get('attempt', {}).get('slot') if isinstance(w.get('attempt'), dict) else None) == slot), None)
+
+    def physical_slot(worker):
+        attempt = worker.get('attempt')
+        return worker.get('slot', attempt.get('slot') if isinstance(attempt, dict) else None)
+
+    mapped = set()
+    for slot in (1, 2):
+        worker = next((w for w in workers if type(physical_slot(w)) is int and physical_slot(w) == slot), None)
+        if worker is not None:
+            mapped.add(id(worker))
         lines += record('Worker slot ' + str(slot), worker, WORKER) if worker else ['Worker slot ' + str(slot) + ': unknown']
-    unassigned = [w for w in workers if 'slot' not in w and
-                  (not isinstance(w.get('attempt'), dict) or 'slot' not in w['attempt'])]
+    unassigned = [w for w in workers if physical_slot(w) is None]
     if unassigned:
         lines += record('Occupied workers (projection order; physical slot IDs unavailable)', unassigned, [WORKER])
+    unmapped = [w for w in workers if physical_slot(w) is not None and id(w) not in mapped]
+    if unmapped:
+        lines += record('Unmapped workers (unknown or duplicate physical slot IDs)', unmapped, [WORKER])
     lines += ['', provenance(snapshot, 'CURRENT')]
     lines += field('Implementation writer (CURRENT)', cur, 'writer')
     lines += field('Implementation writer state (CURRENT)', cur, 'writer_state')

@@ -45,9 +45,9 @@ class StateViewTests(unittest.TestCase):
                            'occupied_slots': 2,
                            'mission': {'project': 'trial-project', 'status': 'running',
                                        'lead_runtime': 'runtime-lead', 'role_epoch': 3},
-                           'workers': [{'slot': 0, 'runtime': 'runtime-one', 'task': 'K-1',
+                           'workers': [{'slot': 1, 'runtime': 'runtime-one', 'task': 'K-1',
                                         'attempt': 'A-1', 'status': 'working', 'epoch': 2},
-                                       {'slot': 1, 'runtime': 'runtime-two', 'task': 'K-2',
+                                       {'slot': 2, 'runtime': 'runtime-two', 'task': 'K-2',
                                         'attempt': 'A-2', 'status': 'waiting', 'epoch': 4}],
                            'tasks': [{'id': 'K-1', 'state': 'running', 'attempt': 'A-1'}],
                            'questions': [{'id': 'Q-1', 'status': 'open', 'question': 'Choose gate'}],
@@ -83,12 +83,34 @@ class StateViewTests(unittest.TestCase):
     def test_controller_exposes_both_slots_with_product_and_implementation_labels(self):
         text = self.rendered('controller')
         for expected in ['trial-project', 'revision: 7', 'event_cursor: 19', 'runtime-lead',
-                         'Worker slot 0', 'runtime-one', 'Worker slot 1', 'runtime-two',
+                         'Worker slot 1', 'runtime-one', 'Worker slot 2', 'runtime-two',
                          'A-1', 'A-2', 'op-1', 'Choose gate', 'candidate-1',
                          'Implementation writer (CURRENT)', 'implementation-author',
                          'Tasks (CURRENT claims)', 'state panes', 'Native bindings (manager)',
                          'lead-thread', 'unix:///product', 'sha256:', self.stamp, 'fresh']:
             self.assertIn(expected, text)
+
+    def test_nested_physical_slots_one_and_two_and_unmapped_workers_remain_visible(self):
+        self.controller['workers'] = [
+            {'attempt': {'id': 'attempt-one', 'slot': 1, 'task': 'task-one'},
+             'runtime': {'id': 'runtime-physical-one', 'state': 'bound'}},
+            {'attempt': {'id': 'attempt-two', 'slot': 2, 'task': 'task-two'},
+             'runtime': {'id': 'runtime-physical-two', 'state': 'bound'}},
+            {'attempt': {'id': 'attempt-unmapped', 'slot': 7},
+             'runtime': {'id': 'runtime-unmapped', 'state': 'bound'}}]
+        self.write_inputs()
+        text = self.rendered('controller')
+        self.assertIn('Worker slot 2:', text)
+        slot_one = text.split('Worker slot 1:', 1)[1].split('Worker slot 2:', 1)[0]
+        self.assertIn('attempt-one', slot_one)
+        self.assertIn('runtime-physical-one', slot_one)
+        slot_two = text.split('Worker slot 2:', 1)[1].split('Unmapped workers', 1)[0]
+        self.assertIn('attempt-two', slot_two)
+        self.assertIn('runtime-physical-two', slot_two)
+        self.assertIn('Unmapped workers', text)
+        self.assertIn('attempt-unmapped', text)
+        self.assertIn('runtime-unmapped', text)
+        self.assertNotIn('Worker slot 0', text)
 
     def test_kata_has_exact_identity_dependencies_and_sync_without_daemon_guess(self):
         text = self.rendered('kata')
@@ -133,7 +155,7 @@ class StateViewTests(unittest.TestCase):
         text = self.rendered('controller')
         for expected in ['official-project', 'Owner admits landing', 'nested-attempt',
                          'native-runtime', 'authority_epoch: 9', 'physical slot IDs unavailable',
-                         'Worker slot 0: unknown', 'Worker slot 1: unknown']:
+                         'Worker slot 1: unknown', 'Worker slot 2: unknown']:
             self.assertIn(expected, text)
         workspaces = self.rendered('workspaces')
         for expected in ['trunk-sha', '/work/official', 'candidate-sha', 'state_drift: True']:
@@ -144,8 +166,8 @@ class StateViewTests(unittest.TestCase):
         del self.config['controller_snapshot_path']
         self.write_inputs()
         text = self.rendered('controller')
-        for expected in ['Product controller: unavailable', 'Worker slot 0: unknown',
-                         'Worker slot 1: unknown', 'implementation-author']:
+        for expected in ['Product controller: unavailable', 'Worker slot 1: unknown',
+                         'Worker slot 2: unknown', 'implementation-author']:
             self.assertIn(expected, text)
         self.config['controller_snapshot_path'] = str(self.root / 'controller.json')
         self.write_inputs()
@@ -155,7 +177,7 @@ class StateViewTests(unittest.TestCase):
             text = self.rendered('controller')
             self.assertIn('Product controller: unavailable', text)
             self.assertIn('malformed', text)
-            self.assertIn('Worker slot 1: unknown', text)
+            self.assertIn('Worker slot 2: unknown', text)
         (self.root / 'kata.json').unlink()
         self.assertIn('missing', self.rendered('kata'))
 
