@@ -171,6 +171,35 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(len(self.views()), 3)
         self.assertTrue(any('adoption' in e for e in report['errors']))
 
+    def test_unowned_exact_endpoint_thread_is_pending_without_duplicate_or_mutation(self):
+        self.tmux('new-session', '-d', '-s', 'operator', '-n', 'overview', 'sleep 3600')
+        self.tmux('set-option', '-t', '=operator:', '@corenius_operator_owner', self.config['owner'])
+        window = self.tmux('new-window', '-d', '-P', '-F', '#{window_id}', '-t', '=operator:', '-n', 'unowned', 'sleep 3600')
+        for key, value in (('@corenius_thread', THREAD1), ('@corenius_role', 'worker-1'),
+                           ('@corenius_endpoint', self.config['endpoint']), ('@corenius_cwd', str(self.root))):
+            self.tmux('set-option', '-w', '-t', window, key, value)
+        report = self.reconcile()
+        self.assertFalse(any(b['thread'] == THREAD1 for b in report['bindings']))
+        self.assertEqual(len(self.views()), 3)
+        self.assertEqual(report['health'], 'degraded')
+        self.assertTrue(any('pending validated adoption' in e for e in report['errors']))
+        self.assertEqual(self.tmux('display-message', '-p', '-t', window, '#{window_name}'), 'unowned')
+        mutations = {'set-option', 'rename-window'}
+        self.assertFalse(any(c[len(self.tmux_argv)] in mutations and window in c for c in self.commands))
+
+    def test_malformed_adoption_binding_reports_degraded_and_retains_existing_views(self):
+        self.reconcile()
+        ids = self.views()
+        legacy = self.root / 'bad-legacy.json'
+        self.config['adopt_manifest_path'] = str(legacy)
+        for bindings in ([42], None, {'window': '@0'}):
+            legacy.write_text(json.dumps({'session': 'operator', 'bindings': bindings}))
+            report = self.reconcile()
+            self.assertEqual(report['health'], 'degraded')
+            self.assertTrue(any('adoption pending' in e for e in report['errors']))
+            self.assertEqual(self.views(), ids)
+            self.assertEqual(len(report['bindings']), 2)
+
     def test_completed_current_is_retained_without_launching_a_new_client(self):
         self.reconcile()
         old_ids = self.views()
@@ -185,14 +214,15 @@ class MaintenanceTests(unittest.TestCase):
         report = self.reconcile()
         old_ids = self.views()
         window = next(b['window'] for b in report['bindings'] if b['thread'] == THREAD1)
-        self.tmux('set-option', '-w', '-t', window, 'remain-on-exit', 'on')
         # Disposable test cleanup only: the maintainer is not allowed to do this.
         pid = int(self.tmux('display-message', '-p', '-t', window, '#{pane_pid}'))
         os.kill(pid, 15)
         for _ in range(100):
-            if self.tmux('list-panes', '-t', window, '-F', '#{pane_dead}') == '1':
+            panes = self.tmux('list-panes', '-s', '-t', '=operator', '-F', '#{window_id} #{pane_dead}').splitlines()
+            if window + ' 1' in panes or window not in self.views():
                 break
             time.sleep(.01)
+        self.assertIn(window, self.views(), 'exited native view must remain without fixture options')
         report = self.reconcile()
         self.assertEqual(report['health'], 'degraded')
         self.assertTrue(any('exited' in e for e in report['errors']))
@@ -202,6 +232,19 @@ class MaintenanceTests(unittest.TestCase):
         report = self.reconcile()
         self.assertTrue(any('socket unavailable' in e for e in report['errors']))
         self.assertEqual(self.views(), old_ids)
+
+    def test_immediately_exiting_view_is_retained_without_relaunch(self):
+        self.viewer.write_text('#!/usr/bin/env python3\nimport sys\nsys.exit(1)\n')
+        self.config['dashboard_argv'] = ['/bin/sleep', '3600']
+        first = self.reconcile()
+        ids = self.views()
+        self.assertEqual(len(ids), 3)
+        time.sleep(.05)
+        second = self.reconcile()
+        self.assertEqual(self.views(), ids)
+        self.assertEqual({b['window'] for b in first['bindings']}, {b['window'] for b in second['bindings']})
+        self.assertEqual(second['health'], 'degraded')
+        self.assertEqual(len([e for e in second['errors'] if 'exited' in e]), 2)
 
     def test_explicit_no_active_author_marks_prior_view_historical_without_launch(self):
         self.reconcile()

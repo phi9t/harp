@@ -182,7 +182,10 @@ def adopt(config, tmux, rows, errors):
         old = read_object(path)
         if old.get('session') != config['session']:
             raise ValueError('adoption manifest session differs')
-        for item in old.get('bindings', []):
+        old_bindings = old.get('bindings', [])
+        if not isinstance(old_bindings, list) or any(not isinstance(item, dict) for item in old_bindings):
+            raise ValueError('adoption bindings must be a list of objects')
+        for item in old_bindings:
             row = next((r for r in rows if r['window'] == item.get('window')), None)
             if not row or row['owner'] == config['owner']:
                 continue
@@ -273,15 +276,21 @@ def _reconcile(config, tmux_argv, runner):
         if key in known or not view['current']:
             continue
         # A legacy-looking unowned UUID is ambiguous, not permission to duplicate it.
-        if any(r['thread'] == view['thread'] and not r['owner'] and not r['endpoint'] for r in rows):
+        if any(r['thread'] == view['thread'] and r['owner'] != config['owner']
+               and r['endpoint'] in ('', view['endpoint']) for r in rows):
             errors.append('view pending validated adoption: ' + view['thread'])
             continue
         problem = launch_problem(config, view)
         if problem:
             errors.append('view pending ' + view['thread'] + ': ' + problem)
             continue
+        # Set retention in the same tmux command queue, before it handles an
+        # immediately exiting client. A unique temporary name targets this window.
+        temporary_name = 'mac-view-' + uuid.uuid4().hex
         window = tmux.run('new-window', '-d', '-P', '-F', '#{window_id}', '-t', target + ':',
-                          '-n', view['role'], '-c', view['cwd'], shlex.join(resume_argv(config, view))).stdout.strip()
+                          '-n', temporary_name, '-c', view['cwd'], shlex.join(resume_argv(config, view)),
+                          ';', 'set-option', '-w', '-t', target + ':=' + temporary_name,
+                          'remain-on-exit', 'on').stdout.strip()
         for option, value in ((VIEW_OWNER, config['owner']), ('@corenius_thread', view['thread']),
                               ('@corenius_role', view['role']), ('@corenius_endpoint', view['endpoint']),
                               ('@corenius_cwd', view['cwd']), ('automatic-rename', 'off')):
