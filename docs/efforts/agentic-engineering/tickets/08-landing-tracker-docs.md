@@ -3,7 +3,7 @@
 Type: task
 Status: resolved
 Owner: codex-landing-audit
-Blocked by: 
+Blocked by:
 Claimed:
 
 ## Acceptance
