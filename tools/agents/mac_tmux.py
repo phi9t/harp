@@ -24,6 +24,8 @@ from urllib.parse import urlsplit
 OWNER = '@corenius_operator_owner'
 VIEW_OWNER = '@corenius_view_owner'
 TERMINAL_STATES = {'terminal', 'completed', 'quiescent', 'stopped', 'done'}
+RUNTIME_AVAILABLE_STATUSES = {'observed', 'available', 'ok'}
+RUNTIME_UNAVAILABLE_STATUSES = {'unavailable', 'pending'}
 
 
 class AlreadyRunning(RuntimeError):
@@ -138,7 +140,12 @@ class Tmux:
 
 
 def runtime_bindings(config, errors):
-    """Only the bounded public roster can admit runtime clients; errors expose no data."""
+    """Only the bounded public roster can admit runtime clients; errors expose no data.
+
+    Legacy observed_at/bindings rosters remain supported. Optional status admits
+    only observed/available/ok; unavailable/pending retains unknown memberships.
+    Optional reason is bounded display data and never copied into the manifest.
+    """
     source = {'status': 'disabled', 'observed_at': None, 'digest': None}
     path = config.get('runtime_bindings_path')
     if not path:
@@ -150,8 +157,17 @@ def runtime_bindings(config, errors):
         if len(raw) > 1024 * 1024:
             raise ValueError('runtime roster too large')
         value = json.loads(raw)
-        if not isinstance(value, dict) or set(value) != {'observed_at', 'bindings'}:
+        if (not isinstance(value, dict) or not {'observed_at', 'bindings'} <= set(value)
+                or not set(value) <= {'observed_at', 'bindings', 'status', 'reason'}):
             raise ValueError('invalid public roster fields')
+        declared_status = value.get('status')
+        if 'status' in value and (not isinstance(declared_status, str)
+                                 or declared_status not in RUNTIME_AVAILABLE_STATUSES | RUNTIME_UNAVAILABLE_STATUSES):
+            raise ValueError('invalid public roster status')
+        if 'reason' in value:
+            reason = text(value['reason'], 'reason')
+            if len(reason) > 4096:
+                raise ValueError('reason too large')
         stamp = text(value['observed_at'], 'observed_at')
         observed = datetime.fromisoformat(stamp.replace('Z', '+00:00'))
         if observed.tzinfo is None:
@@ -179,6 +195,12 @@ def runtime_bindings(config, errors):
                 raise ValueError('WebSocket endpoint requires a host')
             views.append(dict(view, current=item['current']))
         source.update(observed_at=stamp, digest=hashlib.sha256(raw).hexdigest())
+        if declared_status is not None:
+            source['declared_status'] = declared_status
+        if declared_status in RUNTIME_UNAVAILABLE_STATUSES:
+            source['status'] = 'unavailable'
+            errors.append('runtime bindings unavailable; prior published clients retained with unknown state')
+            return [], source
         if age > 300:
             source['status'] = 'stale'
             errors.append('runtime bindings stale; prior published clients retained with unknown state')

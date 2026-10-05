@@ -197,6 +197,79 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(self.views(), ids)
         self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
 
+    def test_unavailable_envelope_retains_provenance_and_unknown_prior_membership(self):
+        published, unpublished = str(uuid.UUID(int=40)), str(uuid.UUID(int=41))
+        path = self.publish_runtime([self.runtime_worker(published)])
+        first = self.reconcile()
+        prior_source = next(b for b in first['bindings'] if b['thread'] == published)['sources'][0]
+        ids = self.views()
+        for status, items in [('unavailable', []), ('unavailable', [self.runtime_worker(unpublished)]),
+                              ('pending', [self.runtime_worker(unpublished)])]:
+            with self.subTest(status=status, contradictory=bool(items)):
+                stamp = datetime.now(timezone.utc).isoformat()
+                value = {'observed_at': stamp, 'status': status, 'bindings': items,
+                         'reason': 'Original native namespaces gone; restored admission not yet validated. '
+                                   'Operator clients remain separate. SECRET_SENTINEL'}
+                path.write_text(json.dumps(value))
+                before_commands = len(self.commands)
+                report = self.reconcile()
+                self.assertEqual(report['health'], 'degraded')
+                source = report['runtime_bindings_source']
+                self.assertEqual(source['status'], 'unavailable')
+                self.assertEqual(source['declared_status'], status)
+                self.assertEqual(source['observed_at'], stamp)
+                self.assertEqual(source['digest'], hashlib.sha256(path.read_bytes()).hexdigest())
+                prior = next(b for b in report['bindings'] if b['thread'] == published)
+                self.assertIsNone(prior['current'])
+                self.assertEqual(prior['sources'], [dict(prior_source, current=None)])
+                self.assertFalse(any(b['thread'] == unpublished for b in report['bindings']))
+                self.assertEqual(self.views(), ids)
+                self.assertFalse(any(c[len(self.tmux_argv)] == 'new-window'
+                                     for c in self.commands[before_commands:]))
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(self.commands))
+
+    def test_positive_envelope_and_legacy_rosters_admit_valid_public_clients(self):
+        for number, status in enumerate((None, 'observed', 'available', 'ok'), 50):
+            with self.subTest(status=status):
+                thread = str(uuid.UUID(int=number))
+                path = self.publish_runtime([self.runtime_worker(thread)])
+                value = json.loads(path.read_text())
+                if status is not None:
+                    value.update(status=status, reason='Public coordinator projection')
+                    path.write_text(json.dumps(value))
+                report = self.reconcile()
+                self.assertEqual(report['health'], 'ok')
+                self.assertEqual(report['runtime_bindings_source']['status'], 'ok')
+                admitted = next(b for b in report['bindings'] if b['thread'] == thread)
+                self.assertIs(admitted['current'], True)
+                self.assertEqual(admitted['sources'][0]['source'], 'runtime_bindings')
+                self.assertEqual(admitted['sources'][0]['digest'], hashlib.sha256(path.read_bytes()).hexdigest())
+                self.assertIn(['resume', '--remote', self.config['endpoint'], '--include-non-interactive', thread],
+                              self.wait_log(number - 46))
+
+    def test_envelope_extras_unknown_status_and_credentials_reject_without_private_output(self):
+        thread = str(uuid.UUID(int=60))
+        path = self.publish_runtime([])
+        self.reconcile()
+        ids = self.views()
+        valid = {'observed_at': datetime.now(timezone.utc).isoformat(), 'status': 'available',
+                 'bindings': [self.runtime_worker(thread)], 'reason': 'SECRET_SENTINEL'}
+        variants = [dict(valid, auth='SECRET_SENTINEL'), dict(valid, unexpected=True),
+                    dict(valid, status='healthy'), dict(valid, status=True),
+                    dict(valid, reason={'private': 'SECRET_SENTINEL'}),
+                    dict(valid, bindings=[dict(self.runtime_worker(thread),
+                                              endpoint='ws://user:SECRET_SENTINEL@host/')])]
+        for value in variants:
+            with self.subTest(fields=sorted(value)):
+                path.write_text(json.dumps(value))
+                report = self.reconcile()
+                self.assertEqual(report['health'], 'degraded')
+                self.assertEqual(report['runtime_bindings_source']['status'], 'degraded')
+                self.assertEqual(self.views(), ids)
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(self.commands))
+
     def test_source_unknown_states_are_independent_even_for_shared_roles(self):
         product = str(uuid.UUID(int=27))
         path = self.publish_runtime([self.runtime_worker(product, 'worker-1'),
