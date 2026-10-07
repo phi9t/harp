@@ -37,3 +37,20 @@ untracked; pristine completion is not yet proved.
 
 ## Comments
 - 2026-10-07T09:14:21Z codex-salvage-prune: claimed until 2026-10-08T09:14:21Z
+
+## Second cleanup increment
+
+Main’s tracked/untracked status is clean after preserving the transcript and the
+superseded nested Sureal report outside the checkout. This criterion is verified;
+final completion still requires a fresh whole-goal audit. Current inventory58
+worktrees/73 branches. Eleven clean merged trees and49 matching pending trees
+were preserved by same-filesystem directory renames, then registrations/merged
+refs retired. The nested tree was independently reviewed and retired. One cross-
+filesystem archive passed12,359 file digests including43 hardlinks before removal.
+Bundle-only recovery reproduced original pending status for61 directory archives.
+See ../evidence/salvage-prune-20261007-archives.json for full receipts and hashes.
+
+The live Ticket03 owner remains in place; user routing question is pending. Its
+latest repair has47 affected tests passing but no completed full gate or independent
+acceptance. The integrating watcher and Kata services also retain their checkouts.
+No stale/parked variant was activated merely to eliminate its branch.
