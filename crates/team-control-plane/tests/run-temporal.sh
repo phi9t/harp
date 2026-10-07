@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-evidence="${TEMPORAL_FIXTURE_EVIDENCE:-$(mktemp -d /tmp/corenius-temporal13.XXXXXX)}"
-mkdir -p "$evidence"
+TMPDIR="$(python3 ../../tools/temp_root.py)" || exit 2
+export TMPDIR
+TMP="$TMPDIR"; TEMP="$TMPDIR"; export TMP TEMP
+tmp_root="$TMPDIR"
+evidence="${TEMPORAL_FIXTURE_EVIDENCE:-$(mktemp -d "$tmp_root/corenius-temporal13.XXXXXX")}"
+evidence="$(TMPDIR="$evidence" python3 ../../tools/temp_root.py)" || exit 2
 export TEMPORAL_FIXTURE_EVIDENCE="$evidence"
 port="$(python3 - <<'PY'
 import socket

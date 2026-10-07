@@ -555,17 +555,24 @@ async fn trusted_exit_result_rejects_misleading_stdout_success_marker() {
         assert!(std::time::Instant::now() < deadline);
         tokio::time::sleep(Duration::from_millis(20)).await;
     }
-    let result = supervisor
-        .result("assembled-worker", execution.id)
-        .await
-        .unwrap();
+    // Namespace shutdown precedes the monitor's immutable wait result. Poll
+    // that separate readiness fact before releasing its retained workspace.
+    let result = loop {
+        if let Some(result) = supervisor
+            .result("assembled-worker", execution.id)
+            .await
+            .unwrap()
+        {
+            break result;
+        }
+        assert!(std::time::Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
     supervisor
         .release("assembled-worker", execution.id)
         .await
         .unwrap();
     f.finish().await;
-    let result =
-        result.expect("trusted monitor must retain actual wait status, independently of stdout");
     assert_eq!(result.exit_code, Some(17));
     assert_eq!(result.signal, None);
     assert_eq!(result.argv, argv);
@@ -7896,6 +7903,10 @@ fn run_owned_episode_usage_case(mode: &str) {
         ])
         .env_clear()
         .env("PATH", "/usr/bin:/bin")
+        .env(
+            "TMPDIR",
+            std::env::var("TMPDIR").unwrap_or_else(|_| "/run/corenius-tmp".into()),
+        )
         .env(
             "TEAM_CONTROL_PLANE_TEST_DSN",
             std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),

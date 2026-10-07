@@ -104,5 +104,5 @@ def verify(task: Task, ws: Path, record: dict) -> dict:
 
 def apply_solution(task: Task, ws: Path, record: dict) -> dict:
     solution = task.path / "solution"
-    return run_in_capsule(record, ws, "sh /tmp/solution/solve.sh", {}, "none", 120.0,
-                          ro=[(str(solution), "/tmp/solution")])
+    return run_in_capsule(record, ws, "sh /run/corenius-tmp/solution/solve.sh", {}, "none", 120.0,
+                          ro=[(str(solution), "/run/corenius-tmp/solution")])

@@ -2746,6 +2746,10 @@ fn public_cancel_stops_actual_nested_writers_and_never_refunds_unknown() {
         .env_clear()
         .env("PATH", "/usr/bin:/bin")
         .env(
+            "TMPDIR",
+            std::env::var("TMPDIR").unwrap_or_else(|_| "/run/corenius-tmp".into()),
+        )
+        .env(
             "TEAM_CONTROL_PLANE_TEST_DSN",
             std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),
         )
@@ -3750,6 +3754,10 @@ fn review580_unbound_original_and_allocated_continuation_hold_unknown_usage() {
         ])
         .env_clear()
         .env("PATH", "/usr/bin:/bin")
+        .env(
+            "TMPDIR",
+            std::env::var("TMPDIR").unwrap_or_else(|_| "/run/corenius-tmp".into()),
+        )
         .env(
             "TEAM_CONTROL_PLANE_TEST_DSN",
             std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),

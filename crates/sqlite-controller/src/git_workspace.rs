@@ -44,6 +44,12 @@ pub struct Suite {
 }
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
+pub struct VerifierRuntime {
+    pub root: PathBuf,
+    pub manifest: Tool,
+}
+#[derive(Clone, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct Policy {
     pub project: String,
     pub root: PathBuf,
@@ -53,6 +59,7 @@ pub struct Policy {
     pub git: Tool,
     pub python: Tool,
     pub bubblewrap: Tool,
+    pub verifier_runtime: Option<VerifierRuntime>,
     pub suites: Vec<Suite>,
 }
 #[derive(Clone, Deserialize, Serialize)]
@@ -194,6 +201,36 @@ struct Inspection {
     state: RepositoryState,
     bundle_b64: Option<String>,
 }
+#[derive(Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RuntimeManifest {
+    schema_version: String,
+    entries: Vec<RuntimeManifestEntry>,
+}
+#[derive(Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RuntimeManifestEntry {
+    path: String,
+    kind: String,
+    sha256: Option<String>,
+    bytes: Option<u64>,
+    target: Option<String>,
+}
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct RuntimeActualEntry {
+    kind: String,
+    sha256: Option<String>,
+    bytes: Option<u64>,
+    target: Option<String>,
+}
+#[derive(Clone, Serialize)]
+pub struct RuntimeEvidence {
+    status: &'static str,
+    root: PathBuf,
+    manifest_path: PathBuf,
+    manifest: String,
+    entries: usize,
+}
 
 pub fn check_tool(tool: &Tool) -> Result<()> {
     if !tool.path.is_absolute()
@@ -213,6 +250,103 @@ pub fn directory(path: &Path) -> Result<()> {
         return Err("directory ownership alias refused".into());
     }
     Ok(())
+}
+fn manifest_relative(raw: &str) -> Result<PathBuf> {
+    let path = Path::new(raw);
+    if raw.is_empty() || path.is_absolute() {
+        return Err("verifier runtime manifest path escaped snapshot".into());
+    }
+    let mut out = PathBuf::new();
+    for component in path.components() {
+        match component {
+            std::path::Component::Normal(part) => out.push(part),
+            _ => return Err("verifier runtime manifest path escaped snapshot".into()),
+        }
+    }
+    Ok(out)
+}
+fn link_target_inside(link: &Path, target: &str) -> Result<()> {
+    let target_path = Path::new(target);
+    if target.is_empty() || target_path.is_absolute() {
+        return Err("verifier runtime symlink escaped snapshot".into());
+    }
+    let mut normalized = link
+        .parent()
+        .ok_or("verifier runtime symlink parent missing")?
+        .to_path_buf();
+    for component in target_path.components() {
+        match component {
+            std::path::Component::CurDir => {}
+            std::path::Component::Normal(part) => normalized.push(part),
+            std::path::Component::ParentDir => {
+                return Err("verifier runtime symlink escaped snapshot".into());
+            }
+            _ => return Err("verifier runtime symlink escaped snapshot".into()),
+        }
+    }
+    Ok(())
+}
+fn runtime_entries(root: &Path) -> Result<BTreeMap<String, RuntimeActualEntry>> {
+    fn visit(
+        root: &Path,
+        path: &Path,
+        entries: &mut BTreeMap<String, RuntimeActualEntry>,
+    ) -> Result<()> {
+        if entries.len() >= 100_000 {
+            return Err("verifier runtime manifest entry bound exceeded".into());
+        }
+        let mut children = fs::read_dir(path)
+            .map_err(|e| e.to_string())?
+            .collect::<std::io::Result<Vec<_>>>()
+            .map_err(|e| e.to_string())?;
+        children.sort_by_key(|e| e.file_name());
+        for child in children {
+            let path = child.path();
+            let metadata = fs::symlink_metadata(&path).map_err(|e| e.to_string())?;
+            let relative = path
+                .strip_prefix(root)
+                .map_err(|e| e.to_string())?
+                .to_str()
+                .ok_or("verifier runtime path encoding refused")?
+                .to_owned();
+            if metadata.is_dir() {
+                visit(root, &path, entries)?;
+            } else if metadata.is_file() {
+                let bytes = read_regular(&path, 256 * 1024 * 1024)?;
+                entries.insert(
+                    relative,
+                    RuntimeActualEntry {
+                        kind: "regular".into(),
+                        sha256: Some(digest(&bytes)),
+                        bytes: Some(metadata.len()),
+                        target: None,
+                    },
+                );
+            } else if metadata.file_type().is_symlink() {
+                let target = fs::read_link(&path).map_err(|e| e.to_string())?;
+                let target = target
+                    .to_str()
+                    .ok_or("verifier runtime symlink encoding refused")?
+                    .to_owned();
+                link_target_inside(Path::new(&relative), &target)?;
+                entries.insert(
+                    relative,
+                    RuntimeActualEntry {
+                        kind: "symlink".into(),
+                        sha256: None,
+                        bytes: None,
+                        target: Some(target),
+                    },
+                );
+            } else {
+                return Err("verifier runtime nonregular entry refused".into());
+            }
+        }
+        Ok(())
+    }
+    let mut entries = BTreeMap::new();
+    visit(root, root, &mut entries)?;
+    Ok(entries)
 }
 pub fn identity(path: &Path) -> Result<String> {
     directory(path)?;
@@ -441,6 +575,16 @@ impl GitBackend {
                 return Err("Git authority inside worker toolchain mount".into());
             }
         }
+        if let Some(runtime) = &policy.verifier_runtime {
+            directory(&runtime.root)?;
+            if runtime.root.starts_with("/usr")
+                || runtime.root.starts_with(&policy.attempts_root)
+                || runtime.root.starts_with(&policy.canonical)
+                || policy.attempts_root.starts_with(&runtime.root)
+            {
+                return Err("verifier runtime topology refused".into());
+            }
+        }
         if policy.root.starts_with(&policy.attempts_root)
             || policy.canonical.starts_with(&policy.attempts_root)
             || policy.attempts_root.starts_with(&policy.root)
@@ -466,6 +610,7 @@ impl GitBackend {
         if !store.exists() {
             backend.init(&store, true)?;
         }
+        backend.verifier_runtime_evidence()?;
         backend.head()?;
         Ok(backend)
     }
@@ -701,7 +846,87 @@ impl GitBackend {
         }
         Ok((repo, owner))
     }
-    fn boundary(&self, repo: &Path, _scratch: &Path) -> Result<Command> {
+    pub fn verifier_runtime_evidence(&self) -> Result<Option<RuntimeEvidence>> {
+        let Some(runtime) = &self.policy.verifier_runtime else {
+            return Ok(None);
+        };
+        directory(&runtime.root)?;
+        let manifest_bytes = read_regular(&runtime.manifest.path, 32 * 1024 * 1024)
+            .map_err(|e| format!("verifier runtime manifest unavailable: {e}"))?;
+        if digest(&manifest_bytes) != runtime.manifest.sha256 {
+            return Err("verifier runtime manifest digest mismatch".into());
+        }
+        let manifest: RuntimeManifest =
+            serde_json::from_slice(&manifest_bytes).map_err(|e| e.to_string())?;
+        if manifest.schema_version != "corenius.verifier-runtime.v1" {
+            return Err("verifier runtime manifest schema unsupported".into());
+        }
+        let mut expected = BTreeMap::new();
+        for entry in manifest.entries {
+            let relative = manifest_relative(&entry.path)?;
+            let key = relative
+                .to_str()
+                .ok_or("verifier runtime manifest path encoding refused")?
+                .to_owned();
+            if expected.contains_key(&key) {
+                return Err("verifier runtime manifest duplicate entry".into());
+            }
+            let actual = match entry.kind.as_str() {
+                "regular" => RuntimeActualEntry {
+                    kind: entry.kind,
+                    sha256: Some(
+                        entry
+                            .sha256
+                            .filter(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+                            .ok_or("verifier runtime manifest digest invalid")?,
+                    ),
+                    bytes: Some(
+                        entry
+                            .bytes
+                            .ok_or("verifier runtime manifest size missing")?,
+                    ),
+                    target: None,
+                },
+                "symlink" => {
+                    let target = entry
+                        .target
+                        .ok_or("verifier runtime manifest link target missing")?;
+                    link_target_inside(&relative, &target)?;
+                    RuntimeActualEntry {
+                        kind: entry.kind,
+                        sha256: None,
+                        bytes: None,
+                        target: Some(target),
+                    }
+                }
+                _ => return Err("verifier runtime manifest kind unsupported".into()),
+            };
+            expected.insert(key, actual);
+        }
+        let actual = runtime_entries(&runtime.root)?;
+        if actual != expected {
+            return Err("verifier runtime manifest mismatch".into());
+        }
+        Ok(Some(RuntimeEvidence {
+            status: "pinned",
+            root: runtime.root.clone(),
+            manifest_path: runtime.manifest.path.clone(),
+            manifest: runtime.manifest.sha256.clone(),
+            entries: actual.len(),
+        }))
+    }
+    pub fn verifier_runtime_document(&self) -> Result<serde_json::Value> {
+        match self.verifier_runtime_evidence()? {
+            Some(evidence) => serde_json::to_value(evidence).map_err(|e| e.to_string()),
+            None => Ok(serde_json::Value::Null),
+        }
+    }
+    fn boundary(
+        &self,
+        repo: &Path,
+        _scratch: &Path,
+        runtime: Option<&RuntimeEvidence>,
+    ) -> Result<Command> {
         check_tool(&self.policy.bubblewrap)?;
         let mut c = Command::new(&self.policy.bubblewrap.path);
         c.env_clear()
@@ -712,8 +937,14 @@ impl GitBackend {
                 "--as-pid-1",
                 "--clearenv",
                 "--ro-bind",
-                "/usr",
-                "/usr",
+            ])
+            .arg(
+                runtime
+                    .map(|r| r.root.as_path())
+                    .unwrap_or(Path::new("/usr")),
+            )
+            .arg("/usr")
+            .args([
                 "--symlink",
                 "usr/bin",
                 "/bin",
@@ -728,7 +959,10 @@ impl GitBackend {
                 "--dev",
                 "/dev",
                 "--tmpfs",
-                "/tmp",
+                "/run/corenius-tmp",
+                        "--setenv",
+                        "TMPDIR",
+                        "/run/corenius-tmp",
                 "--dir",
                 "/home",
                 "--dir",
@@ -792,7 +1026,7 @@ if os.environ.get('CAPTURE_BUNDLE')=='1':
   data=stream.read(16777217);assert len(data)<=16777216;encoded=base64.b64encode(data).decode()
 print(json.dumps({'state':{'commit':commit,'tree':tree,'refs':refs,'status':status,'capture_pid':os.getpid(),'pid_namespace':os.readlink('/proc/self/ns/pid')},'bundle_b64':encoded}))
 "#;
-        let mut c = self.boundary(repo, scratch)?;
+        let mut c = self.boundary(repo, scratch, None)?;
         c.arg("--ro-bind")
             .arg(&self.policy.git.path)
             .arg("/run/git")
@@ -894,13 +1128,23 @@ print(json.dumps({'state':{'commit':commit,'tree':tree,'refs':refs,'status':stat
         fs::create_dir(root.join("scratch")).map_err(|e| e.to_string())?;
         Ok(repo)
     }
-    pub fn verify(&self, repo: &Path, suite: &Suite) -> Result<(bool, Vec<u8>, String)> {
+    pub fn verify(
+        &self,
+        repo: &Path,
+        suite: &Suite,
+    ) -> Result<(bool, Vec<u8>, String, serde_json::Value)> {
         check_tool(&suite.script)?;
         check_tool(&self.policy.python)?;
+        let runtime = self.verifier_runtime_evidence()?;
+        let runtime_doc = match &runtime {
+            Some(evidence) => serde_json::to_value(evidence).map_err(|e| e.to_string())?,
+            None => serde_json::Value::Null,
+        };
         let environment = digest(
             &serde_json::to_vec(&(
                 &self.policy.python,
                 &self.policy.bubblewrap,
+                &runtime_doc,
                 "unshare-all/no-controller-mounts/PATH=/usr/bin:/bin",
             ))
             .map_err(|e| e.to_string())?,
@@ -911,6 +1155,7 @@ print(json.dumps({'state':{'commit':commit,'tree':tree,'refs':refs,'status':stat
                 .parent()
                 .ok_or("materialization parent")?
                 .join("scratch"),
+            runtime.as_ref(),
         )?;
         c.arg("--ro-bind")
             .arg(&suite.script.path)
@@ -919,11 +1164,12 @@ print(json.dumps({'state':{'commit':commit,'tree':tree,'refs':refs,'status':stat
             .arg("/run/verification.py")
             .args(&suite.args);
         let o = output(c)?;
-        let log=serde_json::to_vec(&serde_json::json!({"argv":[self.policy.python.path.to_string_lossy(),"/run/verification.py"],"args":suite.args,"exit":o.status.code(),"stdout":String::from_utf8_lossy(&o.stdout),"stderr":String::from_utf8_lossy(&o.stderr),"suite":suite,"environment":environment,"os_isolated":true,"process":o.process})).map_err(|e|e.to_string())?;
+        let log=serde_json::to_vec(&serde_json::json!({"argv":[self.policy.python.path.to_string_lossy(),"/run/verification.py"],"args":suite.args,"exit":o.status.code(),"stdout":String::from_utf8_lossy(&o.stdout),"stderr":String::from_utf8_lossy(&o.stderr),"suite":suite,"environment":environment,"runtime":runtime_doc,"os_isolated":true,"process":o.process})).map_err(|e|e.to_string())?;
         Ok((
             o.status.success() && o.process.limit.is_none(),
             log,
             environment,
+            runtime_doc,
         ))
     }
     pub fn compare(&self, base: &str, candidate: &str) -> Result<String> {

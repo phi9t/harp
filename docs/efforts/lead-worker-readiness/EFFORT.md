@@ -1,6 +1,6 @@
 # Effort: lead-worker-readiness
 
-Status: integration candidate under independent review; implementation tickets resolved except the live trial; no full live-trial qualification claimed.
+Status: integration candidate under independent review; implementation tickets resolved except ticket 14 live trial and ticket 15 TraeCLI parity; no full live-trial qualification claimed.
 Base: main
 Integration branch: effort/lead-worker-readiness
 Record branch: effort/lead-worker-readiness-records

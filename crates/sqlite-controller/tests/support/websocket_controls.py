@@ -1,6 +1,16 @@
 """Authenticated real TCP gateway controls; no native runtime or paid provider."""
 import hashlib,json,os,pathlib,signal,socket,struct,subprocess,sys,tempfile,time,tarfile
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 binary=pathlib.Path(sys.argv[1]);root=pathlib.Path(tempfile.mkdtemp(prefix='ws05-'))
 env={'PATH':'/usr/bin:/bin','CORENIUS_OPERATOR_TOKEN':'operator-fixture-secret','CORENIUS_CLIENT_TOKEN':'operator-fixture-secret','CORENIUS_CLIENT_PRINCIPAL':'operator','CORENIUS_UI_TOKEN':'separate-ui-fixture-secret'}
 owned=[]

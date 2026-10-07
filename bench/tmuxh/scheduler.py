@@ -103,7 +103,7 @@ class Harness:
         if self.server is not None and self.server.is_alive():
             self.server.kill()
         # tmux can leave the socket file behind; remove only our own, and only when no server answers on it.
-        sock = Path(f"/tmp/tmux-{os.getuid()}") / self.socket
+        sock = Path(f"/run/corenius-tmp/tmux-{os.getuid()}") / self.socket
         if self.server is not None and sock.exists() and not self.server.is_alive():
             try:
                 sock.unlink()

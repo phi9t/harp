@@ -6,6 +6,9 @@
 #   CHECK_CARGO=0 ...                skip `cargo test --offline` (on by default since the AIME work landed, c1f458b)
 # Each feature adds one script, tools/agents/checks.d/NN-name.sh, that runs its own suite; nothing else in this file changes per feature.
 cd "$(dirname "$0")/../.." || exit 2
+TMPDIR="$(python3 tools/temp_root.py)" || exit 2
+export TMPDIR
+TMP="$TMPDIR"; TEMP="$TMPDIR"; export TMP TEMP
 fail=0
 run() {
   printf '== %s\n' "$*"

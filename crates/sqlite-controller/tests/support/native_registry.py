@@ -4,6 +4,16 @@ and supplies deterministic local Responses SSE bytes. It never dispatches worker
 """
 import pathlib,tempfile,json,subprocess,socket,hashlib,time,sys,threading,http.server,socketserver,os,select,signal,sqlite3
 from wsutil import WS
+
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 BIN=pathlib.Path('/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin')
 HERE=pathlib.Path(__file__).resolve().parents[2]
 ORIGIN=pathlib.Path('/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg')
@@ -79,8 +89,10 @@ class Owned:
   assert all(record['whole_process_terminated'] for record in namespace_records),'owned namespace remains after identity-fenced fixture cleanup'
   print('owned_fixture_resources',json.dumps(self.records),flush=True)
 
+def owned_tmp():
+ p=pathlib.Path(os.environ.get('TMPDIR') or '/run/corenius-tmp');p.mkdir(parents=True,exist_ok=True);return str(p)
 def run(topology):
- with tempfile.TemporaryDirectory(prefix='cnr-',dir='/tmp') as directory:
+ with tempfile.TemporaryDirectory(prefix='cnr-',dir=owned_tmp()) as directory:
   r=pathlib.Path(directory);owned=Owned(r);release=threading.Event();cancel_hold=threading.Event();event_b_release=threading.Event();counts={};counter_lock=threading.Lock();requests=[]
   for name in ['workers','controlplanes','t-exec','t-app','canonical']:(r/name).mkdir()
   (r/'canonical/protected').write_text('never mounted')
@@ -177,9 +189,14 @@ def run(topology):
     raise AssertionError('command revision contention')
    command('create_project',{'name':'p','base':native_base})
    grants=[]
-   for task in ['TASK_A','TASK_B']:
+   page_fixture=os.environ.get('CORENIUS_TEST_PAGE_FIXTURE')=='1'
+   # The empty-binding crash applies to the first native thread: defer the peer
+   # until A has established and checked the real pagination boundary.
+   tasks=['TASK_B','TASK_A'] if page_fixture and os.environ.get('CORENIUS_TEST_PAGE_PEER_FIRST')=='1' else ['TASK_A','TASK_B']
+   for task in tasks:
     command('create_task',{'task':task,'work_ref':{'deployment':'fixture','project':'p','item':task},'source_revision':'r1','brief':task+' MODEL_FREE_ACTUAL_PROTOCOL'})
-    grants.append(command('admit',{'task':task}))
+    if not page_fixture or task=='TASK_A':grants.append(command('admit',{'task':task}))
+   if page_fixture:assert len(grants)==1
    if os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1':
     (r/'adopt-events.actors').write_text(json.dumps({'a':grants[0]['attempt'],'b':grants[1]['attempt']}));(r/'hold-codex').unlink()
    confirm_restarted=False;page_ws=None;padding=[]
@@ -228,7 +245,11 @@ def run(topology):
      assert (r/'crash-confirm.observed' if os.environ.get('CORENIUS_TEST_CONFIRM_FIXTURE')=='1' else r/'crash-boundary.observed').exists()
      if os.environ.get('CORENIUS_TEST_PAGE_FIXTURE')=='1':
       assert not page_errors,page_errors
-      observation=json.loads((r/'crash-boundary.observed').read_text());padding_setup(json.loads((r/'page-setup.observed').read_text()),101)
+      observation=json.loads((r/'crash-boundary.observed').read_text())
+      with sqlite3.connect((r/'state.db').as_uri()+'?mode=ro',uri=True) as reader:
+       target=json.loads(reader.execute('SELECT document FROM codex_bindings WHERE attempt=?',(grants[0]['attempt'],)).fetchone()[0])
+      assert len(grants)==1 and target['thread_id']==observation['thread_id'],'pagination crash must target the sole admitted A'
+      padding_setup(json.loads((r/'page-setup.observed').read_text()),101)
       cursor=None;pages=[];deadline=time.monotonic()+8
       while True:
        assert time.monotonic()<deadline,'native pagination observation deadline'
@@ -297,6 +318,11 @@ def run(topology):
      controller=owned.spawn([sys.argv[1],str(r/'state.db'),str(r/'controller.sock')],'controller-confirm-restarted',env);confirm_restarted=True
     try:registry=query('codex_registry')
     except (ConnectionRefusedError,FileNotFoundError,ConnectionResetError,json.JSONDecodeError):return False
+    if page_fixture and confirm_restarted and len(grants)==1:
+     assert len(padding)==202 and not page_errors
+     grants.append(command('admit',{'task':'TASK_B'}))
+     print('actual_native_pagination_admission_order',topology,json.dumps({'task_creation_order':tasks,'admission_order':['TASK_A','TASK_B'],'A_attempt':grants[0]['attempt'],'B_attempt':grants[1]['attempt'],'padding_count_before_B':len(padding),'crash_boundary_before_B':True}),flush=True)
+     return False
     if os.environ.get('CORENIUS_TEST_EMPTY_RESTART')=='1' and confirm_restarted:
      observation=json.loads((r/'crash-boundary.observed').read_text());empty=next((b for b in registry['bindings'] if b['document'].get('thread_id')==observation['thread_id']),None)
      return registry if empty and empty['state']=='unknown' and empty['document'].get('recovery_state')=='qualification_unknown' else False

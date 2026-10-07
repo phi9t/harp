@@ -1,3 +1,3 @@
 #!/bin/sh
 set -eu
-cp -r /tmp/solution/overlay/. /workspace/
+cp -r /run/corenius-tmp/solution/overlay/. /workspace/

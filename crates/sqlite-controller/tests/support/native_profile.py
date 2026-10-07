@@ -1,6 +1,16 @@
 """MODEL_FREE_ACTUAL_PROTOCOL trusted supervisor native-profile qualification."""
-import pathlib,tempfile,json,subprocess,socket,hashlib,time,sys,uuid
+import pathlib,tempfile,json,subprocess,socket,hashlib,time,sys,uuid,os
 from wsutil import WS
+
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 BIN=pathlib.Path('/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin')
 HERE=pathlib.Path(__file__).resolve().parents[2]
 ORIGIN=pathlib.Path('/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg')
@@ -15,11 +25,19 @@ def wait(predicate,seconds=25):
   if result:return result
   time.sleep(.025)
  raise AssertionError('behavior deadline')
-with tempfile.TemporaryDirectory(prefix='cnp-',dir='/tmp') as directory:
+def owned_tmp():
+ p=pathlib.Path(os.environ.get('TMPDIR') or '/run/corenius-tmp');p.mkdir(parents=True,exist_ok=True);return str(p)
+def short_transport_tmp():
+ for candidate in [pathlib.Path('/run/user')/str(os.getuid()), pathlib.Path('/dev/shm'), pathlib.Path(os.environ.get('TMPDIR') or '/run/corenius-tmp')]:
+  if candidate.exists() and os.access(candidate,os.W_OK):
+   return str(candidate)
+ return '/run/corenius-tmp'
+with tempfile.TemporaryDirectory(prefix='cnp-',dir=owned_tmp()) as directory, tempfile.TemporaryDirectory(prefix='cnp-t-',dir=short_transport_tmp()) as transport_directory:
  r=pathlib.Path(directory);(r/'executions').mkdir();(r/'transport').mkdir()
  catalog=ORIGIN/'catalog.json'; cfg=r/'runtime.toml';cfg.write_text((ORIGIN/'codex/config.toml').read_text().replace(str(catalog),'/run/codex/catalog.json').replace('35361','8777'))
  provider=r/'provider.sock';listener=socket.socket(socket.AF_UNIX);listener.bind(str(provider));listener.listen()
- profile={'kind':'app','binary':pin(BIN/'codex'),'companion':pin(BIN/'codex-code-mode-host'),'catalog':pin(catalog),'config':pin(cfg),'launcher':pin(HERE/'support/codex_insula.py'),'transport_root':str(r/'transport'),'provider_socket':str(provider)}
+ transport=pathlib.Path(transport_directory)
+ profile={'kind':'app','binary':pin(BIN/'codex'),'companion':pin(BIN/'codex-code-mode-host'),'catalog':pin(catalog),'config':pin(cfg),'launcher':pin(HERE/'support/codex_insula.py'),'transport_root':str(transport),'provider_socket':str(provider)}
  config=r/'supervisor.json';config.write_text(json.dumps({'root':str(r/'executions'),'profile':{'executable':'/usr/bin/python3','args':['/run/codex/launcher.py'],'codex':profile}}))
  supervisor=pathlib.Path(sys.argv[1]).parent/'corenius-attempt-supervisor';p=subprocess.Popen([str(supervisor),str(config),str(r/'supervisor.sock')],env={'CORENIUS_SUPERVISOR_TOKEN':'native-profile-secret','PATH':'/usr/bin:/bin'},stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
  binding={'project':'native','attempt':str(uuid.uuid4()),'operation':str(uuid.uuid4()),'scope_epoch':1,'base':'0123456789abcdef0123456789abcdef01234567','brief':str(uuid.uuid4())}
@@ -31,7 +49,7 @@ with tempfile.TemporaryDirectory(prefix='cnp-',dir='/tmp') as directory:
   identity=request(r/'supervisor.sock',{'token':'native-profile-secret','action':'start','binding':binding})
   if 'ok' not in identity: print('native_setup_output', (r/'executions'/binding['attempt']/'output.log').read_text(),flush=True)
   assert 'ok' in identity,identity
-  proxy=r/'transport'/binding['attempt']/'native.sock';wait(proxy.exists)
+  proxy=transport/binding['attempt']/'native.sock';wait(proxy.exists)
   token=(r/'executions/native-authority'/binding['attempt']).read_text()
   def lookup():
    value=request(r/'supervisor.sock',{'token':'native-profile-secret','action':'native_lookup','binding':binding})

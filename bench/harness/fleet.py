@@ -24,6 +24,16 @@ from pathlib import Path
 
 import tasklib
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 GIT_ENV = ["-c", "user.email=bench@corenius", "-c", "user.name=bench", "-c", "commit.gpgsign=false"]
 # Build and tool artifacts are not contamination: they are byproducts of running the project's own build.
 IGNORED = (".uvcache/", "target/", "build/", "__pycache__/", ".pytest_cache/", ".blade_tools/", "build64_release/",
@@ -83,9 +93,9 @@ def changed_paths(ws: Path) -> list[str]:
 
 def reference_agent(ticket: Ticket, ws: Path, record: dict) -> dict:
     """Applies the ticket's apply.sh, or copies its overlay, inside the capsule (what a perfect agent would do)."""
-    command = ("sh /tmp/ticket/apply.sh" if (ticket.path / "apply.sh").exists()
-               else "cp -r /tmp/ticket/overlay/. /workspace/")
-    return tasklib.run_in_capsule(record, ws, command, {}, "none", 120.0, ro=[(str(ticket.path), "/tmp/ticket")])
+    command = ("sh /run/corenius-tmp/ticket/apply.sh" if (ticket.path / "apply.sh").exists()
+               else "cp -r /run/corenius-tmp/ticket/overlay/. /workspace/")
+    return tasklib.run_in_capsule(record, ws, command, {}, "none", 120.0, ro=[(str(ticket.path), "/run/corenius-tmp/ticket")])
 
 
 GIT_LOCK = threading.Lock()

@@ -32,6 +32,13 @@ boundary) and the owner of agentic-engineering practice for the workspace.
 
 ## Rules for working here
 
+- Use `python3 tools/temp_root.py -- <command>` for host execution. It preserves a
+  safe absolute owned `TMPDIR`, or creates `.scratch/tmp`; children inherit it.
+  Host and sandbox execution must not allocate under `/tmp`. Private sandbox
+  temporary files belong in a private tmpfs at `/run/corenius-tmp`, with `TMPDIR`
+  set to that path. Preserve sandbox isolation; never bind host temporary roots
+  writable into an execution to avoid this rule.
+
 - One writer per working tree. Do your work in your own git worktree; do not
   edit, stage or move files in a checkout another agent is using.
 - Land by fast-forward only; never rebase, force-push or delete a shared branch.
@@ -39,9 +46,9 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   version together, and `tools/test_sync_agentic_workflow.py` must pass.
 - Reference and inventory documents state a commit read and mark inference; keep
   that discipline when editing them.
-- Agents and tools do not use the host's `/tmp`: set `TMPDIR`, `TMUX_TMPDIR`
-  and `TMPPREFIX` to a directory you own. Worker launches set them under the
-  run directory (`RUN_DIR/tmp`, `RUN_DIR/tmp/tmux`, `RUN_DIR/tmp/zsh`).
+- Host worker launches keep `TMPDIR`, `TMUX_TMPDIR` and `TMPPREFIX` under the
+  owned run directory. Capsule workers use the private `/run/corenius-tmp` tmpfs
+  for temporary files and mount retained run outputs at `/home/bench/run`.
 
 <!-- ultron-agentic-workflow:start -->
 ## Agentic engineering workflow

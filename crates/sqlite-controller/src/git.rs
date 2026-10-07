@@ -287,6 +287,10 @@ fn trusted_proof(c: &Connection, g: &GitBackend, v: &Candidate, report: &str) ->
     {
         return Err("verification provenance binding differs".into());
     }
+    let runtime = g.verifier_runtime_document()?;
+    if doc["runtime"] != runtime {
+        return Err("verifier runtime proof binding differs".into());
+    }
     g.bytes(&artifact)?;
     check_suite(g, required)?;
     Ok(doc)
@@ -294,7 +298,9 @@ fn trusted_proof(c: &Connection, g: &GitBackend, v: &Candidate, report: &str) ->
 fn check_suite(g: &GitBackend, s: &crate::git_workspace::Suite) -> Result<()> {
     crate::git_workspace::check_tool(&s.script)?;
     crate::git_workspace::check_tool(&g.policy.python)?;
-    crate::git_workspace::check_tool(&g.policy.bubblewrap)
+    crate::git_workspace::check_tool(&g.policy.bubblewrap)?;
+    g.verifier_runtime_evidence()?;
+    Ok(())
 }
 
 pub fn dispatch(controller: &Controller, request: Value) -> Result<Value> {
@@ -876,10 +882,10 @@ fn verify_candidate(
     }
     let suite = g.suite(&v.task, &v.base)?;
     let repo = g.materialize_candidate(&v.bundle, &v.commit, &v.tree)?;
-    let (pass, log, environment) = g.verify(&repo, suite)?;
+    let (pass, log, environment, runtime) = g.verify(&repo, suite)?;
     let logs = g.artifact(&log)?;
     let suite_digest = digest(&serde_json::to_vec(suite).map_err(|e| e.to_string())?);
-    let doc = json!({"candidate":v.id,"commit":v.commit,"tree":v.tree,"base":v.base,"brief":v.brief,"brief_digest":v.brief_digest,"suite":suite_digest,"suite_id":suite.id,"environment":environment,"logs":logs,"materialization":repo,"policy":g.identity,"verdict":if pass{"pass"}else{"fail"}});
+    let doc = json!({"candidate":v.id,"commit":v.commit,"tree":v.tree,"base":v.base,"brief":v.brief,"brief_digest":v.brief_digest,"suite":suite_digest,"suite_id":suite.id,"environment":environment,"runtime":runtime,"logs":logs,"materialization":repo,"policy":g.identity,"verdict":if pass{"pass"}else{"fail"}});
     let report_bytes = serde_json::to_vec(&doc).map_err(|e| e.to_string())?;
     let report_artifact = g.artifact(&report_bytes)?;
     let mut c = controller

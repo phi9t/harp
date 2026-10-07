@@ -34,7 +34,9 @@ Every worker launch fixes these in advance, in files, not chat:
    (`git show <commit>:<path>`), never through the working tree.
 7. **Temp directory**: the worker receives `TMPDIR`, `TMUX_TMPDIR` and
    `TMPPREFIX` under its run directory (`RUN_DIR/tmp`, `RUN_DIR/tmp/tmux`,
-   `RUN_DIR/tmp/zsh`) and must not use the host's `/tmp`.
+   `RUN_DIR/tmp/zsh`) and must not use the host's `/tmp`. Capsule workers use
+   private `/run/corenius-tmp` temporary files; retained outputs are mounted
+   separately at `/home/bench/run`.
 
 ## Supervisor checks (per cycle)
 

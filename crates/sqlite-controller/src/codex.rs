@@ -2375,7 +2375,7 @@ mod selected_model_tests {
             base: worker["base"].as_str().unwrap().into(),
             brief: worker["brief"].as_str().unwrap().into(),
         };
-        let runtime = CodexRuntime { config:serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[]})).unwrap(), connections:Mutex::new(HashMap::new()), lifecycle:Mutex::new(()) };
+        let runtime = CodexRuntime { config:serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/run/corenius-tmp/model-fixture","servers":[]})).unwrap(), connections:Mutex::new(HashMap::new()), lifecycle:Mutex::new(()) };
         (root, c, lead, worker, doc, binding, runtime)
     }
     pub(super) fn native_peer(mut peer: UnixStream) -> std::thread::JoinHandle<Value> {
@@ -2478,7 +2478,7 @@ mod selected_model_tests {
             ("bound-default", "gpt-6-astra"),
         ] {
             if key == "configured-default" {
-                c.connection.lock().unwrap().execute("INSERT INTO codex_configuration VALUES(1,?1)",[json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"}).to_string()]).unwrap();
+                c.connection.lock().unwrap().execute("INSERT INTO codex_configuration VALUES(1,?1)",[json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/run/corenius-tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"}).to_string()]).unwrap();
             } else if key == "bound-default" {
                 c.connection.lock().unwrap().execute("UPDATE codex_bindings SET document=json_set(document,'$.model','gpt-6-astra') WHERE id='lead-binding'",[]).unwrap();
             }
@@ -2508,7 +2508,7 @@ mod selected_model_tests {
     #[test]
     fn selected_model_worker_initial_turn_and_thread_intents_match_configuration() {
         let (_root, c, _, worker, _, binding, mut runtime) = fixture();
-        runtime.config=serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"})).unwrap();
+        runtime.config=serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/run/corenius-tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"})).unwrap();
         let mut doc = json!({"server_id":"fixture-server","server_store":"fixture-store","server_incarnation":"incarnation","environment_id":"env","executor":{"incarnation":"executor"}});
         {
             let db = c.connection.lock().unwrap();

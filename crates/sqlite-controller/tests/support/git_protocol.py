@@ -1,11 +1,83 @@
 """MODEL_FREE actual public SQLite/Git/supervisor/bwrap contract qualification.
 All resources are unique local fixtures. No source/mainline/model/session effects.
 """
-import concurrent.futures, hashlib, json, os, pathlib, select, signal, socket, sqlite3, subprocess, sys, tarfile, tempfile, time, uuid
+import concurrent.futures, hashlib, json, os, pathlib, select, shutil, signal, socket, sqlite3, subprocess, sys, sysconfig, tarfile, tempfile, time, uuid
+
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 BIN=pathlib.Path(sys.argv[1]).resolve(); HERE=pathlib.Path(__file__).resolve().parents[2]
 TOKEN='operator-git-secret'; SUPERVISOR='git-supervisor-secret'
 def pin(path):
  p=pathlib.Path(path);return {'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+def owned_tmp():
+ p=pathlib.Path(os.environ.get('TMPDIR') or '/run/corenius-tmp');p.mkdir(parents=True,exist_ok=True);return str(p)
+def copy_into_runtime(source,root):
+ source=pathlib.Path(source)
+ source_bytes=source.resolve() if source.is_symlink() else source
+ text=str(source)
+ if text.startswith('/usr/'):rel=pathlib.Path(text).relative_to('/usr')
+ elif text.startswith('/lib64/'):rel=pathlib.Path('lib64')/pathlib.Path(text).relative_to('/lib64')
+ elif text.startswith('/lib/'):rel=pathlib.Path('lib')/pathlib.Path(text).relative_to('/lib')
+ else:raise AssertionError('runtime source outside supported toolchain roots: '+text)
+ dest=root/rel;dest.parent.mkdir(parents=True,exist_ok=True)
+ if dest.exists() and hashlib.sha256(dest.read_bytes()).hexdigest()==hashlib.sha256(source_bytes.read_bytes()).hexdigest():return
+ shutil.copy2(source_bytes,dest)
+def ldd_paths(paths):
+ found=set()
+ for path in paths:
+  proc=subprocess.run(['/usr/bin/ldd',str(path)],capture_output=True,text=True,check=True)
+  for line in proc.stdout.splitlines():
+   parts=line.strip().split()
+   candidates=[]
+   if '=>' in parts:
+    idx=parts.index('=>')
+    if idx+1<len(parts):candidates.append(parts[idx+1])
+   elif parts and parts[0].startswith('/'):
+    candidates.append(parts[0])
+   for candidate in candidates:
+    if candidate.startswith(('/lib/','/lib64/','/usr/lib/')) and pathlib.Path(candidate).is_file():
+     found.add(candidate)
+ return sorted(found)
+def write_runtime_manifest(root,manifest):
+ entries=[]
+ for path in sorted(root.rglob('*')):
+  rel=path.relative_to(root).as_posix()
+  st=path.lstat()
+  if path.is_symlink():
+   target=os.readlink(path)
+   assert not pathlib.PurePosixPath(target).is_absolute()
+   normalized=pathlib.PurePosixPath(rel).parent.joinpath(target)
+   assert '..' not in normalized.parts
+   entries.append({'path':rel,'kind':'symlink','target':target})
+  elif path.is_file():
+   entries.append({'path':rel,'kind':'regular','sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'bytes':st.st_size})
+ doc={'schema_version':'corenius.verifier-runtime.v1','entries':entries}
+ manifest.write_text(json.dumps(doc,sort_keys=True,separators=(',',':'))+'\n')
+ return {'root':str(root),'manifest':pin(manifest),'control':str(root/'share/corenius-runtime-control/value.txt')}
+def build_verifier_runtime(root):
+ runtime=root/'runtime-snapshot/usr';runtime.mkdir(parents=True)
+ python=pathlib.Path('/usr/bin/python3')
+ copy_into_runtime(python,runtime)
+ stdlib=pathlib.Path(sysconfig.get_path('stdlib'))
+ shutil.copytree(stdlib,runtime/stdlib.relative_to('/usr'),dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+ dynload=pathlib.Path(sysconfig.get_config_var('DESTSHARED') or stdlib/'lib-dynload')
+ if dynload.exists():
+  shutil.copytree(dynload,runtime/dynload.relative_to('/usr'),dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+ so_paths=[python]
+ so_paths.extend(path for path in dynload.glob('*.so') if path.is_file())
+ for dep in ldd_paths(so_paths):copy_into_runtime(dep,runtime)
+ control_source=root/'ambient-runtime-source/value.txt';control_source.parent.mkdir(parents=True);control_source.write_text('snapshotted\n')
+ control=runtime/'share/corenius-runtime-control/value.txt';control.parent.mkdir(parents=True);shutil.copy2(control_source,control)
+ (root/'ambient-runtime-source/ambient_only.py').write_text('raise AssertionError("ambient source imported")\n')
+ control_source.write_text('ambient changed after snapshot\n')
+ return write_runtime_manifest(runtime,root/'runtime-manifest.json')
 def wait(f,seconds=25):
  end=time.monotonic()+seconds
  while time.monotonic()<end:
@@ -21,7 +93,7 @@ def git(path,*args):
  assert p.returncode==0,(args,p.stderr);return p.stdout.strip()
 class Fixture:
  def __init__(self,mode):
-  self.temp=tempfile.TemporaryDirectory(prefix='g4-',dir='/tmp');self.r=pathlib.Path(self.temp.name);self.mode=mode;self.processes=[];self.records=[];self.namespaces={}
+  self.temp=tempfile.TemporaryDirectory(prefix='g4-',dir=owned_tmp());self.r=pathlib.Path(self.temp.name);self.mode=mode;self.processes=[];self.records=[];self.namespaces={};self.runtime=None
   try:self.setup()
   except BaseException:
    self.close();raise
@@ -38,15 +110,32 @@ root=pathlib.Path('/workspace');mode=sys.argv[1];host=sys.argv[2]
 assert not pathlib.Path(host).exists(), 'verifier must not see controller root'
 assert not pathlib.Path('/root/.ssh').exists()
 assert 'CapEff:\\t0000000000000000' in pathlib.Path('/proc/self/status').read_text()
+if len(sys.argv)>3:
+ control=pathlib.Path('/usr/share/corenius-runtime-control/value.txt')
+ assert control.read_text()=='snapshotted\\n', 'verifier consumed ambient runtime instead of snapshot'
+ try:
+  control.write_text('verifier wrote runtime')
+  raise AssertionError('verifier runtime snapshot is writable')
+ except OSError:
+  pass
+ try:
+  __import__('ambient_only')
+  raise AssertionError('omitted ambient module loaded')
+ except ModuleNotFoundError:
+  pass
 for name in (['a','b'] if mode=='combined' else [mode]):
  spec=importlib.util.spec_from_file_location('task_'+name,root/('task_'+name+'.py'));module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
  assert module.answer()==('A' if name=='a' else 'B'), 'fixed admitted task contract failed'
 print('FIXED_CONTRACT_PASS',mode,'VERIFIER_OS_ISOLATED')
 ''')
+  runtime_args=[]
+  if self.mode=='runtime-snapshot':
+   self.runtime=build_verifier_runtime(self.r);runtime_args=['snapshotted']
   suites=[]
   for task in ['a','b']:
-   suites += [{'id':task+'-initial','task':task,'base':self.base,'script':pin(self.suite),'args':[task,str(self.r)]},{'id':task+'-combined','task':task,'base':None,'script':pin(self.suite),'args':['combined',str(self.r)]}]
+   suites += [{'id':task+'-initial','task':task,'base':self.base,'script':pin(self.suite),'args':[task,str(self.r),*runtime_args]},{'id':task+'-combined','task':task,'base':None,'script':pin(self.suite),'args':['combined',str(self.r),*runtime_args]}]
   policy={'project':'p','root':str(self.r/'authority'),'attempts_root':str(self.r/'workers'),'canonical':str(self.r/'canonical'),'protected_ref':'refs/heads/protected','git':pin('/usr/bin/git'),'python':pin('/usr/bin/python3'),'bubblewrap':pin('/usr/bin/bwrap'),'suites':suites}
+  if self.runtime:policy['verifier_runtime']={'root':self.runtime['root'],'manifest':self.runtime['manifest']}
   self.policy=self.r/'git.json';self.policy.write_text(json.dumps(policy))
   worker='''import pathlib,time,json,subprocess,os
 s=pathlib.Path('/scratch');w=pathlib.Path('/workspace')
@@ -442,6 +531,23 @@ def accepted_verification():
   print('actual_accepted_proof_stable_replay_original_landing_terminal_refusal_PASS',json.dumps({'proof':proof,'landed':landed,'fresh_landed':fresh_landed,'before':terminal,'after':terminal_after,'actual_ref':C}),flush=True)
   f.stop_attempt(a)
  finally:f.close()
+def runtime_snapshot():
+ f=Fixture('runtime-snapshot')
+ try:
+  assert f.runtime, 'fixture must prepare verifier runtime snapshot'
+  a=f.admit('a');C=f.ready(a,'a');candidate=f.capture(a)
+  proof=f.command('verify_candidate',{'candidate':candidate['candidate']});assert proof['verdict']=='pass',proof
+  doc=proof['document'];assert doc['runtime']['status']=='pinned' and doc['runtime']['manifest']==f.runtime['manifest']['sha256']
+  log=json.loads((f.r/'authority/artifacts'/doc['logs']).read_bytes())
+  assert log['runtime']['status']=='pinned' and log['runtime']['manifest']==f.runtime['manifest']['sha256']
+  pathlib.Path(f.runtime['control']).write_text('tampered after trusted proof\n')
+  accept=f.command('accept_candidate',{'candidate':candidate['candidate'],'verification':proof['verification']},allow_error=True)
+  fresh=f.command('verify_candidate',{'candidate':candidate['candidate']},key='verify-after-runtime-tamper',allow_error=True)
+  assert fresh.get('error') and 'verifier runtime' in fresh['error'],fresh
+  assert accept.get('error') and 'verifier runtime' in accept['error'],accept
+  print('actual_verifier_runtime_snapshot_tamper_rejected_before_dispatch_and_trusted_proof_PASS',json.dumps({'candidate':candidate,'proof':proof,'fresh_after_tamper':fresh,'accept_after_tamper':accept,'runtime_manifest':f.runtime['manifest']}),flush=True)
+  f.stop_attempt(a)
+ finally:f.close()
 def shadow_imports():
  f=Fixture('shadow-imports')
  try:
@@ -620,6 +726,7 @@ if __name__=='__main__':
   elif mode=='final-output':bounded_output(True)
   elif mode=='bounded-archive':bounded_archive()
   elif mode=='shadow-imports':shadow_imports()
+  elif mode=='runtime-snapshot':runtime_snapshot()
   elif mode=='accepted-verification':accepted_verification()
   elif mode=='inventory-slow':slow_inventory()
   elif mode in ['publication-before_ref_update','publication-after_ref_update']:recovery_publication(mode.removeprefix('publication-'))

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-cp /tmp/ticket/overlay/src/rules.cpp src/rules.cpp
+cp /run/corenius-tmp/ticket/overlay/src/rules.cpp src/rules.cpp
 
 python3 - <<'PY'
 from pathlib import Path

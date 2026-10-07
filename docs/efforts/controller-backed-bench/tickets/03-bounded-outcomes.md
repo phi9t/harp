@@ -1,10 +1,10 @@
 # 03 bounded-outcomes: Enforce bounded runs and report honest outcomes
 
 Type: task
-Status: open
-Owner:
+Status: claimed
+Owner: trae-controller-bench-03
 Blocked by: 02
-Claimed:
+Claimed: 2026-10-07T08:15:09Z expires 2026-10-07T12:15:09Z
 
 Triage: ready-for-agent
 
@@ -42,3 +42,5 @@ Deterministic deadline/failure/unknown/intervention tests through run lifecycle 
 Linux only. Use one writer per isolated worktree and normal controller role interfaces. Preserve existing work, consumed repair authority and historical evidence. Ticket publication authorizes no product execution, model spending, commits, pushes, pull requests or shared-ref landing; advance through the subsequent explicitly requested execution phase. Review repository Standards and parent Spec; a ticket result cannot broaden qualification beyond its stated scenario.
 
 ## Comments
+- 2026-10-05T23:52:30Z trae-controller-bench-03: claimed until 2026-10-06T03:52:30Z
+- 2026-10-07T08:15:09Z trae-controller-bench-03: claimed until 2026-10-07T12:15:09Z

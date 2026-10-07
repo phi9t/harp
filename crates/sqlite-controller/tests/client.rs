@@ -147,7 +147,7 @@ fn control_center_cli_reports_transport_failure_without_opening_storage() {
     let output = Command::new(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
         .args([
             "--dashboard",
-            "/tmp/corenius-absent-fixture.sock",
+            "/run/corenius-tmp/corenius-absent-fixture.sock",
             "p",
             "--once",
         ])

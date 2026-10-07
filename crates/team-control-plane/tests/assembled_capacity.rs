@@ -201,11 +201,11 @@ fn identity(f: &Fixture, root: &std::path::Path) -> RuntimeIdentity {
 }
 fn writers(worker: bool) -> Vec<String> {
     // Each capsule has two independently sessioned nested writer descendants.
-    // Planning has no repository write grant: use its private /tmp and stdout.
+    // Planning has no repository write grant: use its private /run/corenius-tmp and stdout.
     let path = if worker {
         "/workspace/src/heartbeat"
     } else {
-        "/tmp/heartbeat"
+        "/run/corenius-tmp/heartbeat"
     };
     vec![
         "/bin/sh".into(),

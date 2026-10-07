@@ -565,8 +565,8 @@ mod tests {
     fn default_profile_adds_no_serve_args_or_session_meta() {
         let profile = AcpSessionProfile::default();
         assert!(profile.serve_args().is_empty());
-        let params = profile.session_new_params(&PathBuf::from("/tmp/ws"));
-        assert_eq!(params, json!({"cwd": "/tmp/ws", "mcpServers": []}));
+        let params = profile.session_new_params(&PathBuf::from("/run/corenius-tmp/ws"));
+        assert_eq!(params, json!({"cwd": "/run/corenius-tmp/ws", "mcpServers": []}));
     }
 
     #[test]
@@ -588,7 +588,7 @@ mod tests {
             .filter(|pair| pair[0] == "--disallowed-tool")
             .count();
         assert_eq!(disallowed, ISOLATION_DISALLOWED_TOOLS.len());
-        let params = profile.session_new_params(&PathBuf::from("/tmp/ws"));
+        let params = profile.session_new_params(&PathBuf::from("/run/corenius-tmp/ws"));
         assert_eq!(params["_meta"]["trae"]["skills"], json!([]));
         assert_eq!(params["_meta"]["trae"]["mcpServers"], json!([]));
     }
@@ -597,7 +597,7 @@ mod tests {
     fn provider_args_append_profile_after_model() {
         let provider = TraeCliAcpProvider {
             command: "traecli".to_string(),
-            cwd: PathBuf::from("/tmp/ws"),
+            cwd: PathBuf::from("/run/corenius-tmp/ws"),
             model: Some("gpt-5.2".to_string()),
             timeout_ms: 1_000,
             serve_args: None,

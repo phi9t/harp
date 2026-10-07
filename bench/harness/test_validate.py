@@ -13,6 +13,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tasklib  # noqa: E402
 import validate  # noqa: E402
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 
 class ValidateTest(unittest.TestCase):
     def setUp(self):
@@ -39,7 +49,7 @@ class ValidateTest(unittest.TestCase):
         for base in (d / "tests", d / "environment/tests"):
             (base / "test.sh").write_text(test + "\n")
         (d / "solution/overlay/value.txt").write_text(fixed + "\n")
-        (d / "solution/solve.sh").write_text("cp -r /tmp/solution/overlay/. /workspace/\n")
+        (d / "solution/solve.sh").write_text("cp -r /run/corenius-tmp/solution/overlay/. /workspace/\n")
         prot = "" if protected is None else f"protected = {json.dumps(protected)}\n"
         (d / "task.toml").write_text(f'schema_version = "1.1"\n[task]\nname = "{name}"\n[bench]\nnet = "none"\n'
                                      f'[verifier]\ncommand = "{verifier}"\n{prot}')

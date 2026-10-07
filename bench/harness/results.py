@@ -20,6 +20,7 @@ READINESS_INSTANTIATIONS = ("lead-driven", "local-controller", "workflow-control
 READINESS_OUTCOMES = ("passes", "passes with intervention", "not applicable by design", "fails")
 READINESS_PROOFS = ("deterministic", "live")
 CORE_STORIES = frozenset({1, 2, 5, 6, 7, 9, 12, 14, 15, 16, 17, 18, 20, 27, 34, 35})
+CONTROLLER_SCHEMA = "corenius.bench.controller.v1"
 
 
 def _num(value, name, allow_none=False):
@@ -36,8 +37,9 @@ def validate(record: dict) -> dict:
                      ("outcome", dict), ("timing", dict), ("coordination", dict), ("cost", dict), ("provenance", dict)):
         if not isinstance(record.get(key), typ):
             raise ValueError(f"{key} must be {typ.__name__}")
-    if not (record["condition"] == "solo" or record["condition"].startswith("fleet:")):
-        raise ValueError("condition must be solo or fleet:N")
+    condition = record["condition"]
+    if not (condition == "solo" or condition.startswith("fleet:") or condition.startswith("controller:")):
+        raise ValueError("condition must be solo, fleet:N, or controller:TICKET")
     for key in ("digest", "net"):
         if not isinstance(record["capsule"].get(key), str):
             raise ValueError(f"capsule.{key} must be a string")
@@ -51,6 +53,59 @@ def validate(record: dict) -> dict:
         _num(record["coordination"].get(key), f"coordination.{key}")
     for key in ("usd", "input_tokens", "output_tokens"):
         _num(record["cost"].get(key), f"cost.{key}", allow_none=True)
+    if condition.startswith("controller:"):
+        controller = record.get("controller")
+        if not isinstance(controller, dict):
+            raise ValueError("controller must be a dict")
+        if controller.get("schema_version") != CONTROLLER_SCHEMA:
+            raise ValueError("controller.schema_version must be corenius.bench.controller.v1")
+        for key in ("mode", "task", "ticket"):
+            if not isinstance(controller.get(key), str):
+                raise ValueError(f"controller.{key} must be a string")
+        if controller["mode"] != "deterministic":
+            raise ValueError("controller.mode must be deterministic")
+        expected_ticket = condition.split(":", 1)[1]
+        if controller["task"] != record["task_id"] or controller["ticket"] != expected_ticket:
+            raise ValueError("controller task/ticket must match the result condition")
+        partial = controller.get("partial_contract")
+        if not isinstance(partial, dict):
+            raise ValueError("controller.partial_contract must be a dict")
+        for key in ("suite_id", "suite_digest", "noop_verdict", "fixed_verdict"):
+            if not isinstance(partial.get(key), str):
+                raise ValueError(f"controller.partial_contract.{key} must be a string")
+        if not isinstance(partial.get("selected_tests"), list) or not all(isinstance(item, str) for item in partial["selected_tests"]):
+            raise ValueError("controller.partial_contract.selected_tests must be a list of strings")
+        landing = controller.get("landing")
+        if not isinstance(landing, dict) or not isinstance(landing.get("state"), str):
+            raise ValueError("controller.landing.state must be a string")
+        if not isinstance(controller.get("process_disposition"), dict):
+            raise ValueError("controller.process_disposition must be a dict")
+        source = controller.get("source")
+        if not isinstance(source, dict):
+            raise ValueError("controller.source must be a dict")
+        manifest = source.get("content_manifest")
+        if not isinstance(manifest, dict) or manifest.get("schema_version") != "corenius.bench.source-manifest.v1":
+            raise ValueError("controller.source.content_manifest must be a source manifest")
+        if not isinstance(manifest.get("digest"), str):
+            raise ValueError("controller.source.content_manifest.digest must be a string")
+        if not isinstance(manifest.get("entries"), list):
+            raise ValueError("controller.source.content_manifest.entries must be a list")
+        closure = controller.get("runtime_closure")
+        if not isinstance(closure, dict):
+            raise ValueError("controller.runtime_closure must be a dict")
+        if closure.get("status") not in ("pinned", "limited"):
+            raise ValueError("controller.runtime_closure.status must be pinned or limited")
+        if not isinstance(closure.get("pinned"), dict):
+            raise ValueError("controller.runtime_closure.pinned must be a dict")
+        if closure["status"] == "pinned":
+            runtime = closure["pinned"].get("verifier_runtime")
+            if not isinstance(runtime, dict):
+                raise ValueError("controller.runtime_closure.pinned.verifier_runtime must be a dict")
+            manifest = runtime.get("manifest")
+            if not isinstance(manifest, dict) or not isinstance(manifest.get("sha256"), str):
+                raise ValueError("controller verifier runtime manifest must be pinned")
+        for key in ("build_seconds", "setup_seconds", "controller_flow_seconds", "cleanup_seconds"):
+            _num(record["timing"].get(key), f"timing.{key}")
     return record
 
 
@@ -96,11 +151,12 @@ def summarize(records: list[dict]) -> list[dict]:
 
 
 def table(rows: list[dict]) -> str:
-    head = (f"{'task':30s} {'condition':8s} {'agent':16s} {'n':>3s} {'pass':>6s} {'ci95':>13s} {'wall':>7s} {'confl':>5s} "
+    condition_width = max([9, *(len(r["condition"]) for r in rows)])
+    head = (f"{'task':30s} {'condition':{condition_width}s} {'agent':16s} {'n':>3s} {'pass':>6s} {'ci95':>13s} {'wall':>7s} {'confl':>5s} "
             f"{'redo':>4s} {'contam':>6s} {'tok_out':>8s}")
     lines = [head, "-" * len(head)]
     for r in rows:
-        lines.append(f"{r['task']:30s} {r['condition']:8s} {r['agent'][:16]:16s} {r['n']:3d} {r['pass_rate']:6.2f} "
+        lines.append(f"{r['task']:30s} {r['condition']:{condition_width}s} {r['agent'][:16]:16s} {r['n']:3d} {r['pass_rate']:6.2f} "
                      f"[{r['ci95'][0]:.2f},{r['ci95'][1]:.2f}] {r['wall_median']:7.1f} {r['conflicts']:5d} {r['redos']:4d} "
                      f"{r['contamination']:6d} {'-' if r['tokens_out_median'] is None else int(r['tokens_out_median']):>8}")
     return "\n".join(lines)

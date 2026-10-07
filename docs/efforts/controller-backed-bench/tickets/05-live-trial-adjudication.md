@@ -15,7 +15,7 @@ Triage: ready-for-agent
 - [ ] Enforce one trial, at most two concurrent workers, 30-minute execution deadline and at most one fresh integration Attempt; no automatic repeat on provider failure/timeout.
 - [ ] Observe two actual useful worker executions with intersecting intervals and retained task candidates; no transcripts, reference patches, pane liveness or slot occupancy substitutes for live proof.
 - [ ] Require actual normal controller candidate verification/acceptance/landing and stale refusal evidence; fresh integration uses fresh proof and final exact committed m01 passes the unchanged independent verifier.
-- [ ] Attach deterministic stale-acceptance control evidence from the same qualified source alongside the live stale landing sequence; stale acceptance semantics remain required even if separately fixture-proven.
+- [ ] Preserve existing acceptance semantics and require live stale landing refusal plus fresh exact integration proof; do not claim or require a new stale-acceptance guard.
 - [ ] Retain actual source/model/toolchain/Kata manifest, delivery/admission correlation, event ranges, candidate/proof bindings, verifier output, measured/unknown usage and all manual interventions.
 - [ ] On failure/timeout preserve known failure plus independent unresolved-effect disposition and bounded reconciliation evidence; manual rescue cannot create autonomous PASS.
 - [ ] Independent reviewer adjudicates all evidence against the parent contract. PASS requires task and orchestration correctness and no uncertain worker effects; intended retained services have explicit disposition.

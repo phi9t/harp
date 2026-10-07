@@ -181,9 +181,9 @@ impl InsulaSandbox {
             workspace.to_string_lossy().into_owned(),
             "/workspace".to_string(),
             "--tmpfs".to_string(),
-            "/tmp".to_string(),
-            "--tmpfs".to_string(),
             "/run".to_string(),
+            "--tmpfs".to_string(),
+            "/run/corenius-tmp".to_string(),
             "--dir".to_string(),
             "/home".to_string(),
             "--dir".to_string(),
@@ -211,7 +211,7 @@ impl InsulaSandbox {
         }
         filtered.insert("CORENIUS_IN_INSULA".to_string(), "1".to_string());
         filtered.insert("HOME".to_string(), "/home/corenius".to_string());
-        filtered.insert("TMPDIR".to_string(), "/tmp".to_string());
+        filtered.insert("TMPDIR".to_string(), "/run/corenius-tmp".to_string());
         filtered.insert(
             "PATH".to_string(),
             "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin".to_string(),

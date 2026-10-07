@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Deterministic public controller qualification against the exact real Kata daemon.
 No models, production tasks, Kata SQL, or fabricated HTTP successes.
-All fixture resources and failure evidence are retained in the assigned checkout.
+All fixture resources and failure evidence are retained under the checked TMPDIR.
 """
 import base64
 import hashlib
@@ -20,12 +20,21 @@ import time
 import urllib.error
 import urllib.request
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 REPO = Path(__file__).resolve().parents[4]
 PIN = Path(os.environ.get('KATA_PINNED_BINARY', '/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned'))
 SHA = '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6'
 assert hashlib.sha256(PIN.read_bytes()).hexdigest() == SHA
-(REPO/'.scratch').mkdir(exist_ok=True)
-ROOT = Path(tempfile.mkdtemp(prefix='k3-', dir=REPO / '.scratch'))
+ROOT = Path(tempfile.mkdtemp(prefix='k3-'))
 ROOT.chmod(0o700)
 records = []
 api_trace = open(ROOT/'public-api.jsonl','a')

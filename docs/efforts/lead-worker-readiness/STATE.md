@@ -10,11 +10,13 @@ codex/landing-queue-20261007 atop main9a92c95. The specs and tickets exist;
 implementation and worker probe evidence are retained. Current independent review
 found two validation defects, being repaired before landing. Ticket14 remains
 open: recorded small provider probes do not qualify the complete live trial.
+Ticket15 TraeCLI parity also remains open.
 
 ## Next actions
 
 Finish bounded review repairs, run exact-candidate gates and locally fast-forward
-main. Complete live-trial work separately under its effort's execution authority.
+main. Complete ticket14 live-trial work and ticket15 TraeCLI parity separately
+under their effort execution authority.
 
 ## Open questions
 

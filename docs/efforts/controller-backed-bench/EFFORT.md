@@ -1,6 +1,6 @@
 # Controller-backed benchmark dogfooding
 
-Status: specification published; no implementation or live trial started.
+Status: deterministic tickets 01/02/06 completed; ticket 03 active; no live trial started.
 Source read: 48d71588fff00ac70fa4a29e066a47a6b05f2ebd.
 
 ## Intent
@@ -16,13 +16,17 @@ The user approved all four first-round recommendations:
 3. Controller landing is allowed only in a run-owned disposable canonical repository. Existing Corenius refs/worktrees and other user sessions remain untouched.
 4. Retain the existing fleet runner as a baseline and add a separate controller mode. Use the same tasks/verifiers, reporting completion/orchestration correctness independently from time, model usage and interventions.
 
-## Authority
+## Historical design-interview authority — 2026-10-05
 
 Design interview and durable documentation only. No implementation, model-spend run, commit, push, pull request or shared-branch landing is authorized by this interview. The approved disposable landing destination is a design requirement for future authorized trials.
 
+Later owner implementation approvals are recorded in EXECUTION.md. The current
+2026-10-07 publication/landing request supersedes the interview-only Git boundary
+for reviewed pending changes; it grants no new live/model run.
+
 ## Known distinction
 
-Source inspection: the fleet runner rebases and redoes textual conflicts; the controller rejects stale-base candidates even for disjoint changes. Inference: controller-mode success expectations must distinguish fresh integration proof from fleet conflict counts. Existing retained status says complete two-worker live qualification remains unproven; no trial has run in this effort.
+Source inspection: the fleet runner rebases and redoes textual conflicts; the controller rejects stale-base candidates even for disjoint changes. Inference: controller-mode success expectations must distinguish fresh integration proof from fleet conflict counts. Existing retained status says complete two-worker live qualification remains unproven; no live trial has run in this effort.
 
 ## Accepted second-round decisions — 2026-10-05
 
@@ -63,3 +67,7 @@ The user requested redoing the specification against current work. The active su
 ## Specification published
 
 SPEC.md is the durable local-tracker specification with lifecycle Status: open and Triage: ready-for-agent. Independent critique and adversarial review completed, with no remaining blocking specification gaps. The reviewed contract preserves both stale-acceptance and stale-landing controls; unsupported controller semantics become separately scoped prerequisites. Existing public controller and benchmark verifier seams remain the accepted test boundaries, with ticket-level test selection and final unchanged whole-task grading. Document structure/whitespace were checked; no runtime tests or launches ran. Next is blocker-linked ticket decomposition, including readiness findings before live execution.
+
+## Owner amendment during implementation
+
+The user explicitly selected preserving existing acceptance semantics instead of adding a stale-acceptance prerequisite. Conditional stale landing rejection and fresh integration Attempt/Candidate/proof/acceptance are required. This supersedes the earlier stronger acceptance-refusal contract. Implementation authority was granted through implement-spec with separate TraeCLI worktrees and dedicated tmux; live Codex run remains separately gated. Current canonical implementation record is on codex/controller-bench-integration, based at d7f6748.

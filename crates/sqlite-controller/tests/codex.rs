@@ -423,6 +423,7 @@ fn repair2_empty_thread_after_first_loaded_page_recovers() {
     repair_fixture(&[
         ("CORENIUS_TEST_EMPTY_CRASH", "1"),
         ("CORENIUS_TEST_PAGE_FIXTURE", "1"),
+        ("CORENIUS_TEST_PAGE_PEER_FIRST", "1"),
     ]);
 }
 

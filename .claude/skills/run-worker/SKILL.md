@@ -23,7 +23,9 @@ decision to land. Design: `docs/practice/lead-supervisor-worker.md`.
    launches keep embedded `.git` metadata because only `/workspace` is mounted.
    Both layouts let sandboxed workers commit without exposing the shared
    repository's Git metadata. The launcher also sets `TMPDIR`, `TMUX_TMPDIR`
-   and `TMPPREFIX` under `run_dir/tmp`; workers must not use the host's `/tmp`.
+   and `TMPPREFIX` under `run_dir/tmp` for host workers. Capsule workers use
+   private `/run/corenius-tmp` tmpfs and retain outputs at `/home/bench/run`;
+   host temporary roots are never projected as capsule temporary storage.
    For effort tickets, prefer the lead launcher:
    `python3 tools/agents/lead_launch.py launch EFFORT NN --interactive --tmux-session NAME`.
    Interactive launch starts the provider's terminal command in the private

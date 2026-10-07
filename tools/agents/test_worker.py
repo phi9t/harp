@@ -19,6 +19,16 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import worker  # noqa: E402
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 FAKE = textwrap.dedent(
     """\
     #!/usr/bin/env python3
@@ -1876,6 +1886,19 @@ class WorkerTest(unittest.TestCase):
         record = json.loads((run_dir / "capsule-run.json").read_text())
         self.assertEqual((record["net"], record["exit_code"]), ("host", 0))
         self.assertEqual(json.loads((run_dir / "run.json").read_text())["sandbox"], "danger-full-access (capsule)")
+
+    def test_capsule_worker_temp_is_private_not_the_host_run_projection(self):
+        launched = self.launch("clean", "--capsule", self.capsule_request("temp_probe"))
+        verdict = self.supervise(launched)
+        self.assertEqual(verdict["verdict"], "CLEAN", verdict)
+        output = json.loads((Path(launched["worktree"]) / "out.md").read_text())
+        self.assertEqual(output["TMPDIR"], "/run/corenius-tmp")
+        self.assertEqual(output["TMUX_TMPDIR"], "/run/corenius-tmp")
+        self.assertEqual(output["TMPPREFIX"], "/run/corenius-tmp/zsh")
+        self.assertTrue(output["mkdtemp"].startswith("/run/corenius-tmp/"), output)
+        self.assertEqual(output["here_doc"], "/run/corenius-tmp/here-doc.txt")
+        host_temp = Path(launched["run_dir"]) / "tmp"
+        self.assertFalse((host_temp / "here-doc.txt").exists())
 
     def test_network_off_is_enforced_inside_a_capsule(self):
         class Handler(http.server.BaseHTTPRequestHandler):

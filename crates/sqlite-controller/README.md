@@ -520,7 +520,8 @@ cargo test --locked --offline --features fault-injection --test kata -- --nocapt
 
 The deterministic fixtures are gated by `fault-injection`; default builds/tests
 do not run fixtures that rely on manual reconciliation or declared test barriers.
-It retains each fixture under the checkout's `.scratch/k3-*`, including real
+The fixture prints its actual retained path and records it in `qualification.json`.
+It retains each fixture under the validated temporary root (`$TMPDIR/k3-*`), including real
 Kata/controller databases, source Git objects, original source bytes, sanitized
 public requests/responses, process identities/exits and failed runs. It injects
 dropped acknowledgements with a forwarding proxy that only forwards genuine

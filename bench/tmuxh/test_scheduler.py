@@ -164,13 +164,13 @@ class SchedulerTest(unittest.TestCase):
         self.assertNotEqual(self.socket, "default")
         h.stop()
         self.assertFalse(h.server.is_alive())
-        self.assertFalse((Path(f"/tmp/tmux-{os.getuid()}") / self.socket).exists(), "stale socket file left behind")
+        self.assertFalse((Path(f"/run/corenius-tmp/tmux-{os.getuid()}") / self.socket).exists(), "stale socket file left behind")
 
     def test_every_agent_kind_runs_through_a_pane(self):
         h = self.harness(dashboard=False)
         task = self.task("t01-log-window")
         rec_noop = h.run_one(task, "solo", "noop", 0, self.out)
-        rec_cmd = h.run_one(task, "solo", "cmd:test -s /tmp/task/instruction.md", 0, self.out)
+        rec_cmd = h.run_one(task, "solo", "cmd:test -s /run/corenius-tmp/task/instruction.md", 0, self.out)
         self.assertFalse(rec_noop["outcome"]["passed"])
         self.assertEqual(rec_cmd["outcome"]["agent_rc"], 0)
         with self.assertRaises(SystemExit):

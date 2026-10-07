@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run benchmark tasks under a condition with an agent, inside capsules; write result.json per run.
 
-  run.py TASK... | --all   --condition solo|fleet:N   --agent reference|noop|cmd:SHELL|traecli[:MODEL]
+  run.py TASK... | --all   --condition solo|fleet:N|controller:TICKET   --agent reference|noop|cmd:SHELL|traecli[:MODEL]
          [--repeat K] [--out DIR] [--authorize-model-spend]
   run.py --report DIR       aggregate results under DIR
 
@@ -24,9 +24,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import controller_mode  # noqa: E402
 import fleet  # noqa: E402
 import results  # noqa: E402
 import tasklib  # noqa: E402
+
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 
 PROMPT_HEADER = """You are an agent working on one task inside a sandbox. Your working directory is /workspace.
 Change only what the task needs. Do not modify anything under tests/ (it is restored before grading).
@@ -79,21 +90,21 @@ class Agent:
             return Plan("true", {}, "none", False, [], 30.0, request)
         if self.kind == "reference":
             if solution_or_ticket is None:
-                return Plan("sh /tmp/solution/solve.sh", {}, "none", False, [[str(task.path / "solution"), "/tmp/solution"]],
+                return Plan("sh /run/corenius-tmp/solution/solve.sh", {}, "none", False, [[str(task.path / "solution"), "/run/corenius-tmp/solution"]],
                             120.0, request)
-            command = ("sh /tmp/ticket/apply.sh" if (solution_or_ticket / "apply.sh").exists()
-                       else "cp -r /tmp/ticket/overlay/. /workspace/")
-            return Plan(command, {}, "none", False, [[str(solution_or_ticket), "/tmp/ticket"]], 120.0, request)
+            command = ("sh /run/corenius-tmp/ticket/apply.sh" if (solution_or_ticket / "apply.sh").exists()
+                       else "cp -r /run/corenius-tmp/ticket/overlay/. /workspace/")
+            return Plan(command, {}, "none", False, [[str(solution_or_ticket), "/run/corenius-tmp/ticket"]], 120.0, request)
         workdir.mkdir(parents=True, exist_ok=True)
         (workdir / "instruction.md").write_text(instruction)
         if self.kind == "cmd":
-            return Plan(self.arg, {"TASK_INSTRUCTION": "/tmp/task/instruction.md"}, "none", False,
-                        [[str(workdir / "instruction.md"), "/tmp/task/instruction.md"]], timeout, request)
+            return Plan(self.arg, {"TASK_INSTRUCTION": "/run/corenius-tmp/task/instruction.md"}, "none", False,
+                        [[str(workdir / "instruction.md"), "/run/corenius-tmp/task/instruction.md"]], timeout, request)
         model = self.arg or "GPT-5.5"
         (workdir / "prompt.md").write_text(PROMPT_HEADER + instruction)
         command = (f"traecli exec -m {model} -c model_reasoning_effort=xhigh -c model_reasoning_summary=detailed "
-                   f"--json --skip-git-repo-check -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /tmp/task/prompt.md")
-        return Plan(command, {}, "host", bool(task.bench.get("gpu", False)), [[str(workdir / "prompt.md"), "/tmp/task/prompt.md"]],
+                   f"--json --skip-git-repo-check -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /run/corenius-tmp/task/prompt.md")
+        return Plan(command, {}, "host", bool(task.bench.get("gpu", False)), [[str(workdir / "prompt.md"), "/run/corenius-tmp/task/prompt.md"]],
                     timeout, request)
 
     @staticmethod
@@ -237,16 +248,23 @@ def main(argv=None) -> int:
     (tasklib.ROOT / ".scratch").mkdir(exist_ok=True)
     agent = Agent(args.agent, args.authorize_model_spend, args.timeout)
     tasks = tasklib.load_tasks(only=None if args.all else args.task)
-    if not (args.condition == "solo" or re.fullmatch(r"fleet:\d+", args.condition)):
-        raise SystemExit("condition must be solo or fleet:N")
+    if not (args.condition == "solo" or re.fullmatch(r"fleet:\d+", args.condition)
+            or re.fullmatch(r"controller:[A-Za-z0-9_.-]+", args.condition)):
+        raise SystemExit("condition must be solo, fleet:N, or controller:TICKET")
+    if args.condition.startswith("controller:"):
+        controller_mode.validate_controller_selection(tasks, args.condition.split(":", 1)[1])
     out = Path(args.out or tasklib.ROOT / "bench" / "results" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     out.mkdir(parents=True, exist_ok=True)
     for task in tasks:
-        if args.condition != "solo" and "multi" not in task.tags:
+        if args.condition.startswith("fleet:") and "multi" not in task.tags:
             continue
         for i in range(args.repeat):
-            rec = (run_solo(task, agent, out, i) if args.condition == "solo"
-                   else run_fleet_condition(task, agent, out, i, int(args.condition.split(":")[1])))
+            if args.condition == "solo":
+                rec = run_solo(task, agent, out, i)
+            elif args.condition.startswith("fleet:"):
+                rec = run_fleet_condition(task, agent, out, i, int(args.condition.split(":")[1]))
+            else:
+                rec = controller_mode.run_controller_condition(task, agent, out, i, args.condition.split(":", 1)[1])
             persist(rec, out)
             print(f"{'PASS' if rec['outcome']['passed'] else 'FAIL'} {rec['run_id']} {rec['timing']['wall_seconds']}s")
     print(results.table(results.summarize(results.load_all(out))))

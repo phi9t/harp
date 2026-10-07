@@ -40,6 +40,16 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 DEFAULT_PATH = ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"]
 FORBIDDEN_ENV = {"LIBRARY_PATH", "LD_LIBRARY_PATH", "LD_PRELOAD", "CPATH", "C_INCLUDE_PATH", "CPLUS_INCLUDE_PATH",
                  "PYTHONPATH", "PYTHONHOME", "GCC_EXEC_PREFIX", "COMPILER_PATH"}
@@ -276,7 +286,7 @@ def home_binds(layers: list[dict]) -> list[tuple[str, str]]:
 
 def check_shadowing(layers: list[dict]) -> None:
     points = mount_points(layers)
-    reserved = ["/usr", "/bin", "/lib", "/lib64", "/sbin", "/etc", "/proc", "/dev", "/tmp", "/run", "/home", HOME,
+    reserved = ["/usr", "/bin", "/lib", "/lib64", "/sbin", "/etc", "/proc", "/dev", "/run/corenius-tmp", "/run", "/home", HOME,
                 "/workspace"]
     for name, at in points:
         for other in reserved:
@@ -385,7 +395,7 @@ def run_argv(record: dict, workspace: str, rw: list[tuple[str, str]], extra_env:
     etc = list(ETC_FILES) + (["resolv.conf", "hosts", "ssl"] if net == "host" else ["ssl"])
     for name in etc:
         argv += ["--ro-bind-try", f"/etc/{name}", f"/etc/{name}"]
-    argv += ["--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp", "--tmpfs", "/run", "--tmpfs", "/home",
+    argv += ["--proc", "/proc", "--dev", "/dev", "--tmpfs", "/run", "--tmpfs", "/run/corenius-tmp", "--tmpfs", "/home",
              "--dir", HOME, "--dir", "/cap"]
     if gpu:
         devices = gpu_devices()
@@ -411,16 +421,18 @@ def run_argv(record: dict, workspace: str, rw: list[tuple[str, str]], extra_env:
     argv += ["--ro-bind" if ro_workspace else "--bind", workspace, "/workspace"]
     for flag, pairs in (("--bind", rw), ("--ro-bind", ro or [])):
         for host, dest in pairs:
-            if not (dest.startswith("/workspace/") or dest.startswith(HOME + "/") or dest.startswith("/tmp/")):
-                raise CapsuleError(f"bind destination {dest} must be under /workspace, {HOME} or /tmp")
+            if not (dest.startswith("/workspace/") or dest.startswith(HOME + "/") or dest.startswith("/run/corenius-tmp/")):
+                raise CapsuleError(f"bind destination {dest} must be under /workspace, {HOME} or /run/corenius-tmp")
             argv += [flag, host, dest]
     path, layer_envs = layer_env(record["layers"])
-    env = {"HOME": HOME, "TMPDIR": "/tmp", "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8",
+    env = {"HOME": HOME, "TMPDIR": "/run/corenius-tmp", "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8",
            "PATH": ":".join(path + DEFAULT_PATH), "CORENIUS_IN_INSULA": "1",
            "CORENIUS_CAPSULE": record.get("capsule_digest", "@DIGEST@")[:16], "PWD": cwd}
     env.update(layer_envs)
     env.update(record.get("env", {}))
     env.update(extra_env)
+    if env.get("TMPDIR") != "/run/corenius-tmp":
+        raise CapsuleError("capsule TMPDIR is fixed to its private temporary mount")
     if net == "host" and policy.get("proxy"):
         env.update({k: os.environ[k] for k in PROXY_ENV if k in os.environ})
     for key in env:
@@ -506,7 +518,14 @@ if [ "${CORENIUS_IN_INSULA:-}" = 1 ]; then out marker PASS; else out marker FAIL
 
 def probe(record: dict) -> dict:
     results = {}
-    with tempfile.TemporaryDirectory() as ws:
+    selected = os.environ.get("TMPDIR")
+    if not selected or not Path(selected).is_absolute():
+        raise CapsuleError("run with tools/temp_root.py or set an owned absolute TMPDIR")
+    parent = Path(selected).resolve()
+    forbidden = Path("/") / "tmp"
+    if parent == forbidden or forbidden in parent.parents:
+        raise CapsuleError("TMPDIR is forbidden")
+    with tempfile.TemporaryDirectory(dir=parent) as ws:
         home = str(Path.home())
         # A layer mounted under the host home makes its own top-level directory appear there; anything else is a leak.
         allowed = {Path(at).relative_to(home).parts[0] for _, at in mount_points(record["layers"])

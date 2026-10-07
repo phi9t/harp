@@ -668,9 +668,11 @@ def runs_root() -> Path:
 
 def temp_parent() -> Path:
     override = os.environ.get("TMPDIR")
-    parent = Path(override) if override else runs_root() / "tmp"
-    parent.mkdir(parents=True, exist_ok=True)
-    return parent
+    policy = Path(__file__).resolve().parents[1] / "temp_root.py"
+    import runpy
+    return runpy.run_path(str(policy))["temporary_root"](
+        override or str(runs_root() / "tmp")
+    )
 
 
 def temporary_directory(prefix: str):
@@ -808,7 +810,7 @@ Hard rules for this run:
 {protected_rule}
 - Access profile:
 {access_rules}
-- Do not use the host's /tmp; this run's temp directory is {temp_dir}.
+- Use only this run's declared temp directory: {temp_dir}.
 - Use a fresh unique directory (`mktemp -d` under an allowed path) for each experiment.
   Deleting outside the worktree, or with `..` or `~`, is a violation.
 - Do not print secrets. If a rule blocks the task, stop and say so in your final message.
@@ -1125,7 +1127,7 @@ def resume_command(runtime: str, run: dict, session_id: str, prefix: Path) -> tu
     temp = ensure_run_temp(run)
     capsule_ref = run.get("capsule")
     if capsule_ref:
-        inner_prefix = Path("/tmp/run") / prefix.name
+        inner_prefix = Path("/home/bench/run") / prefix.name
         inner_last_message = Path(str(inner_prefix) + "-last-message.md")
         inner = resume_argv(
             runtime,
@@ -1139,8 +1141,10 @@ def resume_command(runtime: str, run: dict, session_id: str, prefix: Path) -> tu
         command = [
             sys.executable, str(capsule_tool), "run", str(capsule_ref), "--workspace", run["worktree"],
             "--net", "host" if access_profile(run)["network"] == "on" else "none",
-            "--rw", f"{run_dir}:/tmp/run", "--env", "TRAE_HOME=/home/bench/.trae",
+            "--rw", f"{run_dir}:/home/bench/run", "--env", "TRAE_HOME=/home/bench/.trae",
             "--env", "TRAECLI_HOME=/home/bench/.trae/cli",
+            "--env", "TMUX_TMPDIR=/run/corenius-tmp",
+            "--env", "TMPPREFIX=/run/corenius-tmp/zsh",
             "--record", str(Path(str(prefix) + "-capsule-run.json")),
         ]
         if run_sandbox_mode(run) == "insula":
@@ -1463,7 +1467,7 @@ def launch(args: argparse.Namespace) -> int:
     )
     profile = launch_access_profile(args)
     temp = new_run_temp(run_dir, keep=args.keep_temp)
-    prompt_temp = f"/tmp/run/tmp (host run directory: {temp['tmpdir']})" if capsule_ref else temp["tmpdir"]
+    prompt_temp = "/run/corenius-tmp (private capsule tmpfs)" if capsule_ref else temp["tmpdir"]
     prompt = HEADER.format(
         worktree=shown_tree,
         branch=shown_branch,
@@ -1485,15 +1489,15 @@ def launch(args: argparse.Namespace) -> int:
         worker_cmd = interactive_argv(runtime, args, worktree, prompt)
     elif capsule_ref:
         # The capsule is the boundary, so the runtime's own sandbox is switched off.
-        inner = exec_argv(runtime, args, Path("/workspace"), Path("/tmp/run"), "danger-full-access")
+        inner = exec_argv(runtime, args, Path("/workspace"), Path("/home/bench/run"), "danger-full-access")
         capsule_tool = Path(__file__).resolve().parents[1] / "insula" / "capsule.py"
         worker_cmd = [
             sys.executable, str(capsule_tool), "run", capsule_ref, "--workspace", str(worktree),
             "--net", "host" if profile["network"] == "on" else "none",
-            "--rw", f"{run_dir}:/tmp/run", "--env", "TRAE_HOME=/home/bench/.trae",
+            "--rw", f"{run_dir}:/home/bench/run", "--env", "TRAE_HOME=/home/bench/.trae",
             "--env", "TRAECLI_HOME=/home/bench/.trae/cli",
-            "--env", "TMPDIR=/tmp/run/tmp", "--env", "TMUX_TMPDIR=/tmp/run/tmp/tmux",
-            "--env", "TMPPREFIX=/tmp/run/tmp/zsh", "--record", str(run_dir / "capsule-run.json"),
+            "--env", "TMPDIR=/run/corenius-tmp", "--env", "TMUX_TMPDIR=/run/corenius-tmp",
+            "--env", "TMPPREFIX=/run/corenius-tmp/zsh", "--record", str(run_dir / "capsule-run.json"),
         ]
         if enforced:
             # F12: the worktree is read-only inside the capsule; only the allowed paths are writable. A write

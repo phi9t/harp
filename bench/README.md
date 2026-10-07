@@ -24,6 +24,9 @@ tools/insula/capsule.py  layered capsule builder and runner
 python3 bench/harness/validate.py [--task ID]...          # offline gate: is the benchmark itself sound?
 python3 bench/harness/run.py ID... --agent reference      # or noop | cmd:SHELL | traecli[:MODEL]
 python3 bench/harness/run.py ID --condition fleet:3 --agent reference     # multi tasks only
+python3 bench/harness/run.py m01-disjoint-utils --condition controller:t1 --agent reference
+python3 bench/harness/run.py m01-disjoint-utils --condition controller:t2 --agent reference
+python3 bench/harness/run.py m01-disjoint-utils --condition controller:complete --agent reference
 python3 bench/harness/run.py ID --agent traecli --authorize-model-spend   # a real model; spends budget
 python3 bench/harness/run.py --report bench/results/<dir>                 # pass rate with 95% Wilson interval
 bench/harness/pilot.sh OUT [REPEAT] [PARALLEL]                            # live pilot over all single tasks
@@ -33,6 +36,36 @@ bench/harness/pilot.sh OUT [REPEAT] [PARALLEL]                            # live
 verdict is deterministic; deleted or stubbed tests do not help; an empty patch fails; tampering with protected source files is
 undone before grading. Multi tasks add: every ticket is necessary, and every landing order ends in a pass with the declared
 number of conflicts.
+
+`controller:<ticket>` is the deterministic controller-backed mode for the first controller dogfood slice. It accepts
+`m01-disjoint-utils` tickets `t1` and `t2`, plus `controller:complete` for the complete two-ticket m01 path. It runs no model
+calls and rejects unsupported tasks or dependency graphs before creating the requested output directory. Single-ticket runs
+create fresh disposable Git/Kata/controller state, record a noop negative partial-verifier control and a fixed-ticket positive
+control, then accept and land the exact candidate through authenticated SQLite-controller commands. Complete mode admits both
+initial workers from the same canonical base, records useful-work intervals bounded by task file writes, contract checks and
+commits, lands the first candidate, retains the stale-base refusal for the second candidate at conditional landing, releases
+the initial attempts, and admits at most one fresh integration attempt from the current canonical base. The fresh integration
+candidate receives fresh complete-suite verification and acceptance; the original stale proof is recorded as rejected for the
+new candidate/base. The final committed canonical tree and omission/tamper controls are independently graded from exported
+exact commits with safe archive-member validation, restored unchanged m01 tests, and the private pinned verifier runtime
+snapshot.
+
+The benchmark `result.json` is written under `--out`; the retained live controller artifacts are in `result.controller.run_root`
+under a short `cb-*` directory below `TMPDIR` when set, otherwise the system temp directory, because Unix-domain supervisor
+sockets must stay below `SUN_LEN`. On hosts where `/tmp` is constrained, run controller mode with an owned short temp root such
+as `TMPDIR=/data02/home/philip.yang/.cb-runtime`.
+
+Controller mode requires the pinned Kata binary
+`/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned` with SHA-256
+`8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6`, plus the Rust controller binaries buildable offline with
+`cargo build --manifest-path crates/sqlite-controller/Cargo.toml --target-dir .scratch/controller-backed-bench/target --locked
+--offline --bins`. The controller record pins the verifier adapter script, protected test file, configured executables and
+policy/config digests. Git-backed verification uses a private verifier-only runtime snapshot mounted read-only at `/usr`, and
+the controller validates that snapshot's manifest before dispatch and before trusted-proof acceptance. The benchmark-built
+snapshot includes the pinned Python executable at the exact resolved policy path, its stdlib, extension modules, dynamic
+loader and shared-library dependencies; the snapshot manifest digest is bound into the verifier environment/proof and retained
+in controller metadata. Independent verifier logs record that same configured Python executable in `argv` instead of a
+synthetic host path.
 
 ## Watching runs in tmux
 

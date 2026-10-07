@@ -1168,7 +1168,23 @@ pub fn prepare_integration(
         .map_err(|_| err(ErrorCode::InvalidArgument))?
         .trim()
         .to_string();
-    let path = std::env::temp_dir().join(format!("artifact-check-{}", Uuid::new_v4()));
+    let temp_root = std::env::var_os("TMPDIR")
+        .map(std::path::PathBuf::from)
+        .ok_or_else(|| err(ErrorCode::InvalidArgument))?;
+    if !temp_root.is_absolute() {
+        return Err(err(ErrorCode::InvalidArgument));
+    }
+    let temp_root = std::fs::canonicalize(temp_root).map_err(io_error)?;
+    let forbidden = std::path::Path::new("/").join("tmp");
+    if temp_root.starts_with(forbidden) {
+        return Err(err(ErrorCode::InvalidArgument));
+    }
+    use std::os::unix::fs::MetadataExt;
+    let metadata = std::fs::metadata(&temp_root).map_err(io_error)?;
+    if metadata.uid() != unsafe { libc::geteuid() } || metadata.mode() & 0o022 != 0 {
+        return Err(err(ErrorCode::InvalidArgument));
+    }
+    let path = temp_root.join(format!("artifact-check-{}", Uuid::new_v4()));
     let path_str = path
         .to_str()
         .ok_or_else(|| err(ErrorCode::InvalidArgument))?;

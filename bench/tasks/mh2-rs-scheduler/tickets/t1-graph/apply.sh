@@ -13,4 +13,4 @@ awk '
   { print }
 ' src/lib.rs > src/lib.rs.new
 mv src/lib.rs.new src/lib.rs
-cp /tmp/ticket/overlay/src/graph.rs src/graph.rs
+cp /run/corenius-tmp/ticket/overlay/src/graph.rs src/graph.rs

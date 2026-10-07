@@ -17,6 +17,16 @@ from dataclasses import dataclass, field
 from engine import Resource, Sim
 from gitrepo import EPOCH, GitRepo, fname, parse_tokens
 
+# Apply the repository temporary-root policy before any host allocation.
+import runpy as _temp_policy_runpy
+from pathlib import Path as _temp_policy_path
+import tempfile as _temp_policy_tempfile
+import os as _temp_policy_os
+_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
+_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
+_temp_policy_tempfile.tempdir = _temp_policy_root
+_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+
 
 @dataclass
 class Task:
@@ -80,7 +90,16 @@ class World:
         self.by_id = {t.id: t for t in self.tasks}
         self.agent_tasks = {a: [t for t in self.tasks if t.agent == a] for a in range(scn.n_agents)}
         self._own_tmp = tmpdir is None
-        self.tmp = tmpdir or tempfile.mkdtemp(prefix="collab-")
+        parent = os.environ.get("TMPDIR")
+        if tmpdir is not None:
+            validator = _temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]
+            tmpdir = str(validator(tmpdir))
+        if not tmpdir and (not parent or not os.path.isabs(parent)):
+            raise ValueError("Run with tools/temp_root.py or set an absolute TMPDIR")
+        forbidden = os.path.join(os.sep, "tmp")
+        if not tmpdir and (os.path.realpath(parent) == forbidden or os.path.realpath(parent).startswith(forbidden + os.sep)):
+            raise ValueError("TMPDIR is forbidden")
+        self.tmp = tmpdir or tempfile.mkdtemp(prefix="collab-", dir=parent)
         self.repo = GitRepo(os.path.join(self.tmp, "repo"))
         self.main = self.repo.init_files(scn.n_files, scn.hunks)
         self.slots = Resource(self.sim, scn.gate_slots)
