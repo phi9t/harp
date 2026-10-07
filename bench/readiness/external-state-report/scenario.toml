@@ -1,0 +1,21 @@
+id = "external-state-report"
+stories = [34, 35]
+task = "task.md"
+environment = "environment"
+
+[worker]
+allow = ["result.txt"]
+external_protect_paths = ["external-state"]
+
+[[participants]]
+id = "unchanged-external-state"
+mode = "unchanged-external-state"
+stories = [34]
+expect_ready = true
+
+[[participants]]
+id = "modify-remove-add"
+mode = "modify-remove-add"
+stories = [35]
+external_add_paths = ["external-state/allowed-adds"]
+expect_ready = false

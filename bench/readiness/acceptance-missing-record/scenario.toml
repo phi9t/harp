@@ -1,0 +1,21 @@
+id = "acceptance-missing-record"
+stories = [6, 7, 17]
+task = "task.md"
+benchmark_task = "t01-log-window"
+kind = "landing"
+
+[worker]
+allow = ["result.txt"]
+
+[landing]
+expect = "acceptance-refused"
+
+[acceptance]
+effort = "readiness"
+ticket = "01"
+mode = "missing-record"
+
+[[participants]]
+id = "commit-ready"
+mode = "commit-ready"
+expect_ready = true

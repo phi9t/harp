@@ -9,9 +9,17 @@ from __future__ import annotations
 import json
 import math
 import statistics
+import tomllib
+from datetime import datetime, timezone
 from pathlib import Path
 
 SCHEMA = "corenius.bench.result.v1"
+READINESS_SCHEMA = "corenius.bench.readiness_result.v1"
+READINESS_RESULT_FILE = "readiness-results.jsonl"
+READINESS_INSTANTIATIONS = ("lead-driven", "local-controller", "workflow-controller")
+READINESS_OUTCOMES = ("passes", "passes with intervention", "not applicable by design", "fails")
+READINESS_PROOFS = ("deterministic", "live")
+CORE_STORIES = frozenset({1, 2, 5, 6, 7, 9, 12, 14, 15, 16, 17, 18, 20, 27, 34, 35})
 
 
 def _num(value, name, allow_none=False):
@@ -96,3 +104,232 @@ def table(rows: list[dict]) -> str:
                      f"[{r['ci95'][0]:.2f},{r['ci95'][1]:.2f}] {r['wall_median']:7.1f} {r['conflicts']:5d} {r['redos']:4d} "
                      f"{r['contamination']:6d} {'-' if r['tokens_out_median'] is None else int(r['tokens_out_median']):>8}")
     return "\n".join(lines)
+
+
+def validate_readiness_row(row: dict) -> dict:
+    if row.get("schema_version") != READINESS_SCHEMA:
+        raise ValueError("unsupported readiness schema_version")
+    for key in ("recorded_at", "scenario", "instantiation", "runtime", "proof", "outcome"):
+        if not isinstance(row.get(key), str) or not row.get(key):
+            raise ValueError(f"{key} must be a non-empty string")
+    requested_runtime = row.get("requested_runtime")
+    if requested_runtime is not None and (not isinstance(requested_runtime, str) or not requested_runtime):
+        raise ValueError("requested_runtime must be a non-empty string or null")
+    if row["instantiation"] not in READINESS_INSTANTIATIONS:
+        raise ValueError("instantiation must be one of the readiness instantiations")
+    if row["proof"] not in READINESS_PROOFS:
+        raise ValueError("proof must be deterministic or live")
+    if row["outcome"] not in READINESS_OUTCOMES:
+        raise ValueError("outcome must be a readiness outcome")
+    reason = row.get("reason")
+    if reason is not None and not isinstance(reason, str):
+        raise ValueError("reason must be a string or null")
+    if row["outcome"] == "not applicable by design" and not reason:
+        raise ValueError("not applicable by design rows require a reason")
+    interventions = row.get("interventions")
+    if not isinstance(interventions, list):
+        raise ValueError("interventions must be a list")
+    for intervention in interventions:
+        if not isinstance(intervention, dict):
+            raise ValueError("intervention must be an object")
+        for key in ("who", "what"):
+            if not isinstance(intervention.get(key), str) or not intervention.get(key).strip():
+                raise ValueError(f"intervention.{key} must be a non-empty string")
+    _num(row.get("elapsed_seconds"), "elapsed_seconds")
+    usage = row.get("model_usage")
+    if usage != "unknown" and not isinstance(usage, dict):
+        raise ValueError("model_usage must be unknown or an object")
+    participants = row.setdefault("participants", [])
+    if not isinstance(participants, list) or any(not isinstance(item, str) or not item for item in participants):
+        raise ValueError("participants must be a list of non-empty strings")
+    stories = row.setdefault("stories", [])
+    if not isinstance(stories, list) or any(isinstance(story, bool) or not isinstance(story, int) for story in stories):
+        raise ValueError("stories must be a list of integers")
+    return row
+
+
+def readiness_row(
+    *,
+    scenario: str,
+    instantiation: str,
+    runtime: str,
+    proof: str,
+    outcome: str,
+    interventions: list[dict] | None = None,
+    elapsed_seconds: float = 0.0,
+    model_usage="unknown",
+    reason: str | None = None,
+    recorded_at: str | None = None,
+    participants: list[str] | None = None,
+    stories: list[int] | None = None,
+    requested_runtime: str | None = None,
+) -> dict:
+    return validate_readiness_row({
+        "schema_version": READINESS_SCHEMA,
+        "recorded_at": recorded_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "scenario": scenario,
+        "instantiation": instantiation,
+        "runtime": runtime,
+        "proof": proof,
+        "outcome": outcome,
+        "reason": reason,
+        "interventions": interventions or [],
+        "elapsed_seconds": round(float(elapsed_seconds), 3),
+        "model_usage": model_usage,
+        "participants": participants or [],
+        "stories": sorted(set(stories or [])),
+        "requested_runtime": requested_runtime,
+    })
+
+
+def append_readiness_row(root: Path, row: dict) -> Path:
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / READINESS_RESULT_FILE
+    with path.open("a") as fh:
+        fh.write(json.dumps(validate_readiness_row(row), sort_keys=True) + "\n")
+    return path
+
+
+def load_readiness_rows(root: Path) -> list[dict]:
+    root = Path(root)
+    paths = [root] if root.is_file() else sorted(root.rglob(READINESS_RESULT_FILE))
+    rows = []
+    for path in paths:
+        if not path.exists():
+            continue
+        for index, line in enumerate(path.read_text().splitlines(), start=1):
+            if line.strip():
+                try:
+                    rows.append(validate_readiness_row(json.loads(line)))
+                except (json.JSONDecodeError, ValueError) as error:
+                    raise ValueError(f"{path}:{index}: {error}") from error
+    return rows
+
+
+def readiness_scenarios(readiness_dir: Path) -> list[dict]:
+    scenarios = []
+    for path in sorted(Path(readiness_dir).glob("*/scenario.toml")):
+        cfg = tomllib.loads(path.read_text())
+        sid = cfg.get("id") or path.parent.name
+        stories = cfg.get("stories")
+        if stories is not None:
+            if not isinstance(stories, list) or any(isinstance(story, bool) or not isinstance(story, int) for story in stories):
+                raise ValueError(f"{path}: stories must be a list of integers")
+        scenarios.append({"id": sid, "stories": stories})
+    return scenarios
+
+
+def _display(value) -> str:
+    if value in (None, ""):
+        return "-"
+    if isinstance(value, dict):
+        return json.dumps(value, sort_keys=True)
+    return str(value)
+
+
+def _format_interventions(interventions: list[dict]) -> str:
+    if not interventions:
+        return "-"
+    return "; ".join(f"{item['who']}: {item['what']}" for item in interventions)
+
+
+def _latest_readiness(rows: list[dict]) -> dict[tuple[str, str, str], dict]:
+    latest = {}
+    for row in rows:
+        latest[(row["scenario"], row["proof"], row["instantiation"])] = row
+    return latest
+
+
+def _row_stories(row: dict, scenario: dict) -> set[int]:
+    if "stories" in row:
+        return set(row.get("stories") or [])
+    return set(scenario["stories"] or [])
+
+
+def _core_counts(scenarios: list[dict], latest: dict[tuple[str, str, str], dict], proof: str, instantiation: str) -> dict[str, int]:
+    counts = {outcome: 0 for outcome in READINESS_OUTCOMES}
+    counts["not yet run"] = 0
+    core = [scenario for scenario in scenarios if scenario["stories"] is not None and set(scenario["stories"]) & CORE_STORIES]
+    for scenario in core:
+        row = latest.get((scenario["id"], proof, instantiation))
+        if row is None or not (_row_stories(row, scenario) & CORE_STORIES):
+            counts["not yet run"] += 1
+        else:
+            counts[row["outcome"]] += 1
+    return counts
+
+
+def _core_story_counts(scenarios: list[dict], latest: dict[tuple[str, str, str], dict], proof: str, instantiation: str) -> dict[str, list[int]]:
+    status: dict[int, str] = {story: "not yet run" for story in sorted(CORE_STORIES)}
+    rank = {
+        "not yet run": 0,
+        "not applicable by design": 1,
+        "passes": 2,
+        "passes with intervention": 3,
+        "fails": 4,
+    }
+    for scenario in scenarios:
+        row = latest.get((scenario["id"], proof, instantiation))
+        if row is None:
+            continue
+        for story in _row_stories(row, scenario) & CORE_STORIES:
+            current = status[story]
+            outcome = row["outcome"]
+            if rank[outcome] >= rank[current]:
+                status[story] = outcome
+    out = {key: [] for key in ["passes", "passes with intervention", "fails", "not yet run", "not applicable by design"]}
+    for story, outcome in sorted(status.items()):
+        out[outcome].append(story)
+    return out
+
+
+def _list_numbers(values: list[int]) -> str:
+    return ",".join(str(value) for value in values) or "-"
+
+
+def readiness_report(root: Path, readiness_dir: Path) -> str:
+    scenarios = readiness_scenarios(readiness_dir)
+    rows = load_readiness_rows(root)
+    latest = _latest_readiness(rows)
+    proofs = sorted({"deterministic", *(row["proof"] for row in rows)}, key=READINESS_PROOFS.index)
+    lines = []
+    for scenario in scenarios:
+        for proof in proofs:
+            lines.append(f"Scenario: {scenario['id']}")
+            lines.append(
+                "Stories: "
+                + ("not declared" if scenario["stories"] is None else ", ".join(str(story) for story in scenario["stories"]))
+            )
+            lines.append(f"Proof: {proof}")
+            lines.append("| instantiation | runtime | requested runtime | outcome | elapsed | model usage | interventions | reason | participants | stories run |")
+            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+            for instantiation in READINESS_INSTANTIATIONS:
+                row = latest.get((scenario["id"], proof, instantiation))
+                if row is None:
+                    lines.append(f"| {instantiation} | - | not yet run | - | - | - | - | - | - |")
+                    continue
+                elapsed = f"{row['elapsed_seconds']:.3f}s"
+                lines.append(
+                    f"| {instantiation} | {row['runtime']} | {_display(row.get('requested_runtime'))} | {row['outcome']} | {elapsed} | "
+                    f"{_display(row['model_usage'])} | {_format_interventions(row['interventions'])} | "
+                    f"{_display(row.get('reason'))} | {', '.join(row.get('participants') or []) or '-'} | "
+                    f"{_list_numbers(row.get('stories') or [])} |"
+                )
+            lines.append("")
+    for proof in proofs:
+        for instantiation in READINESS_INSTANTIATIONS:
+            counts = _core_counts(scenarios, latest, proof, instantiation)
+            lines.append(
+                f"Core set ({proof}, {instantiation}): passes={counts['passes']} "
+                f"passes with intervention={counts['passes with intervention']} "
+                f"fails={counts['fails']} not yet run={counts['not yet run']} "
+                f"not applicable by design={counts['not applicable by design']}"
+            )
+            story_counts = _core_story_counts(scenarios, latest, proof, instantiation)
+            lines.append(
+                f"Core stories ({proof}, {instantiation}): passes={_list_numbers(story_counts['passes'])} "
+                f"passes with intervention={_list_numbers(story_counts['passes with intervention'])} "
+                f"fails={_list_numbers(story_counts['fails'])} not yet run={_list_numbers(story_counts['not yet run'])} "
+                f"not applicable by design={_list_numbers(story_counts['not applicable by design'])}"
+            )
+    return "\n".join(lines).rstrip() + "\n"

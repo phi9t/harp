@@ -1,0 +1,14 @@
+id = "bookkeeping-off-code-branch"
+stories = [1, 2, 5, 6, 7, 21, 22, 27, 28, 29, 44]
+kind = "integration-branch"
+task = "task.md"
+environment = "environment"
+
+[effort]
+name = "demo"
+integration_branch = "effort/demo"
+parallel_cap = 3
+
+[[cases]]
+id = "bookkeeping-while-worker-runs"
+action = "bookkeeping-while-worker-runs"

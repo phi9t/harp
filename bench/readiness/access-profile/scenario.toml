@@ -1,0 +1,34 @@
+id = "access-profile"
+stories = [31, 32, 33, 36]
+task = "task.md"
+environment = "environment"
+
+[worker]
+allow = ["result.txt"]
+
+[[participants]]
+id = "default-network"
+mode = "default-network"
+stories = [31]
+expect_ready = true
+
+[[participants]]
+id = "network-off-download"
+mode = "network-off-download"
+stories = [32]
+network = "off"
+expect_ready = false
+
+[[participants]]
+id = "long-command"
+mode = "long-command"
+stories = [36]
+command_timeout_seconds = 125
+expect_ready = true
+
+[[participants]]
+id = "external-add-path"
+mode = "external-add-path"
+stories = [33]
+external_add_paths = ["external-adds"]
+expect_ready = true

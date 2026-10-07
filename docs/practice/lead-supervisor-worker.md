@@ -11,7 +11,7 @@ go under "Trial log".
 | Role | Is | Owns | May not |
 | --- | --- | --- | --- |
 | Lead | The interactive agent working with the owner | Intent, decomposition, the worker's prompt and boundary, verification of results, integration, the decision to land | Land unverified worker output; hand the worker authority the owner has not given |
-| Worker | A non-interactive agent process, any provider or model (trial: `traecli exec -m GPT-5.5`, xhigh reasoning) | Doing one bounded task in its own worktree and producing the named artifacts | Commit, push, merge, touch other repos or trees, exceed its allowed outputs |
+| Worker | A non-interactive agent process, any provider or model (trial: `traecli exec -m GPT-5.5`, xhigh reasoning) | Doing one bounded task in its own private git workspace and producing the named artifacts as a commit on its worker branch | Push, merge, move shared branches, rewrite history below its base, touch other repos or trees, exceed its allowed outputs |
 | Supervisor | A cheap read-only observer (trial: a Haiku subagent) | Liveness, progress, boundary compliance, stall and violation reports | Edit, kill, message the worker or fix anything; it reports, the lead decides |
 
 The lead is the only role the owner talks to. The supervisor has no authority
@@ -23,7 +23,7 @@ Every worker launch fixes these in advance, in files, not chat:
 
 1. **Task file** (`prompt.md`): the task, hard rules, allowed outputs, and the
    report format. The worker reads the repo's `AGENTS.md` first.
-2. **One worktree and branch** created by the lead from the current mainline.
+2. **One private local clone and branch** created by the lead from the current mainline.
 3. **Allowed outputs**: exact paths the worker may write. Everything else is a
    violation.
 4. **Sandbox and limits**: provider sandbox mode (trial: `workspace-write`), a
@@ -32,6 +32,9 @@ Every worker launch fixes these in advance, in files, not chat:
    last-message file, all outside the worktree, plus the PID.
 6. **Read-only inputs**: sibling repos are read at a named commit
    (`git show <commit>:<path>`), never through the working tree.
+7. **Temp directory**: the worker receives `TMPDIR`, `TMUX_TMPDIR` and
+   `TMPPREFIX` under its run directory (`RUN_DIR/tmp`, `RUN_DIR/tmp/tmux`,
+   `RUN_DIR/tmp/zsh`) and must not use the host's `/tmp`.
 
 ## Supervisor checks (per cycle)
 
@@ -42,12 +45,94 @@ commands in the event stream (builds, tests, the Insula, GPU jobs, git writes
 elsewhere, network). Output is one line per cycle and a final verdict:
 CLEAN, DEGRADED or VIOLATED, with event line numbers as evidence.
 
+## Hand-off rule update (2026-10-05)
+
+`docs/efforts/lead-worker-readiness/decisions/20261005-eight-answers.md`
+changes the hand-off rule for the lead-worker-readiness instantiations: a
+worker commits in its own workspace and hands over an exact Candidate. The
+worker still cannot push, merge, move a branch other than its own, or rewrite
+history below its recorded base.
+
+The launcher gives each worker a private local clone, not a linked worktree in
+the shared repository. For normal provider `workspace-write` launches, the
+clone's `.git` is a pointer to a private git directory under the run directory,
+and that private git directory is passed to the runtime as an additional
+writable root. For `insula` capsule launches, the private clone keeps embedded
+`.git` metadata because only `/workspace` is mounted in the capsule. In both
+layouts, sandboxed workers write only private Git metadata and the main
+repository's `.git` directory stays outside the sandbox.
+
+The same run directory owns the worker's temporary files. The launcher records
+the temp directory in `run.json`, passes it to the runtime process, and removes
+it when a stopped run is accounted unless the launch requested retention.
+
+The worker branch inside the shared repository is only a publication target:
+when the supervisor first pins a ready Candidate, it imports that exact commit
+from the private clone into the shared repository under the worker branch.
+
+The launcher has two hand-off modes. In exit mode, the supervisor reports a run
+as ready for review only after the process exits with code 0, the private worker
+tree is clean, and the private worker branch contains at least one commit on top
+of the launch base. In marker mode, used for interactive sessions that may
+remain alive, the supervisor reports readiness when the private branch tip's
+commit subject equals the declared marker, the worker tree is clean, and the
+branch contains at least one commit on top of the launch base.
+
+In both modes the first ready observation pins the Candidate: commit, tree, base
+commit, and digest of the brief. If the private branch tip later differs from
+that Candidate, the supervisor reports `candidate-moved` with the pinned and
+current commits; it does not replace the Candidate, and the shared worker branch
+stays at the pinned commit until a later ready Candidate is published. A dirty
+tree, no commit after the base, a moved foreign branch, or a branch that no
+longer contains the base is not ready.
+
+## Interactive launch and monitors
+
+For effort tickets, `tools/agents/lead_launch.py launch EFFORT NN --interactive
+--tmux-session NAME` starts the chosen runtime's interactive command in the
+worker's private clone and records the tmux window and pane target in `run.json`.
+Interactive launches for `traecli` and `codex` also pass and record
+`-c projects={"<worker workspace>"={trust_level="trusted"}}` so a fresh private
+clone does not stop at the runtime's folder-trust prompt.
+The command refuses interactive launch when tmux is unavailable; non-interactive
+launch may still request a best-effort tmux watch window. Interactive windows
+stay open after the runtime exits for review or rework.
+
+`tools/agents/lead_launch.py open-session EFFORT --tmux-session NAME` opens only
+the ticket monitor and worker monitor windows. `monitor-tickets EFFORT --json`
+reports one row per ticket, using the worker's private clone for ahead, dirty
+state and tip checks, and marks a visible runtime key prompt as
+`blocked-on-prompt`. `wait` wakes on ready, needs-info, stopped,
+waiting-for-re-integration, and blocked-on-prompt; the prompt case includes the
+prompt text in JSON output. `monitor-workers EFFORT --json` reports each
+worker's process state and uptime, pane activity and context where visible,
+workspace disk usage, and the last rework delivery with sent and acknowledged
+state. For TraeCLI panes, the busy signal is the visible `esc to interrupt`
+runtime hint; idle footers such as `Context 95% left` are reported as `95%`.
+
+When an event stream reports the runtime session id, `run.json` records the
+provider's transcript path. Interactive `traecli` and `codex` sessions can also
+be discovered from the runtime session store by finding the newest session-meta
+record whose working directory is the worker workspace and whose timestamp is
+after launch.
+
+For interactive runs, `lead_launch.py rework RUN_DIR --findings-file FILE`
+types a one-line pointer to the findings file into the worker pane and records a
+terminal delivery receipt. Once the worker acknowledges the delivery by pane
+activity, event-stream activity, or a new commit, review rework counts against
+the review cap; stale-base re-integration does not.
+
+The interim coordinator script kept as lead-worker-readiness evidence is retired
+as an operator path. New launches and monitors use `worker.py` and
+`lead_launch.py`.
+
 ## The lead's duties after the worker exits
 
 Read the supervisor's verdict first, then the worker's artifacts. Verify the
 artifacts against ground truth yourself (sample claims, rerun tests). Nothing
-the worker produced lands until the lead has verified it; the lead, not the
-worker, commits and lands, and only where the repo profile permits.
+the worker produced lands until the lead has verified it; the worker's commit is
+the review subject, and only the repo profile and effort decisions decide where
+it may be landed.
 
 ## What this maps to
 

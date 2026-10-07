@@ -1,0 +1,12 @@
+id = "shared-repository-safe"
+kind = "shared-repository-safe"
+task = "task.md"
+environment = "environment"
+
+[worker]
+allow = ["out.md"]
+
+[[participants]]
+id = "unrelated-branches-move"
+mode = "slow-commit"
+expect_ready = true

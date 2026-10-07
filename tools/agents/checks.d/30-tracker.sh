@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+cd "$(dirname "$0")/../../.." || exit 2
 
-python3 tools/agents/test_tracker.py
-python3 tools/agents/tracker.py --repo . lint agentic-engineering
+PYTHONDONTWRITEBYTECODE=1 python3 tools/agents/test_tracker.py
+PYTHONDONTWRITEBYTECODE=1 python3 tools/agents/tracker.py --repo . lint

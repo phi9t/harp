@@ -1,0 +1,524 @@
+#!/usr/bin/env python3
+"""Interim coordinator for the lead-worker-readiness effort (lead-driven instantiation, run by hand).
+
+Scratch tooling, not product: it exists so the effort's own tickets can be worked by interactive traecli
+workers while the real tooling is being built by those tickets. Standard library only.
+
+  ws.py up                 create the tmux session with the ticket and worker monitors
+  ws.py status             ticket state monitor (one line per ticket)
+  ws.py workers            worker state monitor (one block per launched worker)
+  ws.py launch NN [...]    launch a worker for each ticket (refuses blocked, non-agent, over-cap)
+  ws.py wait NN [...]      block until none of the tickets is `running`, then print status
+  ws.py send NN FILE       deliver a review findings file to the worker's session, with a receipt
+  ws.py land NN --gate CMD gate the exact Candidate and fast-forward the integration branch to it
+  ws.py resolve NN         tick the ticket's acceptance, resolve it, commit on the integration branch
+  ws.py observer           launch the journal-keeping observer (read-only, own worktree) and its ticker
+  ws.py tick [SECONDS]     wake the observer on an interval when it is idle (run by `observer`)
+
+Hand-off rule: a ticket is `ready` only when its branch HEAD is a commit whose subject is exactly
+`ticket NN: ready for review` and the worktree is clean. The marker is itself a commit, so it cannot
+precede the work it marks.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+EFFORT = "lead-worker-readiness"
+MAIN = Path("/data02/home/philip.yang/workspace/corenius")
+INTEGRATION_TREE = MAIN.parent / f"corenius-{EFFORT}"
+INTEGRATION = f"effort/{EFFORT}"
+# Since ticket 16 the effort's tickets and evidence live on a record branch with its own worktree; code lands
+# on the integration branch. Bookkeeping commits go to RECORD_TREE and no longer move the code tip.
+RECORD_TREE = MAIN.parent / "corenius-lwr-records"
+SESSION = "corenius-readiness"
+STATE = Path.home() / ".cache" / "corenius" / "readiness" / EFFORT
+CAP = int(os.environ.get("WS_CAP", "3"))
+TRAECLI = ["traecli", "-m", "gpt-5.5", "-c", "model_reasoning_effort=xhigh", "-c", "model_reasoning_summary=detailed", "--yolo"]
+
+sys.path.insert(0, str(INTEGRATION_TREE / "tools" / "agents"))
+
+
+def sh(*args, cwd=None, check=True) -> str:
+    # GIT_OPTIONAL_LOCKS=0: the monitors run `git status` in workers' worktrees every few seconds; without it a
+    # read-only probe can take the index lock and make a worker's commit fail (found by ticket 08's worker).
+    r = subprocess.run(list(args), cwd=cwd, capture_output=True, text=True, env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"})
+    if check and r.returncode != 0:
+        raise SystemExit(f"{' '.join(args)} failed: {r.stderr.strip() or r.stdout.strip()}")
+    return r.stdout
+
+
+def git(tree, *args, check=True) -> str:
+    return sh("git", "-C", str(tree), *args, check=check)
+
+
+def now() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def rows() -> list[dict]:
+    import tracker
+    out = tracker.frontier_rows(RECORD_TREE, EFFORT)
+    for row in out:
+        text = (RECORD_TREE / row["path"]).read_text()
+        m = re.search(r"^Triage:\s*(\S+)", text, re.M)
+        row["triage"] = m.group(1) if m else ""
+        row["name"] = f"{row['id']}-{row['slug']}"
+        row["tree"] = MAIN.parent / f"corenius-lwr-{row['name']}"
+        row["branch"] = f"work/{EFFORT}/{row['name']}"
+        row["dir"] = STATE / row["name"]
+    return sorted(out, key=lambda r: r["id"])
+
+
+def window_exists(name: str) -> bool:
+    out = sh("tmux", "list-windows", "-t", SESSION, "-F", "#{window_name}", check=False)
+    return name in out.split()
+
+
+def worker_pid(row) -> int | None:
+    pidfile = row["dir"] / "shell.pid"
+    if not pidfile.exists():
+        return None
+    out = sh("pgrep", "-P", pidfile.read_text().strip(), "-f", "traecli", check=False).split()
+    return int(out[0]) if out else None
+
+
+def observe(row) -> dict:
+    """Worker-side state of one ticket, read from git and the process table only."""
+    tree, o = row["tree"], {"state": "-", "ahead": 0, "dirty": 0, "age": "", "subject": ""}
+    if not tree.exists():
+        if git(MAIN, "rev-parse", "-q", "--verify", row["branch"], check=False).strip():
+            o["state"] = "landed" if row["category"] == "resolved" else "no-tree"
+        return o
+    o["ahead"] = int(git(tree, "rev-list", "--count", f"{INTEGRATION}..HEAD").strip() or 0)
+    o["dirty"] = len(git(tree, "status", "--porcelain").splitlines())
+    o["subject"] = git(tree, "log", "-1", "--format=%s").strip()
+    o["age"] = git(tree, "log", "-1", "--format=%cr").strip() if o["ahead"] else ""
+    alive = worker_pid(row) is not None
+    marker = f"ticket {row['id']}:"
+    merged = subprocess.run(["git", "-C", str(MAIN), "merge-base", "--is-ancestor", row["branch"], INTEGRATION],
+                            capture_output=True).returncode == 0
+    if merged and o["ahead"] == 0 and row["category"] == "resolved":
+        o["state"] = "landed"
+    elif o["subject"] == f"{marker} ready for review" and o["dirty"] == 0:
+        head = git(tree, "rev-parse", "HEAD").strip()
+        reviews = row["dir"] / "reviews.jsonl"
+        sent_back = reviews.exists() and json.loads(reviews.read_text().splitlines()[-1])["candidate"] == head
+        pane = sh("tmux", "capture-pane", "-p", "-t", f"{SESSION}:{row['name']}", check=False)
+        # A marker commit is not enough: the worker may still be mid-turn (it rewrote its tip after the first
+        # marker on ticket 01), and a Candidate already sent back for rework is not a new hand-off.
+        o["state"] = "rework" if sent_back else "finishing" if "esc to interrupt" in pane else "ready"
+    elif o["subject"] == f"{marker} needs-info" and o["dirty"] == 0:
+        # A question the lead has already answered (a note sent after the needs-info commit) is the worker's
+        # turn again, not the lead's: report it like rework so `wait` does not fire on it a second time.
+        notes = row["dir"] / "notes.jsonl"
+        asked = int(git(tree, "log", "-1", "--format=%ct").strip() or 0)
+        o["state"] = "rework" if notes.exists() and notes.stat().st_mtime > asked else "needs-info"
+    elif alive:
+        o["state"] = "running"
+    else:
+        o["state"] = "stopped"
+    o["alive"] = alive
+    return o
+
+
+def cmd_status(_):
+    print(f"{EFFORT}  integration {git(MAIN, 'rev-parse', '--short', INTEGRATION).strip()}  {now()}")
+    print(f"{'ticket':<34}{'tracker':<9}{'triage':<16}{'worker':<11}{'ahead':>5} {'dirty':>5}  last commit / waits")
+    for row in rows():
+        o = observe(row)
+        tail = o["age"] or (f"waits for {','.join(row['blocked_by'])}" if row["category"] == "blocked" else "")
+        print(f"{row['name'][:33]:<34}{row['category']:<9}{row['triage']:<16}{o['state']:<11}{o['ahead']:>5} {o['dirty']:>5}  {tail}")
+
+
+def cmd_workers(_):
+    print(f"workers  cap {CAP}  {now()}")
+    for row in rows():
+        if not row["dir"].exists():
+            continue
+        o, pid = observe(row), worker_pid(row)
+        launched = (row["dir"] / "launched").read_text().strip() if (row["dir"] / "launched").exists() else "?"
+        elapsed = sh("ps", "-o", "etimes=", "-p", str(pid), check=False).strip() if pid else ""
+        disk = sh("du", "-sh", str(row["tree"]), check=False).split("\t")[0] if row["tree"].exists() else "-"
+        pane = sh("tmux", "capture-pane", "-p", "-t", f"{SESSION}:{row['name']}", check=False)
+        lines = [l.strip() for l in pane.splitlines() if l.strip()]
+        footer = next((l for l in reversed(lines) if "Context" in l), "")
+        activity = next((l for l in reversed(lines) if "esc to interrupt" in l), "(idle)")
+        print(f"\n{row['name']}  {o['state']}  pid {pid or '-'}  up {elapsed or '-'}s  launched {launched}  disk {disk}")
+        print(f"  git: {o['ahead']} ahead, {o['dirty']} dirty, head: {o['subject'][:70]}")
+        print(f"  now: {activity[:110]}")
+        m = re.search(r"Context \d+% left", footer)
+        print(f"  {m.group(0) if m else 'context: unknown'}")
+
+
+PROMPT = """You are a worker implementing one ticket of the "{effort}" effort in the Corenius repository.
+Your working root is this git worktree: {tree} (branch {branch}). Work only here.
+
+Read first, in this order:
+1. AGENTS.md and CONSTITUTION.md. You are the isolated-execution step of the gated path in
+   docs/agents/agentic-engineering.md: intent, design, critique and specification are done; do not redo them.
+2. The effort's records are not in your worktree: they live on a separate record branch, checked out at
+   {records} (read-only for you; never write there). Read {records}/docs/efforts/{effort}/SPEC.md and every
+   file in {records}/docs/efforts/{effort}/decisions/.
+3. Your ticket: {records}/docs/efforts/{effort}/tickets/{name}.md. Its acceptance items are what you must make true.
+   For findings addressed to you and for what earlier tickets learned, see {records}/docs/efforts/{effort}/evidence/.
+4. The code the ticket's "Declared paths" name, and the existing tests beside it, for style.
+
+Boundaries:
+- Change files only inside this worktree, and only under the ticket's declared paths. If the ticket cannot
+  be done without touching another path, do the minimum, and list each such path with the reason in your report.
+- Never touch the main checkout ({main}), any other worktree, or any other repository. Other agents are
+  working in them right now.
+- Commit on your own branch as often as you like. Never push, merge, rebase onto another branch, switch
+  branches, or move any branch other than your own.
+- Do not edit your ticket file at all: not its header, not its status, not its acceptance boxes. The lead owns it.
+- Your report is the one file of the effort's records you write, and you write it in your own worktree at
+  docs/efforts/{effort}/evidence/{id}-report.md (create the directories); it will be the only file under
+  docs/efforts/{effort}/ on your branch.
+- Do not launch model workers or spend model budget (no real traecli or codex runs); tests use fake binaries.
+- Network is allowed. Do not install packages globally. The data disk is 95% full: keep temporary files
+  small, put them under a fresh `mktemp -d`, and delete them when done.
+
+Method:
+- Work test-first at the seams the spec names: write the failing test, see it fail, make it pass.
+- Run narrow suites while working (`python3 tools/agents/test_<x>.py`, `python3 bench/harness/test_<x>.py`).
+  Your gate before hand-off is: every `tools/agents/test_*.py` suite you touched or that imports what you
+  touched; every `bench/harness/test_*.py` suite; every readiness scenario command
+  (`python3 bench/harness/lead_driven.py <scenario> --out "$(mktemp -d)"`); and `python3 tools/agents/tracker.py lint`.
+  Do NOT run `tools/agents/check.sh` (it runs cargo and hangs in a worktree) and do not run cargo. Report
+  failures honestly, including ones you believe are pre-existing (say how you know).
+- Match the surrounding code: standard library only, same naming and comment density.
+- The owner has banned the host's `/tmp` for agents (it filled up and broke every agent on the machine). Never
+  create anything there. Start every shell command with
+  `export TMPDIR=/data02/home/philip.yang/devx/tmp/lwr-{id} TMUX_TMPDIR=/data02/home/philip.yang/devx/tmp/lwr-{id}/tmux TMPPREFIX=/data02/home/philip.yang/devx/tmp/lwr-{id}/zsh; mkdir -p "$TMPDIR" "$TMUX_TMPDIR"`,
+  write files with your edit tool instead of shell here-documents, never hardcode `/tmp` in code or tests,
+  and clean up what you create. `tools/agents/test_sqlite_baseline.py` hardcodes `/tmp` and fails for that
+  reason: leave it out of your gate and say so.
+- Where your ticket itself grants a permission (for example a few named real model runs), the ticket
+  overrides the general rule above about not launching model workers, for exactly what it names.
+- This repository is always used with several checkouts at once: the mainline in the main checkout, the
+  effort's integration branch in its own worktree (the effort's directory under docs/efforts exists only
+  there), and one worktree per worker. Four tickets so far passed all their tests and failed review because
+  their test repository had a single checkout. Whatever you build that reads or moves a branch, an effort
+  record, a ticket or an evidence file must be tested in that three-checkout layout, run from the main checkout.
+
+Report and hand-off:
+- Write docs/efforts/{effort}/evidence/{id}-report.md with these sections:
+  `## Built` (what now works, in a few lines);
+  `## Acceptance` (each acceptance item of the ticket, quoted, with the test or command that proves it and its result);
+  `## Claims` (one line per checkable factual claim, in the form `- [R] the claim `path:line``, citing the exact
+  file and line that shows it; these are sampled and checked by the lead);
+  `## Outside declared paths` (each path and why, or "none");
+  `## For later tickets` (lines `- to NN: finding` for anything a later ticket of this effort needs to know, or "none");
+  `## Not checked` (what you did not verify).
+- When everything is committed, make one final commit whose subject is exactly
+  `ticket {id}: ready for review`
+  (it may contain just the report). The tree must be clean after it. That commit is the only done signal.
+  After it, make no further commits, and never amend, reset or otherwise rewrite a commit you have handed
+  over: the lead pins the exact commit it reviews.
+- In later rounds add to the report; never remove an entry from `## For later tickets`.
+- If you cannot proceed without a decision or access you do not have, write the question in the report,
+  commit with the subject exactly `ticket {id}: needs-info`, and stop.
+- Then stop and wait in this session. The lead reviews your branch against the ticket and the spec. If
+  it sends review findings, fix them, commit, and finish again with a new `ticket {id}: ready for review` commit.
+- Other tickets land on the integration branch `{integration}` while you work. If the lead tells you it has
+  moved, rebase your own branch onto its new tip (this one rebase of your own branch is allowed), resolve
+  conflicts by intent, rerun your gate, and finish with a new marker commit. Do not do this unasked.
+{handoffs}"""
+
+
+def baseline(row):
+    lines = [f"recorded {now()} before launch of {row['name']}",
+             f"main HEAD {git(MAIN, 'rev-parse', 'HEAD').strip()}",
+             "main status:", git(MAIN, "status", "--porcelain"),
+             f"integration {git(MAIN, 'rev-parse', INTEGRATION).strip()}",
+             "worktrees:", git(MAIN, "worktree", "list"),
+             "disk:", sh("df", "-h", str(MAIN)).splitlines()[-1]]
+    (row["dir"] / "baseline.txt").write_text("\n".join(lines) + "\n")
+
+
+def cmd_launch(ids):
+    all_rows = rows()
+    by_id = {r["id"]: r for r in all_rows}
+    running = [r for r in all_rows if observe(r)["state"] in ("running", "stopped", "ready", "needs-info", "rework", "finishing")]
+    batch = []
+    for tid in ids:
+        row = by_id.get(tid) or sys.exit(f"no ticket {tid}")
+        if row["category"] != "open":
+            sys.exit(f"refused: ticket {tid} is {row['category']} (blockers {row['blocked_by']})")
+        if row["triage"] != "ready-for-agent":
+            sys.exit(f"refused: ticket {tid} triage is {row['triage'] or 'missing'}, not ready-for-agent")
+        if len(running) >= CAP:
+            sys.exit(f"refused: {len(running)} workers already hold slots (cap {CAP})")
+        if row["tree"].exists():
+            sys.exit(f"refused: {row['tree']} already exists")
+        if git(INTEGRATION_TREE, "status", "--porcelain").strip():
+            sys.exit("refused: the integration worktree has uncommitted changes")
+        batch.append(row)
+        running.append(row)
+    # One claim commit for the whole batch, before any worktree is cut: a claim commit per ticket left every
+    # earlier ticket of the batch behind the integration tip from its first second (seen on 02, 08, 13).
+    # WS_DEFER_CLAIM=1: cut the worktrees without a claim commit. Used when another ticket has been told to
+    # re-integrate onto the current tip: a claim commit would move the tip under it. The claim is then made by
+    # `ws.py claim NN` at the next point where the tip moves anyway. The worktree's existence blocks a relaunch.
+    if os.environ.get("WS_DEFER_CLAIM") != "1":
+        claim_rows(batch)
+    base = git(MAIN, "rev-parse", INTEGRATION).strip()
+    for row in batch:
+        tid = row["id"]
+        row["dir"].mkdir(parents=True, exist_ok=True)
+        baseline(row)
+        git(MAIN, "worktree", "add", "-q", "-b", row["branch"], str(row["tree"]), INTEGRATION)
+        handoffs = sh("grep", "-rhE", f"^- to {tid}:", str(RECORD_TREE / "docs/efforts" / EFFORT / "evidence"),
+                      check=False).strip()
+        extra = f"\nFindings left for this ticket by earlier tickets:\n{handoffs}\n" if handoffs else ""
+        prompt = PROMPT.format(effort=EFFORT, tree=row["tree"], branch=row["branch"], name=row["name"],
+                               id=tid, main=MAIN, handoffs=extra, integration=INTEGRATION, records=RECORD_TREE)
+        (row["dir"] / "prompt.md").write_text(prompt)
+        (row["dir"] / "launched").write_text(now() + "\n")
+        (row["dir"] / "launch.json").write_text(json.dumps({
+            "ticket": tid, "base": base, "branch": row["branch"], "tree": str(row["tree"]), "launched": now(),
+            "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(), "command": TRAECLI}, indent=2) + "\n")
+        launcher = row["dir"] / "launch.sh"
+        launcher.write_text("#!/usr/bin/env zsh\n"
+                            f"echo $$ > {row['dir']}/shell.pid\ncd {row['tree']}\n"
+                            f"{' '.join(TRAECLI)} \"$(cat {row['dir']}/prompt.md)\"\n"
+                            f"echo $? > {row['dir']}/exit_code\nexec zsh\n")
+        cmd_up(None, quiet=True)
+        sh("tmux", "new-window", "-d", "-t", f"{SESSION}:", "-n", row["name"], "-c", str(row["tree"]), f"zsh {launcher}")
+        print(f"launched {row['name']} from {base[:9]} in {SESSION}:{row['name']}")
+
+
+def claim_rows(batch):
+    for row in batch:
+        sh("python3", "tools/agents/tracker.py", "claim", EFFORT, row["id"], "--owner", f"worker-{row['id']}",
+           "--ttl-hours", "48", cwd=RECORD_TREE)
+    git(RECORD_TREE, "commit", "-q", "-am", f"Claim tickets {', '.join(r['id'] for r in batch)} for workers")
+
+
+def cmd_claim(ids):
+    by_id = {r["id"]: r for r in rows()}
+    claim_rows([by_id[t] for t in ids if by_id[t]["category"] == "open"])
+
+
+def cmd_up(_, quiet=False):
+    if subprocess.run(["tmux", "has-session", "-t", SESSION], capture_output=True).returncode != 0:
+        me = Path(__file__).resolve()
+        sh("tmux", "new-session", "-d", "-s", SESSION, "-n", "tickets", "-c", str(MAIN),
+           f"watch -t -n 20 python3 {me} status")
+        sh("tmux", "new-window", "-d", "-t", f"{SESSION}:", "-n", "workers", "-c", str(MAIN),
+           f"watch -t -n 20 python3 {me} workers")
+    if not quiet:
+        print(f"tmux session {SESSION}: attach with `tmux attach -t {SESSION}`")
+
+
+def cmd_wait(ids):
+    by_id = {r["id"]: r for r in rows()}
+    while True:
+        states = {tid: observe(by_id[tid])["state"] for tid in ids}
+        if any(s not in ("running", "rework", "finishing") for s in states.values()):
+            time.sleep(20)  # let a just-made commit settle, then re-read
+            states = {tid: observe(by_id[tid])["state"] for tid in ids}
+            if any(s not in ("running", "rework", "finishing") for s in states.values()):
+                print(json.dumps(states))
+                cmd_status(None)
+                return
+        time.sleep(30)
+
+
+def cmd_send(args):
+    tid, path = args[0], Path(args[1]).resolve()
+    row = {r["id"]: r for r in rows()}[tid]
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    target = f"{SESSION}:{row['name']}"
+    text = (f"The lead reviewed your branch and requires changes before it can land. Read {path} and do "
+            f"everything in it, then finish again with a `ticket {tid}: ready for review` commit.")
+    sh("tmux", "send-keys", "-t", target, "-l", text)
+    time.sleep(1)
+    sh("tmux", "send-keys", "-t", target, "Enter")
+    with (row["dir"] / "reviews.jsonl").open("a") as h:
+        h.write(json.dumps({"sent": now(), "file": str(path), "sha256": digest,
+                            "candidate": git(row["tree"], "rev-parse", "HEAD").strip()}) + "\n")
+    print(f"sent {path.name} ({digest[:12]}) to {target}")
+
+
+def cmd_tell(args):
+    """Deliver a note that is not a review (a new finding, a correction) to a running worker, with a receipt."""
+    tid, path = args[0], Path(args[1]).resolve()
+    row = {r["id"]: r for r in rows()}[tid]
+    target = f"{SESSION}:{row['name']}"
+    sh("tmux", "send-keys", "-t", target, "-l",
+       f"Note from the lead (not a review): read {path} and take it into account in this ticket.")
+    time.sleep(1)
+    sh("tmux", "send-keys", "-t", target, "Enter")
+    with (row["dir"] / "notes.jsonl").open("a") as h:
+        h.write(json.dumps({"sent": now(), "file": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}) + "\n")
+    print(f"told {target}: {path.name}")
+
+
+def cmd_land(args):
+    tid = args[0]
+    gate = args[args.index("--gate") + 1] if "--gate" in args else sys.exit("land needs --gate CMD")
+    row = {r["id"]: r for r in rows()}[tid]
+    o = observe(row)
+    if o["state"] != "ready":
+        sys.exit(f"refused: ticket {tid} is {o['state']}, not ready")
+    candidate = git(row["tree"], "rev-parse", "HEAD").strip()
+    tip = git(MAIN, "rev-parse", INTEGRATION).strip()
+    if subprocess.run(["git", "-C", str(MAIN), "merge-base", "--is-ancestor", tip, candidate]).returncode != 0:
+        sys.exit(f"refused: integration {tip[:9]} is not an ancestor of the Candidate {candidate[:9]}; "
+                 "the worker must produce a new Candidate on the new base")
+    check = MAIN.parent / f".lwr-gate-{tid}-{candidate[:9]}"
+    git(MAIN, "worktree", "add", "-q", "--detach", str(check), candidate)
+    try:
+        r = subprocess.run(["sh", "-c", gate], cwd=check, env={**os.environ, "LAND_TIP": candidate})
+    finally:
+        git(MAIN, "worktree", "remove", "--force", str(check), check=False)
+    if r.returncode != 0:
+        sys.exit(f"gate failed for {candidate[:9]}; nothing landed")
+    if git(INTEGRATION_TREE, "status", "--porcelain").strip():
+        sys.exit("refused: the integration worktree has uncommitted changes")
+    git(INTEGRATION_TREE, "merge", "--ff-only", "-q", candidate)
+    with (row["dir"] / "landed.json").open("w") as h:
+        json.dump({"candidate": candidate, "previous_tip": tip, "gate": gate, "landed": now()}, h, indent=2)
+    print(f"landed {candidate[:9]} on {INTEGRATION}")
+
+
+def cmd_resolve(args):
+    tid = args[0]
+    row = {r["id"]: r for r in rows()}[tid]
+    if row["category"] == "open":
+        sh("python3", "tools/agents/tracker.py", "claim", EFFORT, tid, "--owner", f"worker-{tid}", "--ttl-hours", "48",
+           cwd=RECORD_TREE)
+    path = RECORD_TREE / row["path"]
+    path.write_text(path.read_text().replace("- [ ] ", "- [x] "))
+    sh("python3", "tools/agents/tracker.py", "resolve", EFFORT, tid, "--owner", f"worker-{tid}", cwd=RECORD_TREE)
+    git(RECORD_TREE, "commit", "-q", "-am", f"Resolve ticket {tid} after lead review")
+    print(f"resolved {tid}")
+
+
+JOURNAL_TREE = MAIN.parent / "corenius-lwr-journal"
+JOURNAL_BRANCH = f"journal/{EFFORT}"
+JOURNAL_DIR = STATE / "journal"
+LEAD_TRANSCRIPT = Path.home() / ".claude/projects/-data02-home-philip-yang-workspace-corenius/b8dd1a72-5c0d-4e13-99aa-beecaa39b047.jsonl"
+
+JOURNAL_PROMPT = """You are the observer of a multi-agent engineering run in the Corenius repository. You keep its
+research journal. You do not take part in the work. Your working root is this git worktree: {tree}
+(branch {branch}); the journal is the only thing you write.
+
+What is being run, and why you are watching it:
+- An effort called "{effort}" is building the first, simplest level of multi-agent collaboration ("lead-driven"):
+  one interactive lead agent launches worker agents, one per ticket, each in its own git worktree, reviews
+  what they hand over and lands it on an integration branch. The effort is being run in exactly that way
+  (dogfooding), with a small interim coordinator script. The owner wants to learn from this run how the first
+  level should be designed. Your journal is the record that design will be drawn from.
+- Read docs/efforts/{effort}/SPEC.md, its decisions/ and tickets/ in this worktree, and the case study
+  docs/practice/imported/sureal-semantic-layout.md (sections 5 and 8), so you know what is expected to go
+  wrong and what the readiness stories are.
+
+What you may read (all read-only):
+- The coordinator and its monitors: `python3 {ws} status` and `python3 {ws} workers`; the script itself
+  ({ws}); its state directory {state} (per ticket: prompt.md, launch.json, baseline.txt, reviews.jsonl,
+  landed.json); the lead's running notes {notes}.
+- Each worker: its tmux pane (`tmux capture-pane -p -S -200 -t {session}:<window>`; windows are listed by
+  `tmux list-windows -t {session}`), its worktree and branch (`git -C <worktree> log/status/diff`, worktrees
+  are {parent}/corenius-lwr-NN-*), and its traecli session transcript under ~/.trae/cli/sessions/ (find the
+  file whose first record's cwd is the worker's worktree).
+- The lead: its session transcript {lead} (a large JSON-lines file; read it incrementally by byte offset,
+  never whole), and the integration branch `{integration}` (`git log`, `git diff`).
+
+Hard rules:
+- Write only docs/efforts/{effort}/evidence/journal/ in this worktree. Commit there on your own branch as
+  you go. Never push, merge or touch another branch.
+- Never write, stage or run a mutating command anywhere else: not in a worker's worktree, not in the main
+  checkout ({main}), not in the coordinator's state directory. Never run the coordinator's launch, send,
+  land or resolve commands.
+- Never send keys to any tmux pane, never kill or signal a process, never message a worker or the lead.
+  If you see something the lead should act on urgently, write it at the top of
+  docs/efforts/{effort}/evidence/journal/ATTENTION.md and commit; the lead reads that file.
+- Transcripts contain private model reasoning and may contain credentials. Never copy reasoning text,
+  tokens, keys or auth headers into the journal. Quote only commands, public messages and file paths,
+  briefly. Read transcripts with a small script that selects fields; do not dump raw records.
+- Do not launch other agents or model workers.
+
+How to keep the journal:
+- One file per day: docs/efforts/{effort}/evidence/journal/YYYY-MM-DD.md, entries appended in time order,
+  each headed by a UTC time. Keep a short INDEX.md with the current open questions and the strongest findings.
+- Keep cursors (byte offsets, last commit seen per branch, last pane lines) in
+  docs/efforts/{effort}/evidence/journal/cursors.json so each pass reads only what is new.
+- Every entry separates: OBSERVED (what happened, with its source: a command, a transcript record index,
+  a commit, a pane capture and its time), INFERRED (your reading, labelled), and DESIGN (what this suggests
+  for the first-level design, if anything). No entry without a source.
+- Record in particular: every lead action and what triggered it; how long each phase of a ticket took
+  (reading, implementing, verifying, hand-off, review, rework, landing); every time an agent ignored or
+  misread an instruction; every boundary crossed or nearly crossed; every wait (who waited for whom, how
+  long, why); what the monitors showed versus what was actually happening; every change the lead made to
+  the coordinator script and why; collisions between parallel workers; and where the lead's account to the
+  owner differs from what the record shows. Be exact about times. Say plainly when something went well.
+- Do not judge the code quality of the tickets; that is the lead's review. Watch the process.
+
+Rhythm:
+- First pass now: read the context above, write the opening entry (the setup as you find it, the state of
+  each ticket and worker, what you can and cannot observe), commit, then stop and wait.
+- After that you will receive a line beginning `TICK` about every ten minutes. On each tick do one
+  incremental pass, append what is new (or one line saying nothing changed), commit, and stop. Keep each
+  pass short; if your context runs low, write a hand-over entry with the cursors and say so in INDEX.md.
+"""
+
+
+def cmd_observer(_):
+    """Launch the journal-keeping observer and the ticker that wakes it. Not a ticket; holds no worker slot."""
+    if JOURNAL_TREE.exists():
+        sys.exit(f"refused: {JOURNAL_TREE} already exists")
+    JOURNAL_DIR.mkdir(parents=True, exist_ok=True)
+    git(MAIN, "worktree", "add", "-q", "-b", JOURNAL_BRANCH, str(JOURNAL_TREE), INTEGRATION)
+    me = Path(__file__).resolve()
+    prompt = JOURNAL_PROMPT.format(tree=JOURNAL_TREE, branch=JOURNAL_BRANCH, effort=EFFORT, ws=me, state=STATE,
+                                   notes=me.parent / "notes.md", session=SESSION, parent=MAIN.parent,
+                                   lead=LEAD_TRANSCRIPT, integration=INTEGRATION, main=MAIN)
+    (JOURNAL_DIR / "prompt.md").write_text(prompt)
+    (JOURNAL_DIR / "launched").write_text(now() + "\n")
+    launcher = JOURNAL_DIR / "launch.sh"
+    launcher.write_text("#!/usr/bin/env zsh\n"
+                        f"echo $$ > {JOURNAL_DIR}/shell.pid\ncd {JOURNAL_TREE}\n"
+                        f"{' '.join(TRAECLI)} \"$(cat {JOURNAL_DIR}/prompt.md)\"\nexec zsh\n")
+    cmd_up(None, quiet=True)
+    sh("tmux", "new-window", "-d", "-t", f"{SESSION}:", "-n", "journal", "-c", str(JOURNAL_TREE), f"zsh {launcher}")
+    sh("tmux", "new-window", "-d", "-t", f"{SESSION}:", "-n", "ticker", "-c", str(MAIN), f"python3 {me} tick")
+    print(f"observer launched in {SESSION}:journal, ticker in {SESSION}:ticker")
+
+
+def cmd_tick(args):
+    """Every INTERVAL seconds send one TICK line to the observer, but only when its pane is idle."""
+    interval = int(args[0]) if args else 600
+    target = f"{SESSION}:journal"
+    while True:
+        time.sleep(interval)
+        pane = sh("tmux", "capture-pane", "-p", "-t", target, check=False)
+        if not pane:
+            print(f"{now()} journal window gone; ticker stops", flush=True)
+            return
+        if "esc to interrupt" in pane:
+            print(f"{now()} observer busy; tick skipped", flush=True)
+            continue
+        sh("tmux", "send-keys", "-t", target, "-l", f"TICK {now()}: do one incremental pass, append, commit, stop.")
+        time.sleep(1)
+        sh("tmux", "send-keys", "-t", target, "Enter")
+        print(f"{now()} tick sent", flush=True)
+
+
+if __name__ == "__main__":
+    commands = {"up": cmd_up, "status": cmd_status, "workers": cmd_workers, "launch": cmd_launch, "wait": cmd_wait,
+                "send": cmd_send, "land": cmd_land, "resolve": cmd_resolve,
+                "observer": cmd_observer, "tick": cmd_tick, "claim": cmd_claim,
+                "tell": cmd_tell}
+    if len(sys.argv) < 2 or sys.argv[1] not in commands:
+        sys.exit(__doc__)
+    commands[sys.argv[1]](sys.argv[2:])

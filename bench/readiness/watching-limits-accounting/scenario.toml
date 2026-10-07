@@ -1,0 +1,22 @@
+id = "watching-limits-accounting"
+stories = [38, 39, 40, 41]
+kind = "lead-launch"
+task = "task.md"
+environment = "environment"
+
+[effort]
+name = "demo"
+integration_branch = "effort/demo"
+parallel_cap = 2
+
+[[cases]]
+id = "tmux-missing-launch"
+action = "tmux-missing-launch"
+stories = [38]
+ticket = "01"
+
+[[cases]]
+id = "limit-notices-and-accounting"
+action = "limit-notices-and-accounting"
+stories = [39, 40, 41]
+ticket = "02"

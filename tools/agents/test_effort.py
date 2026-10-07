@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
@@ -63,9 +64,86 @@ class EffortTest(unittest.TestCase):
         run(other, "-c", "user.email=a@b", "-c", "user.name=a", "commit", "-qm", "work")
         return other
 
+    def write_legacy_effort(self, root: Path, slug: str) -> None:
+        effort_root = root / "docs" / "efforts" / slug
+        effort_root.mkdir(parents=True, exist_ok=True)
+        (effort_root / "EFFORT.md").write_text(
+            f"# Effort: {slug}\n\n"
+            "Status: active\n"
+            "Base: main\n"
+            "Lead: lead\n"
+        )
+        (effort_root / "STATE.md").write_text(
+            textwrap.dedent(
+                f"""\
+                # State: {slug}
+
+                {effort.START}
+                ```json
+                {{
+                  "base_branch": "main",
+                  "base_commit": "{run(self.repo, 'rev-parse', 'main').strip()}",
+                  "dehydrated": "2026-10-05T00:00:00Z",
+                  "effort": "{slug}",
+                  "runs": [],
+                  "worktrees": []
+                }}
+                ```
+                {effort.END}
+
+                ## Where we are
+
+                Legacy effort exists in many checkouts.
+
+                ## Next actions
+
+                Keep status usable.
+                """
+            )
+        )
+
     def test_new_creates_durable_and_scratch(self):
         self.assertTrue((self.wt / "docs/efforts/demo/EFFORT.md").exists())
         self.assertTrue((self.repo / ".scratch/demo").is_dir())
+        self.assertIn("Integration branch: effort/demo", (self.wt / "docs/efforts/demo/EFFORT.md").read_text())
+
+    def test_move_records_creates_record_branch_and_removes_effort_from_code_branch(self):
+        run(self.wt, "add", "docs/efforts/demo")
+        run(self.wt, "commit", "-qm", "start effort")
+
+        out = self.call(["--repo", str(self.wt), "move-records", "demo"])
+
+        self.assertEqual(self.code, effort.OK, self.err)
+        moved = json.loads(out)
+        record_worktree = Path(moved["record_worktree"])
+        self.assertEqual(moved["record_branch"], "effort/demo-records")
+        self.assertTrue((record_worktree / "docs/efforts/demo/EFFORT.md").exists())
+        self.assertIn("Record branch: effort/demo-records", (record_worktree / "docs/efforts/demo/EFFORT.md").read_text())
+        self.assertFalse((self.wt / "docs/efforts/demo").exists())
+        self.assertEqual(run(record_worktree, "branch", "--show-current").strip(), "effort/demo-records")
+        self.assertEqual(run(self.wt, "branch", "--show-current").strip(), "effort/demo")
+        self.assertEqual(run(self.wt, "status", "--porcelain", "--untracked-files=all"), "")
+        self.assertEqual(run(record_worktree, "status", "--porcelain", "--untracked-files=all"), "")
+
+    def test_move_records_rerun_finishes_after_record_branch_commit_interruption(self):
+        run(self.wt, "add", "docs/efforts/demo")
+        run(self.wt, "commit", "-qm", "start effort")
+        record_worktree = self.repo.parent / "proj-demo-records"
+        run(self.wt, "worktree", "add", "-q", "-b", "effort/demo-records", str(record_worktree), "HEAD")
+        effort_file = record_worktree / "docs/efforts/demo/EFFORT.md"
+        effort_file.write_text(effort.append_record_branch(effort_file.read_text(), "effort/demo-records"))
+        run(record_worktree, "add", "docs/efforts/demo/EFFORT.md")
+        run(record_worktree, "commit", "-qm", "Move demo records to record branch")
+
+        out = self.call(["--repo", str(self.wt), "move-records", "demo"])
+
+        self.assertEqual(self.code, effort.OK, self.err)
+        moved = json.loads(out)
+        self.assertEqual(moved["record_worktree"], str(record_worktree.resolve()))
+        self.assertTrue((record_worktree / "docs/efforts/demo/EFFORT.md").exists())
+        self.assertFalse((self.wt / "docs/efforts/demo").exists())
+        self.assertEqual(run(self.wt, "status", "--porcelain", "--untracked-files=all"), "")
+        self.assertEqual(run(record_worktree, "status", "--porcelain", "--untracked-files=all"), "")
 
     def test_dehydrate_requires_human_part(self):
         self.call(["--repo", str(self.wt), "dehydrate", "demo"])
@@ -156,7 +234,113 @@ class EffortTest(unittest.TestCase):
     def test_status_lists_effort(self):
         out = self.call(["--repo", str(self.wt), "status"])
         self.assertIn('"effort": "demo"', out)
+        self.assertIn('"integration_branch": "effort/demo"', out)
         self.assertIn("never dehydrated", out)
+
+    def test_status_reports_mainline_moved_and_landed_candidates(self):
+        effort_file = self.wt / "docs/efforts/demo/EFFORT.md"
+        if "Integration branch:" not in effort_file.read_text():
+            effort_file.write_text(effort_file.read_text().replace("Base: main\n", "Base: main\nIntegration branch: effort/demo\n"))
+            run(self.wt, "add", "docs/efforts/demo/EFFORT.md")
+            run(self.wt, "commit", "-qm", "record integration branch")
+        evidence = self.wt / "docs/efforts/demo/evidence"
+        (self.wt / "candidate-01.txt").write_text("one\n")
+        run(self.wt, "add", "candidate-01.txt")
+        run(self.wt, "commit", "-qm", "candidate 01")
+        candidate_01 = run(self.wt, "rev-parse", "HEAD").strip()
+        (evidence / "acceptance-01.jsonl").write_text(json.dumps({
+            "schema": "corenius.acceptance.v1",
+            "effort": "demo",
+            "ticket": "01",
+            "candidate": candidate_01,
+            "accepted": True,
+        }) + "\n")
+        run(self.wt, "add", "docs/efforts/demo/evidence/acceptance-01.jsonl")
+        run(self.wt, "commit", "-qm", "accept 01")
+        (self.wt / "candidate-02.txt").write_text("two\n")
+        run(self.wt, "add", "candidate-02.txt")
+        run(self.wt, "commit", "-qm", "candidate 02")
+        candidate_02 = run(self.wt, "rev-parse", "HEAD").strip()
+        (evidence / "acceptance-02.jsonl").write_text(json.dumps({
+            "schema": "corenius.acceptance.v1",
+            "effort": "demo",
+            "ticket": "02",
+            "candidate": candidate_02,
+            "accepted": True,
+        }) + "\n")
+        run(self.wt, "add", "docs/efforts/demo/evidence/acceptance-02.jsonl")
+        run(self.wt, "commit", "-qm", "accept 02")
+        (self.repo / "mainline.txt").write_text("main moved\n")
+        run(self.repo, "add", "mainline.txt")
+        run(self.repo, "commit", "-qm", "main moved")
+        before = {ref: run(self.repo, "rev-parse", ref).strip() for ref in ("main", "effort/demo")}
+
+        out = self.call(["--repo", str(self.wt), "status"])
+
+        after = {ref: run(self.repo, "rev-parse", ref).strip() for ref in ("main", "effort/demo")}
+        rows = [json.loads(line) for line in out.splitlines()]
+        row = next(row for row in rows if row["effort"] == "demo")
+        self.assertEqual(after, before)
+        self.assertTrue(row["integration_behind_mainline"])
+        self.assertEqual(
+            row["landed_candidates"],
+            [
+                {"ticket": "01", "candidate": candidate_01},
+                {"ticket": "02", "candidate": candidate_02},
+            ],
+        )
+
+    def test_status_finds_efforts_from_linked_worktrees(self):
+        run(self.repo, "checkout", "-q", "main")
+
+        out = self.call(["--repo", str(self.repo), "status"])
+
+        rows = [json.loads(line) for line in out.splitlines()]
+        row = next(row for row in rows if row["effort"] == "demo")
+        self.assertEqual(row["base_branch"], "main")
+        self.assertEqual(row["integration_branch"], "effort/demo")
+        self.assertEqual(row["effort_worktree"], str(self.wt.resolve()))
+
+    def test_status_uses_integration_record_from_every_checkout(self):
+        run(self.repo, "checkout", "-q", "main")
+        stale = self.repo.parent / "stale-copy"
+        run(self.repo, "worktree", "add", "-q", "-b", "agent/stale-copy", str(stale), "effort/demo")
+        effort_file = self.wt / "docs/efforts/demo/EFFORT.md"
+        effort_file.write_text(effort_file.read_text().replace("Status: active", "Status: reviewing"))
+        run(self.wt, "add", "docs/efforts/demo/EFFORT.md")
+        run(self.wt, "commit", "-qm", "update effort status")
+
+        outputs = []
+        for checkout in (self.repo, self.wt, stale):
+            out = self.call(["--repo", str(checkout), "status"])
+            self.assertEqual(self.code, effort.OK, (checkout, self.err))
+            rows = [json.loads(line) for line in out.splitlines()]
+            outputs.append(next(row for row in rows if row["effort"] == "demo"))
+
+        self.assertEqual([row["status"] for row in outputs], ["reviewing", "reviewing", "reviewing"])
+        self.assertEqual({row["effort_worktree"] for row in outputs}, {str(self.wt.resolve())})
+
+    def test_status_and_rehydrate_tolerate_many_legacy_effort_copies(self):
+        run(self.repo, "checkout", "-q", "main")
+        self.write_legacy_effort(self.repo, "legacy")
+        run(self.repo, "add", "docs/efforts/legacy")
+        run(self.repo, "commit", "-qm", "legacy effort")
+        for idx in range(4):
+            path = self.repo.parent / f"legacy-copy-{idx}"
+            run(self.repo, "worktree", "add", "-q", "-b", f"work/legacy-copy-{idx}", str(path), "main")
+
+        out = self.call(["--repo", str(self.repo), "status"])
+
+        self.assertEqual(self.code, effort.OK, self.err)
+        rows = [json.loads(line) for line in out.splitlines()]
+        legacy = next(row for row in rows if row["effort"] == "legacy")
+        self.assertEqual(legacy["effort_worktree"], str(self.repo.resolve()))
+        self.assertNotIn("problem", legacy)
+
+        out = self.call(["--repo", str(self.repo), "rehydrate", "legacy"])
+
+        self.assertIn("# Briefing: legacy", out)
+        self.assertNotIn("ambiguous effort record", out + self.err)
 
 
 if __name__ == "__main__":

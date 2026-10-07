@@ -16,6 +16,7 @@ import shlex
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.request
 import urllib.parse
@@ -32,6 +33,20 @@ MODELS = ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna',
 TARGET = REPO / '.scratch/sqlite06-happy-path/target'
 CONTROLLER = TARGET / 'debug/corenius-sqlite-controller'
 SCHEMA = 'e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455'
+
+
+def temp_parent():
+    override = os.environ.get('TMPDIR')
+    if override:
+        root = pathlib.Path(override)
+    else:
+        root = pathlib.Path(os.environ.get('CORENIUS_RUNS') or pathlib.Path.home() / '.cache/corenius') / 'tmp'
+    root.mkdir(parents=True, exist_ok=True)
+    return root
+
+
+def new_run_root(run_id):
+    return pathlib.Path(tempfile.mkdtemp(prefix='cb-' + run_id + '-', dir=str(temp_parent())))
 
 
 def checked(argv, **kwargs):
@@ -487,8 +502,8 @@ def start(args):
     if pin(KATA)['sha256'] != '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6':
         raise RuntimeError('Kata pin changed')
     run_id = time.strftime('%Y%m%dT%H%M%SZ',time.gmtime()) + '-' + uuid.uuid4().hex[:6]
-    root = pathlib.Path('/tmp/cb-' + run_id)
-    root.mkdir(mode=0o700)
+    root = new_run_root(run_id)
+    root.chmod(0o700)
     manifest = {'run_id':run_id,'root':str(root),'session':args.session or 'corenius-baseline-' + run_id,
                 'selected_model':args.model or 'gpt-6-sol',
                 'source_commit':git(REPO,'rev-parse','HEAD'),'source_tree':git(REPO,'rev-parse','HEAD^{tree}'),

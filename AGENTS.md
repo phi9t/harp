@@ -15,10 +15,12 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   and the open decisions.
 - `docs/reference/`: what each sibling repo is for and how it is designed, plus
   `agentic-inventory/` (policy, skills, products, and the rules agents follow).
-- `tools/agents/`: the lead/worker toolbox. `worker.py` (launch a traecli worker, `--capsule` to run it in a capsule, `--sandbox insula` to make the allowed paths the only writable ones; `supervise`), `effort.py`
-  (durable efforts), `wt.py` (new/status/finish/gc agent worktrees), `land.py` (gated landing: rebase, gate the exact tip, push first, then
-  fast-forward mainline; also `wt.py land`), `tracker.py` (tickets and claims under `docs/efforts/*/tickets/`), `msg.py` (handoff messages),
-  `evidence.py` (content-addressed run records), `claims.py` (sample and record claim checks). The repo gate is `tools/agents/check.sh`.
+- `tools/agents/`: the lead/worker toolbox. `worker.py` (launch a traecli worker, `--capsule` to run it in a capsule, `--sandbox insula` to make the allowed paths the only writable ones; `supervise`), `lead_launch.py`
+  (claim and launch ready tickets in batches), `effort.py` (durable efforts), `wt.py` (new/status/finish/gc agent worktrees), `land.py`
+  (gated landing: require the accepted exact tip, push first, then fast-forward the target checkout; it never rebases; also `wt.py land`),
+  `acceptance.py` (record and summarize acceptance checks), `tracker.py` (tickets and claims under `docs/efforts/*/tickets/`), `msg.py`
+  (handoff messages), `evidence.py` (content-addressed run records), `claims.py` (sample and record claim checks). The repo gate is
+  `tools/agents/check.sh`.
 - `docs/efforts/`: durable efforts (charter, decisions, state). Session start:
   `python3 tools/agents/effort.py rehydrate <effort>`; session end: `dehydrate`.
   Working detail goes in gitignored `.scratch/<effort>/`.
@@ -37,6 +39,9 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   version together, and `tools/test_sync_agentic_workflow.py` must pass.
 - Reference and inventory documents state a commit read and mark inference; keep
   that discipline when editing them.
+- Agents and tools do not use the host's `/tmp`: set `TMPDIR`, `TMUX_TMPDIR`
+  and `TMPPREFIX` to a directory you own. Worker launches set them under the
+  run directory (`RUN_DIR/tmp`, `RUN_DIR/tmp/tmux`, `RUN_DIR/tmp/zsh`).
 
 <!-- ultron-agentic-workflow:start -->
 ## Agentic engineering workflow

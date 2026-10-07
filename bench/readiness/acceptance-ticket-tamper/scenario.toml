@@ -1,0 +1,21 @@
+id = "acceptance-ticket-tamper"
+stories = [17]
+task = "task.md"
+benchmark_task = "t01-log-window"
+kind = "landing"
+
+[worker]
+allow = ["result.txt", "docs/efforts/readiness/tickets/01-acceptance.md"]
+
+[landing]
+expect = "acceptance-refused"
+
+[acceptance]
+effort = "readiness"
+ticket = "01"
+mode = "missing-record"
+
+[[participants]]
+id = "commit-ready"
+mode = "ticket-tamper"
+expect_ready = true

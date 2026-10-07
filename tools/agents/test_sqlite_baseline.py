@@ -2,6 +2,7 @@ import pathlib
 import subprocess
 import importlib.util
 import json
+import os
 import shlex
 import tempfile
 import time
@@ -12,6 +13,12 @@ import threading
 
 
 class BaselineEntry(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
     def test_start_accepts_explicit_existing_session_and_pinned_reuse_options(self):
         script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
         result = subprocess.run(['python3', str(script), 'start', '--help'], capture_output=True, text=True)
@@ -41,7 +48,7 @@ class BaselineEntry(unittest.TestCase):
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         try:
-            with tempfile.TemporaryDirectory(prefix='cb-reuse-', dir='/tmp') as directory:
+            with tempfile.TemporaryDirectory(prefix='cb-reuse-', dir=self.tmp.name) as directory:
                 parent = pathlib.Path(directory)
                 root = parent / 'new'; root.mkdir(mode=0o700)
                 baseline.write(root / 'private.json', {'kata_port': 1})
@@ -80,7 +87,7 @@ class BaselineEntry(unittest.TestCase):
         baseline = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(baseline)
         session = 'corenius-input-test-' + uuid.uuid4().hex[:10]
-        with tempfile.TemporaryDirectory(prefix='cb-input-', dir='/tmp') as directory:
+        with tempfile.TemporaryDirectory(prefix='cb-input-', dir=self.tmp.name) as directory:
             root = pathlib.Path(directory)
             output = root / 'received.bin'
             child = root / 'receiver.py'
@@ -106,6 +113,38 @@ class BaselineEntry(unittest.TestCase):
                 self.assertFalse((root / 'canary').exists())
             finally:
                 subprocess.run(['tmux','kill-session','-t',session],capture_output=True)
+
+    def test_run_root_uses_tmpdir_or_runs_root_without_host_tmp(self):
+        script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
+        spec = importlib.util.spec_from_file_location('baseline', script)
+        baseline = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(baseline)
+        forbidden = pathlib.Path(self.tmp.name) / 'forbidden-host-tmp'
+        forbidden.mkdir()
+        try:
+            old_tmpdir = os.environ.pop('TMPDIR', None)
+            old_runs = os.environ.get('CORENIUS_RUNS')
+            baseline.tempfile.tempdir = str(forbidden)
+            runs_root = pathlib.Path(self.tmp.name) / 'runs'
+            os.environ['CORENIUS_RUNS'] = str(runs_root)
+            first = baseline.new_run_root('abc123')
+            self.assertTrue(first.is_relative_to(runs_root))
+            self.assertEqual(list(forbidden.rglob('*')), [])
+
+            explicit = pathlib.Path(self.tmp.name) / 'explicit'
+            os.environ['TMPDIR'] = str(explicit)
+            second = baseline.new_run_root('def456')
+            self.assertTrue(second.is_relative_to(explicit))
+        finally:
+            baseline.tempfile.tempdir = None
+            if old_tmpdir is None:
+                os.environ.pop('TMPDIR', None)
+            else:
+                os.environ['TMPDIR'] = old_tmpdir
+            if old_runs is None:
+                os.environ.pop('CORENIUS_RUNS', None)
+            else:
+                os.environ['CORENIUS_RUNS'] = old_runs
 
 
 if __name__ == '__main__':

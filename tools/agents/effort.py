@@ -9,6 +9,7 @@ An effort has two homes (docs/agents/agentic-engineering.md, "Efforts"):
 
 Commands
   new <slug>          create the effort branch, worktree and durable files
+  move-records <slug> move an effort's tracked records to a record branch
   decide <slug> <t>   add a decision file (append-only; supersede, never edit)
   dehydrate <slug>    refresh STATE.md's machine block from git and run dirs,
                       require the human part, refuse dirty worktrees, commit
@@ -25,11 +26,13 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import land as land_tool  # noqa: E402
 from worker import WorkerError, git, main_worktree, now  # noqa: E402
 
 OK, WARN, ERROR = 0, 1, 2
@@ -43,6 +46,7 @@ EFFORT_TEMPLATE = """\
 
 Status: active
 Base: {base}
+Integration branch: effort/{slug}
 Lead:
 
 ## Intent
@@ -103,6 +107,18 @@ def effort_dir(root: Path, slug: str) -> Path:
     return root / "docs" / "efforts" / slug
 
 
+def effort_record(root: Path, slug: str) -> land_tool.EffortRecord:
+    return land_tool.resolve_effort_record(root, slug)
+
+
+def effort_record_dir(root: Path, slug: str) -> Path:
+    return effort_record(root, slug).path.parent
+
+
+def effort_metadata(root: Path, slug: str) -> dict[str, str | None]:
+    return effort_record(root, slug).metadata
+
+
 def scratch_dir(root: Path, slug: str) -> Path:
     return main_worktree(root) / ".scratch" / slug
 
@@ -118,6 +134,34 @@ def is_ancestor(repo: Path | str, older: str, newer: str) -> bool:
     return subprocess.run(
         ["git", "-C", str(repo), "merge-base", "--is-ancestor", older, newer], capture_output=True
     ).returncode == 0
+
+
+def merge_base(repo: Path | str, left: str, right: str) -> str | None:
+    out = git(repo, "merge-base", left, right, check=False).strip()
+    return out or None
+
+
+def accepted_candidates(root: Path, effort_root: Path, fork: str | None, integration: str | None) -> list[dict]:
+    if not fork or not integration or not rev(root, integration):
+        return []
+    commits = git(root, "rev-list", "--reverse", f"{fork}..{integration}", check=False).splitlines()
+    order = {commit: index for index, commit in enumerate(commits)}
+    candidates = []
+    evidence = effort_root / "evidence"
+    for path in sorted(evidence.glob("acceptance-*.jsonl")) if evidence.is_dir() else []:
+        for line in path.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            candidate = record.get("candidate")
+            ticket = record.get("ticket")
+            if record.get("accepted") is True and candidate in order and ticket:
+                candidates.append({"ticket": ticket, "candidate": candidate, "_order": order[candidate]})
+    candidates.sort(key=lambda item: (item["_order"], item["ticket"]))
+    return [{"ticket": item["ticket"], "candidate": item["candidate"]} for item in candidates]
 
 
 def only_effort_changes(repo: Path, old: str, new: str, slug: str) -> bool:
@@ -247,9 +291,86 @@ def cmd_new(args: argparse.Namespace) -> int:
     return OK
 
 
+def record_branch_name(slug: str) -> str:
+    return f"effort/{slug}-records"
+
+
+def append_record_branch(text: str, branch: str) -> str:
+    if re.search(r"^Record branch:\s*", text, re.M):
+        return re.sub(r"^Record branch:\s*.*$", f"Record branch: {branch}", text, count=1, flags=re.M)
+    if re.search(r"^Integration branch:\s*.*$", text, re.M):
+        return re.sub(
+            r"^(Integration branch:\s*.*)$",
+            rf"\1\nRecord branch: {branch}",
+            text,
+            count=1,
+            flags=re.M,
+        )
+    return text.rstrip() + f"\nRecord branch: {branch}\n"
+
+
+def current_branch(root: Path) -> str:
+    return git(root, "branch", "--show-current").strip()
+
+
+def clean_worktree(root: Path) -> bool:
+    return not git(root, "status", "--porcelain", "--untracked-files=all").strip()
+
+
+def cmd_move_records(args: argparse.Namespace) -> int:
+    root = repo_root(args.repo)
+    slug = args.slug
+    if not SLUG.match(slug):
+        raise WorkerError(f"bad effort slug {slug!r}: use lowercase letters, digits, hyphens")
+    source = effort_dir(root, slug)
+    effort_file = source / "EFFORT.md"
+    if not effort_file.exists():
+        raise WorkerError(f"no effort record at {effort_file}; run this from the checkout that currently holds the effort")
+    if not clean_worktree(root):
+        raise WorkerError("worktree has uncommitted changes")
+    metadata = land_tool.parse_effort_metadata(effort_file.read_text())
+    integration = metadata.get("integration_branch")
+    if integration and current_branch(root) != integration:
+        raise WorkerError(f"move-records must run from {integration}, not {current_branch(root) or 'detached'}")
+    branch = args.record_branch or metadata.get("record_branch") or record_branch_name(slug)
+    record_worktree = Path(args.worktree).resolve() if args.worktree else root.parent / f"{root.name}-{slug}-records"
+    existing_branch = rev(root, branch)
+    existing_worktree = land_tool.worktree_for_ref(root, land_tool.local_mainline_ref(branch)) if existing_branch else None
+    if existing_branch:
+        if existing_worktree is None:
+            raise WorkerError(f"record branch {branch} already exists")
+        record_worktree = existing_worktree.resolve()
+    elif record_worktree.exists():
+        raise WorkerError(f"{record_worktree} already exists")
+    else:
+        git(root, "worktree", "add", "-q", "-b", branch, str(record_worktree), "HEAD")
+    record_effort = record_worktree / "docs" / "efforts" / slug
+    record_effort_file = record_effort / "EFFORT.md"
+    if not record_effort_file.exists():
+        raise WorkerError(f"record branch {branch} has no effort record at {record_effort_file}")
+    record_effort_file.write_text(append_record_branch(record_effort_file.read_text(), branch))
+    git(record_worktree, "add", f"docs/efforts/{slug}/EFFORT.md")
+    if git(record_worktree, "diff", "--cached", "--name-only").strip():
+        git(record_worktree, "commit", "-q", "-m", f"Move {slug} records to record branch")
+
+    if source.exists():
+        shutil.rmtree(source)
+        git(root, "add", "-A", f"docs/efforts/{slug}")
+        if git(root, "diff", "--cached", "--name-only").strip():
+            git(root, "commit", "-q", "-m", f"Remove {slug} records from code branch")
+    print(json.dumps({
+        "effort": slug,
+        "code_branch": current_branch(root),
+        "record_branch": branch,
+        "record_worktree": str(record_worktree),
+        "removed_from": str(source),
+    }, sort_keys=True))
+    return OK
+
+
 def cmd_decide(args: argparse.Namespace) -> int:
     root = repo_root(args.repo)
-    edir = effort_dir(root, args.slug)
+    edir = effort_record_dir(root, args.slug)
     if not edir.is_dir():
         raise WorkerError(f"no effort {args.slug} in {root}")
     words = re.sub(r"[^a-z0-9]+", "-", args.title.lower()).strip("-")[:60]
@@ -264,14 +385,15 @@ def cmd_decide(args: argparse.Namespace) -> int:
 
 def cmd_dehydrate(args: argparse.Namespace) -> int:
     root = repo_root(args.repo)
-    edir = effort_dir(root, args.slug)
+    edir = effort_record_dir(root, args.slug)
+    record_root = edir.parent.parent.parent
     state_path = edir / "STATE.md"
     if not state_path.exists():
         raise WorkerError(f"no STATE.md at {state_path}")
     machine_old, stripped = split_state(state_path.read_text())
     problems = human_problems(stripped)
 
-    wanted = {str(root)}
+    wanted = {str(root), str(record_root)}
     wanted.update(str(Path(w).resolve()) for w in args.worktree)
     wanted.update(w["path"] for w in machine_old.get("worktrees", []))
     worktrees = []
@@ -283,7 +405,7 @@ def cmd_dehydrate(args: argparse.Namespace) -> int:
             problems.append(f"recorded worktree {path} is gone; dehydrate refuses to drop it silently (use --forget)")
             continue
         info = describe_worktree(root, path, edir)
-        stray = [p for p in info["dirty"] if not (path == str(root) and p.startswith(own_prefix))]
+        stray = [p for p in info["dirty"] if not (path == str(record_root) and p.startswith(own_prefix))]
         if stray:
             problems.append(f"worktree {path} has uncommitted changes: {', '.join(stray[:5])}")
         info["dirty"] = []
@@ -312,10 +434,10 @@ def cmd_dehydrate(args: argparse.Namespace) -> int:
         "runs": sorted(runs.values(), key=lambda r: r["run_dir"]),
     }
     state_path.write_text(join_state(stripped, machine))
-    git(root, "add", f"docs/efforts/{args.slug}")
-    if git(root, "diff", "--cached", "--name-only", "--", f"docs/efforts/{args.slug}").strip():
-        git(root, "commit", "-q", "-m", f"Dehydrate effort {args.slug}", "--", f"docs/efforts/{args.slug}")
-    machine["state_commit"] = git(root, "rev-parse", "HEAD").strip()
+    git(record_root, "add", f"docs/efforts/{args.slug}")
+    if git(record_root, "diff", "--cached", "--name-only", "--", f"docs/efforts/{args.slug}").strip():
+        git(record_root, "commit", "-q", "-m", f"Dehydrate effort {args.slug}", "--", f"docs/efforts/{args.slug}")
+    machine["state_commit"] = git(record_root, "rev-parse", "HEAD").strip()
     print(json.dumps({"dehydrated": args.slug, "worktrees": len(worktrees), "runs": len(machine["runs"]),
                       "commit": machine["state_commit"]}))
     return OK
@@ -323,7 +445,7 @@ def cmd_dehydrate(args: argparse.Namespace) -> int:
 
 def cmd_rehydrate(args: argparse.Namespace) -> int:
     root = repo_root(args.repo)
-    edir = effort_dir(root, args.slug)
+    edir = effort_record_dir(root, args.slug)
     if not (edir / "STATE.md").exists():
         raise WorkerError(f"no STATE.md in {edir}; is this checkout at a commit that has the effort?")
     machine, stripped = split_state((edir / "STATE.md").read_text())
@@ -412,21 +534,59 @@ def cmd_rehydrate(args: argparse.Namespace) -> int:
 
 def cmd_status(args: argparse.Namespace) -> int:
     root = repo_root(args.repo)
-    efforts = root / "docs" / "efforts"
     rows = []
-    for edir in sorted(p for p in efforts.iterdir() if p.is_dir()) if efforts.is_dir() else []:
-        text = (edir / "EFFORT.md").read_text() if (edir / "EFFORT.md").exists() else ""
-        status = re.search(r"^Status:\s*(.*)$", text, re.M)
-        stale = "never dehydrated"
-        state = edir / "STATE.md"
-        if state.exists():
-            machine, _ = split_state(state.read_text())
-            if machine:
-                when = datetime.strptime(machine["dehydrated"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-                stale = f"{(datetime.now(timezone.utc) - when).days}d ago"
-        rows.append({"effort": edir.name, "status": status.group(1).strip() if status else "unknown",
-                     "dehydrated": stale, "decisions": len(list((edir / "decisions").glob("*.md")))
-                     if (edir / "decisions").is_dir() else 0})
+    candidates, scan_problems = land_tool.scan_effort_records(root)
+    problem_rows: dict[str, str] = {}
+    for problem in scan_problems:
+        problem_rows.setdefault(problem.effort, f"{problem.path}: {problem.message}")
+    for effort_slug in sorted(candidates):
+        try:
+            record = land_tool.select_effort_record(root, effort_slug, candidates[effort_slug])
+            edir = record.path.parent
+            text = record.text
+            status = re.search(r"^Status:\s*(.*)$", text, re.M)
+            meta = record.metadata
+            base = meta["base"]
+            integration = meta["integration_branch"]
+            fork = merge_base(root, base, integration) if base and integration and rev(root, base) and rev(root, integration) else None
+            integration_behind = bool(fork and base and rev(root, base) != fork)
+            stale = "never dehydrated"
+            state = edir / "STATE.md"
+            if state.exists():
+                machine, _ = split_state(state.read_text())
+                if machine:
+                    when = datetime.strptime(machine["dehydrated"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                    stale = f"{(datetime.now(timezone.utc) - when).days}d ago"
+            rows.append({
+                "effort": edir.name,
+                "status": status.group(1).strip() if status else "unknown",
+                "dehydrated": stale,
+                "decisions": len(list((edir / "decisions").glob("*.md"))) if (edir / "decisions").is_dir() else 0,
+                "effort_worktree": str(record.worktree),
+                "base_branch": base,
+                "integration_branch": integration,
+                "record_branch": meta.get("record_branch"),
+                "integration_behind_mainline": integration_behind,
+                "landed_candidates": accepted_candidates(root, edir, fork, integration),
+            })
+        except WorkerError as error:
+            problem_rows.setdefault(effort_slug, str(error))
+            continue
+        except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+            problem_rows.setdefault(effort_slug, str(error))
+    for effort_slug in sorted(problem_rows):
+        rows.append({
+            "effort": effort_slug,
+            "status": "problem",
+            "dehydrated": "unknown",
+            "decisions": 0,
+            "effort_worktree": None,
+            "base_branch": None,
+            "integration_branch": None,
+            "integration_behind_mainline": False,
+            "landed_candidates": [],
+            "problem": problem_rows[effort_slug],
+        })
     for row in rows:
         print(json.dumps(row))
     return OK
@@ -440,6 +600,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("slug")
     p.add_argument("--base", default="main")
     p.set_defaults(fn=cmd_new)
+    p = sub.add_parser("move-records")
+    p.add_argument("slug")
+    p.add_argument("--record-branch")
+    p.add_argument("--worktree")
+    p.set_defaults(fn=cmd_move_records)
     p = sub.add_parser("decide")
     p.add_argument("slug")
     p.add_argument("title")

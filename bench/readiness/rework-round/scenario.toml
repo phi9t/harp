@@ -1,0 +1,25 @@
+id = "rework-round"
+stories = [12, 14, 15, 16]
+kind = "rework"
+task = "task.md"
+benchmark_task = "t01-log-window"
+
+[worker]
+allow = ["result.txt"]
+
+[acceptance]
+effort = "readiness"
+ticket = "01"
+mode = "rework"
+
+[[cases]]
+id = "one-round-accepted"
+layout = "main-checkout-effort-worktree"
+expect_landing = "landed"
+
+[[cases]]
+id = "second-review-required"
+expect_landing = "acceptance-refused"
+
+[[cases]]
+id = "round-cap-and-stale-redo"

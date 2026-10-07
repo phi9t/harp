@@ -290,3 +290,91 @@ column describes code and documents, and its application to sureal is [INFERRED]
 11. What limits apply to a worker (wall clock, quiet time, tokens, context remaining) and what happens at
     each limit.
 12. Whether the lead may run commands inside a worker's worktree while the worker may still be writing.
+
+## 8. Later observations: ticket 02's rework and the first parallel launch
+
+Added 2026-10-05 by a second read, 06:27 to 07:43 UTC, in the same read-only mode and with the same labels as
+above. Commits read: `phi9t/mainline` at `eb6e412`; `work/semantic-layout/integration` at `417664f`; ticket
+branches `b2b3a4b` (02) and `3c71fb3` (03). Corenius read at `d7f6748`. Sections 1 to 7 are unchanged and
+describe the state at 06:22.
+
+### Ticket 02: done, sent back, done again
+
+| Time (UTC) | Event | Source |
+|---|---|---|
+| 06:31:34 | third commit `2186fe5` "Use legacy Bazel workspace mode" | commit |
+| 06:36:02 | `4d43113` "Close semantic layout wrapper ticket": `**Status:** done`, 8 of 8 items ticked | commit |
+| 06:37:00 | the lead reviews the branch against the spec and ADR 0002 instead of merging | [TRANSCRIPT] |
+| 06:37:41 | the lead writes `review-1.md` (3385 bytes) into the ticket's state directory under `~/.cache/sureal/workstream/` | [OBSERVED] file time |
+| 06:37:44 | the lead types one line into the worker's tmux window (`tmux send-keys`) pointing at that file | [TRANSCRIPT] |
+| 06:38:35 | the worker commits `b6d7ac5` "Reopen ... after review": status back to `ready-for-agent`, three items unticked | commit |
+| 07:05:40 | `0eb7eae` "Use Bzlmod Python wrapper for one test" | commit |
+| 07:06:19 | `b2b3a4b` "Mark wrapper ticket done", a commit that changes only the ticket | commit |
+| 07:07:22 | merge `417664f` into the integration branch (12 files, +832 −10 against `a0fbeb7`) | commit |
+
+The review found four deviations [TRANSCRIPT; the lead's statement of its own findings, not re-verified here]:
+Bzlmod switched off with a hand-written empty lock file, where ADR 0002 and the spec require Bzlmod with a
+committed lock; a hand-written test rule where the spec names `rules_python`; the whole experiment placed on
+`PYTHONPATH` inside the sandbox; and 3.5 GB of probe caches left in the worktree. The worker's tests passed
+and every acceptance item was ticked at the first `done` [READ: `4d43113`].
+
+What this shows:
+
+- A ticked acceptance list and passing tests did not mean the ticket met its spec. The defect was found by a
+  review against the spec and the ADR, not by a gate command. [INFERRED from the two rows above]
+- The rework was done by the same worker session, which still held its context, 27 minutes after the review
+  was delivered. The delivery channel was keystrokes into an interactive terminal. [OBSERVED, TRANSCRIPT]
+- The branch history records the close, the reopen and the fix as separate commits. The reopen was made by
+  the worker, which also reset the status and unticked the items itself. [READ: `b6d7ac5`]
+- The lead's second watcher waited for "finish with a clean tree" [TRANSCRIPT: the background command's
+  description], and the worker's final `done` was a separate commit on a clean tree. The race of section 5
+  did not recur.
+
+### Prompt change
+
+`eb6e412` on `phi9t/mainline` (07:07:22) changes the worker prompt: commit the work and the Comments first, set
+`**Status:** done` only in a final separate commit, never write `done` on a dirty tree; meet stated spec and
+ADR requirements or stop with `needs-info` and the exact error; run Bazel only through `./bazelw`, keep one
+cache layout and delete probe caches because "the disk is nearly full" [READ: `eb6e412`]. The integration
+branch does not contain this commit; ticket worktrees are cut from the integration branch, and the prompt is
+rendered from the mainline copy of the coordinator [INFERRED from the branch graph and `workstream.py`].
+
+### Tickets 03 and 05 in parallel
+
+- Both branches were created from `417664f` at 07:07:23 and 07:07:25 [OBSERVED: reflog, state directory
+  times]. This is the first time two workers ran at once.
+- Ticket 03 finished at 07:41:18 with three commits in 73 seconds: the work (`8a0cdf3`), the verification
+  record (`233dc6f`), then the status (`3c71fb3`); 7 files, +484 −39; tree clean; 6 of 6 ticked. Until
+  07:40:05 it had no commit and showed 0 of 6. [OBSERVED]
+- Ticket 03 commits two executables named `git` and `curl` under `experiments/waymo-perception/tools/`; the
+  `git` file describes itself as a "Git command double for Bazel tests running in the minimal rootfs"
+  [READ: `3c71fb3`]. Whether that is acceptable was not judged.
+- Ticket 05 was still running at 07:42 with 8 uncommitted paths. They include the wrapper `bazelw` and its
+  test, which ticket 02 delivered and ticket 03 relies on, and a new rootfs build script and lock inputs for
+  the second research program. [OBSERVED]
+- Neither parallel ticket had been merged at 07:43, so a merge with a moved integration branch is still
+  untested.
+
+### Still absent
+
+- No external-state baseline was recorded for tickets 02, 03 or 05: the state directory holds only
+  `baseline-01.txt` [OBSERVED 07:41]. Ticket 05 builds a rootfs.
+- The traecli processes of tickets 01 and 02 were still alive at 07:37, 104 and 44 minutes after their
+  tickets were merged [OBSERVED: `ps`].
+- The data volume was 94% full with 191 GB free; three ticket worktrees held 1.6 GB of Bazel cache
+  [OBSERVED 07:38].
+- One finding from ticket 02 that later tickets depend on (the CPU rootfs has no C++ compiler, and tickets
+  that build C++ evaluators need one) exists only in the lead's report to the owner [TRANSCRIPT].
+
+### Effect on the open decisions in section 7
+
+Decision 1 (who commits) now has a worked answer on the sureal side: the worker commits, and the status
+change is its own final commit on a clean tree. Decision 2 (interactive workers) gains a cost on the
+non-interactive side: a worker process that exits cannot receive a review and rework with its context
+intact. Decision 8 (the gate at merge) gains a case where no command gate would have caught the defect.
+Two decisions are added:
+
+13. How review findings reach a worker and how many rework rounds are allowed before the ticket goes back
+    to the lead or the owner.
+14. Whether a worker may reopen its own ticket and untick acceptance items, or whether only the reviewer
+    changes that state.

@@ -1,0 +1,16 @@
+id = "land-stale-candidate"
+stories = [28, 30]
+task = "task.md"
+benchmark_task = "t01-log-window"
+kind = "landing"
+
+[worker]
+allow = ["result.txt"]
+
+[landing]
+expect = "stale"
+
+[[participants]]
+id = "commit-ready"
+mode = "commit-ready"
+expect_ready = true

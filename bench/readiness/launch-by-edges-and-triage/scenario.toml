@@ -1,0 +1,85 @@
+id = "launch-by-edges-and-triage"
+stories = [18, 19, 20, 21, 22, 23, 24, 42, 43]
+kind = "lead-launch"
+task = "task.md"
+environment = "environment"
+
+[effort]
+name = "demo"
+integration_branch = "effort/demo"
+parallel_cap = 3
+
+[[cases]]
+id = "launchable-set"
+action = "launchable"
+stories = [18]
+expect_launchable = ["02", "08", "09", "10"]
+
+[[cases]]
+id = "unresolved-blocker-refused"
+action = "refuse"
+stories = [18]
+ticket = "03"
+expect_refusal = "unresolved blocker"
+
+[[cases]]
+id = "bad-blocker-refused"
+action = "refuse"
+stories = [19]
+ticket = "04"
+mutate_blocker = "oops"
+expect_refusal = "unparseable blocker"
+
+[[cases]]
+id = "human-triage-refused"
+action = "refuse"
+stories = [20]
+ticket = "05"
+expect_refusal = "triage is ready-for-human"
+
+[[cases]]
+id = "missing-triage-refused"
+action = "refuse"
+stories = [20]
+ticket = "06"
+expect_refusal = "triage is missing"
+
+[[cases]]
+id = "parallel-cap-refused"
+action = "parallel-cap"
+stories = [23]
+holder_ticket = "09"
+ticket = "10"
+
+[[cases]]
+id = "integration-base-and-pinned-brief"
+action = "launch"
+stories = [21, 22]
+ticket = "02"
+
+[[cases]]
+id = "two-worktree-integration-checkout"
+action = "launch"
+stories = [21, 22]
+ticket = "02"
+layout = "two-worktree"
+repo_arg = "."
+
+[[cases]]
+id = "worker-question"
+action = "question"
+stories = [24]
+ticket = "08"
+question = "Need a decision before continuing."
+
+[[cases]]
+id = "handoffs-into-briefs"
+action = "launch"
+stories = [42, 43]
+ticket = "10"
+expect_finding_sources = ["ticket 02-ready", "report 05", "lead"]
+expect_finding_texts = [
+  "Reuse the ticket parsing seam.",
+  "Report-level source reaches the later ticket.",
+  "Lead-kept source reaches the later ticket.",
+]
