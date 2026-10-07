@@ -16,19 +16,11 @@ Actual active coordination: /root on codex/sqlite-controller-execution. Actual01
 ```json
 {
   "base_branch": "main",
-  "base_commit": "a21316f74672f55f3c22eff94f93ce1511b51822",
-  "dehydrated": "2026-10-04T00:41:16Z",
+  "base_commit": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+  "dehydrated": "2026-10-07T09:40:30Z",
   "effort": "team-control-plane",
   "runs": [],
-  "worktrees": [
-    {
-      "branch": "codex/reference-design",
-      "dirty": [],
-      "head": "10ae64052232591b4bcf670998790093e301d1f7",
-      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
-      "pushed": false
-    }
-  ]
+  "worktrees": []
 }
 ```
 <!-- effort:machine:end -->
