@@ -12,7 +12,7 @@ Triage: needs-triage
 - [ ] Identify and land all currently landable work with independent reviews and required gates.
 - [ ] Preserve every remaining unique commit, pending file, useful ignored artifact and recovery mapping before retirement.
 - [ ] Retire recovered inactive worktrees and prune eligible branches without losing live-owner work.
-- [ ] Preserve mainline private/untracked artifacts outside the checkout and verify pristine main status.
+- [x] Preserve mainline private/untracked artifacts outside the checkout and verify pristine main status.
 - [ ] Audit current refs/worktrees and recovery coverage against the complete objective.
 
 ## Scope and authority
@@ -71,3 +71,20 @@ Current inventory5 trees/5 refs: main, this owned integration, the persistent Ka
 spike, controller integration watcher, and the live Ticket03 owner. Main is clean.
 The user routing questions for the remaining live owners are pending; this goal
 remains active. See ../evidence/salvage-prune-20261007-final-inactive.json.
+
+## Operational pointer verification and handoff
+
+Managed dehydration explicitly forgets recovered retired checkouts in all five
+machine-bearing efforts. Old machine snapshots remain in Git history and archives;
+worker-run history remains retained. This prevents a future rehydrate from restoring
+retired branches. Readiness’s historical duplicate headings were retagged after the
+real briefing selected superseded next actions; the corrected briefing selects
+current instructions and preserves14/15 as open. Main advancement may produce the
+effort tool’s WARN1, while missing/diverged pointers remain errors and are rejected.
+
+After this metadata publication, the owned reconciliation checkout is scheduled
+for full-directory/metadata archival, bundle-only recovery, and guarded ref cleanup.
+Its final receipt will be retained in the recovery archive named in the ledger.
+The only remaining user-owned/live checkouts will be the persistent Kata spike,
+controller watcher and live Ticket03 owner. Pending routing questions are not
+approvals. No goal-complete claim or ticket resolution is made yet.

@@ -772,5 +772,104 @@
         }
       }
     }
+  },
+  "state_pointer_retirements": {
+    "sha256": "3864f6329751f36a29484b2eadcea756af689de80db82bfcd085a77b5d25cda5",
+    "data": [
+      {
+        "effort": "agentic-engineering",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "8a9950310bed5f715b3c7cd654b9b4143591232c052fd0f059c5a2d4c25e72c1",
+        "retired_machine_worktrees": [
+          {
+            "branch": "claude/durable-efforts",
+            "dirty": [],
+            "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+            "path": "/data02/home/philip.yang/workspace/corenius-efforts",
+            "pushed": false
+          },
+          {
+            "branch": "claude/milestone-b",
+            "dirty": [],
+            "head": "366361b5a46045823cf6b45941c66ad8379dfebe",
+            "path": "/data02/home/philip.yang/workspace/corenius-mb",
+            "pushed": false
+          },
+          {
+            "branch": "claude/worker-mechanism",
+            "dirty": [],
+            "head": "03368f42253dd344c6230d8381fc855f4b7af698",
+            "path": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      },
+      {
+        "effort": "controller-portfolio-stabilization",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "c0ae5736348eb1f1560868c61103f00c6fd015bec178c380de1590b576b89789",
+        "retired_machine_worktrees": [
+          {
+            "branch": "trae/controller-portfolio-stabilization-design",
+            "dirty": [],
+            "head": "fc9d285dcc661105487bbb2be0070ebed33de778",
+            "path": "/data02/home/philip.yang/workspace/corenius-trae-controller-portfolio-stabilization-design",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      },
+      {
+        "effort": "multi-agent-bench",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "051893d062491b063e8870be87d1c6de1cff1737a5aa3ec4c944a01239012682",
+        "retired_machine_worktrees": [
+          {
+            "branch": "effort/multi-agent-bench",
+            "dirty": [],
+            "head": "d0512102500deb98411b219e0734d33279203b41",
+            "path": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      },
+      {
+        "effort": "team-control-plane",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "896e95baed29006498c1192901d7cc66798483ec747e3f8913363a3dfad9480e",
+        "retired_machine_worktrees": [
+          {
+            "branch": "codex/reference-design",
+            "dirty": [],
+            "head": "10ae64052232591b4bcf670998790093e301d1f7",
+            "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      }
+    ]
+  },
+  "briefing_fix": {
+    "candidate": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+    "behavior": "historical headings no longer override current next actions/traps in readiness rehydrate output",
+    "verification": "real rehydrate invocation checks current instructions; main advance yields the tool\u2019s documented WARN exit1, not missing/diverged pointer errors"
+  },
+  "owned_checkout_retirement": {
+    "planned_after_publication": true,
+    "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-reconcile-8f143abf",
+    "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-reconcile-8f143abf",
+    "receipt": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/owned-integration-retirement.json",
+    "remaining_after_verified_retirement": {
+      "worktrees": 4,
+      "branches": 4
+    },
+    "goal_status": "active; live Ticket03 and integration watcher plus persistent Kata spike require final owner routing"
   }
 }
