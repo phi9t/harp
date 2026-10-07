@@ -2,7 +2,7 @@
 
 Recorded: 2026-10-07T08:31:10.428001+00:00. Readiness input: `ca97624`.
 Controller overlay SHA-256: `95a4ed7cfbd2911f09f4cd48656ca4fd29d289ab6521cbd8e8dae95fd27a1546`.
-Owner explicitly selected the existing stronger controller contract on 2026-10-07.
+Integration adopted the existing stronger controller contract under the user’s review-and-integration authorization on 2026-10-07.
 
 ## Decision and conflict reconciliation
 
@@ -74,3 +74,10 @@ Retained diagnostic logs (SHA-256):
 - `/data02/home/philip.yang/devx/tmp/combined-temp-red.log`: `cb156a79b8667f1f6e20954207bcda6217325cccb350edbbee956803eae63e75`.
 - `/data02/home/philip.yang/devx/tmp/combined-worker-land.log`: `8a00956c6ceb8cee4bb4277185c8e7780897caea01156e2a3a1f19dfd8bb2a79`.
 - `/data02/home/philip.yang/devx/tmp/combined-temp-fast-green.log`: `d473566b4a4e5384e8d105668b64dfb535437ac6280c1308da2f594c61e6d3b4`.
+
+## Final verification
+
+The completed component gates, original failed native invocation, repair coverage,
+and source-provenance limits are recorded in landing-queue-20261007-final.md and
+landing-queue-20261007-final-gates.json. Earlier pending statements above describe
+the state when this integration record was first written.

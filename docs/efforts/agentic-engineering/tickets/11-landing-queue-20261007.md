@@ -57,3 +57,12 @@ No full live qualification or hostile-worker interpreter qualification is claime
 
 ## Comments
 - 2026-10-07T08:21:38Z codex-landing-queue: claimed until 2026-10-08T08:21:38Z
+
+## Completed verification and remaining work
+
+Ready frozen groups have passed independent review and component gates. See
+../evidence/landing-queue-20261007-final.md and its JSON gate ledger. Code candidate
+36bd01c946857c085544d9985c990225a30a6057 preserves concurrent main changes.
+The failed initial native invocation and successful bounded repair are retained.
+Final fast-forward and landing receipt are the only remaining queue steps.
+Readiness14/15, controller03/04/05 and proposed future implementations remain open.

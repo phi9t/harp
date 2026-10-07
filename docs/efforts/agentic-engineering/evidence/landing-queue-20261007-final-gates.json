@@ -1,0 +1,208 @@
+{
+  "schema": "corenius.landing_queue_verification.v1",
+  "code_candidate": "36bd01c946857c085544d9985c990225a30a6057",
+  "combined_review_candidate": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1",
+  "preserved_main_base": "29ed63e847753594ebd8ba63a40c2c2883d1f7ac",
+  "checks": [
+    {
+      "command": "python3 tools/test_sync_agentic_workflow.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-00.log",
+      "sha256": "583413a4651c94c980c16537808ce2054c4a4593131861f71fab8826a405c4e2"
+    },
+    {
+      "command": "python3 tools/agents/test_worker.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-01.log",
+      "sha256": "a832d453778343618cda92965c68639192e0a2f672625b84154409e283119fa6"
+    },
+    {
+      "command": "python3 tools/agents/test_effort.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-02.log",
+      "sha256": "35870374d2d1f5d2ce3bcb9feecf7561433859a89dfb7a17f18ecaad1e32b088"
+    },
+    {
+      "command": "sh tools/agents/checks.d/00-temp-paths.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-03.log",
+      "sha256": "1550db1cae42fb499ae528fee672984338b924ad9f665effe3e62ba943fe0487"
+    },
+    {
+      "command": "sh tools/agents/checks.d/10-wt.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-04.log",
+      "sha256": "70e3f441f9b19e8aeca4c4db8c04246f58a9fbacbf4e188b535bcb3b327c08cd"
+    },
+    {
+      "command": "sh tools/agents/checks.d/20-land.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-05.log",
+      "sha256": "306220584230ac9b4cecadcdbb2267008f2196c6c0149475eef816f484c846ce"
+    },
+    {
+      "command": "sh tools/agents/checks.d/25-acceptance.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-06.log",
+      "sha256": "6671d6bbf1446e73aa126e77118f40e6f1074a0351b8a5b324c99364fde81420"
+    },
+    {
+      "command": "sh tools/agents/checks.d/30-tracker.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-07.log",
+      "sha256": "ba2071213ca01a9ddd97388d4a3c8eb59618919cba35ec08ce7ff09c026d2253"
+    },
+    {
+      "command": "sh tools/agents/checks.d/35-lead-launch.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-08.log",
+      "sha256": "ac1110e453cd8f0d431cf0334e907d702f3ac131c8412399bb0cd3f73119ca2c"
+    },
+    {
+      "command": "sh tools/agents/checks.d/40-msg.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-09.log",
+      "sha256": "5776d80f88a98a5f52f3277b738417ffb8bcb2f92ed5188d60b9123a5eddc641"
+    },
+    {
+      "command": "sh tools/agents/checks.d/50-evidence.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-10.log",
+      "sha256": "dcad313986c64a90dce02aa9548f2d568ddd11461e37a1791e797c1003f4f1d4"
+    },
+    {
+      "command": "sh tools/agents/checks.d/60-claims.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-11.log",
+      "sha256": "aba0d0555c3f634a2c9b6cb66f295d46c9aa7c558fae2c8e44bfb5163e288c30"
+    },
+    {
+      "command": "sh tools/agents/checks.d/80-monitor-wake.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-12.log",
+      "sha256": "eff2e4887e6184aa7b543b3ecf75344e086a460c864ee3f2cdcf4aaf1776b022"
+    },
+    {
+      "command": "sh tools/agents/checks.d/89-no-host-tmp-tests.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-13.log",
+      "sha256": "76ace6f33ad6f1131e7ea7e570178b3eae1943d1cdece9ba787a4c3f56d4b627"
+    },
+    {
+      "command": "sh tools/agents/checks.d/90-no-host-tmp.sh",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-14.log",
+      "sha256": "dbb5e56649287b61dc69c5683ec286e732648207f5f2d955754a97a1f5946aa2"
+    },
+    {
+      "command": "python3 bench/harness/test_fleet.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-15.log",
+      "sha256": "b94bd7af175c5d1ecb30e9cc890f5bddc737eb43e04dea1d3e18ce6d4e1515d4"
+    },
+    {
+      "command": "python3 bench/harness/test_run.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-16.log",
+      "sha256": "e602c0427ca0caf6621f3f19f1f3ba9fbfbc68aa92b8af084de4016ce5c3ecc4"
+    },
+    {
+      "command": "python3 bench/harness/test_tasks_tracked.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-17.log",
+      "sha256": "ad61be9b74efb8a4b8ae7d0427622d79c722d44dc55c2f4aeb51140568dfc278"
+    },
+    {
+      "command": "python3 bench/harness/test_validate.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-18.log",
+      "sha256": "2452514057a2bc03b0444d118e00f9de5d49b8739ec60b23f4d1b11a707a9e87"
+    },
+    {
+      "command": "python3 bench/tmuxh/test_scheduler.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-19.log",
+      "sha256": "19af24eb08b3d5e03d39b4d1b6ea853f8b9fe9afa104319bf150dc1a7b5f6608"
+    },
+    {
+      "command": "python3 tools/insula/test_capsule.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-20.log",
+      "sha256": "7f3de303aa1922e265489beaee63c38fba8f62a03509c8d85e666fc4649c5ca4"
+    },
+    {
+      "command": "python3 tools/test_temp_root.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/component-21.log",
+      "sha256": "dad94d3a830b40da572e2aaa0462f7dd590dbe0ed9ad0700af22a8ee48452461"
+    },
+    {
+      "command_or_component": "root-gate",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/root-gate.log",
+      "sha256": "e4f9ee3aa96818a9d1bf7b5149a9d41990acb104ee3ed554e9f1554f046c60f7"
+    },
+    {
+      "command_or_component": "team-gate",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/team-gate.log",
+      "sha256": "2857e96fe1892a8b5b7001095e40adf327ebe90ce20a022a91eb4e0fb053cf2e"
+    },
+    {
+      "command_or_component": "sqlite-control_center",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-control_center.log",
+      "sha256": "3b0919d29259fe7dfc082a73ec1406d93b02f9dc75b6bd0bcfc4d69965cff258"
+    },
+    {
+      "command_or_component": "sqlite-git",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-git.log",
+      "sha256": "2c0b0562a5be313934f2c3b94096b5c970fcaadb3abaa27a7358be17f362832c"
+    },
+    {
+      "command_or_component": "sqlite-kata",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-kata.log",
+      "sha256": "2a532c9974d589a9d929ee3e70837b212cc36be2847eb624805d95fbdec7d2cd"
+    },
+    {
+      "command_or_component": "sqlite-process",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-process.log",
+      "sha256": "86c459b3cc544201fcc4a25d247b951d02012eb8f720e10b57ca1c8d23c7b0d4"
+    },
+    {
+      "command_or_component": "sqlite-public",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-public.log",
+      "sha256": "00af3ee20effab56171dc545d07653ba2c75602b3cc0c139cc11a9d6708d3994"
+    },
+    {
+      "command_or_component": "sqlite-runtime",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-runtime.log",
+      "sha256": "5a658531980c04ae192fe4005dced927e75e82fdccb9d94841301ca04c00be23"
+    },
+    {
+      "command_or_component": "sqlite-doc",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-doc.log",
+      "sha256": "04e02ec7437f795b9c560c544d150657ed0d2168b87e68e7c49802df726e1bd7"
+    },
+    {
+      "command_or_component": "initial SQLite full gate",
+      "exit": 101,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007/.scratch/landing-controller/sqlite-gate.log",
+      "sha256": "88b00ad94e5ea177d554b9b9afb7ae8e9da97be546c8053b878a23bedd0dc5f8",
+      "result": "unit/client passed; native 40 passed, 1 failed; fixture failure subsequently repaired and all three affected native cases rerun successfully"
+    },
+    {
+      "command": "python3 bench/harness/test_lead_driven.py",
+      "exit": 0,
+      "log": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007/.scratch/landing-queue/lead-driven-exact-tip.log",
+      "sha256": "87ba953d10913ee557b9fc88edfc9043ca8fe0845891e0b72185f367780bb4d1",
+      "provenance": "40 tests passed; checkout was concurrently advanced during invocation. Runtime sources unchanged; do not describe this as a frozen exact-tip run."
+    }
+  ]
+}
