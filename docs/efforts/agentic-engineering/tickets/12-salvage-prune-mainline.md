@@ -3,7 +3,7 @@
 Type: task
 Status: claimed
 Owner: codex-salvage-prune
-Blocked by: 
+Blocked by:
 Claimed: 2026-10-07T09:14:21Z expires 2026-10-08T09:14:21Z
 
 Triage: needs-triage
