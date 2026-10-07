@@ -529,7 +529,7 @@ def run(topology):
     for grant in grants:command('cancel_attempt',{'attempt':grant['attempt']})
     wait(lambda:query('snapshot')['occupied_slots']==0);return
    if os.environ.get('CORENIUS_TEST_EMPTY_RESTART')=='1':
-    observation=json.loads((r/'crash-boundary.observed').read_text());empty=next(b for b in registry['bindings'] if b['document']['thread_id']==observation['thread_id']);assert empty['document'].get('turn_id') is None and not empty['document']['ui_input_ready']
+    observation=json.loads((r/'crash-boundary.observed').read_text());empty=next(b for b in registry['bindings'] if b['document'].get('thread_id')==observation['thread_id']);assert empty['document'].get('turn_id') is None and not empty['document']['ui_input_ready']
     end=time.monotonic()+2
     samples=[]
     try:

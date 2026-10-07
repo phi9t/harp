@@ -362,7 +362,7 @@ def readiness_report(root: Path, readiness_dir: Path) -> str:
             for instantiation in READINESS_INSTANTIATIONS:
                 row = latest.get((scenario["id"], proof, instantiation))
                 if row is None:
-                    lines.append(f"| {instantiation} | - | not yet run | - | - | - | - | - | - |")
+                    lines.append(f"| {instantiation} | - | - | not yet run | - | - | - | - | - | - |")
                     continue
                 elapsed = f"{row['elapsed_seconds']:.3f}s"
                 lines.append(
