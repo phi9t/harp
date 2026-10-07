@@ -4,8 +4,8 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "1dd171d11a2f9eb84a69d9238a1003aed19a7c62",
-  "dehydrated": "2026-09-30T01:30:15Z",
+  "base_commit": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+  "dehydrated": "2026-10-07T09:40:30Z",
   "effort": "multi-agent-bench",
   "runs": [
     {
@@ -79,15 +79,7 @@
       "verdict": "DEGRADED"
     }
   ],
-  "worktrees": [
-    {
-      "branch": "effort/multi-agent-bench",
-      "dirty": [],
-      "head": "d0512102500deb98411b219e0734d33279203b41",
-      "path": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
-      "pushed": false
-    }
-  ]
+  "worktrees": []
 }
 ```
 <!-- effort:machine:end -->
