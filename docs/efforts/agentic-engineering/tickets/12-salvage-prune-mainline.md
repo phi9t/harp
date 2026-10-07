@@ -1,10 +1,10 @@
 # 12 salvage-prune-mainline: Salvage pending work and prune Corenius branches/worktrees to a pristine mainline
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: codex-salvage-prune
 Blocked by:
-Claimed: 2026-10-07T09:14:21Z expires 2026-10-08T09:14:21Z
+Claimed:
 
 Triage: needs-triage
 
@@ -110,3 +110,4 @@ The only remaining registered checkout besides main is this sole-writer metadata
 archived/recovered and retired after publication. Whole-goal completion is asserted only after that final
 retirement and a fresh one-checkout/two-required-refs audit recorded outside the tree.
 See ../evidence/salvage-prune-20261007-final-live.json and the archive final completion receipt.
+- 2026-10-07T17:34:46Z codex-salvage-prune: resolved
