@@ -51,12 +51,12 @@ exact commits with safe archive-member validation, restored unchanged m01 tests,
 snapshot.
 
 The benchmark `result.json` is written under `--out`; the retained live controller artifacts are in `result.controller.run_root`
-under a short `cb-*` directory below `TMPDIR` when set, otherwise the system temp directory, because Unix-domain supervisor
-sockets must stay below `SUN_LEN`. On hosts where `/tmp` is constrained, run controller mode with an owned short temp root such
-as `TMPDIR=/data02/home/philip.yang/.cb-runtime`.
+under a short `cb-*` directory below the repository temporary root selected by `tools/temp_root.py`, because Unix-domain
+supervisor sockets must stay below `SUN_LEN`. Host and controller runs must use an owned temporary root outside `/tmp`; this
+worktree uses `/data02/home/philip.yang/.cbt`.
 
 Controller mode requires the pinned Kata binary
-`/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned` with SHA-256
+`~/.local/share/corenius/pinned-tools/kata/8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6/kata-pinned` with SHA-256
 `8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6`, plus the Rust controller binaries buildable offline with
 `cargo build --manifest-path crates/sqlite-controller/Cargo.toml --target-dir .scratch/controller-backed-bench/target --locked
 --offline --bins`. The controller record pins the verifier adapter script, protected test file, configured executables and
@@ -66,6 +66,10 @@ snapshot includes the pinned Python executable at the exact resolved policy path
 loader and shared-library dependencies; the snapshot manifest digest is bound into the verifier environment/proof and retained
 in controller metadata. Independent verifier logs record that same configured Python executable in `argv` instead of a
 synthetic host path.
+
+The pinned artifact stays outside disposable source worktrees. Set `CORENIUS_KATA_PINNED_BINARY` to select another copy for
+controller mode or the retained SQLite entry point; the native Kata fixture uses `KATA_PINNED_BINARY`. Each supplied copy
+must retain the approved SHA-256. These overrides do not authorize model calls or live qualification.
 
 ## Watching runs in tmux
 

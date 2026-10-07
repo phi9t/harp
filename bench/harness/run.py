@@ -239,6 +239,8 @@ def main(argv=None) -> int:
     p.add_argument("--out", default=None)
     p.add_argument("--timeout", type=float)
     p.add_argument("--authorize-model-spend", action="store_true")
+    p.add_argument("--controller-lifecycle-fault", choices=sorted(controller_mode.LIFECYCLE_FAULTS),
+                   help="deterministic controller lifecycle fault injection for bounded failure tests")
     p.add_argument("--report", metavar="DIR")
     args = p.parse_args(argv)
     if args.report:
@@ -253,6 +255,8 @@ def main(argv=None) -> int:
         raise SystemExit("condition must be solo, fleet:N, or controller:TICKET")
     if args.condition.startswith("controller:"):
         controller_mode.validate_controller_selection(tasks, args.condition.split(":", 1)[1])
+    elif args.controller_lifecycle_fault:
+        raise SystemExit("--controller-lifecycle-fault requires a controller condition")
     out = Path(args.out or tasklib.ROOT / "bench" / "results" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     out.mkdir(parents=True, exist_ok=True)
     for task in tasks:
@@ -264,9 +268,21 @@ def main(argv=None) -> int:
             elif args.condition.startswith("fleet:"):
                 rec = run_fleet_condition(task, agent, out, i, int(args.condition.split(":")[1]))
             else:
-                rec = controller_mode.run_controller_condition(task, agent, out, i, args.condition.split(":", 1)[1])
+                rec = controller_mode.run_controller_condition(
+                    task,
+                    agent,
+                    out,
+                    i,
+                    args.condition.split(":", 1)[1],
+                    fault=args.controller_lifecycle_fault,
+                )
             persist(rec, out)
             print(f"{'PASS' if rec['outcome']['passed'] else 'FAIL'} {rec['run_id']} {rec['timing']['wall_seconds']}s")
+            if (
+                args.condition.startswith("controller:")
+                and rec["outcome"].get("failure_stage") in controller_mode.DISPATCH_FAILURE_STAGES
+            ):
+                break
     print(results.table(results.summarize(results.load_all(out))))
     return 0
 

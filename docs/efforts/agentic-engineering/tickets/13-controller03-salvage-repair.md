@@ -11,6 +11,7 @@ Triage: needs-triage
 ## Acceptance
 - [ ] Construct the exact reviewed five-file controller03 semantic delta over current main; preserve landed readiness APIs and behavior.
 - [ ] Repair uncertain success cleanup, unverified manual-intervention task verdicts and resolved failure dispositions with causal regressions.
+- [ ] Retire three default Kata paths into the stable content-addressed artifact directory while preserving overrides and required hashes.
 - [ ] Run focused mixed legacy/controller/readiness checks on immutable candidate and pass independent Standards/Spec review.
 - [ ] Publish verified landable candidate and preserve/prune its owned temporary tree after fast-forward landing.
 
@@ -39,3 +40,20 @@ do not reset the three-round repair cap. Record and escalate non-convergence.
 
 ## Comments
 - 2026-10-07T09:53:38Z codex-controller03-salvage: claimed until 2026-10-08T09:53:38Z
+
+### Repair 2 candidate, 2026-10-07
+
+The exact five-file delta was merged over the current readiness source. Only the result-schema constants conflicted;
+readiness constants and APIs were preserved alongside controller v2 and legacy v1 validation. Success now uses observed
+service and Attempt closure; pre-verifier manual pause retains UNKNOWN task truth; proven reconciliation resolves effects
+independently of a failed task or orchestration. The three causal regressions failed before repair and passed afterward.
+The mixed controller/legacy/readiness gate passed 94 tests in 828.259 seconds. The protected-verifier validator passed
+41 tasks with no failures. This remains repair 2 of 3, following the original owner's repair 1.
+
+Repository cleanup exposed a second bounded defect: three runtime/fixture defaults named a retired Kata worktree. The
+current user goal and explicit lead delegation extend this repair to those three lookup sites, their necessary regression,
+and the benchmark README. Defaults now select the same approved digest under the user's stable pinned-tools directory.
+The controller and SQLite entry point use `CORENIUS_KATA_PINNED_BINARY`; the native fixture retains `KATA_PINNED_BINARY`.
+Actual loaded default/override lookup and native fixture hash-guard behavior passed with all six SQLite-entry tests.
+Final default runtime/fixture gates, evidence publication and independent Standards/Spec review are pending. Neither this
+ticket nor controller-backed-bench Ticket03 is resolved by this candidate.

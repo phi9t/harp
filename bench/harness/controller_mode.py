@@ -17,6 +17,7 @@ import shutil
 import signal
 import socket
 import subprocess
+import sys
 import tarfile
 import tempfile
 import time
@@ -40,7 +41,31 @@ _temp_policy_tempfile.tempdir = _temp_policy_root
 _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 
 
-CONTROLLER_SCHEMA = "corenius.bench.controller.v1"
+CONTROLLER_SCHEMA = "corenius.bench.controller.v2"
+EXECUTION_DEADLINE_SECONDS = 30 * 60
+SETUP_STAGE_TIMEOUT_SECONDS = 300.0
+CLEANUP_TIMEOUT_SECONDS = 60.0
+PINNED_VERIFIER_TIMEOUT_SECONDS = 120.0
+PREFLIGHT_FAILURE_STAGES = {"missing_prerequisite", "preflight", "unsupported_task"}
+DISPATCH_FAILURE_STAGES = {"timeout", "provider_failure"}
+CONTROLLED_FAILURE_STAGES = (
+    PREFLIGHT_FAILURE_STAGES
+    | DISPATCH_FAILURE_STAGES
+    | {"delivery_failure", "failed_verifier", "generic_failure", "missing_evidence", "manual_intervention"}
+)
+DEADLINE_GATED_COMMANDS = {"create_kata_task", "admit", "verify_candidate", "accept_candidate", "land_candidate"}
+LIFECYCLE_FAULTS = {
+    "delivery-failure",
+    "elapsed-deadline",
+    "failed-verifier",
+    "final-deadline",
+    "final-inflight-timeout",
+    "generic-failure",
+    "manual-intervention",
+    "missing-evidence",
+    "missing-prerequisite",
+    "provider-failure",
+}
 PROJECT = "controller-bench"
 EXECUTION_SOURCE_PATHS = [
     "tools/temp_root.py",
@@ -50,11 +75,61 @@ EXECUTION_SOURCE_PATHS = [
     "bench/harness/tasklib.py",
     "bench/harness/fleet.py",
 ]
+KATA_SHA256 = "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6"
 KATA = Path(os.environ.get(
     "CORENIUS_KATA_PINNED_BINARY",
-    "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned",
+    Path.home() / ".local/share/corenius/pinned-tools/kata" / KATA_SHA256 / "kata-pinned",
 ))
-KATA_SHA256 = "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6"
+
+
+class ControllerFailure(RuntimeError):
+    def __init__(self, stage: str, message: str, details: dict | None = None):
+        super().__init__(message)
+        self.stage = stage
+        self.message = message
+        self.details = details or {}
+
+
+class StageBudget:
+    def __init__(self, *, seconds: float, failure_stage: str, label: str):
+        self.seconds = float(seconds)
+        self.failure_stage = failure_stage
+        self.label = label
+        self.started_monotonic = time.monotonic()
+        self.deadline_monotonic = self.started_monotonic + self.seconds
+
+    def remaining(self, boundary: str) -> float:
+        remaining = self.deadline_monotonic - time.monotonic()
+        if remaining <= 0:
+            raise ControllerFailure(
+                self.failure_stage,
+                f"{self.label} budget elapsed before {boundary}",
+                {
+                    "boundary": boundary,
+                    "budget_seconds": self.seconds,
+                    "elapsed_seconds": round(time.monotonic() - self.started_monotonic, 3),
+                },
+            )
+        return remaining
+
+    def timeout(self, requested: float, boundary: str) -> float:
+        return max(0.001, min(float(requested), self.remaining(boundary)))
+
+
+class CleanupBudget:
+    def __init__(self, seconds: float):
+        self.seconds = float(seconds)
+        self.started_monotonic = time.monotonic()
+        self.deadline_monotonic = self.started_monotonic + self.seconds
+
+    def remaining(self) -> float:
+        return max(0.0, self.deadline_monotonic - time.monotonic())
+
+    def wait_slice(self, requested: float) -> float:
+        return min(float(requested), self.remaining())
+
+    def elapsed(self) -> float:
+        return round(time.monotonic() - self.started_monotonic, 3)
 
 PARTIAL_CONTRACTS = {
     "t1": {
@@ -201,10 +276,510 @@ def write_json(path: Path, value: dict) -> None:
     path.chmod(0o600)
 
 
-def wait(description: str, predicate, seconds: float = 30.0):
-    deadline = time.monotonic() + seconds
+def execution_window(admitted_at: float, first_submission_at: float | None = None) -> dict:
+    first_submission_at = admitted_at if first_submission_at is None else first_submission_at
+    return {
+        "clock": "durable_admission_to_final_verification",
+        "deadline_seconds": float(EXECUTION_DEADLINE_SECONDS),
+        "setup_timeout_seconds": float(SETUP_STAGE_TIMEOUT_SECONDS),
+        "cleanup_timeout_seconds": float(CLEANUP_TIMEOUT_SECONDS),
+        "pinned_verifier_timeout_seconds": float(PINNED_VERIFIER_TIMEOUT_SECONDS),
+        "durable_run_admission_unix": admitted_at,
+        "first_mission_submission_unix": first_submission_at,
+        "dispatch_cutoff_unix": admitted_at + EXECUTION_DEADLINE_SECONDS,
+        "failed_preflight_consumed_model_calls": False,
+        "automatic_rerun_after_timeout_or_provider_failure": False,
+        "live_host_requirement": "m01",
+        "platform": sys.platform,
+    }
+
+
+def controller_outcomes(task_verdict: str, orchestration_verdict: str, effect_disposition: str) -> dict:
+    return {
+        "task": {"verdict": task_verdict},
+        "orchestration": {"verdict": orchestration_verdict},
+        "effects": {"disposition": effect_disposition},
+    }
+
+
+def no_model_usage(status: str = "not_applicable") -> dict:
+    return {"status": status, "input_tokens": None, "output_tokens": None, "usd": None, "complete": False}
+
+
+def evidence_entry(kind: str, path: Path) -> dict:
+    entry = {"kind": kind, "path": str(path)}
+    if path.is_file():
+        entry["sha256"] = sha256_bytes(path.read_bytes())
+    return entry
+
+
+def retained_evidence(root: Path, repositories: list[dict] | None = None,
+                      manifests: list[dict] | None = None, events: list[dict] | None = None,
+                      proofs: list[dict] | None = None, logs: list[dict] | None = None) -> dict:
+    return {
+        "run_root": str(root),
+        "repositories": repositories or [],
+        "manifests": manifests or [],
+        "events": events or [],
+        "proofs": proofs or [],
+        "logs": logs or [],
+    }
+
+
+def controller_result_metadata(
+    *,
+    root: Path,
+    admitted_at: float,
+    first_submission_at: float,
+    task_verdict: str,
+    orchestration_verdict: str,
+    effect_disposition: str,
+    attempts_total: int,
+    initial_attempts: int,
+    fresh_integration_attempts: int,
+    interventions: list[dict],
+    retained: dict,
+    failure_stage: str | None = None,
+    failure_kind: str | None = None,
+    failure_message: str | None = None,
+    model_usage: dict | None = None,
+) -> dict:
+    manual_rescue = any(str(item.get("kind", "")).startswith("manual") for item in interventions)
+    return {
+        "execution_window": execution_window(admitted_at, first_submission_at),
+        "outcomes": controller_outcomes(task_verdict, orchestration_verdict, effect_disposition),
+        "failure": {"stage": failure_stage, "kind": failure_kind, "message": failure_message},
+        "interventions": interventions,
+        "autonomous_pass_eligible": not manual_rescue,
+        "attempts": {
+            "total": attempts_total,
+            "initial": initial_attempts,
+            "fresh_integration": fresh_integration_attempts,
+            "max_fresh_integration_attempts": 1,
+            "automatic_retries_after_failure": 0,
+            "max_concurrent_worker_executions": 2,
+        },
+        "model_usage": model_usage or no_model_usage(),
+        "retained_evidence": retained,
+    }
+
+
+def failing_overlay(ticket: fleet.Ticket) -> dict[str, str]:
+    if ticket.id == "t1":
+        return {"strings_util.py": "def title_case(value):\n    return value\n"}
+    if ticket.id == "t2":
+        return {"numbers_util.py": "def clamp(value, low, high):\n    return value\n"}
+    raise RuntimeError(f"no deterministic failing overlay for {ticket.id}")
+
+
+def execution_clock_from_control(control: dict | None) -> dict:
+    if control and isinstance(control.get("execution_clock"), dict):
+        clock = dict(control["execution_clock"])
+        if "first_mission_submission_unix" not in clock:
+            clock["first_mission_submission_unix"] = clock["durable_run_admission_unix"]
+        return clock
+    now = time.time()
+    return {"durable_run_admission_unix": now, "first_mission_submission_unix": now}
+
+
+def runtime_closure_for_failure(root: Path, failure_manifest: Path) -> dict:
+    policy_path = root / "git.json"
+    if policy_path.is_file():
+        policy = json.loads(policy_path.read_text())
+        pinned = {
+            "git": policy.get("git"),
+            "python_executable": policy.get("python"),
+            "bubblewrap": policy.get("bubblewrap"),
+            "verifier_runtime": policy.get("verifier_runtime"),
+        }
+        return {"status": "pinned", "pinned": {key: value for key, value in pinned.items() if value is not None}}
+    return {
+        "status": "limited",
+        "pinned": {},
+        "limitation": "verifier runtime policy was unavailable before this failure; closure status is unknown",
+        "failure_manifest": {"path": str(failure_manifest), "sha256": sha256_bytes(failure_manifest.read_bytes())},
+    }
+
+
+def jsonable(value):
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(key): jsonable(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [jsonable(item) for item in value]
+    if isinstance(value, tuple):
+        return [jsonable(item) for item in value]
+    return value
+
+
+def unknown_source_identity() -> dict:
+    document = {
+        "schema_version": "corenius.bench.source-manifest.v1",
+        "root": str(tasklib.ROOT),
+        "digest": "unknown",
+        "entries": [{"path": "source_identity", "kind": "unknown"}],
+    }
+    return {
+        "head": None,
+        "tree": None,
+        "dirty": None,
+        "status_sha256": None,
+        "diff_sha256": None,
+        "content_manifest": document,
+    }
+
+
+def timeout_failure_from_exception(exc: BaseException, run: "ControllerRun | None") -> ControllerFailure | None:
+    if isinstance(exc, subprocess.TimeoutExpired):
+        stage = "timeout" if run is not None and run.execution_budget is not None else "preflight"
+        details = {
+            "exception_type": "TimeoutExpired",
+            "timeout_seconds": exc.timeout,
+            "boundary": " ".join(str(part) for part in exc.cmd) if isinstance(exc.cmd, (list, tuple)) else str(exc.cmd),
+        }
+        if run is not None and run.execution_budget is not None:
+            details.update(run.attempt_count_details())
+            details.update({
+                "dispatch_cutoff_unix": run.dispatch_cutoff_unix,
+                "observed_unix": time.time(),
+            })
+        else:
+            details.update({"attempts_total": 0, "initial_attempts": 0, "fresh_integration_attempts": 0})
+        return ControllerFailure(stage, f"{stage} subprocess timeout: {details['boundary']}", details)
+    if isinstance(exc, (TimeoutError, socket.timeout)):
+        stage = "timeout" if run is not None and run.execution_budget is not None else "preflight"
+        details = {
+            "exception_type": type(exc).__name__,
+            "exception_message": str(exc),
+            "boundary": str(exc),
+        }
+        if run is not None and run.execution_budget is not None:
+            details.update(run.attempt_count_details())
+            details.update({
+                "dispatch_cutoff_unix": run.dispatch_cutoff_unix,
+                "observed_unix": time.time(),
+            })
+        else:
+            details.update({"attempts_total": 0, "initial_attempts": 0, "fresh_integration_attempts": 0})
+        return ControllerFailure(stage, f"{stage} timeout: {exc}", details)
+    return None
+
+
+def controller_failure_record(
+    *,
+    task: tasklib.Task,
+    agent,
+    rid: str,
+    ticket_id: str,
+    root: Path,
+    source: dict,
+    build: dict,
+    failure: ControllerFailure,
+    control: dict | None,
+    process_records: list[dict],
+    setup_seconds: float,
+    execution_seconds: float,
+    cleanup_seconds: float,
+    total_wall_seconds: float,
+    source_capture_seconds: float,
+    failure_evidence: dict | None = None,
+) -> dict:
+    classification = _fixture_classification(failure.stage)
+    details = jsonable(failure.details)
+    attempts_total = int(details.get("attempts_total", classification["attempts"]))
+    initial_attempts = int(details.get("initial_attempts", min(attempts_total, 2)))
+    fresh_integration_attempts = int(details.get("fresh_integration_attempts", 0))
+    reconciliation = next(
+        (entry.get("record") for entry in process_records if entry.get("name") == "reconciliation" and isinstance(entry.get("record"), dict)),
+        None,
+    )
+    failure_root = root / "failure"
+    failure_root.mkdir(mode=0o700, parents=True, exist_ok=True)
+    failure_manifest = failure_root / "failure-manifest.json"
+    missing_paths = [str(path) for path in details.get("missing_paths", [])]
+    write_json(
+        failure_manifest,
+        {
+            "schema_version": "corenius.bench.controller-lifecycle-failure.v1",
+            "stage": failure.stage,
+            "message": failure.message,
+            "details": details,
+            "missing_paths": missing_paths,
+            "task": task.id,
+            "ticket": ticket_id,
+        },
+    )
+    failure_log = failure_root / "failure.log"
+    failure_log.write_text(f"{failure.stage}: {failure.message}\n")
+    failure_log.chmod(0o600)
+    harness_events_path = failure_root / "harness-events.jsonl"
+    harness_events_path.write_text(
+        json.dumps(
+            {"kind": "harness_lifecycle_failure", "stage": failure.stage, "details": details},
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    harness_events_path.chmod(0o600)
+    proof_path = failure_root / "harness-proof-status.json"
+    write_json(
+        proof_path,
+        {
+            "stage": failure.stage,
+            "verdict": classification["task_verdict"],
+            "trusted": False,
+            "status": "unknown",
+            "details": details,
+        },
+    )
+    failure_evidence = failure_evidence or {}
+    evidence_events = []
+    actual_events = failure_evidence.get("events")
+    if isinstance(actual_events, list):
+        events_path = failure_root / "controller-events.json"
+        write_json(events_path, {"schema_version": "corenius.bench.controller-events.v1", "events": actual_events})
+        evidence_events.append({
+            "kind": "controller",
+            "path": str(events_path),
+            "sha256": sha256_bytes(events_path.read_bytes()),
+            "first_seq": actual_events[0]["seq"] if actual_events else 0,
+            "last_seq": actual_events[-1]["seq"] if actual_events else 0,
+            "count": len(actual_events),
+        })
+    else:
+        evidence_events.append({
+            "kind": "controller",
+            "status": "unknown",
+            "reason": failure_evidence.get("events_error", "controller events unavailable"),
+        })
+    evidence_events.append({
+        "kind": "harness_annotation",
+        "path": str(harness_events_path),
+        "sha256": sha256_bytes(harness_events_path.read_bytes()),
+    })
+    evidence_proofs = []
+    if isinstance(details.get("verification"), dict):
+        actual_proof_path = failure_root / "controller-verification-proof.json"
+        write_json(actual_proof_path, details["verification"])
+        evidence_proofs.append({
+            "kind": "controller_verification",
+            "path": str(actual_proof_path),
+            "sha256": sha256_bytes(actual_proof_path.read_bytes()),
+            "verdict": details["verification"].get("verdict", "unknown"),
+        })
+    else:
+        evidence_proofs.append({
+            "kind": "controller_verification",
+            "status": "unknown",
+            "reason": "no controller verification proof was produced before failure",
+        })
+    process_logs = [
+        evidence_entry(entry["name"], Path(entry["log"]))
+        for entry in process_records
+        if entry.get("log") and Path(entry["log"]).exists()
+    ]
+    retained = retained_evidence(
+        root,
+        repositories=[
+            {
+                "kind": "canonical",
+                "path": str(root / "canonical"),
+                "head": failure_evidence.get("canonical_head"),
+                "head_status": "observed" if failure_evidence.get("canonical_head") else "unknown",
+            },
+            {"kind": "authority_store", "path": str(root / "authority/objects/store.git")},
+        ],
+        manifests=[
+            evidence_entry("source", root / "source-manifest.json"),
+            evidence_entry("failure", failure_manifest),
+            evidence_entry("controller_build", Path(build["log"])) if build.get("log") else {},
+        ],
+        events=evidence_events,
+        proofs=[
+            *evidence_proofs,
+            {
+                "kind": "harness_proof_status",
+                "path": str(proof_path),
+                "sha256": sha256_bytes(proof_path.read_bytes()),
+                "status": "unknown",
+            },
+        ],
+        logs=[evidence_entry("failure", failure_log), *process_logs],
+    )
+    interventions = []
+    if failure.stage == "manual_intervention":
+        observed_intervention = details.get("intervention")
+        interventions = [
+            observed_intervention
+            if isinstance(observed_intervention, dict)
+            else {"kind": "manual_rescue", "stage": failure.stage, "summary": "manual intervention prevents autonomous PASS"}
+        ]
+    clock = execution_clock_from_control(control)
+    model_usage = classification["model_usage"]
+    unresolved = classification["effect_disposition"] == "unresolved"
+    remaining_uncertain = (
+        reconciliation.get("remaining_uncertain", []) if isinstance(reconciliation, dict) else []
+    ) or (
+        [{"kind": "effect", "stage": failure.stage, "reason": "physical stop is not inferred from lifecycle failure"}]
+        if unresolved else []
+    )
+    reconciled_resolved = isinstance(reconciliation, dict) and reconciliation.get("status") == "resolved"
+    effect_disposition = classification["effect_disposition"]
+    if reconciled_resolved:
+        effect_disposition = "resolved"
+        remaining_uncertain = []
+    elif isinstance(reconciliation, dict) and reconciliation.get("status") == "unresolved":
+        effect_disposition = "unresolved"
+    service_uncertain = [
+        item for item in remaining_uncertain
+        if isinstance(item, dict) and item.get("kind") == "service"
+    ]
+    attempt_uncertain = [
+        item for item in remaining_uncertain
+        if isinstance(item, dict) and item.get("kind") != "service"
+    ]
+    metadata = controller_result_metadata(
+        root=root,
+        admitted_at=clock["durable_run_admission_unix"],
+        first_submission_at=clock["first_mission_submission_unix"],
+        task_verdict=classification["task_verdict"],
+        orchestration_verdict="fail",
+        effect_disposition=effect_disposition,
+        attempts_total=attempts_total,
+        initial_attempts=initial_attempts,
+        fresh_integration_attempts=fresh_integration_attempts,
+        interventions=interventions,
+        retained=retained,
+        failure_stage=failure.stage,
+        failure_kind=failure.stage,
+        failure_message=failure.message,
+        model_usage=model_usage,
+    )
+    verify_record = tasklib.capsule_for(task)
+    controller = {
+        "schema_version": CONTROLLER_SCHEMA,
+        "mode": "deterministic",
+        "task": task.id,
+        "ticket": ticket_id,
+        **metadata,
+        "run_root": str(root),
+        "source": source,
+        "build": build,
+        "control": control or {},
+        "partial_contract": {
+            "suite_id": "not_run" if failure.stage in PREFLIGHT_FAILURE_STAGES else "failed_lifecycle",
+            "suite_digest": "not_run",
+            "selected_tests": [],
+            "noop_verdict": "not_run",
+            "fixed_verdict": classification["task_verdict"],
+        },
+        "landing": {"state": "not_landed"},
+        "process_disposition": {
+            "owned_attempts": "unresolved" if attempt_uncertain else "stopped",
+            "services": "unresolved" if service_uncertain else "stopped",
+            "effect_disposition": effect_disposition,
+            "processes": process_records,
+            "remaining_uncertain": remaining_uncertain,
+            **({"reconciliation": reconciliation} if isinstance(reconciliation, dict) else {}),
+        },
+        "runtime_closure": runtime_closure_for_failure(root, failure_manifest),
+        "cleanup": {
+            "bounded_timeout_seconds": CLEANUP_TIMEOUT_SECONDS,
+            "seconds": cleanup_seconds,
+            "observed_owned_processes": len(process_records),
+        },
+        "qualification_limits": [
+            "controlled deterministic lifecycle failure only",
+            "no live model calls",
+            "no one-run speed, cost or recovery superiority claim",
+        ],
+        "failure_details": details,
+        "orchestration_passed": False,
+    }
+    return {
+        "schema_version": "corenius.bench.result.v1",
+        "run_id": rid,
+        "task_id": task.id,
+        "condition": f"controller:{ticket_id}",
+        "agent": {"spec": agent.spec},
+        "capsule": {
+            "digest": verify_record["capsule_digest"],
+            "net": verify_record["policy"]["net"],
+            "hermetic": verify_record["hermetic"],
+            "non_hermetic_layers": verify_record["non_hermetic_layers"],
+        },
+        "outcome": {
+            "passed": False,
+            "reward": 0.0,
+            "verifier_rc": 1 if classification["task_verdict"] == "fail" else None,
+            "timed_out": failure.stage == "timeout",
+            "agent_rc": None,
+            "task_verdict": classification["task_verdict"],
+            "orchestration_verdict": "fail",
+            "effect_disposition": effect_disposition,
+            "failure_stage": failure.stage,
+        },
+        "timing": {
+            "wall_seconds": total_wall_seconds,
+            "agent_seconds": 0.0,
+            "verify_seconds": float(details.get("verify_seconds", 0.0)),
+            "source_capture_seconds": source_capture_seconds,
+            "build_seconds": build.get("seconds", 0.0),
+            "setup_seconds": setup_seconds,
+            "execution_seconds": execution_seconds,
+            "controller_flow_seconds": execution_seconds,
+            "cleanup_seconds": cleanup_seconds,
+        },
+        "coordination": {
+            "conflicts": 0,
+            "stale_refusals": 0,
+            "redos": 0,
+            "contamination": 0,
+            "contamination_paths": [],
+            "tickets": 2 if ticket_id == "complete" else 1,
+            "tickets_landed": 0,
+            "condition_mode": "controller",
+            "attempts": attempts_total,
+            "manual_interventions": len(interventions),
+        },
+        "cost": {
+            "usd": model_usage["usd"],
+            "input_tokens": model_usage["input_tokens"],
+            "output_tokens": model_usage["output_tokens"],
+        },
+        "provenance": {
+            "outcome": "controller lifecycle failure measured",
+            "timing": "measured by harness phase timers",
+            "coordination": "controller lifecycle observed",
+            "cost": f"{model_usage['status']}; no synthesized usage total",
+        },
+        "controller": controller,
+    }
+
+
+def budget_timeout(budget, requested: float, boundary: str) -> float:
+    if budget is None:
+        return float(requested)
+    if hasattr(budget, "timeout"):
+        return budget.timeout(float(requested), boundary)
+    return max(0.001, min(float(requested), budget.remaining()))
+
+
+def budget_remaining(budget, boundary: str) -> float:
+    if budget is None:
+        return float("inf")
+    if isinstance(budget, StageBudget):
+        return budget.deadline_monotonic - time.monotonic()
+    return budget.remaining()
+
+
+def wait(description: str, predicate, seconds: float = 30.0, budget=None):
+    deadline = time.monotonic() + budget_timeout(budget, seconds, description)
     last = None
     while time.monotonic() < deadline:
+        if isinstance(budget, StageBudget):
+            budget.remaining(description)
         try:
             value = predicate()
             if value:
@@ -213,6 +788,11 @@ def wait(description: str, predicate, seconds: float = 30.0):
         except (ConnectionRefusedError, FileNotFoundError, TimeoutError, urllib.error.URLError, socket.timeout) as exc:
             last = exc
         time.sleep(0.05)
+        if budget is not None:
+            if budget_remaining(budget, description) <= 0:
+                break
+    if isinstance(budget, StageBudget) and budget_remaining(budget, description) <= 0:
+        budget.remaining(description)
     raise TimeoutError(f"{description}: {last!r}")
 
 
@@ -222,7 +802,7 @@ def port() -> int:
         return int(stream.getsockname()[1])
 
 
-def fixed_git(path: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
+def fixed_git(path: Path, *args: str, check: bool = True, timeout: float | None = None) -> subprocess.CompletedProcess:
     proc = subprocess.run(
         [
             "/usr/bin/git",
@@ -243,13 +823,14 @@ def fixed_git(path: Path, *args: str, check: bool = True) -> subprocess.Complete
         },
         capture_output=True,
         text=True,
+        timeout=timeout,
     )
     if check and proc.returncode != 0:
         raise RuntimeError(proc.stderr.strip() or proc.stdout.strip() or f"git {' '.join(args)} failed")
     return proc
 
 
-def checkout_commit(repo: Path, commit: str, ws: Path) -> None:
+def checkout_commit(repo: Path, commit: str, ws: Path, budget=None) -> None:
     ws.mkdir(parents=True, exist_ok=True)
     proc = subprocess.run(
         [
@@ -273,6 +854,7 @@ def checkout_commit(repo: Path, commit: str, ws: Path) -> None:
         },
         capture_output=True,
         text=False,
+        timeout=budget_timeout(budget, 30.0, "git archive"),
     )
     if proc.returncode != 0:
         stderr = proc.stderr.decode(errors="replace").strip()
@@ -361,7 +943,8 @@ def verify_runtime_manifest(runtime: dict) -> None:
         raise RuntimeError("verifier runtime manifest schema changed")
 
 
-def run_pinned_complete_suite(ws: Path, suite: dict, runtime: dict, tools: dict, host_root: Path, name: str) -> dict:
+def run_pinned_complete_suite(ws: Path, suite: dict, runtime: dict, tools: dict, host_root: Path, name: str,
+                              budget=None, timeout_override: float | None = None) -> dict:
     verify_runtime_manifest(runtime)
     for key in ["python", "bubblewrap"]:
         check_pin(tools[key])
@@ -369,63 +952,77 @@ def run_pinned_complete_suite(ws: Path, suite: dict, runtime: dict, tools: dict,
     suite_doc = complete_suite_entry("m01-disjoint-utils", "t2", suite, host_root)
     suite_digest = sha256_bytes(json.dumps(suite_doc, sort_keys=True, separators=(",", ":")).encode())
     started = time.time()
-    proc = subprocess.run(
-        [
-            tools["bubblewrap"]["path"],
-            "--unshare-all",
-            "--new-session",
-            "--die-with-parent",
-            "--as-pid-1",
-            "--clearenv",
-            "--setenv", "TMPDIR", "/run/corenius-tmp",
-            "--ro-bind",
-            runtime["root"],
-            "/usr",
-            "--symlink",
-            "usr/bin",
-            "/bin",
-            "--symlink",
-            "usr/lib",
-            "/lib",
-            "--symlink",
-            "usr/lib64",
-            "/lib64",
-            "--proc",
-            "/proc",
-            "--dev",
-            "/dev",
-            "--tmpfs",
-            "/run/corenius-tmp",
-            "--dir",
-            "/home",
-            "--dir",
-            "/home/worker",
-            "--setenv",
-            "HOME",
-            "/home/worker",
-            "--setenv",
-            "PATH",
-            "/usr/bin:/bin",
-            "--bind",
-            str(ws),
-            "/workspace",
-            "--tmpfs",
-            "/scratch",
-            "--chdir",
-            "/workspace",
-            "--ro-bind",
-            suite["path"],
-            "/run/verification.py",
-            tools["python"]["path"],
-            "/run/verification.py",
-            str(host_root),
-            suite["protected_test_sha256"],
-        ],
-        env={},
-        capture_output=True,
-        text=True,
-        timeout=120,
+    argv = [
+        tools["bubblewrap"]["path"],
+        "--unshare-all",
+        "--new-session",
+        "--die-with-parent",
+        "--as-pid-1",
+        "--clearenv",
+        "--setenv", "TMPDIR", "/run/corenius-tmp",
+        "--ro-bind",
+        runtime["root"],
+        "/usr",
+        "--symlink",
+        "usr/bin",
+        "/bin",
+        "--symlink",
+        "usr/lib",
+        "/lib",
+        "--symlink",
+        "usr/lib64",
+        "/lib64",
+        "--proc",
+        "/proc",
+        "--dev",
+        "/dev",
+        "--tmpfs",
+        "/run/corenius-tmp",
+        "--dir",
+        "/home",
+        "--dir",
+        "/home/worker",
+        "--setenv",
+        "HOME",
+        "/home/worker",
+        "--setenv",
+        "PATH",
+        "/usr/bin:/bin",
+        "--bind",
+        str(ws),
+        "/workspace",
+        "--tmpfs",
+        "/scratch",
+        "--chdir",
+        "/workspace",
+        "--ro-bind",
+        suite["path"],
+        "/run/verification.py",
+        tools["python"]["path"],
+        "/run/verification.py",
+        str(host_root),
+        suite["protected_test_sha256"],
+    ]
+    verifier_timeout = (
+        float(timeout_override)
+        if timeout_override is not None
+        else budget_timeout(budget, PINNED_VERIFIER_TIMEOUT_SECONDS, f"independent verifier {name}")
     )
+    try:
+        proc = subprocess.run(
+            argv,
+            env={},
+            capture_output=True,
+            text=True,
+            timeout=verifier_timeout,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise subprocess.TimeoutExpired(
+            ["independent verifier", name, *argv],
+            exc.timeout,
+            output=exc.output,
+            stderr=exc.stderr,
+        ) from exc
     elapsed = round(time.time() - started, 3)
     log = {
         "name": name,
@@ -452,16 +1049,32 @@ def run_pinned_complete_suite(ws: Path, suite: dict, runtime: dict, tools: dict,
 
 def independent_verify_commit(task: tasklib.Task, repo: Path, commit: str, suite: dict, runtime: dict, tools: dict,
                               root: Path, name: str,
-                              tamper_tests: bool = False) -> dict:
-    tree = fixed_git(repo, "rev-parse", "--verify", f"{commit}^{{tree}}").stdout.strip()
+                              tamper_tests: bool = False, budget=None,
+                              timeout_override: float | None = None) -> dict:
+    tree = fixed_git(
+        repo,
+        "rev-parse",
+        "--verify",
+        f"{commit}^{{tree}}",
+        timeout=budget_timeout(budget, 10.0, f"independent verifier {name} rev-parse"),
+    ).stdout.strip()
     ws = root / "independent-verifier" / name / "workspace"
-    checkout_commit(repo, commit, ws)
+    checkout_commit(repo, commit, ws, budget=budget)
     if tamper_tests:
         tests = ws / "tests/test_utils.py"
         tests.parent.mkdir(parents=True, exist_ok=True)
         tests.write_text("import unittest\n\nclass T(unittest.TestCase):\n    def test_tampered(self):\n        self.assertTrue(True)\n")
     source_view = workspace_view_identity(ws)
-    verdict = run_pinned_complete_suite(ws, suite, runtime, tools, root, name)
+    verdict = run_pinned_complete_suite(
+        ws,
+        suite,
+        runtime,
+        tools,
+        root,
+        name,
+        budget=budget,
+        timeout_override=timeout_override,
+    )
     verifier_view = workspace_view_identity(ws)
     evidence_root = root / "independent-verifier" / name
     log_path = evidence_root / "verify-log.json"
@@ -525,7 +1138,7 @@ def copy_runtime_path(source: Path, runtime_root: Path) -> Path:
     return dest
 
 
-def selected_python_layout(python: Path) -> dict:
+def selected_python_layout(python: Path, budget=None) -> dict:
     proc = subprocess.run(
         [
             str(python),
@@ -543,14 +1156,21 @@ def selected_python_layout(python: Path) -> dict:
         capture_output=True,
         text=True,
         check=True,
+        timeout=budget_timeout(budget, 10.0, "python runtime layout"),
     )
     return json.loads(proc.stdout)
 
 
-def ldd_dependencies(paths: list[Path]) -> list[Path]:
+def ldd_dependencies(paths: list[Path], budget=None) -> list[Path]:
     found: set[Path] = set()
     for path in paths:
-        proc = subprocess.run(["/usr/bin/ldd", str(path)], capture_output=True, text=True, check=True)
+        proc = subprocess.run(
+            ["/usr/bin/ldd", str(path)],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=budget_timeout(budget, 10.0, f"ldd {path}"),
+        )
         for line in proc.stdout.splitlines():
             parts = line.strip().split()
             candidates = []
@@ -586,14 +1206,14 @@ def runtime_manifest(runtime_root: Path, manifest_path: Path) -> dict:
     return {"path": str(manifest_path), "sha256": sha256_bytes(manifest_path.read_bytes()), "entries": len(entries)}
 
 
-def build_verifier_runtime(root: Path, python_pin: dict) -> dict:
+def build_verifier_runtime(root: Path, python_pin: dict, budget=None) -> dict:
     runtime_root = root / "runtime-snapshot" / "usr"
     runtime_root.mkdir(parents=True, exist_ok=True)
     python = Path(python_pin["path"])
     python_dest = copy_runtime_path(python, runtime_root)
     if not python_dest.is_file() or sha256_bytes(python_dest.read_bytes()) != python_pin["sha256"]:
         raise RuntimeError(f"runtime snapshot missing pinned interpreter: {python}")
-    layout = selected_python_layout(python)
+    layout = selected_python_layout(python, budget=budget)
     stdlib = Path(layout["stdlib"]).resolve()
     shutil.copytree(stdlib, runtime_root / stdlib.relative_to("/usr"), dirs_exist_ok=True,
                     ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
@@ -604,7 +1224,7 @@ def build_verifier_runtime(root: Path, python_pin: dict) -> dict:
     shared_inputs = [python]
     if dynload.exists():
         shared_inputs.extend(path for path in dynload.glob("*.so") if path.is_file())
-    for dep in ldd_dependencies(shared_inputs):
+    for dep in ldd_dependencies(shared_inputs, budget=budget):
         copy_runtime_path(dep, runtime_root)
     ambient = root / "ambient-runtime-source"
     ambient.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -623,20 +1243,21 @@ def build_verifier_runtime(root: Path, python_pin: dict) -> dict:
     }
 
 
-def git_path_list(*args: str) -> list[str]:
+def git_path_list(*args: str, budget=None) -> list[str]:
     proc = subprocess.run(
         ["/usr/bin/git", "-C", str(tasklib.ROOT), *args],
         capture_output=True,
         check=True,
+        timeout=budget_timeout(budget, 20.0, f"source manifest git {' '.join(args)}"),
     )
     return [item.decode() for item in proc.stdout.split(b"\0") if item]
 
 
-def source_content_manifest() -> dict:
+def source_content_manifest(budget=None) -> dict:
     paths = set(EXECUTION_SOURCE_PATHS)
-    paths.update(git_path_list("diff", "--name-only", "-z", "HEAD", "--"))
-    paths.update(git_path_list("diff", "--cached", "--name-only", "-z", "--"))
-    paths.update(git_path_list("ls-files", "--others", "--exclude-standard", "-z"))
+    paths.update(git_path_list("diff", "--name-only", "-z", "HEAD", "--", budget=budget))
+    paths.update(git_path_list("diff", "--cached", "--name-only", "-z", "--", budget=budget))
+    paths.update(git_path_list("ls-files", "--others", "--exclude-standard", "-z", budget=budget))
     entries = []
     for rel in sorted(paths):
         path = tasklib.ROOT / rel
@@ -650,18 +1271,35 @@ def source_content_manifest() -> dict:
             "entries": entries}
 
 
-def source_identity() -> dict:
-    status = fixed_git(tasklib.ROOT, "status", "--porcelain", "--untracked-files=all").stdout
+def source_identity(budget=None) -> dict:
+    status = fixed_git(
+        tasklib.ROOT,
+        "status",
+        "--porcelain",
+        "--untracked-files=all",
+        timeout=budget_timeout(budget, 30.0, "source identity git status"),
+    ).stdout
     diff = subprocess.run(
         ["/usr/bin/git", "-C", str(tasklib.ROOT), "diff", "--binary", "HEAD"],
         capture_output=True,
         text=False,
         check=True,
+        timeout=budget_timeout(budget, 30.0, "source identity git diff"),
     ).stdout
-    manifest = source_content_manifest()
+    manifest = source_content_manifest(budget=budget)
     return {
-        "head": fixed_git(tasklib.ROOT, "rev-parse", "HEAD").stdout.strip(),
-        "tree": fixed_git(tasklib.ROOT, "rev-parse", "HEAD^{tree}").stdout.strip(),
+        "head": fixed_git(
+            tasklib.ROOT,
+            "rev-parse",
+            "HEAD",
+            timeout=budget_timeout(budget, 10.0, "source identity git rev-parse HEAD"),
+        ).stdout.strip(),
+        "tree": fixed_git(
+            tasklib.ROOT,
+            "rev-parse",
+            "HEAD^{tree}",
+            timeout=budget_timeout(budget, 10.0, "source identity git rev-parse tree"),
+        ).stdout.strip(),
         "dirty": bool(status.strip()),
         "status_sha256": sha256_bytes(status.encode()),
         "diff_sha256": sha256_bytes(diff),
@@ -669,27 +1307,35 @@ def source_identity() -> dict:
     }
 
 
-def build_controller(root: Path) -> dict:
+def build_controller(root: Path, budget=None) -> dict:
     target = tasklib.ROOT / ".scratch" / "controller-backed-bench" / "target"
     target.mkdir(parents=True, exist_ok=True)
     log = root / "controller-build.log"
     started = time.time()
     with log.open("ab") as stream:
-        proc = subprocess.run(
-            [
-                "cargo",
-                "build",
-                "--manifest-path",
-                str(tasklib.ROOT / "crates/sqlite-controller/Cargo.toml"),
-                "--target-dir",
-                str(target),
-                "--locked",
-                "--offline",
-                "--bins",
-            ],
-            stdout=stream,
-            stderr=subprocess.STDOUT,
-        )
+        try:
+            proc = subprocess.run(
+                [
+                    "cargo",
+                    "build",
+                    "--manifest-path",
+                    str(tasklib.ROOT / "crates/sqlite-controller/Cargo.toml"),
+                    "--target-dir",
+                    str(target),
+                    "--locked",
+                    "--offline",
+                    "--bins",
+                ],
+                stdout=stream,
+                stderr=subprocess.STDOUT,
+                timeout=budget_timeout(budget, SETUP_STAGE_TIMEOUT_SECONDS, "cargo build sqlite controller"),
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise ControllerFailure(
+                "preflight",
+                f"controller build exceeded setup budget; see {log}",
+                {"boundary": "cargo build", "timeout_seconds": exc.timeout, "log": str(log)},
+            ) from exc
     elapsed = round(time.time() - started, 3)
     controller = target / "debug/corenius-sqlite-controller"
     supervisor = target / "debug/corenius-attempt-supervisor"
@@ -701,7 +1347,11 @@ def build_controller(root: Path) -> dict:
         "log": str(log),
     }
     if proc.returncode != 0:
-        raise RuntimeError(f"controller build failed; see {log}")
+        raise ControllerFailure(
+            "preflight",
+            f"controller build failed; see {log}",
+            {"boundary": "cargo build", "returncode": proc.returncode, "log": str(log)},
+        )
     record.update({
         "controller": pin(controller),
         "supervisor": pin(supervisor),
@@ -834,22 +1484,23 @@ def complete_suite_entry(task_id: str, task_name: str, suite: dict, root: Path) 
     }
 
 
-def controller_reply(socket_path: Path, value: dict) -> dict:
+def controller_reply(socket_path: Path, value: dict, timeout: float = 40.0) -> dict:
     with socket.socket(socket.AF_UNIX) as stream:
-        stream.settimeout(40)
+        stream.settimeout(max(0.001, float(timeout)))
         stream.connect(str(socket_path))
         stream.sendall(json.dumps(value).encode() + b"\n")
         return json.loads(stream.makefile("rb").readline())
 
 
-def controller_request(socket_path: Path, value: dict) -> dict:
-    reply = controller_reply(socket_path, value)
+def controller_request(socket_path: Path, value: dict, timeout: float = 40.0) -> dict:
+    reply = controller_reply(socket_path, value, timeout=timeout)
     if "error" in reply:
         raise RuntimeError(reply["error"])
     return reply["ok"]
 
 
-def http_json(origin: str, method: str, path: str, token: str | None = None, body: dict | None = None) -> dict:
+def http_json(origin: str, method: str, path: str, token: str | None = None, body: dict | None = None,
+              timeout: float = 5.0) -> dict:
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = "Bearer " + token
@@ -859,7 +1510,7 @@ def http_json(origin: str, method: str, path: str, token: str | None = None, bod
         method=method,
         headers=headers,
     )
-    with urllib.request.urlopen(req, timeout=5) as response:
+    with urllib.request.urlopen(req, timeout=max(0.001, float(timeout))) as response:
         return json.load(response)
 
 
@@ -912,35 +1563,87 @@ def public_grant(grant: dict) -> dict:
     return {k: grant[k] for k in ["attempt", "operation", "slot", "principal", "scope_epoch", "base", "brief"]}
 
 
-def stopped_services(processes: list[ManagedProcess]) -> list[dict]:
+def stopped_services(processes: list[ManagedProcess], timeout_seconds: float = CLEANUP_TIMEOUT_SECONDS,
+                     budget: CleanupBudget | None = None) -> list[dict]:
+    local_budget = budget or CleanupBudget(timeout_seconds)
     records = []
     for entry in reversed(processes):
         proc = entry.process
         if proc.poll() is None:
             proc.terminate()
-            try:
-                proc.wait(timeout=5)
-            except subprocess.TimeoutExpired:
+            if local_budget.remaining() > 0:
+                try:
+                    proc.wait(timeout=local_budget.wait_slice(5.0))
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    if local_budget.remaining() > 0:
+                        try:
+                            proc.wait(timeout=local_budget.wait_slice(5.0))
+                        except subprocess.TimeoutExpired:
+                            pass
+            elif proc.poll() is None:
                 proc.kill()
-                proc.wait(timeout=5)
         records.append(entry.record())
     return list(reversed(records))
 
 
+def observed_process_disposition(process_records: list[dict], attempt_records: list[dict]) -> dict:
+    """Report physical closure independently of task and orchestration results."""
+    services = [
+        {"kind": "service", "id": f"service:{record.get('name')}", "pid": record.get("pid"),
+         "reason": "owned service exit was not observed after bounded cleanup"}
+        for record in process_records if record.get("exit") is None
+    ]
+    attempts = [
+        {"kind": "attempt", "id": record.get("attempt"), "record": record.get("record"),
+         "state": record.get("state"), "reason": "identity-bound attempt exit was not observed"}
+        for record in attempt_records if record.get("state") != "exited"
+    ]
+    remaining = services + attempts
+    return {
+        "owned_attempts": "unresolved" if attempts else "stopped",
+        "services": "unresolved" if services else "stopped",
+        "effect_disposition": "unresolved" if remaining else "resolved",
+        "processes": process_records,
+        "attempts": attempt_records,
+        "remaining_uncertain": remaining,
+    }
+
+
 class ControllerRun:
-    def __init__(self, task: tasklib.Task, ticket: fleet.Ticket, root: Path, build: dict, source: dict):
+    def __init__(self, task: tasklib.Task, ticket: fleet.Ticket, root: Path, build: dict, source: dict,
+                 fault: str | None = None, setup_budget: StageBudget | None = None):
+        if fault is not None and fault not in LIFECYCLE_FAULTS:
+            raise ValueError(f"unsupported controller lifecycle fault: {fault}")
         self.task = task
         self.ticket = ticket
         self.root = root
         self.build = build
         self.source = source
+        self.fault = fault
+        self.setup_budget = setup_budget
+        self.execution_budget: StageBudget | None = None
         self.processes: list[ManagedProcess] = []
+        self.admitted_attempt_ids: list[str] = []
+        self.initial_attempt_ids: list[str] = []
+        self.fresh_integration_attempt_ids: list[str] = []
         self.operator_token = uuid.uuid4().hex + uuid.uuid4().hex
         self.supervisor_token = uuid.uuid4().hex + uuid.uuid4().hex
         self.kata_bootstrap = uuid.uuid4().hex + uuid.uuid4().hex
         self.kata_token = ""
         self.kata_origin = ""
         self.project_revision = 0
+        self.dispatch_cutoff_unix: float | None = None
+        self.control: dict | None = None
+        self.failure_evidence_before_service_stop: dict | None = None
+        self.setup_seconds = 0.0
+        self.flow_started: float | None = None
+
+    def setup_timeout(self, seconds: float, boundary: str) -> float:
+        return budget_timeout(self.setup_budget, seconds, boundary)
+
+    def execution_timeout(self, seconds: float, boundary: str) -> float:
+        return budget_timeout(self.execution_budget, seconds, boundary)
 
     @property
     def controller_socket(self) -> Path:
@@ -962,20 +1665,43 @@ class ControllerRun:
         self.processes.append(entry)
         return entry
 
-    def query(self, kind: str = "snapshot", args: dict | None = None, auth: dict | None = None) -> dict:
+    def query(self, kind: str = "snapshot", args: dict | None = None, auth: dict | None = None,
+              timeout: float = 40.0, bypass_execution_deadline: bool = False, budget=None) -> dict:
+        socket_timeout = budget_timeout(
+            budget,
+            timeout,
+            f"query {kind}",
+        ) if budget is not None else (
+            timeout if bypass_execution_deadline or self.execution_budget is None
+            else self.execution_timeout(timeout, f"query {kind}")
+        )
         return controller_request(
             self.controller_socket,
             {"auth": auth or {"principal": "operator", "token": self.operator_token},
              "project": PROJECT, "query": {"kind": kind, "args": args or {}}},
+            timeout=socket_timeout,
         )
 
     def command(self, kind: str, args: dict, auth: dict | None = None, key: str | None = None,
-                allow_error: bool = False) -> dict:
+                allow_error: bool = False, bypass_execution_deadline: bool = False, budget=None) -> dict:
+        if not bypass_execution_deadline:
+            self.enforce_execution_deadline(kind)
         auth = auth or {"principal": "operator", "token": self.operator_token}
         idempotency_key = key or f"controller-bench-{kind}-{uuid.uuid4()}"
         last = None
         for _ in range(25):
-            revision = 0 if kind == "create_project" else self.query()["revision"]
+            revision = 0 if kind == "create_project" else self.query(
+                bypass_execution_deadline=bypass_execution_deadline,
+                budget=budget,
+            )["revision"]
+            socket_timeout = budget_timeout(
+                budget,
+                40.0,
+                f"command {kind}",
+            ) if budget is not None else (
+                40.0 if bypass_execution_deadline or self.execution_budget is None
+                else self.execution_timeout(40.0, f"command {kind}")
+            )
             reply = controller_reply(
                 self.controller_socket,
                 {"auth": auth,
@@ -986,7 +1712,10 @@ class ControllerRun:
                      "idempotency_key": idempotency_key,
                      "args": args,
                  }},
+                timeout=socket_timeout,
             )
+            if not bypass_execution_deadline:
+                self.enforce_execution_deadline(kind)
             if "ok" in reply:
                 return reply["ok"]
             last = RuntimeError(reply["error"])
@@ -997,25 +1726,240 @@ class ControllerRun:
             time.sleep(0.02)
         raise RuntimeError(str(last))
 
+    def enforce_execution_deadline(self, kind: str) -> None:
+        if self.execution_budget is None or self.dispatch_cutoff_unix is None:
+            return
+        remaining = self.execution_budget.deadline_monotonic - time.monotonic()
+        if remaining > 0:
+            return
+        observed = time.time()
+        counts = self.attempt_count_details()
+        raise ControllerFailure(
+            "timeout",
+            f"controller execution deadline elapsed before {kind}",
+            {
+                "command": kind,
+                "dispatch_cutoff_unix": self.dispatch_cutoff_unix,
+                "observed_unix": observed,
+                "deadline_monotonic_elapsed_seconds": round(-remaining, 6),
+                **counts,
+            },
+        )
+
+    def flow_seconds_so_far(self) -> float:
+        if self.flow_started is None:
+            return 0.0
+        return round(time.time() - self.flow_started, 3)
+
+    def setup_git(self, cwd: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
+        proc = subprocess.run(
+            ["git", *fleet.GIT_ENV, "-C", str(cwd), *args],
+            capture_output=True,
+            text=True,
+            timeout=self.setup_timeout(30.0, f"setup git {' '.join(args)}"),
+        )
+        if check and proc.returncode != 0:
+            raise ControllerFailure(
+                "preflight",
+                f"git {' '.join(args)} failed in {cwd}: {proc.stderr.strip() or proc.stdout.strip()}",
+                {"boundary": "setup git", "args": list(args), "cwd": str(cwd), "returncode": proc.returncode},
+            )
+        return proc
+
+    def observed_attempt_records(self) -> list[dict]:
+        records = []
+        attempts_root = self.root / "attempts"
+        seen: set[str] = set()
+        if attempts_root.is_dir():
+            paths = sorted(attempts_root.glob("*.json"))
+        else:
+            paths = []
+        for path in paths:
+            attempt_id = path.stem
+            try:
+                value = json.loads(path.read_text())
+            except (OSError, json.JSONDecodeError) as exc:
+                seen.add(attempt_id)
+                records.append({
+                    "name": f"attempt:{attempt_id}",
+                    "attempt": attempt_id,
+                    "pid": None,
+                    "start_ticks": None,
+                    "exit": None,
+                    "state": None,
+                    "outcome": None,
+                    "record": str(path),
+                    "identity_evidence": "unreadable",
+                    "identity_error": f"{type(exc).__name__}: {exc}",
+                })
+                continue
+            binding = value.get("binding") if isinstance(value.get("binding"), dict) else {}
+            operation_id = str(value.get("operation") or binding.get("operation") or path.stem)
+            attempt_id = str(value.get("attempt") or binding.get("attempt") or attempt_id)
+            seen.add(attempt_id)
+            records.append({
+                "name": f"attempt:{attempt_id}",
+                "attempt": attempt_id,
+                "operation": operation_id,
+                "pid": value.get("pid"),
+                "start_ticks": value.get("start_ticks"),
+                "exit": value.get("exit"),
+                "state": value.get("state"),
+                "outcome": value.get("outcome"),
+                "record": str(path),
+                "log": str(path),
+                "identity_evidence": "read",
+            })
+        for attempt_id in sorted(set(self.admitted_attempt_ids) - seen):
+            path = attempts_root / f"{attempt_id}.json"
+            records.append({
+                "name": f"attempt:{attempt_id}",
+                "attempt": attempt_id,
+                "pid": None,
+                "start_ticks": None,
+                "exit": None,
+                "state": None,
+                "outcome": None,
+                "record": str(path),
+                "identity_evidence": "missing",
+            })
+        return records
+
+    def attempt_count_details(self) -> dict:
+        total = len(set(self.admitted_attempt_ids))
+        try:
+            snapshot = self.query(timeout=3.0, bypass_execution_deadline=True)
+            total = max(total, len(snapshot.get("attempts", [])))
+        except Exception:
+            total = max(total, len(self.observed_attempt_records()))
+        return {
+            "attempts_total": total,
+            "initial_attempts": len(set(self.initial_attempt_ids)),
+            "fresh_integration_attempts": len(set(self.fresh_integration_attempt_ids)),
+        }
+
+    def active_attempt_ids(self, budget: CleanupBudget | None = None) -> list[str]:
+        ids: set[str] = set(self.admitted_attempt_ids)
+        proven_exited: set[str] = set()
+        if budget is None or budget.remaining() > 0:
+            try:
+                snapshot = self.query(timeout=3.0, bypass_execution_deadline=True, budget=budget)
+                for attempt in snapshot.get("attempts", []):
+                    if attempt.get("state") != "exited":
+                        ids.add(attempt["id"])
+                    else:
+                        proven_exited.add(attempt["id"])
+            except Exception:
+                pass
+        for record in self.observed_attempt_records():
+            attempt_id = record.get("attempt") or Path(record.get("record", "")).stem
+            if not attempt_id:
+                continue
+            if record.get("identity_evidence") == "read" and record.get("state") == "exited":
+                proven_exited.add(str(attempt_id))
+            else:
+                ids.add(str(attempt_id))
+        return sorted(ids - proven_exited)
+
+    def reconcile_owned_processes(self, timeout_seconds: float = CLEANUP_TIMEOUT_SECONDS) -> list[dict]:
+        budget = CleanupBudget(timeout_seconds)
+        reconciliation = {
+            "status": "unknown",
+            "authority": "controller.cancel_attempt",
+            "bounded": True,
+            "identity_bound": True,
+            "timeout_seconds": float(timeout_seconds),
+            "cancel_attempts": [],
+            "observed_attempt_ids": self.active_attempt_ids(budget=budget),
+        }
+        for attempt in reconciliation["observed_attempt_ids"]:
+            if budget.remaining() <= 0:
+                break
+            try:
+                reply = self.command(
+                    "cancel_attempt",
+                    {"attempt": attempt},
+                    allow_error=True,
+                    bypass_execution_deadline=True,
+                    budget=budget,
+                    key=f"cancel-{attempt}",
+                )
+                reconciliation["cancel_attempts"].append({"attempt": attempt, "reply": reply})
+            except Exception as exc:
+                reconciliation["cancel_attempts"].append(
+                    {"attempt": attempt, "error": f"{type(exc).__name__}: {exc}"}
+                )
+        try:
+            if reconciliation["observed_attempt_ids"] and budget.remaining() > 0:
+                wait(
+                    "attempt cancellation reconciliation",
+                    lambda: all(
+                        attempt.get("state") == "exited"
+                        for attempt in self.query(timeout=3.0, bypass_execution_deadline=True, budget=budget).get("attempts", [])
+                    ),
+                    seconds=budget.remaining(),
+                    budget=budget,
+                )
+        except Exception as exc:
+            reconciliation["wait_error"] = f"{type(exc).__name__}: {exc}"
+        attempt_records = self.observed_attempt_records()
+        self.failure_evidence_before_service_stop = collect_failure_evidence(self, budget=budget)
+        service_records = stopped_services(self.processes, timeout_seconds=timeout_seconds, budget=budget)
+        unresolved_attempts = [
+            record
+            for record in attempt_records
+            if not (record.get("identity_evidence") == "read" and record.get("state") == "exited")
+        ]
+        unresolved_services = [
+            record
+            for record in service_records
+            if record.get("exit") is None
+        ]
+        reconciliation["cleanup_seconds"] = budget.elapsed()
+        reconciliation["final_attempt_records"] = attempt_records
+        reconciliation["final_service_records"] = service_records
+        if unresolved_attempts or unresolved_services:
+            reconciliation["status"] = "unresolved"
+            reconciliation["remaining_uncertain"] = [
+                {"kind": "attempt", "id": record.get("name"), "record": record.get("record"), "state": record.get("state")}
+                for record in unresolved_attempts
+            ] + [
+                {
+                    "kind": "service",
+                    "id": f"service:{record.get('name')}",
+                    "pid": record.get("pid"),
+                    "start_ticks": record.get("start_ticks"),
+                    "log": record.get("log"),
+                    "reason": "service exit was not observed within cleanup budget",
+                }
+                for record in unresolved_services
+            ]
+        else:
+            reconciliation["status"] = "resolved"
+        records = service_records + attempt_records
+        records.append({"name": "reconciliation", "record": reconciliation})
+        return records
+
     def setup_repositories(self, tickets: list[fleet.Ticket] | None = None) -> tuple[str, str]:
         tickets = tickets or [self.ticket]
         for name in ["authority", "attempts", "canonical", "seed", "intent", "kata"]:
             path = self.root / name
             path.mkdir(mode=0o700, parents=True, exist_ok=True)
-        fleet.git(self.root / "canonical", "init", "--bare", "--template=")
+        self.setup_timeout(30.0, "materialize setup repositories")
+        self.setup_git(self.root / "canonical", "init", "--bare", "--template=")
         tasklib.materialize(self.task, self.root / "seed")
-        fleet.git(self.root / "seed", "init", "-q", "-b", "main")
-        fleet.git(self.root / "seed", "add", "-A")
-        fleet.git(self.root / "seed", "commit", "-q", "-m", "m01 start")
-        base = fleet.git(self.root / "seed", "rev-parse", "HEAD").stdout.strip()
-        fleet.git(self.root / "seed", "push", str(self.root / "canonical"), f"{base}:refs/heads/protected")
+        self.setup_git(self.root / "seed", "init", "-q", "-b", "main")
+        self.setup_git(self.root / "seed", "add", "-A")
+        self.setup_git(self.root / "seed", "commit", "-q", "-m", "m01 start")
+        base = self.setup_git(self.root / "seed", "rev-parse", "HEAD").stdout.strip()
+        self.setup_git(self.root / "seed", "push", str(self.root / "canonical"), f"{base}:refs/heads/protected")
 
-        fleet.git(self.root / "intent", "init", "-q", "-b", "main")
+        self.setup_git(self.root / "intent", "init", "-q", "-b", "main")
         (self.root / "intent/spec.md").write_text((self.task.path / "instruction.md").read_text())
         for ticket in tickets:
             (self.root / "intent" / f"{ticket.id}.md").write_text(ticket.instruction)
-        fleet.git(self.root / "intent", "add", ".")
-        fleet.git(
+        self.setup_git(self.root / "intent", "add", ".")
+        self.setup_git(
             self.root / "intent",
             "-c",
             "user.name=Controller bench intent",
@@ -1026,12 +1970,23 @@ class ControllerRun:
             "-m",
             "m01 controller intent",
         )
-        intent = fleet.git(self.root / "intent", "rev-parse", "HEAD").stdout.strip()
+        intent = self.setup_git(self.root / "intent", "rev-parse", "HEAD").stdout.strip()
         return base, intent
 
     def setup_kata(self) -> dict:
+        if self.fault == "missing-prerequisite":
+            missing = self.root / "missing-kata-binary"
+            raise ControllerFailure(
+                "missing_prerequisite",
+                f"pinned Kata binary unavailable: {missing}",
+                {"boundary": "setup_kata", "missing_paths": [missing], "attempts_total": 0, "initial_attempts": 0},
+            )
         if not KATA.is_file() or pin(KATA)["sha256"] != KATA_SHA256:
-            raise RuntimeError("pinned Kata 0.24.0 binary unavailable or hash changed")
+            raise ControllerFailure(
+                "missing_prerequisite",
+                "pinned Kata 0.24.0 binary unavailable or hash changed",
+                {"boundary": "setup_kata", "missing_paths": [KATA], "attempts_total": 0, "initial_attempts": 0},
+            )
         (self.root / "kata/config.toml").write_text(
             f'[auth]\ntoken="{self.kata_bootstrap}"\nrequire_token_identity=true\n'
         )
@@ -1041,35 +1996,86 @@ class ControllerRun:
         env = {k: v for k, v in os.environ.items() if not k.startswith("KATA_")}
         env["KATA_HOME"] = str(self.root / "kata")
         self.spawn("kata", [KATA, "daemon", "start", "--foreground", "--listen", f"127.0.0.1:{kport}"], env)
-        wait("Kata health", lambda: http_json(self.kata_origin, "GET", "/health", token=None), 20)
+        wait(
+            "Kata health",
+            lambda: http_json(
+                self.kata_origin,
+                "GET",
+                "/health",
+                token=None,
+                timeout=self.setup_timeout(5.0, "kata health"),
+            ),
+            20,
+            budget=self.setup_budget,
+        )
         token = http_json(
             self.kata_origin,
             "POST",
             "/tokens",
             token=self.kata_bootstrap,
             body={"actor": "corenius-controller", "name": "controller-bench"},
+            timeout=self.setup_timeout(5.0, "kata token"),
         )["plaintext"]
         self.kata_token = token
         (self.root / "kata.token").write_text(token)
         (self.root / "kata.token").chmod(0o600)
-        project = http_json(self.kata_origin, "POST", "/projects", token=token, body={"name": self.root.name})["project"]
-        instance = http_json(self.kata_origin, "GET", "/instance", token=token)["instance_uid"]
+        project = http_json(
+            self.kata_origin,
+            "POST",
+            "/projects",
+            token=token,
+            body={"name": self.root.name},
+            timeout=self.setup_timeout(5.0, "kata project"),
+        )["project"]
+        instance = http_json(
+            self.kata_origin,
+            "GET",
+            "/instance",
+            token=token,
+            timeout=self.setup_timeout(5.0, "kata instance"),
+        )["instance_uid"]
         return {"binary": pin(KATA), "origin": self.kata_origin, "instance_uid": instance, "project": project}
 
     def create_kata_issue(self, title: str, body: str, project: dict) -> dict:
+        if self.fault == "delivery-failure" and title == f"{self.task.id} {self.ticket.id}":
+            try:
+                http_json(
+                    self.kata_origin,
+                    "POST",
+                    f"/projects/{project['id']}-missing/issues",
+                    token=self.kata_token,
+                    body={"title": title, "body": body, "force_new": True},
+                    timeout=self.execution_timeout(5.0, "kata issue delivery fault"),
+                )
+            except Exception as exc:
+                raise ControllerFailure(
+                    "delivery_failure",
+                    f"Kata issue delivery failed at controlled transport boundary: {exc}",
+                    {
+                        **self.attempt_count_details(),
+                        "boundary": "kata issue delivery",
+                        "transport_error": f"{type(exc).__name__}: {exc}",
+                    },
+                ) from exc
+            raise ControllerFailure(
+                "delivery_failure",
+                "controlled delivery failure did not fail at Kata issue delivery boundary",
+                {**self.attempt_count_details(), "boundary": "kata issue delivery"},
+            )
         return http_json(
             self.kata_origin,
             "POST",
             f"/projects/{project['id']}/issues",
             token=self.kata_token,
             body={"title": title, "body": body, "force_new": True},
+            timeout=self.execution_timeout(5.0, "kata issue"),
         )["issue"]
 
     def setup_policy(self, base: str, suite: dict, kata: dict, tickets: list[fleet.Ticket] | None = None,
                      complete_suite: dict | None = None) -> dict:
         tickets = tickets or [self.ticket]
         python = pin("/usr/bin/python3")
-        verifier_runtime = build_verifier_runtime(self.root, python)
+        verifier_runtime = build_verifier_runtime(self.root, python, budget=self.setup_budget)
         supervisor_config = {
             "root": str(self.root / "attempts"),
             "profile": {"executable": "/usr/bin/python3", "args": ["-c", WORKER_SCRIPT], "codex": None},
@@ -1136,7 +2142,7 @@ class ControllerRun:
             [self.build["supervisor"]["path"], self.root / "supervisor.json", self.root / "supervisor.sock"],
             supervisor_env,
         )
-        wait("supervisor socket", lambda: (self.root / "supervisor.sock").exists(), 20)
+        wait("supervisor socket", lambda: (self.root / "supervisor.sock").exists(), 20, budget=self.setup_budget)
         controller_env = {
             "PATH": "/usr/bin:/bin",
             "CORENIUS_OPERATOR_TOKEN": self.operator_token,
@@ -1150,15 +2156,32 @@ class ControllerRun:
             [self.build["controller"]["path"], self.root / "state.db", self.controller_socket],
             controller_env,
         )
-        wait("controller socket", lambda: self.controller_socket.exists(), 20)
-        wait("controller storage", lambda: self.query("storage_configuration"), 20)
+        wait("controller socket", lambda: self.controller_socket.exists(), 20, budget=self.setup_budget)
+        wait(
+            "controller storage",
+            lambda: self.query("storage_configuration", bypass_execution_deadline=True, budget=self.setup_budget),
+            20,
+            budget=self.setup_budget,
+        )
 
     def create_project_and_lead(self, base: str, intent: str, tickets: list[fleet.Ticket] | None = None,
                                 complete: bool = False) -> tuple[dict, dict]:
         tickets = tickets or [self.ticket]
         ticket_ids = [ticket.id for ticket in tickets]
-        project = self.command("create_project", {"name": PROJECT, "base": base}, key="create-project")
-        lead = self.command("replace_lead", {}, key="replace-lead")["result"]
+        project = self.command(
+            "create_project",
+            {"name": PROJECT, "base": base},
+            key="create-project",
+            bypass_execution_deadline=True,
+            budget=self.setup_budget,
+        )
+        lead = self.command(
+            "replace_lead",
+            {},
+            key="replace-lead",
+            bypass_execution_deadline=True,
+            budget=self.setup_budget,
+        )["result"]
         lead_auth = {"principal": lead["principal"], "token": lead["token"]}
         mission = {
             "objective": (
@@ -1176,8 +2199,75 @@ class ControllerRun:
             "intent": f"{self.task.id}:{','.join(ticket_ids)}:{intent}",
         }
         write_json(self.root / "mission.json", mission)
+        admitted_at = time.time()
+        if self.fault == "elapsed-deadline":
+            admitted_at -= EXECUTION_DEADLINE_SECONDS + 0.001
+        self.dispatch_cutoff_unix = admitted_at + EXECUTION_DEADLINE_SECONDS
+        self.execution_budget = StageBudget(
+            seconds=EXECUTION_DEADLINE_SECONDS,
+            failure_stage="timeout",
+            label="controller execution",
+        )
+        if self.fault == "elapsed-deadline":
+            self.execution_budget.deadline_monotonic = time.monotonic() - 0.001
+        write_json(
+            self.root / "durable-run-admission.json",
+            {
+                "schema_version": "corenius.bench.durable-run-admission.v1",
+                "task": self.task.id,
+                "ticket": "complete" if complete else self.ticket.id,
+                "admitted_unix": admitted_at,
+                "deadline_seconds": EXECUTION_DEADLINE_SECONDS,
+                "dispatch_cutoff_unix": self.dispatch_cutoff_unix,
+                "mission_sha256": sha256_bytes(json.dumps(mission, sort_keys=True).encode()),
+            },
+        )
+        control = {
+            "project": project,
+            "lead": {k: lead[k] for k in ["principal", "role_epoch"]},
+            "mission": None,
+            "execution_clock": {
+                "durable_run_admission_unix": admitted_at,
+                "first_mission_submission_unix": admitted_at,
+            },
+        }
+        self.control = control
         mission_receipt = self.command("set_mission", mission, auth=lead_auth, key="set-mission")
-        return lead_auth, {"project": project, "lead": {k: lead[k] for k in ["principal", "role_epoch"]}, "mission": mission_receipt}
+        first_submission_at = time.time()
+        control["mission"] = mission_receipt
+        control["execution_clock"]["first_mission_submission_unix"] = first_submission_at
+        self.control = control
+        return lead_auth, control
+
+    def raise_observed_manual_intervention(self, lead_auth: dict) -> None:
+        receipt = self.command(
+            "pause_dispatch",
+            {"paused": True},
+            auth=lead_auth,
+            key="manual-pause-dispatch",
+        )
+        snapshot = self.query()
+        project = snapshot.get("project") if isinstance(snapshot.get("project"), dict) else {}
+        observed = {
+            "paused": project.get("paused"),
+            "revision": snapshot.get("revision"),
+            "event_seq": receipt.get("event_seq"),
+        }
+        if observed["paused"] is not True:
+            raise RuntimeError(f"manual intervention pause was not observed: {observed}")
+        raise ControllerFailure(
+            "manual_intervention",
+            "controller dispatch paused by observed manual intervention",
+            {
+                **self.attempt_count_details(),
+                "intervention": {
+                    "kind": "manual_pause_dispatch",
+                    "authority": "controller.pause_dispatch",
+                    "receipt": receipt,
+                    "observation": observed,
+                },
+            },
+        )
 
     def create_controller_task(self, task_name: str, issue: dict, intent: str, lead_auth: dict,
                                ticket: fleet.Ticket | None = None) -> dict:
@@ -1198,8 +2288,24 @@ class ControllerRun:
     def begin_attempt(self, task_name: str, lead_auth: dict, action: dict, key_prefix: str) -> dict:
         admission = self.command("admit", {"task": task_name}, auth=lead_auth, key=f"admit-{key_prefix}")
         grant = admission["result"]
+        self.admitted_attempt_ids.append(grant["attempt"])
+        if key_prefix.startswith("fresh-"):
+            self.fresh_integration_attempt_ids.append(grant["attempt"])
+        else:
+            self.initial_attempt_ids.append(grant["attempt"])
         root = self.root / "attempts" / grant["attempt"]
-        wait("attempt workspace", lambda: (root / "workspace/.git/objects").is_dir(), 30)
+        wait(
+            "attempt workspace",
+            lambda: (root / "workspace/.git/objects").is_dir(),
+            30,
+            budget=self.execution_budget,
+        )
+        if self.fault == "provider-failure" and task_name == self.ticket.id:
+            action = {
+                "ticket": action.get("ticket", self.ticket.id),
+                "files": {},
+                "check": "raise SystemExit('controlled provider failure before candidate')",
+            }
         write_json(root / "scratch/action.json", action)
         return {
             "admission": admission,
@@ -1213,7 +2319,12 @@ class ControllerRun:
 
     def wait_attempt_candidate(self, task_name: str, lead_auth: dict, attempt: dict, key_prefix: str) -> dict:
         root = Path(attempt["root"])
-        ready = wait("worker useful checkpoint", lambda: json.loads((root / "scratch/ready.json").read_text()) if (root / "scratch/ready.json").exists() else None, 30)
+        ready = wait(
+            "worker useful checkpoint",
+            lambda: json.loads((root / "scratch/ready.json").read_text()) if (root / "scratch/ready.json").exists() else None,
+            30,
+            budget=self.execution_budget,
+        )
         worker_auth = {"principal": attempt["grant"]["principal"], "token": attempt["grant"]["token"]}
         progress = self.command(
             "report_progress",
@@ -1232,7 +2343,21 @@ class ControllerRun:
     def run_attempt(self, task_name: str, lead_auth: dict, action: dict, key_prefix: str | None = None) -> dict:
         key_prefix = key_prefix or task_name
         attempt = self.begin_attempt(task_name, lead_auth, action, key_prefix)
-        return self.wait_attempt_candidate(task_name, lead_auth, attempt, key_prefix)
+        try:
+            return self.wait_attempt_candidate(task_name, lead_auth, attempt, key_prefix)
+        except TimeoutError as exc:
+            if self.fault == "provider-failure" and task_name == self.ticket.id:
+                raise ControllerFailure(
+                    "provider_failure",
+                    f"participant failed before producing a candidate: {exc}",
+                    {
+                        **self.attempt_count_details(),
+                        "boundary": "worker useful checkpoint",
+                        "attempt": attempt["grant"]["attempt"],
+                        "attempt_records": self.observed_attempt_records(),
+                    },
+                ) from exc
+            raise
 
     def finish_attempt(self, attempt: str) -> dict:
         root = self.root / "attempts" / attempt
@@ -1241,6 +2366,7 @@ class ControllerRun:
             "attempt exited",
             lambda: self.query() if any(a["id"] == attempt and a["state"] == "exited" for a in self.query()["attempts"]) else None,
             30,
+            budget=self.execution_budget,
         )
 
     def attempt_process_record(self, grant: dict) -> dict:
@@ -1274,7 +2400,15 @@ class ControllerRun:
         if contamination:
             raise RuntimeError(f"controller candidate changed paths outside ticket allowlist: {contamination}")
         if verification["result"]["verdict"] != "pass":
-            raise RuntimeError(f"controller partial verifier did not pass: {verification['result']}")
+            raise ControllerFailure(
+                "failed_verifier",
+                f"controller partial verifier did not pass: {verification['result']['verdict']}",
+                {
+                    "verification": verification["result"],
+                    "verify_seconds": timings["fixed_verify_seconds"],
+                    **self.attempt_count_details(),
+                },
+            )
         started = time.time()
         acceptance = self.command(
             "accept_candidate",
@@ -1306,7 +2440,15 @@ class ControllerRun:
         verification = self.command("verify_candidate", {"candidate": candidate["candidate"]}, auth=lead_auth, key=f"verify-{key_prefix}")
         timings["verify_seconds"] = round(time.time() - started, 3)
         if verification["result"]["verdict"] != "pass":
-            raise RuntimeError(f"controller verifier did not pass: {verification['result']}")
+            raise ControllerFailure(
+                "failed_verifier",
+                f"controller verifier did not pass: {verification['result']['verdict']}",
+                {
+                    "verification": verification["result"],
+                    "verify_seconds": timings["verify_seconds"],
+                    **self.attempt_count_details(),
+                },
+            )
         started = time.time()
         acceptance = self.command(
             "accept_candidate",
@@ -1325,9 +2467,16 @@ class ControllerRun:
         kata = self.setup_kata()
         policy = self.setup_policy(base, suite, kata)
         self.start_services()
+        self.setup_seconds = round(time.time() - setup_started, 3)
         lead_auth, control = self.create_project_and_lead(base, intent)
+        if self.fault == "generic-failure":
+            raise RuntimeError("controlled generic harness failure after durable mission admission")
+        if self.fault == "manual-intervention":
+            self.raise_observed_manual_intervention(lead_auth)
         setup_seconds = round(time.time() - setup_started, 3)
+        self.setup_seconds = setup_seconds
         flow_started = time.time()
+        self.flow_started = flow_started
         project = kata["project"]
         noop_issue = self.create_kata_issue(
             f"{self.task.id} {self.ticket.id} noop control",
@@ -1356,17 +2505,17 @@ class ControllerRun:
         self.finish_attempt(noop["grant"]["attempt"])
         noop_finish_seconds = round(time.time() - phase_started, 3)
 
-        overlay = {
-            str(path.relative_to(self.ticket.path / "overlay")): path.read_text()
-            for path in sorted((self.ticket.path / "overlay").rglob("*"))
-            if path.is_file()
-        }
+        overlay = failing_overlay(self.ticket) if self.fault == "failed-verifier" else ticket_overlay(self.ticket)
         self.create_controller_task(self.ticket.id, fixed_issue, intent, lead_auth)
         phase_started = time.time()
         fixed = self.run_attempt(
             self.ticket.id,
             lead_auth,
-            {"ticket": self.ticket.id, "files": overlay, "check": PARTIAL_CONTRACTS[self.ticket.id]["check"]},
+            {
+                "ticket": self.ticket.id,
+                "files": overlay,
+                "check": "" if self.fault == "failed-verifier" else PARTIAL_CONTRACTS[self.ticket.id]["check"],
+            },
         )
         fixed_attempt_seconds = round(time.time() - phase_started, 3)
         comparison, verification, acceptance, landing, authority_timings = self.verify_accept_land(fixed["candidate"], lead_auth, base)
@@ -1375,12 +2524,32 @@ class ControllerRun:
         fixed_finish_seconds = round(time.time() - phase_started, 3)
         inventory = self.query("workspace_inventory")
         events = self.query("events", {"after": 0, "limit": 100})
-        final_ref = fleet.git(self.root / "canonical", "rev-parse", "refs/heads/protected").stdout.strip()
+        final_ref = fixed_git(
+            self.root / "canonical",
+            "rev-parse",
+            "refs/heads/protected",
+            timeout=self.execution_timeout(10.0, "final protected ref read"),
+        ).stdout.strip()
         flow_seconds = round(time.time() - flow_started, 3)
         cleanup_started = time.time()
         process_records = stopped_services(self.processes)
         cleanup_seconds = round(time.time() - cleanup_started, 3)
         attempt_records = [self.attempt_process_record(noop["grant"]), self.attempt_process_record(fixed["grant"])]
+        if self.fault == "missing-evidence":
+            missing_path = self.root / "source-manifest.json"
+            missing_path.unlink(missing_ok=True)
+            raise ControllerFailure(
+                "missing_evidence",
+                f"required retained evidence artifact is missing: {missing_path}",
+                {
+                    "missing_paths": [missing_path],
+                    "attempts_total": 2,
+                    "initial_attempts": 1,
+                    "cleanup_seconds_before_failure": cleanup_seconds,
+                    "observed_processes_before_failure": process_records,
+                    "observed_attempts_before_failure": attempt_records,
+                },
+            )
         timing = {
             "wall_seconds": round(time.time() - started, 3),
             "setup_seconds": setup_seconds,
@@ -1407,8 +2576,10 @@ class ControllerRun:
             "noop_verdict": noop_verification["verdict"],
             "fixed_verdict": verification["verdict"],
         }
+        process_disposition = observed_process_disposition(process_records, attempt_records)
         orchestration_passed = (
-            noop_verification["verdict"] == "fail"
+            process_disposition["effect_disposition"] == "resolved"
+            and noop_verification["verdict"] == "fail"
             and verification["verdict"] == "pass"
             and acceptance["candidate"] == fixed["candidate"]["candidate"]
             and landing["state"] == "landed"
@@ -1417,11 +2588,48 @@ class ControllerRun:
             and not any(p for p in extract_diff_paths(comparison["diff"]) if not fleet.allowed(p, self.ticket.allow))
             and any(a["id"] == fixed["grant"]["attempt"] and a["state"] == "exited" for a in final_snapshot["attempts"])
         )
+        task_verdict = "partial_pass" if partial["fixed_verdict"] == "pass" else "fail"
+        orchestration_verdict = "pass" if orchestration_passed else "fail"
+        retained = retained_evidence(
+            self.root,
+            repositories=[
+                {"kind": "canonical", "path": str(self.root / "canonical"), "protected_ref": "refs/heads/protected", "head": final_ref},
+                {"kind": "authority_store", "path": str(self.root / "authority/objects/store.git")},
+            ],
+            manifests=[
+                evidence_entry("source", self.root / "source-manifest.json"),
+                evidence_entry("git_policy", self.root / "git.json"),
+                evidence_entry("kata_config", self.root / "kata.json"),
+                evidence_entry("supervisor_config", self.root / "supervisor.json"),
+            ],
+            events=[{"kind": "controller", "first_seq": 1, "last_seq": events[-1]["seq"] if events else 0, "count": len(events)}],
+            proofs=[
+                {"kind": "noop", "verification": noop_verification["verification"], "report": noop_verification["report"],
+                 "verdict": noop_verification["verdict"]},
+                {"kind": "fixed", "verification": verification["verification"], "report": verification["report"],
+                 "verdict": verification["verdict"]},
+            ],
+            logs=[evidence_entry(entry["name"], Path(entry["log"])) for entry in process_records],
+        )
+        metadata = controller_result_metadata(
+            root=self.root,
+            admitted_at=control["execution_clock"]["durable_run_admission_unix"],
+            first_submission_at=control["execution_clock"]["first_mission_submission_unix"],
+            task_verdict=task_verdict,
+            orchestration_verdict=orchestration_verdict,
+            effect_disposition=process_disposition["effect_disposition"],
+            attempts_total=2,
+            initial_attempts=1,
+            fresh_integration_attempts=0,
+            interventions=[],
+            retained=retained,
+        )
         return {
             "schema_version": CONTROLLER_SCHEMA,
             "mode": "deterministic",
             "task": self.task.id,
             "ticket": self.ticket.id,
+            **metadata,
             "run_root": str(self.root),
             "source": self.source,
             "build": self.build,
@@ -1451,8 +2659,7 @@ class ControllerRun:
             "verification": verification,
             "acceptance": acceptance,
             "landing": landing,
-            "process_disposition": {"owned_attempts": "stopped", "services": "stopped", "processes": process_records,
-                                    "attempts": attempt_records},
+            "process_disposition": process_disposition,
             "events_observed": {"count": len(events), "last_seq": events[-1]["seq"] if events else 0},
             "workspace_inventory": {
                 "configured": inventory.get("configured"),
@@ -1482,9 +2689,16 @@ class ControllerRun:
         kata = self.setup_kata()
         policy = self.setup_policy(base, partial_suite, kata, tickets, complete_suite=complete_suite)
         self.start_services()
+        self.setup_seconds = round(time.time() - setup_started, 3)
         lead_auth, control = self.create_project_and_lead(base, intent, tickets, complete=True)
+        if self.fault == "generic-failure":
+            raise RuntimeError("controlled generic harness failure after durable mission admission")
+        if self.fault == "manual-intervention":
+            self.raise_observed_manual_intervention(lead_auth)
         setup_seconds = round(time.time() - setup_started, 3)
+        self.setup_seconds = setup_seconds
         flow_started = time.time()
+        self.flow_started = flow_started
         project = kata["project"]
 
         issues = {
@@ -1511,7 +2725,12 @@ class ControllerRun:
             )
         for attempt in initial_attempts.values():
             root = Path(attempt["root"])
-            wait("worker ready for useful release", lambda root=root: (root / "scratch/waiting_for_useful_start").exists(), 30)
+            wait(
+                "worker ready for useful release",
+                lambda root=root: (root / "scratch/waiting_for_useful_start").exists(),
+                30,
+                budget=self.execution_budget,
+            )
         for attempt in initial_attempts.values():
             self.release_useful_start(attempt)
         initial = {
@@ -1625,18 +2844,75 @@ class ControllerRun:
         fresh_finish_seconds = round(time.time() - fresh_finish_started, 3)
 
         store = self.root / "authority/objects/store.git"
-        final_ref = fleet.git(self.root / "canonical", "rev-parse", "refs/heads/protected").stdout.strip()
-        final_external = independent_verify_commit(
-            self.task, self.root / "canonical", final_ref, complete_suite, policy["verifier_runtime"], policy["tools"], self.root, "final"
-        )
+        final_ref = fixed_git(
+            self.root / "canonical",
+            "rev-parse",
+            "refs/heads/protected",
+            timeout=self.execution_timeout(10.0, "final protected ref read"),
+        ).stdout.strip()
+        if self.fault == "final-deadline":
+            self.execution_budget.deadline_monotonic = time.monotonic() - 0.001
+        self.enforce_execution_deadline("final_independent_verifier")
+        try:
+            final_external = independent_verify_commit(
+                self.task,
+                self.root / "canonical",
+                final_ref,
+                complete_suite,
+                policy["verifier_runtime"],
+                policy["tools"],
+                self.root,
+                "final",
+                budget=self.execution_budget,
+                timeout_override=0.001 if self.fault == "final-inflight-timeout" else None,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise ControllerFailure(
+                "timeout",
+                f"independent final verifier timed out in flight: {exc}",
+                {
+                    **self.attempt_count_details(),
+                    "command": "final_independent_verifier",
+                    "exception_type": "TimeoutExpired",
+                    "timeout_seconds": exc.timeout,
+                    "boundary": " ".join(str(part) for part in exc.cmd) if isinstance(exc.cmd, (list, tuple)) else str(exc.cmd),
+                    "dispatch_cutoff_unix": self.dispatch_cutoff_unix,
+                    "observed_unix": time.time(),
+                },
+            ) from exc
         t1_only = independent_verify_commit(
-            self.task, store, initial["t1"]["candidate"]["commit"], complete_suite, policy["verifier_runtime"], policy["tools"], self.root, "t1-only"
+            self.task,
+            store,
+            initial["t1"]["candidate"]["commit"],
+            complete_suite,
+            policy["verifier_runtime"],
+            policy["tools"],
+            self.root,
+            "t1-only",
+            budget=self.execution_budget,
         )
         t2_only = independent_verify_commit(
-            self.task, store, initial["t2"]["candidate"]["commit"], complete_suite, policy["verifier_runtime"], policy["tools"], self.root, "t2-only"
+            self.task,
+            store,
+            initial["t2"]["candidate"]["commit"],
+            complete_suite,
+            policy["verifier_runtime"],
+            policy["tools"],
+            self.root,
+            "t2-only",
+            budget=self.execution_budget,
         )
         tampered = independent_verify_commit(
-            self.task, store, initial["t1"]["candidate"]["commit"], complete_suite, policy["verifier_runtime"], policy["tools"], self.root, "tampered-t1-only", tamper_tests=True
+            self.task,
+            store,
+            initial["t1"]["candidate"]["commit"],
+            complete_suite,
+            policy["verifier_runtime"],
+            policy["tools"],
+            self.root,
+            "tampered-t1-only",
+            tamper_tests=True,
+            budget=self.execution_budget,
         )
         if final_external["verdict"] != "pass" or t1_only["verdict"] != "fail" or t2_only["verdict"] != "fail" or tampered["verdict"] != "fail":
             raise RuntimeError(
@@ -1719,8 +2995,10 @@ class ControllerRun:
             }
             for ticket_id in ["t1", "t2"]
         }
+        process_disposition = observed_process_disposition(process_records, attempt_records)
         orchestration_passed = (
-            all(partial_contracts[t]["fixed_verdict"] == "pass" for t in ["t1", "t2"])
+            process_disposition["effect_disposition"] == "resolved"
+            and all(partial_contracts[t]["fixed_verdict"] == "pass" for t in ["t1", "t2"])
             and first_landing["state"] == "landed"
             and stale_landing["state"] == "stale_base"
             and "error" in old_proof_refusal
@@ -1734,11 +3012,57 @@ class ControllerRun:
             and overlap["seconds"] > 0
             and any(a["id"] == fresh["grant"]["attempt"] and a["state"] == "exited" for a in final_snapshot["attempts"])
         )
+        task_verdict = "pass" if complete_contract["final_verdict"] == "pass" else "fail"
+        orchestration_verdict = "pass" if orchestration_passed else "fail"
+        retained = retained_evidence(
+            self.root,
+            repositories=[
+                {"kind": "canonical", "path": str(self.root / "canonical"), "protected_ref": "refs/heads/protected", "head": final_ref},
+                {"kind": "authority_store", "path": str(store)},
+            ],
+            manifests=[
+                evidence_entry("source", self.root / "source-manifest.json"),
+                evidence_entry("git_policy", self.root / "git.json"),
+                evidence_entry("kata_config", self.root / "kata.json"),
+                evidence_entry("supervisor_config", self.root / "supervisor.json"),
+                {
+                    "kind": "verifier_runtime",
+                    "path": policy["verifier_runtime"]["manifest"]["path"],
+                    "sha256": policy["verifier_runtime"]["manifest"]["sha256"],
+                },
+            ],
+            events=[{"kind": "controller", "first_seq": 1, "last_seq": events[-1]["seq"] if events else 0, "count": len(events)}],
+            proofs=[
+                {"kind": "initial_t1", "verification": initial_proofs["t1"]["verification"]["verification"],
+                 "report": initial_proofs["t1"]["verification"]["report"], "verdict": initial_proofs["t1"]["verification"]["verdict"]},
+                {"kind": "initial_t2", "verification": initial_proofs["t2"]["verification"]["verification"],
+                 "report": initial_proofs["t2"]["verification"]["report"], "verdict": initial_proofs["t2"]["verification"]["verdict"]},
+                {"kind": "fresh_integration", "verification": fresh_verification["verification"],
+                 "report": fresh_verification["report"], "verdict": fresh_verification["verdict"]},
+                {"kind": "final_external", "path": final_external["log"]["path"], "sha256": final_external["log"]["sha256"],
+                 "verdict": final_external["verdict"]},
+            ],
+            logs=[evidence_entry(entry["name"], Path(entry["log"])) for entry in process_records],
+        )
+        metadata = controller_result_metadata(
+            root=self.root,
+            admitted_at=control["execution_clock"]["durable_run_admission_unix"],
+            first_submission_at=control["execution_clock"]["first_mission_submission_unix"],
+            task_verdict=task_verdict,
+            orchestration_verdict=orchestration_verdict,
+            effect_disposition=process_disposition["effect_disposition"],
+            attempts_total=3,
+            initial_attempts=2,
+            fresh_integration_attempts=1,
+            interventions=[],
+            retained=retained,
+        )
         return {
             "schema_version": CONTROLLER_SCHEMA,
             "mode": "deterministic",
             "task": self.task.id,
             "ticket": "complete",
+            **metadata,
             "run_root": str(self.root),
             "source": self.source,
             "build": self.build,
@@ -1803,8 +3127,7 @@ class ControllerRun:
                 "after_initial_release_occupied_slots": initial_finish_snapshots["t2"]["occupied_slots"],
                 "max_concurrent_worker_executions": 2,
             },
-            "process_disposition": {"owned_attempts": "stopped", "services": "stopped", "processes": process_records,
-                                    "attempts": attempt_records},
+            "process_disposition": process_disposition,
             "events_observed": {"count": len(events), "last_seq": events[-1]["seq"] if events else 0},
             "workspace_inventory": {
                 "configured": inventory.get("configured"),
@@ -1859,10 +3182,260 @@ def validate_controller_selection(tasks: list[tasklib.Task], ticket_id: str) -> 
         controller_tickets(task, ticket_id)
 
 
+def _fixture_classification(stage: str) -> dict:
+    if stage in {"missing_prerequisite", "unsupported_task", "preflight"}:
+        return {
+            "task_verdict": "unknown",
+            "effect_disposition": "resolved",
+            "attempts": 0,
+            "execution_seconds": 0.0,
+            "model_usage": no_model_usage(),
+        }
+    if stage == "generic_failure":
+        return {
+            "task_verdict": "unknown",
+            "effect_disposition": "unresolved",
+            "attempts": 0,
+            "execution_seconds": 0.0,
+            "model_usage": no_model_usage("unknown"),
+        }
+    if stage == "failed_verifier":
+        return {
+            "task_verdict": "fail",
+            "effect_disposition": "unresolved",
+            "attempts": 1,
+            "execution_seconds": 1.0,
+            "model_usage": no_model_usage(),
+        }
+    if stage == "manual_intervention":
+        return {
+            "task_verdict": "unknown",
+            "effect_disposition": "resolved",
+            "attempts": 1,
+            "execution_seconds": 1.0,
+            "model_usage": no_model_usage("unknown"),
+        }
+    if stage in {"timeout", "provider_failure"}:
+        return {
+            "task_verdict": "unknown",
+            "effect_disposition": "unresolved",
+            "attempts": 1,
+            "execution_seconds": 1.0,
+            "model_usage": no_model_usage("unknown"),
+        }
+    if stage in {"delivery_failure", "missing_evidence"}:
+        return {
+            "task_verdict": "unknown",
+            "effect_disposition": "unresolved" if stage == "delivery_failure" else "unknown",
+            "attempts": 1,
+            "execution_seconds": 1.0,
+            "model_usage": no_model_usage("unknown"),
+        }
+    raise ValueError(f"unsupported controller failure fixture stage: {stage}")
+
+
+def failure_fixture_record(task: tasklib.Task, agent, out: Path, index: int, ticket_id: str,
+                           stage: str, message: str) -> dict:
+    """Build a deterministic controller failure result without launching providers."""
+    classification = _fixture_classification(stage)
+    out = Path(out)
+    rid = f"{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-controller{ticket_id}-{stage}-{task.id}-{index:03d}"
+    root = out / rid / "retained"
+    root.mkdir(mode=0o700, parents=True, exist_ok=True)
+    source = source_identity()
+    write_json(root / "source-manifest.json", source["content_manifest"])
+    failure_manifest = {
+        "schema_version": "corenius.bench.controller-failure-fixture.v1",
+        "stage": stage,
+        "message": message,
+        "task": task.id,
+        "ticket": ticket_id,
+    }
+    write_json(root / "failure-manifest.json", failure_manifest)
+    failure_log = root / "failure.log"
+    failure_log.write_text(f"{stage}: {message}\n")
+    failure_log.chmod(0o600)
+    events_path = root / "events.jsonl"
+    events_path.write_text(json.dumps({"seq": 1, "kind": "failure", "stage": stage}, sort_keys=True) + "\n")
+    events_path.chmod(0o600)
+    proof_path = root / "proof.json"
+    write_json(proof_path, {"stage": stage, "verdict": classification["task_verdict"], "trusted": False})
+    retained = retained_evidence(
+        root,
+        repositories=[
+            {"kind": "canonical", "path": str(root / "canonical.git"), "head": None},
+        ],
+        manifests=[
+            evidence_entry("source", root / "source-manifest.json"),
+            evidence_entry("failure", root / "failure-manifest.json"),
+        ],
+        events=[{"kind": "controller", "path": str(events_path), "sha256": sha256_bytes(events_path.read_bytes()), "first_seq": 1, "last_seq": 1}],
+        proofs=[{"kind": "failure", "path": str(proof_path), "sha256": sha256_bytes(proof_path.read_bytes()), "verdict": classification["task_verdict"]}],
+        logs=[evidence_entry("failure", failure_log)],
+    )
+    admitted_at = time.time()
+    first_submission_at = admitted_at if classification["execution_seconds"] == 0.0 else admitted_at + 0.001
+    interventions = (
+        [{"kind": "manual_rescue", "stage": stage, "summary": "fixture manual intervention prevents autonomous PASS"}]
+        if stage == "manual_intervention" else []
+    )
+    metadata = controller_result_metadata(
+        root=root,
+        admitted_at=admitted_at,
+        first_submission_at=first_submission_at,
+        task_verdict=classification["task_verdict"],
+        orchestration_verdict="fail",
+        effect_disposition=classification["effect_disposition"],
+        attempts_total=classification["attempts"],
+        initial_attempts=min(classification["attempts"], 2),
+        fresh_integration_attempts=0,
+        interventions=interventions,
+        retained=retained,
+        failure_stage=stage,
+        failure_kind=stage,
+        failure_message=message,
+        model_usage=classification["model_usage"],
+    )
+    verify_record = tasklib.capsule_for(task)
+    controller = {
+        "schema_version": CONTROLLER_SCHEMA,
+        "mode": "deterministic",
+        "task": task.id,
+        "ticket": ticket_id,
+        **metadata,
+        "run_root": str(root),
+        "source": source,
+        "build": {"seconds": 0.0, "exit": 0, "log": str(failure_log)},
+        "partial_contract": {
+            "suite_id": "not_run",
+            "suite_digest": "not_run",
+            "selected_tests": [],
+            "noop_verdict": "not_run",
+            "fixed_verdict": classification["task_verdict"],
+        },
+        "landing": {"state": "not_landed"},
+        "process_disposition": {
+            "owned_attempts": "unresolved" if classification["effect_disposition"] == "unresolved" else "stopped",
+            "services": "stopped",
+            "effect_disposition": classification["effect_disposition"],
+            "remaining_uncertain": (
+                [{"kind": "attempt", "id": f"fixture-{stage}", "reason": "physical stop not inferred from failure"}]
+                if classification["effect_disposition"] == "unresolved" else []
+            ),
+        },
+        "runtime_closure": {
+            "status": "pinned",
+            "pinned": {"verifier_runtime": {"manifest": {"sha256": sha256_bytes((root / "failure-manifest.json").read_bytes())}}},
+        },
+        "qualification_limits": [
+            "controlled deterministic failure fixture only",
+            "no live model calls",
+            "no one-run speed, cost or recovery superiority claim",
+        ],
+        "orchestration_passed": False,
+    }
+    execution_seconds = classification["execution_seconds"]
+    return {
+        "schema_version": "corenius.bench.result.v1",
+        "run_id": rid,
+        "task_id": task.id,
+        "condition": f"controller:{ticket_id}",
+        "agent": {"spec": agent.spec},
+        "capsule": {
+            "digest": verify_record["capsule_digest"],
+            "net": verify_record["policy"]["net"],
+            "hermetic": verify_record["hermetic"],
+            "non_hermetic_layers": verify_record["non_hermetic_layers"],
+        },
+        "outcome": {
+            "passed": False,
+            "reward": 0.0,
+            "verifier_rc": 1,
+            "timed_out": stage == "timeout",
+            "agent_rc": None,
+            "task_verdict": classification["task_verdict"],
+            "orchestration_verdict": "fail",
+            "effect_disposition": classification["effect_disposition"],
+            "failure_stage": stage,
+        },
+        "timing": {
+            "wall_seconds": round(0.5 + execution_seconds, 3),
+            "agent_seconds": 0.0,
+            "verify_seconds": 0.0 if stage != "failed_verifier" else 0.5,
+            "source_capture_seconds": 0.0,
+            "build_seconds": 0.0,
+            "setup_seconds": 0.5,
+            "execution_seconds": execution_seconds,
+            "controller_flow_seconds": execution_seconds,
+            "cleanup_seconds": 0.5,
+        },
+        "coordination": {
+            "conflicts": 0,
+            "stale_refusals": 0,
+            "redos": 0,
+            "contamination": 0,
+            "contamination_paths": [],
+            "tickets": 2 if ticket_id == "complete" else 1,
+            "tickets_landed": 0,
+            "condition_mode": "controller",
+            "attempts": classification["attempts"],
+            "manual_interventions": len(interventions),
+        },
+        "cost": {
+            "usd": classification["model_usage"]["usd"],
+            "input_tokens": classification["model_usage"]["input_tokens"],
+            "output_tokens": classification["model_usage"]["output_tokens"],
+        },
+        "provenance": {
+            "outcome": "controlled deterministic controller failure fixture",
+            "timing": "measured by fixture phase timers",
+            "coordination": "controller fixture measured",
+            "cost": f"{classification['model_usage']['status']}; no synthesized usage total",
+        },
+        "controller": controller,
+    }
+
+
+def collect_failure_evidence(run: ControllerRun | None, budget=None) -> dict:
+    if run is None:
+        return {"events_error": "controller services were not started"}
+    evidence: dict = {}
+    try:
+        if isinstance(budget, CleanupBudget) and budget.remaining() <= 0:
+            evidence["events_error"] = "cleanup evidence budget exhausted before controller event export"
+        else:
+            evidence["events"] = run.query(
+                "events",
+                {"after": 0, "limit": 200},
+                timeout=3.0,
+                bypass_execution_deadline=True,
+                budget=budget,
+            )
+    except Exception as exc:
+        evidence["events_error"] = f"{type(exc).__name__}: {exc}"
+    try:
+        canonical = run.root / "canonical"
+        if isinstance(budget, CleanupBudget) and budget.remaining() <= 0:
+            evidence.setdefault("canonical_head_error", "cleanup evidence budget exhausted before canonical head export")
+        elif canonical.exists():
+            evidence["canonical_head"] = fixed_git(
+                canonical,
+                "rev-parse",
+                "refs/heads/protected",
+                check=False,
+                timeout=budget_timeout(budget, 3.0, "failure evidence canonical head"),
+            ).stdout.strip() or None
+    except Exception as exc:
+        evidence["canonical_head_error"] = f"{type(exc).__name__}: {exc}"
+    return evidence
+
+
 def run_controller_condition(task: tasklib.Task, agent, out: Path, index: int, ticket_id: str, rid: str | None = None,
-                             observer=None) -> dict:
+                             observer=None, fault: str | None = None) -> dict:
     if agent.kind != "reference":
         raise SystemExit("controller mode currently supports the deterministic reference agent only")
+    if fault is not None and fault not in LIFECYCLE_FAULTS:
+        raise SystemExit(f"unsupported controller lifecycle fault {fault!r}")
     observer = observer or (lambda event, **fields: None)
     tickets = controller_tickets(task, ticket_id)
     ticket = tickets[0]
@@ -1871,37 +3444,81 @@ def run_controller_condition(task: tasklib.Task, agent, out: Path, index: int, t
     rid = rid or f"{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-controller{ticket_id}-{task.id}-reference-{index:03d}"
     total_started = time.time()
     root = Path(tempfile.mkdtemp(prefix=f"cb-{ticket_id}-", dir=str(run_root_parent())))
-    source_started = time.time()
-    source = source_identity()
-    source_capture_seconds = round(time.time() - source_started, 3)
-    write_json(root / "source-manifest.json", source["content_manifest"])
-    observer("controller-setup")
-    build = build_controller(root)
-    run = ControllerRun(task, ticket, root, build, source)
+    setup_budget = StageBudget(seconds=SETUP_STAGE_TIMEOUT_SECONDS, failure_stage="preflight", label="controller setup")
+    source = unknown_source_identity()
+    source_capture_seconds = 0.0
+    build = {"seconds": 0.0, "exit": None, "log": str(root / "controller-build.log")}
+    run = None
+
+    def failure_result(exc: ControllerFailure, process_records: list[dict], cleanup_seconds: float) -> dict:
+        failure_evidence = (
+            getattr(run, "failure_evidence_before_service_stop", None)
+            if run is not None else None
+        )
+        if failure_evidence is None:
+            failure_evidence = collect_failure_evidence(run)
+        rec = controller_failure_record(
+            task=task,
+            agent=agent,
+            rid=rid,
+            ticket_id=ticket_id,
+            root=root,
+            source=source,
+            build=build,
+            failure=exc,
+            control=run.control if run is not None else None,
+            process_records=process_records,
+            setup_seconds=run.setup_seconds if run is not None else round(time.time() - total_started, 3),
+            execution_seconds=run.flow_seconds_so_far() if run is not None else 0.0,
+            cleanup_seconds=cleanup_seconds,
+            total_wall_seconds=round(time.time() - total_started, 3),
+            source_capture_seconds=source_capture_seconds,
+            failure_evidence=failure_evidence,
+        )
+        write_json(root / "failure-result.json", rec)
+        return rec
+
     try:
+        source_started = time.time()
+        source = source_identity(budget=setup_budget)
+        source_capture_seconds = round(time.time() - source_started, 3)
+        write_json(root / "source-manifest.json", source["content_manifest"])
+        observer("controller-setup")
+        build = build_controller(root, budget=setup_budget)
+        run = ControllerRun(task, ticket, root, build, source, fault=fault, setup_budget=setup_budget)
         controller = run.run_complete(tickets) if complete else run.run()
+    except ControllerFailure as exc:
+        cleanup_started = time.time()
+        process_records = run.reconcile_owned_processes() if run is not None else []
+        cleanup_seconds = round(time.time() - cleanup_started, 3)
+        rec = failure_result(exc, process_records, cleanup_seconds)
+        observer("controller-done", passed=False, failure_stage=exc.stage)
+        return rec
     except BaseException as exc:
-        process_records = stopped_services(run.processes)
-        failure = {
-            "schema_version": CONTROLLER_SCHEMA,
-            "mode": "deterministic",
-            "task": task.id,
-            "ticket": ticket_id,
-            "run_root": str(root),
-            "source": source,
-            "build": build,
-            "failure_stage": "controller-run",
-            "error": f"{type(exc).__name__}: {exc}",
-            "process_disposition": {"services": "stopped", "processes": process_records},
-        }
-        write_json(root / "failure.json", failure)
-        raise
+        cleanup_started = time.time()
+        process_records = run.reconcile_owned_processes() if run is not None else []
+        cleanup_seconds = round(time.time() - cleanup_started, 3)
+        failure = timeout_failure_from_exception(exc, run)
+        if failure is None:
+            failure = ControllerFailure(
+                "generic_failure",
+                f"{type(exc).__name__}: {exc}",
+                {
+                    "exception_type": type(exc).__name__,
+                    "exception_message": str(exc),
+                    "boundary": "controller-run",
+                    **(run.attempt_count_details() if run is not None else {"attempts_total": 0, "initial_attempts": 0, "fresh_integration_attempts": 0}),
+                },
+            )
+        rec = failure_result(failure, process_records, cleanup_seconds)
+        observer("controller-done", passed=False, failure_stage=failure.stage)
+        return rec
     observer("controller-done", passed=controller["orchestration_passed"])
     total_wall_seconds = round(time.time() - total_started, 3)
-    task_passed = (
-        controller.get("complete_contract", {}).get("final_verdict") == "pass"
-        if complete else controller["partial_contract"]["fixed_verdict"] == "pass"
-    )
+    task_verdict = controller["outcomes"]["task"]["verdict"]
+    orchestration_verdict = controller["outcomes"]["orchestration"]["verdict"]
+    effect_disposition = controller["outcomes"]["effects"]["disposition"]
+    task_passed = task_verdict in ("pass", "partial_pass")
     rec = {
         "schema_version": "corenius.bench.result.v1",
         "run_id": rid,
@@ -1920,9 +3537,10 @@ def run_controller_condition(task: tasklib.Task, agent, out: Path, index: int, t
             "verifier_rc": 0 if task_passed else 1,
             "timed_out": False,
             "agent_rc": 0,
-            "task_verdict": "pass" if complete and task_passed else ("partial_pass" if task_passed else "fail"),
-            "orchestration_verdict": "pass" if controller["orchestration_passed"] else "fail",
-            "effect_disposition": "resolved",
+            "task_verdict": task_verdict,
+            "orchestration_verdict": orchestration_verdict,
+            "effect_disposition": effect_disposition,
+            "failure_stage": controller["failure"]["stage"],
         },
         "timing": {
             "wall_seconds": total_wall_seconds,
@@ -1931,6 +3549,7 @@ def run_controller_condition(task: tasklib.Task, agent, out: Path, index: int, t
             "source_capture_seconds": source_capture_seconds,
             "build_seconds": controller["build"]["seconds"],
             "setup_seconds": round(source_capture_seconds + controller["build"]["seconds"] + controller["timing"]["setup_seconds"], 3),
+            "execution_seconds": controller["timing"]["controller_flow_seconds"],
             "controller_flow_seconds": controller["timing"]["controller_flow_seconds"],
             "cleanup_seconds": controller["timing"]["cleanup_seconds"],
         },
@@ -1948,12 +3567,16 @@ def run_controller_condition(task: tasklib.Task, agent, out: Path, index: int, t
             "attempts": 3 if complete else 2,
             "manual_interventions": 0,
         },
-        "cost": {"usd": None, "input_tokens": None, "output_tokens": None},
+        "cost": {
+            "usd": controller["model_usage"]["usd"],
+            "input_tokens": controller["model_usage"]["input_tokens"],
+            "output_tokens": controller["model_usage"]["output_tokens"],
+        },
         "provenance": {
             "outcome": "controller measured",
             "timing": "measured by harness phase timers",
             "coordination": "controller measured",
-            "cost": "unmeasured; deterministic no-model mode",
+            "cost": f"{controller['model_usage']['status']}; deterministic no-model mode",
         },
         "controller": controller,
     }

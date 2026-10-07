@@ -6,10 +6,12 @@ import json
 import math
 import io
 import os
+import subprocess
 import sys
 import tarfile
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -176,10 +178,16 @@ class RunTest(unittest.TestCase):
         self.assertEqual(rec["coordination"]["tickets_landed"], 1)
         self.assertEqual(rec["coordination"]["condition_mode"], "controller")
         controller = rec["controller"]
-        self.assertEqual(controller["schema_version"], "corenius.bench.controller.v1")
+        self.assertEqual(controller["schema_version"], "corenius.bench.controller.v2")
         self.assertEqual(controller["mode"], "deterministic")
         self.assertEqual(controller["task"], "m01-disjoint-utils")
         self.assertEqual(controller["ticket"], "t1")
+        self.assertEqual(controller["execution_window"]["deadline_seconds"], 1800.0)
+        self.assertEqual(
+            controller["execution_window"]["dispatch_cutoff_unix"],
+            controller["execution_window"]["durable_run_admission_unix"] + 1800.0,
+        )
+        self.assertFalse(controller["execution_window"]["automatic_rerun_after_timeout_or_provider_failure"])
         self.assertEqual(controller["partial_contract"]["suite_id"], "m01-disjoint-utils:t1:partial")
         self.assertEqual(controller["partial_contract"]["selected_tests"], ["T.test_title_keeps_small_words_lower_and_collapses_spaces"])
         self.assertEqual(controller["partial_contract"]["noop_verdict"], "fail")
@@ -295,6 +303,735 @@ class RunTest(unittest.TestCase):
         self.assertEqual(controller["process_disposition"]["owned_attempts"], "stopped")
         self.assertEqual(len(controller["process_disposition"]["attempts"]), 3)
         self.assertNotIn("stale acceptance", " ".join(controller["qualification_limits"]).lower())
+
+    def minimal_controller_record(self, run_id="controller-v2", passed=True):
+        verdict = "pass" if passed else "fail"
+        return {
+            "schema_version": results.SCHEMA,
+            "run_id": run_id,
+            "task_id": "m01-disjoint-utils",
+            "condition": "controller:complete",
+            "agent": {"spec": "reference"},
+            "capsule": {"digest": "capsule", "net": "none"},
+            "outcome": {
+                "passed": passed,
+                "reward": 1.0 if passed else 0.0,
+                "verifier_rc": 0 if passed else 1,
+                "timed_out": False,
+                "agent_rc": 0,
+                "task_verdict": verdict,
+                "orchestration_verdict": verdict,
+                "effect_disposition": "resolved",
+                "failure_stage": None,
+            },
+            "timing": {
+                "wall_seconds": 10.0,
+                "agent_seconds": 3.0,
+                "verify_seconds": 2.0,
+                "source_capture_seconds": 0.1,
+                "build_seconds": 1.0,
+                "setup_seconds": 2.0,
+                "execution_seconds": 6.0,
+                "controller_flow_seconds": 6.0,
+                "cleanup_seconds": 1.0,
+            },
+            "coordination": {
+                "conflicts": 0,
+                "stale_refusals": 1,
+                "redos": 1,
+                "contamination": 0,
+                "tickets": 2,
+                "tickets_landed": 2,
+                "condition_mode": "controller",
+                "attempts": 3,
+                "manual_interventions": 0,
+            },
+            "cost": {"usd": None, "input_tokens": None, "output_tokens": None},
+            "provenance": {
+                "outcome": "controller measured",
+                "timing": "measured by harness phase timers",
+                "coordination": "controller measured",
+                "cost": "not_applicable; deterministic no-model mode",
+            },
+            "controller": {
+                "schema_version": "corenius.bench.controller.v2",
+                "mode": "deterministic",
+                "task": "m01-disjoint-utils",
+                "ticket": "complete",
+                "run_root": str(self.out / "retained-run"),
+                "execution_window": {
+                    "clock": "durable_admission_to_final_verification",
+                    "deadline_seconds": 1800.0,
+                    "setup_timeout_seconds": 300.0,
+                    "cleanup_timeout_seconds": 60.0,
+                    "pinned_verifier_timeout_seconds": 120.0,
+                    "durable_run_admission_unix": 1000.0,
+                    "first_mission_submission_unix": 1000.1,
+                    "dispatch_cutoff_unix": 2800.0,
+                    "failed_preflight_consumed_model_calls": False,
+                    "automatic_rerun_after_timeout_or_provider_failure": False,
+                    "live_host_requirement": "m01",
+                    "platform": "linux",
+                },
+                "outcomes": {
+                    "task": {"verdict": verdict},
+                    "orchestration": {"verdict": verdict},
+                    "effects": {"disposition": "resolved"},
+                },
+                "failure": {"stage": None, "kind": None, "message": None},
+                "interventions": [],
+                "attempts": {
+                    "total": 3,
+                    "initial": 2,
+                    "fresh_integration": 1,
+                    "max_fresh_integration_attempts": 1,
+                    "automatic_retries_after_failure": 0,
+                    "max_concurrent_worker_executions": 2,
+                },
+                "model_usage": {
+                    "status": "not_applicable",
+                    "input_tokens": None,
+                    "output_tokens": None,
+                    "usd": None,
+                    "complete": False,
+                },
+                "retained_evidence": {
+                    "run_root": str(self.out / "retained-run"),
+                    "repositories": [{"kind": "canonical", "path": str(self.out / "canonical"), "head": "0" * 40}],
+                    "manifests": [{"kind": "source", "path": str(self.out / "source-manifest.json"), "sha256": "a" * 64}],
+                    "events": [{"kind": "controller", "first_seq": 1, "last_seq": 10}],
+                    "proofs": [{"kind": "final", "sha256": "b" * 64}],
+                    "logs": [{"kind": "summary", "path": str(self.out / "summary.log"), "sha256": "c" * 64}],
+                },
+                "partial_contract": {
+                    "suite_id": "multiple",
+                    "suite_digest": "multiple",
+                    "selected_tests": ["T.test_title_keeps_small_words_lower_and_collapses_spaces", "T.test_clamp_both_ends"],
+                    "noop_verdict": "not_run",
+                    "fixed_verdict": verdict,
+                },
+                "landing": {"state": "landed" if passed else "not_landed"},
+                "process_disposition": {"owned_attempts": "stopped", "services": "stopped", "effect_disposition": "resolved"},
+                "source": {
+                    "content_manifest": {
+                        "schema_version": "corenius.bench.source-manifest.v1",
+                        "digest": "d" * 64,
+                        "entries": [],
+                    },
+                },
+                "runtime_closure": {
+                    "status": "pinned",
+                    "pinned": {"verifier_runtime": {"manifest": {"sha256": "e" * 64}}},
+                },
+                "qualification_limits": ["no one-run speed, cost or recovery superiority claim"],
+                "orchestration_passed": passed,
+            },
+        }
+
+    def test_controller_v2_result_records_independent_outcomes_deadlines_usage_and_evidence(self):
+        rec = results.validate(self.minimal_controller_record())
+        self.assertTrue(rec["outcome"]["passed"])
+        controller = rec["controller"]
+        self.assertEqual(controller["schema_version"], "corenius.bench.controller.v2")
+        self.assertEqual(controller["execution_window"]["deadline_seconds"], 1800.0)
+        self.assertEqual(
+            controller["execution_window"]["dispatch_cutoff_unix"],
+            controller["execution_window"]["durable_run_admission_unix"] + 1800.0,
+        )
+        self.assertEqual(rec["timing"]["execution_seconds"], rec["timing"]["controller_flow_seconds"])
+        self.assertEqual(controller["outcomes"]["task"]["verdict"], "pass")
+        self.assertEqual(controller["outcomes"]["orchestration"]["verdict"], "pass")
+        self.assertEqual(controller["outcomes"]["effects"]["disposition"], "resolved")
+        self.assertEqual(controller["attempts"]["fresh_integration"], 1)
+        self.assertEqual(controller["model_usage"]["status"], "not_applicable")
+        self.assertIsNone(controller["model_usage"]["input_tokens"])
+        self.assertTrue(controller["retained_evidence"]["manifests"][0]["sha256"])
+
+    def test_controller_v2_rejects_autonomous_pass_that_contradicts_failure_state(self):
+        rec = self.minimal_controller_record(passed=False)
+        rec["outcome"]["passed"] = True
+        rec["outcome"]["reward"] = 1.0
+        rec["outcome"]["failure_stage"] = "timeout"
+        rec["outcome"]["timed_out"] = True
+        rec["controller"]["failure"] = {"stage": "timeout", "kind": "timeout", "message": "elapsed"}
+        rec["controller"]["outcomes"]["task"]["verdict"] = "unknown"
+        rec["controller"]["outcomes"]["effects"]["disposition"] = "unresolved"
+        rec["outcome"]["task_verdict"] = "unknown"
+        rec["outcome"]["effect_disposition"] = "unresolved"
+        with self.assertRaisesRegex(ValueError, "autonomous PASS"):
+            results.validate(rec)
+
+    def test_controller_v2_permits_dispatch_failure_resolved_after_proven_cleanup(self):
+        rec = self.minimal_controller_record(passed=False)
+        rec["outcome"].update(
+            timed_out=True,
+            task_verdict="unknown",
+            orchestration_verdict="fail",
+            effect_disposition="resolved",
+            failure_stage="timeout",
+        )
+        rec["controller"]["failure"] = {"stage": "timeout", "kind": "timeout", "message": "elapsed"}
+        rec["controller"]["outcomes"] = {
+            "task": {"verdict": "unknown"},
+            "orchestration": {"verdict": "fail"},
+            "effects": {"disposition": "resolved"},
+        }
+        rec["controller"]["process_disposition"] = {
+            "owned_attempts": "stopped",
+            "services": "stopped",
+            "effect_disposition": "resolved",
+            "remaining_uncertain": [],
+            "reconciliation": {
+                "status": "resolved",
+                "authority": "controller.cancel_attempt",
+                "bounded": True,
+                "identity_bound": True,
+                "cancel_attempts": [{"attempt": "attempt-1", "status": "cancelled"}],
+            },
+        }
+        self.assertIs(results.validate(rec), rec)
+
+    def timeout_failure_record(self, index: int = 0, stage: str = "timeout") -> dict:
+        rec = self.minimal_controller_record(run_id=f"controller-timeout-repeat-{index}", passed=False)
+        rec["condition"] = "controller:t1"
+        rec["controller"]["ticket"] = "t1"
+        rec["coordination"].update(stale_refusals=0, redos=0, tickets=1, tickets_landed=0, attempts=1)
+        rec["controller"]["attempts"].update(total=1, initial=1, fresh_integration=0)
+        rec["outcome"].update(
+            timed_out=stage == "timeout",
+            task_verdict="unknown",
+            orchestration_verdict="fail",
+            effect_disposition="unresolved",
+            failure_stage=stage,
+        )
+        rec["controller"]["failure"] = {"stage": stage, "kind": stage, "message": f"{stage} failure"}
+        rec["controller"]["outcomes"] = {
+            "task": {"verdict": "unknown"},
+            "orchestration": {"verdict": "fail"},
+            "effects": {"disposition": "unresolved"},
+        }
+        rec["controller"]["partial_contract"]["suite_id"] = "not_run"
+        rec["controller"]["partial_contract"]["suite_digest"] = "not_run"
+        rec["controller"]["partial_contract"]["selected_tests"] = []
+        rec["controller"]["partial_contract"]["noop_verdict"] = "not_run"
+        rec["controller"]["partial_contract"]["fixed_verdict"] = "unknown"
+        rec["controller"]["landing"] = {"state": "not_landed"}
+        rec["controller"]["process_disposition"] = {
+            "owned_attempts": "unresolved",
+            "services": "stopped",
+            "effect_disposition": "unresolved",
+            "remaining_uncertain": [{"kind": "attempt", "id": "attempt-1"}],
+        }
+        return rec
+
+    def test_controller_repeat_stops_after_timeout_failure(self):
+        calls = []
+        original = run.controller_mode.run_controller_condition
+
+        def fake_controller(task, agent, out, index, ticket_id, **kwargs):
+            calls.append(index)
+            return self.timeout_failure_record(index=index, stage="timeout")
+
+        try:
+            run.controller_mode.run_controller_condition = fake_controller
+            code = run.main([
+                "m01-disjoint-utils",
+                "--condition",
+                "controller:t1",
+                "--agent",
+                "reference",
+                "--repeat",
+                "3",
+                "--out",
+                str(self.out / "repeat-timeout"),
+            ])
+        finally:
+            run.controller_mode.run_controller_condition = original
+        self.assertEqual(code, 0)
+        self.assertEqual(calls, [0])
+
+    def test_controller_repeat_stops_after_provider_failure(self):
+        calls = []
+        original = run.controller_mode.run_controller_condition
+
+        def fake_controller(task, agent, out, index, ticket_id, **kwargs):
+            calls.append(index)
+            return self.timeout_failure_record(index=index, stage="provider_failure")
+
+        try:
+            run.controller_mode.run_controller_condition = fake_controller
+            code = run.main([
+                "m01-disjoint-utils",
+                "--condition",
+                "controller:t1",
+                "--agent",
+                "reference",
+                "--repeat",
+                "3",
+                "--out",
+                str(self.out / "repeat-provider-failure"),
+            ])
+        finally:
+            run.controller_mode.run_controller_condition = original
+        self.assertEqual(code, 0)
+        self.assertEqual(calls, [0])
+
+    def assert_controller_fault_is_loadable(self, fault: str, stage: str):
+        out = self.out / f"controller-{fault}"
+        code = run.main([
+            "m01-disjoint-utils",
+            "--condition",
+            "controller:t1",
+            "--agent",
+            "reference",
+            "--controller-lifecycle-fault",
+            fault,
+            "--out",
+            str(out),
+        ])
+        self.assertEqual(code, 0)
+        loaded = results.load_all(out)
+        self.assertEqual(len(loaded), 1)
+        rec = loaded[0]
+        self.assertFalse(rec["outcome"]["passed"], rec)
+        self.assertEqual(rec["outcome"]["failure_stage"], stage)
+        self.assertEqual(rec["controller"]["failure"]["stage"], stage)
+        self.assertTrue(rec["controller"]["retained_evidence"]["manifests"])
+        self.assertTrue(rec["controller"]["retained_evidence"]["logs"])
+        closure = rec["controller"]["runtime_closure"]
+        self.assertIn(closure["status"], {"limited", "pinned"})
+        if closure["status"] == "pinned":
+            self.assertIn("verifier_runtime", closure["pinned"])
+        return rec
+
+    def assert_retained_controller_events_are_actual(self, rec: dict, required_kinds: set[str]):
+        events = rec["controller"]["retained_evidence"]["events"]
+        controller_events = [
+            item for item in events
+            if item.get("kind") == "controller" and item.get("path") and item.get("status") != "unknown"
+        ]
+        self.assertTrue(controller_events, events)
+        retained = controller_events[0]
+        self.assertGreater(retained["count"], 1)
+        self.assertEqual(retained["first_seq"], 1)
+        self.assertGreaterEqual(retained["last_seq"], retained["first_seq"])
+        path = Path(retained["path"])
+        self.assertTrue(path.is_file(), retained)
+        self.assertEqual(retained["sha256"], controller_mode.sha256_bytes(path.read_bytes()))
+        document = json.loads(path.read_text())
+        actual = document["events"]
+        self.assertEqual(len(actual), retained["count"])
+        self.assertEqual(actual[0]["seq"], retained["first_seq"])
+        self.assertEqual(actual[-1]["seq"], retained["last_seq"])
+        kinds = {event["kind"] for event in actual}
+        self.assertTrue(required_kinds.issubset(kinds), kinds)
+
+    def test_controller_missing_prerequisite_fault_persists_loadable_preflight_result(self):
+        rec = self.assert_controller_fault_is_loadable("missing-prerequisite", "missing_prerequisite")
+        self.assertEqual(rec["outcome"]["task_verdict"], "unknown")
+        self.assertFalse(rec["controller"]["execution_window"]["failed_preflight_consumed_model_calls"])
+        self.assertTrue(rec["controller"]["failure_details"]["missing_paths"])
+        self.assertEqual(rec["controller"]["runtime_closure"]["status"], "limited")
+
+    def test_controller_provider_failure_fault_persists_loadable_result_with_reconciliation(self):
+        rec = self.assert_controller_fault_is_loadable("provider-failure", "provider_failure")
+        self.assertEqual(rec["outcome"]["task_verdict"], "unknown")
+        self.assertIn(rec["outcome"]["effect_disposition"], {"resolved", "unresolved"})
+        self.assertGreaterEqual(rec["coordination"]["attempts"], 1)
+        self.assertIn("reconciliation", rec["controller"]["process_disposition"])
+        self.assertEqual(rec["controller"]["failure_details"]["boundary"], "worker useful checkpoint")
+        self.assertTrue(rec["controller"]["failure_details"]["attempt_records"])
+        self.assert_retained_controller_events_are_actual(
+            rec,
+            {"set_mission", "admit", "observe_attempt"},
+        )
+
+    def test_controller_delivery_failure_fault_persists_loadable_result(self):
+        rec = self.assert_controller_fault_is_loadable("delivery-failure", "delivery_failure")
+        self.assertEqual(rec["outcome"]["task_verdict"], "unknown")
+        self.assertEqual(rec["controller"]["failure_details"]["boundary"], "kata issue delivery")
+        self.assertIn("transport_error", rec["controller"]["failure_details"])
+
+    def test_controller_generic_failure_fault_persists_loadable_result(self):
+        rec = self.assert_controller_fault_is_loadable("generic-failure", "generic_failure")
+        self.assertEqual(rec["outcome"]["task_verdict"], "unknown")
+        self.assertEqual(rec["controller"]["failure_details"]["exception_type"], "RuntimeError")
+
+    def test_controller_manual_intervention_fault_records_actual_observation(self):
+        rec = self.assert_controller_fault_is_loadable("manual-intervention", "manual_intervention")
+        self.assertEqual(rec["coordination"]["manual_interventions"], 1)
+        self.assertFalse(rec["controller"]["autonomous_pass_eligible"])
+        intervention = rec["controller"]["interventions"][0]
+        self.assertEqual(intervention["kind"], "manual_pause_dispatch")
+        self.assertEqual(intervention["observation"]["paused"], True)
+        self.assertTrue(any(item.get("kind") == "controller" for item in rec["controller"]["retained_evidence"]["events"]))
+
+    def test_controller_source_capture_timeout_persists_preflight_result(self):
+        original = controller_mode.source_identity
+
+        def fail_source_identity(*args, **kwargs):
+            raise subprocess.TimeoutExpired(["git", "status"], timeout=0.001)
+
+        try:
+            controller_mode.source_identity = fail_source_identity
+            task = tasklib.load_tasks(only=["m01-disjoint-utils"])[0]
+            rec = controller_mode.run_controller_condition(
+                task,
+                run.Agent("reference"),
+                self.out / "source-timeout",
+                0,
+                "t1",
+            )
+        finally:
+            controller_mode.source_identity = original
+        rec = results.validate(rec)
+        self.assertEqual(rec["outcome"]["failure_stage"], "preflight")
+        self.assertEqual(rec["controller"]["failure_details"]["exception_type"], "TimeoutExpired")
+        self.assertEqual(rec["controller"]["runtime_closure"]["status"], "limited")
+
+    def test_controller_failure_fixtures_never_autonomous_pass_and_keep_unknowns_explicit(self):
+        task = tasklib.load_tasks(only=["m01-disjoint-utils"])[0]
+        stages = [
+            "missing_prerequisite",
+            "unsupported_task",
+            "delivery_failure",
+            "failed_verifier",
+            "timeout",
+            "provider_failure",
+            "missing_evidence",
+            "manual_intervention",
+        ]
+        for stage in stages:
+            with self.subTest(stage=stage):
+                rec = controller_mode.failure_fixture_record(
+                    task,
+                    run.Agent("reference"),
+                    self.out / stage,
+                    0,
+                    ticket_id="complete",
+                    stage=stage,
+                    message=f"fixture {stage}",
+                )
+                rec = results.validate(rec)
+                self.assertFalse(rec["outcome"]["passed"], rec)
+                self.assertEqual(rec["outcome"]["orchestration_verdict"], "fail")
+                self.assertEqual(rec["controller"]["failure"]["stage"], stage)
+                self.assertEqual(rec["controller"]["attempts"]["automatic_retries_after_failure"], 0)
+                self.assertFalse(rec["controller"]["execution_window"]["automatic_rerun_after_timeout_or_provider_failure"])
+                self.assertIn(rec["controller"]["model_usage"]["status"], {"not_applicable", "unknown"})
+                if stage == "failed_verifier":
+                    self.assertEqual(rec["outcome"]["task_verdict"], "fail")
+                    self.assertEqual(rec["outcome"]["effect_disposition"], "unresolved")
+                if stage == "manual_intervention":
+                    self.assertEqual(rec["coordination"]["manual_interventions"], 1)
+                    self.assertFalse(rec["controller"]["autonomous_pass_eligible"])
+                if stage in {"missing_prerequisite", "unsupported_task"}:
+                    self.assertEqual(rec["timing"]["execution_seconds"], 0.0)
+                    self.assertFalse(rec["controller"]["execution_window"]["failed_preflight_consumed_model_calls"])
+
+    def test_controller_timeout_fault_persists_valid_failure_result_through_run_lifecycle(self):
+        out = self.out / "controller-timeout"
+        code = run.main([
+            "m01-disjoint-utils",
+            "--condition",
+            "controller:t1",
+            "--agent",
+            "reference",
+            "--controller-lifecycle-fault",
+            "elapsed-deadline",
+            "--out",
+            str(out),
+        ])
+        self.assertEqual(code, 0)
+        loaded = results.load_all(out)
+        self.assertEqual(len(loaded), 1)
+        rec = loaded[0]
+        self.assertFalse(rec["outcome"]["passed"], rec)
+        self.assertTrue(rec["outcome"]["timed_out"])
+        self.assertEqual(rec["outcome"]["failure_stage"], "timeout")
+        self.assertEqual(rec["outcome"]["effect_disposition"], "resolved")
+        self.assertGreater(rec["timing"]["setup_seconds"], 0.0)
+        self.assertGreaterEqual(rec["timing"]["cleanup_seconds"], 0.0)
+        self.assertLessEqual(
+            rec["timing"]["cleanup_seconds"],
+            rec["controller"]["execution_window"]["cleanup_timeout_seconds"],
+        )
+        controller = rec["controller"]
+        self.assertEqual(controller["failure"]["stage"], "timeout")
+        self.assertEqual(controller["failure_details"]["command"], "set_mission")
+        admission = json.loads((Path(controller["run_root"]) / "durable-run-admission.json").read_text())
+        self.assertEqual(
+            controller["execution_window"]["durable_run_admission_unix"],
+            admission["admitted_unix"],
+        )
+        self.assertEqual(
+            controller["execution_window"]["dispatch_cutoff_unix"],
+            admission["dispatch_cutoff_unix"],
+        )
+        self.assertGreaterEqual(
+            controller["failure_details"]["observed_unix"],
+            controller["failure_details"]["dispatch_cutoff_unix"],
+        )
+        self.assertEqual(controller["attempts"]["automatic_retries_after_failure"], 0)
+        self.assertFalse(controller["execution_window"]["automatic_rerun_after_timeout_or_provider_failure"])
+        self.assertEqual(
+            controller["execution_window"]["dispatch_cutoff_unix"],
+            controller["execution_window"]["durable_run_admission_unix"] + 1800.0,
+        )
+        self.assertTrue(controller["retained_evidence"]["logs"])
+        self.assertTrue(controller["retained_evidence"]["manifests"])
+        self.assertEqual(controller["process_disposition"]["reconciliation"]["status"], "resolved")
+        self.assertTrue(controller["process_disposition"]["reconciliation"]["bounded"])
+        self.assertTrue(controller["process_disposition"]["reconciliation"]["identity_bound"])
+        self.assertFalse(controller["process_disposition"]["remaining_uncertain"])
+
+    def test_controller_failed_verifier_fault_observes_real_verifier_failure(self):
+        out = self.out / "controller-failed-verifier"
+        code = run.main([
+            "m01-disjoint-utils",
+            "--condition",
+            "controller:t1",
+            "--agent",
+            "reference",
+            "--controller-lifecycle-fault",
+            "failed-verifier",
+            "--out",
+            str(out),
+        ])
+        self.assertEqual(code, 0)
+        rec = results.load_all(out)[0]
+        self.assertFalse(rec["outcome"]["passed"], rec)
+        self.assertEqual(rec["outcome"]["failure_stage"], "failed_verifier")
+        self.assertEqual(rec["outcome"]["task_verdict"], "fail")
+        self.assertEqual(rec["outcome"]["effect_disposition"], "resolved")
+        verification = rec["controller"]["failure_details"]["verification"]
+        self.assertEqual(verification["verdict"], "fail")
+        self.assertIn("verification", verification)
+        self.assertGreater(rec["timing"]["verify_seconds"], 0.0)
+        self.assertFalse(rec["controller"]["process_disposition"]["remaining_uncertain"])
+
+    def test_controller_missing_evidence_fault_observes_missing_retained_artifact_after_cleanup(self):
+        out = self.out / "controller-missing-evidence"
+        code = run.main([
+            "m01-disjoint-utils",
+            "--condition",
+            "controller:t1",
+            "--agent",
+            "reference",
+            "--controller-lifecycle-fault",
+            "missing-evidence",
+            "--out",
+            str(out),
+        ])
+        self.assertEqual(code, 0)
+        rec = results.load_all(out)[0]
+        self.assertFalse(rec["outcome"]["passed"], rec)
+        self.assertEqual(rec["outcome"]["failure_stage"], "missing_evidence")
+        missing = rec["controller"]["failure_details"]["missing_paths"]
+        self.assertTrue(missing)
+        self.assertFalse(Path(missing[0]).exists())
+        self.assertGreaterEqual(rec["timing"]["cleanup_seconds"], 0.0)
+        self.assertGreaterEqual(rec["controller"]["cleanup"]["observed_owned_processes"], 2)
+        self.assertEqual(rec["controller"]["process_disposition"]["owned_attempts"], "stopped")
+
+    def test_controller_final_verifier_uses_shared_deadline(self):
+        out = self.out / "controller-final-deadline"
+        code = run.main([
+            "m01-disjoint-utils",
+            "--condition",
+            "controller:complete",
+            "--agent",
+            "reference",
+            "--controller-lifecycle-fault",
+            "final-deadline",
+            "--out",
+            str(out),
+        ])
+        self.assertEqual(code, 0)
+        rec = results.load_all(out)[0]
+        self.assertFalse(rec["outcome"]["passed"], rec)
+        self.assertTrue(rec["outcome"]["timed_out"])
+        self.assertEqual(rec["outcome"]["failure_stage"], "timeout")
+        self.assertEqual(rec["controller"]["failure_details"]["command"], "final_independent_verifier")
+        self.assertEqual(rec["coordination"]["attempts"], 3)
+        self.assertEqual(rec["controller"]["attempts"]["fresh_integration"], 1)
+        self.assertLessEqual(
+            rec["timing"]["cleanup_seconds"],
+            rec["controller"]["execution_window"]["cleanup_timeout_seconds"],
+        )
+
+    def test_controller_final_verifier_inflight_timeout_classified_as_timeout(self):
+        out = self.out / "controller-final-inflight-timeout"
+        code = run.main([
+            "m01-disjoint-utils",
+            "--condition",
+            "controller:complete",
+            "--agent",
+            "reference",
+            "--controller-lifecycle-fault",
+            "final-inflight-timeout",
+            "--repeat",
+            "2",
+            "--out",
+            str(out),
+        ])
+        self.assertEqual(code, 0)
+        loaded = results.load_all(out)
+        self.assertEqual(len(loaded), 1)
+        rec = loaded[0]
+        self.assertEqual(rec["outcome"]["failure_stage"], "timeout")
+        self.assertTrue(rec["outcome"]["timed_out"])
+        self.assertEqual(rec["controller"]["failure_details"]["exception_type"], "TimeoutExpired")
+        self.assertIn("independent verifier", rec["controller"]["failure_details"]["boundary"])
+
+    def test_controller_cleanup_keeps_missing_attempt_identity_uncertain(self):
+        controller = object.__new__(controller_mode.ControllerRun)
+        controller.root = self.out / "cleanup-identity"
+        attempts = controller.root / "attempts"
+        attempts.mkdir(parents=True)
+        controller.processes = []
+        controller.admitted_attempt_ids = ["missing-attempt", "unreadable-attempt", "exited-attempt"]
+        (attempts / "unreadable-operation.json").write_text("{not-json")
+        controller_mode.write_json(
+            attempts / "exited-operation.json",
+            {
+                "binding": {"attempt": "exited-attempt", "operation": "exited-operation"},
+                "state": "exited",
+                "outcome": "identity-bound supervisor confirmed exit",
+            },
+        )
+        cancelled = []
+
+        def fake_query(*args, **kwargs):
+            return {"attempts": []}
+
+        def fake_command(kind, args, **kwargs):
+            cancelled.append(args["attempt"])
+            return {"ok": {"attempt": args["attempt"]}}
+
+        controller.query = fake_query
+        controller.command = fake_command
+
+        records = controller.reconcile_owned_processes()
+        reconciliation = next(item["record"] for item in records if item.get("name") == "reconciliation")
+        remaining = {item["id"] for item in reconciliation["remaining_uncertain"]}
+        self.assertEqual(remaining, {"attempt:missing-attempt", "attempt:unreadable-attempt", "attempt:unreadable-operation"})
+        self.assertEqual(reconciliation["status"], "unresolved")
+        self.assertEqual(set(cancelled), {"missing-attempt", "unreadable-attempt", "unreadable-operation"})
+        observed = {item["attempt"]: item for item in reconciliation["final_attempt_records"]}
+        self.assertEqual(observed["missing-attempt"]["identity_evidence"], "missing")
+        self.assertEqual(observed["unreadable-attempt"]["identity_evidence"], "missing")
+        self.assertEqual(observed["unreadable-operation"]["identity_evidence"], "unreadable")
+        self.assertEqual(observed["exited-attempt"]["identity_evidence"], "read")
+
+    def test_controller_cleanup_keeps_unwaited_service_uncertain(self):
+        class HangingProcess:
+            pid = 424242
+
+            def poll(self):
+                return None
+
+            def terminate(self):
+                pass
+
+            def kill(self):
+                pass
+
+            def wait(self, timeout=None):
+                raise subprocess.TimeoutExpired(["service"], timeout)
+
+        service_log = self.out / "hanging-service.log"
+        service_log.write_text("still running\n")
+        controller = object.__new__(controller_mode.ControllerRun)
+        controller.root = self.out / "cleanup-service"
+        (controller.root / "attempts").mkdir(parents=True)
+        controller.processes = [
+            controller_mode.ManagedProcess("controller", HangingProcess(), service_log, "service-start")
+        ]
+        controller.admitted_attempt_ids = []
+
+        def fake_query(*args, **kwargs):
+            return {"attempts": []}
+
+        controller.query = fake_query
+        controller.command = lambda *args, **kwargs: {"ok": {}}
+
+        records = controller.reconcile_owned_processes(timeout_seconds=0.0)
+        reconciliation = next(item["record"] for item in records if item.get("name") == "reconciliation")
+        self.assertEqual(reconciliation["status"], "unresolved")
+        self.assertIn("service:controller", {item["id"] for item in reconciliation["remaining_uncertain"]})
+
+    def test_controller_success_requires_observed_service_exit(self):
+        original_stop = controller_mode.stopped_services
+
+        def uncertain_stop(*args, **kwargs):
+            records = original_stop(*args, **kwargs)
+            # Physical closure of one owned service was not observed after kill.
+            records[0]["exit"] = None
+            return records
+
+        task = tasklib.load_tasks(only=["m01-disjoint-utils"])[0]
+        for ticket in ("t1", "complete"):
+            with self.subTest(ticket=ticket), mock.patch.object(
+                controller_mode, "stopped_services", side_effect=uncertain_stop
+            ):
+                rec = results.validate(controller_mode.run_controller_condition(
+                    task, run.Agent("reference"), self.out, 0, ticket
+                ))
+                self.assertIn(rec["outcome"]["task_verdict"], ("pass", "partial_pass"))
+                self.assertFalse(rec["outcome"]["passed"])
+                self.assertEqual(rec["outcome"]["effect_disposition"], "unresolved")
+                disposition = rec["controller"]["process_disposition"]
+                self.assertEqual(disposition["services"], "unresolved")
+                self.assertTrue(disposition["remaining_uncertain"])
+
+    def test_controller_manual_pause_before_verification_has_unknown_task_truth(self):
+        task = tasklib.load_tasks(only=["m01-disjoint-utils"])[0]
+        rec = results.validate(controller_mode.run_controller_condition(
+            task, run.Agent("reference"), self.out, 0, "t1", fault="manual-intervention"
+        ))
+        self.assertEqual(rec["outcome"]["failure_stage"], "manual_intervention")
+        self.assertEqual(rec["outcome"]["task_verdict"], "unknown")
+        self.assertEqual(rec["outcome"]["orchestration_verdict"], "fail")
+        self.assertIsNone(rec["outcome"]["verifier_rc"])
+        self.assertFalse(rec["outcome"]["passed"])
+        self.assertEqual(rec["controller"]["retained_evidence"]["proofs"][0]["status"], "unknown")
+
+    def test_controller_failure_disposition_follows_actual_cleanup_not_failure_stage(self):
+        task = tasklib.load_tasks(only=["m01-disjoint-utils"])[0]
+        controller = object.__new__(controller_mode.ControllerRun)
+        controller.root = self.out / "resolved-failure"
+        (controller.root / "attempts").mkdir(parents=True)
+        controller.processes = []
+        controller.admitted_attempt_ids = []
+        controller.query = lambda *args, **kwargs: {"attempts": []}
+        controller.command = lambda *args, **kwargs: {"ok": {}}
+        records = controller.reconcile_owned_processes()
+        for stage in ("failed_verifier", "generic_failure", "delivery_failure"):
+            with self.subTest(stage=stage):
+                rec = results.validate(controller_mode.controller_failure_record(
+                    task=task, agent=run.Agent("reference"), rid=stage, ticket_id="t1",
+                    root=controller.root, source=controller_mode.unknown_source_identity(),
+                    build={"seconds": 0.0, "exit": None},
+                    failure=controller_mode.ControllerFailure(stage, "controlled failure", {"attempts_total": 0}),
+                    control=None, process_records=records, setup_seconds=0.0,
+                    execution_seconds=0.0, cleanup_seconds=0.0, total_wall_seconds=0.0,
+                    source_capture_seconds=0.0,
+                ))
+                self.assertFalse(rec["outcome"]["passed"])
+                self.assertEqual(rec["outcome"]["effect_disposition"], "resolved")
+                self.assertFalse(rec["controller"]["process_disposition"]["remaining_uncertain"])
+
+    def test_controller_report_separates_stale_refusals_from_fleet_conflicts(self):
+        controller = results.validate(self.minimal_controller_record(run_id="controller-stale"))
+        solo = self.solo("t01-log-window", "reference")
+        rows = {row["condition"]: row for row in results.summarize([controller, solo])}
+        self.assertEqual(rows["controller:complete"]["conflicts"], 0)
+        self.assertEqual(rows["controller:complete"]["stale_refusals"], 1)
+        self.assertEqual(rows["solo"]["stale_refusals"], 0)
+        table = results.table(list(rows.values()))
+        self.assertIn("stale", table)
+        self.assertRegex(table, r"controller:complete\s+reference\s+1\s+1\.00.*\s0\s+1\s+1\s+0")
 
     def test_controller_export_rejects_unsafe_archive_members_before_extraction(self):
         archive = self.out / "malicious.tar"

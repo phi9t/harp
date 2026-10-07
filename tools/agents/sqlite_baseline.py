@@ -35,7 +35,11 @@ _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 SELF = pathlib.Path(__file__).resolve()
 BIN = pathlib.Path('/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin')
-KATA = pathlib.Path('/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned')
+KATA_SHA256 = '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6'
+KATA = pathlib.Path(os.environ.get(
+    'CORENIUS_KATA_PINNED_BINARY',
+    pathlib.Path.home() / '.local/share/corenius/pinned-tools/kata' / KATA_SHA256 / 'kata-pinned',
+))
 CATALOG = pathlib.Path('/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json')
 CONFIG = CATALOG.parent / 'codex/config.toml'
 MODELS = ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna',
@@ -509,7 +513,7 @@ def start(args):
         raise SystemExit(result.returncode)
     if pin(BIN / 'codex')['sha256'] != '8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479':
         raise RuntimeError('Codex pin changed')
-    if pin(KATA)['sha256'] != '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6':
+    if pin(KATA)['sha256'] != KATA_SHA256:
         raise RuntimeError('Kata pin changed')
     run_id = time.strftime('%Y%m%dT%H%M%SZ',time.gmtime()) + '-' + uuid.uuid4().hex[:6]
     root = new_run_root(run_id)

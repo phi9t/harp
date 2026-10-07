@@ -30,6 +30,51 @@ class BaselineEntry(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
+    def test_pinned_kata_lookup_survives_retired_worktree_and_preserves_overrides(self):
+        repo = pathlib.Path(__file__).resolve().parents[2]
+        sha = '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6'
+        stable = pathlib.Path.home() / '.local/share/corenius/pinned-tools/kata' / sha / 'kata-pinned'
+        alternate = pathlib.Path(self.tmp.name) / 'alternate-kata'
+        alternate.symlink_to(stable)
+        program = r"""
+import ast, hashlib, json, os, pathlib, runpy, sys
+repo = pathlib.Path(sys.argv[1])
+sys.path.insert(0, str(repo / 'bench/harness'))
+controller = runpy.run_path(str(repo / 'bench/harness/controller_mode.py'))
+baseline = runpy.run_path(str(repo / 'tools/agents/sqlite_baseline.py'))
+fixture = repo / 'crates/sqlite-controller/tests/support/kata_protocol.py'
+tree = ast.parse(fixture.read_text(), filename=str(fixture))
+# Execute the fixture's actual imports, lookup and mandatory hash guard;
+# stop before it allocates a run or starts any service.
+stop = next(i for i, stmt in enumerate(tree.body) if isinstance(stmt, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == 'ROOT' for target in stmt.targets))
+namespace = {'__file__': str(fixture)}
+exec(compile(ast.Module(body=tree.body[:stop], type_ignores=[]), str(fixture), 'exec'), namespace)
+paths = [controller['KATA'], baseline['KATA'], namespace['PIN']]
+assert all(str(path) == sys.argv[2] for path in paths), paths
+assert all(os.access(path, os.X_OK) for path in paths)
+assert all(hashlib.sha256(path.read_bytes()).hexdigest() == namespace['SHA'] for path in paths)
+print(json.dumps([str(path) for path in paths]))
+"""
+        env = dict(os.environ)
+        env.pop('CORENIUS_KATA_PINNED_BINARY', None)
+        env.pop('KATA_PINNED_BINARY', None)
+        for expected in (stable, alternate):
+            with self.subTest(path=str(expected)):
+                if expected == alternate:
+                    env.update(CORENIUS_KATA_PINNED_BINARY=str(alternate), KATA_PINNED_BINARY=str(alternate))
+                result = subprocess.run(['python3', '-c', program, str(repo), str(expected)],
+                                        env=env, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(json.loads(result.stdout), [str(expected)] * 3)
+        corrupt = pathlib.Path(self.tmp.name) / 'corrupt-kata'
+        corrupt.write_bytes(b'not the approved Kata binary')
+        env['KATA_PINNED_BINARY'] = str(corrupt)
+        rejected = subprocess.run(['python3', '-c', program, str(repo), str(alternate)],
+                                  env=env, capture_output=True, text=True)
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertIn('AssertionError', rejected.stderr)
+
     def test_start_accepts_explicit_existing_session_and_pinned_reuse_options(self):
         script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
         result = subprocess.run(['python3', str(script), 'start', '--help'], capture_output=True, text=True)

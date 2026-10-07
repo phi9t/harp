@@ -20,7 +20,15 @@ READINESS_INSTANTIATIONS = ("lead-driven", "local-controller", "workflow-control
 READINESS_OUTCOMES = ("passes", "passes with intervention", "not applicable by design", "fails")
 READINESS_PROOFS = ("deterministic", "live")
 CORE_STORIES = frozenset({1, 2, 5, 6, 7, 9, 12, 14, 15, 16, 17, 18, 20, 27, 34, 35})
-CONTROLLER_SCHEMA = "corenius.bench.controller.v1"
+LEGACY_CONTROLLER_SCHEMA = "corenius.bench.controller.v1"
+CONTROLLER_SCHEMA = "corenius.bench.controller.v2"
+CONTROLLER_SCHEMAS = {LEGACY_CONTROLLER_SCHEMA, CONTROLLER_SCHEMA}
+TASK_VERDICTS = {"pass", "partial_pass", "fail", "unknown", "not_run"}
+ORCHESTRATION_VERDICTS = {"pass", "fail", "unknown"}
+EFFECT_DISPOSITIONS = {"resolved", "unresolved", "unknown"}
+USAGE_STATUSES = {"measured", "partial", "unknown", "not_applicable"}
+PREFLIGHT_FAILURE_STAGES = {"missing_prerequisite", "unsupported_task", "preflight"}
+DISPATCH_FAILURE_STAGES = {"timeout", "provider_failure"}
 
 
 def _num(value, name, allow_none=False):
@@ -28,6 +36,168 @@ def _num(value, name, allow_none=False):
         return
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         raise ValueError(f"{name} must be a finite number")
+
+
+def _bool(value, name):
+    if not isinstance(value, bool):
+        raise ValueError(f"{name} must be a bool")
+
+
+def _str_or_none(value, name):
+    if value is not None and not isinstance(value, str):
+        raise ValueError(f"{name} must be a string or null")
+
+
+def _validate_controller_v2(record: dict, controller: dict) -> None:
+    window = controller.get("execution_window")
+    if not isinstance(window, dict):
+        raise ValueError("controller.execution_window must be a dict")
+    for key in (
+        "deadline_seconds",
+        "setup_timeout_seconds",
+        "cleanup_timeout_seconds",
+        "pinned_verifier_timeout_seconds",
+        "durable_run_admission_unix",
+        "first_mission_submission_unix",
+        "dispatch_cutoff_unix",
+    ):
+        _num(window.get(key), f"controller.execution_window.{key}")
+    if window["deadline_seconds"] != 1800.0:
+        raise ValueError("controller.execution_window.deadline_seconds must be 1800.0")
+    if abs(window["dispatch_cutoff_unix"] - (window["durable_run_admission_unix"] + window["deadline_seconds"])) > 0.001:
+        raise ValueError("controller.execution_window.dispatch_cutoff_unix must be admission plus the deadline")
+    if window["first_mission_submission_unix"] < window["durable_run_admission_unix"]:
+        raise ValueError("controller.execution_window.first_mission_submission_unix must follow durable admission")
+    for key in ("failed_preflight_consumed_model_calls", "automatic_rerun_after_timeout_or_provider_failure"):
+        _bool(window.get(key), f"controller.execution_window.{key}")
+    if window["automatic_rerun_after_timeout_or_provider_failure"]:
+        raise ValueError("controller execution must not automatically rerun after timeout or provider failure")
+    for key in ("clock", "live_host_requirement", "platform"):
+        if not isinstance(window.get(key), str):
+            raise ValueError(f"controller.execution_window.{key} must be a string")
+    if window["clock"] != "durable_admission_to_final_verification":
+        raise ValueError("controller.execution_window.clock must be durable_admission_to_final_verification")
+    if window["platform"] != "linux":
+        raise ValueError("controller.execution_window.platform must be linux")
+    if window["live_host_requirement"] != "m01":
+        raise ValueError("controller.execution_window.live_host_requirement must be m01")
+
+    outcomes = controller.get("outcomes")
+    if not isinstance(outcomes, dict):
+        raise ValueError("controller.outcomes must be a dict")
+    task = outcomes.get("task")
+    orchestration = outcomes.get("orchestration")
+    effects = outcomes.get("effects")
+    if not isinstance(task, dict) or task.get("verdict") not in TASK_VERDICTS:
+        raise ValueError("controller.outcomes.task.verdict is unsupported")
+    if not isinstance(orchestration, dict) or orchestration.get("verdict") not in ORCHESTRATION_VERDICTS:
+        raise ValueError("controller.outcomes.orchestration.verdict is unsupported")
+    if not isinstance(effects, dict) or effects.get("disposition") not in EFFECT_DISPOSITIONS:
+        raise ValueError("controller.outcomes.effects.disposition is unsupported")
+    if record["outcome"].get("task_verdict") != task["verdict"]:
+        raise ValueError("outcome.task_verdict must match controller task outcome")
+    if record["outcome"].get("orchestration_verdict") != orchestration["verdict"]:
+        raise ValueError("outcome.orchestration_verdict must match controller orchestration outcome")
+    if record["outcome"].get("effect_disposition") != effects["disposition"]:
+        raise ValueError("outcome.effect_disposition must match controller effect disposition")
+
+    failure = controller.get("failure")
+    if not isinstance(failure, dict):
+        raise ValueError("controller.failure must be a dict")
+    for key in ("stage", "kind", "message"):
+        _str_or_none(failure.get(key), f"controller.failure.{key}")
+    if record["outcome"].get("failure_stage") != failure.get("stage"):
+        raise ValueError("outcome.failure_stage must match controller failure stage")
+    if failure.get("stage") in PREFLIGHT_FAILURE_STAGES and window["failed_preflight_consumed_model_calls"]:
+        raise ValueError("failed preflight must not consume model calls")
+    if failure.get("stage") in DISPATCH_FAILURE_STAGES:
+        if controller.get("attempts", {}).get("automatic_retries_after_failure") != 0:
+            raise ValueError("timeout/provider failure must not automatically retry")
+        if effects["disposition"] == "resolved":
+            disposition = controller.get("process_disposition", {})
+            reconciliation = disposition.get("reconciliation") if isinstance(disposition, dict) else None
+            if not isinstance(reconciliation, dict):
+                raise ValueError("resolved timeout/provider failure requires cleanup reconciliation proof")
+            if reconciliation.get("status") != "resolved":
+                raise ValueError("resolved timeout/provider failure requires resolved cleanup reconciliation")
+            if reconciliation.get("authority") != "controller.cancel_attempt":
+                raise ValueError("resolved timeout/provider failure requires controller cancellation authority")
+            if reconciliation.get("bounded") is not True or reconciliation.get("identity_bound") is not True:
+                raise ValueError("resolved timeout/provider failure requires bounded identity-bound cleanup")
+            if disposition.get("remaining_uncertain"):
+                raise ValueError("resolved timeout/provider failure cannot retain uncertain effects")
+            if disposition.get("owned_attempts") not in ("stopped", "not_started", "resolved"):
+                raise ValueError("resolved timeout/provider failure requires stopped owned attempts")
+
+    autonomous_success = (
+        failure.get("stage") is None
+        and task["verdict"] in {"pass", "partial_pass"}
+        and orchestration["verdict"] == "pass"
+        and effects["disposition"] == "resolved"
+    )
+    if record["outcome"].get("passed") and not autonomous_success:
+        raise ValueError("autonomous PASS contradicts controller failure or verdict state")
+    if record["outcome"].get("reward") > 0 and not record["outcome"].get("passed"):
+        raise ValueError("positive reward requires a passing outcome")
+
+    attempts = controller.get("attempts")
+    if not isinstance(attempts, dict):
+        raise ValueError("controller.attempts must be a dict")
+    for key in (
+        "total",
+        "fresh_integration",
+        "max_fresh_integration_attempts",
+        "automatic_retries_after_failure",
+        "max_concurrent_worker_executions",
+    ):
+        _num(attempts.get(key), f"controller.attempts.{key}")
+    if attempts["fresh_integration"] > attempts["max_fresh_integration_attempts"]:
+        raise ValueError("controller attempts exceed the fresh integration limit")
+    if attempts["automatic_retries_after_failure"] != 0:
+        raise ValueError("controller automatic failure retries must be zero")
+    if record["coordination"].get("attempts") != attempts["total"]:
+        raise ValueError("coordination.attempts must match controller attempts")
+
+    interventions = controller.get("interventions")
+    if not isinstance(interventions, list) or not all(isinstance(item, dict) for item in interventions):
+        raise ValueError("controller.interventions must be a list of dicts")
+    manual_interventions = record["coordination"].get("manual_interventions")
+    _num(manual_interventions, "coordination.manual_interventions")
+    if manual_interventions != len(interventions):
+        raise ValueError("coordination.manual_interventions must match controller interventions")
+    manual_rescue = any(str(item.get("kind", "")).startswith("manual") for item in interventions)
+    if manual_rescue:
+        if record["outcome"]["passed"]:
+            raise ValueError("manual intervention cannot yield autonomous PASS")
+        if controller.get("autonomous_pass_eligible") is not False:
+            raise ValueError("manual intervention must mark autonomous pass ineligible")
+
+    usage = controller.get("model_usage")
+    if not isinstance(usage, dict) or usage.get("status") not in USAGE_STATUSES:
+        raise ValueError("controller.model_usage.status is unsupported")
+    _bool(usage.get("complete"), "controller.model_usage.complete")
+    for key in ("input_tokens", "output_tokens", "usd"):
+        _num(usage.get(key), f"controller.model_usage.{key}", allow_none=True)
+    if usage["status"] in ("unknown", "not_applicable"):
+        for key in ("input_tokens", "output_tokens", "usd"):
+            if usage.get(key) is not None:
+                raise ValueError(f"controller.model_usage.{key} must be unknown")
+    if usage["status"] == "measured" and (
+        usage.get("input_tokens") is None or usage.get("output_tokens") is None or not usage["complete"]
+    ):
+        raise ValueError("measured controller usage must include complete token counts")
+
+    retained = controller.get("retained_evidence")
+    if not isinstance(retained, dict) or not isinstance(retained.get("run_root"), str):
+        raise ValueError("controller.retained_evidence.run_root must be a string")
+    for key in ("repositories", "manifests", "events", "proofs", "logs"):
+        if not isinstance(retained.get(key), list) or not all(isinstance(item, dict) for item in retained[key]):
+            raise ValueError(f"controller.retained_evidence.{key} must be a list of dicts")
+    if not any(retained[key] for key in ("repositories", "manifests", "events", "proofs", "logs")):
+        raise ValueError("controller.retained_evidence must retain at least one identity")
+
+    if bool(controller.get("orchestration_passed")) != (orchestration["verdict"] == "pass"):
+        raise ValueError("controller.orchestration_passed must match orchestration verdict")
 
 
 def validate(record: dict) -> dict:
@@ -57,13 +227,15 @@ def validate(record: dict) -> dict:
         controller = record.get("controller")
         if not isinstance(controller, dict):
             raise ValueError("controller must be a dict")
-        if controller.get("schema_version") != CONTROLLER_SCHEMA:
-            raise ValueError("controller.schema_version must be corenius.bench.controller.v1")
+        if controller.get("schema_version") not in CONTROLLER_SCHEMAS:
+            raise ValueError("controller.schema_version must be a supported controller schema")
         for key in ("mode", "task", "ticket"):
             if not isinstance(controller.get(key), str):
                 raise ValueError(f"controller.{key} must be a string")
-        if controller["mode"] != "deterministic":
+        if controller["schema_version"] == LEGACY_CONTROLLER_SCHEMA and controller["mode"] != "deterministic":
             raise ValueError("controller.mode must be deterministic")
+        if controller["schema_version"] == CONTROLLER_SCHEMA and controller["mode"] not in ("deterministic", "live"):
+            raise ValueError("controller.mode must be deterministic or live")
         expected_ticket = condition.split(":", 1)[1]
         if controller["task"] != record["task_id"] or controller["ticket"] != expected_ticket:
             raise ValueError("controller task/ticket must match the result condition")
@@ -106,6 +278,11 @@ def validate(record: dict) -> dict:
                 raise ValueError("controller verifier runtime manifest must be pinned")
         for key in ("build_seconds", "setup_seconds", "controller_flow_seconds", "cleanup_seconds"):
             _num(record["timing"].get(key), f"timing.{key}")
+        if controller["schema_version"] == CONTROLLER_SCHEMA:
+            _num(record["timing"].get("execution_seconds"), "timing.execution_seconds")
+            if record["timing"]["execution_seconds"] != record["timing"]["controller_flow_seconds"]:
+                raise ValueError("timing.execution_seconds must match controller_flow_seconds")
+            _validate_controller_v2(record, controller)
     return record
 
 
@@ -144,6 +321,7 @@ def summarize(records: list[dict]) -> list[dict]:
                                   if any(r["cost"]["output_tokens"] is not None for r in rs) else None),
             "redos": sum(r["coordination"]["redos"] for r in rs),
             "conflicts": sum(r["coordination"]["conflicts"] for r in rs),
+            "stale_refusals": sum(r["coordination"].get("stale_refusals", 0) for r in rs),
             "contamination": sum(r["coordination"]["contamination"] for r in rs),
             "capsules": sorted({r["capsule"]["digest"][:12] for r in rs}),
         })
@@ -153,11 +331,11 @@ def summarize(records: list[dict]) -> list[dict]:
 def table(rows: list[dict]) -> str:
     condition_width = max([9, *(len(r["condition"]) for r in rows)])
     head = (f"{'task':30s} {'condition':{condition_width}s} {'agent':16s} {'n':>3s} {'pass':>6s} {'ci95':>13s} {'wall':>7s} {'confl':>5s} "
-            f"{'redo':>4s} {'contam':>6s} {'tok_out':>8s}")
+            f"{'stale':>5s} {'redo':>4s} {'contam':>6s} {'tok_out':>8s}")
     lines = [head, "-" * len(head)]
     for r in rows:
         lines.append(f"{r['task']:30s} {r['condition']:{condition_width}s} {r['agent'][:16]:16s} {r['n']:3d} {r['pass_rate']:6.2f} "
-                     f"[{r['ci95'][0]:.2f},{r['ci95'][1]:.2f}] {r['wall_median']:7.1f} {r['conflicts']:5d} {r['redos']:4d} "
+                     f"[{r['ci95'][0]:.2f},{r['ci95'][1]:.2f}] {r['wall_median']:7.1f} {r['conflicts']:5d} {r['stale_refusals']:5d} {r['redos']:4d} "
                      f"{r['contamination']:6d} {'-' if r['tokens_out_median'] is None else int(r['tokens_out_median']):>8}")
     return "\n".join(lines)
 
