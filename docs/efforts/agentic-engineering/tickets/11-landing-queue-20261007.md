@@ -1,16 +1,16 @@
 # 11 landing-queue-20261007: Review and land the October 7 pending-work queue
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: codex-landing-queue
 Blocked by:
-Claimed: 2026-10-07T08:21:38Z expires 2026-10-08T08:21:38Z
+Claimed:
 
 ## Acceptance
-- [ ] Freeze source tips and stable worktree snapshots; account for every queue group.
-- [ ] Review Standards and Spec independently; resolve blocking landing defects.
-- [ ] Gate exact integration candidates and fast-forward only; preserve source refs/worktrees.
-- [ ] Report landed commits and every unfinished or parked item with evidence.
+- [x] Freeze source tips and stable worktree snapshots; account for every queue group.
+- [x] Review Standards and Spec independently; resolve blocking landing defects.
+- [x] Gate exact integration candidates and fast-forward only; preserve source refs/worktrees.
+- [x] Report landed commits and every unfinished or parked item with evidence.
 
 ## Intent and authority
 
@@ -64,5 +64,12 @@ Ready frozen groups have passed independent review and component gates. See
 ../evidence/landing-queue-20261007-final.md and its JSON gate ledger. Code candidate
 36bd01c946857c085544d9985c990225a30a6057 preserves concurrent main changes.
 The failed initial native invocation and successful bounded repair are retained.
-Final fast-forward and landing receipt are the only remaining queue steps.
+Final detached-tip metadata/source gates passed and main fast-forwarded to
+a00be4fecd3c97222b2c6c02d13b8e145ddfc9dc. The landing receipt records the accepted code candidate.
 Readiness14/15, controller03/04/05 and proposed future implementations remain open.
+
+## Landing receipt
+
+Accepted code candidate 36bd01c946857c085544d9985c990225a30a6057 is now in main ancestry.
+No shared ref was rewritten and no source worktree was deleted.
+- 2026-10-07T09:11:25Z codex-landing-queue: resolved

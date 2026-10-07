@@ -70,3 +70,11 @@ must assert the intended checkout, and integration trees need unique session
 names plus source-identity guards. The causal temp scanner regression is now a
 deterministic gate. These are recorded follow-up improvements, not extra feature
 implementation silently added to this landing task.
+
+## Landing receipt
+
+Main fast-forwarded to `a00be4fecd3c97222b2c6c02d13b8e145ddfc9dc` after detached-tip sync24, tracker28,
+tracker lint, source scanner, native selection2 and whitespace gates passed.
+Four fresh report-focused tests passed on the preserved concurrent report fix.
+The accepted code candidate is in main ancestry; `landing-11.jsonl` records it.
+The subsequent receipt commit is metadata only and receives fresh detached gates.
