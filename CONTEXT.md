@@ -139,3 +139,99 @@ _Avoid_: Thread identity, recovery epoch.
 A recorded unresolved state that retains evidence and conflicting capacity
 until effects and authority are safely reconciled.
 _Avoid_: Failed means stopped, refunded on timeout.
+## Controller portfolio stewardship
+
+**Corenius**:
+The program-of-record repository for the persistent engineering-team control
+plane, its domain language, admitted controller contracts and accepted evidence.
+_Avoid_: DevX controller, Insula controller, repository-specific orchestration copy.
+
+**Repository Stabilization Envelope**:
+A read-only preservation inventory that covers every registered worktree and
+durable effort before focused stabilization can change shared repository state.
+_Avoid_: Cleanup campaign, Controller Portfolio, permission to retire work.
+
+**Controller Portfolio**:
+The Corenius efforts, branches, worktrees, runtime bindings and evidence that
+develop or exercise persistent multi-agent coordination and control.
+_Avoid_: All Corenius work, one controller implementation line.
+
+**Controller Portfolio Stabilization**:
+A two-pass program that first records the Controller Portfolio's complete
+operational closure, then applies separately reviewed human-approved actions.
+_Avoid_: Bulk landing, age-based cleanup, automatic branch retirement.
+
+**Director**:
+The external coordination role that sets portfolio priorities, reviews evidence
+and grants shared-state actions without becoming the execution Lead.
+_Avoid_: Lead, process supervisor, tmux operator as authority.
+
+**Lead**:
+A replaceable logical team role that autonomously coordinates admitted work,
+workers, verification and evidence within the Director's authority boundary.
+_Avoid_: Provider session, tmux pane, fixed machine process, human merge authority.
+
+**Scout Lead**:
+A Lead whose admitted objective is evidence-only inventory and proposal; it may
+write dedicated stabilization records but cannot mutate the observed portfolio.
+_Avoid_: Read-only process, pass-two implementation Lead, cleanup authority.
+
+**Bootstrap Lead**:
+A short-lived Lead authorized only to build and qualify the Scout Kit before any
+portfolio observation begins.
+_Avoid_: Scout Lead, portfolio implementer, authority to inspect or alter observed work.
+
+**Scout Kit**:
+The reviewed schemas, source manifest, read-only collectors, redaction pipeline
+and bootstrap journal tooling required before the Scout Lead can inventory work.
+_Avoid_: Controller product, pass-one evidence, ad-hoc shell command set.
+
+**Bootstrap Mandate**:
+An immutable, expiring assignment that binds a pre-I2 RoleEpoch to one worktree,
+provider session, operation allowlist and monotonic directive sequence.
+_Avoid_: I2 command, tmux text as authority, reusable session permission.
+
+**Observer**:
+An independent read-only role that samples progress and health and alerts the
+Director without steering, killing, restarting or accepting work.
+_Avoid_: Supervisor, verifier, Lead, watchdog with mutation authority.
+
+**Stabilization Evidence Record**:
+An immutable strict-YAML statement of schema-validated repository or operational
+facts, including provenance, freshness and explicit unknowns.
+_Avoid_: Recommendation, mutable dashboard row, prose summary.
+
+**Evidence Redaction**:
+The allowlist-first removal of secret-bearing or overbroad source data before any
+evidence bytes reach persistent storage.
+_Avoid_: Post-hoc log scrubbing, raw environment capture, secret-shaped masking only.
+
+**Action Packet**:
+A reviewed pass-two proposal bound to exact Stabilization Evidence Records, with
+preconditions, conflicts, consequences and required human authority.
+_Avoid_: Inventory observation, automatic operation, blanket cleanup approval.
+
+**Observation Round**:
+One bounded pass over declared inventory sources whose facts retain source
+generations and observation times; two rounds are compared before promotion.
+_Avoid_: Atomic global snapshot, repository freeze, freshness assumption.
+
+**Mechanism Promotion**:
+The evidence-gated admission of a proven I1 coordination mechanism into the I2
+product contract without importing I1 branch history as a unit.
+_Avoid_: Branch merge, code copying without provenance, I1 supersedes I2.
+
+**Qualification Rung**:
+One cumulative proof level in the controller acceptance ladder; passing an early
+rung establishes only its declared scope and never replaces later proof.
+_Avoid_: Milestone completion, readiness claim without scope, superseding test.
+
+**Trial Repository**:
+A disposable controller-owned Git and work-ledger scenario materialized from a
+versioned deterministic template for qualification and fault testing.
+_Avoid_: Mock repository, ad-hoc temporary checkout, human source repository.
+
+**Trial Template**:
+The immutable declarative definition of a Trial Repository's seed tree, history,
+work items, acceptance contract, fault hooks and expected identities.
+_Avoid_: Materialized Trial Repository, shell setup transcript, golden outcome.
