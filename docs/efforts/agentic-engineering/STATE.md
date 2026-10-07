@@ -4,8 +4,8 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "e5fe74461a9285c1ef70e5d8a0ffabbc6953e85d",
-  "dehydrated": "2026-09-30T22:20:03Z",
+  "base_commit": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+  "dehydrated": "2026-10-07T09:40:29Z",
   "effort": "agentic-engineering",
   "runs": [
     {
@@ -48,29 +48,8 @@
     {
       "branch": "main",
       "dirty": [],
-      "head": "e5fe74461a9285c1ef70e5d8a0ffabbc6953e85d",
+      "head": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
       "path": "/data02/home/philip.yang/workspace/corenius",
-      "pushed": false
-    },
-    {
-      "branch": "claude/durable-efforts",
-      "dirty": [],
-      "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
-      "path": "/data02/home/philip.yang/workspace/corenius-efforts",
-      "pushed": false
-    },
-    {
-      "branch": "claude/milestone-b",
-      "dirty": [],
-      "head": "366361b5a46045823cf6b45941c66ad8379dfebe",
-      "path": "/data02/home/philip.yang/workspace/corenius-mb",
-      "pushed": false
-    },
-    {
-      "branch": "claude/worker-mechanism",
-      "dirty": [],
-      "head": "03368f42253dd344c6230d8381fc855f4b7af698",
-      "path": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
       "pushed": false
     }
   ]
