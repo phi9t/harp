@@ -1,19 +1,19 @@
 # 13 controller03-salvage-repair: Repair and verify frozen controller benchmark outcome evidence before landing
 
 Type: bug
-Status: claimed
+Status: resolved
 Owner: codex-controller03-salvage
 Blocked by:
-Claimed: 2026-10-07T09:53:38Z expires 2026-10-08T09:53:38Z
+Claimed:
 
 Triage: needs-triage
 
 ## Acceptance
-- [ ] Construct the exact reviewed five-file controller03 semantic delta over current main; preserve landed readiness APIs and behavior.
-- [ ] Repair uncertain success cleanup, unverified manual-intervention task verdicts and resolved failure dispositions with causal regressions.
-- [ ] Retire three default Kata paths into the stable content-addressed artifact directory while preserving overrides and required hashes.
-- [ ] Run focused mixed legacy/controller/readiness checks on immutable candidate and pass independent Standards/Spec review.
-- [ ] Publish verified landable candidate and preserve/prune its owned temporary tree after fast-forward landing.
+- [x] Construct the exact reviewed five-file controller03 semantic delta over current main; preserve landed readiness APIs and behavior.
+- [x] Repair uncertain success cleanup, unverified manual-intervention task verdicts and resolved failure dispositions with causal regressions.
+- [x] Retire three default Kata paths into the stable content-addressed artifact directory while preserving overrides and required hashes.
+- [x] Run focused mixed legacy/controller/readiness checks on immutable candidate and pass independent Standards/Spec review.
+- [x] Publish verified landable candidate and preserve/prune its owned temporary tree after fast-forward landing.
 
 ## Intent, source and authority
 
@@ -57,5 +57,15 @@ and Spec reviews passed that same code tip with no findings. Exact commands, has
 [the repair evidence](../evidence/landing-queue-20261007-controller03-repair2.md). Lead acceptance and landing remain pending.
 Neither this ticket nor controller-backed-bench Ticket03 is resolved by this candidate.
 
+## Verified landing and retirement
+
+Reviewed source and all final gates passed; candidate d95985089f90bbb2718805b75fcc5e2f9c123d8b was
+accepted and published by fast-forward to main89ff376380fa390ac718e2f0f934a59671bfc07a.
+The original live Ticket03 checkout remains untouched. The separately owned repair checkout is fully archived,
+its Git metadata and log hashes retained, and its clean status independently reproduced from the verified
+controller03-landing-history.bundle before its registration and branch were retired.
+Receipt: /data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/controller03-retirement.json.
+
 ## Comments
 - 2026-10-07T09:53:38Z codex-controller03-salvage: claimed until 2026-10-08T09:53:38Z
+- 2026-10-07T10:26:52Z codex-controller03-salvage: resolved

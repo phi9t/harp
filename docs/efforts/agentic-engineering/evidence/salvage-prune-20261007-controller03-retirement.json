@@ -1,0 +1,37 @@
+{
+  "commit_read": "89ff376380fa390ac718e2f0f934a59671bfc07a",
+  "receipt_path": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/controller03-retirement.json",
+  "receipt_sha256": "18170d56200e78a92f35e9b589c8e8363773e56fcaa67a8badb27ce3072c1ad2",
+  "retirement": {
+    "tip": "89ff376380fa390ac718e2f0f934a59671bfc07a",
+    "original": "/data02/home/philip.yang/devx/tmp/corenius-controller03-salvage-08b8c914",
+    "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-controller03-salvage-08b8c914",
+    "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-controller03-salvage-08b8c914",
+    "bundle": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/controller03-landing-history.bundle",
+    "bundle_sha256": "5a9e0d1b153bf8cf2e4d169e0eac7b95eaa621e8af2a6a80498dd947ddf2c7da",
+    "independent_status_equal": true,
+    "logs": {
+      ".scratch/controller03-salvage/pin-path-red.log": "3b54740577ed56d744be2282bb950c7c820f00cfd67f16d9fc399082c55bd56f",
+      ".scratch/controller03-salvage/temp-paths-merge.log": "dbb5e56649287b61dc69c5683ec286e732648207f5f2d955754a97a1f5946aa2",
+      ".scratch/controller03-salvage/tracker-green.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      ".scratch/controller03-salvage/scanner-pin-green.log": "dbb5e56649287b61dc69c5683ec286e732648207f5f2d955754a97a1f5946aa2",
+      ".scratch/controller03-salvage/validate-green.log": "b360e3222a14aed6565f975f6e74da5d1966fd8438dbc9e2e028a7bc84dd6e25",
+      ".scratch/controller03-salvage/default-runtime-green.log": "1ea50bb0d62f4e44248e91f6e5c118d215ed74440d36299c51e2a721f3dbe898",
+      ".scratch/controller03-salvage/legacy-result-green.log": "ceb0621ef71049e9294638e4bd2d9b368d532d087a6f1b7d0be0226100963121",
+      ".scratch/controller03-salvage/scanner-green.log": "dbb5e56649287b61dc69c5683ec286e732648207f5f2d955754a97a1f5946aa2",
+      ".scratch/controller03-salvage/native-kata-green.log": "062baf92a6b56d973f4a60746e395095716498ebfab2a619af1648943a5ce3b3",
+      ".scratch/controller03-salvage/mixed-focused-green.log": "ccf5c1201e930932796289c600f862f49a9bdb89a0ff7022d3e58d3bea3a42be",
+      ".scratch/controller03-salvage/repair2-red.log": "67aa4edef777e2cc9240355c45b244a9c0cf4196f2b594f13c4ec31a0479b149",
+      ".scratch/controller03-salvage/repair2-green.log": "79976b577adbc43c46cd0564f43ab852bff6e2c39b6957879255c248216b9408",
+      ".scratch/controller03-salvage/pin-path-green.log": "0f6e41d6e71464d59b9f2c3c8ce5214653e47df468a13f6591cdcdd446d3d1cf"
+    },
+    "retired_branch": "codex/controller03-salvage-08b8c914",
+    "remaining_ownership": "main + persistent Kata spike + integration watcher + original live Ticket03 owner"
+  },
+  "remaining_live_worktrees": [
+    "/data02/home/philip.yang/.local/share/kata-spike/repo",
+    "/data02/home/philip.yang/workspace/corenius-codex-controller-bench-integration",
+    "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-03"
+  ],
+  "goal_complete": false
+}

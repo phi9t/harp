@@ -88,3 +88,12 @@ Its final receipt will be retained in the recovery archive named in the ledger.
 The only remaining user-owned/live checkouts will be the persistent Kata spike,
 controller watcher and live Ticket03 owner. Pending routing questions are not
 approvals. No goal-complete claim or ticket resolution is made yet.
+
+## Controller03 bounded salvage landed
+
+Ticket13 repaired the frozen pending controller delta, retained current readiness APIs, and corrected three Kata
+defaults broken by checkout retirement. Both independent reviews and all final gates passed, including94 mixed
+tests,41 task validators,6 default controller cases and the real native Kata protocol fixture. Main was clean
+after fast-forward publication to89ff376. The owned candidate was completely recovered and retired; see the
+controller03 retirement evidence. The original live owner, integration watcher and persistent Kata spike remain.
+Their pending routing questions are not approvals, and this whole-goal ticket stays claimed.
