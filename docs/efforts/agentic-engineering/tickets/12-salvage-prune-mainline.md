@@ -54,3 +54,20 @@ The live Ticket03 owner remains in place; user routing question is pending. Its
 latest repair has47 affected tests passing but no completed full gate or independent
 acceptance. The integrating watcher and Kata services also retain their checkouts.
 No stale/parked variant was activated merely to eliminate its branch.
+
+## Third cleanup increment
+
+Thirty inactive same-filesystem trees and19 cross-filesystem trees are fully
+preserved; every retirement was verified through bundle-only status reconstruction.
+Nineteen orphan refs were also salvaged and pruned with exact expected-tip guards.
+Three historical readiness trees were recovered and retired; current EFFORT/STATE
+routing no longer points at their retired branches. Tickets14/15 remain open.
+Two independently verified orphan Kata evaluation fixtures were stopped gracefully
+through their pinned daemon CLI, their complete homes preserved, and the evaluation
+checkout recovered and retired. Unix endpoints were verified unbound and retained
+in raw backups, with all regular-file bytes independently copied and hashed.
+
+Current inventory5 trees/5 refs: main, this owned integration, the persistent Kata
+spike, controller integration watcher, and the live Ticket03 owner. Main is clean.
+The user routing questions for the remaining live owners are pending; this goal
+remains active. See ../evidence/salvage-prune-20261007-final-inactive.json.

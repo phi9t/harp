@@ -1,9 +1,7 @@
 # Effort: lead-worker-readiness
 
-Status: integration candidate under independent review; implementation tickets resolved except ticket 14 live trial and ticket 15 TraeCLI parity; no full live-trial qualification claimed.
+Status: reviewed deterministic implementation and records landed on main; ticket 14 live trial and ticket 15 TraeCLI parity remain open; no full live-trial qualification claimed.
 Base: main
-Integration branch: effort/lead-worker-readiness
-Record branch: effort/lead-worker-readiness-records
 Lead: interactive session (Claude)
 
 ## Intent
@@ -49,3 +47,18 @@ directly to produce `SPEC.md`; it was not invoked.
 - [ ] M5 Every deterministic story passes, or is declared not applicable with its reason, for the lead-driven instantiation; the command and result are in `evidence/`.
 - [ ] M6 One live trial of the lead-driven instantiation inside Corenius; every intervention is recorded; the record and the running notes are in `evidence/`.
 - [ ] M7 The comparison table holds a result or "not yet run" for every scenario and instantiation.
+
+## Historical branch retirement: 2026-10-07
+
+The user’s salvage/prune instruction supersedes earlier source-ref preservation
+wording. Historical integration `effort/lead-worker-readiness` at7d2f69cb, records
+`effort/lead-worker-readiness-records` at540f8f7c and journal
+`journal/lead-worker-readiness` at7053f391 were recovered from the verified history
+bundle and preserved as complete directories with their original Git metadata.
+Their old references/checkouts are retired; they are not current routing pointers.
+Current tickets/specification and accepted evidence live on main. Exact recovery
+paths and full hashes are in Corenius’s salvage/prune evidence ledger.
+
+Future ticket14/15 execution requires fresh isolated integration and record branches
+through the existing effort setup, starting from current main. No live trial or
+TraeCLI parity result is established by this retirement.

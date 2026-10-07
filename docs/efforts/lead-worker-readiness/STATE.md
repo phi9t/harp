@@ -5,34 +5,35 @@
 
 ## Where we are
 
-As of 2026-10-07, code tip7d2f69cb and records540f8f7 are being integrated on
-codex/landing-queue-20261007 atop main9a92c95. The specs and tickets exist;
-implementation and worker probe evidence are retained. Current independent review
-found two validation defects, being repaired before landing. Ticket14 remains
-open: recorded small provider probes do not qualify the complete live trial.
-Ticket15 TraeCLI parity also remains open.
+The reviewed deterministic implementation and selectively imported historical
+records are landed on main. Current source read:84cbfeb, with accepted code
+candidate36bd01c and its review/component-gate receipts. Historical integration,
+record and journal branches/checkouts were completely salvaged and retired under
+the user’s broader cleanup goal. Ticket14 live qualification and15 TraeCLI parity
+remain open. The repository cleanup does not establish either qualification.
 
 ## Next actions
 
-Finish bounded review repairs, run exact-candidate gates and locally fast-forward
-main. Complete ticket14 live-trial work and ticket15 TraeCLI parity separately
-under their effort execution authority.
+For14/15, establish fresh isolated integration and record branches from current
+main using existing effort setup; revalidate current specs, authority and gates.
+Consult salvage receipts for historical source recovery rather than recreating
+old code or pointing operational tools at retired checkouts.
 
 ## Open questions
 
-No live qualification is established by this landing. The controller benchmark's
-active implementation worktree is a separate candidate and must be reviewed.
+No live qualification is established by this landing. Active controller benchmark
+Ticket03 belongs to its own live owner and still requires independent acceptance.
 
 ## Traps
 
-The record and journal branches contain older versions of code and state. Import
-only their intent, decisions, tickets and historical evidence; preserve newer
-code reports. Existing branches are preserved and are not rebased or deleted.
+Historical record/journal code is older than accepted main. Retired branch names
+are provenance, not routing pointers. Preserve archival evidence and do not
+activate rejected or superseded source merely to recover a historical reference.
 
 ## Do not redo
 
-Historical journal entries and provider probes remain evidence of their dated
-observations. Do not replay model calls merely to publish those records.
+Historical journal entries and provider probes retain their dated observations.
+Do not replay model calls merely to publish those records.
 
 ## Historical initial state (superseded)
 
