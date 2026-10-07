@@ -9,11 +9,11 @@ Claimed: 2026-10-07T09:14:21Z expires 2026-10-08T09:14:21Z
 Triage: needs-triage
 
 ## Acceptance
-- [ ] Identify and land all currently landable work with independent reviews and required gates.
-- [ ] Preserve every remaining unique commit, pending file, useful ignored artifact and recovery mapping before retirement.
-- [ ] Retire recovered inactive worktrees and prune eligible branches without losing live-owner work.
+- [x] Identify and land all currently landable work with independent reviews and required gates.
+- [x] Preserve every remaining unique commit, pending file, useful ignored artifact and recovery mapping before retirement.
+- [x] Retire recovered inactive worktrees and prune eligible branches without losing live-owner work.
 - [x] Preserve mainline private/untracked artifacts outside the checkout and verify pristine main status.
-- [ ] Audit current refs/worktrees and recovery coverage against the complete objective.
+- [x] Audit current refs/worktrees and recovery coverage against the complete objective.
 
 ## Scope and authority
 
@@ -97,3 +97,16 @@ tests,41 task validators,6 default controller cases and the real native Kata pro
 after fast-forward publication to89ff376. The owned candidate was completely recovered and retired; see the
 controller03 retirement evidence. The original live owner, integration watcher and persistent Kata spike remain.
 Their pending routing questions are not approvals, and this whole-goal ticket stays claimed.
+
+## Owner-authorized final cleanup
+
+The user explicitly authorized graceful shutdown and handoff of the final three live owners. All five PIDs
+are missing, and the post-stop process scan found no remaining process using their checkouts. All original
+checkouts except main are recovered and retired, with their complete files/indexes/history retained and
+independent dirty-status reconstruction. Kata service data is retained in place and separately hash-copied
+(1,128 files/102,472,140 bytes). Independent review found no additional landable changes and accepted
+original Ticket03; its deterministic source is already on main. Future04/05 are not implementations to land.
+The only remaining registered checkout besides main is this sole-writer metadata candidate; it will be
+archived/recovered and retired after publication. Whole-goal completion is asserted only after that final
+retirement and a fresh one-checkout/two-required-refs audit recorded outside the tree.
+See ../evidence/salvage-prune-20261007-final-live.json and the archive final completion receipt.

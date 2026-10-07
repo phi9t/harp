@@ -1,7 +1,7 @@
 # Controller-backed benchmark implementation
 
 Source base: d7f674829e9844d011869b711d64fcf55313f7f1.
-Integration branch: codex/controller-bench-integration.
+Historical integration branch (recovered and retired): codex/controller-bench-integration.
 
 The user requested each ticket in its own worktree, with interactive TraeCLI gpt-5.5 workers using xhigh effort and detailed summaries in one dedicated tmux session. This overrides generic harness subagent selection. Mainline and pre-existing worktrees are untouched. Exact-source reviews are independent of worker completion messages.
 
@@ -53,10 +53,18 @@ Runtime fix reviewed and fresh behavioral/compatibility checks pass; exact retai
 
 2026-10-05T23:52:21+00:00: Full-access verification resolved temporary-root/socket-path and fixture readiness defects. Required gate components pass, including 41 native SQLite cases and the full Team Control Plane rerun. Fresh deterministic complete scenario and independent evidence review pass. Evidence: evidence/full-access-verification.md. Ticket03 worktree prepared for requested TraeCLI launch; no commits or shared refs moved.
 
-## Ticket03 active
+## Historical Ticket03 launch
 
 2026-10-05T23:53:10Z: Ticket02 resolved and Ticket03 claimed. TraeCLI worker started in `/data02/home/philip.yang/workspace/corenius-trae-controller-bench-03`, branch `trae/controller-bench-03`, tmux `ticket-03` pane `%681`, native session `01a10e7c-4d52-7d03-a0f7-b959a877c267`. Recorded model gpt-5.5/xhigh with task_started; exact launch command retains detailed summaries and --yolo. Worker TMPDIR is owned `/data02/home/philip.yang/.cbt`. Seed manifest and prompt are retained under the worker .scratch/controller-backed-bench/implementation-03. Dashboard state lives outside /tmp in devx/tmp/corenius-controller-bench-dashboard. No project commits or mainline changes.
 
 ## Ticket03 resumed after interrupted session
 
 2026-10-07T08:15:39Z: Previous tmux session is absent; native worker log ends without terminal event at 2026-10-06T00:01:56Z. No old worker remains in its checkout. Partial source and red/green evidence preserved with resume-source-manifest.json. Renewed claim and launched requested TraeCLI command in dedicated session corenius-controller-bench-resume-20261007. Mainline now 9a92c95; read-only drift audit underway for readiness. Integration remains d7f6748 plus reviewed overlay; no reset or shared-ref changes. Rehydrate finds no STATE.md because this effort remains uncommitted; current pointers and manifests were inspected directly.
+
+## Owner-authorized graceful shutdown and publication
+
+Commit read: f4bfd2f7197cba943b02375f8c2f67269659ae47. The user explicitly authorized stopping Ticket03,
+its watcher and the Kata spike, preserving all state and retiring their checkouts/branches. All five owner
+PIDs exited. Independent review found no additional landable source beyond accepted main; local Kata
+configuration is retained privately. Original03 is accepted/resolved;04/05 remain unexecuted. Current records
+and deterministic implementation live on main, with no operational pointer to the historical integration branch.

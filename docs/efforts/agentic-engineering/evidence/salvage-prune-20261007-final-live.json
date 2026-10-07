@@ -1,0 +1,33 @@
+{
+  "commit_read": "f4bfd2f7197cba943b02375f8c2f67269659ae47",
+  "user_authority": "Stop the Ticket03 worker, its integration watcher, and the Kata spike gracefully. Preserve all work and service data, land any remaining verified work, then prune their worktrees and branches.",
+  "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/final-live-retirement",
+  "receipts": {
+    "retirement-receipt.json": {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/final-live-retirement/retirement-receipt.json",
+      "sha256": "6368aed00742dafb3b112e1d77b271082a13986af0496c9e3380796ff11fb5f9"
+    },
+    "kata-service-data-manifest.json": {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/final-live-retirement/kata-service-data-manifest.json",
+      "sha256": "51da832a4fd622b051a04aa1d02dacad68f4bd2a9e192b20b525bec0cd3730b8"
+    },
+    "initial-processes.json": {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/final-live-retirement/initial-processes.json",
+      "sha256": "b31c7c885a068248d86c4b8739aaf3d1224b8a7d60794438fcdb52e553ff7b10"
+    },
+    "post-stop-process-scan.json": {
+      "path": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/final-live-retirement/post-stop-process-scan.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  },
+  "all_original_owner_pids_missing": true,
+  "all_original_worktrees_retired_except_main": true,
+  "remaining_landable_delta": null,
+  "kata_service_backup_files": 1128,
+  "kata_service_backup_bytes": 102472140,
+  "policy_retained_refs": [
+    "main",
+    "ultron/mainline"
+  ],
+  "pending_final_action": "Publish this metadata and recover/retire its sole-writer checkout; final completion requires the external completion receipt."
+}

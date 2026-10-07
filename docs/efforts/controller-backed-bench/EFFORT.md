@@ -1,6 +1,6 @@
 # Controller-backed benchmark dogfooding
 
-Status: deterministic tickets 01/02/06 completed; ticket 03 active; no live trial started.
+Status: deterministic tickets 01/02/03/06 completed and landed; tickets04/05 remain open; no live trial started.
 Source read: 48d71588fff00ac70fa4a29e066a47a6b05f2ebd.
 
 ## Intent
@@ -70,4 +70,13 @@ SPEC.md is the durable local-tracker specification with lifecycle Status: open a
 
 ## Owner amendment during implementation
 
-The user explicitly selected preserving existing acceptance semantics instead of adding a stale-acceptance prerequisite. Conditional stale landing rejection and fresh integration Attempt/Candidate/proof/acceptance are required. This supersedes the earlier stronger acceptance-refusal contract. Implementation authority was granted through implement-spec with separate TraeCLI worktrees and dedicated tmux; live Codex run remains separately gated. Current canonical implementation record is on codex/controller-bench-integration, based at d7f6748.
+The user explicitly selected preserving existing acceptance semantics instead of adding a stale-acceptance prerequisite. Conditional stale landing rejection and fresh integration Attempt/Candidate/proof/acceptance are required. This supersedes the earlier stronger acceptance-refusal contract. Implementation authority was granted through implement-spec with separate TraeCLI worktrees and dedicated tmux; live Codex run remains separately gated. The historical canonical implementation record was on codex/controller-bench-integration, based at d7f6748; that branch is now recovered and retired.
+
+## Current publication and owner-authorized retirement
+
+Commit read: f4bfd2f7197cba943b02375f8c2f67269659ae47. Current accepted deterministic implementation and records
+are on main. Ticket03 is independently accepted after bounded repair2; its former worker, the integration
+watcher and persistent Kata daemon stopped gracefully under the explicit cleanup instruction. Their complete
+checkouts and service data are preserved in the recovery archive before retirement. Old paths, launch commands
+and branch names above are historical evidence. Future04/05 execution requires fresh isolated setup and its
+separate live/spend authority; no retired branch is an operational integration target.
