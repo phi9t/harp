@@ -4,19 +4,11 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "d7f674829e9844d011869b711d64fcf55313f7f1",
-  "dehydrated": "2026-10-06T21:27:47Z",
+  "base_commit": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+  "dehydrated": "2026-10-07T09:40:29Z",
   "effort": "controller-portfolio-stabilization",
   "runs": [],
-  "worktrees": [
-    {
-      "branch": "trae/controller-portfolio-stabilization-design",
-      "dirty": [],
-      "head": "fc9d285dcc661105487bbb2be0070ebed33de778",
-      "path": "/data02/home/philip.yang/workspace/corenius-trae-controller-portfolio-stabilization-design",
-      "pushed": false
-    }
-  ]
+  "worktrees": []
 }
 ```
 <!-- effort:machine:end -->
