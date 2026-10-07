@@ -5,18 +5,10 @@
 {
   "base_branch": "main",
   "base_commit": "84cbfebde694cad4acd46ab29b6c6c3cafe64a4a",
-  "dehydrated": "2026-10-07T09:34:55Z",
+  "dehydrated": "2026-10-07T09:35:48Z",
   "effort": "lead-worker-readiness",
   "runs": [],
-  "worktrees": [
-    {
-      "branch": "codex/landing-reconcile-8f143abf",
-      "dirty": [],
-      "head": "acc9306c6401e531002872c0e10b2b82c322a623",
-      "path": "/data02/home/philip.yang/devx/tmp/corenius-landing-reconcile-8f143abf",
-      "pushed": false
-    }
-  ]
+  "worktrees": []
 }
 ```
 <!-- effort:machine:end -->
