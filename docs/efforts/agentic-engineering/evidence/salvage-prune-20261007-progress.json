@@ -1,0 +1,58 @@
+{
+  "schema": "corenius.salvage_prune_progress.v1",
+  "commit_read": "5281ea10f382ad5fc50b7a6fa645e2ce9fd06c01",
+  "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f",
+  "bundle": {
+    "path": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/all-history.bundle",
+    "sha256": "4589888697a16f5cd717d22939f479fa7bacffc93ed0ba693dd97ab4c593ce00",
+    "verified": true
+  },
+  "initial_counts": {
+    "worktrees": 124,
+    "branches": 134,
+    "dirty": 73
+  },
+  "working_state": {
+    "snapshots": 120,
+    "stable_snapshots": 120,
+    "captured_entries": 5498,
+    "manifest_sha256": "3895792b7dcec11f7f806a397462b28dcd284d0437e67c4c5f1713c99dd20af9",
+    "scope": "tracked binary patches, staged/unstaged patches, changed and untracked file bytes; ignored artifacts remain in original trees and are not yet fully salvaged"
+  },
+  "retired": [
+    {
+      "path": "/data02/home/philip.yang/.local/share/kata-spike/courier-wt",
+      "head": "1a662cca7389172fde3894ab76354818c08036a7",
+      "branch": "",
+      "result": "clean merged checkout retired; history in main and verified recovery bundle"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-b1",
+      "head": "b8a3742a100ed952161f7ee81b6fab3d59a856a3",
+      "branch": "claude/b1-worker-supervisor",
+      "result": "clean merged checkout retired; history in main and verified recovery bundle"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-efforts",
+      "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+      "branch": "claude/durable-efforts",
+      "result": "clean merged checkout retired; history in main and verified recovery bundle"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-verify",
+      "head": "bccdcee8f0a47115bec8fa835b4c1763be72cdc4",
+      "branch": "traecli/verify-milano-reference",
+      "result": "clean merged checkout retired; history in main and verified recovery bundle"
+    }
+  ],
+  "remaining": {
+    "worktrees": 120,
+    "branches": 131,
+    "active_owner_worktrees": [
+      "corenius-trae-controller-bench-03",
+      "corenius-codex-controller-bench-integration",
+      "kata-spike/repo"
+    ],
+    "required": "salvage useful ignored artifacts; review newly landable work; handoff live owners before retirement; prune remaining recovered inactive trees/refs; preserve main transcript and nested worktree; verify pristine mainline and restoration coverage"
+  }
+}
