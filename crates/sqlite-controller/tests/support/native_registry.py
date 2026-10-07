@@ -4,6 +4,7 @@ and supplies deterministic local Responses SSE bytes. It never dispatches worker
 """
 import pathlib,tempfile,json,subprocess,socket,hashlib,time,sys,threading,http.server,socketserver,os,select,signal,sqlite3
 from wsutil import WS
+from native_registry_selection import binding_for_thread
 
 # Apply the repository temporary-root policy before any host allocation.
 import runpy as _temp_policy_runpy
@@ -529,7 +530,7 @@ def run(topology):
     for grant in grants:command('cancel_attempt',{'attempt':grant['attempt']})
     wait(lambda:query('snapshot')['occupied_slots']==0);return
    if os.environ.get('CORENIUS_TEST_EMPTY_RESTART')=='1':
-    observation=json.loads((r/'crash-boundary.observed').read_text());empty=next(b for b in registry['bindings'] if b['document'].get('thread_id')==observation['thread_id']);assert empty['document'].get('turn_id') is None and not empty['document']['ui_input_ready']
+    observation=json.loads((r/'crash-boundary.observed').read_text());empty=binding_for_thread(registry['bindings'],observation['thread_id']);assert empty['document'].get('turn_id') is None and not empty['document']['ui_input_ready']
     end=time.monotonic()+2
     samples=[]
     try:
@@ -549,7 +550,7 @@ def run(topology):
     for grant in grants:command('cancel_attempt',{'attempt':grant['attempt']})
     release.set();wait(lambda:query('snapshot')['occupied_slots']==0);page_ws.close();return
    if os.environ.get('CORENIUS_TEST_EMPTY_CRASH')=='1':
-    observation=json.loads((r/'crash-boundary.observed').read_text());binding=next(b for b in registry['bindings'] if b['document']['thread_id']==observation['thread_id'])
+    observation=json.loads((r/'crash-boundary.observed').read_text());binding=binding_for_thread(registry['bindings'],observation['thread_id'])
     assert confirm_restarted and binding['document']['server_incarnation']==observation['server_incarnation']
     assert len([o for o in registry['operations'] if o['binding']==binding['id'] and o['kind']=='thread/start'])==1
     print('actual_empty_thread_binding_recovered',topology,json.dumps(observation),flush=True)

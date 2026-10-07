@@ -581,3 +581,19 @@ fn stale_correction_authority_preserves_history_and_allows_current_delivery() {
         String::from_utf8_lossy(&output.stderr)
     );
 }
+
+#[test]
+fn native_registry_selection_skips_unbound_peer() {
+    let output = Command::new("/usr/bin/python3")
+        .arg(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tests/support/test_native_registry_selection.py"
+        ))
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
