@@ -52,8 +52,10 @@ current user goal and explicit lead delegation extend this repair to those three
 and the benchmark README. Defaults now select the same approved digest under the user's stable pinned-tools directory.
 The controller and SQLite entry point use `CORENIUS_KATA_PINNED_BINARY`; the native fixture retains `KATA_PINNED_BINARY`.
 Actual loaded default/override lookup and native fixture hash-guard behavior passed with all six SQLite-entry tests.
-Final default runtime/fixture gates, evidence publication and independent Standards/Spec review are pending. Neither this
-ticket nor controller-backed-bench Ticket03 is resolved by this candidate.
+Final default runtime and native fixture gates passed on `ded40db69367c94f70848cae0d56b4350d9877c2`; independent Standards
+and Spec reviews passed that same code tip with no findings. Exact commands, hashes and qualification limits are recorded in
+[the repair evidence](../evidence/landing-queue-20261007-controller03-repair2.md). Lead acceptance and landing remain pending.
+Neither this ticket nor controller-backed-bench Ticket03 is resolved by this candidate.
 
 ## Comments
 - 2026-10-07T09:53:38Z codex-controller03-salvage: claimed until 2026-10-08T09:53:38Z
