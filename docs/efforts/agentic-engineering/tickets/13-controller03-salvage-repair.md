@@ -38,10 +38,7 @@ source bytes and is not this candidate’s verification.
 This is the next bounded repair iteration after the original owner’s repair1;
 do not reset the three-round repair cap. Record and escalate non-convergence.
 
-## Comments
-- 2026-10-07T09:53:38Z codex-controller03-salvage: claimed until 2026-10-08T09:53:38Z
-
-### Repair 2 candidate, 2026-10-07
+## Repair 2 candidate, 2026-10-07
 
 The exact five-file delta was merged over the current readiness source. Only the result-schema constants conflicted;
 readiness constants and APIs were preserved alongside controller v2 and legacy v1 validation. Success now uses observed
@@ -57,3 +54,6 @@ The controller and SQLite entry point use `CORENIUS_KATA_PINNED_BINARY`; the nat
 Actual loaded default/override lookup and native fixture hash-guard behavior passed with all six SQLite-entry tests.
 Final default runtime/fixture gates, evidence publication and independent Standards/Spec review are pending. Neither this
 ticket nor controller-backed-bench Ticket03 is resolved by this candidate.
+
+## Comments
+- 2026-10-07T09:53:38Z codex-controller03-salvage: claimed until 2026-10-08T09:53:38Z
