@@ -4,8 +4,8 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "84cbfebde694cad4acd46ab29b6c6c3cafe64a4a",
-  "dehydrated": "2026-10-07T09:35:48Z",
+  "base_commit": "89ff376380fa390ac718e2f0f934a59671bfc07a",
+  "dehydrated": "2026-10-07T10:27:12Z",
   "effort": "lead-worker-readiness",
   "runs": [],
   "worktrees": []
