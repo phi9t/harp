@@ -52,15 +52,15 @@ seam; three instantiations judged by the same scenarios; Codex workers before tr
 default; the lead-driven instantiation built and run first, agent-heavy, with notes kept. Nothing is
 committed. No tickets exist. No worker has been launched under this effort.
 
-## Next actions
+### Historical next actions
 
 1. Get the owner's approval of the proposed ticket breakdown.
 2. Publish the spec into tickets with blocking edges, lead-driven instantiation first: harness scenarios, then toolbox changes, then the live trial.
 3. Ask the owner for authority to commit and land the effort record.
 
-## Open questions
+### Historical open questions
 
-## Traps
+### Historical traps
 
 Things a fresh agent would get wrong.
 
@@ -69,4 +69,4 @@ Things a fresh agent would get wrong.
 - The fleet runner in the benchmark is not the seam: it commits for the worker and lands by rebase.
 - Sureal is read-only from this effort.
 
-## Do not redo
+### Historical do not redo
