@@ -48,3 +48,17 @@ SHA256 identities:
 - cargo-selection-green.log: `8a9ab5d5b6c7dbf86afb5b7ecb7da4bfcfb80ae005118677a1c8cb025cacfe75`
 - native-case.log: `aaddce005b23c0c914a50b224b40a1d943e7d39874a760bb76ed7dfcf32a6881`
 - native-other-selector.log: `8a9e105384b06b0e421170827ec64f7aa9d43a76d889f18f19bed9af56e866e4`
+
+## Additional affected-path verification
+
+At the primary's request, the unchanged pagination case
+`repair2_empty_thread_after_first_loaded_page_recovers` passed in both shared
+and separate topologies: exit0, 1 passed, 41 filtered out, 70.78 seconds.
+Its log `native-pagination.log` SHA256 is `11bdeb9f588f4fc9779210acd7d5bc920bcbb5a9bf29317ce1f5e470fdbd2809`.
+All three native cases enabling EMPTY_CRASH now have fresh focused proof.
+Both independent reviews of this bounded delta reported PASS to the primary.
+
+A supplementary `cargo fmt --check` reported pre-existing indentation in
+`src/git_workspace.rs` around line960 (three private-temp environment lines).
+That product source is unchanged by this fixture repair; no formatting change
+was made. Log `fmt.log` SHA256 is `e5e8bcaf286f7eb4b38c58fd94985e0af0284ed1299b16e04ca19920b0bb6708`.
