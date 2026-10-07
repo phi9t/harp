@@ -16,8 +16,8 @@ Actual active coordination: /root on codex/sqlite-controller-execution. Actual01
 ```json
 {
   "base_branch": "main",
-  "base_commit": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
-  "dehydrated": "2026-10-07T09:40:30Z",
+  "base_commit": "89ff376380fa390ac718e2f0f934a59671bfc07a",
+  "dehydrated": "2026-10-07T10:27:12Z",
   "effort": "team-control-plane",
   "runs": [],
   "worktrees": []
