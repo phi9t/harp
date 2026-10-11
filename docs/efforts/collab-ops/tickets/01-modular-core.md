@@ -1,10 +1,10 @@
 # 01 modular-core: Modular collab, same behavior
 
 Type: task
-Status: claimed
-Owner: collab-ops-01
+Status: open
+Owner:
 Blocked by: 
-Claimed: 2026-10-11T23:37:11Z expires 2026-10-13T23:37:11Z
+Claimed:
 
 Triage: ready-for-agent
 
@@ -24,3 +24,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 50, 54). Use the project glo
 
 ## Comments
 - 2026-10-11T23:37:11Z collab-ops-01: claimed until 2026-10-13T23:37:11Z
+- 2026-10-11T23:59:00Z claude: released; first launch had no declared paths
