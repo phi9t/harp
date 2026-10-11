@@ -1,0 +1,347 @@
+{
+  "recorded_at": "2026-10-11T19:27:47.673544+00:00",
+  "metadata": {
+    "schema_version": 1,
+    "source_revision": "b7bee20e00c822feec48362a1dbd8d62fe9c3641",
+    "branch": "codex/engineering-postgres-temporal-labs",
+    "worktree_status": "M crates/team-control-plane/tests/run-postgres.sh\n?? docs/efforts/engineering-profile-labs/",
+    "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "cargo": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+    "temporal": "temporal version 1.7.0 (Server 1.31.0, UI 2.49.1)",
+    "docker_server": "26.1.4",
+    "postgres": {
+      "pinned_reference": "postgres@sha256:f3bd19c606e442c3d7bdfa8002e03fe260a1023351e0ea4598032022b68dd6e3",
+      "image_id": "sha256:567d5d704a3e5a4864393b623a0d50eb1b5a4ad134cdac7cf19555cb2d8ffe9e",
+      "version_env": [
+        "PG_MAJOR=17",
+        "PG_VERSION=17.6-2.pgdg12+1"
+      ]
+    },
+    "input_sha256": {
+      "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510",
+      "crates/team-control-plane/tests/run-postgres.sh": "fe3f1d2c82d1f57ad0a00b88f894da7ada736a2c55b258b9b9aed4bd1f126dbb",
+      "crates/team-control-plane/tests/run-temporal.sh": "2f39b3108f792cd1c6e1bec79031119b95987714e0c1f8f63e1df1c0ce47177f",
+      "crates/team-control-plane/src/storage.rs": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68",
+      "crates/team-control-plane/src/admission.rs": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c",
+      "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+      "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "docs/efforts/engineering-profile-labs/run.py": "35842a5b7e36ca5eb0440083ad0e8db87d5d8ffe158d87fc98aeeb23976df41b",
+      "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/cleanup.json": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/mission.json": "c2b58de522e88450873d95db925ba5d28c9b94ab691f3115c65d29941284cb50",
+      "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/run-manifest.json": "e2e8b5b8b372cc51c3147ba5ff9553601cf510a8a2ab1e418a55aadb2ac9436c",
+      "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-first.json": "1f7f80a3fc91ff34a038fef1e324e77b34d54e826b19cbdb2bc241786eb3420c",
+      "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-terminal.json": "4c61d00569dd0893d64e1e3b7f9dfe9e6c4695cc45521b1246de3a973c1df483"
+    },
+    "execution": {
+      "TMPDIR": "/data02/home/philip.yang/devx/tmp",
+      "CARGO_TARGET_DIR": "/data02/home/philip.yang/.codex/worktrees/833c/corenius-labs/.scratch/engineering-profile-labs/cargo-target",
+      "cargo_resolution": "locked and offline",
+      "test_threads": 1,
+      "boundary": "host-native learning fixtures; no Insula proof"
+    }
+  },
+  "results": {
+    "accepted": true,
+    "results": [
+      {
+        "lab": "postgres",
+        "started_at": "2026-10-11T19:25:31.035065+00:00",
+        "finished_at": "2026-10-11T19:25:37.559143+00:00",
+        "elapsed_seconds": 6.524,
+        "command": [
+          "bash",
+          "/data02/home/philip.yang/.codex/worktrees/833c/corenius-labs/crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "kernel",
+          "--",
+          "--nocapture",
+          "--test-threads=1"
+        ],
+        "timeout_seconds": 1200,
+        "timed_out": false,
+        "exit_code": 0,
+        "required_tests_missing": [],
+        "test_summary": [
+          "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.36s"
+        ],
+        "cleanup": {
+          "postgres-cleanup.json": {
+            "container": "corenius-kernel-pg-1791746731-3138423",
+            "owned_container_removed": true
+          }
+        },
+        "accepted": true,
+        "artifacts": {
+          "postgres-cleanup.json": {
+            "bytes": 87,
+            "sha256": "fc23e2bf0f3ecced08a71aa32c6fa726fdf8c4d261c385d66ba38d227a4564ea"
+          },
+          "postgres-connections.jsonl": {
+            "bytes": 225,
+            "sha256": "cc883293f177d8e9b03bec8dec155b92a366392981075504d6846bd696a5cbaa"
+          },
+          "postgres-final.json": {
+            "bytes": 67,
+            "sha256": "ff750ae2fd7cbb14a6d93374e16683ea71c889085f5e01a43bc9c37ad1aed7f9"
+          },
+          "postgres-fixture.json": {
+            "bytes": 254,
+            "sha256": "3a2306f7d70f99929cbe3c6053188a7989507605d27d3c448e260b2299bbb4d1"
+          },
+          "postgres.log": {
+            "bytes": 7598,
+            "sha256": "3b7b94cad8201c079aab39acb48ef695a41a3c53b5235ffda2ee700c121d4802"
+          },
+          "test.log": {
+            "bytes": 1335,
+            "sha256": "7d60eb5232f56c1083d451921f51674bf555bf2af4341eb47f6eceb1f4d38de0"
+          }
+        }
+      },
+      {
+        "lab": "temporal",
+        "started_at": "2026-10-11T19:25:37.559705+00:00",
+        "finished_at": "2026-10-11T19:26:00.119839+00:00",
+        "elapsed_seconds": 22.56,
+        "command": [
+          "bash",
+          "/data02/home/philip.yang/.codex/worktrees/833c/corenius-labs/crates/team-control-plane/tests/run-temporal.sh",
+          "--offline",
+          "--test",
+          "temporal",
+          "--",
+          "--nocapture",
+          "--test-threads=1"
+        ],
+        "timeout_seconds": 1200,
+        "timed_out": false,
+        "exit_code": 0,
+        "required_tests_missing": [],
+        "test_summary": [
+          "test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 18.97s"
+        ],
+        "cleanup": {
+          "postgres-cleanup.json": {
+            "container": "corenius-kernel-pg-1791746737-3141111",
+            "owned_container_removed": true
+          },
+          "cleanup.json": {
+            "temporal_listener_closed": true
+          }
+        },
+        "accepted": true,
+        "artifacts": {
+          "activity-invocations.jsonl": {
+            "bytes": 2957,
+            "sha256": "ba3c8a1d4db6fe759ed0bb01e10d48db93f65cb12bf88d64913a0ff5391a750b"
+          },
+          "cleanup.json": {
+            "bytes": 34,
+            "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+          },
+          "mailbox-first.json": {
+            "bytes": 33228,
+            "sha256": "58c30d2df84181cf7086d5a8ca934ceeda02692a0cee282656c828338da1dc19"
+          },
+          "mailbox-terminal.json": {
+            "bytes": 18521,
+            "sha256": "3ff5c061d6bfb771b845b374a10c0db3b6f418cf3f9fef07247c9570fb3b21f8"
+          },
+          "mission.json": {
+            "bytes": 9096,
+            "sha256": "d1505f2d2c0afe4de9246add64158420c567464289f56868d4161747ffb27d77"
+          },
+          "postgres-cleanup.json": {
+            "bytes": 87,
+            "sha256": "cbec23758961ab17c1116c81bb7aaee4b3221ecd8649fed04fd6f03a98b11103"
+          },
+          "postgres-connections.jsonl": {
+            "bytes": 911,
+            "sha256": "640928fbb36a1477b230adab7fb3d436c3af5e38618c922607384e15568ff8e6"
+          },
+          "postgres-final.json": {
+            "bytes": 67,
+            "sha256": "ff750ae2fd7cbb14a6d93374e16683ea71c889085f5e01a43bc9c37ad1aed7f9"
+          },
+          "postgres-fixture.json": {
+            "bytes": 254,
+            "sha256": "07cb5a56e20f36307387668412c5a42831b382d274f5db6efe1231b88911291f"
+          },
+          "postgres.log": {
+            "bytes": 4090,
+            "sha256": "b1900817a1df1a18e52d199d36e9828a5d1f153bb4be80dcba7fbba8c2ae2cf2"
+          },
+          "registry-observation.json": {
+            "bytes": 308,
+            "sha256": "78ca1e989ae56b308e32b0abd383b6cfe0b77c8162aeaefdf93920a8452ee841"
+          },
+          "reply-lost.marker": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "server.log": {
+            "bytes": 130,
+            "sha256": "afca2d0e3b771b3e603357a932efb34c895b70613768dd6ffdf159804cf727b3"
+          },
+          "task-first.json": {
+            "bytes": 34726,
+            "sha256": "f4a9393f92a65bb9043f36e6ed914782edaef23620b9190d0e283bdf2ac30888"
+          },
+          "task-terminal.json": {
+            "bytes": 23135,
+            "sha256": "d3a6896edcf1b18a6a102dfaac82b0fdc8f052d7917819591d828cef1db8b907"
+          },
+          "temporal.sqlite": {
+            "bytes": 794624,
+            "sha256": "951a17d6a0ef83567cd9e3efa95ebce8c5e2b82c5e122b8184afab57be1bd8c8"
+          },
+          "test.log": {
+            "bytes": 1163,
+            "sha256": "c9227722c75f31def4738c687d2ef7860ffcad4c5c2d4862de4fbf7a69b479a3"
+          }
+        }
+      }
+    ]
+  },
+  "observations": {
+    "history_structure": {
+      "task-first.json": {
+        "events": 55,
+        "event_types": {
+          "1": 1,
+          "5": 10,
+          "26": 4,
+          "6": 9,
+          "7": 9,
+          "10": 4,
+          "11": 4,
+          "12": 4,
+          "17": 4,
+          "18": 4,
+          "8": 1,
+          "28": 1
+        }
+      },
+      "task-terminal.json": {
+        "events": 33,
+        "event_types": {
+          "1": 1,
+          "5": 6,
+          "6": 6,
+          "7": 6,
+          "10": 3,
+          "11": 3,
+          "12": 3,
+          "17": 2,
+          "18": 2,
+          "2": 1
+        }
+      },
+      "mission.json": {
+        "events": 12,
+        "event_types": {
+          "1": 1,
+          "5": 2,
+          "26": 1,
+          "6": 2,
+          "7": 2,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "2": 1
+        }
+      },
+      "mailbox-first.json": {
+        "events": 52,
+        "event_types": {
+          "1": 1,
+          "5": 10,
+          "26": 1,
+          "6": 9,
+          "7": 9,
+          "10": 4,
+          "11": 4,
+          "12": 4,
+          "17": 4,
+          "18": 4,
+          "8": 1,
+          "28": 1
+        }
+      },
+      "mailbox-terminal.json": {
+        "events": 26,
+        "event_types": {
+          "1": 1,
+          "5": 5,
+          "6": 5,
+          "7": 5,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "17": 1,
+          "26": 2,
+          "2": 1
+        }
+      }
+    },
+    "maximum_activity_attempt": 2,
+    "registry": {
+      "after_can": {
+        "incarnation": 2,
+        "lifecycle": "running",
+        "run_id": "b4e632cf-5aaf-4557-8932-45fdceebb9e1"
+      },
+      "first_run": "01a12c6d-b03f-7448-ae2d-5329c7105ffb",
+      "terminal": {
+        "incarnation": 2,
+        "lifecycle": "completed",
+        "run_id": "b4e632cf-5aaf-4557-8932-45fdceebb9e1"
+      }
+    }
+  },
+  "runner_rejections": [
+    {
+      "name": "invalid-deadline",
+      "command": [
+        "python3",
+        "docs/efforts/engineering-profile-labs/run.py",
+        "--timeout-seconds",
+        "0"
+      ],
+      "environment_delta": {},
+      "exit_code": 2,
+      "stderr": "usage: run.py [-h] [--lab {all,postgres,temporal}]\n              [--timeout-seconds TIMEOUT_SECONDS]\nrun.py: error: timeout must be between 30 and 1800 seconds"
+    },
+    {
+      "name": "unsafe-tmpdir",
+      "command": [
+        "python3",
+        "docs/efforts/engineering-profile-labs/run.py"
+      ],
+      "environment_delta": {
+        "TMPDIR": "/tmp"
+      },
+      "exit_code": 2,
+      "stderr": "usage: run.py [-h] [--lab {all,postgres,temporal}]\n              [--timeout-seconds TIMEOUT_SECONDS]\nrun.py: error: run through python3 tools/temp_root.py --; use an owned TMPDIR outside /tmp"
+    }
+  ],
+  "initial_warmup": {
+    "exit_code": 2,
+    "log_sha256": "68a89dcf4821c08eda9a4c3eb016136d6c234da1aa776478de38161d92a029f4",
+    "status": "invalid wrapper execution; not accepted",
+    "reason": "The shell wrapper was edited while its earlier Bash process was running. All 16 tests passed, but the live wrapper read changed offsets and reported a syntax error at then during its continuation. No production bug was inferred; final unchanged-wrapper fresh runs passed.",
+    "cleanup_observation": "No matching fixture container was present in docker ps before the first indexed final run."
+  },
+  "limitations": [
+    "host-native learning fixtures, not Insula execution",
+    "parked implementation, no production readiness",
+    "no server restart, HA, storage crash recovery or arbitrary upgrade proof",
+    "no native provider call or real agent qualification",
+    "runner timeout termination path not fault-qualified",
+    "independent parent review pending"
+  ]
+}

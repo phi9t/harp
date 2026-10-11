@@ -65,8 +65,37 @@ with open(path, "w") as f:
 PY
  fi
  docker stop "$name" >/dev/null
+ if [[ -n "${TEMPORAL_FIXTURE_EVIDENCE:-}" ]]; then
+  python3 - "$name" "$TEMPORAL_FIXTURE_EVIDENCE/postgres-cleanup.json" <<'PYCODE'
+import json
+import subprocess
+import sys
+
+remaining = subprocess.run(
+    ["docker", "ps", "-a", "--filter", f"name=^/{sys.argv[1]}$",
+     "--format", "{{.Names}}"],
+    check=True, capture_output=True, text=True,
+).stdout.splitlines()
+removed = sys.argv[1] not in remaining
+with open(sys.argv[2], "w") as output:
+    json.dump({"container": sys.argv[1], "owned_container_removed": removed}, output)
+if not removed:
+    raise SystemExit("owned PostgreSQL container remained after stop")
+PYCODE
+ fi
 }
 trap cleanup EXIT
+if [[ -n "${TEMPORAL_FIXTURE_EVIDENCE:-}" ]]; then
+ python3 - "$name" "$image" "$port" "$TEMPORAL_FIXTURE_EVIDENCE/postgres-fixture.json" <<'PYCODE'
+import json
+import sys
+
+with open(sys.argv[4], "w") as output:
+    json.dump({"container": sys.argv[1], "image": sys.argv[2],
+               "host": "127.0.0.1", "port": int(sys.argv[3]),
+               "storage": "disposable tmpfs", "authentication": "fixture-only trust"}, output)
+PYCODE
+fi
 ready=0
 for i in $(seq 1 60); do
  if postgres_tcp_ready; then ready=1; break; fi
