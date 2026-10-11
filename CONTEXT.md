@@ -94,6 +94,16 @@ An immutable proposed result whose identity includes the content and context
 needed to verify and accept it.
 _Avoid_: Mutable change ID as proof subject.
 
+**Integration commit**:
+The single commit that combines a Candidate with its ticket's closure on the
+admitted trunk base; the exact subject that is checked and, if accepted, landed.
+_Avoid_: Candidate, merge commit, rebased copy.
+
+**Check receipt**:
+The durable record binding a check's subject, command, outcome and log identity;
+landing requires one that still matches its subject.
+_Avoid_: CI status, "tests passed", operator memory.
+
 ## Ownership and execution
 
 **ExecutionScope**:
