@@ -3,7 +3,7 @@
 Type: task
 Status: claimed
 Owner: codex-postgres-temporal-labs
-Blocked by: 
+Blocked by:
 Claimed: 2026-10-11T19:19:20Z expires 2026-10-12T19:19:20Z
 
 Triage: needs-triage
