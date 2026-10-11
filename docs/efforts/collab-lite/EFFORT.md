@@ -1,8 +1,9 @@
 # Collab Lite adoption
 
-Status: reviewed implementation complete; ticket closure awaits human Git actions
+Status: accepted; ready for owner-authorized local mainline landing
+Base: main
 Base commit: d31c3df460132e9ab87c0a52bffd949c387543e8
-Integration branch: codex/collab-lite
+Integration branch: codex/collab-lite-mainline
 
 ## Intent
 Implement the user-supplied local Git-ticket and SQLite CLI design in Corenius.
@@ -30,3 +31,10 @@ The CLI implements the attached commands and coordination guarantees with fresh
 public-interface integration tests, safe temporary allocation, exact check identity,
 conservative recovery/cleanup, documentation and repository gate registration.
 Prior attached test results are not fresh evidence for this implementation.
+
+## Mainline candidate
+
+The user authorized local mainline landing. The reviewed source commit f6ba6c8
+was cherry-picked onto the pending health-repair tip be9de21 in a new private
+worktree, preserving the original branch and peer work. Main is untouched until
+the peer landing completes and the shared landing lock is acquired.
