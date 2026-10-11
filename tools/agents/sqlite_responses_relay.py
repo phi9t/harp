@@ -13,6 +13,7 @@ import http.server
 import json
 import os
 import pathlib
+import socket
 import socketserver
 import ssl
 import stat
@@ -101,6 +102,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         started = time.time()
         record = {'started':started, 'path':'/v1/responses'}
         response = None
+        stream_timer = None
         acquired = False
         try:
             if self.path != '/v1/responses':
@@ -147,16 +149,43 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             total = 0
             deadline = time.monotonic() + STREAM_SECONDS
+            stream_socket = response.fp.raw._sock if isinstance(response, http.client.HTTPResponse) else None
+
+            def expire_stream():
+                # Inactivity timeouts alone do not bound HTTP chunk framing:
+                # a peer can keep readline alive by trickling header bytes.
+                for channel in (stream_socket, self.connection):
+                    if channel is not None:
+                        try:
+                            channel.shutdown(socket.SHUT_RDWR)
+                        except OSError:
+                            pass
+
+            stream_timer = threading.Timer(STREAM_SECONDS, expire_stream)
+            stream_timer.daemon = True
+            stream_timer.start()
             while time.monotonic() < deadline:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError('response wall deadline')
+                # HTTPResponse owns a file wrapper even when a close-delimited
+                # response has detached the socket from HTTPSConnection.
+                if stream_socket is not None:
+                    stream_socket.settimeout(remaining)
                 chunk = response.read1(65536) if hasattr(response, 'read1') else response.read(65536)
+                if time.monotonic() >= deadline:
+                    raise TimeoutError('response wall deadline')
                 if not chunk:
                     record['stream_complete'] = True
                     break
                 total += len(chunk)
                 if total > RESPONSE_LIMIT:
                     raise ValueError('response byte limit')
+                self.connection.settimeout(deadline - time.monotonic())
                 self.wfile.write(chunk)
                 self.wfile.flush()
+                if time.monotonic() >= deadline:
+                    raise TimeoutError('response wall deadline')
             else:
                 raise ValueError('response wall deadline')
             record['response_bytes'] = total
@@ -170,6 +199,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 except OSError:
                     pass
         finally:
+            if stream_timer is not None:
+                stream_timer.cancel()
+                stream_timer.join()
             if response is not None:
                 response.close()
                 connection = getattr(response, '_owned_connection', None)

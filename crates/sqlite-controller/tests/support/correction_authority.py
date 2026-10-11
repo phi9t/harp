@@ -34,7 +34,7 @@ def exercise(root,query,command,request,grants,lead,wait,topology,token):
   before=correction_rows()
  finally:(root/'hold-codex').unlink(missing_ok=True)
  # Peer correction proves actual autonomous native dispatch is progressing, without allowing stale authority.
- wait(lambda:byid(others[1]['correction'])['state']=='presented',20)
+ wait(lambda:byid(others[1]['correction'])['state'] in ('presented','acknowledged'),20)
  try:wait(lambda:byid(others[0]['correction'])['state'] in ('presented','acknowledged'),12)
  except AssertionError:pass
  registry=query('codex_registry');after=correction_rows()
@@ -43,7 +43,7 @@ def exercise(root,query,command,request,grants,lead,wait,topology,token):
  with sqlite3.connect((root/'state.db').as_uri()+'?mode=ro',uri=True) as db:
   ops=db.execute("SELECT id,state,intent FROM codex_operations WHERE json_extract(intent,'$.correction') IN (?,?,?)",(first['correction'],others[0]['correction'],others[1]['correction'])).fetchall()
  old_refusal=request(root/'controller.sock',{'auth':oldlead,'project':'p','query':{'kind':'monitor_context','args':{}}});assert 'error' in old_refusal
- result={'topology':topology,'old_lead':oldlead['principal'],'current_lead':currentlead['principal'],'original_author_retained':original_author,'reauthorization':'not attempted before fairness discriminator','before':before,'after':after,'native_correction_operations':ops,'peer_positive':positive,'current_authorized_behind_stale':blocked,'stale':stale,'old_lead_refused':old_refusal,'contract_pass':blocked['state'] in ('presented','acknowledged'),'qualification':'Actual native shared runtime; public fixture observations/findings explicitly synthetic; all auth/replacement/correction requests real. Peer presented proves dispatch progress; no old-grant execution allowed.'}
+ result={'topology':topology,'old_lead':oldlead['principal'],'current_lead':currentlead['principal'],'original_author_retained':original_author,'reauthorization':'not attempted before fairness discriminator','before':before,'after':after,'native_correction_operations':ops,'peer_positive':positive,'current_authorized_behind_stale':blocked,'stale':stale,'old_lead_refused':old_refusal,'contract_pass':blocked['state'] in ('presented','acknowledged'),'qualification':'Actual native shared runtime; public fixture observations/findings explicitly synthetic; all auth/replacement/correction requests real. Peer delivered proves dispatch progress; no old-grant execution allowed.'}
  (out/'correction-result.json').write_text(json.dumps(result,indent=2));(root/'independent-correction-result.json').write_text(json.dumps(result,indent=2));print('independent_correction_authority_queue',json.dumps(result),flush=True)
  assert positive['state'] in ('presented','acknowledged'), positive
  assert result['contract_pass'], 'superseded authorization starves later current correction'

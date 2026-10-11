@@ -1,21 +1,14 @@
 {
-  "version": "happy-path-4",
-  "observed_at": "2026-10-05T05:44:15.503225+00:00",
-  "coordinator": "/root",
+  "version": "retirement-reconciliation-1",
+  "observed_at": "2026-10-07",
+  "projection_kind": "coordinator-owned current execution disposition; historical trials preserved separately",
+  "execution_state": "quiescent",
+  "coordinator": null,
   "writer": null,
-  "writer_state": "No active implementation writer; two independent review axes on immutable prototype candidate",
-  "thread": null,
-  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
-  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
-  "source": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
-  "tickets": {
-    "01": "accepted",
-    "02": "accepted",
-    "03": "accepted",
-    "04": "accepted",
-    "05": "unaccepted; extra C1/C2 round consumed; scoped product checks pass, fixture timing finding OPEN",
-    "06": "live happy-path attempted; current outer exit1 after model capacity; qualification pending"
-  },
+  "worktree": null,
+  "source": "main; verify exact HEAD before any new qualification",
+  "history": "history/CURRENT-before-retirement-reconciliation-20261007.json",
+  "history_sha256": "ec99c8de9728437bcd027d849b38598aa3e718d9c874db8c047c6aa93c23cff2",
   "caps": {
     "05_prior": 3,
     "05_extra_authorized": 1,
@@ -24,252 +17,49 @@
     "04": 3,
     "EMPTY_diagnostics": 2
   },
-  "next": "Independent exact-candidate Standards/Spec; scoped disposition; fresh launcher for approved live command",
+  "tickets": {
+    "01": "accepted",
+    "02": "accepted",
+    "03": "accepted",
+    "04": "accepted",
+    "05": "unaccepted; extra C1/C2 round consumed; scoped product checks pass, fixture timing finding OPEN",
+    "06": "live happy-path attempted; current outer exit1 after model capacity; qualification pending"
+  },
+  "claim": {
+    "ticket": "05",
+    "owner": "sqlite-controller-05",
+    "expires": "2026-10-05T19:11:38Z",
+    "state": "expired historical claim; tracker status remains claimed for explicit owner disposition; no renewal or writer authority"
+  },
+  "next": "Review bounded health-repair candidate and exact-source gate results; separately resolve expired ticket05 ownership and baseline qualification",
+  "authority": "No active writer or executable launch admitted by this reconciliation; historical trial grants do not authorize continuation",
   "unknowns": [
     "original process/session disappearance cause unestablished",
     "controller restoration and native binding reconciliation pending",
     "concurrent useful episode overlap and stale-base reintegration unproven",
     "baseline/mainline qualification pending"
   ],
-  "deferred": [
-    "crash/replay/oversize/history expansion",
-    "root Insula implementation",
-    "baseline/mainline acceptance"
-  ],
-  "ack": "Matched actor/tree/base and all handoff/dirtydiff/REDlog pins; root independently resolved thread from session_meta parent/agent_path",
-  "claim": "Existing unexpired logical sqlite-controller-05 claim retained; actual actor admission/ACK bound in this projection.",
-  "mainlead_assignment_notice": {
-    "operation": "c5ed548b-79cc-443b-aade-c0bb8d8c2bf7",
-    "observed_at": "2026-10-05T05:28:44.741698+00:00",
-    "state": "queued",
-    "exit": 0,
-    "receipt": "01a10a89-2df4-7b31-af6b-2c22390e92b7",
-    "receipt_state": "exact unique nontarget UUID",
-    "presentation": "unknown",
-    "ack": "unknown"
+  "open_findings": {
+    "C1-TEST-PEER-WAIT": "OPEN; repair cap remains consumed",
+    "relay_S2": "OPEN; strict deadline not proven"
   },
-  "focused_results": {
-    "C1": "Independent actual candidate PASS75.146s vs frozen baseline RED49.015s (Spec); both runtime topologies tested.",
-    "C2": "Independent actual candidate PASS6.434s vs baseline RED6.327s; current/history/task operator progress privacy checked (Spec/Standards).",
-    "fixture_issue": "Branch654 + Standards confirm Medium presented-only peer wait timing defect in correction_authority.py:37. OPEN; no repair/reset under06.",
-    "qualification": "Scoped product behavior only; reports sealing, full baseline/release still pending."
+  "baseline_qualified": false,
+  "recovery": {
+    "original_worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+    "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite06-happy-path",
+    "receipt": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/unmerged-tree-retirement-receipts.json",
+    "source": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+    "recovery_verified": true
   },
-  "pending_gates": [
-    "actual newsolo exactcandidate verificationacceptanceFF",
-    "actual two usefulepisode overlap/nativeobservers/staleintegration",
-    "fullbaseline hardening/sourcefreeze/integration/release later"
-  ],
-  "context": {
-    "action": "Model-link author quiesced at120852; no next phase in stale context",
-    "prior_input": 123724,
-    "prior_cached": 121600,
-    "prior_output": 2684,
-    "window": 258400,
-    "current_first_request": "pending public telemetry",
-    "cap_reset": false,
-    "root_compaction": {
-      "actual_at": "2026-10-05T05:11:18.039Z",
-      "before_input": 181266,
-      "first_after_input": 43509,
-      "window": 258400,
-      "proof": "public metadata; next positive request measured"
-    },
-    "current_last_input": 120852,
-    "current_cached": 120064,
-    "current_output": 479,
-    "current_window": 258400,
-    "current_measured_at": "2026-10-05T05:39:18.483Z",
-    "boundary_action": "Checkpoint requested; actual acknowledgement/compaction/fresh successor pending",
-    "running_gate_interruption": false,
-    "previous_thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282"
-  },
-  "last_writer": {
-    "actor": "/root/sqlite06_model_link_author",
-    "thread": "01a10a86-8959-7022-a25a-8504f165f2a0",
-    "state": "completed/quiescent; all scoped checks ended",
-    "handoff_sha256": "ee4732cd738924e87c7be99d63c33f8de33284462a134d94d49d67c8e3bd0a4e"
-  },
-  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
-  "projection_kind": "coordinator-owned manual canonical projection; product controller projection qualification remains pending",
-  "controller_event_cursor": 114,
-  "retention": {
-    "audit_sha256": "ac23bf163615b7d95ed78ad7448f0c800eac531b535da35a43d1166e4ae3b76a",
-    "crate_inputs": 50,
-    "archives": 7,
-    "members": 1931,
-    "original_birth_ids": 32,
-    "same_birth_live": 0,
-    "unknown_reads": 0,
-    "historical_red_script_pins": "Final reproducer hash is retrospective; original logs/source binary retained; independent focused checks adjudicate cause."
-  },
-  "trial_authority": "c9 happy-path kickoff; prepare missing links now, actual model input after root scoped disposition",
-  "scoped_disposition": "evidence/05/c1c2-extra1/independent/root-disposition.json",
-  "happy_path_blocker": {
-    "kind": "model_capacity",
-    "model": "gpt-6-sol",
-    "native_turn": "01a10a70-24c4-7703-9729-86c40cb540b4",
-    "error": "serverOverloaded",
-    "outer_exit": 1,
-    "worker_attempts": 0,
-    "authority": "Root admitted one supported alternate probe; no source change/retry/new deployment yet",
-    "supported_alternative": "gpt-6.1-sol actualprobe completed0; installedlisted",
-    "remaining": "native UI/durable dispatch/thread factory omit selected model; narrow fix admitted"
-  },
-  "next_executable_attachment": "tmux attach -t corenius-team",
-  "next_launch": {
-    "cwd": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
-    "command": "python3 tools/agents/sqlite_baseline.py start --session corenius-team --reuse-kata /tmp/cb-20261005T050033Z-84eb5a/kata.json --target-dir /data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/continuation-target --model gpt-6.1-sol",
-    "state": "Reviewed-candidate trial pending independent disposition; old84eb retained, no duplicate old bootstrap"
-  },
-  "relay": {
-    "source": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
-    "test": "c0f22e117fdf40e80c1a00ed885e7be2e46167df2795f6a08fdb7ce3b049d396",
-    "S1": "Resolved: independent3/3 privacy/routing/authority +author2/2 actualexit0; runtimecanaries0/2 retained; exacthashesunchanged.",
-    "S2": "Confirmed deadline-before-read/lateEOF bookkeeping gap; hardeningOPEN/prototype-nonblocking; strict180s wallnotproven.",
-    "actual_live_provider": "HTTP200/response.completed/gpt6-sol/26input11output2.605s, safe receipt929d0023"
-  },
-  "trial": {
-    "run": "/tmp/cb-20261005T050033Z-84eb5a",
-    "run_id": "20261005T050033Z-84eb5a",
-    "session": "corenius-team",
-    "source": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
-    "source_tree": "e33f6ad0017029a0ac826356d920dd6f55ea6865",
-    "lead_thread": "01a10a6f-b309-7a92-854d-25092fc7a92b",
-    "controller_binary_sha256": "46e0613f2871bf081b2bddea3c73638f09ee93331fc7c7b9cdfa30aba9a8073c",
-    "Kata_instance": "01M45415JGMBCGXVAN68BNGFD9",
-    "Kata_project_uid": "01M456YRGAEKPQVYZM0Z2M7JA6",
-    "state": "outer terminal exit1; controller/Kata/lead/observers retained; no worker Attempt",
-    "new_task_actors_for_views": false,
-    "native_product_worker_observers": "pending admitted role bindings; currentworkerA/B panes areJSONviews",
-    "baseline_qualified": false,
-    "windows": {
-      "outer": "@121/%131",
-      "relay": "@122/%132",
-      "workers": "@123/%133",
-      "controlplanes": "@124/%134",
-      "controller": "@126/%136",
-      "gateway": "@127/%137",
-      "lead": "@128/%138",
-      "dashboard": "@129/%139",
-      "workerA_status": "@130/%140",
-      "workerB_status": "@131/%141"
-    },
-    "births": {
-      "relay": [
-        1269572,
-        59201455
-      ],
-      "workers": [
-        1269620,
-        59201508
-      ],
-      "controlplanes": [
-        1270033,
-        59202410
-      ],
-      "controller": [
-        1270791,
-        59203262
-      ],
-      "gateway": [
-        1271759,
-        59204073
-      ],
-      "lead": [
-        1271813,
-        59204125
-      ],
-      "dashboard": [
-        1272031,
-        59204126
-      ]
-    },
-    "native_lead_observer": {
-      "pane": "%143",
-      "scoped_ui_endpoint": "ws://127.0.0.1:17189",
-      "input_authority": "observer only; private wrapper grant"
-    },
-    "outer_exit": 1,
-    "outcome_receipt": "evidence/06/replacement-first-capacity/actual-outcome.json"
-  },
-  "operator_session": "corenius-team",
-  "public_exports": {
-    "observed_at": "2026-10-05T05:13:45.799598+00:00",
-    "controller_snapshot_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/control_center.json",
-    "kata_snapshot_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/kata.json",
-    "kata_source_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/kata_source.json",
-    "runtime_bindings_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/replacement-runtime-bindings.json",
-    "status": "Live whitelisted exports; lead binding only; roster list uses scoped_ui_endpoint; no worker bindings admitted",
-    "runtime_source_path": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public/runtime_roster.json"
-  },
-  "gateway_link": {
-    "base": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
-    "source_pin": "ad37c0cfa87d28d484c7928e8311ccbe0bd95caf786a8b0d5df0d7a24a82e869",
-    "test_pin": "6e22c811c40718578e2901f86cb6357fa807cace082edd36b6403b63eed11570",
-    "source_status": "Exact reviewed2files committed e1a398ce; clean",
-    "author_results": "RED101/GREEN0/affected9tests0",
-    "independent_results": "Fresh affected9tests actualexit0; no scopedblockingfinding",
-    "limits": "No restored native runtime/worker application or baselinequalification proof"
-  },
-  "prior_trials": [
-    {
-      "run": "/tmp/cb-20261005T040926Z-c8403c",
-      "state": "quarantined/failed original outer",
-      "source": "173053b",
-      "ref": "ec49f779",
-      "history": "history/CURRENT-20261005T050405Z.json",
-      "solo_verified": true,
-      "two_useful_episode_overlap": false,
-      "stale_integration": false
-    }
-  ],
-  "mainlead_live_bindings_notice": {
-    "operation": "1c311b1c-d08a-466a-a86b-807616e8a8fe",
-    "exit": 0,
-    "state": "queued",
-    "receipt": "01a10a72-9c46-7b73-bc1f-9574c2efc985",
-    "presentation": "unknown",
-    "ack": "unknown"
-  },
-  "mainlead_public_export_notice": {
-    "operation": "1dae4ab8-1208-4b61-acb4-13cdc7454844",
-    "at": "2026-10-05T05:14:26.726494+00:00",
-    "state": "queued",
-    "exit": 0,
-    "receipt": null,
-    "presentation": "unknown",
-    "ack": "unknown",
-    "receipt_state": "unknown: parser selected target UUID; target is not a queue receipt; no retry"
-  },
-  "model_selection": {
-    "decision": "adopted: explicit model in durable intent/native turn/start/runtime factory",
-    "chosen_model": "gpt-6.1-sol",
-    "fixture_requirements": [
-      "role/binding guards",
-      "same operation ID cannot silently change model",
-      "actual adapter receives exact model"
+  "bounded_health_repair": {
+    "authority": "User said proceed after diagnosis of state, gate and controller findings; narrow repair only, no prior cap reset",
+    "ticket": "../agentic-engineering/tickets/14-current-main-health-repair.md",
+    "state": "reviewed candidate; focused regressions and isolated native correction pass; broader native gate resource-limited, full qualification uncredited",
+    "findings": [
+      "C1-TEST-PEER-WAIT",
+      "relay_S2"
     ],
-    "existing_config_identity": "immutable; no bypass/migration",
-    "next_deployment": "fresh disposable state in existing corenius-team after independent scoped review; explicit Kata reuse/new project",
-    "old_trial": "preserved idle actors, outer actualexit1 and capacity failure",
-    "cap_reset": false,
-    "author_results": {
-      "focused": "actualexit0/3passed",
-      "harness": "actualexit0/4passed",
-      "adjacent": "actualexit0/24lib+9controlcenter",
-      "native_boundary": "three focused checks running; final exact snapshot/review pending",
-      "provenance": "current actor public report; exact logs/pins to audit at snapshot"
-    }
-  },
-  "working_candidate": {
-    "base": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
-    "commit": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
-    "tree": "cc14262c740c935ebfbbfee4285c1710f6c7f6ec",
-    "dirty": false,
-    "kind": "prototype candidate snapshot; not final baseline source freeze"
-  },
-  "reviewers": {
-    "Standards": "/root/sqlite06_model_standards_review",
-    "Spec": "/root/sqlite06_model_spec_review"
+    "qualification": "does not accept SQLite05/06 or authorize live trial",
+    "evidence": "../agentic-engineering/evidence/health-repair-20261007.md"
   }
 }

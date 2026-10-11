@@ -9,6 +9,8 @@ import tempfile
 import threading
 import unittest
 import secrets
+import time
+import types
 
 # Apply the repository temporary-root policy before any host allocation.
 import runpy as _temp_policy_runpy
@@ -22,6 +24,104 @@ _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, 
 
 
 class RelayBoundary(unittest.TestCase):
+    def deadline_request(self, response_factory, limit):
+        path = pathlib.Path(__file__).with_name('sqlite_responses_relay.py')
+        spec = importlib.util.spec_from_file_location('deadline_relay', path)
+        relay = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(relay)
+        relay.STREAM_SECONDS = limit
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            evidence = root / 'metadata.jsonl'
+            response = response_factory(relay)
+            server = relay.Server(root / 'provider.sock', lambda *_: response, evidence)
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            started = time.monotonic()
+            try:
+                c = http.client.HTTPConnection('localhost', timeout=2)
+                c.sock = socket.socket(socket.AF_UNIX)
+                c.sock.connect(str(server.server_address))
+                c.request('POST', '/v1/responses', body=json.dumps({
+                    'stream': True, 'store': False, 'input': []}))
+                c.getresponse().read()
+                elapsed = time.monotonic() - started
+                c.close()
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join()
+            return json.loads(evidence.read_text()), elapsed
+
+    def test_eof_after_deadline_is_not_recorded_complete(self):
+        def response_factory(relay):
+            clock = [100.0]
+            relay.time = types.SimpleNamespace(monotonic=lambda: clock[0], time=lambda: clock[0])
+            class Response(io.BytesIO):
+                status = 200
+                def read1(self, size):
+                    clock[0] += 0.06
+                    return b''
+            return Response(b'')
+        record, _ = self.deadline_request(response_factory, 0.02)
+        self.assertFalse(record.get('stream_complete', False))
+        self.assertIn('failure_class', record)
+
+    def test_stalled_http_response_read_is_bounded_by_remaining_deadline(self):
+        peers = []
+        def response_factory(relay):
+            local, peer = socket.socketpair()
+            peers.extend([local, peer])
+            peer.sendall(b'HTTP/1.0 200 OK\r\nContent-Type: text/event-stream\r\n\r\n')
+            response = http.client.HTTPResponse(local)
+            response.begin()
+            def delayed_eof():
+                time.sleep(0.3)
+                peer.close()
+            threading.Thread(target=delayed_eof, daemon=True).start()
+            return response
+        try:
+            record, elapsed = self.deadline_request(response_factory, 0.02)
+            self.assertLess(elapsed, 0.15, 'socket read escaped stream deadline')
+            self.assertFalse(record.get('stream_complete', False))
+            self.assertIn('failure_class', record)
+        finally:
+            for peer in peers:
+                peer.close()
+
+    def test_trickling_chunk_header_cannot_extend_absolute_deadline(self):
+        peers = []
+        senders = []
+        def response_factory(relay):
+            local, peer = socket.socketpair()
+            peers.extend([local, peer])
+            peer.sendall(b'HTTP/1.0 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n')
+            response = http.client.HTTPResponse(local)
+            response.begin()
+            def trickle():
+                try:
+                    for _ in range(30):
+                        peer.sendall(b'1')
+                        time.sleep(0.01)
+                except OSError:
+                    pass
+                finally:
+                    peer.close()
+            sender = threading.Thread(target=trickle, daemon=True)
+            senders.append(sender)
+            sender.start()
+            return response
+        try:
+            record, elapsed = self.deadline_request(response_factory, 0.04)
+            self.assertLess(elapsed, 0.15, 'chunk framing kept extending socket inactivity timeout')
+            self.assertFalse(record.get('stream_complete', False))
+            self.assertIn('failure_class', record)
+        finally:
+            for peer in peers:
+                peer.close()
+            for sender in senders:
+                sender.join(timeout=1)
+
     def test_runtime_generated_body_and_header_canaries_absent_from_evidence(self):
         path = pathlib.Path(__file__).with_name('sqlite_responses_relay.py')
         spec = importlib.util.spec_from_file_location('relay_privacy', path)
