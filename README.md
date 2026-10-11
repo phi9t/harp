@@ -14,6 +14,10 @@ MAC terminal views now live in this repository. See
 The complete live two-worker baseline remains unqualified; see the status record
 before treating a source landing as product acceptance.
 
+For optional local Git-ticket coordination, see [Collab Lite](tools/collab/README.md).
+Its standalone Linux CLI provides claims, worktrees, exact checks, and explicit
+operator landing. Adoption and ledger migration remain operator decisions.
+
 ## Commands
 
 - `cargo run -- run --workspace <path>`

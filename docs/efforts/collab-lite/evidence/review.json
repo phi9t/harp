@@ -1,0 +1,37 @@
+{
+  "base_commit": "d31c3df460132e9ab87c0a52bffd949c387543e8",
+  "branch": "codex/collab-lite",
+  "candidate": "uncommitted isolated worktree",
+  "product_sha256": {
+    "tools/collab/collab.py": "5273d081c8a30b8b8d92dbf01045b0ce20d61f2109934e65cd2798e92cb1e897",
+    "tools/collab/tests/test_collab.py": "d7692e0fde7893f1b9081159957145890ee2a945b7dd755b5c308b83eac1bdb3",
+    "tools/collab/README.md": "aec2ebf92050bd82c9e9891f03b8202df5cf93a44a4621e079c2564f0b4879f5",
+    "tools/agents/checks.d/65-collab.sh": "a944fe04f893b4294bebc12de1feccbc9818d0f7835fe0e4a0eb870a38a727f9",
+    "README.md": "a8222a259c699ec2b7aab0605af889efa6d2779f1ac89d5998cd79ea3086bd24"
+  },
+  "repair_rounds": 1,
+  "standards": {
+    "initial_blockers": 0,
+    "optional_comment_fixed": true,
+    "final_blockers": 0
+  },
+  "spec": {
+    "initial_blockers": 3,
+    "final_blockers": 0,
+    "fresh_tests": 48,
+    "duration_seconds": 27.85
+  },
+  "independent_defect_audit": {
+    "initial_blockers": 1,
+    "final_blockers": 0,
+    "fresh_repair_tests": 9
+  },
+  "branch_review": {
+    "command": "roborev review --branch --base main",
+    "exit_code": 1,
+    "reason": "no commits on branch since main",
+    "fallback": "separate-context independent defect audit of complete untracked product files and fixed-base tracked diff"
+  },
+  "scope": "standalone CLI; no live adoption or retained-controller changes",
+  "git_authority": "no Corenius commits, staging, push, PR or merge authorized/performed"
+}

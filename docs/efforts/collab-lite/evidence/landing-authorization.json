@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-11T22:24:25.163450+00:00",
+  "user_instruction": "land on corenius repo mainline",
+  "authorized_actions": [
+    "commit reviewed Collab Lite changes",
+    "create a fresh candidate on advanced local main if needed",
+    "run focused landing gates",
+    "fast-forward local Corenius main"
+  ],
+  "remote": "none configured; no publication",
+  "coordination": "respect shared .git/land.lock; preserve active claude/health-repair landing and all peer worktrees"
+}

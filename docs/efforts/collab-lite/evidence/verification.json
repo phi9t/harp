@@ -1,0 +1,123 @@
+{
+  "base_commit": "d31c3df460132e9ab87c0a52bffd949c387543e8",
+  "candidate": "codex/collab-lite, uncommitted",
+  "repository_gate": {
+    "command": "python3 tools/temp_root.py -- sh tools/agents/check.sh",
+    "exit_code": 1,
+    "log": ".scratch/collab-lite/repository-gate.log",
+    "log_sha256": "fefc6a86596bd82d8cdbf4346b0875c258a6ea54e4f66a8ef717a11496d2c517",
+    "stages": [
+      {
+        "command": "python3 tools/agents/test_worker.py",
+        "initial_result": "passed"
+      },
+      {
+        "command": "python3 tools/agents/test_effort.py",
+        "initial_result": "passed"
+      },
+      {
+        "command": "python3 tools/test_sync_agentic_workflow.py",
+        "initial_result": "passed"
+      },
+      {
+        "command": "python3 tools/agents/tracker.py lint",
+        "initial_result": "failed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/00-temp-paths.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/10-wt.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/15-worker.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/18-effort.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/20-land.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/25-acceptance.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/30-tracker.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/35-lead-launch.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/40-msg.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/45-lead-driven-harness.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/50-evidence.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/60-claims.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/65-collab.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/70-sqlite-controller.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/70-team-control-plane.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/80-monitor-wake.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/89-no-host-tmp-tests.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "sh tools/agents/checks.d/90-no-host-tmp.sh",
+        "initial_result": "passed"
+      },
+      {
+        "command": "cargo test --offline",
+        "initial_result": "passed"
+      }
+    ],
+    "sole_failure": "initial report path tickets/01-report.md matched tracker ticket grammar, creating duplicate id01",
+    "repair": "moved report to evidence/implementation.md; updated references",
+    "fresh_global_tracker_lint_exit_code": 0
+  },
+  "collab_focused_gate": {
+    "tests": 48,
+    "duration_seconds": 28.17,
+    "exit_code": 0,
+    "source": "65-collab.sh within repository gate after final product freeze"
+  },
+  "independent_reviews": "Standards, Spec, separate defect audit clear after one repair round",
+  "product_hashes_unchanged_since_review": true,
+  "optional_check_bench": false,
+  "optional_check_sync": false,
+  "acceptance": "all required individual check commands pass after the targeted tracker-lint recheck; aggregate historical exit remains1",
+  "tracker_resolution": {
+    "exit_code": 1,
+    "reason": "ticket 01 has no accepted, landed Candidate",
+    "disposition": "implementation, review and verification complete; preserve claimed ticket until human-authorized Git commit/landing"
+  }
+}
