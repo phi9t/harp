@@ -1,10 +1,10 @@
 # 02 gate-scope: Gate runs collab tests only when the toolset changes
 
 Type: task
-Status: open
-Owner:
+Status: claimed
+Owner: collab-ops-02
 Blocked by: 
-Claimed:
+Claimed: 2026-10-11T23:37:11Z expires 2026-10-13T23:37:11Z
 
 Triage: ready-for-agent
 
@@ -20,3 +20,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 53). Use the project glossar
 - [ ] Shellcheck is clean for the check script.
 
 ## Comments
+- 2026-10-11T23:37:11Z collab-ops-02: claimed until 2026-10-13T23:37:11Z
