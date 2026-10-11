@@ -1,6 +1,6 @@
 # Engineering profile labs state
 
-Updated: 2026-10-11; local landing preparation
+Updated: 2026-10-11; local lab landing completed
 Base: `b7bee20e00c822feec48362a1dbd8d62fe9c3641`
 Branch: `codex/engineering-postgres-temporal-labs`
 Checkout: `/data02/home/philip.yang/.codex/worktrees/833c/corenius-labs`
@@ -32,14 +32,13 @@ evidence files were unchanged by repairs.
 ## Landing authority and remaining qualification
 
 Independent Standards and Spec review passes with no remaining actionable
-findings. Ticket 01 remains claimed pending an accepted, landed Candidate;
-ticket 02 stays open behind its tracker blocker; ticket 03 records the native
-learning slice. Local checks and review do not supply a promotion receipt, so
-the tracker was not forced closed. The learning experiments were explicitly
-authorized. After this review, the user requested "land these labs first".
-The reviewed lab slice and its closure records may be committed and landed on
-local main. No remote is configured. No deployment or further provider retry
-is part of this landing.
+findings. Candidate `00f7f2ee94557d4f3cb9402d6d519d2a9798283c` landed on
+local main after the full repository gate, the 21 native model-free tests and
+exact net-diff checks passed. All three lab tickets were closed through normal
+acceptance and tracker transitions after actual main ancestry was verified.
+See evidence/landing.json for the exact base/tip, gate log digest and limitations.
+The user authorized this chat's work plus Corenius plans for local landing.
+No remote is configured; no publication, deployment or provider retry occurred.
 
 Adoption gates remain: operational database recovery, active native-turn
 interruption/recovery, lost-ack reconciliation and enforced provider budgets.
@@ -50,7 +49,7 @@ The database runner's deadline termination path is also not fault-qualified.
 Read the specification and evidence summary first. Inspect `git status --short`
 and use `python3 tools/temp_root.py --` for commands. Use the exact-candidate
 landing gate before changing main. This manual STATE retains the reviewed
-learning outcomes; subsequent landing and tracker closure will identify the
-accepted source commit.
+learning outcomes; the landing and normal tracker closure identify the
+accepted source commit above.
 Raw logs/builds are regenerable scratch.
 A cold run has a 1200-second per-suite deadline; use run.py for fresh qualification.

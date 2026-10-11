@@ -1,0 +1,19 @@
+{
+  "schema": "corenius.learning_lab_landing.v1",
+  "recorded_at": "2026-10-11T20:35:53.795915+00:00",
+  "base": "b7bee20e00c822feec48362a1dbd8d62fe9c3641",
+  "candidate": "00f7f2ee94557d4f3cb9402d6d519d2a9798283c",
+  "target": "refs/heads/main",
+  "method": "tools/agents/land.py standalone owner-authorized fast-forward",
+  "repository_gate": "passed: tools/agents/check.sh; check: all green",
+  "native_model_free_tests": 21,
+  "net_diff_check": "passed",
+  "gate_log_sha256": "838af8bd088db741cd84c5445012c518ce0504e8dbacc92687047fcd1f797f01",
+  "gate_log_path": "/data02/home/philip.yang/.codex/worktrees/833c/corenius-labs/.scratch/engineering-profile-labs/landing-gate.log",
+  "publication": "none; no remote configured",
+  "limits": [
+    "Learning acceptance only; controller adoption remains unqualified",
+    "Not a protected production Git/PostgreSQL promotion receipt",
+    "No active native-turn recovery or enforced provider-budget readiness claim"
+  ]
+}

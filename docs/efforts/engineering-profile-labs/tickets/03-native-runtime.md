@@ -1,8 +1,8 @@
 # 03 native-runtime: Native TraeCLI, Codex CLI and app-server learning labs
 
 Type: task
-Status: open
-Owner:
+Status: resolved
+Owner: codex-lab-closure
 Blocked by:
 Claimed:
 
@@ -34,7 +34,11 @@ See [native index](../native/README.md), its linked evidence and guides, and
 [final review](../evidence/review.md). All 21 model-free tests passed in the
 integrated clone; independent Standards and Spec review found no remaining
 actionable findings.
-This ticket records user-authorized independent learning experiments; it does
-not grant launch authority or attest an accepted, landed Candidate.
+The reviewed lab Candidate `00f7f2ee94557d4f3cb9402d6d519d2a9798283c` is
+accepted and landed on local main; the normal tracker transition now records
+closure. This learning acceptance does not grant further launch authority or
+qualify production native recovery.
 
 ## Comments
+- 2026-10-11T20:35:20Z codex-lab-closure: claimed until 2026-10-12T20:35:20Z
+- 2026-10-11T20:35:20Z codex-lab-closure: resolved

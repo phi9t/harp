@@ -1,10 +1,10 @@
 # 01 postgres-transactions: PostgreSQL transactional claims, receipts, revisions and fencing labs
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: codex-postgres-temporal-labs
 Blocked by:
-Claimed: 2026-10-11T19:19:20Z expires 2026-10-12T19:19:20Z
+Claimed:
 
 Triage: needs-triage
 
@@ -32,8 +32,10 @@ production-readiness claim or Trondheim integration.
 See [PostgreSQL walkthrough](../POSTGRESQL.md) and
 [evidence summary](../evidence/summary.md). The learning content is integrated
 with passing native evidence. Independent review found no remaining blocking
-finding. The ticket remains claimed pending an accepted, landed Candidate;
-local passing tests and review do not supply a promotion receipt.
+finding. The exact reviewed lab Candidate `00f7f2ee94557d4f3cb9402d6d519d2a9798283c`
+landed on local main after the full repository gate passed. Acceptance records
+and ancestry now support tracker closure; adoption remains unqualified.
 
 ## Comments
 - 2026-10-11T19:19:20Z codex-postgres-temporal-labs: claimed until 2026-10-12T19:19:20Z
+- 2026-10-11T20:35:20Z codex-postgres-temporal-labs: resolved

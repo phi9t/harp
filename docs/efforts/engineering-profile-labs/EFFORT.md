@@ -1,6 +1,6 @@
 # Engineering profile learning labs
 
-Status: independently reviewed; user authorized local landing
+Status: learning slice accepted and landed on local main; adoption unqualified
 Base: main
 Integration branch: main
 Source: `b7bee20e00c822feec48362a1dbd8d62fe9c3641`
@@ -45,7 +45,7 @@ code. Native event acceptance uses focused model-free red/green fixtures.
 - Retain fresh exit status, assertions, source identity, versions, artifact hashes,
   cleanup evidence and explicit limitations.
 - Integrate a detailed lab only after its fresh selected tests pass.
-- Keep resumable STATE without committing and present changes for human review.
+- Keep resumable STATE and independently reviewed exact-candidate landing records.
 
 ## Milestones
 

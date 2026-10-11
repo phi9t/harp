@@ -92,3 +92,10 @@ The Trondheim profile currently compiles pinned plan proposals and projects a
 ready frontier. It grants no execution authority. These labs do not install a
 second scheduler or qualify a production coordinator. Active-turn recovery,
 lost-ack reconciliation and enforced provider budgets remain adoption gates.
+
+## Next steps
+
+The [Corenius adoption plan](../engineering-profile-adoption/README.md) preserves
+the original design verbatim and defines the decision and implementation frontier.
+Its first ticket reconciles the retained I2/Kata priority with proposed
+PostgreSQL/Temporal adoption before migration or new provider execution.
