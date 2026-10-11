@@ -4,15 +4,15 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "be9de21f3f5287bc7c8ab3cb01e581328eb20b1a",
-  "dehydrated": "2026-10-11T22:30:09Z",
+  "base_commit": "71d0904ce9ef9dc71919e650f440f034455b77c5",
+  "dehydrated": "2026-10-11T22:32:12Z",
   "effort": "collab-lite",
   "runs": [],
   "worktrees": [
     {
       "branch": "codex/collab-lite-mainline",
       "dirty": [],
-      "head": "240ca4817970fda7caec23f77b35afa7764b34f6",
+      "head": "71d0904ce9ef9dc71919e650f440f034455b77c5",
       "path": "/data02/home/philip.yang/workspace/corenius-collab-lite-mainline",
       "pushed": false
     }
@@ -21,7 +21,7 @@
 ```
 <!-- effort:machine:end -->
 
-Status: accepted; ready for authorized local mainline landing
+Status: complete; code landed on local Corenius main
 Updated: 2026-10-11
 Base read: d31c3df460132e9ab87c0a52bffd949c387543e8
 Mainline preparation base: be9de21f3f5287bc7c8ab3cb01e581328eb20b1a
@@ -35,7 +35,9 @@ landing on Corenius mainline. Reviewed source f6ba6c8 was preserved on its
 original branch and cherry-picked onto the independently landed health repair
 be9de21 as Candidate 240ca48. Product hashes remain identical to review.
 Acceptance is recorded through acceptance.py and ticket01 resolved through
-tracker.py on the integration branch. Mainline landing remains pending.
+tracker.py. The shared-lock land tool fast-forwarded main to 71d0904 after
+all exact-tip gates passed. Acceptance and observed landing receipts are
+recorded under evidence/. This refresh changes only effort bookkeeping.
 
 All48 CLI tests and the updated gate-dispatch, operational-state consistency,
 temporary-path, global tracker-lint and whitespace checks passed on the new
@@ -46,10 +48,10 @@ and acceptance-01.jsonl under evidence/. No live Collab adoption occurred.
 
 ## Next actions
 
-Land the exact committed candidate through land.py on local main under the
-shared landing lock. There is no configured remote. Record the observed
-mainline transition and refresh this state after landing. The user request
-explicitly delegates the required local Git actions; no PR merge is involved.
+No implementation work remains. Fast-forward this bookkeeping refresh through
+the same shared-lock tool, then retain the original and integration worktrees.
+There is no configured remote. Adoption in a project remains a separate
+operator decision; no PR merge or live Collab initialization occurred.
 
 ## Open questions
 

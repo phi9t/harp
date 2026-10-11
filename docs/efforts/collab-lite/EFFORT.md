@@ -1,6 +1,6 @@
 # Collab Lite adoption
 
-Status: accepted; ready for owner-authorized local mainline landing
+Status: complete; landed on local Corenius main
 Base: main
 Base commit: d31c3df460132e9ab87c0a52bffd949c387543e8
 Integration branch: codex/collab-lite-mainline
@@ -38,3 +38,12 @@ The user authorized local mainline landing. The reviewed source commit f6ba6c8
 was cherry-picked onto the pending health-repair tip be9de21 in a new private
 worktree, preserving the original branch and peer work. Main is untouched until
 the peer landing completes and the shared landing lock is acquired.
+
+## Mainline outcome
+
+The shared-lock land tool fast-forwarded main from be9de21 to 71d0904.
+The exact tip passed all48 CLI tests, gate-dispatch and state-consistency
+checks, temporary-path checks, global tracker lint and whitespace checks.
+Ticket01 is resolved and acceptance/landing receipts are recorded. No remote
+is configured; the original Collab branch/worktree and peer health repair
+remain preserved. The pending health-repair landing completed before ours.

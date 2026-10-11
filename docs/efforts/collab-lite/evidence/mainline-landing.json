@@ -1,0 +1,42 @@
+{
+  "schema": "corenius.collab_lite_mainline_landing.v1",
+  "observed_at": "2026-10-11T22:32:12.514962+00:00",
+  "source_candidate": "240ca4817970fda7caec23f77b35afa7764b34f6",
+  "landed_tip": "71d0904ce9ef9dc71919e650f440f034455b77c5",
+  "predecessor": "be9de21f3f5287bc7c8ab3cb01e581328eb20b1a",
+  "target": "main",
+  "land_tool_exit_code": 0,
+  "owner_override": "Philip, explicit user landing request",
+  "no_push": true,
+  "checks": {
+    "collab-cli": {
+      "passed": true,
+      "tests": 48,
+      "seconds": 27.203
+    },
+    "gate-dispatch": {
+      "passed": true,
+      "tests": 5
+    },
+    "state-consistency": {
+      "passed": true,
+      "tests": 8
+    },
+    "temp-helper": {
+      "passed": true,
+      "tests": 7
+    },
+    "temp-source-scan": {
+      "passed": true
+    },
+    "global-tracker-lint": {
+      "passed": true
+    },
+    "whitespace": {
+      "passed": true
+    }
+  },
+  "original_branch_preserved": "codex/collab-lite",
+  "integration_branch": "codex/collab-lite-mainline",
+  "new_base_health_repair_preserved": true
+}
