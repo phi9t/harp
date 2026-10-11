@@ -13,6 +13,9 @@ open-attempt accepts the launcher's process id or run directory. recover and aba
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 29-31). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] recover and abandon refuse while the recorded worker runs (tested with a real child process).
 - [ ] They proceed once it has exited and --confirm-stopped is given.

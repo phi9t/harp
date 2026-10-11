@@ -13,6 +13,9 @@ refresh abandons an Attempt and opens a new one on current trunk, cherry-picking
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 24-26). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] A clean refresh carries all commits forward onto the new Attempt.
 - [ ] A conflict stops with the worktree left for the worker and nothing resolved silently.

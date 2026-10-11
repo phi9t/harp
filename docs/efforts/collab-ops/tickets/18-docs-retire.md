@@ -13,6 +13,11 @@ Record the decision to absorb the worktree and landing tools, update the collab 
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories (documentation)). Use the project glossary terms.
 
+## Declared paths
+- `docs/adr/`
+- `tools/collab/README.md`
+- `docs/efforts/collab-ops/`
+
 ## Acceptance
 - [ ] An ADR records the decision, alternatives and consequences.
 - [ ] The README matches the final commands.

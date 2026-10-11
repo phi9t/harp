@@ -13,6 +13,9 @@ Triage: ready-for-agent
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 40, 41, 44). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] A dirty worktree is archived with its patch and untracked files before removal, and only with the flag.
 - [ ] Stale refs, logs and orphan check worktrees past retention are pruned; younger ones stay.

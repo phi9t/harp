@@ -13,6 +13,9 @@ A repository skill runs the sweep on request: dry run first, apply only on expli
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 45). Use the project glossary terms.
 
+## Declared paths
+- `.claude/skills/`
+
 ## Acceptance
 - [ ] The skill is discoverable alongside the existing run-worker skill.
 - [ ] It runs the dry run by default and states what --apply would do.

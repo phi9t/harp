@@ -13,6 +13,9 @@ Landing resolves the ticket through the tracker under the landing lock. Collab n
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 33-34 (resolve side)). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] After landing the ticket is resolved with the acceptance evidence recorded.
 - [ ] A failure to resolve is reported as landed with records incomplete.

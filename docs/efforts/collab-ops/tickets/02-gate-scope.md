@@ -13,6 +13,10 @@ The collab gate check runs its suite when the change set touches the toolset, an
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 53). Use the project glossary terms.
 
+## Declared paths
+- `tools/agents/checks.d/65-collab.sh`
+- `tools/agents/test_check.py`
+
 ## Acceptance
 - [ ] A change outside the toolset skips the suite and says so.
 - [ ] A change inside the toolset runs it.

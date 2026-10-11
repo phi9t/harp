@@ -13,6 +13,9 @@ Move the effort record-branch landing support into a separate optional module fo
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 51-52). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] An effort that uses record branches lands exactly as before.
 - [ ] A new effort lands on main with records in the tree and never loads the module.

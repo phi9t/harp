@@ -13,6 +13,9 @@ A mainline override must name an owner from the configured allowed list. Every o
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 19-21). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] An unlisted or whitespace-only owner is refused.
 - [ ] A standalone landing with an override records the event.

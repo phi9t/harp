@@ -13,6 +13,9 @@ A sweep command lists, and with --apply removes, merged clean worktrees and bran
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 36-39, 42, 43). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] Dry run removes nothing and lists every candidate with its reason.
 - [ ] A freshly opened Attempt survives --apply (regression for the audited deletion).

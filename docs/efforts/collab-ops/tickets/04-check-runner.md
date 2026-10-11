@@ -13,6 +13,9 @@ check builds the Integration commit, runs the stored command with a timeout and 
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 6-10). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] A hung check ends as a distinct timeout outcome.
 - [ ] The log is readable while the check runs.

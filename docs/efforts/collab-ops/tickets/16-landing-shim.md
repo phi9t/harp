@@ -13,6 +13,10 @@ The old landing tool delegates to collab with the same flags and exit codes and 
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 48-49). Use the project glossary terms.
 
+## Declared paths
+- `tools/agents/land.py`
+- `tools/collab/`
+
 ## Acceptance
 - [ ] The existing landing test suite passes unchanged against the shim.
 - [ ] help carries a deprecation notice.

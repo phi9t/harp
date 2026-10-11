@@ -13,6 +13,9 @@ Split the collab CLI into modules with narrow interfaces (ticket source, workspa
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 50, 54). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] The 48 existing collab tests pass unchanged.
 - [ ] Only the state store module touches SQLite.

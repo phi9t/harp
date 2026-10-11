@@ -13,6 +13,9 @@ land verifies the local fast-forward is possible, records push intent, pushes, t
 
 Spec: docs/efforts/collab-ops/SPEC.md (user stories 11-18, 22, 23). Use the project glossary terms.
 
+## Declared paths
+- `tools/collab/`
+
 ## Acceptance
 - [ ] A crash between push and local fast-forward is recovered by recover and never leaves the remote ahead without a record.
 - [ ] A moved Candidate is refused against an expected tip.
