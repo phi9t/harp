@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+from contextvars import ContextVar
 import fcntl
 import json
 import os
@@ -18,7 +19,7 @@ from pathlib import Path
 
 from common import Refused, digest, failpoint
 from legacy_journal import LegacyJournal
-from landing_protocol import classify_push_failure, gate_workspace_status, process_group_alive
+from landing_protocol import classify_push_failure, gate_workspace_status, process_group_alive, rejected_push_target
 from state_store import StoreError
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "agents"))
@@ -40,6 +41,7 @@ from worker import WorkerError, git, git_env, main_worktree, now, temp_parent  #
 LOST_RACE = STALE_CANDIDATE
 RECORDS_INCOMPLETE = 12
 SLUG = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+_LANDING_FDS: ContextVar[tuple[int, ...]] = ContextVar("legacy_landing_fds", default=())
 
 
 def repo_root(repo: str | Path) -> Path:
@@ -61,11 +63,16 @@ def land_lock(repo: Path):
         handle.flush()
         try:
             journal = LegacyJournal(common_git_dir(repo))
-            if journal.store.load_config() is not None:
-                with journal.store.lock("lane"):
+            with contextlib.ExitStack() as stack:
+                if journal.store.load_config() is not None:
+                    stack.enter_context(journal.store.lock("lane"))
+                # A surviving Git child keeps both locks after its controller dies.
+                descriptors = (handle.fileno(), *journal.store.fds)
+                token = _LANDING_FDS.set((*_LANDING_FDS.get(), *descriptors))
+                try:
                     yield
-            else:
-                yield
+                finally:
+                    _LANDING_FDS.reset(token)
         finally:
             fcntl.flock(handle, fcntl.LOCK_UN)
 
@@ -73,7 +80,10 @@ def land_lock(repo: Path):
 def git_result(repo: str | Path, *args: str, env: dict | None = None) -> subprocess.CompletedProcess[str]:
     environment = git_env()
     environment.update(env or {})
-    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, env=environment)
+    return subprocess.run(
+        ["git", "-C", str(repo), *args], capture_output=True, text=True, env=environment,
+        pass_fds=_LANDING_FDS.get(),
+    )
 
 
 def rev(repo: Path, ref: str) -> str:
@@ -259,7 +269,7 @@ def run_gates(
 
 
 def push_tip(repo: Path, remote: str, tip: str, mainline: str) -> subprocess.CompletedProcess[str]:
-    return git_result(repo, "push", "-q", remote, f"{tip}:refs/heads/{mainline}")
+    return git_result(repo, "push", "--porcelain", "-q", remote, f"{tip}:refs/heads/{mainline}")
 
 
 def local_mainline_ref(mainline: str) -> str:
@@ -367,7 +377,10 @@ def recover_landing(repo: Path, journal: LegacyJournal, identity: str) -> int:
         if state == "landed":
             print(tip)
             return OK
-        if state not in {"prepared", "push_started", "pushed", "local_started", "landed_records_incomplete"}:
+        recoverable = {
+            "prepared", "push_started", "push_failed", "pushed", "local_started", "landed_records_incomplete",
+        }
+        if state not in recoverable:
             raise Refused("This compatibility landing has no interrupted Git phase to recover")
         journal.require_gate_receipt(operation)
         current = rev(repo, target_ref)
@@ -375,14 +388,17 @@ def recover_landing(repo: Path, journal: LegacyJournal, identity: str) -> int:
             raise Refused("Target moved beyond the bound landing; preserve and inspect")
         if operation["pushing"]:
             observed = remote_head(repo, operation["remote"], operation["target_branch"])
+            proven_no_push = state == "prepared" or (
+                state in {"push_started", "push_failed"} and journal.confirmed_push_rejection(operation)
+            )
             no_push_observed = (
                 observed == operation["remote_before"]
                 and current == local_before
-                and state in {"prepared", "push_started"}
+                and proven_no_push
             )
             if no_push_observed:
                 journal.change(operation, "rolled_back")
-                print(json.dumps({"landing": identity, "action": "no push observed; no refs changed"}))
+                print(json.dumps({"landing": identity, "action": "push not started or rejected; no refs changed"}))
                 return OK
             if observed != tip:
                 raise Refused("Remote push outcome is unknown or moved; preserve and inspect")
@@ -554,15 +570,19 @@ def land(args: argparse.Namespace) -> int:
         journal.change(operation, "prepared")
         if pushing:
             journal.change(operation, "push_started")
+            failpoint("after_legacy_push_started")
             pushed = push_tip(repo, args.remote, tip, target_branch)
             if pushed.returncode != 0:
                 reason = classify_push_failure(pushed)
                 print(reason, file=sys.stderr)
+                rejection = rejected_push_target(pushed, target_ref)
+                if rejection is not None:
+                    journal.event(operation, "push_rejection", **rejection)
                 try:
                     observed = remote_head(repo, args.remote, target_branch)
                 except WorkerError:
                     observed = None
-                if observed == target_before:
+                if observed == target_before and journal.confirmed_push_rejection(operation):
                     journal.change(operation, "push_failed", reason=reason)
                 elif observed == tip:
                     journal.change(operation, "pushed", reason=reason)
