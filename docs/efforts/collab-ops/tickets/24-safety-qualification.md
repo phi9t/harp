@@ -3,7 +3,7 @@
 Type: task
 Status: claimed
 Owner: trae
-Blocked by: 
+Blocked by:
 Claimed: 2026-10-12T18:02:04Z expires 2026-10-13T18:02:04Z
 
 Triage: ready-for-agent

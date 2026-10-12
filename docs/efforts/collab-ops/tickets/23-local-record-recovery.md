@@ -3,7 +3,7 @@
 Type: task
 Status: resolved
 Owner: trae
-Blocked by: 
+Blocked by:
 Claimed:
 
 Triage: ready-for-agent
