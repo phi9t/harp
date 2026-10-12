@@ -154,7 +154,7 @@ class Collab:
                 raise Refused("Empty contribution")
             if self.workspace.git("rev-list", "--merges", f"{base}..{candidate}").strip():
                 raise Refused("Use a linear private branch for this prototype")
-            changed = self.workspace.git("diff", "--name-only", "-z", base, candidate).split("\0")
+            changed = self.workspace.git("diff", "--name-only", "--no-renames", "-z", base, candidate).split("\0")
             if not any(changed):
                 raise Refused("Empty contribution: candidate has no file changes")
             protect_candidate_paths(changed, self.require_config().get("protected_paths"))

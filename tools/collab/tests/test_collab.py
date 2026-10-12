@@ -373,6 +373,22 @@ class CollabTests(unittest.TestCase):
                 target.unlink()
                 self.commit("withdraw protected edit", cwd=worker)
 
+    def test_renaming_a_protected_path_cannot_submit(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        gate = Path(self.repo) / "tools" / "agents" / "check.sh"
+        gate.parent.mkdir(parents=True)
+        gate.write_text("#!/bin/sh\nexit 0\n")
+        self.commit("gate entry point on trunk")
+        a = self.claim()
+        worker = Path(a["path"])
+        (worker / "moved").mkdir()
+        self.git("mv", "tools/agents/check.sh", "moved/check.sh", cwd=worker)
+        self.commit("rename protected file", cwd=worker)
+        result = self.cli("submit", a["id"], ok=False)
+        self.assertIn("coordination/policy", result.stderr)
+
     def test_default_protected_paths_include_gate_and_constitution(self):
         config = self.init()
         self.assertEqual(
