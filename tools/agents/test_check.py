@@ -27,8 +27,41 @@ raise SystemExit(7 if os.environ.get("GATE_FAIL_MATCH") in sys.argv[1:] else 0)
                 executable = fixture / name
                 executable.write_text(shim)
                 executable.chmod(0o700)
+            git = "#!" + sys.executable + "\n" + r'''import json, os, sys
+with open(os.environ["GATE_TRACE"], "a") as stream:
+    stream.write(json.dumps([os.path.basename(sys.argv[0]), *sys.argv[1:]]) + "\n")
+if os.environ.get("GATE_GIT_MODE") == "fail":
+    raise SystemExit(1)
+args = sys.argv[1:]
+if args == ["rev-parse", "--verify", "--quiet", "main"]:
+    raise SystemExit(0)
+if args == ["merge-base", "HEAD", "main"]:
+    print("base")
+    raise SystemExit(0)
+if args == ["diff", "--name-only", "base", "HEAD"]:
+    sys.stdout.write(os.environ.get("GATE_CHANGED_FILES", ""))
+    if os.environ.get("GATE_CHANGED_FILES"):
+        sys.stdout.write("\n")
+    raise SystemExit(0)
+if args == ["diff", "--name-only"]:
+    sys.stdout.write(os.environ.get("GATE_WORKTREE_CHANGED_FILES", ""))
+    if os.environ.get("GATE_WORKTREE_CHANGED_FILES"):
+        sys.stdout.write("\n")
+    raise SystemExit(0)
+if args == ["diff", "--name-only", "--cached"]:
+    sys.stdout.write(os.environ.get("GATE_INDEX_CHANGED_FILES", ""))
+    if os.environ.get("GATE_INDEX_CHANGED_FILES"):
+        sys.stdout.write("\n")
+    raise SystemExit(0)
+raise SystemExit(1)
+'''
+            git_executable = fixture / "git"
+            git_executable.write_text(git)
+            git_executable.chmod(0o700)
             environment = dict(os.environ)
-            for variable in ("CHECK_BENCH", "CHECK_SYNC", "CHECK_CARGO", "CHECK_TEAM_CONTROL_PLANE"):
+            for variable in ("CHECK_BENCH", "CHECK_SYNC", "CHECK_CARGO", "CHECK_TEAM_CONTROL_PLANE",
+                             "GATE_CHANGED_FILES", "GATE_GIT_MODE", "GATE_INDEX_CHANGED_FILES",
+                             "GATE_WORKTREE_CHANGED_FILES"):
                 environment.pop(variable, None)
             environment.update(PATH=str(fixture) + os.pathsep + environment["PATH"],
                                GATE_TRACE=str(trace), CHECK_CARGO="0")
@@ -37,6 +70,10 @@ raise SystemExit(7 if os.environ.get("GATE_FAIL_MATCH") in sys.argv[1:] else 0)
                                     env=environment, text=True, capture_output=True)
             calls = [json.loads(line) for line in trace.read_text().splitlines()]
             return result, calls
+
+    def collab_suite_count(self, calls):
+        return sum(call[:6] == ["python3", "-m", "unittest", "discover", "-s", "tools/collab/tests"]
+                   for call in calls)
 
     def test_each_existing_suite_runs_once(self):
         result, calls = self.dispatch()
@@ -73,6 +110,23 @@ raise SystemExit(7 if os.environ.get("GATE_FAIL_MATCH") in sys.argv[1:] else 0)
         self.assertIn("FAILED:", result.stdout)
         self.assertIn("check: FAILED", result.stdout)
         self.assertTrue(any("crates/sqlite-controller/Cargo.toml" in call for call in calls))
+
+    def test_collab_suite_skips_when_change_set_is_outside_toolset(self):
+        result, calls = self.dispatch(GATE_CHANGED_FILES="README.md")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self.collab_suite_count(calls), 0)
+        self.assertIn("SKIP: collab tests (no tools/collab/ changes)", result.stdout)
+
+    def test_collab_suite_runs_when_change_set_touches_toolset(self):
+        result, calls = self.dispatch(GATE_CHANGED_FILES="tools/collab/collab.py")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self.collab_suite_count(calls), 1)
+
+    def test_collab_suite_runs_when_change_set_is_undeterminable(self):
+        result, calls = self.dispatch(GATE_GIT_MODE="fail")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self.collab_suite_count(calls), 1)
+        self.assertIn("RUN: collab tests (change set undetermined)", result.stdout)
 
 
 if __name__ == "__main__":
