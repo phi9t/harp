@@ -14,6 +14,8 @@ ADR0002 records consolidation, alternatives, exact verification identity, tracke
 - tools/agents/checks.d/10-wt.sh and20-land.sh: compatibility suites.
 - tools/agents/test_wt.py andtest_land.py: compatibility entry points and exported Python APIs.
 - tools/test_temp_root.py: loads the landing shim with `runpy` to check the temporary-worktree export.
+- tools/collab/tests/test_legacy_landing.py andtest_legacy_repair.py: invoke the landing shim; the former also imports its Python API.
+- tools/collab/tests/test_cleanup.py: invokes the worktree shim to qualify cleanup compatibility.
 
 Historical preimages and source snapshots under the team-control-plane effort's
 evidence also refer to the shims. Preserve these recorded sources with their
