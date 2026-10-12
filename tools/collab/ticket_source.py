@@ -1,4 +1,10 @@
-"""Committed ticket source adapter for standalone collab tickets."""
+"""One ticket contract for standalone headers and Corenius tracker tickets.
+
+Both layouts read committed bytes, validate dependencies at an explicit commit,
+and enumerate their configured source. Corenius claims and resolution belong to
+tracker.py; this adapter never writes tracker files or maintains a second ledger.
+Qualified effort:number identities select Corenius for explicit legacy callers.
+"""
 from __future__ import annotations
 
 import json
@@ -133,6 +139,49 @@ class TicketSource:
     def __init__(self, workspace):
         self.workspace = workspace
 
+    def list_tickets(self, commit: str) -> list[dict]:
+        """Enumerate the configured source, retaining malformed tickets as errors."""
+        source = self.workspace.require_config().get("ticket_source", "standalone")
+        directory = "docs/efforts/" if source == "corenius" else ".tickets/"
+        paths = self.workspace.git("ls-tree", "-r", "--name-only", commit, "--", directory).splitlines()
+        identities = []
+        for path in paths:
+            if source == "corenius":
+                match = re.fullmatch(r"docs/efforts/([a-z0-9][a-z0-9-]*)/tickets/(\d{2})-[^/]+\.md", path)
+                if match:
+                    identities.append(corenius_ticket_id(*match.groups()))
+            elif path.count("/") == 1 and path.endswith(".md"):
+                identities.append(Path(path).stem)
+        rows = []
+        for identity in sorted(set(identities)):
+            try:
+                meta, _ = self.ticket(identity, commit)
+                rows.append(meta)
+            except Refused as exc:
+                rows.append({"id": identity, "error": str(exc)})
+        return rows
+
+    def require_ready(self, meta: dict, commit: str) -> None:
+        """Use the selected source's authoritative admission rules and blockers."""
+        self.deps_ok(meta["id"], commit)
+        corenius = split_corenius_ticket(meta["id"])
+        if corenius:
+            self.require_corenius_ready(*corenius)
+        elif meta["status"] == "closed":
+            raise Refused("Ticket is closed")
+
+    def require_refresh_claim(self, attempt: dict, commit: str) -> None:
+        """Transfer an unchanged Corenius claim only to the same stopped owner."""
+        self.same_contract(attempt, commit)
+        corenius = split_corenius_ticket(attempt["ticket"])
+        if not corenius:
+            return
+        meta, _ = self.ticket(attempt["ticket"], commit)
+        row = self.tracker_row(*corenius)
+        if any(record.get("status") != "claimed" or record.get("owner") != attempt["owner"]
+               for record in (meta, row)):
+            raise Refused("Tracker claim no longer belongs to this Attempt's owner; explicitly re-admit")
+
     def ticket(self, tid: str, commit: str | None = None) -> tuple[dict, bytes]:
         corenius = split_corenius_ticket(tid)
         if corenius:
@@ -163,12 +212,30 @@ class TicketSource:
         return parse_corenius_ticket(raw, effort, ticket_id, relpath), raw
 
     def tracker_rows(self, effort: str) -> list[dict]:
+        self.require_in_tree_effort(effort)
         root = Path(self.workspace.require_config()["root"])
         command = [sys.executable, str(TRACKER), "--repo", str(root), "list", effort, "--json"]
         process = subprocess.run(command, cwd=root, text=True, capture_output=True, env=child_environment())
         if process.returncode:
             raise Refused(process.stderr.strip() or process.stdout.strip() or "tracker list failed")
         return json.loads(process.stdout)
+
+    def require_in_tree_effort(self, effort: str) -> None:
+        """Refuse legacy routing before tracker.py can select another checkout."""
+        config = self.workspace.require_config()
+        revision = self.workspace.trunk()
+        path = f"docs/efforts/{effort}/EFFORT.md"
+        raw = self.workspace.git("show", f"{revision}:{path}")
+        fields = {}
+        for line in raw.splitlines():
+            if line.startswith("Integration branch:"):
+                fields["integration"] = line.partition(":")[2].strip().strip("`")
+            elif line.startswith("Record branch:"):
+                fields["record"] = line.partition(":")[2].strip().strip("`")
+        integration = fields.get("integration")
+        trunk = config["trunk_ref"].removeprefix("refs/heads/")
+        if fields.get("record") or (integration and integration.removeprefix("refs/heads/") != trunk):
+            raise Refused("Legacy effort routing requires the optional effort-record module; no tracker writes made")
 
     def tracker_row(self, effort: str, ticket_id: str) -> dict:
         for row in self.tracker_rows(effort):
@@ -185,6 +252,7 @@ class TicketSource:
             raise Refused(f"tracker ticket {ticket_id} is not ready-for-agent")
 
     def claim_corenius(self, effort: str, ticket_id: str, owner: str, ttl_hours: float) -> tuple[dict, bytes]:
+        self.require_in_tree_effort(effort)
         root = Path(self.workspace.require_config()["root"])
         command = [
             sys.executable,
