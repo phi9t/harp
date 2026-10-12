@@ -44,12 +44,7 @@
 - None changed outside `tools/collab/` and this report path.
 
 ## For later tickets
-- Investigate the repeated lead-driven harness failure:
-  `LeadDrivenTest.test_interactive_launch_and_monitors_scenario_runs_through_lead_driven_mode`
-  reports ticket `01` stuck at `tracker_status: claimed` and `worker_state: ready`
-  instead of reaching finishing.
-- `LeadDrivenTest.test_access_profile_scenario_runs_through_lead_driven_mode`
-  timed out even when run alone under the 120s per-command cap.
+none
 
 ## Not checked
 - The default repository gate was not completed successfully because of the
@@ -57,3 +52,11 @@
 - Remaining default-gate fragments after the confirmed `45-lead-driven-harness`
   failure, including the later agent checks and `cargo test --offline`, were not
   run in this worker attempt.
+
+### Worker-reported harness observations (not addressed to a ticket)
+- Investigate the repeated lead-driven harness failure:
+  `LeadDrivenTest.test_interactive_launch_and_monitors_scenario_runs_through_lead_driven_mode`
+  reports ticket `01` stuck at `tracker_status: claimed` and `worker_state: ready`
+  instead of reaching finishing.
+- `LeadDrivenTest.test_access_profile_scenario_runs_through_lead_driven_mode`
+  timed out even when run alone under the 120s per-command cap.
