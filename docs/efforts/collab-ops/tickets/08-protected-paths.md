@@ -1,10 +1,10 @@
 # 08 protected-paths: Protected paths from config
 
 Type: feature
-Status: claimed
+Status: resolved
 Owner: collab-ops-08
 Blocked by: 01
-Claimed: 2026-10-12T00:39:05Z expires 2026-10-14T00:39:05Z
+Claimed:
 
 Triage: ready-for-agent
 
@@ -17,9 +17,10 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 27-28). Use the project glos
 - `tools/collab/`
 
 ## Acceptance
-- [ ] A candidate touching a gate script, the gate entry point or the constitution is refused at submit.
-- [ ] A repository can choose its own list at init.
-- [ ] The default list matches the documented one.
+- [x] A candidate touching a gate script, the gate entry point or the constitution is refused at submit.
+- [x] A repository can choose its own list at init.
+- [x] The default list matches the documented one.
 
 ## Comments
 - 2026-10-12T00:39:05Z collab-ops-08: claimed until 2026-10-14T00:39:05Z
+- 2026-10-12T01:28:21Z collab-ops-08: resolved
