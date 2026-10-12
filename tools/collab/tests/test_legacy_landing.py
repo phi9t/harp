@@ -157,6 +157,22 @@ class LegacyLandingTest(unittest.TestCase):
         self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.base)
         self.assertEqual(self.git("show", ":README"), "staged local work\n")
 
+    def test_empty_cherry_pick_marker_refuses_before_push(self):
+        remote = self.remote()
+        cherry_pick = subprocess.run(
+            ["git", "-C", str(self.repo), "cherry-pick", self.base],
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(cherry_pick.returncode, 0, cherry_pick.stderr)
+        self.assertTrue((self.repo / ".git/CHERRY_PICK_HEAD").exists())
+        self.assertEqual(self.git("status", "--porcelain=v1"), "")
+        result = self.call()
+        self.assertEqual(result.returncode, 10, result.stderr)
+        self.assertIn("in-progress Git operation", result.stderr)
+        self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.base)
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.base)
+
     def test_recover_after_local_move_requires_its_attributed_exact_tip(self):
         result = self.call(env={"COLLAB_FAILPOINT": "after_legacy_local"})
         self.assertEqual(result.returncode, 86, result.stderr)

@@ -143,6 +143,38 @@ class LifecycleOpsTests(unittest.TestCase):
         self.cli("recover", attempt["id"], "--confirm-stopped")
         self.assertEqual(self.git("rev-parse", "HEAD"), record_head)
 
+    def test_pushed_local_success_recovers_records_while_remote_offline(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("effort ticket")
+        attempt = self.open_corenius_attempt()
+        self.contribute(attempt)
+        fixtures.CollabTests.cli(self, "submit", attempt["id"])
+        checked = fixtures.CollabTests.cli(self, "check", attempt["id"])
+        remote = fixtures.CollabTests.add_bare_remote(self)
+        review = json.dumps({"reviewer": "operator", "standards": "passed", "spec": "passed", "criteria": [1]})
+        crashed = fixtures.CollabTests.cli(
+            self,
+            "land",
+            attempt["id"],
+            "--review-json",
+            review,
+            failpoint="after_git_land",
+            ok=False,
+        )
+        self.assertEqual(crashed.returncode, 86)
+        self.assertEqual(fixtures.CollabTests.remote_head(self, remote), checked["integration"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+        remote.rename(remote.with_name("origin-offline.git"))
+        recovered = fixtures.CollabTests.cli(self, "recover", attempt["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "landed")
+        self.assertIn("Status: resolved", ticket.read_text())
+        acceptance = self.repo / "docs/efforts/sample-effort/evidence/acceptance-01.jsonl"
+        self.assertEqual(len(acceptance.read_text().splitlines()), 1)
+        head = self.git("rev-parse", "HEAD")
+        fixtures.CollabTests.cli(self, "recover", attempt["id"], "--confirm-stopped")
+        self.assertEqual(self.git("rev-parse", "HEAD"), head)
+
     def test_override_with_effort_exports_attributed_committed_record(self):
         self.cli("init", "--trunk", "main", "--check-json", '["true"]',
                  "--override-owners-json", '["operator"]')

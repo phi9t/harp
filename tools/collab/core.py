@@ -7,6 +7,7 @@ from pathlib import Path
 from check_runner import CheckRunner
 from common import Refused, failpoint, output_path, valid_branch_component, valid_id
 from landing import LandingManager
+from landing_protocol import require_no_pending_publication
 from liveness import liveness_blockers, normalize_worker_binding, worker_liveness
 from policy import (
     protect_candidate_paths,
@@ -49,6 +50,7 @@ class Collab:
 
     def open_refreshed_attempt(self, previous: dict, commits: list[str], head: str) -> dict:
         """Allocate under RefreshManager's locks without rewriting an owned claim."""
+        require_no_pending_publication(self.store, self.workspace.common)
         self.workspace.primary()
         base = self.workspace.trunk()
         self.tickets.require_refresh_claim(previous, base)
@@ -125,7 +127,8 @@ class Collab:
         deps = [valid_id(item) for item in deps]
         if len(deps) != len(set(deps)) or tid in deps:
             raise Refused("Duplicate or self dependency")
-        with self.store.lock("meta"):
+        with self.store.lock("lane"), self.store.lock("meta"):
+            require_no_pending_publication(self.store, self.workspace.common)
             self.workspace.primary()
             directory = Path(self.require_config()["root"]) / ".tickets"
             if directory.is_symlink():
@@ -179,7 +182,8 @@ class Collab:
 
     def open_standalone_attempt(self, tid: str, owner: str, worker: dict | None = None) -> dict:
         worker = worker or normalize_worker_binding(None, None)
-        with self.store.lock("meta"):
+        with self.store.lock("lane"), self.store.lock("meta"):
+            require_no_pending_publication(self.store, self.workspace.common)
             base = self.workspace.trunk()
             meta, _ = self.tickets.ticket(tid, base)
             self.tickets.require_ready(meta, base)
@@ -205,7 +209,8 @@ class Collab:
     ) -> dict:
         worker = worker or normalize_worker_binding(None, None)
         source_id = corenius_ticket_id(effort, tid)
-        with self.store.lock("meta"):
+        with self.store.lock("lane"), self.store.lock("meta"):
+            require_no_pending_publication(self.store, self.workspace.common)
             self.workspace.primary()
             self.tickets.require_corenius_ready(effort, tid)
             base = self.workspace.trunk()

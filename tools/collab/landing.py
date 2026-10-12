@@ -4,10 +4,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from common import Refused, digest, failpoint
+from landing_protocol import preflight, require_no_pending_publication
 from liveness import require_worker_stopped
 from state_store import StoreError, UNRESOLVED_LANDING
 from ticket_resolution import TicketResolution
-from legacy_journal import LegacyJournal
 
 
 class LandingManager:
@@ -55,8 +55,7 @@ class LandingManager:
     def land(self, aid: str, expected_tip: str | None = None, no_push: bool = False) -> dict:
         # This explicit human operator action is the manual review/approval gate.
         with self.store.lock("lane"), self.store.lock("meta"):
-            self.store.no_uncertain_landing()
-            LegacyJournal(self.workspace.common).require_no_pending()
+            require_no_pending_publication(self.store, self.workspace.common)
             attempt = self.store.row(aid)
             if attempt["state"] != "verified":
                 raise Refused("Exact integration candidate has not passed checking")
@@ -104,7 +103,7 @@ class LandingManager:
         if self.workspace.git("merge-base", attempt["base"], attempt["integration"]).strip() != attempt["base"]:
             raise Refused("Local fast-forward is not possible")
         self._require_expected_candidate_tip(attempt, expected_tip)
-        self._refuse_operator_overlaps(root, attempt)
+        preflight(root, config["trunk_ref"], attempt["base"], attempt["integration"], root)
         self.workspace.clean(root)
 
     def _require_expected_candidate_tip(self, attempt: dict, expected_tip: str | None) -> None:
@@ -344,6 +343,7 @@ class LandingManager:
     def _recover_landing(self, attempt: dict, aid: str) -> dict | None:
         self.workspace.primary()
         self.require_receipt(attempt)
+        require_no_pending_publication(self.store, self.workspace.common, except_attempt=aid)
         destination = self.store.latest_event(aid, "push_intent", after_kind="landing_prepared")
         if attempt["state"] in ("push_intended", "push_completed") or destination is not None:
             return self._recover_pushed_landing(attempt, aid, destination)
@@ -374,10 +374,10 @@ class LandingManager:
     def _recover_pushed_landing(self, attempt: dict, aid: str, destination: dict | None) -> dict | None:
         if not destination:
             raise Refused("Current landing operation has no recorded remote destination; preserve and inspect")
-        remote_tip = self._remote_tip(destination)
         target = self.workspace.trunk()
-        if self._integration_is_landed(attempt, target):
+        if self._local_publication_attributed(attempt, aid, target):
             return self._finish_after_local_landing(attempt)
+        remote_tip = self._remote_tip(destination)
         if remote_tip == attempt["integration"] and target == attempt["base"]:
             self._preflight(attempt, None)
             self.store.change(aid, "landing_started")
@@ -394,6 +394,24 @@ class LandingManager:
         if not self._integration_is_landed(attempt, target):
             raise Refused("Landing records are incomplete, but the Integration commit is not on trunk")
         return self._finish_after_local_landing(attempt)
+
+    def _local_publication_attributed(self, attempt: dict, aid: str, target: str) -> bool:
+        if not self._integration_is_landed(attempt, target):
+            return False
+        records = TicketResolution(self.store, self.workspace, self.tickets, self.config).latest(aid, "records_prepared")
+        expected_previous = attempt["base"]
+        expected_actions = [f"collab-land:{aid}:"]
+        if records and target == records.get("commit"):
+            expected_previous = records.get("predecessor")
+            expected_actions = [f"collab-records:{aid}:"]
+        log = self.workspace.git("reflog", "show", "--format=%H%x00%gs", self.config()["trunk_ref"])
+        entries = log.splitlines()
+        return any(
+            any(line.startswith(target + "\0" + action) for action in expected_actions)
+            and index + 1 < len(entries)
+            and entries[index + 1].split("\0", 1)[0] == expected_previous
+            for index, line in enumerate(entries)
+        )
 
     def _remote_tip(self, destination: dict) -> str | None:
         result = self.workspace.git_result("ls-remote", destination["remote"], destination["ref"])
@@ -469,7 +487,7 @@ class LandingManager:
                 if plan is None:
                     self.store.change(aid, "abandoned")
                 else:
-                    LegacyJournal(self.workspace.common).require_no_pending()
+                    require_no_pending_publication(self.store, self.workspace.common, except_attempt=aid)
                     self.store.change_with_event(
                         aid, "abandoning", event_kind="claim_release_intent", event_details=plan,
                     )
@@ -482,7 +500,7 @@ class LandingManager:
         if not plan:
             raise Refused("Missing claim release intent; preserve state and inspect")
         require_worker_stopped(attempt)
-        LegacyJournal(self.workspace.common).require_no_pending()
+        require_no_pending_publication(self.store, self.workspace.common, except_attempt=attempt["id"])
         self.tickets.finish_claim_release(attempt, plan)
         self.store.change(attempt["id"], "abandoned")
 

@@ -2,12 +2,17 @@
 from __future__ import annotations
 
 from pathlib import Path
+from contextlib import contextmanager
+import json
 import os
 import subprocess
 
 from common import Refused
 from state_store import StateStore
 from workspace import run_git
+
+
+LEGACY_UNCERTAIN = {"prepared", "push_started", "pushed", "local_started", "landed_records_incomplete"}
 
 
 class PreflightRefused(Refused):
@@ -35,6 +40,66 @@ def process_group_alive(identity: int) -> bool:
     except PermissionError:
         return True
     return True
+
+
+def confirmed_legacy_push_rejection(record: dict) -> bool:
+    return any(
+        event.get("kind") == "push_rejection"
+        and event.get("source_ref") == record.get("tip")
+        and event.get("target_ref") == record.get("target_ref")
+        and isinstance(event.get("summary"), str)
+        and event["summary"].startswith(("[rejected]", "[remote rejected]"))
+        for event in record.get("events", [])
+        if isinstance(event, dict)
+    )
+
+
+def require_no_pending_legacy(common: Path, except_landing: str | None = None) -> None:
+    home = common / "legacy-land"
+    for path in sorted(home.glob("*.json")):
+        if except_landing is not None and path.stem == except_landing:
+            continue
+        try:
+            record = json.loads(path.read_text())
+        except (OSError, ValueError) as exc:
+            raise Refused(f"Unresolved legacy landing record {path.name}: {exc}") from exc
+        if (
+            not isinstance(record, dict)
+            or not isinstance(record.get("id"), str)
+            or not isinstance(record.get("state"), str)
+            or not isinstance(record.get("events"), list)
+        ):
+            raise Refused(f"Invalid compatibility landing record {path.name}; preserve and inspect it")
+        state = record["state"]
+        uncertain_failure = state == "push_failed" and not confirmed_legacy_push_rejection(record)
+        if state in LEGACY_UNCERTAIN or uncertain_failure:
+            identity = record.get("id", path.stem) if isinstance(record, dict) else path.stem
+            raise Refused(f"Unresolved legacy landing {identity}; use --recover-landing {identity}")
+
+
+def require_no_pending_publication(
+    store: StateStore,
+    common: Path,
+    *,
+    except_attempt: str | None = None,
+    except_legacy: str | None = None,
+) -> None:
+    store.no_uncertain_landing(except_attempt)
+    require_no_pending_legacy(common, except_legacy)
+
+
+@contextmanager
+def guard_initialized_trunk_mutation(repo: Path):
+    common = Path(run_git(repo, "rev-parse", "--path-format=absolute", "--git-common-dir").strip())
+    home = common / "collab"
+    store = StateStore(home, home / "state.sqlite3")
+    config = store.load_config()
+    if config is None:
+        yield
+        return
+    with store.lock("lane"), store.lock("meta"):
+        require_no_pending_publication(store, common)
+        yield
 
 
 def gate_workspace_status(repo: Path, checkout: Path, tip: str, git_directory: str) -> dict:
