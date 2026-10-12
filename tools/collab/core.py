@@ -42,6 +42,8 @@ class Collab:
         )
 
     def require_refresh_stopped(self, attempt: dict) -> None:
+        if attempt["state"] == "abandoning":
+            raise Refused("Claim release is pending; recover abandonment before refresh")
         from liveness import require_worker_stopped
         require_worker_stopped(attempt)
 

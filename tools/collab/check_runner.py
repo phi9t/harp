@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import signal
 import subprocess
+import time
 import uuid
 
 from common import Refused, child_environment, digest, failpoint, now
@@ -131,6 +132,10 @@ class CheckRunner:
                 )
                 try:
                     code = process.wait(timeout=timeout_seconds)
+                    if self._process_group_live(process.pid):
+                        command_error = "Check command exited with live descendants; receipt cannot pass"
+                        self._terminate(process)
+                        stream.write(command_error + "\n")
                 except subprocess.TimeoutExpired:
                     timed_out = True
                     self._terminate(process)
@@ -289,17 +294,38 @@ class CheckRunner:
         return f"Check did not pass ({outcome}); log: {log}"
 
     @staticmethod
-    def _terminate(process: subprocess.Popen) -> None:
+    def _process_group_live(group: int) -> bool:
+        # A dead leader does not establish that descendants in its session stopped.
+        for entry in Path("/proc").iterdir():
+            if not entry.name.isdigit():
+                continue
+            try:
+                raw = (entry / "stat").read_text()
+                fields = raw[raw.rfind(")") + 2:].split()
+                if fields[0] != "Z" and int(fields[2]) == group:
+                    return True
+            except (FileNotFoundError, ProcessLookupError, IndexError, ValueError):
+                continue
+        return False
+
+    @classmethod
+    def _terminate(cls, process: subprocess.Popen) -> None:
         try:
             os.killpg(process.pid, signal.SIGTERM)
         except ProcessLookupError:
+            process.wait()
             return
-        try:
-            process.wait(timeout=1)
-        except subprocess.TimeoutExpired:
+        grace = time.monotonic() + 1
+        while cls._process_group_live(process.pid) and time.monotonic() < grace:
+            process.poll()
+            time.sleep(0.02)
+        if cls._process_group_live(process.pid):
             try:
                 os.killpg(process.pid, signal.SIGKILL)
             except ProcessLookupError:
-                return
-            process.wait(timeout=1)
-
+                pass
+        # Keep the execution lock and log open until every live group member exits.
+        while cls._process_group_live(process.pid):
+            process.poll()
+            time.sleep(0.02)
+        process.wait()

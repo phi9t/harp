@@ -7,13 +7,14 @@ Qualified effort:number identities select Corenius for explicit legacy callers.
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
 import subprocess
 import sys
 
-from common import Refused, child_environment, digest, valid_id
+from common import Refused, child_environment, digest, failpoint, valid_id
 
 TRACKER = Path(__file__).resolve().parents[1] / "agents" / "tracker.py"
 TRACKER_TITLE = re.compile(r"^# (?P<id>\d{2}) (?P<slug>[a-z0-9][a-z0-9-]*): (?P<title>.+)$")
@@ -276,6 +277,80 @@ class TicketSource:
         self.workspace.git("add", "--", relpath, cwd=root)
         self.workspace.git("commit", "-q", "-m", f"Claim ticket {ticket_id} for {owner}", cwd=root)
         return self.corenius_ticket(effort, ticket_id)
+
+    def prepare_claim_release(self, attempt: dict) -> dict | None:
+        corenius = split_corenius_ticket(attempt["ticket"])
+        if not corenius:
+            return None
+        self.workspace.primary()
+        self.require_in_tree_effort(corenius[0])
+        meta, _ = self.ticket(attempt["ticket"])
+        if meta["sha256"] != attempt["ticket_hash"]:
+            raise Refused("Tracker claim changed since this Attempt; preserve it and recover the exact claim first")
+        if meta["status"] == "open" and attempt["state"] == "allocating":
+            return None
+        if meta["status"] != "claimed" or meta["owner"] != attempt["owner"]:
+            raise Refused("Tracker claim no longer belongs to this Attempt")
+        plan = {"effort": corenius[0], "ticket_id": corenius[1], "owner": attempt["owner"],
+                "attempt_id": attempt["id"], "before_sha256": attempt["ticket_hash"],
+                "at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+        return self._release_tracker(plan, dry_run=True)
+
+    def _release_tracker(self, plan: dict, dry_run: bool = False) -> dict:
+        self.require_in_tree_effort(plan["effort"])
+        root = Path(self.workspace.require_config()["root"])
+        command = [sys.executable, str(TRACKER), "--repo", str(root), "release", plan["effort"],
+                   plan["ticket_id"], "--owner", plan["owner"], "--attempt", plan["attempt_id"],
+                   "--expected-sha256", plan["before_sha256"], "--at", plan["at"]]
+        if dry_run:
+            command.append("--dry-run")
+        process = subprocess.run(command, cwd=root, text=True, capture_output=True, env=child_environment())
+        if process.returncode:
+            raise Refused(process.stderr.strip() or process.stdout.strip() or "tracker release failed")
+        return json.loads(process.stdout)
+
+    def finish_claim_release(self, attempt: dict, plan: dict) -> None:
+        if (plan.get("attempt_id") != attempt["id"] or plan.get("owner") != attempt["owner"]
+                or plan.get("before_sha256") != attempt["ticket_hash"]
+                or corenius_ticket_id(plan["effort"], plan["ticket_id"]) != attempt["ticket"]):
+            raise Refused("Claim release intent does not match the exact Attempt")
+        self.require_in_tree_effort(plan["effort"])
+        self.workspace.primary_identity()
+        config = self.workspace.require_config()
+        root = Path(config["root"])
+        if self.workspace.git("symbolic-ref", "-q", "HEAD", cwd=root).strip() != config["trunk_ref"]:
+            raise Refused("Claim release requires the configured trunk checkout")
+        meta, _ = self.ticket(attempt["ticket"])
+        if meta["path"] != plan["path"]:
+            raise Refused("Claim release ticket path changed")
+        if meta["sha256"] == plan["after_sha256"]:
+            self.workspace.clean(root)
+            return
+        if meta["sha256"] != plan["before_sha256"]:
+            raise Refused("Tracker claim changed during release; preserve it and inspect")
+        file = root / plan["path"]
+        if file.is_symlink() or file.stat().st_mode & 0o111 or self.workspace.hidden_index(root):
+            raise Refused("Claim release ticket/index identity changed")
+        status = self.workspace.git("status", "--porcelain=v1", "-z", "--untracked-files=all", cwd=root)
+        if any(entry and (entry[3:] != plan["path"] or entry[:2] not in (" M", "M ", "MM"))
+               for entry in status.split("\0")):
+            raise Refused("Claim release has unrelated operator changes; preserve them and inspect")
+        indexed = self.workspace.git("show", ":" + plan["path"], cwd=root, raw=True)
+        if digest(indexed) not in (plan["before_sha256"], plan["after_sha256"]):
+            raise Refused("Claim release index contains unexpected ticket content")
+        working_hash = digest(file.read_bytes())
+        if working_hash == plan["before_sha256"]:
+            result = self._release_tracker(plan)
+            if result != plan:
+                raise Refused("Tracker release result does not match its durable intent")
+        elif working_hash != plan["after_sha256"]:
+            raise Refused("Claim release worktree contains unexpected ticket content")
+        failpoint("after_tracker_release")
+        if digest(file.read_bytes()) != plan["after_sha256"]:
+            raise Refused("Released tracker ticket changed before commit")
+        self.workspace.git("add", "--", plan["path"], cwd=root)
+        self.workspace.git("commit", "-q", "-m", "Release claim for abandoned Attempt " + attempt["id"], cwd=root)
+        failpoint("after_claim_release_commit")
 
     def deps_ok(self, tid: str, commit: str) -> None:
         corenius = split_corenius_ticket(tid)

@@ -327,6 +327,8 @@ class LandingManager:
                 recovered = self._recover_landing(attempt, aid)
                 if recovered:
                     return recovered
+            elif attempt["state"] == "abandoning":
+                self._finish_abandon(attempt)
             elif attempt["state"] == "allocating":
                 self._recover_allocation(attempt, aid)
             elif attempt["state"] == "checking":
@@ -455,19 +457,40 @@ class LandingManager:
         if not confirmed:
             raise Refused("Requires --confirm-stopped; this command does not stop processes")
         require_worker_stopped(self.store.row(aid))
-        with self.store.lock("lane"), self.store.lock("meta"):
+        with self.store.lock("check"), self.store.lock("lane"), self.store.lock("meta"):
             attempt = self.store.row(aid)
             require_worker_stopped(attempt)
             if attempt["state"] in (*UNRESOLVED_LANDING, "landed", "abandoned"):
                 raise Refused("Cannot abandon this state; reconcile landing first")
-            self.store.change(aid, "abandoned")
+            if attempt["state"] == "abandoning":
+                self._finish_abandon(attempt)
+            else:
+                plan = self.tickets.prepare_claim_release(attempt)
+                if plan is None:
+                    self.store.change(aid, "abandoned")
+                else:
+                    LegacyJournal(self.workspace.common).require_no_pending()
+                    self.store.change_with_event(
+                        aid, "abandoning", event_kind="claim_release_intent", event_details=plan,
+                    )
+                    failpoint("after_claim_release_intent")
+                    self._finish_abandon(self.store.row(aid))
         return self.store.row(aid)
+
+    def _finish_abandon(self, attempt: dict) -> None:
+        plan = self.store.latest_event(attempt["id"], "claim_release_intent")
+        if not plan:
+            raise Refused("Missing claim release intent; preserve state and inspect")
+        require_worker_stopped(attempt)
+        LegacyJournal(self.workspace.common).require_no_pending()
+        self.tickets.finish_claim_release(attempt, plan)
+        self.store.change(attempt["id"], "abandoned")
 
     def gc(self, aid: str, confirmed: bool) -> dict:
         if not confirmed:
             raise Refused("Requires --confirm-stopped; no process supervision is provided")
         require_worker_stopped(self.store.row(aid))
-        with self.store.lock("lane"), self.store.lock("meta"):
+        with self.store.lock("check"), self.store.lock("lane"), self.store.lock("meta"):
             attempt = self.store.row(aid)
             require_worker_stopped(attempt)
             if attempt["state"] not in ("landed", "abandoned"):
