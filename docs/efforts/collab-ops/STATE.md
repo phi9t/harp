@@ -2,8 +2,11 @@
 
 ## Where we are
 
-The 18-ticket implementation is committed. The user authorized landing the current
-snapshot locally on mainline and drafting follow-up work on 2026-10-12. Mainline
+The 18-ticket implementation and follow-up draft are committed and landed locally
+on mainline by fast-forward at snapshot 3b7b0b0. The user explicitly authorized
+this snapshot landing and follow-up drafting on 2026-10-12. See the durable
+`evidence/mainline-snapshot-landing.json` receipt. Final record commits can follow
+that snapshot without changing its product source. Mainline
 already contained the implementation through repair 2 plus two cleanup fixes;
 those fixes were merged into the completion branch without conflicts.
 
@@ -61,15 +64,15 @@ logs and archive hashes are recorded in evidence; preserve their qualification.
 ```json
 {
   "base_branch": "main",
-  "base_commit": "9d8c90b0e871586ba6daa9d342d4def56152644b",
-  "dehydrated": "2026-10-12T04:35:44Z",
+  "base_commit": "3b7b0b0f4d188ad34e5598c704d5887d854d7ff5",
+  "dehydrated": "2026-10-12T04:37:31Z",
   "effort": "collab-ops",
   "runs": [],
   "worktrees": [
     {
       "branch": "codex/collab-ops-complete",
       "dirty": [],
-      "head": "365876ed00be3cdd50f3baebfdb06378e1423e39",
+      "head": "3b7b0b0f4d188ad34e5598c704d5887d854d7ff5",
       "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-complete",
       "pushed": false
     }

@@ -1,0 +1,12 @@
+{
+  "schema": "corenius.user_authorized_snapshot_landing.v1",
+  "branch": "main",
+  "before": "9d8c90b0e871586ba6daa9d342d4def56152644b",
+  "after": "3b7b0b0f4d188ad34e5598c704d5887d854d7ff5",
+  "mode": "fast-forward",
+  "remote": null,
+  "authorization": "User requested commit current snapshot, land mainline and draft follow-up on 2026-10-12",
+  "acceptance": "not granted; four architectural blockers and archive/Python regression remain",
+  "follow_up": "docs/efforts/collab-ops/FOLLOWUP.md; tickets 19-25",
+  "checkout_clean": true
+}
