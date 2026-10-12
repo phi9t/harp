@@ -18,6 +18,7 @@ from policy import (
 from state_store import StateStore
 from sweep import SweepManager
 from ticket_source import TicketSource, corenius_ticket_id
+from ticket_resolution import TicketResolution
 from workspace import RepositoryWorkspace, run_git
 
 
@@ -221,15 +222,24 @@ class Collab:
     def check(self, aid: str) -> dict:
         return self.checks.check(aid)
 
-    def land(self, aid: str, owner_mainline_override: str | None = None) -> dict:
+    def land(self, aid: str, owner_mainline_override: str | None = None,
+             review: dict | None = None, effort: str | None = None) -> dict:
+        attempt = self.store.row(aid)
+        resolver = TicketResolution(self.store, self.workspace, self.tickets, self.require_config)
+        resolver.prepare_review(attempt, review)
+        export_effort = attempt["ticket"].split(":", 1)[0] if ":" in attempt["ticket"] else effort
+        if export_effort:
+            valid_id(export_effort)
+            entry = f"docs/efforts/{export_effort}/EFFORT.md"
+            if not self.workspace.git("ls-tree", attempt["base"], "--", entry).startswith("100644 blob "):
+                raise Refused("Override effort must be a committed regular effort record")
         if owner_mainline_override is not None:
             if owner_mainline_override not in self.require_config().get("mainline_override_owners", []):
                 raise Refused("Mainline override owner is not configured")
-            attempt = self.store.row(aid)
             with self.store.tx() as con:
                 self.store.event(
                     con, aid, "mainline_override", owner=owner_mainline_override,
-                    subject=attempt["integration"], ticket=attempt["ticket"],
+                    subject=attempt["integration"], ticket=attempt["ticket"], effort=export_effort,
                 )
         return self.landing.land(aid)
 

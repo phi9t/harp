@@ -96,12 +96,15 @@ def _run_check(collab: Collab, args: argparse.Namespace) -> object:
 
 
 def _run_land(collab: Collab, args: argparse.Namespace) -> object:
-    return collab.land(args.attempt, args.owner_mainline_override)
+    review = json.loads(args.review_json) if args.review_json is not None else None
+    return collab.land(args.attempt, args.owner_mainline_override, review, args.effort)
 
 
 def _add_land(parser: argparse.ArgumentParser) -> None:
     _add_attempt(parser)
     parser.add_argument("--owner-mainline-override")
+    parser.add_argument("--review-json")
+    parser.add_argument("--effort")
 
 
 def _run_recover(collab: Collab, args: argparse.Namespace) -> object:

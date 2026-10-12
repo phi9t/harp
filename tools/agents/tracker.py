@@ -914,6 +914,16 @@ def cmd_resolve(args: argparse.Namespace) -> int:
         return REFUSED
     missing_landed = not has_accepted_landed_candidate(root, args.effort, ticket)
     unchecked_acceptance = not all_acceptance_checked(ticket)
+    if unchecked_acceptance and getattr(args, "mark_reviewed", False):
+        if missing_landed:
+            print("cannot mark acceptance without accepted, landed evidence", file=sys.stderr)
+            return REFUSED
+        lines = list(ticket.lines)
+        for line_number, _ in ticket.acceptance:
+            lines[line_number - 1] = re.sub(r"^- \[[ ]\]", "- [x]", lines[line_number - 1])
+        ticket.path.write_text("\n".join(lines) + "\n")
+        ticket, _ = find_ticket(root, args.effort, args.ticket)
+        unchecked_acceptance = not all_acceptance_checked(ticket)
     if unchecked_acceptance and not args.force:
         print(f"ticket {ticket.id} has unchecked acceptance", file=sys.stderr)
         return REFUSED
@@ -1121,6 +1131,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(fn=cmd_claim)
 
     p = sub.add_parser("resolve")
+    p.add_argument("--mark-reviewed", action="store_true",
+                   help="operator attests all criteria reviewed against accepted, landed evidence")
     p.add_argument("effort")
     p.add_argument("ticket")
     p.add_argument("--owner", required=True)

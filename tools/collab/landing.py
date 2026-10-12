@@ -6,6 +6,7 @@ from pathlib import Path
 from common import Refused, digest, failpoint
 from liveness import require_worker_stopped
 from state_store import UNRESOLVED_LANDING
+from ticket_resolution import TicketResolution
 
 
 class LandingManager:
@@ -22,6 +23,7 @@ class LandingManager:
             raise Refused("Conflicting landing receipt ref")
         if not old:
             self.workspace.git("update-ref", ref, attempt["integration"], "")
+        TicketResolution(self.store, self.workspace, self.tickets, self.config).finish(attempt)
         self.store.change(attempt["id"], "landed")
 
     def require_receipt(self, attempt: dict) -> None:

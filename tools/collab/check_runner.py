@@ -10,7 +10,7 @@ import subprocess
 import uuid
 
 from common import Refused, child_environment, digest, failpoint, now
-from ticket_source import ticket_sections
+from ticket_source import split_corenius_ticket, ticket_sections
 
 
 class CheckRunner:
@@ -70,16 +70,21 @@ class CheckRunner:
             )
             # Only the fresh detached verification worktree is rewritten.
             self.workspace.git("reset", "--soft", attempt["base"], cwd=path)
-            ticket_path = path / ".tickets" / (attempt["ticket"] + ".md")
+            meta, _ = self.tickets.ticket(attempt["ticket"], attempt["base"])
+            if split_corenius_ticket(attempt["ticket"]):
+                ticket_path = path / meta["path"]
+            else:
+                ticket_path = path / ".tickets" / (attempt["ticket"] + ".md")
             raw = ticket_path.read_bytes()
             if digest(raw) != attempt["ticket_hash"]:
                 raise Refused("Candidate changed ticket bytes")
-            prefix, header, suffix = ticket_sections(raw)
-            header, count = re.subn(rb"(?m)^status:[^\r\n]*", b"status: closed", header)
-            if count != 1:
-                raise Refused("Expected one status field")
-            ticket_path.write_bytes(prefix + header + suffix)
-            self.workspace.git("add", "--", ".tickets/" + attempt["ticket"] + ".md", cwd=path)
+            if not split_corenius_ticket(attempt["ticket"]):
+                prefix, header, suffix = ticket_sections(raw)
+                header, count = re.subn(rb"(?m)^status:[^\r\n]*", b"status: closed", header)
+                if count != 1:
+                    raise Refused("Expected one status field")
+                ticket_path.write_bytes(prefix + header + suffix)
+                self.workspace.git("add", "--", ".tickets/" + attempt["ticket"] + ".md", cwd=path)
             message = (
                 f"{attempt['ticket']}: accepted contribution\n\n"
                 f"Collab-Attempt: {aid}\n"

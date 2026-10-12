@@ -149,7 +149,7 @@ def liveness_blockers(attempt: dict) -> list[dict]:
     status = worker_liveness(attempt)
     blockers = []
     for source in status["sources"]:
-        if not source["alive"]:
+        if not source["alive"] and source.get("state") != "unknown":
             continue
         blocker = {"kind": "worker_liveness", **source}
         blockers.append(blocker)
@@ -159,4 +159,4 @@ def liveness_blockers(attempt: dict) -> list[dict]:
 def require_worker_stopped(attempt: dict) -> None:
     blockers = liveness_blockers(attempt)
     if blockers:
-        raise Refused(f"recorded worker still running for Attempt {attempt['id']}: {blockers[0]}")
+        raise Refused(f"recorded worker running or unknown for Attempt {attempt['id']}: {blockers[0]}")

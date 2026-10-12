@@ -81,6 +81,8 @@ def protect_candidate_paths(paths: list[str], protected_paths: object | None) ->
     for path in paths:
         if not path:
             continue
+        if path.startswith("docs/efforts/") and "/tickets/" in path:
+            raise Refused(f"Candidate changes protected tracker ticket: {path!r}")
         if any(_matches_protected_path(path, protected_path) for protected_path in protected):
             raise Refused(
                 f"Candidate changes protected path {path!r} (coordination/policy); "

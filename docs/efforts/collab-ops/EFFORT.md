@@ -1,9 +1,9 @@
 # Collab operations
 
-Status: specified; tickets pending
+Status: implementing the approved completion frontier; source workers preserved
 Base: main
 Base commit: c0a2fc0370f18ff28009dbe9b62a59916de0e582
-Integration branch: claude/collab-ops-spec
+Integration branch: codex/collab-ops-complete
 
 ## Intent
 Make the collab toolset the single production-ready system for multi-agent work in
