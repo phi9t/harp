@@ -86,8 +86,12 @@ def archive_worktree(workspace, home: Path, item: dict) -> dict:
         raise Refused("Split index needs separate preservation; retaining worktree")
     index = (gitdir / "index").read_bytes()
     token = uuid.uuid4().hex
-    directory = home / "archives" / token
-    directory.mkdir(parents=True, mode=0o700)
+    archive_root = home / "archives"
+    if archive_root.is_symlink() or archive_root.resolve() != archive_root:
+        raise Refused("Archive storage identity mismatch; retaining worktree")
+    archive_root.mkdir(mode=0o700, exist_ok=True)
+    directory = archive_root / token
+    directory.mkdir(mode=0o700)
     head_ref = item.get("archive_ref") or f"refs/collab/archive/{token}/head"
     workspace.git("update-ref", head_ref, item["head"], "")
     (directory / "index").write_bytes(index)

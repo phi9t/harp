@@ -36,7 +36,7 @@ Final focused verification:
 
 ```sh
 python3 tools/temp_root.py -- python3 -m unittest discover -s tools/collab/tests -p test_cleanup.py -v
-# 8 tests passed
+# 9 tests passed
 python3 tools/temp_root.py -- python3 -m unittest discover -s tools/collab/tests -p test_collab.py -q
 # 70 existing tests passed
 python3 tools/temp_root.py -- python3 -m compileall -q tools/collab tools/agents/wt.py
@@ -77,3 +77,8 @@ unmerged branches require the flag and receive an archive ref before deletion.
 Integration glue is limited to CLI sweep flags and restore command dispatch,
 and Collab.sweep/Collab.restore_archive facade methods in core.py.
 The lead runs the repository gate and performs independent review.
+
+A follow-up regression showed that a preexisting archive-storage symlink wrote
+into an unrelated tree. The archive root now requires canonical identity before
+any write. The new public test passes and confirms that the unrelated directory
+stays empty and the source worktree stays present.
