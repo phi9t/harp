@@ -1,0 +1,210 @@
+"""Collab lifecycle facade composed from narrow modules."""
+from __future__ import annotations
+
+import uuid
+from pathlib import Path
+
+from check_runner import CheckRunner
+from common import Refused, failpoint, output_path, valid_id
+from landing import LandingManager
+from policy import protect_candidate_paths, validate_check_argv
+from state_store import StateStore
+from ticket_source import TicketSource
+from workspace import RepositoryWorkspace, run_git
+
+
+class Collab:
+    def __init__(self, repo: str | Path):
+        self.invoked = output_path(repo)
+        common = run_git(self.invoked, "rev-parse", "--path-format=absolute", "--git-common-dir").strip()
+        self.common = output_path(common)
+        self.home = self.common / "collab"
+        self.db_path = self.home / "state.sqlite3"
+        self.store = StateStore(self.home, self.db_path)
+        self.config = self.store.load_config()
+        self.workspace = RepositoryWorkspace(self.invoked, self.common, self.store, self.config)
+        self.tickets = TicketSource(self.workspace)
+        self.checks = CheckRunner(self.store, self.workspace, self.tickets, self.require_config)
+        self.landing = LandingManager(self.store, self.workspace, self.tickets, self.require_config)
+
+    def require_config(self) -> dict:
+        if self.config is None:
+            raise Refused("Run init first; never delete state.sqlite3 to reset active work")
+        return self.config
+
+    def init(self, trunk: str, check_argv: list[str], workspace_root: str | None = None) -> dict:
+        if self.db_path.exists():
+            raise Refused("Already initialized or partial initialization; inspect, do not overwrite")
+        check_argv = validate_check_argv(check_argv)
+        root = Path(self.workspace.git("rev-parse", "--show-toplevel", cwd=self.invoked).strip())
+        trunk_ref = "refs/heads/" + trunk
+        self.workspace.git("check-ref-format", trunk_ref, cwd=root)
+        if self.workspace.git("symbolic-ref", "-q", "HEAD", cwd=root).strip() != trunk_ref:
+            raise Refused("Initialize from the intended trunk checkout")
+        self.workspace.git("rev-parse", "--verify", trunk_ref + "^{commit}", cwd=root)
+        self.workspace.clean(root)
+        if workspace_root:
+            work = output_path(workspace_root)
+        else:
+            work = root.parent / (root.name + "-collab-worktrees")
+        if work == root or root in work.parents:
+            raise Refused("Workspaces must be outside the primary checkout")
+        config = {
+            "schema": 1,
+            "root": str(root),
+            "trunk_ref": trunk_ref,
+            "workspace_root": str(work),
+            "check_argv": check_argv,
+        }
+        self.store.initialize(config)
+        self.config = config
+        self.workspace.set_config(config)
+        return config
+
+    def new(self, tid: str, title: str, deps: list[str]) -> dict:
+        self.require_config()
+        valid_id(tid)
+        deps = [valid_id(item) for item in deps]
+        if len(deps) != len(set(deps)) or tid in deps:
+            raise Refused("Duplicate or self dependency")
+        with self.store.lock("meta"):
+            self.workspace.primary()
+            directory = Path(self.require_config()["root"]) / ".tickets"
+            if directory.is_symlink():
+                raise Refused("Ticket directory cannot be a symlink")
+            directory.mkdir(exist_ok=True)
+            path = directory / (tid + ".md")
+            text = (
+                f"---\nid: {tid}\nstatus: open\ndeps: [{', '.join(deps)}]\n---\n\n"
+                f"# {title}\n\n"
+                "## Outcome\nDescribe the outcome and why it matters.\n\n"
+                "## Invariants\nList actual constraints, not implementation guesses.\n\n"
+                "## Acceptance\nDescribe observable evidence.\n\n"
+                "## Discretion\n"
+                "You own the engineering strategy. Escalate changes to acceptance or authority.\n"
+            )
+            with path.open("x") as stream:
+                stream.write(text)
+        return {
+            "path": str(path),
+            "next": "Edit and explicitly git-add/commit this ticket on trunk before claiming",
+        }
+
+    def claim(self, tid: str, owner: str) -> dict:
+        self.require_config()
+        if not owner.strip():
+            raise Refused("Owner required")
+        with self.store.lock("meta"):
+            base = self.workspace.trunk()
+            meta, _ = self.tickets.ticket(tid, base)
+            if meta["status"] == "closed":
+                raise Refused("Ticket is closed")
+            self.tickets.deps_ok(tid, base)
+            aid = "a-" + uuid.uuid4().hex[:16]
+            branch = f"codex/collab/{tid}/{aid}"
+            path = Path(self.require_config()["workspace_root"]) / aid
+            with self.store.tx() as con:
+                self.store.insert_attempt(con, aid, tid, owner, base, meta["sha256"], path, branch)
+                self.store.event(con, aid, "allocating", ticket=tid, owner=owner, base=base)
+            failpoint("after_claim_record")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            self.workspace.git(
+                "worktree",
+                "add",
+                "--lock",
+                "--reason",
+                f"collab:{aid}",
+                "-b",
+                branch,
+                str(path),
+                base,
+            )
+            failpoint("after_worktree_add")
+            self.store.change(aid, "working")
+        return self.store.row(aid)
+
+    def submit(self, aid: str) -> dict:
+        with self.store.lock("meta"):
+            attempt = self.store.row(aid)
+            if attempt["state"] not in ("working", "submitted", "check_failed", "verified"):
+                raise Refused("Attempt cannot submit in its current state")
+            path = self.workspace.validate_attempt(attempt)
+            self.workspace.clean(path)
+            assigned_branch = "refs/heads/" + attempt["branch"]
+            if self.workspace.git("symbolic-ref", "-q", "HEAD", cwd=path).strip() != assigned_branch:
+                raise Refused("Worker changed its assigned branch")
+            base = self.workspace.trunk()
+            candidate = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
+            if base != attempt["base"]:
+                raise Refused("Trunk moved; stop/abandon, claim fresh, and cherry-pick only the prior contribution")
+            self.tickets.same_contract(attempt, base)
+            if self.workspace.git("merge-base", base, candidate).strip() != base:
+                raise Refused(
+                    "Candidate diverges from its admitted base; stop/abandon, claim fresh, cherry-pick contribution"
+                )
+            if base == candidate:
+                raise Refused("Empty contribution")
+            if self.workspace.git("rev-list", "--merges", f"{base}..{candidate}").strip():
+                raise Refused("Use a linear private branch for this prototype")
+            changed = self.workspace.git("diff", "--name-only", "-z", base, candidate).split("\0")
+            if not any(changed):
+                raise Refused("Empty contribution: candidate has no file changes")
+            protect_candidate_paths(changed)
+            self.workspace.git("update-ref", f"refs/collab/candidates/{aid}/{candidate}", candidate)
+            self.store.change(aid, "submitted", base=base, candidate=candidate, integration=None)
+        return self.store.row(aid)
+
+    def check(self, aid: str) -> dict:
+        return self.checks.check(aid)
+
+    def land(self, aid: str) -> dict:
+        return self.landing.land(aid)
+
+    def recover(self, aid: str, confirmed: bool) -> dict:
+        return self.landing.recover(aid, confirmed)
+
+    def abandon(self, aid: str, confirmed: bool) -> dict:
+        return self.landing.abandon(aid, confirmed)
+
+    def gc(self, aid: str, confirmed: bool) -> dict:
+        return self.landing.gc(aid, confirmed)
+
+    def status(self) -> dict:
+        self.require_config()
+        base = self.workspace.trunk()
+        paths = self.workspace.git("ls-tree", "-r", "--name-only", base, "--", ".tickets/").splitlines()
+        attempts = self.store.attempts()
+        active = {
+            attempt["ticket"]: attempt
+            for attempt in attempts
+            if attempt["state"] not in ("landed", "abandoned")
+        }
+        tickets = []
+        for path in paths:
+            if path.count("/") != 1 or not path.endswith(".md"):
+                continue
+            tid = Path(path).stem
+            try:
+                meta, _ = self.tickets.ticket(tid, base)
+                blocker = None
+                try:
+                    self.tickets.deps_ok(tid, base)
+                except Refused as exc:
+                    blocker = str(exc)
+                attempt = active.get(tid)
+                tickets.append(
+                    {
+                        **meta,
+                        "active_attempt": attempt["id"] if attempt else None,
+                        "execution": attempt["state"] if attempt else None,
+                        "ready": meta["status"] != "closed" and not blocker and not attempt,
+                        "blocker": blocker,
+                    }
+                )
+            except Refused as exc:
+                tickets.append({"id": tid, "error": str(exc), "ready": False})
+        return {"trunk": base, "tickets": tickets, "attempts": attempts}
+
+    def backup(self, destination: str) -> dict:
+        self.require_config()
+        return self.store.backup(destination)

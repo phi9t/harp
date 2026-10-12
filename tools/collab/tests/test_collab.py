@@ -1,5 +1,6 @@
 """Public CLI proof using real disposable Git repositories and process death."""
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -7,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import tokenize
 import unittest
 
 CLI = Path(__file__).resolve().parents[1] / "collab.py"
@@ -14,6 +16,7 @@ sys.path.insert(0, str(CLI.parents[1]))
 from temp_root import temporary_root
 
 SYSTEM_TMP = str(Path("/") / "tmp")
+COLLAB_ROOT = CLI.parent
 
 
 class CollabTests(unittest.TestCase):
@@ -68,7 +71,10 @@ class CollabTests(unittest.TestCase):
     def ticket(self, tid="T-one", deps=(), status="open", crlf=False):
         path = self.repo / ".tickets" / (tid + ".md")
         path.parent.mkdir(exist_ok=True)
-        raw = (f"---\nid: {tid}\nstatus: {status}\ndeps: [{', '.join(deps)}]\n---\n\n# {tid}\n\nDo the thing.\n").encode()
+        raw = (
+            f"---\nid: {tid}\nstatus: {status}\ndeps: [{', '.join(deps)}]\n---\n\n"
+            f"# {tid}\n\nDo the thing.\n"
+        ).encode()
         path.write_bytes(raw.replace(b"\n", b"\r\n") if crlf else raw)
         return path
 
@@ -339,7 +345,15 @@ class CollabTests(unittest.TestCase):
         self.commit("ticket")
         a = self.claim()
         worker = Path(a["path"])
-        for name in (".github/workflow.yml", ".corenius/config", "docs/agents/policy.md", "AGENTS.md", "CLAUDE.md", ".tickets/T-extra.md"):
+        protected_paths = (
+            ".github/workflow.yml",
+            ".corenius/config",
+            "docs/agents/policy.md",
+            "AGENTS.md",
+            "CLAUDE.md",
+            ".tickets/T-extra.md",
+        )
+        for name in protected_paths:
             with self.subTest(path=name):
                 target = worker / name
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -383,7 +397,8 @@ class CollabTests(unittest.TestCase):
                 "print('mode='+mode); "
                 "Path('code.txt').write_text('mutation') if mode=='tracked' else None; "
                 "Path('extra.txt').write_text('untracked') if mode=='untracked' else None; "
-                "subprocess.run(['git','commit','--allow-empty','-m','mutated HEAD'],check=True) if mode=='head' else None; "
+                "subprocess.run(['git','commit','--allow-empty','-m','mutated HEAD'],"
+                "check=True) if mode=='head' else None; "
                 "sys.exit(7 if mode=='fail' else 0)")
         a = self.prepared([sys.executable, "-c", code])
         for mode in ("fail", "tracked", "untracked", "head"):
@@ -549,7 +564,10 @@ class CollabTests(unittest.TestCase):
         self.assertTrue(Path(old["check_path"]).is_dir())
         self.assertTrue(Path(checked["log"]).is_file())
         self.assertEqual(self.git("rev-parse", a["branch"]), a["candidate"])
-        self.assertEqual(self.git("rev-parse", "refs/collab/candidates/" + a["id"] + "/" + a["candidate"]), a["candidate"])
+        self.assertEqual(
+            self.git("rev-parse", "refs/collab/candidates/" + a["id"] + "/" + a["candidate"]),
+            a["candidate"],
+        )
         self.assertEqual(self.cli("show", a["id"])["state"], "abandoned")
 
     def test_live_check_child_retains_lane_lock_after_cli_parent_death(self):
@@ -777,6 +795,43 @@ class CollabTests(unittest.TestCase):
                 self.assertIn("dependency", result.stderr)
                 self.assertEqual(self.git("status", "--porcelain=v1"), "")
                 self.assertFalse((self.repo / ".tickets").exists())
+
+
+class CollabStructureTests(unittest.TestCase):
+    def test_collab_toolset_has_named_modules_and_single_sqlite_owner(self):
+        expected = {
+            "check_runner.py",
+            "cli.py",
+            "landing.py",
+            "policy.py",
+            "state_store.py",
+            "ticket_source.py",
+            "workspace.py",
+        }
+        present = {path.name for path in COLLAB_ROOT.glob("*.py")}
+        self.assertTrue(expected <= present, expected - present)
+
+        for path in sorted(COLLAB_ROOT.glob("*.py")):
+            source = path.read_text()
+            if path.name == "state_store.py":
+                self.assertIn("sqlite3", source)
+            else:
+                self.assertNotIn("import sqlite3", source, path.name)
+                self.assertNotIn("sqlite3.", source, path.name)
+
+        long_lines = []
+        for path in sorted(COLLAB_ROOT.glob("*.py")):
+            for line_number, line in enumerate(path.read_text().splitlines(), start=1):
+                if len(line) > 120:
+                    long_lines.append(f"{path.name}:{line_number}")
+        self.assertEqual(long_lines, [])
+
+    def test_cli_entry_uses_command_table_without_packed_statements(self):
+        source = (COLLAB_ROOT / "cli.py").read_text()
+        self.assertIn("COMMANDS =", source)
+        self.assertNotIn("elif args.command", source)
+        tokens = tokenize.generate_tokens(io.StringIO(source).readline)
+        self.assertFalse(any(token.string == ";" for token in tokens))
 
 
 if __name__ == "__main__":
