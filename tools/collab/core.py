@@ -47,7 +47,7 @@ class Collab:
         from liveness import require_worker_stopped
         require_worker_stopped(attempt)
 
-    def open_refreshed_attempt(self, previous: dict, commits: list[str]) -> dict:
+    def open_refreshed_attempt(self, previous: dict, commits: list[str], head: str) -> dict:
         """Allocate under RefreshManager's locks without rewriting an owned claim."""
         self.workspace.primary()
         base = self.workspace.trunk()
@@ -55,12 +55,7 @@ class Collab:
         aid = "a-" + uuid.uuid4().hex[:16]
         branch = self.attempt_branch(previous["owner"], previous["ticket"].replace(":", "-"), aid)
         path = Path(self.require_config()["workspace_root"]) / aid
-        with self.store.tx() as con:
-            self.store.insert_attempt(
-                con, aid, previous["ticket"], previous["owner"], base, previous["ticket_hash"], path, branch
-            )
-            self.store.event(con, aid, "allocating", previous=previous["id"], claim_transferred=True)
-            self.store.event(con, aid, "refresh_started", previous=previous["id"], commits=commits)
+        self.store.reserve_refresh(previous, aid, base, path, branch, head, commits)
         failpoint("after_claim_record")
         self.workspace.create_attempt_worktree(self.store.row(aid))
         failpoint("after_worktree_add")

@@ -35,12 +35,9 @@ class RefreshManager:
                 "rev-list", "--reverse", f"{old['base']}..{head}", "--not", trunk
             ).splitlines()
             self.tickets.require_refresh_claim(old, trunk)
-            with self.store.tx() as con:
-                self.store.set_state_with_event(con, aid, "abandoned")
-                self.store.event(con, aid, "refresh_requested", trunk=trunk, head=head, commits=commits)
             # Keep admission and picks under the same operation locks. Transactions
             # remain short; no DB connection stays open across a cherry-pick.
-            fresh = self.open_fresh(old, commits)
+            fresh = self.open_fresh(old, commits, head)
             new_path = Path(fresh["path"])
             for commit in commits:
                 try:
