@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import os
 import subprocess
 
 from common import Refused
@@ -14,6 +15,59 @@ class PreflightRefused(Refused):
         super().__init__(reason)
         self.kind = kind
         self.paths = paths or []
+
+
+def hidden_index_entries(checkout: Path) -> list[dict]:
+    entries = run_git(checkout, "ls-files", "-v", "-z").split("\0")
+    hidden = []
+    for entry in entries:
+        if entry and (entry[0].islower() or entry[0] == "S"):
+            flag = "skip-worktree" if entry[0].upper() == "S" else "assume-unchanged"
+            hidden.append({"path": entry[2:], "flag": flag})
+    return hidden
+
+
+def process_group_alive(identity: int) -> bool:
+    try:
+        os.killpg(identity, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def gate_workspace_status(repo: Path, checkout: Path, tip: str, git_directory: str) -> dict:
+    status = {"identity": False, "same_head": False, "clean": False, "hidden_index": []}
+    try:
+        expected_common = run_git(repo, "rev-parse", "--path-format=absolute", "--git-common-dir").strip()
+        actual_common = run_git(checkout, "rev-parse", "--path-format=absolute", "--git-common-dir").strip()
+        actual_git = run_git(checkout, "rev-parse", "--absolute-git-dir").strip()
+        top = run_git(checkout, "rev-parse", "--show-toplevel").strip()
+        head = run_git(checkout, "rev-parse", "HEAD").strip()
+        branch = run_git(checkout, "symbolic-ref", "-q", "HEAD", check=False).strip()
+        records = run_git(repo, "worktree", "list", "--porcelain", "-z").split("\0\0")
+        registration = next(
+            (record.split("\0") for record in records if record.startswith("worktree " + str(checkout) + "\0")),
+            [],
+        )
+        status["identity"] = (
+            checkout.resolve() == checkout
+            and top == str(checkout)
+            and expected_common == actual_common
+            and actual_git == git_directory
+            and not branch
+            and "detached" in registration
+            and "HEAD " + head in registration
+            and not any(entry == "locked" or entry.startswith("locked ") for entry in registration)
+        )
+        status["same_head"] = head == tip
+        status["hidden_index"] = hidden_index_entries(checkout)
+        visible = run_git(checkout, "status", "--porcelain=v1", "-z", "--untracked-files=all")
+        status["clean"] = not visible and not status["hidden_index"]
+    except (Refused, OSError) as error:
+        status["reason"] = str(error)
+    return status
 
 
 def collision_paths(repo: Path, checkout: Path | None, base: str, tip: str) -> list[str]:
@@ -58,8 +112,7 @@ def preflight(repo: Path, target_ref: str, expected_base: str, tip: str, checkou
         raise PreflightRefused("local", "Target checkout is no longer on the intended branch")
     if run_git(checkout, "rev-parse", "HEAD").strip() != expected_base:
         raise PreflightRefused("stale", "Target checkout HEAD moved")
-    entries = run_git(checkout, "ls-files", "-v", "-z").split("\0")
-    if any(entry and (entry[0].islower() or entry[0] == "S") for entry in entries):
+    if hidden_index_entries(checkout):
         raise PreflightRefused("local", "Target checkout has hidden index entries; preserve and inspect them")
     # An existing staged change makes Git's fast-forward index update unsafe even
     # when its path is outside the Candidate diff. Preserve it before publishing.
