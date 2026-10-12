@@ -14,6 +14,7 @@ from policy import (
     validate_protected_paths,
 )
 from state_store import StateStore
+from sweep import SweepManager
 from ticket_source import TicketSource, corenius_ticket_id
 from workspace import RepositoryWorkspace, run_git
 
@@ -31,6 +32,7 @@ class Collab:
         self.tickets = TicketSource(self.workspace)
         self.checks = CheckRunner(self.store, self.workspace, self.tickets, self.require_config)
         self.landing = LandingManager(self.store, self.workspace, self.tickets, self.require_config)
+        self.sweeper = SweepManager(self.store, self.workspace, self.require_config)
 
     def require_config(self) -> dict:
         if self.config is None:
@@ -207,6 +209,9 @@ class Collab:
 
     def gc(self, aid: str, confirmed: bool) -> dict:
         return self.landing.gc(aid, confirmed)
+
+    def sweep(self, apply: bool = False) -> dict:
+        return self.sweeper.sweep(apply)
 
     def status(self) -> dict:
         self.require_config()

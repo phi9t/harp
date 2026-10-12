@@ -100,6 +100,14 @@ def _run_gc(collab: Collab, args: argparse.Namespace) -> object:
     return collab.gc(args.attempt, args.confirm_stopped)
 
 
+def _add_sweep(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--apply", action="store_true")
+
+
+def _run_sweep(collab: Collab, args: argparse.Namespace) -> object:
+    return collab.sweep(args.apply)
+
+
 def _add_no_args(parser: argparse.ArgumentParser) -> None:
     del parser
 
@@ -133,6 +141,7 @@ COMMANDS = {
     "recover": Command(_add_confirmed_attempt, _run_recover),
     "abandon": Command(_add_confirmed_attempt, _run_abandon),
     "gc": Command(_add_confirmed_attempt, _run_gc),
+    "sweep": Command(_add_sweep, _run_sweep),
     "status": Command(_add_no_args, _run_status),
     "ready": Command(_add_no_args, _run_ready),
     "backup": Command(_add_backup, _run_backup),

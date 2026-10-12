@@ -168,6 +168,8 @@ Git, check, and agent processes. Confirmation does not stop them:
 collab recover a-ACTUAL-ID --confirm-stopped
 collab abandon a-ACTUAL-ID --confirm-stopped
 collab gc a-ACTUAL-ID --confirm-stopped
+collab sweep
+collab sweep --apply
 collab backup /absolute/path/to/new-snapshot.sqlite3
 ```
 
@@ -193,7 +195,17 @@ database-reset command.
 It refuses tracked modifications, untracked files, ignored outputs, repository
 substitution, and changed check HEADs. Classify and preserve useful files first.
 Git removes the worktrees without force. Branches, sealed refs, logs, database
-history, and older check worktrees remain. Bulk retention is not implemented.
+history, and older check worktrees remain.
+
+`sweep` is dry-run by default. It lists clean unlocked terminal Attempt worktrees
+and their branches with the cleanup reason, but removes nothing unless `--apply`
+is passed. Applied cleanup removes clean merged terminal Attempt worktrees and
+branches. Clean unmerged terminal Attempt branches are first archived under
+`refs/collab/archive/` so their commits stay reachable, then the worktree and
+branch are removed. Fresh, in-progress and locked worktrees are skipped with a
+reason. Foreign unmerged branches are listed with their owner prefix and left
+alone. Dirty-worktree archival, stale-ref pruning, old-log pruning and orphaned
+check-worktree pruning are not implemented.
 
 `backup` creates an exclusive new SQLite snapshot and refuses overwrite,
 including symlink destinations and competing writers. Preserve Git objects,

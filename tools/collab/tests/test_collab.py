@@ -136,6 +136,9 @@ class CollabTests(unittest.TestCase):
         (path / "code.txt").write_text(content)
         return self.commit("worker contribution", cwd=path)
 
+    def unlock_worktree(self, attempt):
+        self.git("worktree", "unlock", attempt["path"])
+
     def prepared(self, argv=None, timeout_seconds=None):
         self.init(argv, timeout_seconds=timeout_seconds)
         self.ticket()
@@ -868,6 +871,95 @@ class CollabTests(unittest.TestCase):
             a["candidate"],
         )
         self.assertEqual(self.cli("show", a["id"])["state"], "abandoned")
+
+    def test_sweep_dry_run_lists_candidates_without_removing(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        worker = Path(attempt["path"])
+        self.cli("abandon", attempt["id"], "--confirm-stopped")
+        self.unlock_worktree(attempt)
+        result = self.cli("sweep")
+        self.assertFalse(result["applied"])
+        self.assertEqual([item["attempt"] for item in result["candidates"]], [attempt["id"]])
+        self.assertEqual(result["candidates"][0]["reason"], "terminal Attempt has a clean merged branch")
+        self.assertTrue(worker.is_dir())
+        self.assertEqual(self.git("rev-parse", attempt["branch"]), attempt["base"])
+
+    def test_sweep_apply_removes_merged_terminal_attempt(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        worker = Path(attempt["path"])
+        self.cli("abandon", attempt["id"], "--confirm-stopped")
+        self.unlock_worktree(attempt)
+        result = self.cli("sweep", "--apply")
+        self.assertTrue(result["applied"])
+        self.assertEqual(result["removed"][0]["attempt"], attempt["id"])
+        self.assertFalse(worker.exists())
+        branch = self.run_process(["git", "rev-parse", "--verify", attempt["branch"]])
+        self.assertNotEqual(branch.returncode, 0)
+
+    def test_sweep_apply_never_removes_fresh_attempt(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        worker = Path(attempt["path"])
+        result = self.cli("sweep", "--apply")
+        self.assertEqual(result["candidates"], [])
+        self.assertEqual(result["skipped"][0]["attempt"], attempt["id"])
+        self.assertIn("working", result["skipped"][0]["reason"])
+        self.assertTrue(worker.is_dir())
+        self.assertEqual(self.git("rev-parse", attempt["branch"]), attempt["base"])
+
+    def test_sweep_reports_locked_terminal_worktree_as_skipped(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        self.cli("abandon", attempt["id"], "--confirm-stopped")
+        result = self.cli("sweep", "--apply")
+        self.assertEqual(result["candidates"], [])
+        self.assertEqual(result["skipped"][0]["attempt"], attempt["id"])
+        self.assertIn("worktree is locked: collab:" + attempt["id"], result["skipped"][0]["reason"])
+        self.assertTrue(Path(attempt["path"]).is_dir())
+        self.assertEqual(self.git("rev-parse", attempt["branch"]), attempt["base"])
+
+    def test_sweep_archives_unmerged_clean_terminal_branch_before_removal(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        worker = Path(attempt["path"])
+        head = self.contribute(attempt)
+        self.cli("abandon", attempt["id"], "--confirm-stopped")
+        self.unlock_worktree(attempt)
+        result = self.cli("sweep", "--apply")
+        candidate = result["candidates"][0]
+        self.assertEqual(candidate["action"], "archive_then_remove_worktree_and_branch")
+        self.assertEqual(candidate["head"], head)
+        self.assertFalse(worker.exists())
+        self.assertEqual(self.git("rev-parse", candidate["archive_ref"]), head)
+        branch = self.run_process(["git", "rev-parse", "--verify", attempt["branch"]])
+        self.assertNotEqual(branch.returncode, 0)
+
+    def test_sweep_lists_foreign_unmerged_branch_with_owner_and_leaves_it(self):
+        self.init()
+        self.git("switch", "-c", "other-worker/feature")
+        (self.repo / "foreign.txt").write_text("foreign work\n")
+        head = self.commit("foreign work")
+        self.git("switch", "main")
+        result = self.cli("sweep", "--apply")
+        foreign = [item for item in result["skipped"] if item["kind"] == "foreign_branch"]
+        self.assertEqual(len(foreign), 1)
+        self.assertEqual(foreign[0]["branch"], "other-worker/feature")
+        self.assertEqual(foreign[0]["owner"], "other-worker")
+        self.assertEqual(foreign[0]["head"], head)
+        self.assertIn("unmerged", foreign[0]["reason"])
+        self.assertEqual(self.git("rev-parse", "other-worker/feature"), head)
 
     def test_live_check_child_retains_check_lock_after_cli_parent_death(self):
         started, release, done = [self.root / name for name in ("child-started", "release-child", "child-done")]
