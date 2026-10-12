@@ -34,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import land as land_tool  # noqa: E402
 from landing_protocol import guard_initialized_trunk_mutation  # noqa: E402
+from common import Refused  # noqa: E402
 from worker import WorkerError, git, main_worktree, now  # noqa: E402
 
 OK, WARN, ERROR = 0, 1, 2
@@ -335,17 +336,19 @@ def cmd_move_records(args: argparse.Namespace) -> int:
         raise WorkerError(f"move-records must run from {integration}, not {current_branch(root) or 'detached'}")
     branch = args.record_branch or metadata.get("record_branch") or record_branch_name(slug)
     record_worktree = Path(args.worktree).resolve() if args.worktree else root.parent / f"{root.name}-{slug}-records"
-    existing_branch = rev(root, branch)
-    existing_worktree = land_tool.worktree_for_ref(root, land_tool.local_mainline_ref(branch)) if existing_branch else None
-    if existing_branch:
-        if existing_worktree is None:
-            raise WorkerError(f"record branch {branch} already exists")
-        record_worktree = existing_worktree.resolve()
-    elif record_worktree.exists():
-        raise WorkerError(f"{record_worktree} already exists")
-    else:
-        git(root, "worktree", "add", "-q", "-b", branch, str(record_worktree), "HEAD")
     with guard_initialized_trunk_mutation(root):
+        existing_branch = rev(root, branch)
+        existing_worktree = (
+            land_tool.worktree_for_ref(root, land_tool.local_mainline_ref(branch)) if existing_branch else None
+        )
+        if existing_branch:
+            if existing_worktree is None:
+                raise WorkerError(f"record branch {branch} already exists")
+            record_worktree = existing_worktree.resolve()
+        elif record_worktree.exists():
+            raise WorkerError(f"{record_worktree} already exists")
+        else:
+            git(root, "worktree", "add", "-q", "-b", branch, str(record_worktree), "HEAD")
         record_effort = record_worktree / "docs" / "efforts" / slug
         record_effort_file = record_effort / "EFFORT.md"
         if not record_effort_file.exists():
@@ -627,7 +630,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         return args.fn(args)
-    except WorkerError as error:
+    except (WorkerError, Refused) as error:
         print(f"error: {error}", file=sys.stderr)
         return 64
 
