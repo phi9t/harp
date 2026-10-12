@@ -1,10 +1,10 @@
 # 19 mutation-design: Approve shared mutation contract and bounded safety follow-up
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: trae
 Blocked by: 
-Claimed: 2026-10-12T17:35:52Z expires 2026-10-13T17:35:52Z
+Claimed:
 
 Triage: ready-for-agent
 
@@ -20,3 +20,4 @@ Draft follow-up requested by the user on 2026-10-12. See [FOLLOWUP.md](../FOLLOW
 ## Comments
 - 2026-10-12T17:35:52Z trae: claimed until 2026-10-13T17:35:52Z
 - 2026-10-12T17:38:00Z trae: approved the shared `landing_protocol.py` mutation interface, lock order, all-managed-writers scope, liveness states, three-effect recovery contract and bounded ticket 20-25 repair/review budget in `decisions/2026-10-12-mutation-contract.md`.
+- 2026-10-12T17:38:03Z trae: resolved with --force despite missing accepted, landed Candidate

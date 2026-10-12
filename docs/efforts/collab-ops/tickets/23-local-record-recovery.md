@@ -1,12 +1,12 @@
 # 23 local-record-recovery: Repair established local success while remote is offline
 
 Type: task
-Status: open
-Owner:
-Blocked by: 19
-Claimed:
+Status: claimed
+Owner: trae
+Blocked by: 
+Claimed: 2026-10-12T17:38:46Z expires 2026-10-13T17:38:46Z
 
-Triage: needs-triage
+Triage: ready-for-agent
 
 ## Context
 
@@ -18,3 +18,5 @@ Draft follow-up requested by the user on 2026-10-12. See [FOLLOWUP.md](../FOLLOW
 - [ ] Offline before outstanding local FF remains uncertain; exact remote acknowledgment allows recovery; divergent evidence refuses.
 
 ## Comments
+- 2026-10-12T17:39:00Z trae: unblocked by resolved ticket 19 decision record `decisions/2026-10-12-mutation-contract.md`.
+- 2026-10-12T17:38:46Z trae: claimed until 2026-10-13T17:38:46Z

@@ -1,10 +1,10 @@
 # 25 archive-python-compat: Restore archives on the supported host Python versions
 
 Type: task
-Status: open
-Owner:
+Status: claimed
+Owner: trae
 Blocked by: 
-Claimed:
+Claimed: 2026-10-12T17:37:34Z expires 2026-10-13T17:37:34Z
 
 Triage: needs-triage
 
@@ -18,3 +18,4 @@ Draft follow-up requested on 2026-10-12. Mainline commit e69d9ce introduced `Tar
 - [ ] The final combined Collab suite passes all 170 current tests and the follow-up qualification ticket records this regression.
 
 ## Comments
+- 2026-10-12T17:37:34Z trae: claimed until 2026-10-13T17:37:34Z
