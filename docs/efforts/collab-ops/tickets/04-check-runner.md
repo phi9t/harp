@@ -1,10 +1,10 @@
 # 04 check-runner: Check runner: timeout, streamed log, receipt v2
 
 Type: feature
-Status: claimed
+Status: resolved
 Owner: collab-ops-04
 Blocked by: 01
-Claimed: 2026-10-12T00:39:05Z expires 2026-10-14T00:39:05Z
+Claimed:
 
 Triage: ready-for-agent
 
@@ -17,11 +17,12 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 6-10). Use the project gloss
 - `tools/collab/`
 
 ## Acceptance
-- [ ] A hung check ends as a distinct timeout outcome.
-- [ ] The log is readable while the check runs.
-- [ ] The receipt records argv, outcome and log hash.
-- [ ] Another landing is not blocked for the length of a check.
-- [ ] A dirty workspace, changed HEAD or moved trunk still fails the check.
+- [x] A hung check ends as a distinct timeout outcome.
+- [x] The log is readable while the check runs.
+- [x] The receipt records argv, outcome and log hash.
+- [x] Another landing is not blocked for the length of a check.
+- [x] A dirty workspace, changed HEAD or moved trunk still fails the check.
 
 ## Comments
 - 2026-10-12T00:39:05Z collab-ops-04: claimed until 2026-10-14T00:39:05Z
+- 2026-10-12T01:39:41Z collab-ops-04: resolved
