@@ -1,6 +1,7 @@
 """Legacy landing CLI behavior in real disposable Git repositories."""
 from __future__ import annotations
 
+import fcntl
 import os
 import json
 import shlex
@@ -146,6 +147,21 @@ class LegacyLandingTest(unittest.TestCase):
         ])
         result = self.call("--gate", f"{shlex.quote(sys.executable)} -c {shlex.quote(code)}")
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_initialized_legacy_landing_honors_busy_collab_meta_lock_before_publication(self):
+        self.collab("init", "--trunk", "main", "--check-json", '["true"]')
+        remote = self.remote()
+        lock = self.repo / ".git/collab/meta.lock"
+
+        with lock.open("a+") as handle:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            result = self.call()
+
+        self.assertEqual(result.returncode, 64, result.stderr)
+        self.assertIn("meta operation busy", result.stderr)
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.base)
+        self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.base)
+        self.assertFalse((self.repo / ".git/legacy-land").exists())
 
     def test_staged_unrelated_change_refuses_local_fast_forward_before_push(self):
         remote = self.remote()

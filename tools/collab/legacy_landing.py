@@ -71,6 +71,7 @@ def land_lock(repo: Path):
         with contextlib.ExitStack() as stack:
             if journal.store.load_config() is not None:
                 stack.enter_context(journal.store.lock("lane"))
+                stack.enter_context(journal.store.lock("meta"))
             stack.enter_context(inherited_legacy_landing_lock())
             # A surviving Git child keeps both locks after its controller dies.
             descriptors = (handle.fileno(), *journal.store.fds)
