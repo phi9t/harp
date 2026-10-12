@@ -1,6 +1,6 @@
 # Collab operations
 
-Status: implementing the approved completion frontier; source workers preserved
+Status: mainline snapshot authorized; acceptance blocked; safety follow-up drafted
 Base: main
 Base commit: c0a2fc0370f18ff28009dbe9b62a59916de0e582
 Integration branch: codex/collab-ops-complete

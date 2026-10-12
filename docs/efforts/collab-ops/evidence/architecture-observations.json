@@ -1,0 +1,128 @@
+{
+  "admission": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-knnpc9iz/project",
+    "attempt": "a-7b0908bb7e284624",
+    "other_attempt": "a-79d200a3ef7b4eca",
+    "base": "de0949e5740cae726fd5e22315c53251f02940d2",
+    "integration": "a3b7abf83472bbc8c2800419fcf22fb2f58b170b",
+    "local_competing_claim": "8461759450518eab0a45ee1c680b5c7192af3bae",
+    "remote": "a3b7abf83472bbc8c2800419fcf22fb2f58b170b",
+    "recovery_rc": 2,
+    "recovery_error": "{\"error\": \"Ambiguous pushed landing; preserve state and inspect a-7b0908bb7e284624: recorded remote origin refs/heads/main is a3b7abf83472bbc8c2800419fcf22fb2f58b170b; current remote state does not prove the push never executed; no automatic retry\"}\n"
+  },
+  "allocation": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-vp1auyjz/project",
+    "attempt": "a-be966285a53d4f75",
+    "other_attempt": "a-c87b042832af47db",
+    "base": "9c3bce718ad1a6aef3cb3df8d448178cdcbf6b3a",
+    "integration": "899af2d62934cd668883595f8f3b5da4db3aa08e",
+    "local_competing_claim": "c134b4a8ff5210baf3619be5569af8040e3418b5",
+    "remote": "899af2d62934cd668883595f8f3b5da4db3aa08e",
+    "recovery_rc": 2,
+    "recovery_error": "{\"error\": \"Ambiguous pushed landing; preserve state and inspect a-be966285a53d4f75: recorded remote origin refs/heads/main is 899af2d62934cd668883595f8f3b5da4db3aa08e; current remote state does not prove the push never executed; no automatic retry\"}\n"
+  },
+  "lane": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-9spmknqr/project",
+    "attempt": "a-fe9be5a4750b44c9",
+    "state": "working",
+    "admission_while_lane_held": true,
+    "after": "2edd2313d016f3fd6a443a20eac60796d84e5077"
+  },
+  "operation": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-9ksqg0ix/project",
+    "attempt": "a-59bcf520e4d84109",
+    "porcelain": "",
+    "marker_exists": true,
+    "state": "landing_started",
+    "base": "d7fab8d3b40e017c68a1444d0d7f615775c4b080",
+    "integration": "c14b6788499d38866031c01062140bd47fc55255",
+    "remote_after": "c14b6788499d38866031c01062140bd47fc55255",
+    "land_rc": 2,
+    "land_error": "{\"error\": \"Git refused merge --ff-only --no-edit: fatal: You have not concluded your cherry-pick (CHERRY_PICK_HEAD exists).\\nPlease, commit your changes before you merge.\"}\n"
+  },
+  "liveness-empty": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-17x75uq0/project",
+    "attempt": "a-83ea756690384a8b",
+    "record": {},
+    "exit_file_exists": false,
+    "inspect": {
+      "attempt": "a-83ea756690384a8b",
+      "blocked": false,
+      "blockers": [],
+      "state": "working"
+    },
+    "abandon_state": "abandoned",
+    "gc": {
+      "removed": [
+        "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-17x75uq0/workspaces/a-83ea756690384a8b"
+      ],
+      "retained": "branches, candidate/check refs, logs, database history"
+    },
+    "worker_workspace_exists": false
+  },
+  "liveness-invalid": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-y23sifne/project",
+    "attempt": "a-6ed113ba3dad48f2",
+    "record": {
+      "pid": "broken",
+      "process_session_id": "broken"
+    },
+    "exit_file_exists": false,
+    "inspect": {
+      "attempt": "a-6ed113ba3dad48f2",
+      "blocked": false,
+      "blockers": [],
+      "state": "working"
+    },
+    "abandon_state": "abandoned",
+    "gc": {
+      "removed": [
+        "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-y23sifne/workspaces/a-6ed113ba3dad48f2"
+      ],
+      "retained": "branches, candidate/check refs, logs, database history"
+    },
+    "worker_workspace_exists": false
+  },
+  "recovery": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-9bgbgldn/project",
+    "attempt": "a-62f34647ebae41b3",
+    "integration": "8569ad2d1e1835708704b1fdae8da406ce609f5b",
+    "local_landed": "8569ad2d1e1835708704b1fdae8da406ce609f5b",
+    "state_before_recover": "landing_started",
+    "offline_recovery_rc": 2,
+    "offline_recovery_error": "{\"error\": \"Cannot inspect pushed remote during recovery: fatal: '/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-9bgbgldn/origin.git' does not appear to be a git repository\\nfatal: Could not read from remote repository.\\n\\nPlease make sure you have the correct access rights\\nand the repository exists.\"}\n",
+    "state_after_online_recover": "landed",
+    "local_after": "8569ad2d1e1835708704b1fdae8da406ce609f5b"
+  },
+  "records": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-u6xo9o7q/project",
+    "attempt": "a-0b023d9f3a8049b4",
+    "integration": "888811746eae40878574643e31cca567d31adf22",
+    "local_landed": "16db5cb68d319850b76766368c798931b81db737",
+    "state_before_recover": "landing_started",
+    "offline_recovery_rc": 2,
+    "offline_recovery_error": "{\"error\": \"Cannot inspect pushed remote during recovery: fatal: '/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-u6xo9o7q/origin.git' does not appear to be a git repository\\nfatal: Could not read from remote repository.\\n\\nPlease make sure you have the correct access rights\\nand the repository exists.\"}\n",
+    "state_after_online_recover": "landed",
+    "local_after": "16db5cb68d319850b76766368c798931b81db737"
+  },
+  "legacy-admission": {
+    "reproduced": true,
+    "repo": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012/tmp/collab-test-q8fv_3dx/project",
+    "legacy_operation": "21a98acacde74dc2b53da9434b1c485e",
+    "base": "66bb1d7fe972006376d5e03f8679545c77af5ad8",
+    "legacy_tip": "9ff81c8fec9c17b84960bad1074a9575a0153ed7",
+    "remote_after": "9ff81c8fec9c17b84960bad1074a9575a0153ed7",
+    "competing_claim": "1ccca4d60a192a8ff712ad871d445e48adf55bdb",
+    "attempt": "a-fab621a831ac4af0",
+    "recovery_rc": 64,
+    "recovery_error": "error: Target moved beyond the bound landing; preserve and inspect\n"
+  }
+}

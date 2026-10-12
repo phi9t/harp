@@ -1,0 +1,16 @@
+{
+  "schema": "corenius.architecture_review_artifacts.v1",
+  "read_commit": "3c812cf1a11f57d75c6bfd0a6965b7cdb1142478",
+  "directory": "/data02/home/philip.yang/.codex/reviews/collab-arch-3c812cf-20261012",
+  "artifacts": {
+    "observations.json": "b3cff6cc26aa421f8c08266bcb8ee9cb777352185504db8448e748e1ec8cebf1",
+    "commands.jsonl": "8d822d21bc329083edbd0c609a47c40c71c5d7bb7cb98381a2cb0c1c5d58c5f3",
+    "frozen_tree.txt": "77f9e3631e0fa14ec34c9d1fb2b7e3feb86d7b427182a9d177198b31adcbaa70",
+    "REPORT.md": "6f46523f6e14391f51046de3fb8c5a5ca71e29ec47e513abd3d0f6ceddd9023d",
+    "source_head.txt": "7fbc7e762eec75bf7e6d36956de305705036cd6474a3391b55db73cb19a4ca6d",
+    "SHA256SUMS.json": "3bc6ad12ddd529d92e0c99dd393bf7f1b1fec051f34412bfba35c0e4ad73d6b5",
+    "reproduce.py": "6b34d80fbc921d086e13f0f2e4ffde6e6cd1697886382f2387ccae930b8e889e",
+    "source_status.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "result": "four blockers reproduced; nine variants; follow-up design proposed"
+}

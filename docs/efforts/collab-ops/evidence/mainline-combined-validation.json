@@ -1,0 +1,15 @@
+{
+  "schema": "corenius.collab_ops_validation.v1",
+  "candidate": "365876ed00be3cdd50f3baebfdb06378e1423e39",
+  "mainline_parent": "9d8c90b0e871586ba6daa9d342d4def56152644b",
+  "command": "python3 tools/temp_root.py -- sh tools/agents/checks.d/65-collab.sh",
+  "exit_code": 1,
+  "tests_run": 170,
+  "failures": 4,
+  "python_version": "3.11.2 (main, Nov 30 2024, 21:22:50) [GCC 12.2.0]",
+  "log": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-complete/.scratch/collab-ops-complete/mainline-combined-collab.log",
+  "log_sha256": "acbb559fc086bae1fdea23a80ff0402e0ce5f9fb8385417ecf66150850887966",
+  "cause": "Inherited mainline e69d9ce uses TarFile.extract filter unsupported by host Python. Four archive/sweep tests fail.",
+  "follow_up_ticket": "25",
+  "qualification": "Snapshot landing explicitly authorized with open findings; no acceptance granted."
+}

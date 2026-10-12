@@ -1,0 +1,18 @@
+{
+  "schema": "corenius.collab_ops_validation.v1",
+  "source_candidate": "3c812cf1a11f57d75c6bfd0a6965b7cdb1142478",
+  "checks": {
+    "final-repository-gate.log": {
+      "sha256": "b0717b0f414eaf77df13fca8892f55077780ad8886b569725e73114c27d96689",
+      "exit_code": 0,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-complete/.scratch/collab-ops-complete/final-repository-gate.log"
+    },
+    "final-affected-checks.log": {
+      "sha256": "134180462fb893800b05e7fbeb5779f5cffbccac40749aebd59acaeb369f5d86",
+      "exit_code": 0,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-complete/.scratch/collab-ops-complete/final-affected-checks.log"
+    }
+  },
+  "scope": "Full default gate started at 795b571 and passed. All affected stages freshly passed at 3c812cf, including 169 Collab tests. Unchanged Rust/native/controller sources covered by the full gate. Optional parked checks not run.",
+  "readiness": "blocked by four independently reproduced branch findings"
+}
