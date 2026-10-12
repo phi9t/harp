@@ -23,6 +23,27 @@ class TicketResolution:
         events = self.store.row(aid).get("events", [])
         return next((event["details"] for event in reversed(events) if event["kind"] == kind), None)
 
+    def prepare_identity(self, attempt: dict) -> dict | None:
+        source = split_corenius_ticket(attempt["ticket"])
+        override = self.latest(attempt["id"], "mainline_override")
+        if not source and not (override and override.get("effort")):
+            return None
+        existing = self.latest(attempt["id"], "records_identity")
+        if existing:
+            return existing["environment"]
+        environment = {}
+        for role in ("AUTHOR", "COMMITTER"):
+            identity = self.workspace.git("var", f"GIT_{role}_IDENT").strip()
+            match = re.fullmatch(r"(.+) <([^<>]+)> \d+ [+-]\d{4}", identity)
+            if not match:
+                raise Refused("Bookkeeping commits require a valid repository commit identity")
+            environment[f"GIT_{role}_NAME"] = match[1]
+            environment[f"GIT_{role}_EMAIL"] = match[2]
+        with self.store.tx() as con:
+            self.store.event(con, attempt["id"], "records_identity", environment=environment,
+                             subject=attempt["integration"])
+        return environment
+
     def prepare_review(self, attempt: dict, review: object) -> None:
         source = split_corenius_ticket(attempt["ticket"])
         if not source:
@@ -57,6 +78,7 @@ class TicketResolution:
         export_effort = override.get("effort") if override else None
         if not source and not export_effort:
             return
+        identity = self.prepare_identity(attempt)
         receipt_ref = f"refs/collab/records/{attempt['id']}"
         existing = self.workspace.git("rev-parse", "--verify", receipt_ref, check=False).strip()
         prepared = self.latest(attempt["id"], "records_prepared")
@@ -101,7 +123,7 @@ class TicketResolution:
             })
         self.workspace.git("add", "--", f"docs/efforts/{effort}/", cwd=path)
         message = f"Record acceptance for {attempt['ticket']}\n\nCollab-Records: {attempt['id']}"
-        self.workspace.git("commit", "-m", message, cwd=path)
+        self.workspace.git("commit", "-m", message, cwd=path, env=identity)
         commit = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
         self.workspace.git("fetch", "--no-tags", str(path), commit)
         with self.store.tx() as con:

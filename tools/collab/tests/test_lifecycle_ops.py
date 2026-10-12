@@ -88,6 +88,42 @@ class LifecycleOpsTests(unittest.TestCase):
         self.cli("land", attempt["id"], "--review-json", review, ok=False)
         self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
 
+    def test_corenius_records_use_repository_local_commit_identity(self):
+        for key in ("GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL"):
+            self.env.pop(key, None)
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("effort ticket")
+        attempt = self.open_corenius_attempt()
+        self.contribute(attempt)
+        self.cli("submit", attempt["id"])
+        checked = self.cli("check", attempt["id"])
+        review = json.dumps({"reviewer": "operator", "standards": "passed", "spec": "passed", "criteria": [1]})
+        landed = self.cli("land", attempt["id"], "--review-json", review)
+        self.assertEqual(landed["state"], "landed")
+        self.assertIn("Status: resolved", ticket.read_text())
+        self.assertEqual(self.git("log", "-1", "--format=%an <%ae>|%cn <%ce>"),
+                         "Collab Test <collab@example.invalid>|Collab Test <collab@example.invalid>")
+        self.assertEqual(self.git("rev-parse", "HEAD^"), checked["integration"])
+
+    def test_missing_bookkeeping_identity_refuses_before_code_publication(self):
+        self.init()
+        self.effort_ticket()
+        self.commit("effort ticket")
+        attempt = self.open_corenius_attempt()
+        self.contribute(attempt)
+        self.cli("submit", attempt["id"])
+        checked = self.cli("check", attempt["id"])
+        self.git("config", "user.name", "")
+        self.git("config", "user.email", "")
+        env = dict(self.env)
+        for key in ("GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL"):
+            env.pop(key, None)
+        review = json.dumps({"reviewer": "operator", "standards": "passed", "spec": "passed", "criteria": [1]})
+        self.cli("land", attempt["id"], "--review-json", review, env=env, ok=False)
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+        self.assertEqual(self.cli("show", attempt["id"])["state"], "verified")
+
     def test_corenius_record_crash_recovers_without_repeating_landing(self):
         self.init()
         ticket = self.effort_ticket()

@@ -90,6 +90,7 @@ class LandingManager:
 
     def _preflight(self, attempt: dict, expected_tip: str | None) -> None:
         self.require_receipt(attempt)
+        TicketResolution(self.store, self.workspace, self.tickets, self.config).prepare_identity(attempt)
         self.workspace.primary_identity()
         config = self.config()
         root = Path(config["root"])
