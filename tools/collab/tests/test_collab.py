@@ -1207,16 +1207,28 @@ class CollabTests(unittest.TestCase):
         self.assertTrue(worker.is_dir())
         self.assertEqual(self.git("rev-parse", attempt["branch"]), attempt["base"])
 
-    def test_sweep_reports_locked_terminal_worktree_as_skipped(self):
+    def test_sweep_removes_terminal_worktree_locked_by_collab_itself(self):
         self.init()
         self.ticket()
         self.commit("ticket")
         attempt = self.claim()
         self.cli("abandon", attempt["id"], "--confirm-stopped")
         result = self.cli("sweep", "--apply")
+        self.assertEqual(result["removed"][0]["attempt"], attempt["id"])
+        self.assertFalse(Path(attempt["path"]).exists())
+
+    def test_sweep_reports_foreign_locked_terminal_worktree_as_skipped(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        self.cli("abandon", attempt["id"], "--confirm-stopped")
+        self.git("worktree", "unlock", attempt["path"])
+        self.git("worktree", "lock", "--reason", "held by another tool", attempt["path"])
+        result = self.cli("sweep", "--apply")
         self.assertEqual(result["candidates"], [])
         self.assertEqual(result["skipped"][0]["attempt"], attempt["id"])
-        self.assertIn("worktree is locked: collab:" + attempt["id"], result["skipped"][0]["reason"])
+        self.assertIn("worktree is locked: held by another tool", result["skipped"][0]["reason"])
         self.assertTrue(Path(attempt["path"]).is_dir())
         self.assertEqual(self.git("rev-parse", attempt["branch"]), attempt["base"])
 

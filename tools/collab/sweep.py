@@ -76,11 +76,12 @@ class SweepManager:
                 "reason": f"Attempt is {attempt['state']}; fresh or in-progress Attempts are never swept",
             }
         record = worktrees.get(attempt["path"])
-        if record and record["locked"]:
+        if record and record["locked"] and record["lock_reason"] != f"collab:{attempt['id']}":
             reason = "worktree is locked"
             if record["lock_reason"]:
                 reason += f": {record['lock_reason']}"
             return {**item, "action": "skip", "reason": reason}
+        item["unlock"] = bool(record and record["locked"])
         try:
             self.require_stopped(attempt)
             path = self.workspace.validate_attempt(attempt)
@@ -146,7 +147,16 @@ class SweepManager:
                 self.workspace.git("update-ref", archive_ref, head, "")
             archived.append({"branch": item["branch"], "head": head, "ref": archive_ref})
         self.require_removal_owner(item)
-        self.workspace.git("worktree", "remove", item["path"])
+        if item.get("unlock"):
+            self.workspace.git("worktree", "unlock", item["path"])
+        try:
+            self.workspace.git("worktree", "remove", item["path"])
+        except Refused:
+            if item.get("unlock"):
+                self.workspace.git(
+                    "worktree", "lock", "--reason", f"collab:{item['attempt']}", item["path"], check=False,
+                )
+            raise
         self.workspace.git("update-ref", "-d", "refs/heads/" + item["branch"], head)
         removed.append(
             {
@@ -168,7 +178,7 @@ class SweepManager:
         registration = self.worktrees_by_path().get(item["path"])
         if registration is None:
             raise Refused("Worktree registration changed; retaining worktree")
-        if registration["locked"]:
+        if registration["locked"] and registration["lock_reason"] != f"collab:{item['attempt']}":
             raise Refused("Worktree is locked; retaining worktree: " + registration["lock_reason"])
         return self.workspace.validate_attempt(attempt, expected_head=item["head"])
 
