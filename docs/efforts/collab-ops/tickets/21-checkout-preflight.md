@@ -1,10 +1,10 @@
 # 21 checkout-preflight: Share checkout preflight before publication
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: trae
 Blocked by: 
-Claimed: 2026-10-12T17:38:46Z expires 2026-10-13T17:38:46Z
+Claimed:
 
 Triage: ready-for-agent
 
@@ -21,3 +21,4 @@ Draft follow-up requested by the user on 2026-10-12. See [FOLLOWUP.md](../FOLLOW
 - 2026-10-12T17:39:00Z trae: unblocked by resolved ticket 19 decision record `decisions/2026-10-12-mutation-contract.md`.
 - 2026-10-12T17:38:46Z trae: claimed until 2026-10-13T17:38:46Z
 - 2026-10-12T17:49:00Z trae: core landing now uses shared checkout preflight before push/local FF while retaining strict cleanliness; legacy marker preflight remains shared. Evidence: focused empty-cherry-pick core and legacy tests passed in the 5-test focused run; affected Collab/legacy suite passed 46 tests.
+- 2026-10-12T18:54:20Z trae: resolved with --force despite missing accepted, landed Candidate
