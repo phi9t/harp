@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from pathlib import Path
 from contextlib import contextmanager
+from contextvars import ContextVar
+import fcntl
 import json
 import os
 import subprocess
@@ -13,6 +15,7 @@ from workspace import run_git
 
 
 LEGACY_UNCERTAIN = {"prepared", "push_started", "pushed", "local_started", "landed_records_incomplete"}
+_LEGACY_LANDING_LOCK_DEPTH: ContextVar[int] = ContextVar("legacy_landing_lock_depth", default=0)
 
 
 class PreflightRefused(Refused):
@@ -89,17 +92,45 @@ def require_no_pending_publication(
 
 
 @contextmanager
-def guard_initialized_trunk_mutation(repo: Path):
+def legacy_landing_lock(common: Path):
+    if _LEGACY_LANDING_LOCK_DEPTH.get():
+        yield
+        return
+    with (common / "land.lock").open("a+") as lockfile:
+        try:
+            fcntl.flock(lockfile.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise Refused("legacy landing operation busy; retry later") from exc
+        token = _LEGACY_LANDING_LOCK_DEPTH.set(_LEGACY_LANDING_LOCK_DEPTH.get() + 1)
+        try:
+            yield
+        finally:
+            _LEGACY_LANDING_LOCK_DEPTH.reset(token)
+
+
+@contextmanager
+def inherited_legacy_landing_lock():
+    token = _LEGACY_LANDING_LOCK_DEPTH.set(_LEGACY_LANDING_LOCK_DEPTH.get() + 1)
+    try:
+        yield
+    finally:
+        _LEGACY_LANDING_LOCK_DEPTH.reset(token)
+
+
+@contextmanager
+def guard_initialized_trunk_mutation(repo: Path, *, except_legacy: str | None = None):
     common = Path(run_git(repo, "rev-parse", "--path-format=absolute", "--git-common-dir").strip())
     home = common / "collab"
     store = StateStore(home, home / "state.sqlite3")
     config = store.load_config()
-    if config is None:
-        yield
-        return
-    with store.lock("lane"), store.lock("meta"):
-        require_no_pending_publication(store, common)
-        yield
+    with legacy_landing_lock(common):
+        if config is None:
+            require_no_pending_legacy(common, except_landing=except_legacy)
+            yield
+            return
+        with store.lock("lane"), store.lock("meta"):
+            require_no_pending_publication(store, common, except_legacy=except_legacy)
+            yield
 
 
 def gate_workspace_status(repo: Path, checkout: Path, tip: str, git_directory: str) -> dict:

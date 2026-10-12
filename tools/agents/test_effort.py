@@ -243,6 +243,30 @@ class EffortTest(unittest.TestCase):
             0,
         )
 
+    def test_move_records_refuses_legacy_pending_publication_without_collab_init(self):
+        run(self.wt, "add", "docs/efforts/demo")
+        run(self.wt, "commit", "-qm", "start effort")
+        common = Path(run(self.wt, "rev-parse", "--path-format=absolute", "--git-common-dir").strip())
+        legacy = common / "legacy-land"
+        legacy.mkdir()
+        (legacy / "legacy-landing.json").write_text(json.dumps({
+            "id": "legacy-landing",
+            "state": "pushed",
+            "events": [],
+        }))
+        record_worktree = self.wt.parent / f"{self.wt.name}-demo-records"
+
+        moved = self.effort_cli(self.wt, "move-records", "demo")
+
+        self.assertNotEqual(moved.returncode, 0)
+        self.assertIn("Unresolved legacy landing legacy-landing", moved.stderr)
+        self.assertFalse(record_worktree.exists())
+        self.assertFalse((common / "collab").exists())
+        self.assertNotEqual(
+            git_result(self.wt, "rev-parse", "--verify", "-q", "effort/demo-records").returncode,
+            0,
+        )
+
     def test_dehydrate_requires_human_part(self):
         self.call(["--repo", str(self.wt), "dehydrate", "demo"])
         self.assertEqual(self.code, effort.ERROR)

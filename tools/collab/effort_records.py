@@ -53,8 +53,10 @@ def record_landing(
     return path
 
 
-def commit_effort_record_change(checkout: Path, message: str, paths: list[Path]) -> None:
-    with guard_initialized_trunk_mutation(checkout):
+def commit_effort_record_change(
+    checkout: Path, message: str, paths: list[Path], *, except_legacy: str | None = None,
+) -> None:
+    with guard_initialized_trunk_mutation(checkout, except_legacy=except_legacy):
         relative = [str(path.resolve().relative_to(checkout.resolve())) for path in paths]
         git(checkout, "add", *relative)
         if git(checkout, "diff", "--cached", "--name-only", "--", *relative).strip():
@@ -80,7 +82,7 @@ def finish_landing_records(operation: dict) -> None:
     _append_once(
         path, identity, lambda: record_landing(checkout, effort, ticket, tip, target, landing_id=identity),
     )
-    commit_effort_record_change(checkout, f"Record landing for ticket {ticket}", [path])
+    commit_effort_record_change(checkout, f"Record landing for ticket {ticket}", [path], except_legacy=identity)
     if operation.get("override_owner"):
         path = checkout / "docs" / "efforts" / effort / "evidence" / "mainline-landing-overrides.jsonl"
         _append_once(
@@ -89,7 +91,9 @@ def finish_landing_records(operation: dict) -> None:
                 checkout, effort, ticket, tip, target, operation["override_owner"], landing_id=identity,
             ),
         )
-        commit_effort_record_change(checkout, f"Record mainline override for ticket {ticket}", [path])
+        commit_effort_record_change(
+            checkout, f"Record mainline override for ticket {ticket}", [path], except_legacy=identity,
+        )
 
 
 def _append_once(path: Path, identity: str, append) -> None:

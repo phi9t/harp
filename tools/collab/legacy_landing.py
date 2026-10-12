@@ -19,7 +19,13 @@ from pathlib import Path
 
 from common import Refused, digest, failpoint
 from legacy_journal import LegacyJournal
-from landing_protocol import classify_push_failure, gate_workspace_status, process_group_alive, rejected_push_target
+from landing_protocol import (
+    classify_push_failure,
+    gate_workspace_status,
+    inherited_legacy_landing_lock,
+    process_group_alive,
+    rejected_push_target,
+)
 from state_store import StoreError
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "agents"))
@@ -65,6 +71,7 @@ def land_lock(repo: Path):
         with contextlib.ExitStack() as stack:
             if journal.store.load_config() is not None:
                 stack.enter_context(journal.store.lock("lane"))
+            stack.enter_context(inherited_legacy_landing_lock())
             # A surviving Git child keeps both locks after its controller dies.
             descriptors = (handle.fileno(), *journal.store.fds)
             token = _LANDING_FDS.set((*_LANDING_FDS.get(), *descriptors))
