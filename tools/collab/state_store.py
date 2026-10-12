@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 import sqlite3
 
-from common import Refused, now, output_path, valid_id
+from common import Refused, failpoint, now, output_path, valid_id
 
 StoreError = sqlite3.Error
 
@@ -197,6 +197,25 @@ class StateStore:
             )
         except sqlite3.IntegrityError as exc:
             raise Refused("Ticket already has an active claim") from exc
+
+    def reserve_refresh(
+        self, previous: dict, aid: str, base: str, path: Path, branch: str, head: str, commits: list[str],
+    ) -> dict:
+        """Transfer the active reservation and its journal in one durable transaction."""
+        with self.tx() as con:
+            current = con.execute("SELECT * FROM attempts WHERE id=?", (previous["id"],)).fetchone()
+            identity = ("state", "ticket", "owner", "base", "ticket_hash", "path", "branch")
+            if current is None or any(current[key] != previous[key] for key in identity):
+                raise Refused("Refresh admission changed; preserving the original Attempt")
+            self.set_state_with_event(con, previous["id"], "abandoned")
+            self.event(con, previous["id"], "refresh_requested", trunk=base, head=head, commits=commits)
+            failpoint("after_refresh_abandon")
+            self.insert_attempt(
+                con, aid, previous["ticket"], previous["owner"], base, previous["ticket_hash"], path, branch
+            )
+            self.event(con, aid, "allocating", previous=previous["id"], claim_transferred=True)
+            self.event(con, aid, "refresh_started", previous=previous["id"], commits=commits)
+        return self.row(aid)
 
     def busy_locks(self, names: tuple[str, ...] = ("check", "lane", "meta")) -> list[dict]:
         blockers = []
