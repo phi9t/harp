@@ -47,7 +47,7 @@
   written.
 
 ## For later tickets
-- No follow-up needed for this ticket.
+none
 
 ## Not checked
 - A full `tools/agents/check.sh` completion was not achieved inside the
