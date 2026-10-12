@@ -11,7 +11,10 @@ class LifecycleOpsTests(unittest.TestCase):
     run_process = fixtures.CollabTests.run_process
     git = fixtures.CollabTests.git
     commit = fixtures.CollabTests.commit
-    cli = fixtures.CollabTests.cli
+    def cli(self, *args, **kwargs):
+        if args and args[0] == "land" and "--no-push" not in args:
+            args = (*args, "--no-push")
+        return fixtures.CollabTests.cli(self, *args, **kwargs)
     init = fixtures.CollabTests.init
     ticket = fixtures.CollabTests.ticket
     claim = fixtures.CollabTests.claim
