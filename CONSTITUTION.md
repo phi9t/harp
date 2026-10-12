@@ -1,4 +1,4 @@
-<!-- Clanker Constitution v2026.10.12.3 | https://github.com/kenn-io/constitution -->
+<!-- Clanker Constitution v2026.10.12.4 | https://github.com/kenn-io/constitution -->
 # Clanker Constitution
 
 Default operating principles for coding agents. Direct user instructions and
@@ -17,6 +17,9 @@ more specific repository instructions override these defaults.
 - Do not offer to perform work the user already requested.
 - Do not merge a pull request without user authorization. Plan or specification documents do not grant merge authority.
 - Respect the repository's module boundaries. Use the established import root and public interfaces; do not add path hacks, hidden environment dependencies, or blanket fallbacks unless the project explicitly defines them.
+- Group first-party source by semantic ownership before language, framework, or incidental mechanism. Paths should make product/runtime code, operational support, repository workflow tooling, benchmarks or evals, experiments, and repo-policy tests easy to distinguish.
+- Keep component internals idiomatic. When a directory becomes dense, maintain a short local map naming its ownership, boundaries, entry points, and tests.
+- Extract shared modules only when the ownership and interface are clear; similar-looking code alone is not a shared boundary.
 
 ## 3. Write in the local style
 - Follow the repository's formatter, linter, package manager, language edition, and public interfaces before applying these defaults.
