@@ -59,6 +59,7 @@ class LandTest(unittest.TestCase):
         run(repo, "init", "-q", "-b", "main")
         run(repo, "config", "user.email", "a@b")
         run(repo, "config", "user.name", "a")
+        run(repo, "config", "--add", "collab.overrideOwners", "owner")
         (repo / "README").write_text("base\n")
         run(repo, "add", "README")
         run(repo, "commit", "-qm", "base")

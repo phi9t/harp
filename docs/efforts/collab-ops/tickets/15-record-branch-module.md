@@ -22,3 +22,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 51-52). Use the project glos
 - [ ] The module can be deleted without touching the core landing tests.
 
 ## Comments
+- 2026-10-12T02:29:45Z codex-collab-ops-legacy: Provisional isolated dependency work implemented; see evidence/15-report.md. Blocker acceptance and root integration remain pending; no completion or claim is asserted.

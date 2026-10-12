@@ -23,3 +23,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 48-49). Use the project glos
 - [ ] Exit codes match the old mapping.
 
 ## Comments
+- 2026-10-12T02:29:45Z codex-collab-ops-legacy: Provisional isolated dependency work implemented; see evidence/16-report.md. Blocker acceptance and root integration remain pending; no completion or claim is asserted.
