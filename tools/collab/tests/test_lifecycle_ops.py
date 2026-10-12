@@ -153,6 +153,27 @@ class LifecycleOpsTests(unittest.TestCase):
         self.assertTrue(Path(old["path"]).is_dir())
 
 
+    def test_tracker_failure_reports_landed_records_incomplete_and_recovers(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("effort ticket")
+        attempt = self.open_corenius_attempt()
+        self.contribute(attempt)
+        self.cli("submit", attempt["id"])
+        checked = self.cli("check", attempt["id"])
+        review = json.dumps({"reviewer": "operator", "standards": "passed", "spec": "passed", "criteria": [1]})
+        env = dict(self.env, CORENIUS_TRACKER_NOW="invalid")
+        partial = self.cli("land", attempt["id"], "--review-json", review, env=env)
+        self.assertEqual(partial["state"], "landed_records_incomplete")
+        self.assertTrue(partial["landed"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+        self.assertIn("Status: claimed", ticket.read_text())
+        recovered = self.cli("recover", attempt["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "landed")
+        self.assertIn("Status: resolved", ticket.read_text())
+        self.assertEqual(self.git("rev-parse", "HEAD^"), checked["integration"])
+
+
 
 if __name__ == "__main__":
     unittest.main()

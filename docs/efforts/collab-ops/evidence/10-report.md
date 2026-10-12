@@ -94,6 +94,9 @@ The lead instructed it to preserve the claims and report the incident.
 The local ticket copies remain unchanged; the agent made no subsequent foreign mutation or cleanup.
 Ticket 17 adds public-CLI regression tests and a preflight refusal for this routing behavior.
 
-## For later tickets
+## Integration notes
 
 No later-ticket findings beyond the integration requirements above.
+
+## For later tickets
+none

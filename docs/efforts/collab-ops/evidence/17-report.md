@@ -92,7 +92,10 @@ The implementing agent stopped tracker writes and preserved those claims at the 
 The exact commands and foreign files are recorded in `10-report.md`.
 The routing regressions and preflight refusal above address the discovered safety defect for in-tree sources.
 
-## For later tickets
+## Integration notes
 
 Legacy record-branch routing remains an explicit optional-module operation.
 The in-tree source never silently adopts or changes a foreign record checkout.
+
+## For later tickets
+none

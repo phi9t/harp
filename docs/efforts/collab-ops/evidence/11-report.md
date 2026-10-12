@@ -36,10 +36,13 @@
 ## Outside declared paths
 - None beyond this allowed ticket report path.
 
-## For later tickets
+## Integration notes
 - Dirty-worktree archival, stale collab ref pruning, old check log pruning, orphaned check-worktree pruning, and explicit foreign-branch cleanup flags remain for later sweep tiers.
 - The full repository gate is longer than this worker's 120-second command limit on this host; use a supervisor-side or longer-running gate when that evidence is required.
 
 ## Not checked
 - Did not push, merge, rebase, or run container builds.
 - Did not run the full `tools/agents/check.sh` to completion because of the per-command limit; the ticket-relevant registered collab gate passed separately.
+
+## For later tickets
+none
