@@ -12,6 +12,7 @@ from policy import (
     validate_check_argv,
     validate_check_timeout,
     validate_protected_paths,
+    validate_override_owners,
 )
 from state_store import StateStore
 from sweep import SweepManager
@@ -46,12 +47,14 @@ class Collab:
         workspace_root: str | None = None,
         protected_paths: list[str] | None = None,
         check_timeout_seconds: float | None = None,
+        mainline_override_owners: list[str] | None = None,
     ) -> dict:
         if self.db_path.exists():
             raise Refused("Already initialized or partial initialization; inspect, do not overwrite")
         check_argv = validate_check_argv(check_argv)
         protected_paths = validate_protected_paths(protected_paths)
         check_timeout_seconds = validate_check_timeout(check_timeout_seconds)
+        mainline_override_owners = validate_override_owners(mainline_override_owners)
         root = Path(self.workspace.git("rev-parse", "--show-toplevel", cwd=self.invoked).strip())
         trunk_ref = "refs/heads/" + trunk
         self.workspace.git("check-ref-format", trunk_ref, cwd=root)
@@ -73,6 +76,7 @@ class Collab:
             "check_argv": check_argv,
             "protected_paths": protected_paths,
             "check_timeout_seconds": check_timeout_seconds,
+            "mainline_override_owners": mainline_override_owners,
         }
         self.store.initialize(config)
         self.config = config
@@ -198,7 +202,16 @@ class Collab:
     def check(self, aid: str) -> dict:
         return self.checks.check(aid)
 
-    def land(self, aid: str) -> dict:
+    def land(self, aid: str, owner_mainline_override: str | None = None) -> dict:
+        if owner_mainline_override is not None:
+            if owner_mainline_override not in self.require_config().get("mainline_override_owners", []):
+                raise Refused("Mainline override owner is not configured")
+            attempt = self.store.row(aid)
+            with self.store.tx() as con:
+                self.store.event(
+                    con, aid, "mainline_override", owner=owner_mainline_override,
+                    subject=attempt["integration"], ticket=attempt["ticket"],
+                )
         return self.landing.land(aid)
 
     def recover(self, aid: str, confirmed: bool) -> dict:

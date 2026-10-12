@@ -123,11 +123,15 @@ class StateStore:
                 "SELECT details FROM events WHERE attempt=? AND kind='check_receipt' ORDER BY seq DESC LIMIT 1",
                 (aid,),
             ).fetchone()
+            events = con.execute(
+                "SELECT seq,at,kind,details FROM events WHERE attempt=? ORDER BY seq", (aid,)
+            ).fetchall()
         if attempt is None:
             raise Refused("Unknown attempt")
         return {
             **dict(attempt),
             "check_receipt": json.loads(receipt[0]) if receipt else None,
+            "events": [{**dict(event), "details": json.loads(event["details"])} for event in events],
         }
 
     def insert_attempt(

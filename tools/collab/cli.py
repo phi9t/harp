@@ -29,6 +29,7 @@ def _add_init(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--protected-paths-json")
     parser.add_argument("--check-timeout-seconds", type=float)
     parser.add_argument("--workspace-root")
+    parser.add_argument("--override-owners-json")
 
 
 def _run_init(collab: Collab, args: argparse.Namespace) -> object:
@@ -39,6 +40,7 @@ def _run_init(collab: Collab, args: argparse.Namespace) -> object:
         args.workspace_root,
         protected_paths,
         args.check_timeout_seconds,
+        json.loads(args.override_owners_json) if args.override_owners_json is not None else None,
     )
 
 
@@ -85,7 +87,12 @@ def _run_check(collab: Collab, args: argparse.Namespace) -> object:
 
 
 def _run_land(collab: Collab, args: argparse.Namespace) -> object:
-    return collab.land(args.attempt)
+    return collab.land(args.attempt, args.owner_mainline_override)
+
+
+def _add_land(parser: argparse.ArgumentParser) -> None:
+    _add_attempt(parser)
+    parser.add_argument("--owner-mainline-override")
 
 
 def _run_recover(collab: Collab, args: argparse.Namespace) -> object:
@@ -137,7 +144,7 @@ COMMANDS = {
     "show": Command(_add_attempt, _run_show),
     "submit": Command(_add_attempt, _run_submit),
     "check": Command(_add_attempt, _run_check),
-    "land": Command(_add_attempt, _run_land),
+    "land": Command(_add_land, _run_land),
     "recover": Command(_add_confirmed_attempt, _run_recover),
     "abandon": Command(_add_confirmed_attempt, _run_abandon),
     "gc": Command(_add_confirmed_attempt, _run_gc),

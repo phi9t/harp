@@ -28,6 +28,19 @@ def validate_check_argv(check_argv: object) -> list[str]:
     return check_argv
 
 
+def validate_override_owners(owners: object | None) -> list[str]:
+    if owners is None:
+        return []
+    if not isinstance(owners, list) or any(
+        not isinstance(owner, str) or not owner.strip() or "\0" in owner or owner != owner.strip()
+        for owner in owners
+    ):
+        raise Refused("Override owners must be a JSON array of nonempty owner names")
+    if len(owners) != len(set(owners)):
+        raise Refused("Override owners must not contain duplicates")
+    return owners
+
+
 def validate_check_timeout(timeout_seconds: float | None) -> float | None:
     if timeout_seconds is None:
         return None
