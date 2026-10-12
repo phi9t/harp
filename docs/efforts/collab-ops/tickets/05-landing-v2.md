@@ -1,10 +1,10 @@
 # 05 landing-v2: Landing v2: safe push order and recovery
 
 Type: feature
-Status: open
-Owner:
+Status: claimed
+Owner: collab-ops-05
 Blocked by: 04
-Claimed:
+Claimed: 2026-10-12T01:49:53Z expires 2026-10-14T01:49:53Z
 
 Triage: ready-for-agent
 
@@ -25,3 +25,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 11-18, 22, 23). Use the proj
 - [ ] A failed post-landing record write is reported as landed, records incomplete.
 
 ## Comments
+- 2026-10-12T01:49:53Z collab-ops-05: claimed until 2026-10-14T01:49:53Z

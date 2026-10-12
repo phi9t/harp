@@ -1,10 +1,10 @@
 # 09 liveness-inspect: Worker liveness and inspect
 
 Type: feature
-Status: open
-Owner:
+Status: claimed
+Owner: collab-ops-09
 Blocked by: 03
-Claimed:
+Claimed: 2026-10-12T01:49:53Z expires 2026-10-14T01:49:53Z
 
 Triage: ready-for-agent
 
@@ -22,3 +22,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 29-31). Use the project glos
 - [ ] inspect names hidden index flags, ignored files and locks that block a change.
 
 ## Comments
+- 2026-10-12T01:49:53Z collab-ops-09: claimed until 2026-10-14T01:49:53Z

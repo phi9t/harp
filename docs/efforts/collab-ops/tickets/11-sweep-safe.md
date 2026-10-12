@@ -1,10 +1,10 @@
 # 11 sweep-safe: Sweep, tiers 1-2, dry run by default
 
 Type: feature
-Status: open
-Owner:
+Status: claimed
+Owner: collab-ops-11
 Blocked by: 03
-Claimed:
+Claimed: 2026-10-12T01:49:53Z expires 2026-10-14T01:49:53Z
 
 Triage: ready-for-agent
 
@@ -24,3 +24,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 36-39, 42, 43). Use the proj
 - [ ] A foreign unmerged branch is listed with its owner and left alone.
 
 ## Comments
+- 2026-10-12T01:49:53Z collab-ops-11: claimed until 2026-10-14T01:49:53Z
