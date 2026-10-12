@@ -124,6 +124,7 @@ def archive_worktree(workspace, home: Path, item: dict) -> dict:
     manifest = {"schema": 1, "branch": item["branch"], "head": item["head"], "files": before,
                 "artifacts": artifacts, "head_ref": head_ref, "index_ref": index_ref}
     (directory / "manifest.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
+    manifest_hash = hashlib.sha256((directory / "manifest.json").read_bytes()).hexdigest()
     if inventory(path) != before or (gitdir / "index").read_bytes() != index:
         raise Refused("Worktree changed during archive; retaining worktree")
     with tempfile.TemporaryDirectory(prefix="verify-", dir=directory) as verification:
@@ -134,7 +135,35 @@ def archive_worktree(workspace, home: Path, item: dict) -> dict:
     if inventory(path) != before or (gitdir / "index").read_bytes() != index:
         raise Refused("Worktree changed during archive verification; retaining worktree")
     return {"archive": str(directory), "ref": head_ref, "index_ref": index_ref,
-            "branch": item["branch"], "head": item["head"], "verified": True}
+            "branch": item["branch"], "head": item["head"], "verified": True, "manifest_sha256": manifest_hash}
+
+
+def require_archived_source(workspace, home: Path, record: dict, item: dict) -> None:
+    """Confirm the owned recovery copy still covers the exact bytes about to be cleared."""
+    directory = Path(record["archive"])
+    root = home / "archives"
+    if root.is_symlink() or root.resolve() != root or directory.parent != root or directory.resolve() != directory:
+        raise Refused("Archive storage identity changed; retaining worktree")
+    manifest_path = directory / "manifest.json"
+    if manifest_path.is_symlink() or not manifest_path.is_file():
+        raise Refused("Archive manifest identity changed; retaining worktree")
+    raw = manifest_path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != record["manifest_sha256"]:
+        raise Refused("Archive manifest changed before cleanup; retaining worktree")
+    manifest = json.loads(raw)
+    expected_artifacts = {"history.bundle", "index", "staged.patch", "unstaged.patch", "files.tar"}
+    if (set(manifest["artifacts"]) != expected_artifacts or manifest["head"] != item["head"]
+            or manifest["branch"] != item["branch"]):
+        raise Refused("Archive no longer matches the cleanup subject; retaining worktree")
+    for name, expected in manifest["artifacts"].items():
+        artifact = directory / name
+        if (artifact.is_symlink() or not artifact.is_file()
+                or hashlib.sha256(artifact.read_bytes()).hexdigest() != expected):
+            raise Refused(f"Archive artifact changed before cleanup: {name}; retaining worktree")
+    path = Path(item["path"])
+    gitdir = Path(workspace.git("rev-parse", "--path-format=absolute", "--git-dir", cwd=path).strip())
+    if inventory(path) != manifest["files"] or (gitdir / "index").read_bytes() != (directory / "index").read_bytes():
+        raise Refused("Worktree changed after archive verification; retaining worktree")
 
 
 def clear_archived_changes(workspace, path: Path) -> None:
