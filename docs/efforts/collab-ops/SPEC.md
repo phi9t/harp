@@ -100,17 +100,44 @@ without losing work. `wt.py` and `land.py` remain as compatible shims for one re
 - Protected paths: set at initialization; Corenius defaults add the gate scripts, the gate entry point and the constitution to the existing coordination and policy paths.
 - Sweep tiers: (1) merged, clean, terminal Attempt: remove worktree and branch; (2) clean with unmerged commits: archive to a recoverable ref, then remove; (3) dirty: archive patch and untracked files, only with an explicit flag; (4) prune stale collab refs, old logs, orphaned check worktrees and dangling worktree registrations past retention. Dry run is the default and `--apply` acts. Non-terminal and fresh worktrees are never swept. Foreign branches only when fully merged, otherwise listed with owner; an explicit flag archives them first.
 - Mainline resolution is configurable; status reports divergence against the remote as well as local mainline when a remote exists.
-- Shims keep current flags and exit codes for one release; they translate to collab and add a deprecation notice. Their own tests run unchanged against them, then retire with them.
+- Shims keep current flags and exit codes for one release; they translate to collab and add a deprecation notice. Existing tests remain unchanged except expectations that encode the audited defects: a fresh worktree must survive garbage collection, and a mainline override requires configured authority. Reports identify each corrected expectation and its regression evidence.
 - Effort record-branch support moves into an optional landing module; new efforts do not use it.
 - The gate runs the collab tests when files under the toolset changed, and runs them when the change set cannot be determined.
 - A repository skill triggers the sweep manually.
 - Glossary terms: Attempt, Candidate, Integration commit and Check receipt, as defined in the project glossary.
 
+### Completion clarifications
+
+The user invoked `/implement` after reviewing the staged completion recommendation.
+The public CLI and existing shim seams remain the approved behavioral interfaces.
+Implementation and commits occur on `codex/collab-ops-complete` and isolated ticket
+branches; existing source worktrees and active workers retain their owners.
+
+Corenius effort ticket closure is a tracker-owned post-landing record operation.
+The checked Integration commit contains the contribution without rewriting the
+Corenius ticket. Resolution and its acceptance evidence become a separate,
+attributed bookkeeping commit under the same landing lane. A failure after code
+landing is recorded as `landed_records_incomplete`; recovery repairs only the
+bound record operation and cannot repeat the code landing or overwrite operator
+changes. Standalone tickets retain closure inside the checked Integration commit.
+
+Dirty cleanup archives preserve tracked edits, staged state, untracked and ignored
+files, executable modes and symlink identity without following external symlinks.
+Git objects needed to recover removed refs remain pinned. Unknown/live writers,
+substituted repositories and externally locked workspaces remain retained.
+Retention age alone never establishes safe removal. Restore behavior is tested
+before an archive can authorize deletion in disposable qualification repositories.
+
+Legacy override names are validated against trusted configuration, including
+repeatable `collab.overrideOwners` Git configuration for repositories that have
+not initialized Collab. A caller-supplied name is not an authority grant. Legacy
+support does not silently initialize a Collab ticket ledger.
+
 ## Testing Decisions
 
 - A good test drives the public collab CLI in a disposable real Git repository and asserts observable results only: refs, state rows, receipts, exit codes, files on disk. No test reaches into a module's internals.
 - Seam one: the collab CLI. Every behavior above is proven here, including each audit defect as a regression: a fresh worktree survives the sweep (W1), locked worktrees are reported not failed (W2), a crash between push and local fast-forward is recovered (L1), push causes are distinguished (L2), a collision appearing during a long gate is caught (L3), receipts record argv, outcome and timeout (L4), overrides are validated and always recorded (L5), partial post-landing failure is reported distinctly (L6), a moved branch is refused against an expected tip (L7).
-- Seam two: the shim contract. The existing worktree and landing test suites pass unchanged against the shims.
+- Seam two: the shim contract. Existing worktree and landing suites pass against the shims, with only the explicitly documented unsafe expectations corrected as described above.
 - Process death uses the existing failpoint mechanism; liveness uses a real child process.
 - The sweep skill is a thin wrapper over the CLI and has no tests of its own.
 - Prior art: the existing public-CLI suite for collab, and the worktree and landing suites.
