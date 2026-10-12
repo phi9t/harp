@@ -11,6 +11,7 @@ import uuid
 
 from common import Refused, child_environment, digest, failpoint, now
 from ticket_source import split_corenius_ticket, ticket_sections
+from legacy_journal import LegacyJournal
 
 
 class CheckRunner:
@@ -47,6 +48,7 @@ class CheckRunner:
         # The lane lock serializes check admission with landings, not the gate run.
         with self.store.lock("lane"), self.store.lock("meta"):
             self.store.no_uncertain_landing()
+            LegacyJournal(self.workspace.common).require_no_pending()
             attempt = self.store.row(aid)
             if attempt["state"] not in ("submitted", "check_failed", "verified"):
                 raise Refused("Submit a candidate first")
@@ -165,6 +167,7 @@ class CheckRunner:
             errors = []
             try:
                 self.store.no_uncertain_landing()
+                LegacyJournal(self.workspace.common).require_no_pending()
             except Refused as exc:
                 no_landing = False
                 errors.append(str(exc))

@@ -7,6 +7,7 @@ from common import Refused, digest, failpoint
 from liveness import require_worker_stopped
 from state_store import StoreError, UNRESOLVED_LANDING
 from ticket_resolution import TicketResolution
+from legacy_journal import LegacyJournal
 
 
 class LandingManager:
@@ -55,6 +56,7 @@ class LandingManager:
         # This explicit human operator action is the manual review/approval gate.
         with self.store.lock("lane"), self.store.lock("meta"):
             self.store.no_uncertain_landing()
+            LegacyJournal(self.workspace.common).require_no_pending()
             attempt = self.store.row(aid)
             if attempt["state"] != "verified":
                 raise Refused("Exact integration candidate has not passed checking")
