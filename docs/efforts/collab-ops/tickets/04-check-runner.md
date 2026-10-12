@@ -1,10 +1,10 @@
 # 04 check-runner: Check runner: timeout, streamed log, receipt v2
 
 Type: feature
-Status: open
-Owner:
+Status: claimed
+Owner: collab-ops-04
 Blocked by: 01
-Claimed:
+Claimed: 2026-10-12T00:39:05Z expires 2026-10-14T00:39:05Z
 
 Triage: ready-for-agent
 
@@ -24,3 +24,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 6-10). Use the project gloss
 - [ ] A dirty workspace, changed HEAD or moved trunk still fails the check.
 
 ## Comments
+- 2026-10-12T00:39:05Z collab-ops-04: claimed until 2026-10-14T00:39:05Z

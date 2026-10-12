@@ -1,10 +1,10 @@
 # 08 protected-paths: Protected paths from config
 
 Type: feature
-Status: open
-Owner:
+Status: claimed
+Owner: collab-ops-08
 Blocked by: 01
-Claimed:
+Claimed: 2026-10-12T00:39:05Z expires 2026-10-14T00:39:05Z
 
 Triage: ready-for-agent
 
@@ -22,3 +22,4 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 27-28). Use the project glos
 - [ ] The default list matches the documented one.
 
 ## Comments
+- 2026-10-12T00:39:05Z collab-ops-08: claimed until 2026-10-14T00:39:05Z
