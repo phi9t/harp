@@ -1,9 +1,10 @@
 """Safe manual cleanup for completed collab Attempts."""
 from __future__ import annotations
 
+from contextlib import nullcontext
 from pathlib import Path
 
-from archives import archive_worktree, clear_archived_changes
+from archives import archive_worktree, clear_archived_changes, require_archived_source
 from common import Refused
 from retention import Retention
 from liveness import require_worker_stopped, worker_liveness
@@ -24,7 +25,8 @@ class SweepManager:
         retention_days: float = 30,
     ) -> dict:
         self.config()
-        with self.store.lock("lane"), self.store.lock("meta"):
+        execution_lock = self.store.lock("check") if apply else nullcontext()
+        with execution_lock, self.store.lock("lane"), self.store.lock("meta"):
             trunk = self.workspace.trunk()
             worktrees = self.worktrees_by_path()
             candidates = []
@@ -122,17 +124,18 @@ class SweepManager:
         if item["kind"] == "foreign_branch":
             self.apply_foreign_branch(item, removed, archived)
             return
-        current_attempt = self.store.row(item["attempt"])
-        self.require_stopped(current_attempt)
-        path = self.workspace.validate_attempt(item)
+        path = self.require_removal_owner(item)
         if not item.get("dirty"):
             self.workspace.clean(path, include_ignored=True)
         current = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
         if current != head:
             raise Refused(f"Sweep candidate moved before removal: {item['attempt']}")
         if item.get("dirty"):
-            archived.append(archive_worktree(self.workspace, self.store.home, item))
-            self.workspace.validate_attempt(item, expected_head=head)
+            record = archive_worktree(self.workspace, self.store.home, item)
+            archived.append(record)
+            self.require_removal_owner(item)
+            require_archived_source(self.workspace, self.store.home, record, item)
+            self.require_removal_owner(item)
             clear_archived_changes(self.workspace, path)
         if item["action"] == "archive_then_remove_worktree_and_branch":
             archive_ref = item["archive_ref"]
@@ -142,6 +145,7 @@ class SweepManager:
             if not old:
                 self.workspace.git("update-ref", archive_ref, head, "")
             archived.append({"branch": item["branch"], "head": head, "ref": archive_ref})
+        self.require_removal_owner(item)
         self.workspace.git("worktree", "remove", item["path"])
         self.workspace.git("update-ref", "-d", "refs/heads/" + item["branch"], head)
         removed.append(
@@ -152,6 +156,21 @@ class SweepManager:
                 "path": item["path"],
             }
         )
+
+    def require_removal_owner(self, item: dict) -> Path:
+        """Re-read owner and Git registration immediately before destructive cleanup."""
+        attempt = self.store.row(item["attempt"])
+        if attempt["state"] not in TERMINAL_STATES or any(
+            attempt[name] != item[name] for name in ("owner", "path", "branch")
+        ):
+            raise Refused("Sweep Attempt ownership changed; retaining worktree")
+        self.require_stopped(attempt)
+        registration = self.worktrees_by_path().get(item["path"])
+        if registration is None:
+            raise Refused("Worktree registration changed; retaining worktree")
+        if registration["locked"]:
+            raise Refused("Worktree is locked; retaining worktree: " + registration["lock_reason"])
+        return self.workspace.validate_attempt(attempt, expected_head=item["head"])
 
     def require_stopped(self, attempt: dict) -> None:
         require_worker_stopped(attempt)
