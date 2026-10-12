@@ -9,7 +9,6 @@ import fcntl
 import json
 import os
 import re
-import shutil
 import signal
 import threading
 import subprocess
@@ -19,7 +18,7 @@ from pathlib import Path
 
 from common import Refused, digest, failpoint
 from legacy_journal import LegacyJournal
-from landing_protocol import classify_push_failure
+from landing_protocol import classify_push_failure, gate_workspace_status, process_group_alive
 from state_store import StoreError
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "agents"))
@@ -148,22 +147,31 @@ def is_ancestor(repo: Path, older: str, newer: str) -> bool:
 
 
 @contextlib.contextmanager
-def temporary_worktree(repo: Path, ref: str, prefix: str, detach: bool):
+def temporary_worktree(repo: Path, ref: str, prefix: str, detach: bool, *, keep: bool = False):
     parent = temp_parent()
     path = Path(tempfile.mkdtemp(prefix=prefix, dir=str(parent)))
     added = False
+    git_directory = None
+    tip = None
     try:
         args = ["worktree", "add", "-q"]
         if detach:
             args.append("--detach")
         git(repo, *args, str(path), ref)
         added = True
+        git_directory = git(path, "rev-parse", "--absolute-git-dir").strip()
+        tip = rev(path, "HEAD")
         yield path
     finally:
-        if added:
-            git(repo, "worktree", "remove", "--force", str(path), check=False)
-        if path.exists():
-            shutil.rmtree(path)
+        if added and not keep:
+            status = gate_workspace_status(repo, path, tip, git_directory)
+            if status["identity"] and status["same_head"] and status["clean"]:
+                git(repo, "worktree", "remove", str(path), check=False)
+        elif not added and path.exists():
+            try:
+                path.rmdir()
+            except OSError:
+                pass
 
 
 def merge_commits(repo: Path, base_ref: str, tip: str) -> list[str]:
@@ -174,9 +182,16 @@ def run_gates(
     repo: Path, tip: str, gates: list[str], *, journal: LegacyJournal | None = None,
     operation: dict | None = None, timeout_seconds: float | None = None,
 ) -> bool:
-    with temporary_worktree(repo, tip, ".land-gate-", detach=True) as checkout:
+    retained = journal is not None and operation is not None
+    with temporary_worktree(repo, tip, ".land-gate-", detach=True, keep=True) as checkout:
+        git_directory = git(checkout, "rev-parse", "--absolute-git-dir").strip()
+        if retained:
+            operation["check_path"] = str(checkout)
+            operation["check_git_dir"] = git_directory
+            journal.event(operation, "gate_workspace", check_path=str(checkout), check_git_dir=git_directory)
         log = journal.home / (operation["id"] + "-gate.log") if journal and operation else None
         outcome, exit_code = "passed", 0
+        process_groups = []
         for gate in gates:
             env = git_env()
             env["LAND_TIP"] = tip
@@ -184,6 +199,7 @@ def run_gates(
                 ["sh", "-c", gate], cwd=checkout, env=env,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True,
             )
+            process_groups.append(process.pid)
             errors = []
 
             def stream():
@@ -220,19 +236,25 @@ def run_gates(
                 if outcome != "timeout":
                     outcome = "failed"
                 break
-        clean = not git(checkout, "status", "--porcelain", "--untracked-files=all").strip()
-        same_head = rev(checkout, "HEAD") == tip
-        if not clean or not same_head:
+        workspace = gate_workspace_status(repo, checkout, tip, git_directory)
+        quiescent = not any(process_group_alive(identity) for identity in process_groups)
+        if not workspace["clean"] or not workspace["same_head"] or not workspace["identity"]:
+            outcome = "invalid_subject"
+        elif outcome == "passed" and not quiescent:
             outcome = "invalid_subject"
         if journal and operation:
             if not log.exists():
                 log.touch()
             journal.event(
                 operation, "gate_receipt", subject=tip, base=operation["local_before"],
+                version=2, check_path=str(checkout), check_git_dir=git_directory,
                 argv=[["sh", "-c", gate] for gate in gates], outcome=outcome,
                 exit_code=exit_code, timeout_seconds=timeout_seconds, log=str(log),
-                log_sha256=digest(log.read_bytes()), clean=clean, same_head=same_head,
+                log_sha256=digest(log.read_bytes()), quiescent=quiescent, process_groups=process_groups,
+                **workspace,
             )
+        elif outcome == "passed":
+            git(repo, "worktree", "remove", str(checkout), check=False)
         return outcome == "passed"
 
 
@@ -294,6 +316,7 @@ def finish_records(journal: LegacyJournal, operation: dict) -> int:
             import effort_records
             effort_records.finish_landing_records(operation)
         journal.change(operation, "landed")
+        release_gate_workspace(journal, operation)
         return OK
     except Exception as error:
         try:
@@ -304,6 +327,15 @@ def finish_records(journal: LegacyJournal, operation: dict) -> int:
             print(f"partial-success record could not be completed: {record_error}", file=sys.stderr)
         print(f"landed {operation['tip']}, records incomplete: {error}; recover {operation['id']}", file=sys.stderr)
         return RECORDS_INCOMPLETE
+
+
+def release_gate_workspace(journal: LegacyJournal, operation: dict) -> None:
+    try:
+        journal.require_gate_receipt(operation)
+        checkout = Path(operation["check_path"])
+        git(operation["repo"], "worktree", "remove", "--force", str(checkout))
+    except (WorkerError, Refused, OSError) as error:
+        print(f"gate workspace retained for inspection: {error}", file=sys.stderr)
 
 
 def require_legacy_candidate(journal: LegacyJournal, candidate_ref: str, tip: str) -> None:
@@ -540,6 +572,7 @@ def land(args: argparse.Namespace) -> int:
             journal.change(operation, "pushed")
             failpoint("after_legacy_push")
         journal.change(operation, "local_started")
+        failpoint("before_legacy_local")
         forwarded, reason = fast_forward_ref(
             repo, target_ref, local_before, tip, target_checkout, f"legacy-land:{operation['id']}",
         )

@@ -44,5 +44,11 @@ def main(argv: list[str] | None = None) -> int:
     return legacy_main(argv)
 
 
+def temporary_worktree(*args, **kwargs):
+    """Retain the historical runpy namespace seam without eager implementation imports."""
+    from legacy_landing import temporary_worktree as legacy_temporary_worktree
+    return legacy_temporary_worktree(*args, **kwargs)
+
+
 if __name__ == "__main__":
     raise SystemExit(main())

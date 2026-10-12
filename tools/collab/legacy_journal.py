@@ -13,6 +13,7 @@ import tempfile
 import uuid
 
 from common import Refused, digest, now, valid_id
+from landing_protocol import gate_workspace_status, process_group_alive
 from state_store import StateStore
 
 UNCERTAIN = {"prepared", "push_started", "pushed", "local_started", "landed_records_incomplete"}
@@ -67,14 +68,34 @@ class LegacyJournal:
             raise Refused("Compatibility landing has no bound gate receipt")
         receipt = receipts[-1]
         if (
-            receipt.get("subject") != record["tip"]
+            receipt.get("version") != 2
+            or receipt.get("subject") != record["tip"]
             or receipt.get("base") != record["local_before"]
             or receipt.get("outcome") != "passed"
             or receipt.get("clean") is not True
             or receipt.get("same_head") is not True
+            or receipt.get("identity") is not True
+            or receipt.get("hidden_index") != []
+            or receipt.get("quiescent") is not True
+            or receipt.get("check_path") != record.get("check_path")
+            or receipt.get("check_git_dir") != record.get("check_git_dir")
+            or not isinstance(receipt.get("check_path"), str)
+            or not isinstance(receipt.get("check_git_dir"), str)
+            or not isinstance(receipt.get("process_groups"), list)
+            or not all(isinstance(identity, int) and identity > 0 for identity in receipt["process_groups"])
             or digest(Path(receipt["log"]).read_bytes()) != receipt.get("log_sha256")
         ):
             raise Refused("Compatibility gate receipt or log no longer matches the exact subject")
+        workspace = gate_workspace_status(
+            Path(record["repo"]), Path(receipt["check_path"]), record["tip"], receipt["check_git_dir"],
+        )
+        if (
+            not workspace["identity"]
+            or not workspace["same_head"]
+            or not workspace["clean"]
+            or any(process_group_alive(identity) for identity in receipt["process_groups"])
+        ):
+            raise Refused("Compatibility gate workspace changed or remains active; preserve and inspect it")
 
     def begin(self, **plan) -> dict:
         record = {"version": 1, "id": uuid.uuid4().hex, "state": "checking", "events": [], **plan}
