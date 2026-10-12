@@ -97,7 +97,8 @@ def _run_check(collab: Collab, args: argparse.Namespace) -> object:
 
 def _run_land(collab: Collab, args: argparse.Namespace) -> object:
     review = json.loads(args.review_json) if args.review_json is not None else None
-    return collab.land(args.attempt, args.owner_mainline_override, review, args.effort)
+    return collab.land(args.attempt, args.owner_mainline_override, review, args.effort,
+                       args.expected_tip, args.no_push)
 
 
 def _add_land(parser: argparse.ArgumentParser) -> None:
@@ -105,6 +106,8 @@ def _add_land(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--owner-mainline-override")
     parser.add_argument("--review-json")
     parser.add_argument("--effort")
+    parser.add_argument("--expected-tip")
+    parser.add_argument("--no-push", action="store_true")
 
 
 def _run_recover(collab: Collab, args: argparse.Namespace) -> object:
@@ -176,7 +179,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Local cooperative Git-ticket coordination. Python standard library + Git.\n\n"
-            "Not an agent runtime or sandbox. Commands mutate local state only; never push.\n"
+            "Not an agent runtime or sandbox. Land requires an upstream unless --no-push is used.\n"
             "See README.md for the trust, crash-recovery and ticket-format limitations."
         )
     )

@@ -61,7 +61,7 @@ run:
 collab submit a-ACTUAL-ID
 collab check a-ACTUAL-ID
 # Review the checked diff, receipt, log, and ticket acceptance criteria.
-collab land a-ACTUAL-ID
+collab land a-ACTUAL-ID --expected-tip CANDIDATE-SHA
 ```
 
 `submit` seals the exact candidate. It refuses dirty or substituted workspaces,
@@ -92,10 +92,17 @@ recorded as unknown, and cannot pass verification. A timed-out check is recorded
 as the distinct `timeout` outcome.
 
 `land` is an explicit operator approval action. It requires the matching
-receipt, unchanged check log, contract and predecessor, and a clean primary
-checkout in the original repository. A fast-forward merge lands exactly the
-checked commit and closure together. Ignored operator content is protected
-against overwrite. No command pushes or authenticates reviewer identity.
+receipt, unchanged check log, contract and predecessor, unchanged sealed
+Candidate and a clean primary checkout in the original repository.
+`--expected-tip` pins the reviewed Candidate and refuses a moved branch before
+publication. By default the configured trunk must have an upstream: landing
+verifies the local fast-forward and operator-file overlap first, records push
+intent, pushes the exact Integration commit to that upstream, then
+fast-forwards the local checkout. `--no-push` skips remote publication and
+lands locally only. A fast-forward merge lands exactly the checked commit and
+closure together.
+Ignored and untracked operator content is rechecked immediately before the
+merge so content appearing during a long check is protected against overwrite.
 Reserve the primary checkout for the operator; avoid concurrent manual edits
 during landing.
 
@@ -188,16 +195,21 @@ ticket, recovery may create the missing workspace when trunk moved only by the
 tracker claim owned by the Attempt. Interrupted checking becomes `check_failed`
 and must run again.
 
-Landing records `landing_prepared` before it can start Git, then
-`landing_started`. A prepared operation at unchanged base can recover to
-`verified`. Once Git may have started, absent attribution is ambiguous even
-at base. Attributed reflog evidence with the expected predecessor and
-integration ancestry can reconcile a lost acknowledgment to `landed`.
-Missing or truncated history never establishes nonexecution. An unresolved
-landing blocks all other final checks and landings; it cannot be abandoned.
-This also applies when Git refuses an ignored-file collision after the started
-phase. Preserve the state and reconcile manually; there is no unsafe retry or
-database-reset command.
+Landing records `landing_prepared` before publication, `push_intended` before a
+push, `push_completed` after a successful push, and `landing_started` before
+the local fast-forward. A prepared operation at unchanged base can recover to
+`verified`. A pushed operation can recover by finishing the local
+fast-forward when the remote already names the Integration commit, so the
+remote is not left ahead without a record. Once local Git may have started,
+absent attribution is ambiguous even at base. Attributed reflog evidence with
+the expected predecessor and integration ancestry can reconcile a lost
+acknowledgment to `landed`. A successful local fast-forward followed by failed
+record writes is reported as `landed_records_incomplete` with a repair step;
+after the record blocker is fixed, `recover --confirm-stopped` completes the
+landing record. Missing or truncated history never establishes nonexecution.
+An unresolved landing blocks all other final checks and landings; it cannot be
+abandoned. Preserve the state and reconcile deliberately; there is no unsafe
+retry or database-reset command.
 
 `gc` requires a terminal attempt and validates every workspace before removal.
 It refuses tracked modifications, untracked files, ignored outputs, repository

@@ -158,17 +158,218 @@ class CollabTests(unittest.TestCase):
         self.contribute(a)
         return self.cli("submit", a["id"])
 
+    def add_bare_remote(self):
+        remote = self.root / "origin.git"
+        self.git("init", "--bare", str(remote))
+        self.git("--git-dir", str(remote), "symbolic-ref", "HEAD", "refs/heads/main")
+        self.git("remote", "add", "origin", str(remote))
+        self.git("push", "-u", "origin", "main")
+        return remote
+
+    def remote_head(self, remote, ref="refs/heads/main"):
+        return self.git("--git-dir", str(remote), "rev-parse", ref)
+
+    def set_ssh_remote(self, message):
+        script = self.root / ("ssh-" + hashlib.sha256(message.encode()).hexdigest()[:8])
+        script.write_text(
+            "#!/usr/bin/env python3\n"
+            "import sys\n"
+            f"print({message!r}, file=sys.stderr)\n"
+            "sys.exit(255)\n"
+        )
+        script.chmod(0o700)
+        self.git("remote", "add", "origin", "ssh://example.invalid/repo.git")
+        self.git("config", "branch.main.remote", "origin")
+        self.git("config", "branch.main.merge", "refs/heads/main")
+        return dict(self.env, GIT_SSH_COMMAND=str(script))
+
     def test_checked_commit_and_ticket_closure_land_together(self):
         a = self.prepared()
         checked = self.cli("check", a["id"])
         self.assertEqual(checked["state"], "verified")
         self.assertEqual(self.git("rev-parse", "HEAD"), a["base"])
-        landed = self.cli("land", a["id"])
+        result = self.cli("land", a["id"], ok=False)
+        self.assertIn("no upstream", result.stderr)
+        landed = self.cli("land", a["id"], "--no-push")
         self.assertEqual(landed["state"], "landed")
         self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
         self.assertEqual(self.git("rev-parse", "HEAD^"), a["base"])
         self.assertIn("status: closed", (self.repo / ".tickets/T-one.md").read_text())
         self.assertEqual((self.repo / "code.txt").read_text(), "contribution\n")
+
+    def test_default_landing_pushes_and_recover_completes_after_push_crash(self):
+        a = self.prepared()
+        remote = self.add_bare_remote()
+        checked = self.cli("check", a["id"])
+        result = self.cli(
+            "land",
+            a["id"],
+            "--expected-tip",
+            checked["candidate"],
+            failpoint="after_git_push",
+            ok=False,
+        )
+        self.assertEqual(result.returncode, 86)
+        self.assertEqual(self.remote_head(remote), checked["integration"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "push_completed")
+        recovered = self.cli("recover", a["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "landed")
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+        self.assertEqual(self.remote_head(remote), checked["integration"])
+        self.assertEqual(self.git("rev-parse", "refs/collab/landed/" + a["id"]), checked["integration"])
+
+    def test_recover_completes_after_pushed_landing_started_crash(self):
+        a = self.prepared()
+        remote = self.add_bare_remote()
+        checked = self.cli("check", a["id"])
+        result = self.cli(
+            "land",
+            a["id"],
+            "--expected-tip",
+            checked["candidate"],
+            failpoint="after_land_started",
+            ok=False,
+        )
+        self.assertEqual(result.returncode, 86)
+        self.assertEqual(self.remote_head(remote), checked["integration"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "landing_started")
+        recovered = self.cli("recover", a["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "landed")
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+
+    def test_land_refuses_moved_candidate_branch_against_expected_tip(self):
+        a = self.prepared()
+        remote = self.add_bare_remote()
+        checked = self.cli("check", a["id"])
+        worker = Path(a["path"])
+        (worker / "late.txt").write_text("late branch movement\n")
+        self.commit("move candidate branch", cwd=worker)
+        result = self.cli("land", a["id"], "--expected-tip", checked["candidate"], ok=False)
+        self.assertIn("Candidate branch moved", result.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+        self.assertEqual(self.remote_head(remote), checked["base"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+
+    def test_push_failure_reports_non_fast_forward_without_local_landing(self):
+        a = self.prepared()
+        remote = self.add_bare_remote()
+        checked = self.cli("check", a["id"])
+        other = self.root / "remote-writer"
+        self.git("clone", str(remote), str(other))
+        (other / "remote.txt").write_text("remote movement\n")
+        self.commit("remote advances", cwd=other)
+        self.git("push", "origin", "main", cwd=other)
+        result = self.cli("land", a["id"], "--expected-tip", checked["candidate"], ok=False)
+        self.assertIn("non-fast-forward", result.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+        self.assertNotEqual(self.remote_head(remote), checked["integration"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+
+    def test_push_failure_reports_authentication_and_network_distinctly(self):
+        for message, cause in (
+            ("Permission denied (publickey).", "authentication"),
+            ("ssh: Could not resolve hostname example.invalid: Name or service not known", "network"),
+        ):
+            with self.subTest(cause=cause):
+                with tempfile.TemporaryDirectory(prefix="collab-push-", dir=temporary_root()) as root:
+                    original_root, original_repo = self.root, self.repo
+                    self.root = Path(root)
+                    self.repo = self.root / "project"
+                    self.repo.mkdir()
+                    self.git("init", "-b", "main")
+                    self.git("config", "user.name", "Collab Test")
+                    self.git("config", "user.email", "collab@example.invalid")
+                    (self.repo / "code.txt").write_text("base\n")
+                    (self.repo / ".gitignore").write_text("build/\n")
+                    self.commit("initial")
+                    try:
+                        a = self.prepared()
+                        env = self.set_ssh_remote(message)
+                        checked = self.cli("check", a["id"])
+                        result = self.cli(
+                            "land",
+                            a["id"],
+                            "--expected-tip",
+                            checked["candidate"],
+                            env=env,
+                            ok=False,
+                        )
+                        self.assertIn(cause, result.stderr)
+                        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+                        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+                    finally:
+                        self.root = original_root
+                        self.repo = original_repo
+
+    def test_ignored_collision_created_during_check_is_caught_before_push(self):
+        ready, release = self.root / "check-ready", self.root / "release-check"
+        code = (
+            "import time\n"
+            "from pathlib import Path\n"
+            f"Path({str(ready)!r}).write_text('ready')\n"
+            "deadline=time.monotonic()+10\n"
+            f"while not Path({str(release)!r}).exists() and time.monotonic()<deadline: time.sleep(.01)\n"
+        )
+        self.init([sys.executable, "-c", code])
+        self.ticket()
+        self.commit("ticket")
+        remote = self.add_bare_remote()
+        a = self.claim()
+        worker = Path(a["path"])
+        (worker / "build").mkdir()
+        (worker / "build/ship.txt").write_text("tracked contribution\n")
+        self.git("add", "--force", "build/ship.txt", cwd=worker)
+        self.commit("track ignored output", cwd=worker)
+        self.cli("submit", a["id"])
+        process = subprocess.Popen(
+            [sys.executable, str(CLI), "--repo", str(self.repo), "check", a["id"]],
+            env=self.env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        try:
+            deadline = time.monotonic() + 5
+            while not ready.exists() and time.monotonic() < deadline:
+                time.sleep(.01)
+            self.assertTrue(ready.exists(), "check did not start")
+            operator_file = self.repo / "build/ship.txt"
+            operator_file.parent.mkdir()
+            operator_file.write_text("ignored operator content\n")
+        finally:
+            release.touch()
+            out, err = process.communicate(timeout=5)
+        self.assertEqual(process.returncode, 0, err)
+        checked = json.loads(out)
+        result = self.cli("land", a["id"], "--expected-tip", checked["candidate"], ok=False)
+        self.assertIn("operator path would be overwritten", result.stderr)
+        self.assertEqual(operator_file.read_text(), "ignored operator content\n")
+        self.assertEqual(self.remote_head(remote), checked["base"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+
+    def test_no_push_lands_locally_only_when_upstream_exists(self):
+        a = self.prepared()
+        remote = self.add_bare_remote()
+        checked = self.cli("check", a["id"])
+        landed = self.cli("land", a["id"], "--expected-tip", checked["candidate"], "--no-push")
+        self.assertEqual(landed["state"], "landed")
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+        self.assertEqual(self.remote_head(remote), checked["base"])
+
+    def test_post_landing_record_failure_reports_landed_records_incomplete(self):
+        a = self.prepared()
+        checked = self.cli("check", a["id"])
+        (self.repo / ".git/refs/collab/landed").write_text("blocking loose ref path\n")
+        reported = self.cli("land", a["id"], "--expected-tip", checked["candidate"], "--no-push")
+        self.assertEqual(reported["state"], "landed_records_incomplete")
+        self.assertTrue(reported["landed"])
+        self.assertIn("records incomplete", reported["records_error"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "landed_records_incomplete")
+        (self.repo / ".git/refs/collab/landed").unlink()
+        self.assertEqual(self.cli("recover", a["id"], "--confirm-stopped")["state"], "landed")
 
     def test_init_rejects_non_array_check_argv(self):
         for value in ('"true"', '{"true": "value"}', '[]', '[""]', '[1]', '["bad\\u0000arg"]'):
@@ -230,22 +431,22 @@ class CollabTests(unittest.TestCase):
         self.assertEqual(receipt["base"], checked["base"])
         self.assertEqual(receipt["log_sha256"], hashlib.sha256(Path(checked["log"]).read_bytes()).hexdigest())
         self.assertTrue(receipt["passed"])
-        self.assertEqual(self.cli("land", a["id"])["state"], "landed")
+        self.assertEqual(self.cli("land", a["id"], "--no-push")["state"], "landed")
 
     def test_prepared_landing_at_base_can_recover_verified(self):
         a = self.prepared()
         self.cli("check", a["id"])
-        result = self.cli("land", a["id"], failpoint="before_git_land", ok=False)
+        result = self.cli("land", a["id"], "--no-push", failpoint="before_git_land", ok=False)
         self.assertEqual(result.returncode, 86)
         self.assertEqual(self.cli("show", a["id"])["state"], "landing_prepared")
         self.cli("recover", a["id"], ok=False)
         self.assertEqual(self.cli("recover", a["id"], "--confirm-stopped")["state"], "verified")
-        self.assertEqual(self.cli("land", a["id"])["state"], "landed")
+        self.assertEqual(self.cli("land", a["id"], "--no-push")["state"], "landed")
 
     def test_started_landing_without_attribution_stays_ambiguous_at_base(self):
         a = self.prepared()
         self.cli("check", a["id"])
-        result = self.cli("land", a["id"], failpoint="after_land_started", ok=False)
+        result = self.cli("land", a["id"], "--no-push", failpoint="after_land_started", ok=False)
         self.assertEqual(result.returncode, 86)
         self.assertEqual(self.cli("show", a["id"])["state"], "landing_started")
         self.assertEqual(self.git("rev-parse", "HEAD"), a["base"])
@@ -264,12 +465,12 @@ class CollabTests(unittest.TestCase):
             self.contribute(a, a["id"])
             self.cli("submit", a["id"])
             self.cli("check", a["id"])
-        self.cli("land", first["id"], failpoint="before_git_land", ok=False)
+        self.cli("land", first["id"], "--no-push", failpoint="before_git_land", ok=False)
         for command in ("check", "land"):
             result = self.cli(command, second["id"], ok=False)
             self.assertIn("Unresolved landing", result.stderr)
         self.cli("recover", first["id"], "--confirm-stopped")
-        self.cli("land", first["id"], failpoint="after_land_started", ok=False)
+        self.cli("land", first["id"], "--no-push", failpoint="after_land_started", ok=False)
         for command in ("check", "land"):
             result = self.cli(command, second["id"], ok=False)
             self.assertIn("Unresolved landing", result.stderr)
@@ -770,7 +971,7 @@ class CollabTests(unittest.TestCase):
         self.git("cherry-pick", a["candidate"], cwd=Path(fresh["path"]))
         self.cli("submit", fresh["id"])
         self.cli("check", fresh["id"])
-        self.assertEqual(self.cli("land", fresh["id"])["state"], "landed")
+        self.assertEqual(self.cli("land", fresh["id"], "--no-push")["state"], "landed")
         self.assertTrue(Path(a["path"]).exists())
 
     def test_interrupted_and_failed_allocations_retain_claim_until_explicit_abandon(self):
@@ -887,7 +1088,7 @@ class CollabTests(unittest.TestCase):
     def test_lost_landing_acknowledgment_recovers_attributed_integration_ancestry(self):
         a = self.prepared()
         checked = self.cli("check", a["id"])
-        result = self.cli("land", a["id"], failpoint="after_git_land", ok=False)
+        result = self.cli("land", a["id"], "--no-push", failpoint="after_git_land", ok=False)
         self.assertEqual(result.returncode, 86)
         self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
         (self.repo / "operator.txt").write_text("after landing\n")
@@ -900,7 +1101,7 @@ class CollabTests(unittest.TestCase):
     def test_matching_integration_without_attribution_cannot_reconcile_landing(self):
         a = self.prepared()
         checked = self.cli("check", a["id"])
-        self.cli("land", a["id"], failpoint="after_land_started", ok=False)
+        self.cli("land", a["id"], "--no-push", failpoint="after_land_started", ok=False)
         self.git("merge", "--ff-only", checked["integration"])
         result = self.cli("recover", a["id"], "--confirm-stopped", ok=False)
         self.assertIn("Ambiguous", result.stderr)
@@ -910,7 +1111,7 @@ class CollabTests(unittest.TestCase):
     def test_lost_reflog_never_establishes_started_landing_nonexecution(self):
         a = self.prepared()
         self.cli("check", a["id"])
-        self.cli("land", a["id"], failpoint="after_land_started", ok=False)
+        self.cli("land", a["id"], "--no-push", failpoint="after_land_started", ok=False)
         self.git("reflog", "expire", "--expire=all", "--all")
         result = self.cli("recover", a["id"], "--confirm-stopped", ok=False)
         self.assertIn("Ambiguous", result.stderr)
@@ -919,7 +1120,7 @@ class CollabTests(unittest.TestCase):
     def test_prepared_landing_with_unrelated_trunk_movement_stays_unresolved(self):
         a = self.prepared()
         self.cli("check", a["id"])
-        self.cli("land", a["id"], failpoint="before_git_land", ok=False)
+        self.cli("land", a["id"], "--no-push", failpoint="before_git_land", ok=False)
         (self.repo / "operator.txt").write_text("unrelated movement\n")
         head = self.commit("unrelated trunk commit")
         self.cli("recover", a["id"], "--confirm-stopped", ok=False)
@@ -1122,7 +1323,7 @@ class CollabTests(unittest.TestCase):
             while not ready.exists() and time.monotonic() < deadline:
                 time.sleep(.01)
             self.assertTrue(ready.exists(), "long check did not start")
-            landed = self.cli("land", first["id"])
+            landed = self.cli("land", first["id"], "--no-push")
             self.assertEqual(landed["state"], "landed")
         finally:
             release.touch()
@@ -1202,8 +1403,8 @@ class CollabTests(unittest.TestCase):
         self.cli("land", a["id"], ok=False)
         self.assertEqual(operator_file.read_text(), "ignored operator content\n")
         self.assertEqual(self.git("rev-parse", "HEAD"), a["base"])
-        self.assertEqual(self.cli("show", a["id"])["state"], "landing_started")
-        self.cli("recover", a["id"], "--confirm-stopped", ok=False)
+        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+        self.assertEqual(self.cli("recover", a["id"], "--confirm-stopped")["state"], "verified")
 
     def test_interrupted_check_before_command_is_failed_on_explicit_recovery(self):
         a = self.prepared()
@@ -1291,7 +1492,7 @@ class CollabTests(unittest.TestCase):
         self.contribute(a)
         self.cli("submit", a["id"])
         self.cli("check", a["id"])
-        self.cli("land", a["id"])
+        self.cli("land", a["id"], "--no-push")
         self.assertEqual(ticket.read_bytes(), original.replace(b"status: open", b"status: closed"))
 
     def test_completed_check_with_removed_workspace_records_failed_receipt(self):

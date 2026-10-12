@@ -223,7 +223,8 @@ class Collab:
         return self.checks.check(aid)
 
     def land(self, aid: str, owner_mainline_override: str | None = None,
-             review: dict | None = None, effort: str | None = None) -> dict:
+             review: dict | None = None, effort: str | None = None,
+             expected_tip: str | None = None, no_push: bool = False) -> dict:
         attempt = self.store.row(aid)
         resolver = TicketResolution(self.store, self.workspace, self.tickets, self.require_config)
         resolver.prepare_review(attempt, review)
@@ -241,7 +242,7 @@ class Collab:
                     con, aid, "mainline_override", owner=owner_mainline_override,
                     subject=attempt["integration"], ticket=attempt["ticket"], effort=export_effort,
                 )
-        return self.landing.land(aid)
+        return self.landing.land(aid, expected_tip, no_push)
 
     def recover(self, aid: str, confirmed: bool) -> dict:
         return self.landing.recover(aid, confirmed)

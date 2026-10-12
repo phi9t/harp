@@ -33,7 +33,14 @@ CREATE TABLE events (
 );
 """
 
-UNRESOLVED_LANDING = ("landing_prepared", "landing_started", "landing")
+UNRESOLVED_LANDING = (
+    "landing_prepared",
+    "push_intended",
+    "push_completed",
+    "landing_started",
+    "landing",
+    "landed_records_incomplete",
+)
 ATTEMPT_LIVENESS_COLUMNS = {
     "worker_pid": "INTEGER",
     "worker_pid_start_ticks": "TEXT",
@@ -207,6 +214,16 @@ class StateStore:
         return blockers
 
     def change(self, aid: str, state: str, **fields) -> None:
+        self.change_with_event(aid, state, event_kind=state, event_details=fields, **fields)
+
+    def change_with_event(
+        self,
+        aid: str,
+        state: str,
+        event_kind: str,
+        event_details: dict | None = None,
+        **fields,
+    ) -> None:
         permitted = {"base", "candidate", "integration", "check_path", "log"}
         if not set(fields) <= permitted:
             raise Refused("Invalid state update")
@@ -217,7 +234,34 @@ class StateStore:
                 "UPDATE attempts SET " + assignments + " WHERE id=?",
                 (*values.values(), aid),
             )
-            self.event(con, aid, state, **fields)
+            self.event(con, aid, event_kind, **(event_details or {}))
+
+    def record_event(self, aid: str, kind: str, **details) -> None:
+        with self.tx() as con:
+            self.event(con, aid, kind, **details)
+
+    def latest_event(self, aid: str, kind: str) -> dict | None:
+        self.require_initialized()
+        with self.db() as con:
+            row = con.execute(
+                "SELECT details FROM events WHERE attempt=? AND kind=? ORDER BY seq DESC LIMIT 1",
+                (aid, kind),
+            ).fetchone()
+        return json.loads(row[0]) if row else None
+
+    def records_incomplete(self, aid: str, error: str) -> None:
+        with self.tx() as con:
+            con.execute(
+                "UPDATE attempts SET state=?,updated=? WHERE id=?",
+                ("landed_records_incomplete", now(), aid),
+            )
+            self.event(
+                con,
+                aid,
+                "landed_records_incomplete",
+                error=error,
+                repair="fix landing records, then run recover --confirm-stopped",
+            )
 
     def update_claim_basis(self, aid: str, base: str, ticket_hash: str) -> None:
         with self.tx() as con:
@@ -234,8 +278,9 @@ class StateStore:
     def no_uncertain_landing(self) -> None:
         self.require_initialized()
         with self.db() as con:
+            placeholders = ",".join("?" for _ in UNRESOLVED_LANDING)
             row = con.execute(
-                "SELECT id FROM attempts WHERE state IN (?,?,?) LIMIT 1",
+                f"SELECT id FROM attempts WHERE state IN ({placeholders}) LIMIT 1",
                 UNRESOLVED_LANDING,
             ).fetchone()
         if row:

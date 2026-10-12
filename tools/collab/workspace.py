@@ -16,6 +16,20 @@ def run_git(
     raw: bool = False,
     fds: tuple[int, ...] = (),
 ) -> str | bytes:
+    process = run_git_process(root, *args, input=input, env=env, raw=raw, fds=fds)
+    if check and process.returncode:
+        raise Refused(f"Git refused {' '.join(args[:3])}: {process.stderr.strip()}")
+    return process.stdout
+
+
+def run_git_process(
+    root: Path,
+    *args: str,
+    input: str | None = None,
+    env: dict | None = None,
+    raw: bool = False,
+    fds: tuple[int, ...] = (),
+) -> subprocess.CompletedProcess:
     environment = child_environment()
     if env:
         environment.update(env)
@@ -31,7 +45,7 @@ def run_git(
         str(root),
         *args,
     ]
-    process = subprocess.run(
+    return subprocess.run(
         command,
         input=input,
         text=not raw,
@@ -39,9 +53,6 @@ def run_git(
         env=environment,
         pass_fds=fds,
     )
-    if check and process.returncode:
-        raise Refused(f"Git refused {' '.join(args[:3])}: {process.stderr.strip()}")
-    return process.stdout
 
 
 class RepositoryWorkspace:
@@ -76,6 +87,26 @@ class RepositoryWorkspace:
             *args,
             input=input,
             check=check,
+            env=env,
+            raw=raw,
+            fds=tuple(self.store.fds),
+        )
+
+    def git_result(
+        self,
+        *args: str,
+        cwd: Path | None = None,
+        input: str | None = None,
+        env: dict | None = None,
+        raw: bool = False,
+    ) -> subprocess.CompletedProcess:
+        if cwd is None:
+            self.primary_identity()
+        root = cwd or Path(self.require_config()["root"])
+        return run_git_process(
+            root,
+            *args,
+            input=input,
             env=env,
             raw=raw,
             fds=tuple(self.store.fds),
