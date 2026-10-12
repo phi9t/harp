@@ -210,8 +210,16 @@ class Collab:
     def gc(self, aid: str, confirmed: bool) -> dict:
         return self.landing.gc(aid, confirmed)
 
-    def sweep(self, apply: bool = False) -> dict:
-        return self.sweeper.sweep(apply)
+    def sweep(
+        self, apply: bool = False, archive_dirty: bool = False, include_foreign: bool = False,
+        retention_days: float = 30,
+    ) -> dict:
+        return self.sweeper.sweep(apply, archive_dirty, include_foreign, retention_days)
+
+    def restore_archive(self, archive: str, destination: str) -> dict:
+        from archives import restore_archive
+
+        return restore_archive(archive, destination)
 
     def status(self) -> dict:
         self.require_config()
