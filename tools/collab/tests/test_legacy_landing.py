@@ -200,6 +200,41 @@ class LegacyLandingTest(unittest.TestCase):
         self.assertEqual(repaired.returncode, 0, repaired.stderr)
         self.assertEqual(json.loads(path.read_text())["state"], "landed")
 
+    def test_recover_refuses_unrelated_pending_legacy_landing(self):
+        result = self.call(env={"COLLAB_FAILPOINT": "after_legacy_local"})
+        self.assertEqual(result.returncode, 86, result.stderr)
+        path = next((self.repo / ".git/legacy-land").glob("*.json"))
+        operation = json.loads(path.read_text())
+        other = self.repo / ".git/legacy-land/other-landing.json"
+        other.write_text(json.dumps({
+            "id": "other-landing",
+            "state": "pushed",
+            "events": [],
+        }))
+
+        repaired = self.call("--recover-landing", operation["id"])
+
+        self.assertEqual(repaired.returncode, 64, repaired.stderr)
+        self.assertIn("Unresolved legacy landing other-landing", repaired.stderr)
+        self.assertEqual(json.loads(path.read_text())["state"], "local_started")
+
+    def test_recover_repairs_attributed_local_success_while_remote_offline(self):
+        remote = self.remote()
+        result = self.call(env={"COLLAB_FAILPOINT": "after_legacy_local"})
+        self.assertEqual(result.returncode, 86, result.stderr)
+        path = next((self.repo / ".git/legacy-land").glob("*.json"))
+        operation = json.loads(path.read_text())
+        self.assertEqual(operation["state"], "local_started")
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.tip)
+        self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.tip)
+        remote.rename(remote.with_name("origin-offline.git"))
+
+        repaired = self.call("--recover-landing", operation["id"])
+
+        self.assertEqual(repaired.returncode, 0, repaired.stderr)
+        self.assertEqual(json.loads(path.read_text())["state"], "landed")
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.tip)
+
     def test_push_rejection_reports_actual_cause_without_a_stale_candidate_claim(self):
         remote = self.remote()
         hook = remote / "hooks/pre-receive"

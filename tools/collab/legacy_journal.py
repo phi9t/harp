@@ -25,10 +25,10 @@ class LegacyJournal:
         home = common / "collab"
         self.store = StateStore(home, home / "state.sqlite3")
 
-    def require_no_pending(self) -> None:
+    def require_no_pending(self, except_landing: str | None = None) -> None:
         if self.store.load_config() is not None:
             self.store.no_uncertain_landing()
-        require_no_pending_legacy(self.home.parent)
+        require_no_pending_legacy(self.home.parent, except_landing=except_landing)
 
     def confirmed_push_rejection(self, record: dict) -> bool:
         return any(

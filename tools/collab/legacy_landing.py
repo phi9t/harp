@@ -388,11 +388,23 @@ def recover_landing(repo: Path, journal: LegacyJournal, identity: str) -> int:
         }
         if state not in recoverable:
             raise Refused("This compatibility landing has no interrupted Git phase to recover")
+        journal.require_no_pending(except_landing=identity)
         journal.require_gate_receipt(operation)
         current = rev(repo, target_ref)
         if current not in {local_before, tip}:
             raise Refused("Target moved beyond the bound landing; preserve and inspect")
-        if operation["pushing"]:
+        locally_landed = False
+        if current == tip and local_before != tip:
+            entries = git(repo, "reflog", "show", "--format=%H%x00%gs", target_ref).splitlines()
+            locally_landed = any(
+                entry.startswith(tip + "\0legacy-land:" + identity)
+                and index + 1 < len(entries)
+                and entries[index + 1].split("\0", 1)[0] == local_before
+                for index, entry in enumerate(entries)
+            )
+            if not locally_landed:
+                raise Refused("Local movement is not attributed to this landing; preserve and inspect")
+        if operation["pushing"] and not locally_landed:
             observed = remote_head(repo, operation["remote"], operation["target_branch"])
             proven_no_push = state == "prepared" or (
                 state in {"push_started", "push_failed"} and journal.confirmed_push_rejection(operation)
@@ -420,16 +432,6 @@ def recover_landing(repo: Path, journal: LegacyJournal, identity: str) -> int:
             )
             if not forwarded:
                 raise Refused(f"Recovery local fast-forward refused: {reason}")
-        elif current == tip and local_before != tip:
-            entries = git(repo, "reflog", "show", "--format=%H%x00%gs", target_ref).splitlines()
-            attributed = any(
-                entry.startswith(tip + "\0legacy-land:" + identity)
-                and index + 1 < len(entries)
-                and entries[index + 1].split("\0", 1)[0] == local_before
-                for index, entry in enumerate(entries)
-            )
-            if not attributed:
-                raise Refused("Local movement is not attributed to this landing; preserve and inspect")
         code = finish_records(journal, operation)
         print(tip)
         return code
