@@ -298,7 +298,7 @@ class CollabTests(unittest.TestCase):
                         )
                         self.assertIn(cause, result.stderr)
                         self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
-                        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+                        self.assertEqual(self.cli("show", a["id"])["state"], "push_intended")
                     finally:
                         self.root = original_root
                         self.repo = original_repo
