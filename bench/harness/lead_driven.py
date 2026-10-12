@@ -254,6 +254,7 @@ def init_repo(scenario: Scenario, repo: Path) -> str:
     if scenario.acceptance:
         seed_acceptance_ticket(repo, scenario.acceptance)
     git(repo, "init", "-q", "-b", "main")
+    git(repo, "config", "--local", "collab.overrideOwners", "owner")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "start")
     git(repo, "branch", "side")
@@ -412,6 +413,7 @@ def init_launch_repo(scenario: Scenario, repo: Path, layout: str = "single") -> 
     git(repo, "init", "-q", "-b", "main")
     git(repo, "config", "user.email", "bench@corenius")
     git(repo, "config", "user.name", "bench")
+    git(repo, "config", "--local", "collab.overrideOwners", "owner")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "main")
     main = git(repo, "rev-parse", "HEAD").strip()

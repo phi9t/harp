@@ -1,11 +1,12 @@
-# Collab Lite
+# Collab operations
 
-Collab Lite coordinates local agents through committed Git tickets, isolated
+Collab coordinates local agents through committed Git tickets, isolated
 worktrees, and SQLite attempts. It is an optional Linux engineering tool.
 It does not start agents, replace the retained controller, or activate a ledger
 in Corenius. Adoption and any migration require an operator decision.
 
-Git owns `.tickets/<exact-id>.md` and accepted code. The Git common directory
+Git owns standalone `.tickets/<exact-id>.md` or Corenius effort tickets and
+accepted code. The Git common directory
 owns `collab/state.sqlite3`, lock files, and check logs. Linked worktrees share
 that state. SQLite records attempts and receipts, rather than a second backlog.
 
@@ -14,6 +15,8 @@ that state. SQLite records attempts and receipts, rather than a second backlog.
 Use Python 3.10+, Git, and a local Linux filesystem with `fcntl.flock` support.
 The CLI uses the standard library and the sibling `tools/temp_root.py` helper.
 If you copy the CLI elsewhere, preserve that relative layout and helper.
+Copy the complete `tools/collab/` module directory. Corenius effort support and
+the compatibility entry points also require their `tools/agents/` dependencies.
 
 Host commands need a safe, absolute, owned temporary root. The wrapper below
 validates `TMPDIR`, or selects Corenius's `.scratch/tmp`. The CLI also validates
@@ -36,6 +39,7 @@ collab() {
 
 collab init --trunk main --check-json '["python3", "-m", "unittest"]' \
   --check-timeout-seconds 120 \
+  --ticket-source standalone \
   --workspace-root /absolute/path/to/project-worktrees
 collab new T-example 'A narrow outcome'
 # Edit, review, and explicitly commit the ticket on trunk.
@@ -49,6 +53,12 @@ positive. Workspace roots must be outside the primary
 checkout. Initialization refuses existing or partial state. Repositories can
 choose their protected path list with `--protected-paths-json`; omit it for the
 Corenius defaults.
+
+Configure approved override names with `--override-owners-json '["operator"]'`
+at initialization. A supplied `--owner-mainline-override` name must match that
+configuration; every override creates a durable event. An optional `--effort`
+exports the event into committed effort evidence. Uninitialized compatibility
+repositories use repeatable local `git config --add collab.overrideOwners NAME`.
 
 `open-attempt` returns an attempt ID, an `owner/topic` branch, and a locked
 worktree. A launcher can record the worker with `--worker-pid PID` or
@@ -70,6 +80,7 @@ commits, and changes to the configured protected paths. The Corenius default
 protected paths are `.tickets/`, `.github/`, `.corenius/`, `docs/agents/`,
 root `AGENTS.md`, root `CLAUDE.md`, `tools/agents/checks.d/`,
 `tools/agents/check.sh`, and root `CONSTITUTION.md`.
+Corenius effort ticket paths are always protected against worker submission.
 
 Clean-workspace checks conservatively refuse `assume-unchanged` and
 `skip-worktree` index entries, even if their files currently match Git.
@@ -154,6 +165,28 @@ records an Attempt in SQLite, and creates the locked worktree from the committed
 claim. Blocked, already claimed, resolved, untriaged or uncommitted tracker
 tickets are refused before any Attempt worktree is opened.
 
+Choose `--ticket-source corenius` at initialization to make `status` and `ready`
+read committed effort tickets. Qualified `effort:number` identities also work.
+Create these tickets through `tracker.py new`. The in-tree adapter refuses
+foreign integration or record-branch routing before invoking the tracker;
+existing moved efforts retain the optional compatibility route.
+
+For Corenius tickets, `check` preserves the admitted ticket bytes. Landing
+requires explicit operator review of both axes and all numbered acceptance items:
+
+```sh
+collab land a-ACTUAL-ID --expected-tip CANDIDATE-SHA --no-push \
+  --review-json '{"reviewer":"operator","standards":"passed","spec":"passed","criteria":[1,2]}'
+```
+
+The `criteria` array covers every acceptance item in order, starting at one.
+The operator reviews those criteria against the exact checked contribution.
+Code lands first; tracker resolution and its bound acceptance evidence become
+a separate attributed bookkeeping commit under the same lane. Failed records
+are reported as `landed_records_incomplete`. Recovery repairs only that bound
+operation and retains unrelated operator changes. Standalone tickets keep their
+closure inside the checked Integration commit.
+
 ## Trunk movement
 
 An attempt cannot change its admitted base. Preserve its workspace and branch.
@@ -167,6 +200,13 @@ collab open-attempt T-example --owner worker-a
 ```
 
 Changing the ticket also requires explicit abandonment and a fresh claim.
+
+`collab refresh a-OLD-ID --confirm-stopped` performs the fresh Attempt allocation
+and clean cherry-picks for an unchanged contract. It preserves the original
+branch, workspace and receipts, excludes commits already on trunk, and stops at
+the first conflict. The diagnostic identifies the new Attempt and its retained
+conflict state; no resolution or rebase happens automatically. An unchanged
+Corenius claim transfers to the fresh Attempt under the same owner.
 
 ## Recovery, cleanup, and backup
 
@@ -212,6 +252,7 @@ abandoned. Preserve the state and reconcile deliberately; there is no unsafe
 retry or database-reset command.
 
 `gc` requires a terminal attempt and validates every workspace before removal.
+Recorded live or unknown workers and externally installed locks block removal.
 It refuses tracked modifications, untracked files, ignored outputs, repository
 substitution, and changed check HEADs. Classify and preserve useful files first.
 Git removes the worktrees without force. Branches, sealed refs, logs, database
@@ -224,8 +265,17 @@ branches. Clean unmerged terminal Attempt branches are first archived under
 `refs/collab/archive/` so their commits stay reachable, then the worktree and
 branch are removed. Fresh, in-progress and locked worktrees are skipped with a
 reason. Foreign unmerged branches are listed with their owner prefix and left
-alone. Dirty-worktree archival, stale-ref pruning, old-log pruning and orphaned
-check-worktree pruning are not implemented.
+alone unless `--include-foreign` explicitly requests archival first.
+
+`sweep --archive-dirty --apply` can archive dirty terminal work before removal.
+Archives retain Git objects, staged and unstaged changes, untracked and ignored
+files, executable modes and symlinks. Restore into an exclusive new destination
+with `restore-archive ARCHIVE DESTINATION`; hashes are verified before restoration.
+Nested private repositories or unknown ownership remain retained for inspection.
+`--retention-days` selects the age threshold for known terminal refs, logs and
+orphaned check worktrees. Active or unresolved attempts retain needed evidence;
+age alone never permits removal. The repository `sweep-collab` skill requests a
+dry run before an explicitly authorized applied sweep.
 
 `backup` creates an exclusive new SQLite snapshot and refuses overwrite,
 including symlink destinations and competing writers. Preserve Git objects,
@@ -236,7 +286,7 @@ refs, live workspaces, and logs as well for a complete project backup.
 This is cooperative, single-machine coordination. Same-user agents can bypass
 the CLI and edit shared state. Worktrees and advisory locks are not a hostile
 code sandbox. Distributed execution, network filesystems, process supervision,
-automatic leases or retries, scheduling, remote publication, authenticated
+automatic leases or retries, scheduling, deployment, authenticated
 review, full YAML support, and power-loss guarantees are outside scope.
 
 SQLite uses short `BEGIN IMMEDIATE` transactions, uniqueness constraints, a
@@ -255,3 +305,15 @@ python3 tools/temp_root.py -- python3 -m unittest discover -s tools/collab/tests
 `tools/agents/checks.d/65-collab.sh` registers the same suite in the repository
 gate. Tests use `COLLAB_FAILPOINT` for process death; leave it unset in normal
 operation. Prior attachment results do not establish verification of this copy.
+
+## Compatibility and retirement
+
+`tools/agents/wt.py` and `land.py` retain their arguments and exit codes for one
+release and identify their deprecation in help. Their implementation now lives
+in Collab modules. Legacy gate and push receipts are journaled; uncertain legacy
+operations block conflicting core checks and landings. Use the compatibility
+`--recover-landing ID` command to reconcile a bound legacy operation.
+
+The optional `effort_records` module serves existing moved efforts. New in-tree
+efforts do not require it. See [ADR0002](../../docs/adr/0002-collab-operations.md)
+and the [caller retirement checklist](../../docs/efforts/collab-ops/evidence/18-report.md).

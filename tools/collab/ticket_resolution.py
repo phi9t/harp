@@ -100,8 +100,8 @@ class TicketResolution:
                 "owner": override["owner"], "recorded_at": now(),
             })
         self.workspace.git("add", "--", f"docs/efforts/{effort}/", cwd=path)
-        self.workspace.git("commit", "-m", f"Record acceptance for {attempt['ticket']}\n\nCollab-Records: {attempt['id']}",
-                           cwd=path)
+        message = f"Record acceptance for {attempt['ticket']}\n\nCollab-Records: {attempt['id']}"
+        self.workspace.git("commit", "-m", message, cwd=path)
         commit = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
         self.workspace.git("fetch", "--no-tags", str(path), commit)
         with self.store.tx() as con:
