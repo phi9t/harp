@@ -16,8 +16,9 @@ from policy import (
     validate_override_owners,
 )
 from state_store import StateStore
+from refresh import RefreshManager
 from sweep import SweepManager
-from ticket_source import TicketSource, corenius_ticket_id
+from ticket_source import TicketSource, corenius_ticket_id, split_corenius_ticket
 from ticket_resolution import TicketResolution
 from workspace import RepositoryWorkspace, run_git
 
@@ -36,6 +37,36 @@ class Collab:
         self.checks = CheckRunner(self.store, self.workspace, self.tickets, self.require_config)
         self.landing = LandingManager(self.store, self.workspace, self.tickets, self.require_config)
         self.sweeper = SweepManager(self.store, self.workspace, self.require_config)
+        self.refresher = RefreshManager(
+            self.store, self.workspace, self.tickets, self.open_refreshed_attempt, self.require_refresh_stopped
+        )
+
+    def require_refresh_stopped(self, attempt: dict) -> None:
+        from liveness import require_worker_stopped
+        require_worker_stopped(attempt)
+
+    def open_refreshed_attempt(self, previous: dict, commits: list[str]) -> dict:
+        """Allocate under RefreshManager's locks without rewriting an owned claim."""
+        self.workspace.primary()
+        base = self.workspace.trunk()
+        self.tickets.require_refresh_claim(previous, base)
+        aid = "a-" + uuid.uuid4().hex[:16]
+        branch = self.attempt_branch(previous["owner"], previous["ticket"].replace(":", "-"), aid)
+        path = Path(self.require_config()["workspace_root"]) / aid
+        with self.store.tx() as con:
+            self.store.insert_attempt(
+                con, aid, previous["ticket"], previous["owner"], base, previous["ticket_hash"], path, branch
+            )
+            self.store.event(con, aid, "allocating", previous=previous["id"], claim_transferred=True)
+            self.store.event(con, aid, "refresh_started", previous=previous["id"], commits=commits)
+        failpoint("after_claim_record")
+        self.workspace.create_attempt_worktree(self.store.row(aid))
+        failpoint("after_worktree_add")
+        self.store.change(aid, "working")
+        return self.store.row(aid)
+
+    def refresh(self, aid: str, confirmed: bool) -> dict:
+        return self.refresher.refresh(aid, confirmed)
 
     def require_config(self) -> dict:
         if self.config is None:
@@ -50,6 +81,7 @@ class Collab:
         protected_paths: list[str] | None = None,
         check_timeout_seconds: float | None = None,
         mainline_override_owners: list[str] | None = None,
+        ticket_source: str = "standalone",
     ) -> dict:
         if self.db_path.exists():
             raise Refused("Already initialized or partial initialization; inspect, do not overwrite")
@@ -57,6 +89,8 @@ class Collab:
         protected_paths = validate_protected_paths(protected_paths)
         check_timeout_seconds = validate_check_timeout(check_timeout_seconds)
         mainline_override_owners = validate_override_owners(mainline_override_owners)
+        if ticket_source not in ("standalone", "corenius"):
+            raise Refused("Ticket source must be standalone or corenius")
         root = Path(self.workspace.git("rev-parse", "--show-toplevel", cwd=self.invoked).strip())
         trunk_ref = "refs/heads/" + trunk
         self.workspace.git("check-ref-format", trunk_ref, cwd=root)
@@ -79,6 +113,7 @@ class Collab:
             "protected_paths": protected_paths,
             "check_timeout_seconds": check_timeout_seconds,
             "mainline_override_owners": mainline_override_owners,
+            "ticket_source": ticket_source,
         }
         self.store.initialize(config)
         self.config = config
@@ -87,6 +122,8 @@ class Collab:
 
     def new(self, tid: str, title: str, deps: list[str]) -> dict:
         self.require_config()
+        if self.require_config().get("ticket_source") == "corenius":
+            raise Refused("Create Corenius tickets through tools/agents/tracker.py new")
         valid_id(tid)
         deps = [valid_id(item) for item in deps]
         if len(deps) != len(set(deps)) or tid in deps:
@@ -136,6 +173,11 @@ class Collab:
         worker = normalize_worker_binding(worker_pid, worker_run_dir)
         if effort:
             return self.open_corenius_attempt(tid, owner.strip(), effort, ttl_hours, worker)
+        qualified = split_corenius_ticket(tid)
+        if qualified:
+            return self.open_corenius_attempt(qualified[1], owner.strip(), qualified[0], ttl_hours, worker)
+        if self.require_config().get("ticket_source") == "corenius":
+            raise Refused("Corenius tickets require effort:number or --effort")
         return self.open_standalone_attempt(tid, owner.strip(), worker)
 
     def open_standalone_attempt(self, tid: str, owner: str, worker: dict | None = None) -> dict:
@@ -143,9 +185,7 @@ class Collab:
         with self.store.lock("meta"):
             base = self.workspace.trunk()
             meta, _ = self.tickets.ticket(tid, base)
-            if meta["status"] == "closed":
-                raise Refused("Ticket is closed")
-            self.tickets.deps_ok(tid, base)
+            self.tickets.require_ready(meta, base)
             aid = "a-" + uuid.uuid4().hex[:16]
             branch = self.attempt_branch(owner, tid, aid)
             path = Path(self.require_config()["workspace_root"]) / aid
@@ -201,7 +241,7 @@ class Collab:
             base = self.workspace.trunk()
             candidate = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
             if base != attempt["base"]:
-                raise Refused("Trunk moved; stop/abandon, claim fresh, and cherry-pick only the prior contribution")
+                raise Refused("Trunk moved; stop the worker and refresh, then submit/check again")
             self.tickets.same_contract(attempt, base)
             if self.workspace.git("merge-base", base, candidate).strip() != base:
                 raise Refused(
@@ -281,7 +321,6 @@ class Collab:
     def status(self) -> dict:
         self.require_config()
         base = self.workspace.trunk()
-        paths = self.workspace.git("ls-tree", "-r", "--name-only", base, "--", ".tickets/").splitlines()
         attempts = self.store.attempts()
         active = {
             attempt["ticket"]: attempt
@@ -289,15 +328,15 @@ class Collab:
             if attempt["state"] not in ("landed", "abandoned")
         }
         tickets = []
-        for path in paths:
-            if path.count("/") != 1 or not path.endswith(".md"):
+        for meta in self.tickets.list_tickets(base):
+            tid = meta["id"]
+            if "error" in meta:
+                tickets.append({**meta, "ready": False})
                 continue
-            tid = Path(path).stem
             try:
-                meta, _ = self.tickets.ticket(tid, base)
                 blocker = None
                 try:
-                    self.tickets.deps_ok(tid, base)
+                    self.tickets.require_ready(meta, base)
                 except Refused as exc:
                     blocker = str(exc)
                 attempt = active.get(tid)
@@ -306,7 +345,7 @@ class Collab:
                         **meta,
                         "active_attempt": attempt["id"] if attempt else None,
                         "execution": attempt["state"] if attempt else None,
-                        "ready": meta["status"] != "closed" and not blocker and not attempt,
+                        "ready": not blocker and not attempt,
                         "blocker": blocker,
                     }
                 )

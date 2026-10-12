@@ -24,6 +24,7 @@ class Command:
 
 
 def _add_init(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--ticket-source", choices=("standalone", "corenius"), default="standalone")
     parser.add_argument("--trunk", required=True)
     parser.add_argument("--check-json", required=True)
     parser.add_argument("--protected-paths-json")
@@ -41,6 +42,7 @@ def _run_init(collab: Collab, args: argparse.Namespace) -> object:
         protected_paths,
         args.check_timeout_seconds,
         json.loads(args.override_owners_json) if args.override_owners_json is not None else None,
+        ticket_source=args.ticket_source,
     )
 
 
@@ -118,6 +120,10 @@ def _run_abandon(collab: Collab, args: argparse.Namespace) -> object:
     return collab.abandon(args.attempt, args.confirm_stopped)
 
 
+def _run_refresh(collab: Collab, args: argparse.Namespace) -> object:
+    return collab.refresh(args.attempt, args.confirm_stopped)
+
+
 def _run_gc(collab: Collab, args: argparse.Namespace) -> object:
     return collab.gc(args.attempt, args.confirm_stopped)
 
@@ -177,6 +183,7 @@ COMMANDS = {
     "land": Command(_add_land, _run_land),
     "recover": Command(_add_confirmed_attempt, _run_recover),
     "abandon": Command(_add_confirmed_attempt, _run_abandon),
+    "refresh": Command(_add_confirmed_attempt, _run_refresh),
     "gc": Command(_add_confirmed_attempt, _run_gc),
     "sweep": Command(_add_sweep, _run_sweep),
 
