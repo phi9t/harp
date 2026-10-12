@@ -157,7 +157,7 @@ class RefreshSourceTests(unittest.TestCase):
         self.commit("dependency", cwd=path)
         self.cli("submit", dependency["id"])
         self.cli("check", dependency["id"])
-        self.cli("land", dependency["id"])
+        self.cli("land", dependency["id"], "--no-push")
         self.assertEqual([row["id"] for row in self.cli("ready")], ["T-one"])
         attempt = self.open()
         self.assertEqual(attempt["ticket"], "T-one")

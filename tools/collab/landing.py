@@ -372,10 +372,14 @@ class LandingManager:
             current = self.workspace.trunk()
             if current == attempt["base"]:
                 meta, _ = self.tickets.ticket(attempt["ticket"], current)
-                if meta["status"] != "open":
+                allocation = self.store.latest_event(aid, "allocating") or {}
+                if allocation.get("claim_transferred"):
+                    self.tickets.require_refresh_claim(attempt, current)
+                elif meta["status"] != "open":
                     raise Refused("Tracker claim no longer matches this Attempt")
-                claimed, _ = self.tickets.claim_corenius(effort, ticket_id, attempt["owner"], 24.0)
-                self.store.update_claim_basis(aid, self.workspace.trunk(), claimed["sha256"])
+                else:
+                    claimed, _ = self.tickets.claim_corenius(effort, ticket_id, attempt["owner"], 24.0)
+                    self.store.update_claim_basis(aid, self.workspace.trunk(), claimed["sha256"])
                 attempt = self.store.row(aid)
             else:
                 self._recover_missing_corenius_allocation_claim(attempt, current)

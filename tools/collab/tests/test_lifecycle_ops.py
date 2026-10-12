@@ -137,6 +137,22 @@ class LifecycleOpsTests(unittest.TestCase):
         self.assertEqual(self.cli("show", attempt["id"])["state"], "working")
 
 
+    def test_transferred_corenius_claim_recovers_interrupted_fresh_allocation(self):
+        self.init()
+        self.effort_ticket()
+        self.commit("effort ticket")
+        old = self.open_corenius_attempt()
+        self.contribute(old)
+        (self.repo / "other.txt").write_text("new trunk\n")
+        self.commit("trunk moves")
+        self.cli("refresh", old["id"], "--confirm-stopped", failpoint="after_claim_record", ok=False)
+        fresh = next(row for row in self.cli("status")["attempts"] if row["state"] == "allocating")
+        recovered = self.cli("recover", fresh["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "working")
+        self.assertEqual(self.git("rev-parse", "HEAD", cwd=recovered["path"]), recovered["base"])
+        self.assertTrue(Path(old["path"]).is_dir())
+
+
 
 if __name__ == "__main__":
     unittest.main()
