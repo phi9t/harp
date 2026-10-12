@@ -30,8 +30,19 @@ class LegacyJournal:
             self.store.no_uncertain_landing()
         for path in sorted(self.home.glob("*.json")):
             record = self.read(path.stem)
-            if record["state"] in UNCERTAIN:
+            uncertain_failure = record["state"] == "push_failed" and not self.confirmed_push_rejection(record)
+            if record["state"] in UNCERTAIN or uncertain_failure:
                 raise Refused(f"Unresolved legacy landing {record['id']}; use --recover-landing {record['id']}")
+
+    def confirmed_push_rejection(self, record: dict) -> bool:
+        return any(
+            event["kind"] == "push_rejection"
+            and event.get("source_ref") == record["tip"]
+            and event.get("target_ref") == record["target_ref"]
+            and isinstance(event.get("summary"), str)
+            and event["summary"].startswith(("[rejected]", "[remote rejected]"))
+            for event in record["events"]
+        )
 
     def read(self, identity: str) -> dict:
         valid_id(identity)
@@ -110,10 +121,11 @@ class LegacyJournal:
         self._write(record)
         if self.store.load_config() is not None:
             with self.store.tx() as con:
-                self.store.event(
-                    con, None, kind, source="legacy", landing=record["id"],
-                    candidate=record["tip"], target_ref=record["target_ref"], **details,
-                )
+                recorded = {
+                    "source": "legacy", "landing": record["id"], "candidate": record["tip"],
+                    "target_ref": record["target_ref"], **details,
+                }
+                self.store.event(con, None, kind, **recorded)
 
     def change(self, record: dict, state: str, **details) -> None:
         record["state"] = state

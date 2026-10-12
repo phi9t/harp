@@ -150,3 +150,22 @@ def classify_push_failure(result: subprocess.CompletedProcess) -> str:
     else:
         category = "remote rejection or transport error"
     return f"push failed ({category}): {reason}"
+
+
+def rejected_push_target(result: subprocess.CompletedProcess, target_ref: str) -> dict | None:
+    """Read an affirmative rejection for the exact ref from Git's porcelain status."""
+    if result.returncode == 0:
+        return None
+    for line in result.stdout.splitlines():
+        fields = line.split("\t")
+        if len(fields) != 3 or fields[0] != "!":
+            continue
+        source, separator, target = fields[1].rpartition(":")
+        summary = fields[2]
+        if (
+            separator
+            and target == target_ref
+            and (summary.startswith("[rejected]") or summary.startswith("[remote rejected]"))
+        ):
+            return {"source_ref": source, "target_ref": target, "summary": summary}
+    return None
