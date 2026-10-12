@@ -7,7 +7,7 @@ from pathlib import Path
 from check_runner import CheckRunner
 from common import Refused, failpoint, output_path, valid_id
 from landing import LandingManager
-from policy import protect_candidate_paths, validate_check_argv
+from policy import protect_candidate_paths, validate_check_argv, validate_protected_paths
 from state_store import StateStore
 from ticket_source import TicketSource
 from workspace import RepositoryWorkspace, run_git
@@ -32,10 +32,17 @@ class Collab:
             raise Refused("Run init first; never delete state.sqlite3 to reset active work")
         return self.config
 
-    def init(self, trunk: str, check_argv: list[str], workspace_root: str | None = None) -> dict:
+    def init(
+        self,
+        trunk: str,
+        check_argv: list[str],
+        workspace_root: str | None = None,
+        protected_paths: list[str] | None = None,
+    ) -> dict:
         if self.db_path.exists():
             raise Refused("Already initialized or partial initialization; inspect, do not overwrite")
         check_argv = validate_check_argv(check_argv)
+        protected_paths = validate_protected_paths(protected_paths)
         root = Path(self.workspace.git("rev-parse", "--show-toplevel", cwd=self.invoked).strip())
         trunk_ref = "refs/heads/" + trunk
         self.workspace.git("check-ref-format", trunk_ref, cwd=root)
@@ -55,6 +62,7 @@ class Collab:
             "trunk_ref": trunk_ref,
             "workspace_root": str(work),
             "check_argv": check_argv,
+            "protected_paths": protected_paths,
         }
         self.store.initialize(config)
         self.config = config
@@ -149,7 +157,7 @@ class Collab:
             changed = self.workspace.git("diff", "--name-only", "-z", base, candidate).split("\0")
             if not any(changed):
                 raise Refused("Empty contribution: candidate has no file changes")
-            protect_candidate_paths(changed)
+            protect_candidate_paths(changed, self.require_config().get("protected_paths"))
             self.workspace.git("update-ref", f"refs/collab/candidates/{aid}/{candidate}", candidate)
             self.store.change(aid, "submitted", base=base, candidate=candidate, integration=None)
         return self.store.row(aid)

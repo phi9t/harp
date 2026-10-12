@@ -44,7 +44,9 @@ collab claim T-example --owner worker-a
 
 Use the actual trunk and verification command. `--check-json` must be a nonempty
 JSON array of nonempty strings. Workspace roots must be outside the primary
-checkout. Initialization refuses existing or partial state.
+checkout. Initialization refuses existing or partial state. Repositories can
+choose their protected path list with `--protected-paths-json`; omit it for the
+Corenius defaults.
 
 The claim returns an attempt ID, a `codex/collab/` branch, and a locked worktree.
 Start the chosen agent in that worktree. Commit a nonempty, linear contribution
@@ -59,8 +61,10 @@ collab land a-ACTUAL-ID
 
 `submit` seals the exact candidate. It refuses dirty or substituted workspaces,
 stale bases, changed ticket bytes, unmet dependencies, empty deltas, merge
-commits, and changes to `.tickets/`, `.github/`, `.corenius/`, `docs/agents/`,
-root `AGENTS.md`, or root `CLAUDE.md`.
+commits, and changes to the configured protected paths. The Corenius default
+protected paths are `.tickets/`, `.github/`, `.corenius/`, `docs/agents/`,
+root `AGENTS.md`, root `CLAUDE.md`, `tools/agents/checks.d/`,
+`tools/agents/check.sh`, and root `CONSTITUTION.md`.
 
 Clean-workspace checks conservatively refuse `assume-unchanged` and
 `skip-worktree` index entries, even if their files currently match Git.

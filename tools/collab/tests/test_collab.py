@@ -63,10 +63,19 @@ class CollabTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout)
         return result
 
-    def init(self, argv=None):
-        return self.cli("init", "--trunk", "main", "--check-json",
-                        json.dumps(argv or [sys.executable, "-c", "print('checked')"]),
-                        "--workspace-root", str(self.root / "workspaces"))
+    def init(self, argv=None, protected_paths=None):
+        args = [
+            "init",
+            "--trunk",
+            "main",
+            "--check-json",
+            json.dumps(argv or [sys.executable, "-c", "print('checked')"]),
+            "--workspace-root",
+            str(self.root / "workspaces"),
+        ]
+        if protected_paths is not None:
+            args.extend(["--protected-paths-json", json.dumps(protected_paths)])
+        return self.cli(*args)
 
     def ticket(self, tid="T-one", deps=(), status="open", crlf=False):
         path = self.repo / ".tickets" / (tid + ".md")
@@ -363,6 +372,71 @@ class CollabTests(unittest.TestCase):
                 self.assertIn("coordination/policy", result.stderr)
                 target.unlink()
                 self.commit("withdraw protected edit", cwd=worker)
+
+    def test_default_protected_paths_include_gate_and_constitution(self):
+        config = self.init()
+        self.assertEqual(
+            config["protected_paths"],
+            [
+                ".tickets/",
+                ".github/",
+                ".corenius/",
+                "docs/agents/",
+                "AGENTS.md",
+                "CLAUDE.md",
+                "tools/agents/checks.d/",
+                "tools/agents/check.sh",
+                "CONSTITUTION.md",
+            ],
+        )
+        self.ticket()
+        self.commit("ticket")
+        a = self.claim()
+        worker = Path(a["path"])
+        protected_paths = (
+            "tools/agents/checks.d/65-collab.sh",
+            "tools/agents/check.sh",
+            "CONSTITUTION.md",
+        )
+        for name in protected_paths:
+            with self.subTest(path=name):
+                target = worker / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("worker gate edit\n")
+                self.commit("protected path", cwd=worker)
+                result = self.cli("submit", a["id"], ok=False)
+                self.assertIn("protected path", result.stderr)
+                target.unlink()
+                self.commit("withdraw protected edit", cwd=worker)
+
+    def test_repository_specific_protected_paths_are_set_at_init(self):
+        config = self.init(protected_paths=["project-policy/", "OWNERS"])
+        self.assertEqual(config["protected_paths"], ["project-policy/", "OWNERS"])
+        self.ticket()
+        self.commit("ticket")
+        a = self.claim()
+        worker = Path(a["path"])
+        (worker / "project-policy").mkdir()
+        (worker / "project-policy/rules.md").write_text("worker policy edit\n")
+        self.commit("protected project policy", cwd=worker)
+        result = self.cli("submit", a["id"], ok=False)
+        self.assertIn("protected path", result.stderr)
+
+    def test_init_rejects_invalid_protected_path_json(self):
+        for value in ('"OWNERS"', '[1]', '[""]', '["../outside"]', '["/absolute"]', '["bad\\u0000path"]'):
+            with self.subTest(value=value):
+                result = self.cli(
+                    "init",
+                    "--trunk",
+                    "main",
+                    "--check-json",
+                    '["true"]',
+                    "--protected-paths-json",
+                    value,
+                    ok=False,
+                )
+                self.assertIn("protected", result.stderr)
+                self.assertFalse((self.repo / ".git/collab/state.sqlite3").exists())
 
     def test_dirty_worker_and_operator_files_are_preserved(self):
         a = self.prepared()

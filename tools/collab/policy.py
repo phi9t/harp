@@ -3,8 +3,17 @@ from __future__ import annotations
 
 from common import Refused
 
-PROTECTED_PREFIXES = (".tickets/", ".github/", ".corenius/", "docs/agents/")
-PROTECTED_FILES = ("AGENTS.md", "CLAUDE.md")
+DEFAULT_PROTECTED_PATHS = [
+    ".tickets/",
+    ".github/",
+    ".corenius/",
+    "docs/agents/",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "tools/agents/checks.d/",
+    "tools/agents/check.sh",
+    "CONSTITUTION.md",
+]
 
 
 def validate_check_argv(check_argv: object) -> list[str]:
@@ -17,6 +26,40 @@ def validate_check_argv(check_argv: object) -> list[str]:
     return check_argv
 
 
-def protect_candidate_paths(paths: list[str]) -> None:
-    if any(path in PROTECTED_FILES or path.startswith(PROTECTED_PREFIXES) for path in paths if path):
-        raise Refused("Candidate changes coordination/policy paths; use a separately approved operator change")
+def validate_protected_paths(protected_paths: object | None) -> list[str]:
+    if protected_paths is None:
+        return list(DEFAULT_PROTECTED_PATHS)
+    if not isinstance(protected_paths, list):
+        raise Refused("provide protected paths as a JSON array")
+    normalized = []
+    for path in protected_paths:
+        if not isinstance(path, str) or not path or "\0" in path:
+            raise Refused("protected paths must be nonempty strings")
+        if path.startswith("/"):
+            raise Refused("protected paths must be repository-relative")
+        stem = path[:-1] if path.endswith("/") else path
+        parts = stem.split("/")
+        if not stem or any(part in ("", ".", "..") for part in parts):
+            raise Refused("protected paths must be normalized repository paths")
+        normalized.append(path)
+    if len(normalized) != len(set(normalized)):
+        raise Refused("protected paths must not contain duplicates")
+    return normalized
+
+
+def _matches_protected_path(path: str, protected_path: str) -> bool:
+    if protected_path.endswith("/"):
+        return path.startswith(protected_path)
+    return path == protected_path
+
+
+def protect_candidate_paths(paths: list[str], protected_paths: object | None) -> None:
+    protected = validate_protected_paths(protected_paths)
+    for path in paths:
+        if not path:
+            continue
+        if any(_matches_protected_path(path, protected_path) for protected_path in protected):
+            raise Refused(
+                f"Candidate changes protected path {path!r} (coordination/policy); "
+                "use a separately approved operator change"
+            )
