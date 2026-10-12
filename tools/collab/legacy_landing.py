@@ -61,20 +61,18 @@ def land_lock(repo: Path):
         handle.truncate()
         handle.write(f"{os.getpid()} {now()}\n")
         handle.flush()
-        try:
-            journal = LegacyJournal(common_git_dir(repo))
-            with contextlib.ExitStack() as stack:
-                if journal.store.load_config() is not None:
-                    stack.enter_context(journal.store.lock("lane"))
-                # A surviving Git child keeps both locks after its controller dies.
-                descriptors = (handle.fileno(), *journal.store.fds)
-                token = _LANDING_FDS.set((*_LANDING_FDS.get(), *descriptors))
-                try:
-                    yield
-                finally:
-                    _LANDING_FDS.reset(token)
-        finally:
-            fcntl.flock(handle, fcntl.LOCK_UN)
+        journal = LegacyJournal(common_git_dir(repo))
+        with contextlib.ExitStack() as stack:
+            if journal.store.load_config() is not None:
+                stack.enter_context(journal.store.lock("lane"))
+            # A surviving Git child keeps both locks after its controller dies.
+            descriptors = (handle.fileno(), *journal.store.fds)
+            token = _LANDING_FDS.set((*_LANDING_FDS.get(), *descriptors))
+            try:
+                yield
+            finally:
+                _LANDING_FDS.reset(token)
+        # The context closes only our reference; a surviving Git child keeps the fence.
 
 
 def git_result(repo: str | Path, *args: str, env: dict | None = None) -> subprocess.CompletedProcess[str]:

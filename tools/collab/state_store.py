@@ -115,7 +115,8 @@ class StateStore:
                 yield
             finally:
                 self.fds.remove(lockfile.fileno())
-                fcntl.flock(lockfile.fileno(), fcntl.LOCK_UN)
+                # Close only this descriptor. LOCK_UN would also release surviving
+                # children's inherited references to the same open file description.
 
     def event(self, con, attempt: str | None, kind: str, **details) -> None:
         con.execute(

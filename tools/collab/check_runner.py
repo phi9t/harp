@@ -120,6 +120,7 @@ class CheckRunner:
             }
             stream.write(json.dumps(started) + "\n")
             stream.flush()
+            process = None
             try:
                 process = subprocess.Popen(
                     argv,
@@ -143,6 +144,14 @@ class CheckRunner:
             except OSError as exc:
                 command_error = str(exc)
                 stream.write(command_error + "\n")
+            finally:
+                if process is not None:
+                    # Defer repeated controller interrupts until all gate children stop.
+                    previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT})
+                    try:
+                        self._terminate(process)
+                    finally:
+                        signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
             stream.flush()
             os.fsync(stream.fileno())
         return code, timed_out, command_error
