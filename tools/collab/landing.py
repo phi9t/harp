@@ -398,7 +398,9 @@ class LandingManager:
     def _local_publication_attributed(self, attempt: dict, aid: str, target: str) -> bool:
         if not self._integration_is_landed(attempt, target):
             return False
-        records = TicketResolution(self.store, self.workspace, self.tickets, self.config).latest(aid, "records_prepared")
+        records = TicketResolution(
+            self.store, self.workspace, self.tickets, self.config,
+        ).latest(aid, "records_prepared")
         expected_previous = attempt["base"]
         expected_actions = [f"collab-land:{aid}:"]
         if records and target == records.get("commit"):

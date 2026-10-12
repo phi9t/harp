@@ -163,7 +163,7 @@ def preflight(repo: Path, target_ref: str, expected_base: str, tip: str, checkou
     if overlap:
         raise PreflightRefused(
             "overlap",
-            "target checkout has local files overlapping the Candidate that would be overwritten",
+            "operator path would be overwritten by the Candidate",
             overlap,
         )
     if checkout is None:
