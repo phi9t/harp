@@ -124,10 +124,22 @@ def _run_gc(collab: Collab, args: argparse.Namespace) -> object:
 
 def _add_sweep(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--archive-dirty", action="store_true")
+    parser.add_argument("--include-foreign", action="store_true")
+    parser.add_argument("--retention-days", type=float, default=30)
 
 
 def _run_sweep(collab: Collab, args: argparse.Namespace) -> object:
-    return collab.sweep(args.apply)
+    return collab.sweep(args.apply, args.archive_dirty, args.include_foreign, args.retention_days)
+
+
+def _add_restore_archive(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("archive")
+    parser.add_argument("destination")
+
+
+def _run_restore_archive(collab: Collab, args: argparse.Namespace) -> object:
+    return collab.restore_archive(args.archive, args.destination)
 
 def _run_inspect(collab: Collab, args: argparse.Namespace) -> object:
     return collab.inspect(args.attempt)
@@ -169,6 +181,7 @@ COMMANDS = {
     "sweep": Command(_add_sweep, _run_sweep),
 
     "inspect": Command(_add_attempt, _run_inspect),
+    "restore-archive": Command(_add_restore_archive, _run_restore_archive),
     "status": Command(_add_no_args, _run_status),
     "ready": Command(_add_no_args, _run_ready),
     "backup": Command(_add_backup, _run_backup),

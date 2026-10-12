@@ -1,7 +1,12 @@
 """Safe manual cleanup for completed collab Attempts."""
 from __future__ import annotations
 
+from pathlib import Path
+
+from archives import archive_worktree, clear_archived_changes
 from common import Refused
+from retention import Retention
+from liveness import require_worker_stopped, worker_liveness
 
 
 TERMINAL_STATES = ("landed", "abandoned")
@@ -12,8 +17,12 @@ class SweepManager:
         self.store = store
         self.workspace = workspace
         self.config = config
+        self.retention = Retention(store, workspace, config)
 
-    def sweep(self, apply: bool = False) -> dict:
+    def sweep(
+        self, apply: bool = False, archive_dirty: bool = False, include_foreign: bool = False,
+        retention_days: float = 30,
+    ) -> dict:
         self.config()
         with self.store.lock("lane"), self.store.lock("meta"):
             trunk = self.workspace.trunk()
@@ -23,12 +32,16 @@ class SweepManager:
             attempt_branches = set()
             for attempt in self.store.attempts():
                 attempt_branches.add(attempt["branch"])
-                item = self.classify_attempt(attempt, trunk, worktrees)
+                item = self.classify_attempt(attempt, trunk, worktrees, archive_dirty)
                 if item["action"] == "skip":
                     skipped.append(item)
                 else:
                     candidates.append(item)
-            skipped.extend(self.foreign_unmerged_branches(trunk, attempt_branches))
+            for item in self.foreign_branches(trunk, attempt_branches, include_foreign):
+                (skipped if item["action"] == "skip" else candidates).append(item)
+            old_candidates, old_skipped = self.retention.classify(retention_days, self.store.attempts(), worktrees)
+            candidates.extend(old_candidates)
+            skipped.extend(old_skipped)
             removed = []
             archived = []
             if apply:
@@ -42,7 +55,9 @@ class SweepManager:
             "archived": archived,
         }
 
-    def classify_attempt(self, attempt: dict, trunk: str, worktrees: dict[str, dict]) -> dict:
+    def classify_attempt(
+        self, attempt: dict, trunk: str, worktrees: dict[str, dict], archive_dirty: bool = False,
+    ) -> dict:
         item = {
             "kind": "attempt",
             "attempt": attempt["id"],
@@ -65,11 +80,21 @@ class SweepManager:
                 reason += f": {record['lock_reason']}"
             return {**item, "action": "skip", "reason": reason}
         try:
+            self.require_stopped(attempt)
             path = self.workspace.validate_attempt(attempt)
-            self.workspace.clean(path, include_ignored=True)
+            dirty = False
+            try:
+                self.workspace.clean(path, include_ignored=True)
+            except Refused:
+                if not archive_dirty:
+                    raise
+                dirty = True
             head = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
         except Refused as exc:
             return {**item, "action": "skip", "reason": str(exc)}
+        if dirty:
+            return {**item, "action": "archive_dirty_then_remove_worktree_and_branch", "head": head,
+                    "dirty": True, "reason": "terminal dirty Attempt; verified archive before removal"}
         merged = self.is_ancestor(head, trunk)
         if merged:
             return {
@@ -90,12 +115,25 @@ class SweepManager:
         }
 
     def apply_candidate(self, item: dict, removed: list[dict], archived: list[dict]) -> None:
+        if item["kind"] not in ("attempt", "foreign_branch"):
+            self.retention.apply(item, removed)
+            return
         head = item["head"]
+        if item["kind"] == "foreign_branch":
+            self.apply_foreign_branch(item, removed, archived)
+            return
+        current_attempt = self.store.row(item["attempt"])
+        self.require_stopped(current_attempt)
         path = self.workspace.validate_attempt(item)
-        self.workspace.clean(path, include_ignored=True)
+        if not item.get("dirty"):
+            self.workspace.clean(path, include_ignored=True)
         current = self.workspace.git("rev-parse", "HEAD", cwd=path).strip()
         if current != head:
             raise Refused(f"Sweep candidate moved before removal: {item['attempt']}")
+        if item.get("dirty"):
+            archived.append(archive_worktree(self.workspace, self.store.home, item))
+            self.workspace.validate_attempt(item, expected_head=head)
+            clear_archived_changes(self.workspace, path)
         if item["action"] == "archive_then_remove_worktree_and_branch":
             archive_ref = item["archive_ref"]
             old = self.workspace.git("rev-parse", "--verify", archive_ref, check=False).strip()
@@ -115,35 +153,54 @@ class SweepManager:
             }
         )
 
+    def require_stopped(self, attempt: dict) -> None:
+        require_worker_stopped(attempt)
+        status = worker_liveness(attempt)
+        if any(source.get("state") == "unknown" for source in status["sources"]):
+            raise Refused("Worker liveness is unknown; retaining Attempt artifacts")
+
     def is_ancestor(self, older: str, newer: str) -> bool:
         return self.workspace.git("merge-base", older, newer, check=False).strip() == older
 
-    def foreign_unmerged_branches(self, trunk: str, attempt_branches: set[str]) -> list[dict]:
+    def foreign_branches(self, trunk: str, attempt_branches: set[str], include_foreign: bool) -> list[dict]:
         trunk_branch = self.config()["trunk_ref"].removeprefix("refs/heads/")
         rows = self.workspace.git(
-            "for-each-ref",
-            "--format=%(refname:short)%00%(objectname)%00%(worktreepath)",
-            "refs/heads",
+            "for-each-ref", "--format=%(refname:short)%00%(objectname)%00%(worktreepath)", "refs/heads",
         ).splitlines()
-        skipped = []
+        result = []
         for row in rows:
             branch, head, worktree = (row.split("\0") + ["", ""])[:3]
             if branch == trunk_branch or branch in attempt_branches:
                 continue
-            if self.is_ancestor(head, trunk):
-                continue
-            skipped.append(
-                {
-                    "kind": "foreign_branch",
-                    "action": "skip",
-                    "branch": branch,
-                    "owner": self.branch_owner(branch),
-                    "head": head,
-                    "path": worktree,
-                    "reason": "foreign branch has unmerged commits",
-                }
-            )
-        return skipped
+            merged = self.is_ancestor(head, trunk)
+            item = {"kind": "foreign_branch", "branch": branch, "owner": self.branch_owner(branch),
+                    "head": head, "path": worktree, "merged": merged}
+            if worktree:
+                result.append({**item, "action": "skip", "reason": "foreign checkout has unknown worker identity"})
+            elif not merged and not include_foreign:
+                result.append({**item, "action": "skip", "reason": "foreign branch has unmerged commits"})
+            else:
+                result.append({**item, "action": "remove_branch" if merged else "archive_then_remove_branch",
+                               "reason": "fully merged foreign branch" if merged else "explicit foreign archive",
+                               "archive_ref": "refs/collab/archive/foreign/" + head})
+        return result
+
+    def apply_foreign_branch(self, item: dict, removed: list[dict], archived: list[dict]) -> None:
+        if any(record["branch"] == "refs/heads/" + item["branch"] for record in self.worktrees_by_path().values()):
+            raise Refused("Foreign branch acquired a checkout; retaining it")
+        current = self.workspace.git("rev-parse", "--verify", "refs/heads/" + item["branch"]).strip()
+        if current != item["head"]:
+            raise Refused("Foreign branch moved; retaining it")
+        if not item["merged"]:
+            ref = item["archive_ref"]
+            old = self.workspace.git("rev-parse", "--verify", ref, check=False).strip()
+            if old and old != current:
+                raise Refused("Archive ref moved; retaining branch")
+            if not old:
+                self.workspace.git("update-ref", ref, current, "")
+            archived.append({"branch": item["branch"], "head": current, "ref": ref})
+        self.workspace.git("update-ref", "-d", "refs/heads/" + item["branch"], current)
+        removed.append({"branch": item["branch"], "head": current})
 
     def branch_owner(self, branch: str) -> str:
         return branch.split("/", 1)[0] if "/" in branch else "unknown"

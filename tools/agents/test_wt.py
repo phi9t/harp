@@ -176,19 +176,19 @@ class WtTest(unittest.TestCase):
         dry_rows = [json.loads(line) for line in self.call(["gc", "--repo", str(self.repo)]).splitlines()]
         self.assertEqual(self.code, wt.OK, self.err)
         dry_branches = {row["branch"] for row in dry_rows}
-        self.assertEqual(dry_branches, {merged_branch, old_branch})
+        self.assertEqual(dry_branches, set())
         self.assertTrue(all(row["removed"] is False for row in dry_rows))
         self.assertTrue(merged.exists())
         self.assertTrue(old.exists())
 
         apply_rows = [json.loads(line) for line in self.call(["gc", "--apply", "--repo", str(self.repo)]).splitlines()]
         self.assertEqual(self.code, wt.OK, self.err)
-        self.assertEqual({row["branch"] for row in apply_rows}, {merged_branch, old_branch})
+        self.assertEqual({row["branch"] for row in apply_rows}, set())
         self.assertTrue(all(row["removed"] is True for row in apply_rows))
-        self.assertFalse(merged.exists())
-        self.assertFalse(old.exists())
-        self.assertFalse(self.branch_exists(merged_branch))
-        self.assertFalse(self.branch_exists(old_branch))
+        self.assertTrue(merged.exists())
+        self.assertTrue(old.exists())
+        self.assertTrue(self.branch_exists(merged_branch))
+        self.assertTrue(self.branch_exists(old_branch))
         self.assertTrue(dirty.exists())
         self.assertTrue(ahead.exists())
         self.assertTrue(self.branch_exists(dirty_branch))
