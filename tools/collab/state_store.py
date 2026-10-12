@@ -240,13 +240,24 @@ class StateStore:
         with self.tx() as con:
             self.event(con, aid, kind, **details)
 
-    def latest_event(self, aid: str, kind: str) -> dict | None:
+    def latest_event(self, aid: str, kind: str, *, after_kind: str | None = None) -> dict | None:
+        """Restrict an event to the latest boundary; a missing boundary matches nothing."""
         self.require_initialized()
         with self.db() as con:
-            row = con.execute(
-                "SELECT details FROM events WHERE attempt=? AND kind=? ORDER BY seq DESC LIMIT 1",
-                (aid, kind),
-            ).fetchone()
+            if after_kind is None:
+                row = con.execute(
+                    "SELECT details FROM events WHERE attempt=? AND kind=? ORDER BY seq DESC LIMIT 1",
+                    (aid, kind),
+                ).fetchone()
+            else:
+                row = con.execute(
+                    """
+                    SELECT details FROM events WHERE attempt=? AND kind=? AND seq > (
+                        SELECT MAX(seq) FROM events WHERE attempt=? AND kind=?
+                    ) ORDER BY seq DESC LIMIT 1
+                    """,
+                    (aid, kind, aid, after_kind),
+                ).fetchone()
         return json.loads(row[0]) if row else None
 
     def records_incomplete(self, aid: str, error: str) -> None:

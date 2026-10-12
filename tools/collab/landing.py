@@ -344,8 +344,9 @@ class LandingManager:
     def _recover_landing(self, attempt: dict, aid: str) -> dict | None:
         self.workspace.primary()
         self.require_receipt(attempt)
-        if attempt["state"] in ("push_intended", "push_completed") or self.store.latest_event(aid, "push_intent"):
-            return self._recover_pushed_landing(attempt, aid)
+        destination = self.store.latest_event(aid, "push_intent", after_kind="landing_prepared")
+        if attempt["state"] in ("push_intended", "push_completed") or destination is not None:
+            return self._recover_pushed_landing(attempt, aid, destination)
         if attempt["state"] == "landed_records_incomplete":
             return self._recover_landed_records(attempt)
         log = self.workspace.git("reflog", "show", "--format=%H%x00%gs", self.config()["trunk_ref"])
@@ -370,10 +371,9 @@ class LandingManager:
             raise Refused("Ambiguous landing; preserve state and inspect manually")
         return None
 
-    def _recover_pushed_landing(self, attempt: dict, aid: str) -> dict | None:
-        destination = self.store.latest_event(aid, "push_intent") or self._push_destination()
+    def _recover_pushed_landing(self, attempt: dict, aid: str, destination: dict | None) -> dict | None:
         if not destination:
-            raise Refused("Cannot recover pushed landing without a recorded remote destination")
+            raise Refused("Current landing operation has no recorded remote destination; preserve and inspect")
         remote_tip = self._remote_tip(destination)
         target = self.workspace.trunk()
         if self._integration_is_landed(attempt, target):
