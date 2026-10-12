@@ -218,6 +218,17 @@ class CleanupTests(unittest.TestCase):
         self.assertIn("prune_registration", str(result["removed"]))
         self.assertNotIn(str(check_path), self.git("worktree", "list", "--porcelain"))
 
+    def test_archive_storage_symlink_does_not_write_an_unrelated_tree(self):
+        attempt, path = self.terminal()
+        (path / "new").write_text("dirty\n")
+        unrelated = self.root / "unrelated"
+        unrelated.mkdir()
+        (self.repo / ".git" / "collab" / "archives").symlink_to(unrelated, target_is_directory=True)
+        result = self.cli("sweep", "--apply", "--archive-dirty", ok=False)
+        self.assertIn("archive", result.stderr.lower())
+        self.assertTrue(path.exists())
+        self.assertEqual(list(unrelated.iterdir()), [])
+
 
 if __name__ == "__main__":
     unittest.main()
