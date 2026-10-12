@@ -64,15 +64,25 @@ budget in
 [decisions/2026-10-12-mutation-contract.md](decisions/2026-10-12-mutation-contract.md).
 Existing original ticket claims and acceptance records are preserved.
 
+## Qualification strategy update
+
+On 2026-10-12 the user narrowed the follow-up qualification strategy: keep
+reasonable unit coverage for the important mutation, preflight, liveness,
+local-record recovery and archive compatibility surfaces, and rely on a few
+live/e2e checks for integrated behavior. Do not require every retained
+architecture reproduction to become a separate long-running public CLI test, and
+do not require the full default repository gate for this follow-up qualification.
+
 ## Verification
 
 Use the already approved public CLI and compatibility-shim seams with real Git
-repositories. Turn the nine retained defect reproductions into red-green tests;
-add the complete acceptance scenarios in the architectural report. Check all
-operation markers, conservative liveness consumers, inherited child locks and
-exact-operation recovery, including record repair without remote access.
+repositories where they materially exercise the user-facing behavior. Add or
+keep focused red-green coverage for the important surfaces: pending publication
+admission/recovery, shared checkout preflight, conservative liveness consumers,
+and exact-operation recovery including record repair without remote access.
 
-After focused proof passes, run affected toolbox/shim suites, Collab tests, lint
-and the full default gate. Require fresh Standards, Spec and independent branch
-reviews without blockers before marking the effort accepted. Record a new
-explicit repair budget; the earlier three rounds are exhausted.
+After focused proof passes, run affected toolbox/shim suites, Collab tests as
+the main broad regression, lint/diff checks and a small live/e2e set. Require
+fresh Standards, Spec and independent branch reviews without blockers before
+marking the effort accepted. Record a new explicit repair budget; the earlier
+three rounds are exhausted.
