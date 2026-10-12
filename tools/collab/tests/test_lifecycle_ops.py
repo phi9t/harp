@@ -172,6 +172,55 @@ class LifecycleOpsTests(unittest.TestCase):
         self.assertIn("unknown", refused.stderr)
         self.assertEqual(self.cli("show", attempt["id"])["state"], "working")
 
+    def test_liveness_decisions_report_bad_evidence_and_block_lifecycle_commands(self):
+        self.init()
+        for index in range(8):
+            self.ticket(f"T-{index}")
+        self.commit("tickets")
+        cases = [
+            ("missing", None, "run.json unusable"),
+            ("malformed", "{broken", "run.json unusable"),
+            ("nonmapping", "[]", "run.json must be a JSON object"),
+            ("missing-identity", "{}", "no usable pid or session"),
+            ("nonpositive-pid", {"pid": 0}, "pid must be a positive integer"),
+            ("invalid-pid", {"pid": "broken"}, "pid must be a positive integer"),
+            ("invalid-session", {"process_session_id": "broken"}, "process_session_id must be a positive integer"),
+            ("malformed-completion", {"pid": 2147483647, "exit_code": "not-an-int"},
+             "completion exit_code must be a non-negative integer"),
+        ]
+        for index, (name, payload, reason) in enumerate(cases):
+            with self.subTest(name=name):
+                run = self.root / f"run-{name}"
+                run.mkdir()
+                if isinstance(payload, str):
+                    (run / "run.json").write_text(payload)
+                elif isinstance(payload, dict):
+                    exit_code = payload.pop("exit_code", None)
+                    (run / "run.json").write_text(json.dumps(payload))
+                    if exit_code is not None:
+                        (run / "exit_code").write_text(exit_code)
+                attempt = self.cli("open-attempt", f"T-{index}", "--owner", "test-worker",
+                                   "--worker-run-dir", str(run))
+                inspected = self.cli("inspect", attempt["id"])
+                self.assertTrue(inspected["blocked"])
+                self.assertEqual(inspected["liveness"]["decision"], "unknown")
+                self.assertEqual(inspected["blockers"][0]["decision"], "unknown")
+                self.assertIn(reason, inspected["blockers"][0]["reason"])
+                for command in ("recover", "abandon", "refresh"):
+                    refused = self.cli(command, attempt["id"], "--confirm-stopped", ok=False)
+                    self.assertIn("state unknown", refused.stderr)
+
+    def test_unbound_attempt_reports_unbound_and_confirmed_abandon_still_works(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        inspected = self.cli("inspect", attempt["id"])
+        self.assertFalse(inspected["blocked"])
+        self.assertEqual(inspected["liveness"]["decision"], "unbound")
+        abandoned = self.cli("abandon", attempt["id"], "--confirm-stopped")
+        self.assertEqual(abandoned["state"], "abandoned")
+
 
     def test_transferred_corenius_claim_recovers_interrupted_fresh_allocation(self):
         self.init()

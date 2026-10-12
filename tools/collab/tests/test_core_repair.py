@@ -73,6 +73,19 @@ class CoreRepairTests(unittest.TestCase):
         self.assertTrue(Path(attempt["path"]).exists())
         self.assertTrue(Path(attempt["check_path"]).exists())
 
+    def test_gc_retains_all_worktrees_when_completion_evidence_is_malformed(self):
+        run = self.root / "run"
+        run.mkdir()
+        (run / "run.json").write_text(json.dumps({"pid": 2147483647}))
+        attempt = self.terminal("--worker-run-dir", str(run))
+        (run / "exit_code").write_text("not-an-int\n")
+        before = self.git("worktree", "list", "--porcelain")
+        result = self.cli("gc", attempt["id"], "--confirm-stopped", ok=False)
+        self.assertIn("completion exit_code", result.stderr)
+        self.assertEqual(self.git("worktree", "list", "--porcelain"), before)
+        self.assertTrue(Path(attempt["path"]).exists())
+        self.assertTrue(Path(attempt["check_path"]).exists())
+
     def fail_after_real_push(self):
         script = self.root / "receive-then-fail"
         calls = self.root / "push-calls"

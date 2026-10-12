@@ -3,8 +3,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 
 from common import Refused, output_path
+
+DECISION_RUNNING = "running"
+DECISION_STOPPED = "stopped"
+DECISION_UNKNOWN = "unknown"
+DECISION_UNBOUND = "unbound"
 
 
 def _stat(pid: int) -> dict | None:
@@ -35,10 +41,11 @@ def _stat(pid: int) -> dict | None:
 def _int_or_none(value: object) -> int | None:
     if value is None:
         return None
-    try:
-        parsed = int(value)
-    except (TypeError, ValueError) as exc:
-        raise Refused(f"Invalid worker process id: {value!r}") from exc
+    if isinstance(value, bool) or not isinstance(value, (int, str)):
+        raise Refused(f"Invalid worker process id: {value!r}")
+    if isinstance(value, str) and not re.fullmatch(r"[1-9][0-9]*", value):
+        raise Refused(f"Invalid worker process id: {value!r}")
+    parsed = int(value)
     if parsed <= 0:
         raise Refused("--worker-pid must be positive")
     return parsed
@@ -106,29 +113,111 @@ def live_session_pids(session_id: int | None) -> list[int]:
     return sorted(pids)
 
 
+def _source(source: str, decision: str, **fields) -> dict:
+    return {
+        "source": source,
+        "decision": decision,
+        "state": decision,
+        "alive": decision == DECISION_RUNNING,
+        **fields,
+    }
+
+
+def _strict_positive_int(value: object, field: str) -> tuple[int | None, str | None]:
+    if value is None:
+        return None, None
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        return None, f"{field} must be a positive integer"
+    return value, None
+
+
+def _completion(run_dir: Path) -> tuple[int | None, str | None]:
+    exit_file = run_dir / "exit_code"
+    if not exit_file.exists():
+        return None, None
+    try:
+        text = exit_file.read_text().strip()
+    except OSError as exc:
+        return None, f"completion unreadable: {exc}"
+    if not re.fullmatch(r"\d+", text):
+        return None, "completion exit_code must be a non-negative integer"
+    return int(text), None
+
+
 def _run_dir_liveness(run_dir: Path) -> dict:
-    source = {"source": "worker_run_dir", "worker_run_dir": str(run_dir), "alive": False}
+    source = {"worker_run_dir": str(run_dir)}
     try:
         run = json.loads((run_dir / "run.json").read_text())
     except (OSError, json.JSONDecodeError) as exc:
-        return {**source, "state": "unknown", "reason": str(exc)}
-    session_id = _optional_int(run.get("process_session_id"))
-    pids = live_session_pids(session_id)
-    if pids:
-        return {**source, "alive": True, "state": "running", "process_session_id": session_id, "live_pids": pids}
-    exit_file = run_dir / "exit_code"
-    if exit_file.exists() and exit_file.read_text().strip():
-        return {**source, "state": "exited", "exit_code": exit_file.read_text().strip()}
-    pid = _optional_int(run.get("pid"))
-    alive = pid_alive(pid) if pid is not None else False
-    return {**source, "alive": alive, "state": "running" if alive else "stopped", "pid": pid}
+        return _source("worker_run_dir", DECISION_UNKNOWN, **source, reason=f"run.json unusable: {exc}")
+    if not isinstance(run, dict):
+        return _source("worker_run_dir", DECISION_UNKNOWN, **source, reason="run.json must be a JSON object")
+    pid, pid_error = _strict_positive_int(run.get("pid"), "pid")
+    session_id, session_error = _strict_positive_int(run.get("process_session_id"), "process_session_id")
+    if pid_error or session_error:
+        return _source(
+            "worker_run_dir",
+            DECISION_UNKNOWN,
+            **source,
+            pid=run.get("pid"),
+            process_session_id=run.get("process_session_id"),
+            reason=pid_error or session_error,
+        )
+    if pid is None and session_id is None:
+        return _source("worker_run_dir", DECISION_UNKNOWN, **source, reason="run.json has no usable pid or session")
+    if session_id is not None:
+        pids = live_session_pids(session_id)
+        if pids:
+            return _source(
+                "worker_run_dir",
+                DECISION_RUNNING,
+                **source,
+                process_session_id=session_id,
+                live_pids=pids,
+            )
+    if pid is not None and pid_alive(pid):
+        return _source("worker_run_dir", DECISION_RUNNING, **source, pid=pid, process_session_id=session_id)
+    exit_code, completion_error = _completion(run_dir)
+    if completion_error:
+        return _source(
+            "worker_run_dir",
+            DECISION_UNKNOWN,
+            **source,
+            pid=pid,
+            process_session_id=session_id,
+            reason=completion_error,
+        )
+    if exit_code is not None:
+        return _source(
+            "worker_run_dir",
+            DECISION_STOPPED,
+            **source,
+            pid=pid,
+            process_session_id=session_id,
+            exit_code=exit_code,
+            reason="valid completion evidence",
+        )
+    return _source(
+        "worker_run_dir",
+        DECISION_STOPPED,
+        **source,
+        pid=pid,
+        process_session_id=session_id,
+        reason="no live process observed for usable identity",
+    )
 
 
-def _optional_int(value: object) -> int | None:
-    try:
-        return int(value) if value is not None else None
-    except (TypeError, ValueError):
-        return None
+def _pid_liveness(pid: object, start_ticks: str | None) -> dict:
+    parsed, error = _strict_positive_int(pid, "worker_pid")
+    if error:
+        return _source("worker_pid", DECISION_UNKNOWN, pid=pid, reason=error)
+    alive = pid_alive(parsed, start_ticks)
+    return _source(
+        "worker_pid",
+        DECISION_RUNNING if alive else DECISION_STOPPED,
+        pid=parsed,
+        reason="process is live" if alive else "process is not live",
+    )
 
 
 def worker_liveness(attempt: dict) -> dict:
@@ -138,18 +227,29 @@ def worker_liveness(attempt: dict) -> dict:
         sources.append(_run_dir_liveness(Path(run_dir)))
     pid = attempt.get("worker_pid")
     if pid is not None:
-        pid = int(pid)
-        alive = pid_alive(pid, attempt.get("worker_pid_start_ticks"))
-        sources.append({"source": "worker_pid", "pid": pid, "alive": alive, "state": "running" if alive else "stopped"})
-    live = [source for source in sources if source["alive"]]
-    return {"alive": bool(live), "sources": sources}
+        sources.append(_pid_liveness(pid, attempt.get("worker_pid_start_ticks")))
+    if not sources:
+        return {
+            "decision": DECISION_UNBOUND,
+            "state": DECISION_UNBOUND,
+            "alive": False,
+            "reason": "no worker binding",
+            "sources": [],
+        }
+    if any(source["decision"] == DECISION_RUNNING for source in sources):
+        decision = DECISION_RUNNING
+    elif any(source["decision"] == DECISION_UNKNOWN for source in sources):
+        decision = DECISION_UNKNOWN
+    else:
+        decision = DECISION_STOPPED
+    return {"decision": decision, "state": decision, "alive": decision == DECISION_RUNNING, "sources": sources}
 
 
-def liveness_blockers(attempt: dict) -> list[dict]:
-    status = worker_liveness(attempt)
+def liveness_blockers(attempt: dict, status: dict | None = None) -> list[dict]:
+    status = status or worker_liveness(attempt)
     blockers = []
     for source in status["sources"]:
-        if not source["alive"] and source.get("state") != "unknown":
+        if source["decision"] not in (DECISION_RUNNING, DECISION_UNKNOWN):
             continue
         blocker = {"kind": "worker_liveness", **source}
         blockers.append(blocker)
@@ -157,7 +257,8 @@ def liveness_blockers(attempt: dict) -> list[dict]:
 
 
 def require_worker_stopped(attempt: dict) -> None:
-    blockers = liveness_blockers(attempt)
+    status = worker_liveness(attempt)
+    blockers = liveness_blockers(attempt, status)
     if blockers:
-        state = "still running" if blockers[0]["alive"] else "state unknown"
+        state = "still running" if status["decision"] == DECISION_RUNNING else "state unknown"
         raise Refused(f"recorded worker {state} for Attempt {attempt['id']}: {blockers[0]}")
