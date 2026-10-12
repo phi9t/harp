@@ -71,7 +71,7 @@ def restore_archive(source: str, destination: str) -> dict:
                 raise Refused("Unsupported archive member")
             if any((target / parent).is_symlink() for parent in relative.parents):
                 raise Refused("Archive entry crosses a symlink")
-            stream.extract(member, target)
+            stream.extract(member, target, filter="fully_trusted")
     shutil.copyfile(archive / "index", target / ".git" / "index")
     if inventory(target) != manifest["files"]:
         raise Refused("Restored file inventory differs from archive")
