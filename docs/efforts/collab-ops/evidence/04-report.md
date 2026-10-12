@@ -67,12 +67,7 @@
 - None. Changes are under `tools/collab/` plus this report.
 
 ## For later tickets
-
-- Check receipts now include an explicit `outcome` string that landing can treat
-  as the stable v2 receipt contract.
-- The new live-check lock is global for checks, matching the existing single
-  lane model. If later work introduces parallel check lanes, that lock can be
-  narrowed without changing the receipt contract.
+none
 
 ## Not checked
 
@@ -81,3 +76,10 @@
 - Cargo tests did not run to completion separately.
 - No network, push, merge, rebase, container build, or global package install was
   performed.
+
+### Worker notes for later work (not addressed to a ticket)
+- Check receipts now include an explicit `outcome` string that landing can treat
+  as the stable v2 receipt contract.
+- The new live-check lock is global for checks, matching the existing single
+  lane model. If later work introduces parallel check lanes, that lock can be
+  narrowed without changing the receipt contract.
