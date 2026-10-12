@@ -100,7 +100,9 @@ Git commands; inherited repository or index redirection cannot change the check
 subject. If completed checking leaves its workspace unavailable, the CLI
 publishes a failed receipt with an inspection diagnostic. An unreadable trunk is
 recorded as unknown, and cannot pass verification. A timed-out check is recorded
-as the distinct `timeout` outcome.
+as the distinct `timeout` outcome. Timeout cleanup drains the whole process
+group. A command whose leader exits while children remain cannot publish a
+passing receipt; those children are stopped before execution protection ends.
 
 `land` is an explicit operator approval action. It requires the matching
 receipt, unchanged check log, contract and predecessor, unchanged sealed
@@ -234,6 +236,18 @@ workspace requires abandonment before another claim. For a Corenius tracker
 ticket, recovery may create the missing workspace when trunk moved only by the
 tracker claim owned by the Attempt. Interrupted checking becomes `check_failed`
 and must run again.
+
+Abandoning a Corenius Attempt releases its exact owned claim through the tracker
+and commits that release before permitting another Attempt. The durable
+`abandoning` state records the before and after ticket hashes; `recover` can
+finish an interrupted release. A changed ticket, another owner's claim, or
+unrelated operator changes cause refusal and remain preserved. Refresh transfers
+the existing claim directly to the fresh Attempt. Destructive abandonment,
+garbage collection and sweep require the check execution lock.
+
+Landings that create bookkeeping commits validate the original repository's
+effective author and committer identity before publishing code. A durable event
+preserves that identity for the private record workspace and recovery.
 
 Landing records `landing_prepared` before publication, `push_intended` before a
 push, `push_completed` after a successful push, and `landing_started` before
