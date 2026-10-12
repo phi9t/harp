@@ -62,6 +62,8 @@ class LandingManager:
                 raise Refused("Exact integration candidate has not passed checking")
             self._preflight(attempt, expected_tip)
             destination = None if no_push else self._push_destination()
+            if destination:
+                destination = self._observe_push_predecessor(destination)
             self.store.change(aid, "landing_prepared")
             failpoint("before_git_land")
             if destination:
@@ -185,7 +187,17 @@ class LandingManager:
             "integration": attempt["integration"],
             "remote": destination["remote"],
             "ref": destination["ref"],
+            "remote_before": destination.get("remote_before"),
+            "remote_before_known": destination.get("remote_before_known", False),
+            "remote_before_error": destination.get("remote_before_error"),
         }
+
+    def _observe_push_predecessor(self, destination: dict) -> dict:
+        try:
+            before = self._remote_tip(destination)
+        except Refused as exc:
+            return {**destination, "remote_before_known": False, "remote_before_error": str(exc)}
+        return {**destination, "remote_before": before, "remote_before_known": True}
 
     def _push_checked_tip(self, aid: str, attempt: dict, destination: dict) -> None:
         result = self.workspace.git_result(
@@ -198,13 +210,45 @@ class LandingManager:
             return
         output = self._push_output(result)
         cause = self._push_failure_cause(output)
+        remote_after = None
+        inspection_error = None
+        try:
+            remote_after = self._remote_tip(destination)
+        except Refused as exc:
+            inspection_error = str(exc)
+        rejected_unchanged = (
+            self._push_ref_rejected(result.stdout, destination["ref"])
+            and destination.get("remote_before_known") is True
+            and destination.get("remote_before") is not None
+            and inspection_error is None
+            and remote_after == destination["remote_before"]
+        )
         self.store.change_with_event(
             aid,
-            "verified",
+            "verified" if rejected_unchanged else "push_intended",
             event_kind="push_failed",
-            event_details={**self._push_details(attempt, destination), "cause": cause, "output": output},
+            event_details={
+                **self._push_details(attempt, destination), "cause": cause, "output": output,
+                "remote_after": remote_after, "remote_inspection_error": inspection_error,
+                "rejected_unchanged": rejected_unchanged,
+            },
         )
-        raise Refused(f"Push failed ({cause}): {output}")
+        recovery = "" if rejected_unchanged else (
+            f"; outcome uncertain, inspect {aid} then recover {aid} --confirm-stopped"
+        )
+        raise Refused(f"Push failed ({cause}){recovery}: {output}")
+
+    @staticmethod
+    def _push_ref_rejected(stdout: str, ref: str) -> bool:
+        statuses = []
+        for line in stdout.splitlines():
+            fields = line.split("\t")
+            if len(fields) == 3 and fields[1].rsplit(":", 1)[-1] == ref:
+                statuses.append(fields)
+        if len(statuses) != 1:
+            return False
+        flag, _, summary = statuses[0]
+        return flag == "!" and summary.startswith(("[rejected]", "[remote rejected]"))
 
     @staticmethod
     def _push_output(result) -> str:
@@ -332,13 +376,15 @@ class LandingManager:
         if self._integration_is_landed(attempt, target):
             return self._finish_after_local_landing(attempt)
         if remote_tip == attempt["integration"] and target == attempt["base"]:
+            self._preflight(attempt, None)
             self.store.change(aid, "landing_started")
             self._fast_forward_primary(aid, attempt)
             return self._finish_after_local_landing(attempt)
-        if attempt["state"] == "push_intended" and target == attempt["base"] and remote_tip in (None, attempt["base"]):
-            self.store.change(aid, "verified")
-            return None
-        raise Refused("Ambiguous pushed landing; preserve state and inspect manually")
+        raise Refused(
+            f"Ambiguous pushed landing; preserve state and inspect {aid}: "
+            f"recorded remote {destination['remote']} {destination['ref']} is {remote_tip or 'absent'}; "
+            "current remote state does not prove the push never executed; no automatic retry"
+        )
 
     def _recover_landed_records(self, attempt: dict) -> dict | None:
         target = self.workspace.trunk()
@@ -419,8 +465,10 @@ class LandingManager:
     def gc(self, aid: str, confirmed: bool) -> dict:
         if not confirmed:
             raise Refused("Requires --confirm-stopped; no process supervision is provided")
+        require_worker_stopped(self.store.row(aid))
         with self.store.lock("lane"), self.store.lock("meta"):
             attempt = self.store.row(aid)
+            require_worker_stopped(attempt)
             if attempt["state"] not in ("landed", "abandoned"):
                 raise Refused("Only terminal attempts may be cleaned")
             removed = []
@@ -436,14 +484,23 @@ class LandingManager:
                 expected_head = attempt["integration"] if name == "check_path" else attempt["candidate"]
                 self.workspace.validate_attempt(attempt, name, expected_head)
                 self.workspace.clean(path, include_ignored=True)
-                paths.append(path)
+                lock_reason = self._worktree_lock_reason(path)
+                expected_lock = f"collab:{aid}" if name == "path" else f"collab-check:{aid}"
+                if lock_reason is not None and lock_reason != expected_lock:
+                    raise Refused(f"Workspace has an external lock: {path}: {lock_reason}")
+                paths.append((path, lock_reason))
             # Validate every workspace before unlocking or removing any of them.
-            for path in paths:
-                self.workspace.git("worktree", "unlock", str(path))
+            for path, lock_reason in paths:
+                require_worker_stopped(self.store.row(aid))
+                if self._worktree_lock_reason(path) != lock_reason:
+                    raise Refused(f"Workspace lock changed during cleanup: {path}")
+                if lock_reason is not None:
+                    self.workspace.git("worktree", "unlock", str(path))
                 try:
                     self.workspace.git("worktree", "remove", str(path))
                 except Refused:
-                    self.workspace.git("worktree", "lock", "--reason", f"collab:{aid}", str(path), check=False)
+                    if lock_reason is not None:
+                        self.workspace.git("worktree", "lock", "--reason", lock_reason, str(path), check=False)
                     raise
                 removed.append(str(path))
             # Keep branches and sealed refs: no hidden destructive pruning.
@@ -453,3 +510,15 @@ class LandingManager:
             "removed": removed,
             "retained": "branches, candidate/check refs, logs, database history",
         }
+
+    def _worktree_lock_reason(self, path: Path) -> str | None:
+        records = self.workspace.git("worktree", "list", "--porcelain", "-z").split("\0\0")
+        for record in records:
+            entries = record.split("\0")
+            if entries[0] != "worktree " + str(path):
+                continue
+            for entry in entries:
+                if entry == "locked" or entry.startswith("locked "):
+                    return entry.partition(" ")[2]
+            return None
+        raise Refused(f"Workspace registration missing during cleanup: {path}")
