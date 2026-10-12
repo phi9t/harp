@@ -1,10 +1,10 @@
 # 01 modular-core: Modular collab, same behavior
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: collab-ops-01
 Blocked by: 
-Claimed: 2026-10-11T23:45:55Z expires 2026-10-13T23:45:55Z
+Claimed:
 
 Triage: ready-for-agent
 
@@ -17,12 +17,13 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 50, 54). Use the project glo
 - `tools/collab/`
 
 ## Acceptance
-- [ ] The 48 existing collab tests pass unchanged.
-- [ ] Only the state store module touches SQLite.
-- [ ] No line exceeds 120 columns and the CLI entry has no packed statements.
-- [ ] The repository gate passes.
+- [x] The 48 existing collab tests pass unchanged.
+- [x] Only the state store module touches SQLite.
+- [x] No line exceeds 120 columns and the CLI entry has no packed statements.
+- [x] The repository gate passes.
 
 ## Comments
 - 2026-10-11T23:37:11Z collab-ops-01: claimed until 2026-10-13T23:37:11Z
 - 2026-10-11T23:59:00Z claude: released; first launch had no declared paths
 - 2026-10-11T23:45:55Z collab-ops-01: claimed until 2026-10-13T23:45:55Z
+- 2026-10-12T00:38:58Z collab-ops-01: resolved
