@@ -18,10 +18,10 @@ Spec: docs/efforts/collab-ops/SPEC.md (user stories 53). Use the project glossar
 - `tools/agents/test_check.py`
 
 ## Acceptance
-- [ ] A change outside the toolset skips the suite and says so.
-- [ ] A change inside the toolset runs it.
-- [ ] An undeterminable change set runs it.
-- [ ] Shellcheck is clean for the check script.
+- [x] A change outside the toolset skips the suite and says so.
+- [x] A change inside the toolset runs it.
+- [x] An undeterminable change set runs it.
+- [x] Shellcheck is clean for the check script.
 
 ## Comments
 - 2026-10-11T23:37:11Z collab-ops-02: claimed until 2026-10-13T23:37:11Z
