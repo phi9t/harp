@@ -89,8 +89,47 @@ class CollabTests(unittest.TestCase):
         path.write_bytes(raw.replace(b"\n", b"\r\n") if crlf else raw)
         return path
 
+    def effort_ticket(
+        self,
+        tid="01",
+        slug="do-work",
+        status="open",
+        owner="",
+        blocked_by="",
+        claimed="",
+        effort="sample-effort",
+    ):
+        directory = self.repo / "docs" / "efforts" / effort / "tickets"
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory.parent / "EFFORT.md").write_text(
+            f"# {effort}\n\n"
+            "Base: main\n"
+            "Integration branch: main\n"
+        )
+        path = directory / f"{tid}-{slug}.md"
+        path.write_text(
+            f"# {tid} {slug}: Do work\n\n"
+            "Type: feature\n"
+            f"Status: {status}\n"
+            f"Owner: {owner}\n"
+            f"Blocked by: {blocked_by}\n"
+            f"Claimed: {claimed}\n\n"
+            "Triage: ready-for-agent\n\n"
+            "## What to build\n"
+            "Do the thing.\n\n"
+            "## Acceptance\n"
+            "- [ ] observable result\n\n"
+            "## Comments\n"
+        )
+        return path
+
     def claim(self, tid="T-one"):
-        return self.cli("claim", tid, "--owner", "test-worker")
+        return self.cli("open-attempt", tid, "--owner", "test-worker")
+
+    def open_corenius_attempt(self, tid="01", owner="agent-a", effort="sample-effort", failpoint=None, ok=True):
+        env = dict(self.env, CORENIUS_TRACKER_NOW="2026-10-12T00:00:00Z")
+        return self.cli("open-attempt", tid, "--effort", effort, "--owner", owner,
+                        failpoint=failpoint, env=env, ok=ok)
 
     def contribute(self, attempt, content="contribution\n"):
         path = Path(attempt["path"])
@@ -234,12 +273,12 @@ class CollabTests(unittest.TestCase):
         self.init()
         self.cli("backup", SYSTEM_TMP + "/collab-must-not-create.sqlite3", ok=False)
 
-    def test_claim_uses_codex_branch_and_child_inherits_safe_temp(self):
+    def test_open_attempt_uses_agent_topic_branch_and_child_inherits_safe_temp(self):
         code = ("import os,tempfile; from pathlib import Path; p=Path(tempfile.gettempdir()); "
                 "assert p==Path(os.environ['TMPDIR']); "
                 f"assert not p.is_relative_to(Path({SYSTEM_TMP!r})); print(p)")
         a = self.prepared([sys.executable, "-c", code])
-        self.assertTrue(a["branch"].startswith("codex/"))
+        self.assertTrue(a["branch"].startswith("test-worker/"))
         self.assertEqual(self.cli("check", a["id"])["state"], "verified")
 
     def substitute_workspace(self, attempt):
@@ -285,7 +324,7 @@ class CollabTests(unittest.TestCase):
         self.init()
         self.ticket()
         self.commit("ticket")
-        self.cli("claim", "T-one", "--owner", "worker", failpoint="after_worktree_add", ok=False)
+        self.cli("open-attempt", "T-one", "--owner", "worker", failpoint="after_worktree_add", ok=False)
         a = self.cli("status")["attempts"][0]
         self.git("commit", "--allow-empty", "-m", "unexpected moved HEAD", cwd=Path(a["path"]))
         result = self.cli("recover", a["id"], "--confirm-stopped", ok=False)
@@ -297,7 +336,7 @@ class CollabTests(unittest.TestCase):
         self.ticket()
         self.commit("ticket")
         processes = [subprocess.Popen([sys.executable, str(CLI), "--repo", str(self.repo),
-                                      "claim", "T-one", "--owner", owner], env=self.env,
+                                      "open-attempt", "T-one", "--owner", owner], env=self.env,
                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                      for owner in ("worker-a", "worker-b")]
         results = [(process.wait(), *process.communicate()) for process in processes]
@@ -312,14 +351,104 @@ class CollabTests(unittest.TestCase):
         authored = self.cli("new", "T-one", "An authored ticket")
         self.assertTrue(Path(authored["path"]).is_file())
         self.assertEqual(self.cli("ready"), [])
-        self.cli("claim", "T-one", "--owner", "worker", ok=False)
+        self.cli("open-attempt", "T-one", "--owner", "worker", ok=False)
         self.commit("authored ticket")
         self.assertEqual([ticket["id"] for ticket in self.cli("ready")], ["T-one"])
         a = self.claim()
         self.assertEqual(self.cli("show", a["id"], repo=Path(a["path"]))["id"], a["id"])
         self.assertEqual(self.cli("ready", repo=Path(a["path"])), [])
-        self.cli("claim", "T-one", "--owner", "second", repo=Path(a["path"]), ok=False)
+        self.cli("open-attempt", "T-one", "--owner", "second", repo=Path(a["path"]), ok=False)
         self.cli("init", "--trunk", "main", "--check-json", '["true"]', ok=False)
+
+    def test_old_claim_command_is_renamed_to_open_attempt(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        result = self.cli("claim", "T-one", "--owner", "worker", ok=False)
+        self.assertIn("invalid choice", result.stderr)
+        self.assertEqual(self.cli("status")["attempts"], [])
+
+    def test_open_attempt_claims_corenius_ticket_and_creates_worktree(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("tracker ticket")
+        a = self.open_corenius_attempt()
+        self.assertEqual(a["ticket"], "sample-effort:01")
+        self.assertEqual(a["owner"], "agent-a")
+        self.assertEqual(a["state"], "working")
+        self.assertTrue(a["branch"].startswith("agent-a/"))
+        self.assertEqual(self.git("branch", "--show-current", cwd=Path(a["path"])), a["branch"])
+        self.assertEqual(self.git("rev-parse", "HEAD", cwd=Path(a["path"])), a["base"])
+        claimed = ticket.read_text()
+        self.assertIn("Status: claimed", claimed)
+        self.assertIn("Owner: agent-a", claimed)
+        self.assertIn("Claimed: 2026-10-12T00:00:00Z expires 2026-10-13T00:00:00Z", claimed)
+        self.assertIn("agent-a: claimed until 2026-10-13T00:00:00Z", claimed)
+        self.assertEqual(self.git("status", "--porcelain=v1"), "")
+        self.assertEqual(self.git("rev-parse", "HEAD"), a["base"])
+        self.assertEqual(a["ticket_hash"], hashlib.sha256(ticket.read_bytes()).hexdigest())
+
+    def test_open_attempt_refuses_unready_corenius_tracker_tickets(self):
+        self.init()
+        self.effort_ticket("01", "blocker")
+        self.effort_ticket("02", "blocked", blocked_by="01")
+        self.effort_ticket(
+            "03",
+            "claimed",
+            status="claimed",
+            owner="other",
+            claimed="2026-10-12T00:00:00Z expires 2026-10-13T00:00:00Z",
+        )
+        self.effort_ticket("04", "resolved", status="resolved", owner="done")
+        self.commit("tracker tickets")
+        for tid, reason in (("02", "blocked"), ("03", "claimed"), ("04", "resolved")):
+            with self.subTest(ticket=tid):
+                result = self.open_corenius_attempt(tid, owner="agent-a", ok=False)
+                self.assertIn(reason, result.stderr)
+                self.assertEqual(self.cli("status")["attempts"], [])
+
+    def test_open_attempt_recover_completes_corenius_allocation_after_tracker_claim(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("tracker ticket")
+        result = self.open_corenius_attempt(failpoint="after_tracker_claim", ok=False)
+        self.assertEqual(result.returncode, 86)
+        a = self.cli("status")["attempts"][0]
+        self.assertEqual(a["state"], "allocating")
+        self.assertIn("Status: claimed", ticket.read_text())
+        self.assertFalse(Path(a["path"]).exists())
+        recovered = self.cli("recover", a["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "working")
+        self.assertTrue(Path(recovered["path"]).is_dir())
+        self.assertEqual(self.git("rev-parse", "HEAD", cwd=Path(recovered["path"])), recovered["base"])
+
+    def test_open_attempt_recover_claims_corenius_ticket_after_state_record_crash(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("tracker ticket")
+        result = self.open_corenius_attempt(failpoint="after_claim_record", ok=False)
+        self.assertEqual(result.returncode, 86)
+        a = self.cli("status")["attempts"][0]
+        self.assertEqual(a["state"], "allocating")
+        self.assertIn("Status: open", ticket.read_text())
+        recovered = self.cli("recover", a["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "working")
+        self.assertIn("Status: claimed", ticket.read_text())
+        self.assertIn("Owner: agent-a", ticket.read_text())
+        self.assertEqual(self.git("rev-parse", "HEAD", cwd=Path(recovered["path"])), recovered["base"])
+
+    def test_open_attempt_recover_adopts_corenius_worktree_after_creation_crash(self):
+        self.init()
+        self.effort_ticket()
+        self.commit("tracker ticket")
+        result = self.open_corenius_attempt(failpoint="after_worktree_add", ok=False)
+        self.assertEqual(result.returncode, 86)
+        a = self.cli("status")["attempts"][0]
+        self.assertEqual(a["state"], "allocating")
+        before = self.git("worktree", "list", "--porcelain")
+        recovered = self.cli("recover", a["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "working")
+        self.assertEqual(self.git("worktree", "list", "--porcelain"), before)
 
     def test_dependencies_missing_cycles_closed_and_regular_ticket_modes(self):
         self.init()
@@ -334,7 +463,7 @@ class CollabTests(unittest.TestCase):
         self.assertEqual([t["id"] for t in self.cli("ready")], ["T-ready"])
         for tid in ("T-dep", "T-blocked", "T-missing", "T-cycle-a", "T-executable", "T-rea", "../T-ready"):
             with self.subTest(ticket=tid):
-                self.cli("claim", tid, "--owner", "worker", ok=False)
+                self.cli("open-attempt", tid, "--owner", "worker", ok=False)
         a = self.claim("T-ready")
         self.assertEqual(a["state"], "working")
 
@@ -358,7 +487,7 @@ class CollabTests(unittest.TestCase):
         self.git("worktree", "add", str(operator), "main")
         self.cli("init", "--trunk", "main", "--check-json", '["true"]',
                  "--workspace-root", str(self.root / "workspaces"), repo=operator)
-        a = self.cli("claim", "T-one", "--owner", "worker", repo=operator)
+        a = self.cli("open-attempt", "T-one", "--owner", "worker", repo=operator)
         self.contribute(a)
         self.cli("submit", a["id"], repo=Path(a["path"]))
         self.cli("check", a["id"], repo=Path(a["path"]))
@@ -634,25 +763,25 @@ class CollabTests(unittest.TestCase):
         self.init()
         self.ticket()
         self.commit("ticket")
-        result = self.cli("claim", "T-one", "--owner", "worker", failpoint="after_claim_record", ok=False)
+        result = self.cli("open-attempt", "T-one", "--owner", "worker", failpoint="after_claim_record", ok=False)
         self.assertEqual(result.returncode, 86)
         a = self.cli("status")["attempts"][0]
         self.assertEqual(a["state"], "allocating")
         self.cli("recover", a["id"], "--confirm-stopped", ok=False)
-        self.cli("claim", "T-one", "--owner", "second", ok=False)
+        self.cli("open-attempt", "T-one", "--owner", "second", ok=False)
         self.cli("abandon", a["id"], "--confirm-stopped")
         (self.root / "workspaces").write_text("operator owns this file\n")
-        self.cli("claim", "T-one", "--owner", "worker", ok=False)
+        self.cli("open-attempt", "T-one", "--owner", "worker", ok=False)
         second = self.cli("status")["attempts"][-1]
         self.assertEqual(second["state"], "allocating")
         self.assertEqual((self.root / "workspaces").read_text(), "operator owns this file\n")
-        self.cli("claim", "T-one", "--owner", "third", ok=False)
+        self.cli("open-attempt", "T-one", "--owner", "third", ok=False)
 
     def test_existing_allocation_is_adopted_without_duplicate_worktree(self):
         self.init()
         self.ticket()
         self.commit("ticket")
-        result = self.cli("claim", "T-one", "--owner", "worker", failpoint="after_worktree_add", ok=False)
+        result = self.cli("open-attempt", "T-one", "--owner", "worker", failpoint="after_worktree_add", ok=False)
         self.assertEqual(result.returncode, 86)
         a = self.cli("status")["attempts"][0]
         before = self.git("worktree", "list", "--porcelain")

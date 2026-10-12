@@ -52,13 +52,15 @@ def _run_new(collab: Collab, args: argparse.Namespace) -> object:
     return collab.new(args.ticket, args.title, args.deps)
 
 
-def _add_claim(parser: argparse.ArgumentParser) -> None:
+def _add_open_attempt(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("ticket")
     parser.add_argument("--owner", required=True)
+    parser.add_argument("--effort")
+    parser.add_argument("--ttl-hours", type=float, default=24.0)
 
 
-def _run_claim(collab: Collab, args: argparse.Namespace) -> object:
-    return collab.claim(args.ticket, args.owner)
+def _run_open_attempt(collab: Collab, args: argparse.Namespace) -> object:
+    return collab.open_attempt(args.ticket, args.owner, args.effort, args.ttl_hours)
 
 
 def _add_attempt(parser: argparse.ArgumentParser) -> None:
@@ -123,7 +125,7 @@ def _run_backup(collab: Collab, args: argparse.Namespace) -> object:
 COMMANDS = {
     "init": Command(_add_init, _run_init),
     "new": Command(_add_new, _run_new),
-    "claim": Command(_add_claim, _run_claim),
+    "open-attempt": Command(_add_open_attempt, _run_open_attempt),
     "show": Command(_add_attempt, _run_show),
     "submit": Command(_add_attempt, _run_submit),
     "check": Command(_add_attempt, _run_check),

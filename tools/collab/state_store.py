@@ -165,6 +165,14 @@ class StateStore:
             )
             self.event(con, aid, state, **fields)
 
+    def update_claim_basis(self, aid: str, base: str, ticket_hash: str) -> None:
+        with self.tx() as con:
+            con.execute(
+                "UPDATE attempts SET base=?,ticket_hash=?,updated=? WHERE id=?",
+                (base, ticket_hash, now(), aid),
+            )
+            self.event(con, aid, "tracker_claimed", base=base, ticket_hash=ticket_hash)
+
     def set_state_with_event(self, con, aid: str, state: str) -> None:
         con.execute("UPDATE attempts SET state=?,updated=? WHERE id=?", (state, now(), aid))
         self.event(con, aid, state)

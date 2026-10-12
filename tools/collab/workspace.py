@@ -85,6 +85,22 @@ class RepositoryWorkspace:
         config = self.require_config()
         return self.git("rev-parse", "--verify", config["trunk_ref"] + "^{commit}").strip()
 
+    def create_attempt_worktree(self, attempt: dict) -> None:
+        path = Path(attempt["path"])
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self.git("check-ref-format", "refs/heads/" + attempt["branch"])
+        self.git(
+            "worktree",
+            "add",
+            "--lock",
+            "--reason",
+            f"collab:{attempt['id']}",
+            "-b",
+            attempt["branch"],
+            str(path),
+            attempt["base"],
+        )
+
     def clean(self, path: Path, include_ignored: bool = False) -> None:
         if self.hidden_index(path):
             raise Refused(f"Workspace has hidden index entries: {path}; preserve files and classify flags manually")

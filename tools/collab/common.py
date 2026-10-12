@@ -12,6 +12,9 @@ class Refused(Exception):
     pass
 
 
+BRANCH_COMPONENT = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
 def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -19,6 +22,12 @@ def now() -> str:
 def valid_id(value: str) -> str:
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,99}", value):
         raise Refused(f"Invalid identifier: {value!r}")
+    return value
+
+
+def valid_branch_component(name: str, value: str) -> str:
+    if not BRANCH_COMPONENT.fullmatch(value):
+        raise Refused(f"Invalid {name}: {value!r}")
     return value
 
 

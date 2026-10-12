@@ -5,7 +5,7 @@ import uuid
 from pathlib import Path
 
 from check_runner import CheckRunner
-from common import Refused, failpoint, output_path, valid_id
+from common import Refused, failpoint, output_path, valid_branch_component, valid_id
 from landing import LandingManager
 from policy import (
     protect_candidate_paths,
@@ -14,7 +14,7 @@ from policy import (
     validate_protected_paths,
 )
 from state_store import StateStore
-from ticket_source import TicketSource
+from ticket_source import TicketSource, corenius_ticket_id
 from workspace import RepositoryWorkspace, run_git
 
 
@@ -106,10 +106,22 @@ class Collab:
             "next": "Edit and explicitly git-add/commit this ticket on trunk before claiming",
         }
 
-    def claim(self, tid: str, owner: str) -> dict:
+    def attempt_branch(self, owner: str, ticket_label: str, aid: str) -> str:
+        agent = valid_branch_component("owner", owner)
+        topic = valid_branch_component("topic", f"collab-{ticket_label}-{aid}")
+        return f"{agent}/{topic}"
+
+    def open_attempt(self, tid: str, owner: str, effort: str | None = None, ttl_hours: float = 24.0) -> dict:
         self.require_config()
         if not owner.strip():
             raise Refused("Owner required")
+        if ttl_hours <= 0:
+            raise Refused("--ttl-hours must be positive")
+        if effort:
+            return self.open_corenius_attempt(tid, owner.strip(), effort, ttl_hours)
+        return self.open_standalone_attempt(tid, owner.strip())
+
+    def open_standalone_attempt(self, tid: str, owner: str) -> dict:
         with self.store.lock("meta"):
             base = self.workspace.trunk()
             meta, _ = self.tickets.ticket(tid, base)
@@ -117,24 +129,35 @@ class Collab:
                 raise Refused("Ticket is closed")
             self.tickets.deps_ok(tid, base)
             aid = "a-" + uuid.uuid4().hex[:16]
-            branch = f"codex/collab/{tid}/{aid}"
+            branch = self.attempt_branch(owner, tid, aid)
             path = Path(self.require_config()["workspace_root"]) / aid
             with self.store.tx() as con:
                 self.store.insert_attempt(con, aid, tid, owner, base, meta["sha256"], path, branch)
                 self.store.event(con, aid, "allocating", ticket=tid, owner=owner, base=base)
             failpoint("after_claim_record")
-            path.parent.mkdir(parents=True, exist_ok=True)
-            self.workspace.git(
-                "worktree",
-                "add",
-                "--lock",
-                "--reason",
-                f"collab:{aid}",
-                "-b",
-                branch,
-                str(path),
-                base,
-            )
+            self.workspace.create_attempt_worktree(self.store.row(aid))
+            failpoint("after_worktree_add")
+            self.store.change(aid, "working")
+        return self.store.row(aid)
+
+    def open_corenius_attempt(self, tid: str, owner: str, effort: str, ttl_hours: float) -> dict:
+        source_id = corenius_ticket_id(effort, tid)
+        with self.store.lock("meta"):
+            self.workspace.primary()
+            self.tickets.require_corenius_ready(effort, tid)
+            base = self.workspace.trunk()
+            meta, _ = self.tickets.ticket(source_id, base)
+            aid = "a-" + uuid.uuid4().hex[:16]
+            branch = self.attempt_branch(owner, f"{effort}-{tid}", aid)
+            path = Path(self.require_config()["workspace_root"]) / aid
+            with self.store.tx() as con:
+                self.store.insert_attempt(con, aid, source_id, owner, base, meta["sha256"], path, branch)
+                self.store.event(con, aid, "allocating", ticket=source_id, owner=owner, base=base)
+            failpoint("after_claim_record")
+            claimed, _ = self.tickets.claim_corenius(effort, tid, owner, ttl_hours)
+            failpoint("after_tracker_claim")
+            self.store.update_claim_basis(aid, self.workspace.trunk(), claimed["sha256"])
+            self.workspace.create_attempt_worktree(self.store.row(aid))
             failpoint("after_worktree_add")
             self.store.change(aid, "working")
         return self.store.row(aid)

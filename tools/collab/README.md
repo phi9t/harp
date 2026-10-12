@@ -40,7 +40,7 @@ collab init --trunk main --check-json '["python3", "-m", "unittest"]' \
 collab new T-example 'A narrow outcome'
 # Edit, review, and explicitly commit the ticket on trunk.
 collab ready
-collab claim T-example --owner worker-a
+collab open-attempt T-example --owner worker-a
 ```
 
 Use the actual trunk and verification command. `--check-json` must be a nonempty
@@ -50,9 +50,9 @@ checkout. Initialization refuses existing or partial state. Repositories can
 choose their protected path list with `--protected-paths-json`; omit it for the
 Corenius defaults.
 
-The claim returns an attempt ID, a `codex/collab/` branch, and a locked worktree.
-Start the chosen agent in that worktree. Commit a nonempty, linear contribution
-on its assigned branch, then run:
+`open-attempt` returns an attempt ID, an `owner/topic` branch, and a locked
+worktree. Start the chosen agent in that worktree. Commit a nonempty, linear
+contribution on its assigned branch, then run:
 
 ```sh
 collab submit a-ACTUAL-ID
@@ -130,6 +130,20 @@ Only standalone `---` lines delimit the header; triple hyphens inside IDs,
 scalar values, or body text remain ordinary content. `new` rejects duplicate
 and self dependencies before writing an operator file.
 
+Corenius effort tickets use the tracker format under
+`docs/efforts/<effort>/tickets/NN-slug.md`:
+
+```sh
+collab open-attempt 03 --effort collab-ops --owner worker-a
+```
+
+For Corenius efforts, `open-attempt` preflights readiness through the tracker,
+then calls `tools/agents/tracker.py claim` to mutate the ticket. The tracker is
+the only writer of the ticket file. Collab commits that tracker claim on trunk,
+records an Attempt in SQLite, and creates the locked worktree from the committed
+claim. Blocked, already claimed, resolved, untriaged or uncommitted tracker
+tickets are refused before any Attempt worktree is opened.
+
 ## Trunk movement
 
 An attempt cannot change its admitted base. Preserve its workspace and branch.
@@ -137,7 +151,7 @@ Stop its processes, then abandon it and claim a new attempt at current trunk:
 
 ```sh
 collab abandon a-OLD-ID --confirm-stopped
-collab claim T-example --owner worker-a
+collab open-attempt T-example --owner worker-a
 # In the new assigned worktree, cherry-pick only the old contribution commits.
 # Resolve conflicts, run focused tests, commit, submit, and check again.
 ```
@@ -158,9 +172,11 @@ collab backup /absolute/path/to/new-snapshot.sqlite3
 ```
 
 Failed allocation retains its claim. Recovery can adopt only the registered
-workspace on the assigned branch at its original base. A missing workspace
-requires abandonment before another claim. Interrupted checking becomes
-`check_failed` and must run again.
+workspace on the assigned branch at its original base. A standalone missing
+workspace requires abandonment before another claim. For a Corenius tracker
+ticket, recovery may create the missing workspace when trunk moved only by the
+tracker claim owned by the Attempt. Interrupted checking becomes `check_failed`
+and must run again.
 
 Landing records `landing_prepared` before it can start Git, then
 `landing_started`. A prepared operation at unchanged base can recover to

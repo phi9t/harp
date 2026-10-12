@@ -127,10 +127,39 @@ class LandingManager:
     def _recover_allocation(self, attempt: dict, aid: str) -> None:
         path = Path(attempt["path"])
         if not path.exists():
-            # No deletion or new execution. Claim stays reserved pending operator choice.
-            raise Refused("Workspace not present; explicitly abandon before a new claim")
+            if ":" not in attempt["ticket"]:
+                # No deletion or new execution. Claim stays reserved pending operator choice.
+                raise Refused("Workspace not present; explicitly abandon before a new claim")
+            effort, ticket_id = attempt["ticket"].split(":", 1)
+            self.workspace.primary()
+            current = self.workspace.trunk()
+            if current == attempt["base"]:
+                meta, _ = self.tickets.ticket(attempt["ticket"], current)
+                if meta["status"] != "open":
+                    raise Refused("Tracker claim no longer matches this Attempt")
+                claimed, _ = self.tickets.claim_corenius(effort, ticket_id, attempt["owner"], 24.0)
+                self.store.update_claim_basis(aid, self.workspace.trunk(), claimed["sha256"])
+                attempt = self.store.row(aid)
+            else:
+                self._recover_missing_corenius_allocation_claim(attempt, current)
+                attempt = self.store.row(aid)
+            if self.workspace.trunk() != attempt["base"]:
+                raise Refused("Trunk moved after tracker claim; explicitly abandon before a new claim")
+            self.tickets.same_contract(attempt, attempt["base"])
+            self.workspace.create_attempt_worktree(attempt)
         self.workspace.validate_attempt(attempt, expected_head=attempt["base"])
         self.store.change(aid, "working")
+
+    def _recover_missing_corenius_allocation_claim(self, attempt: dict, current: str) -> None:
+        effort, ticket_id = attempt["ticket"].split(":", 1)
+        meta, _ = self.tickets.ticket(attempt["ticket"], current)
+        changed = self.workspace.git("diff", "--name-only", attempt["base"], current).splitlines()
+        if changed != [meta["path"]]:
+            raise Refused("Trunk moved after tracker claim; explicitly abandon before a new claim")
+        if meta["status"] != "claimed" or meta.get("owner") != attempt["owner"]:
+            raise Refused("Tracker claim no longer matches this Attempt")
+        self.tickets.corenius_blockers_ok(effort, ticket_id, current)
+        self.store.update_claim_basis(attempt["id"], current, meta["sha256"])
 
     def abandon(self, aid: str, confirmed: bool) -> dict:
         if not confirmed:
