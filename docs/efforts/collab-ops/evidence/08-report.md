@@ -38,7 +38,7 @@
 
 ## For later tickets
 
-- None.
+none
 
 ## Not checked
 
