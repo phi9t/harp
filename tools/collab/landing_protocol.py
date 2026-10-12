@@ -161,7 +161,11 @@ def preflight(repo: Path, target_ref: str, expected_base: str, tip: str, checkou
         raise PreflightRefused("stale", "Target moved or the Candidate cannot fast-forward from the target")
     overlap = collision_paths(repo, checkout, expected_base, tip)
     if overlap:
-        raise PreflightRefused("overlap", "target checkout has local files overlapping the Candidate", overlap)
+        raise PreflightRefused(
+            "overlap",
+            "target checkout has local files overlapping the Candidate that would be overwritten",
+            overlap,
+        )
     if checkout is None:
         return
     expected_common = run_git(repo, "rev-parse", "--path-format=absolute", "--git-common-dir").strip()
