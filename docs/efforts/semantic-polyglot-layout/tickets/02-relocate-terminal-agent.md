@@ -20,7 +20,7 @@ Triage: ready-for-agent
 - [ ] Root Cargo defaults select the terminal agent and preserve documented run and test behavior; temporary workspace structure permits independent controller packages until consolidation.
 - [ ] Default evaluation data remains available; documented root-relative dataset interpretation and absolute dataset arguments retain their pre-migration behavior.
 - [ ] Component-local commands and output locations are documented accurately; active navigation and affected gates are updated within this slice.
-- [ ] Existing terminal-agent tests and deterministic CLI/asset checks pass without requiring live provider credentials or real-model evaluation.
+- [ ] Existing terminal_agent tests and deterministic CLI/asset checks pass without requiring live provider credentials or real-model evaluation.
 - [ ] Repository-local scratch outputs remain at their intended destinations; historical evaluation evidence is preserved.
 
 ## Exclusions

@@ -46,7 +46,7 @@ Read at the same Corenius commit: the terminal agent is the root Cargo package; 
 
 ## Third-round decisions — 2026-10-05
 
-The user accepted terminal-agent/, sqlite-controller/ and team-control-plane/ as semantic product boundaries, retaining idiomatic Rust internals. Controller-specific tooling follows its owner; engineering worktree, tracker, evidence and landing tools stay under tools/agents. Existing SQLite client integration is the reference proof. Aim for one root Cargo workspace with the terminal agent as default member, subject to checking dependency/toolchain compatibility. These are design decisions, not authorization to implement source moves.
+The user accepted snake_case directory names for semantic product boundaries: terminal_agent/ for the terminal agent, controller/ for the active SQLite-backed controller, and experiments/team_control_plane/ for the parked PostgreSQL/Temporal implementation. Controller-specific tooling follows its owner; engineering worktree, tracker, evidence and landing tools stay under tools/agents. Existing SQLite client integration is the reference proof. Aim for one root Cargo workspace with the terminal agent as default member, subject to checking dependency/toolchain compatibility. These are design decisions, not authorization to implement source moves.
 
 ## Fourth-round decisions — 2026-10-05
 
@@ -63,7 +63,7 @@ Defer Bazel adoption; first implement semantic layout and evaluate Cargo consoli
 ## Agreed design for confirmation
 
 - Scope: current Corenius only; no sibling policy edits or rollout.
-- Active product directories: terminal-agent/ and controller/, retaining idiomatic package internals and colocated cross-language support. The parked PostgreSQL/Temporal implementation belongs under experiments/team-control-plane/.
+- Active product directories: terminal_agent/ and controller/, retaining idiomatic package internals and colocated cross-language support. The parked PostgreSQL/Temporal implementation belongs under experiments/team_control_plane/.
 - Engineering, benchmarks and exploratory code retain tools/agents/, bench/ and experiments/; controller-specific launchers and views move with their actual owner after dependency inspection.
 - Root Cargo workspace and one lockfile are preferred, with terminal agent as default member; concrete compatibility blockers permit independent workspaces temporarily.
 - Preserve root user commands; update current paths, gate registrations and documentation. Forward old script entry points only where established consumers require it.
@@ -83,7 +83,7 @@ The user clarified that only Linux matters. This supersedes the earlier requirem
 
 ## Component naming and status correction — 2026-10-05
 
-The user approved controller/ for the active SQLite-backed implementation and experiments/team-control-plane/ for the retained, parked PostgreSQL/Temporal implementation. This supersedes the earlier three-product directory proposal. Controller names its responsibility: durable state, permissions, work admission and execution reconciliation; SQLite is its storage implementation. Coordinator was considered but understates these authority responsibilities.
+The user approved controller/ for the active SQLite-backed implementation and experiments/team_control_plane/ for the retained, parked PostgreSQL/Temporal implementation. This supersedes the earlier three-product directory proposal. Controller names its responsibility: durable state, permissions, work admission and execution reconciliation; SQLite is its storage implementation. Coordinator was considered but understates these authority responsibilities.
 
 Source evidence at the recorded commit: docs/efforts/team-control-plane/EFFORT.md explicitly marks the richer roadmap parked, preserved and unfinished in favor of the SQLite baseline. Treating both as equally active products was incorrect. Preserve the older implementation and its qualification caveats; relocation does not revive or complete that effort. Cargo membership/default gates for the parked implementation must remain explicit in specification rather than silently making it a default product build.
 
