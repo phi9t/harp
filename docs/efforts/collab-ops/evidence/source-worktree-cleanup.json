@@ -1,0 +1,126 @@
+{
+  "schema": "corenius.source_worktree_cleanup.v1",
+  "candidate": "795b5714dd752d37d26814730db03ce272619eab",
+  "bundle": {
+    "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/implementation-sources.bundle",
+    "sha256": "45a548fd7392f724d3c6056b9bdec8e9cec25f78ef8770bc2d4d58e3c97bde56"
+  },
+  "sources": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-cleanup",
+      "head": "f62e0b2e0cce4b291d0013c8c55c96259641244b",
+      "ref": "refs/heads/codex/collab-ops-cleanup",
+      "tree": "ea70512a97330dc39c1b3bffaa051e8539917a74",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-cleanup.tar.gz",
+        "sha256": "bf21dd394d10c86088d025dff005eaaa18c44f04bd9676e40269545b5e2e2cc0",
+        "entries": 10254,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-cleanup.json",
+        "manifest_sha256": "3c12a3889a040475548fa3a691a9eaef759b0647b522947ae04d56b80065c976"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-core-repair",
+      "head": "063eae7e814cfa5a49356725633badcb775fcd9f",
+      "ref": "refs/heads/codex/collab-ops-core-repair",
+      "tree": "b76a8c65aee2ff3b3eb71d5ab43a16621bede6bb",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-core-repair.tar.gz",
+        "sha256": "53abe45e8bb6ffea1f50ef731c7afb05ff2162b9c40eb75d7f35a4089c107ac1",
+        "entries": 10288,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-core-repair.json",
+        "manifest_sha256": "4227a17d400e4afcfa72c43dd37aaab092d99a2990d29e2f6da96962d166edaa"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-legacy",
+      "head": "3d8f82ffe62cffdcb337a0b92649405efe51bc41",
+      "ref": "refs/heads/codex/collab-ops-legacy",
+      "tree": "4909bf7008739dc820e0ab962fa0b9a024718514",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-legacy.tar.gz",
+        "sha256": "051a3aaa98c70c15caac3becdfd649879a3b18ad7aca0a273b18a6ed6dd65414",
+        "entries": 10259,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-legacy.json",
+        "manifest_sha256": "43ddfa51dfcc646df96b34c294d4194aede109b4ab5d99d7098414d6908a0f85"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-legacy-repair",
+      "head": "fa0e5217bdece707ff0b6f93c385fc9c94c857f2",
+      "ref": "refs/heads/codex/collab-ops-legacy-repair",
+      "tree": "cf41c08b417875ea3cb2844e6e384b38dce4d44b",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-legacy-repair.tar.gz",
+        "sha256": "013175b69954e71fe744bd880ca3d97dec8f1bc817d2b63b0c31daaee30985f4",
+        "entries": 10288,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-legacy-repair.json",
+        "manifest_sha256": "97a5ba1845a920ffec4cd1e92fe10e654331ebb7b865667737992534f5fce494"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-refresh",
+      "head": "531cfe673bc2b53e26e3e48ecc066ddfdeba41c3",
+      "ref": "refs/heads/codex/collab-ops-refresh",
+      "tree": "c80345f63122bfe717ef12dfc8aa7ae5fd9967b9",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-refresh.tar.gz",
+        "sha256": "e606858c9c2decbd46c0537990e187b22282fd7d4903a401b21ac5efc5f330ad",
+        "entries": 10242,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-refresh.json",
+        "manifest_sha256": "96947458fb3747bdb288f4ae671dd1701b98675b189cff6b2b9b631dd1e779a7"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-execution-repair",
+      "head": "7fa4b6b3d71637c8a18ea0151b8b919f44b358ef",
+      "ref": "refs/heads/codex/collab-ops-execution-repair",
+      "tree": "6104c10b8d086d12e030a9da97a7caa78c920584",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-execution-repair.tar.gz",
+        "sha256": "a0a3597b744d701dd8dfff4588d2e84893609abc83ba994333b823d6578817e0",
+        "entries": 10296,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-execution-repair.json",
+        "manifest_sha256": "41d899e56e3de2b76222e84e48df394a7887b5ef94e226d8fb20804ee6f610fd"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-push-repair",
+      "head": "182c4fb4e8d2e7df6bfd6b94b5baa7c1fe7d9829",
+      "ref": "refs/heads/codex/collab-ops-push-repair",
+      "tree": "9f1e77e4800e48bd06ded2291d430a5c1cef1d96",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-push-repair.tar.gz",
+        "sha256": "db704bd3ee799a0dd1fd26b94d9e27e2341753db3f5a1ba41018ef331a01e385",
+        "entries": 10295,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-push-repair.json",
+        "manifest_sha256": "33cff32be93c6f55b680f8ed64f4060fcfb3f33e0f2ae1a4f08686d4928426b6"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-sweep-repair",
+      "head": "c2b9bd1b2cfe0c2575d2c213d7eee5357dc54408",
+      "ref": "refs/heads/codex/collab-ops-sweep-repair",
+      "tree": "78b67a86fb136aa7f516a46e6250e8de213580c4",
+      "archive": {
+        "path": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-sweep-repair.tar.gz",
+        "sha256": "459bf9106f7cd079e7bc17b513fa3b20308921a75e23b1d9ca7bf5d7a9bf03d5",
+        "entries": 10285,
+        "manifest": "/data02/home/philip.yang/.cache/corenius/tasks/collab-salvage-20261012/final-source-archives/corenius-codex-collab-ops-sweep-repair.json",
+        "manifest_sha256": "76ec509179729d4af702d18b0be4c17f1cd525ec396422dbfa5f2f7c82f7f04d"
+      }
+    }
+  ],
+  "removed": [
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-cleanup",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-core-repair",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-legacy",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-legacy-repair",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-refresh",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-execution-repair",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-push-repair",
+    "/data02/home/philip.yang/workspace/corenius-codex-collab-ops-sweep-repair"
+  ],
+  "policy": "Archive only finished team-owned source worktrees. Keep all branch refs, the completed working tree, and every foreign working tree.",
+  "completed_at": "2026-10-12T03:58:45.532926+00:00"
+}

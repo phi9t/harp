@@ -209,8 +209,10 @@ and clean cherry-picks for an unchanged contract. It preserves the original
 branch, workspace and receipts, excludes commits already on trunk, and stops at
 the first conflict. The diagnostic identifies the new Attempt and its retained
 conflict state; no resolution or rebase happens automatically. An unchanged
-Corenius claim transfers to the fresh Attempt under the same owner. Normal
-Corenius abandonment instead releases the exact owned claim through tracker.py
+Corenius claim transfers to the fresh Attempt under the same owner.
+The old terminal transition and replacement reservation commit atomically;
+an interruption before reservation leaves the old Attempt and claim active.
+Normal Corenius abandonment instead releases the exact owned claim through tracker.py
 and commits that release before allowing a fresh Attempt. Changed ticket bytes
 or another owner require reconciliation before automatic release.
 
@@ -250,6 +252,8 @@ and must run again.
 Landings that create bookkeeping commits validate the original repository's
 effective author and committer identity before publishing code. A durable event
 preserves that identity for the private record workspace and recovery.
+Selected evidence files and their ancestors must be regular paths inside that
+workspace. Candidate-controlled symlinks are refused before publication.
 
 Landing records `landing_prepared` before publication, `push_intended` before a
 push, `push_completed` after a successful push, and `landing_started` before
@@ -266,6 +270,10 @@ landing record. Missing or truncated history never establishes nonexecution.
 An unresolved landing blocks all other final checks and landings; it cannot be
 abandoned. Preserve the state and reconcile deliberately; there is no unsafe
 retry or database-reset command.
+Each landing preparation starts a new operation boundary. Recovery uses only
+that operation's push intent, so a rejected earlier push cannot poison a retry.
+Ctrl-C stops a running check group before its fence is released. Surviving Git
+children retain a publication fence until they stop; recovery waits for them.
 
 `gc` requires a terminal attempt and validates every workspace before removal.
 Recorded live or unknown workers and externally installed locks block removal.
