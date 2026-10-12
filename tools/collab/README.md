@@ -100,7 +100,10 @@ Git commands; inherited repository or index redirection cannot change the check
 subject. If completed checking leaves its workspace unavailable, the CLI
 publishes a failed receipt with an inspection diagnostic. An unreadable trunk is
 recorded as unknown, and cannot pass verification. A timed-out check is recorded
-as the distinct `timeout` outcome.
+as the distinct `timeout` outcome. Check execution remains protected until the
+entire command process group stops. If a leader exits while descendants are
+still running, Collab stops that group and publishes an error receipt, even when
+the leader exited zero. A timed-out group receives TERM, then KILL if necessary.
 
 `land` is an explicit operator approval action. It requires the matching
 receipt, unchanged check log, contract and predecessor, unchanged sealed
@@ -206,9 +209,17 @@ and clean cherry-picks for an unchanged contract. It preserves the original
 branch, workspace and receipts, excludes commits already on trunk, and stops at
 the first conflict. The diagnostic identifies the new Attempt and its retained
 conflict state; no resolution or rebase happens automatically. An unchanged
-Corenius claim transfers to the fresh Attempt under the same owner.
+Corenius claim transfers to the fresh Attempt under the same owner. Normal
+Corenius abandonment instead releases the exact owned claim through tracker.py
+and commits that release before allowing a fresh Attempt. Changed ticket bytes
+or another owner require reconciliation before automatic release.
 
 ## Recovery, cleanup, and backup
+
+`abandon` and `gc` refuse while a check command owns the execution lock. A
+Corenius release in progress has state `abandoning`; `recover --confirm-stopped`
+finishes only its recorded tracker edit and commit. Fresh admission, refresh,
+and cleanup retain that active Attempt until release completes.
 
 Use `status` for committed tickets and attempt history, `show <attempt>` for
 one attempt, and `inspect <attempt>` to list blockers such as live recorded

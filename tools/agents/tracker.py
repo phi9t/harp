@@ -7,6 +7,7 @@ contract in ``docs/efforts/agentic-engineering/milestone-b/contracts``.
 Commands
   new EFFORT SLUG --title T [--type feature|bug|task] [--blocked-by NN,NN]
   claim EFFORT NN --owner NAME [--ttl-hours H]
+  release EFFORT NN --owner NAME --attempt ID --expected-sha256 HASH [--dry-run]
   resolve EFFORT NN --owner NAME [--force]
   add-finding EFFORT NN --to NN --text TEXT
   findings EFFORT NN [--json]
@@ -22,6 +23,7 @@ Set CORENIUS_TRACKER_NOW to an UTC timestamp (YYYY-MM-DDTHH:MM:SSZ) in tests.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -710,7 +712,7 @@ def claimed_until(ticket: Ticket) -> datetime | None:
     return parsed[1] if parsed else None
 
 
-def write_transition(ticket: Ticket, updates: dict[str, str], actor: str, text: str, stamp: datetime) -> None:
+def transition_bytes(ticket: Ticket, updates: dict[str, str], actor: str, text: str, stamp: datetime) -> bytes:
     if ticket.comments_line is None:
         raise WorkerError(f"{ticket.path} has no Comments section")
     lines = list(ticket.lines)
@@ -720,7 +722,11 @@ def write_transition(ticket: Ticket, updates: dict[str, str], actor: str, text: 
         index = 2 + HEADER_KEYS.index(key)
         lines[index] = f"{key}: {value}" if value else f"{key}:"
     lines.append(f"- {format_utc(stamp)} {actor}: {text}")
-    ticket.path.write_text("\n".join(lines) + "\n")
+    return ("\n".join(lines) + "\n").encode("utf-8")
+
+
+def write_transition(ticket: Ticket, updates: dict[str, str], actor: str, text: str, stamp: datetime) -> None:
+    ticket.path.write_bytes(transition_bytes(ticket, updates, actor, text, stamp))
 
 
 def write_triage_comment(ticket: Ticket, triage: str, actor: str, text: str, stamp: datetime) -> None:
@@ -897,6 +903,33 @@ def cmd_claim(args: argparse.Namespace) -> int:
         stamp,
     )
     print(str(ticket.path.relative_to(root)))
+    return OK
+
+
+def cmd_release(args: argparse.Namespace) -> int:
+    root = effort_record_root(repo_root(args.repo), args.effort)
+    ticket, _ = find_ticket(root, args.effort, args.ticket)
+    if not re.fullmatch(r"a-[a-f0-9]{16}", args.attempt):
+        raise WorkerError("release requires an exact collab Attempt identity")
+    if not re.fullmatch(r"[a-f0-9]{64}", args.expected_sha256):
+        raise WorkerError("release requires the expected ticket SHA-256")
+    if ticket.path.is_symlink() or ticket.path.resolve() != ticket.path:
+        raise WorkerError("release refuses a symlinked ticket path")
+    before = hashlib.sha256(ticket.path.read_bytes()).hexdigest()
+    if ticket.status != "claimed" or ticket.owner != args.owner or before != args.expected_sha256:
+        print("claim changed or belongs to another owner; release refused", file=sys.stderr)
+        return REFUSED
+    stamp = parse_utc(args.at) if args.at else current_time()
+    result = transition_bytes(
+        ticket, {"Status": "open", "Owner": "", "Claimed": ""}, args.owner,
+        f"released claim for abandoned Attempt {args.attempt}", stamp,
+    )
+    plan = {"path": str(ticket.path.relative_to(root)), "before_sha256": before,
+            "after_sha256": hashlib.sha256(result).hexdigest(), "at": format_utc(stamp),
+            "owner": args.owner, "attempt_id": args.attempt, "effort": args.effort, "ticket_id": args.ticket}
+    if not args.dry_run:
+        ticket.path.write_bytes(result)
+    print(json.dumps(plan, sort_keys=True))
     return OK
 
 
@@ -1129,6 +1162,16 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--ttl-hours", type=float, default=24.0)
     add_repo_arg(p)
     p.set_defaults(fn=cmd_claim)
+
+    p = sub.add_parser("release", help="release an exact owned collab claim; --dry-run returns its plan")
+    p.add_argument("effort")
+    p.add_argument("ticket")
+    p.add_argument("--owner", required=True)
+    p.add_argument("--attempt", required=True)
+    p.add_argument("--expected-sha256", required=True)
+    p.add_argument("--at")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_release)
 
     p = sub.add_parser("resolve")
     p.add_argument("--mark-reviewed", action="store_true",
