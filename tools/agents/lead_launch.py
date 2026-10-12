@@ -25,6 +25,7 @@ import land  # noqa: E402
 import acceptance  # noqa: E402
 import tracker  # noqa: E402
 import worker  # noqa: E402
+from landing_protocol import guard_initialized_trunk_mutation  # noqa: E402
 from worker import WorkerError  # noqa: E402
 
 OK, REFUSED, USAGE = 0, 1, 64
@@ -409,46 +410,48 @@ def active_overlap_report(repo: Path, effort: str, integration: str | None, acti
 
 
 def claim_batch(root: Path, effort: str, tickets: list[tracker.Ticket], owner_prefix: str, ttl_hours: float) -> None:
-    stamp = tracker.current_time()
-    expires = stamp + timedelta(hours=ttl_hours)
-    claim_text = f"{tracker.format_utc(stamp)} expires {tracker.format_utc(expires)}"
-    for ticket in tickets:
-        tracker.write_transition(
-            ticket,
-            {"Status": "claimed", "Owner": f"{owner_prefix}-{ticket.id}", "Claimed": claim_text},
-            f"{owner_prefix}-{ticket.id}",
-            f"claimed until {tracker.format_utc(expires)}",
-            stamp,
-        )
-    git(root, "add", *[ticket_relpath(effort, ticket) for ticket in tickets])
-    subject = f"Claim ticket {tickets[0].id} for worker" if len(tickets) == 1 else f"Claim tickets {', '.join(t.id for t in tickets)} for workers"
-    git(root, "commit", "-q", "-m", subject)
+    with guard_initialized_trunk_mutation(root):
+        stamp = tracker.current_time()
+        expires = stamp + timedelta(hours=ttl_hours)
+        claim_text = f"{tracker.format_utc(stamp)} expires {tracker.format_utc(expires)}"
+        for ticket in tickets:
+            tracker.write_transition(
+                ticket,
+                {"Status": "claimed", "Owner": f"{owner_prefix}-{ticket.id}", "Claimed": claim_text},
+                f"{owner_prefix}-{ticket.id}",
+                f"claimed until {tracker.format_utc(expires)}",
+                stamp,
+            )
+        git(root, "add", *[ticket_relpath(effort, ticket) for ticket in tickets])
+        subject = f"Claim ticket {tickets[0].id} for worker" if len(tickets) == 1 else f"Claim tickets {', '.join(t.id for t in tickets)} for workers"
+        git(root, "commit", "-q", "-m", subject)
 
 
 def release_unlaunched_claims(root: Path, effort: str, tickets: list[tracker.Ticket], launched: list[dict], actor: str) -> None:
-    launched_tickets = {item.get("lead_launch", {}).get("ticket") for item in launched}
-    _, current_tickets, problems = tracker.load_tickets(root, effort)
-    tracker.ensure_clean(problems)
-    by_id = tracker.tickets_by_id(current_tickets)
-    to_release = [by_id[ticket.id] for ticket in tickets if ticket.id not in launched_tickets]
-    if not to_release:
-        return
-    stamp = tracker.current_time()
-    for ticket in to_release:
-        tracker.write_transition(
-            ticket,
-            {"Status": "open", "Owner": "", "Claimed": ""},
-            actor,
-            "released after worker launch failed before a run started",
-            stamp,
+    with guard_initialized_trunk_mutation(root):
+        launched_tickets = {item.get("lead_launch", {}).get("ticket") for item in launched}
+        _, current_tickets, problems = tracker.load_tickets(root, effort)
+        tracker.ensure_clean(problems)
+        by_id = tracker.tickets_by_id(current_tickets)
+        to_release = [by_id[ticket.id] for ticket in tickets if ticket.id not in launched_tickets]
+        if not to_release:
+            return
+        stamp = tracker.current_time()
+        for ticket in to_release:
+            tracker.write_transition(
+                ticket,
+                {"Status": "open", "Owner": "", "Claimed": ""},
+                actor,
+                "released after worker launch failed before a run started",
+                stamp,
+            )
+        git(root, "add", *[ticket_relpath(effort, ticket) for ticket in to_release])
+        subject = (
+            f"Release ticket {to_release[0].id} after failed launch"
+            if len(to_release) == 1
+            else f"Release tickets {', '.join(t.id for t in to_release)} after failed launch"
         )
-    git(root, "add", *[ticket_relpath(effort, ticket) for ticket in to_release])
-    subject = (
-        f"Release ticket {to_release[0].id} after failed launch"
-        if len(to_release) == 1
-        else f"Release tickets {', '.join(t.id for t in to_release)} after failed launch"
-    )
-    git(root, "commit", "-q", "-m", subject)
+        git(root, "commit", "-q", "-m", subject)
 
 
 def launch_sources(

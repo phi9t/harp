@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from landing_protocol import guard_initialized_trunk_mutation
 from worker import WorkerError, git, now
 
 
@@ -53,10 +54,11 @@ def record_landing(
 
 
 def commit_effort_record_change(checkout: Path, message: str, paths: list[Path]) -> None:
-    relative = [str(path.resolve().relative_to(checkout.resolve())) for path in paths]
-    git(checkout, "add", *relative)
-    if git(checkout, "diff", "--cached", "--name-only", "--", *relative).strip():
-        git(checkout, "commit", "-q", "-m", message, "--", *relative)
+    with guard_initialized_trunk_mutation(checkout):
+        relative = [str(path.resolve().relative_to(checkout.resolve())) for path in paths]
+        git(checkout, "add", *relative)
+        if git(checkout, "diff", "--cached", "--name-only", "--", *relative).strip():
+            git(checkout, "commit", "-q", "-m", message, "--", *relative)
 
 
 def finish_landing_records(operation: dict) -> None:
