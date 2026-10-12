@@ -35,6 +35,7 @@ collab() {
 }
 
 collab init --trunk main --check-json '["python3", "-m", "unittest"]' \
+  --check-timeout-seconds 120 \
   --workspace-root /absolute/path/to/project-worktrees
 collab new T-example 'A narrow outcome'
 # Edit, review, and explicitly commit the ticket on trunk.
@@ -43,7 +44,8 @@ collab claim T-example --owner worker-a
 ```
 
 Use the actual trunk and verification command. `--check-json` must be a nonempty
-JSON array of nonempty strings. Workspace roots must be outside the primary
+JSON array of nonempty strings. `--check-timeout-seconds`, when present, must be
+positive. Workspace roots must be outside the primary
 checkout. Initialization refuses existing or partial state. Repositories can
 choose their protected path list with `--protected-paths-json`; omit it for the
 Corenius defaults.
@@ -73,16 +75,18 @@ apply this rule. The CLI preserves the files and flags for manual classification
 
 `check` builds a fresh detached integration commit from the candidate delta and
 the ticket closure. Its only parent is the admitted trunk base. It runs the
-stored argv directly, without a shell. Success requires zero exit, a clean
-workspace, unchanged detached HEAD and repository identity, and unchanged
-trunk. Ignored check outputs may remain, but cleanup refuses them. The verified
-state and durable receipt are published in one SQLite transaction. `show`
-includes the receipt, exact subject, argv, result, conditions, and log hash.
-Check children use the same sanitized Git environment as internal Git commands;
-inherited repository or index redirection cannot change the check subject.
-If completed checking leaves its workspace unavailable, the CLI publishes a
-failed receipt with an inspection diagnostic. An unreadable trunk is recorded
-as unknown, and cannot pass verification.
+stored argv directly, without a shell, and appends output to a log file that is
+readable while the command is still running. Success requires zero exit, no
+timeout, a clean workspace, unchanged detached HEAD and repository identity, and
+unchanged trunk. Ignored check outputs may remain, but cleanup refuses them. The
+verified state and durable v2 receipt are published in one SQLite transaction.
+`show` includes the receipt, exact subject, argv, outcome, timeout, conditions,
+and log hash. Check children use the same sanitized Git environment as internal
+Git commands; inherited repository or index redirection cannot change the check
+subject. If completed checking leaves its workspace unavailable, the CLI
+publishes a failed receipt with an inspection diagnostic. An unreadable trunk is
+recorded as unknown, and cannot pass verification. A timed-out check is recorded
+as the distinct `timeout` outcome.
 
 `land` is an explicit operator approval action. It requires the matching
 receipt, unchanged check log, contract and predecessor, and a clean primary
@@ -190,7 +194,9 @@ review, full YAML support, and power-loss guarantees are outside scope.
 SQLite uses short `BEGIN IMMEDIATE` transactions, uniqueness constraints, a
 five-second busy timeout, `synchronous=FULL`, and DELETE journals. No transaction
 spans Git or verification execution. Cooperating metadata and lane locks serialize
-mutations; Git and check children inherit the needed lock descriptors.
+mutations; `check` holds a separate live-check lock while the verification
+command runs, so the landing lane is not held across the gate. Git and check
+children inherit the needed lock descriptors.
 
 Run the fresh public CLI suite in disposable real Git repositories:
 

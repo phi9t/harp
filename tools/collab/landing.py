@@ -25,15 +25,19 @@ class LandingManager:
 
     def require_receipt(self, attempt: dict) -> None:
         receipt = attempt["check_receipt"]
+        config = self.config()
         expected = {
+            "version": 2,
             "subject": attempt["integration"],
             "base": attempt["base"],
             "candidate": attempt["candidate"],
             "check_path": attempt["check_path"],
             "log": attempt["log"],
             "trunk": attempt["base"],
-            "argv": self.config()["check_argv"],
+            "argv": config["check_argv"],
+            "outcome": "passed",
             "exit_code": 0,
+            "timeout_seconds": config.get("check_timeout_seconds"),
             "clean": True,
             "same_head": True,
             "identity": True,
@@ -80,7 +84,7 @@ class LandingManager:
     def recover(self, aid: str, confirmed: bool) -> dict:
         if not confirmed:
             raise Refused("Requires --confirm-stopped: inspect old CLI/Git/check processes first")
-        with self.store.lock("lane"), self.store.lock("meta"):
+        with self.store.lock("check"), self.store.lock("lane"), self.store.lock("meta"):
             attempt = self.store.row(aid)
             if attempt["state"] in UNRESOLVED_LANDING:
                 self._recover_landing(attempt, aid)

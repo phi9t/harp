@@ -1,6 +1,8 @@
 """Collab admission policy for protected paths and check command shape."""
 from __future__ import annotations
 
+import math
+
 from common import Refused
 
 DEFAULT_PROTECTED_PATHS = [
@@ -24,6 +26,14 @@ def validate_check_argv(check_argv: object) -> list[str]:
     ):
         raise Refused("Provide a nonempty check argv JSON array")
     return check_argv
+
+
+def validate_check_timeout(timeout_seconds: float | None) -> float | None:
+    if timeout_seconds is None:
+        return None
+    if timeout_seconds <= 0 or not math.isfinite(timeout_seconds):
+        raise Refused("Provide a finite positive check timeout in seconds")
+    return timeout_seconds
 
 
 def validate_protected_paths(protected_paths: object | None) -> list[str]:

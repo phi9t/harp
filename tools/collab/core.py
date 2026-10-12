@@ -7,7 +7,12 @@ from pathlib import Path
 from check_runner import CheckRunner
 from common import Refused, failpoint, output_path, valid_id
 from landing import LandingManager
-from policy import protect_candidate_paths, validate_check_argv, validate_protected_paths
+from policy import (
+    protect_candidate_paths,
+    validate_check_argv,
+    validate_check_timeout,
+    validate_protected_paths,
+)
 from state_store import StateStore
 from ticket_source import TicketSource
 from workspace import RepositoryWorkspace, run_git
@@ -38,11 +43,13 @@ class Collab:
         check_argv: list[str],
         workspace_root: str | None = None,
         protected_paths: list[str] | None = None,
+        check_timeout_seconds: float | None = None,
     ) -> dict:
         if self.db_path.exists():
             raise Refused("Already initialized or partial initialization; inspect, do not overwrite")
         check_argv = validate_check_argv(check_argv)
         protected_paths = validate_protected_paths(protected_paths)
+        check_timeout_seconds = validate_check_timeout(check_timeout_seconds)
         root = Path(self.workspace.git("rev-parse", "--show-toplevel", cwd=self.invoked).strip())
         trunk_ref = "refs/heads/" + trunk
         self.workspace.git("check-ref-format", trunk_ref, cwd=root)
@@ -63,6 +70,7 @@ class Collab:
             "workspace_root": str(work),
             "check_argv": check_argv,
             "protected_paths": protected_paths,
+            "check_timeout_seconds": check_timeout_seconds,
         }
         self.store.initialize(config)
         self.config = config

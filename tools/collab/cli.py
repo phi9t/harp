@@ -27,12 +27,19 @@ def _add_init(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--trunk", required=True)
     parser.add_argument("--check-json", required=True)
     parser.add_argument("--protected-paths-json")
+    parser.add_argument("--check-timeout-seconds", type=float)
     parser.add_argument("--workspace-root")
 
 
 def _run_init(collab: Collab, args: argparse.Namespace) -> object:
     protected_paths = json.loads(args.protected_paths_json) if args.protected_paths_json is not None else None
-    return collab.init(args.trunk, json.loads(args.check_json), args.workspace_root, protected_paths)
+    return collab.init(
+        args.trunk,
+        json.loads(args.check_json),
+        args.workspace_root,
+        protected_paths,
+        args.check_timeout_seconds,
+    )
 
 
 def _add_new(parser: argparse.ArgumentParser) -> None:

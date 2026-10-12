@@ -63,7 +63,7 @@ class CollabTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout)
         return result
 
-    def init(self, argv=None, protected_paths=None):
+    def init(self, argv=None, protected_paths=None, timeout_seconds=None):
         args = [
             "init",
             "--trunk",
@@ -75,6 +75,8 @@ class CollabTests(unittest.TestCase):
         ]
         if protected_paths is not None:
             args.extend(["--protected-paths-json", json.dumps(protected_paths)])
+        if timeout_seconds is not None:
+            args.extend(["--check-timeout-seconds", str(timeout_seconds)])
         return self.cli(*args)
 
     def ticket(self, tid="T-one", deps=(), status="open", crlf=False):
@@ -95,8 +97,8 @@ class CollabTests(unittest.TestCase):
         (path / "code.txt").write_text(content)
         return self.commit("worker contribution", cwd=path)
 
-    def prepared(self, argv=None):
-        self.init(argv)
+    def prepared(self, argv=None, timeout_seconds=None):
+        self.init(argv, timeout_seconds=timeout_seconds)
         self.ticket()
         self.commit("ticket")
         a = self.claim()
@@ -122,6 +124,22 @@ class CollabTests(unittest.TestCase):
                 self.assertIn("argv", result.stderr)
                 self.assertFalse((self.repo / ".git/collab/state.sqlite3").exists())
 
+    def test_init_rejects_nonpositive_check_timeout(self):
+        for value in ("0", "-1", "nan", "inf"):
+            with self.subTest(value=value):
+                result = self.cli(
+                    "init",
+                    "--trunk",
+                    "main",
+                    "--check-json",
+                    '["true"]',
+                    "--check-timeout-seconds",
+                    value,
+                    ok=False,
+                )
+                self.assertIn("timeout", result.stderr)
+                self.assertFalse((self.repo / ".git/collab/state.sqlite3").exists())
+
     def test_claim_hashes_exact_crlf_ticket_and_check_preserves_line_endings(self):
         self.init()
         ticket = self.ticket(crlf=True)
@@ -134,6 +152,7 @@ class CollabTests(unittest.TestCase):
         checked = self.cli("check", a["id"])
         self.assertEqual((Path(checked["check_path"]) / ".tickets/T-one.md").read_bytes(),
                          original.replace(b"status: open", b"status: closed"))
+        self.assertEqual(checked["check_receipt"]["outcome"], "passed")
 
     def test_check_death_before_receipt_commit_cannot_publish_verified(self):
         a = self.prepared()
@@ -152,6 +171,8 @@ class CollabTests(unittest.TestCase):
         checked = self.cli("show", a["id"])
         self.assertEqual(checked["state"], "verified")
         receipt = checked["check_receipt"]
+        self.assertEqual(receipt["version"], 2)
+        self.assertEqual(receipt["outcome"], "passed")
         self.assertEqual(receipt["subject"], checked["integration"])
         self.assertEqual(receipt["base"], checked["base"])
         self.assertEqual(receipt["log_sha256"], hashlib.sha256(Path(checked["log"]).read_bytes()).hexdigest())
@@ -498,12 +519,70 @@ class CollabTests(unittest.TestCase):
                 current = self.cli("show", a["id"])
                 self.assertEqual(current["state"], "check_failed")
                 self.assertFalse(current["check_receipt"]["passed"])
+                self.assertEqual(
+                    current["check_receipt"]["outcome"],
+                    {
+                        "fail": "failed",
+                        "tracked": "dirty",
+                        "untracked": "dirty",
+                        "head": "changed_head",
+                    }[mode],
+                )
                 self.assertIn("mode=" + mode, Path(current["log"]).read_text())
                 self.cli("land", a["id"], ok=False)
         mode_file.write_text("pass")
         checked = self.cli("check", a["id"])
         self.assertEqual(checked["state"], "verified")
         self.assertEqual(len(list((self.root / "workspaces").glob("check-*"))), 5)
+
+    def test_hung_check_times_out_with_distinct_receipt_and_live_log(self):
+        marker = self.root / "check-started"
+        code = ("import time\nfrom pathlib import Path\n"
+                "print('before hang', flush=True)\n"
+                f"Path({str(marker)!r}).write_text('started')\n"
+                "time.sleep(30)\n")
+        a = self.prepared([sys.executable, "-c", code], timeout_seconds=0.2)
+        result = self.cli("check", a["id"], ok=False)
+        self.assertIn("timed out", result.stderr)
+        current = self.cli("show", a["id"])
+        self.assertEqual(current["state"], "check_failed")
+        receipt = current["check_receipt"]
+        self.assertEqual(receipt["version"], 2)
+        self.assertEqual(receipt["argv"], [sys.executable, "-c", code])
+        self.assertEqual(receipt["outcome"], "timeout")
+        self.assertEqual(receipt["exit_code"], None)
+        self.assertEqual(receipt["timeout_seconds"], 0.2)
+        self.assertFalse(receipt["passed"])
+        self.assertEqual(receipt["log_sha256"], hashlib.sha256(Path(current["log"]).read_bytes()).hexdigest())
+        self.assertIn("before hang", Path(current["log"]).read_text())
+        self.assertTrue(marker.exists())
+
+    def test_live_check_log_is_readable_before_command_exits(self):
+        ready, release = self.root / "check-log-ready", self.root / "release-check"
+        code = ("import time\nfrom pathlib import Path\n"
+                "print('streamed line', flush=True)\n"
+                f"Path({str(ready)!r}).write_text('ready')\n"
+                "deadline=time.monotonic()+10\n"
+                f"while not Path({str(release)!r}).exists() and time.monotonic()<deadline: time.sleep(.01)\n")
+        a = self.prepared([sys.executable, "-c", code])
+        process = subprocess.Popen([sys.executable, str(CLI), "--repo", str(self.repo), "check", a["id"]],
+                                   env=self.env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            deadline = time.monotonic() + 5
+            while not ready.exists() and time.monotonic() < deadline:
+                time.sleep(.01)
+            self.assertTrue(ready.exists(), "check child did not write its ready marker")
+            current = self.cli("show", a["id"])
+            log = Path(current["log"])
+            deadline = time.monotonic() + 5
+            while time.monotonic() < deadline and "streamed line" not in log.read_text():
+                time.sleep(.01)
+            self.assertIn("streamed line", log.read_text())
+        finally:
+            release.touch()
+            out, err = process.communicate(timeout=5)
+        self.assertEqual(process.returncode, 0, err)
+        self.assertEqual(json.loads(out)["state"], "verified")
 
     def test_check_uses_literal_argv_and_land_rejects_changed_receipt_log(self):
         marker = self.root / "shell-must-not-execute"
@@ -527,6 +606,7 @@ class CollabTests(unittest.TestCase):
         current = self.cli("show", a["id"])
         self.assertEqual(current["state"], "check_failed")
         self.assertEqual(current["check_receipt"]["exit_code"], 0)
+        self.assertEqual(current["check_receipt"]["outcome"], "trunk_moved")
         self.assertTrue(current["check_receipt"]["clean"])
         self.assertNotEqual(current["check_receipt"]["trunk"], current["base"])
         self.cli("land", a["id"], ok=False)
@@ -660,7 +740,7 @@ class CollabTests(unittest.TestCase):
         )
         self.assertEqual(self.cli("show", a["id"])["state"], "abandoned")
 
-    def test_live_check_child_retains_lane_lock_after_cli_parent_death(self):
+    def test_live_check_child_retains_check_lock_after_cli_parent_death(self):
         started, release, done = [self.root / name for name in ("child-started", "release-child", "child-done")]
         code = ("import os,time\nfrom pathlib import Path\n"
                 f"Path({str(started)!r}).write_text(str(os.getpid()))\n"
@@ -678,7 +758,7 @@ class CollabTests(unittest.TestCase):
             process.kill()
             process.communicate(timeout=5)
             result = self.cli("recover", a["id"], "--confirm-stopped", ok=False)
-            self.assertIn("lane operation busy", result.stderr)
+            self.assertIn("check operation busy", result.stderr)
             self.assertEqual(self.cli("show", a["id"])["state"], "checking")
         finally:
             release.touch()
@@ -691,11 +771,53 @@ class CollabTests(unittest.TestCase):
                                        "recover", a["id"], "--confirm-stopped"])
             if result.returncode == 0:
                 break
-            self.assertIn("lane operation busy", result.stderr)
+            self.assertIn("check operation busy", result.stderr)
             time.sleep(.01)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout)["state"], "check_failed")
         self.assertTrue(done.exists())
+
+    def test_running_check_does_not_hold_landing_lane_lock(self):
+        self.init([sys.executable, "check_gate"])
+        (self.repo / "check_gate").write_text("print('checked')\n")
+        self.ticket("T-one")
+        self.ticket("T-two")
+        self.commit("two tickets and check gate")
+        first = self.claim("T-one")
+        self.contribute(first, "first\n")
+        first = self.cli("submit", first["id"])
+        first = self.cli("check", first["id"])
+        self.assertEqual(first["state"], "verified")
+
+        second = self.claim("T-two")
+        worker = Path(second["path"])
+        gate = worker / "check_gate"
+        (worker / "code.txt").write_text("second\n")
+        self.commit("second contribution", cwd=worker)
+        ready, release = self.root / "long-check-ready", self.root / "release-long-check"
+        code = ("import time\nfrom pathlib import Path\n"
+                f"Path({str(ready)!r}).write_text('ready')\n"
+                "deadline=time.monotonic()+10\n"
+                f"while not Path({str(release)!r}).exists() and time.monotonic()<deadline: time.sleep(.01)\n")
+        (worker / "check_gate").write_text(code)
+        self.commit("add long check gate", cwd=worker)
+        self.cli("submit", second["id"])
+        process = subprocess.Popen([sys.executable, str(CLI), "--repo", str(self.repo), "check", second["id"]],
+                                   env=self.env,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            deadline = time.monotonic() + 5
+            while not ready.exists() and time.monotonic() < deadline:
+                time.sleep(.01)
+            self.assertTrue(ready.exists(), "long check did not start")
+            landed = self.cli("land", first["id"])
+            self.assertEqual(landed["state"], "landed")
+        finally:
+            release.touch()
+            out, err = process.communicate(timeout=5)
+        self.assertNotEqual(process.returncode, 0, out)
+        self.assertIn("trunk moved", err.lower())
+        self.assertEqual(self.cli("show", second["id"])["state"], "check_failed")
 
     def test_backup_creates_snapshot_and_never_overwrites_existing_or_dangling_link(self):
         self.init()
