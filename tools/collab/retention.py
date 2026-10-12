@@ -7,7 +7,7 @@ import re
 import time
 
 from common import Refused
-from liveness import require_worker_stopped, worker_liveness
+from liveness import require_worker_stopped
 
 TERMINAL = ("landed", "abandoned")
 
@@ -140,5 +140,3 @@ class Retention:
 
     def require_stopped(self, attempt: dict) -> None:
         require_worker_stopped(attempt)
-        if any(source.get("state") == "unknown" for source in worker_liveness(attempt)["sources"]):
-            raise Refused("Worker liveness unknown; retaining artifacts")

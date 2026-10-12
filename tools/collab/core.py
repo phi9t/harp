@@ -7,7 +7,7 @@ from pathlib import Path
 from check_runner import CheckRunner
 from common import Refused, failpoint, output_path, valid_branch_component, valid_id
 from landing import LandingManager
-from liveness import liveness_blockers, normalize_worker_binding
+from liveness import liveness_blockers, normalize_worker_binding, worker_liveness
 from policy import (
     protect_candidate_paths,
     validate_check_argv,
@@ -304,13 +304,15 @@ class Collab:
     def inspect(self, aid: str) -> dict:
         self.require_config()
         attempt = self.store.row(aid)
+        liveness = worker_liveness(attempt)
         blockers = []
-        blockers.extend(liveness_blockers(attempt))
+        blockers.extend(liveness_blockers(attempt, liveness))
         blockers.extend(self.store.busy_locks())
         blockers.extend(self.workspace.attempt_blockers(attempt))
         return {
             "attempt": aid,
             "state": attempt["state"],
+            "liveness": liveness,
             "blockers": blockers,
             "blocked": bool(blockers),
         }

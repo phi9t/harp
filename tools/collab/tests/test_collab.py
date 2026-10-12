@@ -1042,11 +1042,12 @@ class CollabTests(unittest.TestCase):
         }))
         second = self.cli("open-attempt", "T-two", "--owner", "worker", "--worker-run-dir", str(run_dir))
         self.assertEqual(second["worker_run_dir"], str(run_dir.resolve()))
+        (run_dir / "exit_code").write_text("0\n")
         blocked = self.cli("abandon", second["id"], "--confirm-stopped", ok=False)
         self.assertIn("worker still running", blocked.stderr)
         second_process.terminate()
         second_process.wait(timeout=5)
-        (run_dir / "exit_code").write_text(str(second_process.returncode))
+        (run_dir / "exit_code").write_text("143\n")
         abandoned = self.cli("abandon", second["id"], "--confirm-stopped")
         self.assertEqual(abandoned["state"], "abandoned")
 
