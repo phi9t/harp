@@ -7,6 +7,7 @@ from pathlib import Path
 from check_runner import CheckRunner
 from common import Refused, failpoint, output_path, valid_branch_component, valid_id
 from landing import LandingManager
+from liveness import liveness_blockers, normalize_worker_binding
 from policy import (
     protect_candidate_paths,
     validate_check_argv,
@@ -117,17 +118,27 @@ class Collab:
         topic = valid_branch_component("topic", f"collab-{ticket_label}-{aid}")
         return f"{agent}/{topic}"
 
-    def open_attempt(self, tid: str, owner: str, effort: str | None = None, ttl_hours: float = 24.0) -> dict:
+    def open_attempt(
+        self,
+        tid: str,
+        owner: str,
+        effort: str | None = None,
+        ttl_hours: float = 24.0,
+        worker_pid: int | str | None = None,
+        worker_run_dir: str | None = None,
+    ) -> dict:
         self.require_config()
         if not owner.strip():
             raise Refused("Owner required")
         if ttl_hours <= 0:
             raise Refused("--ttl-hours must be positive")
+        worker = normalize_worker_binding(worker_pid, worker_run_dir)
         if effort:
-            return self.open_corenius_attempt(tid, owner.strip(), effort, ttl_hours)
-        return self.open_standalone_attempt(tid, owner.strip())
+            return self.open_corenius_attempt(tid, owner.strip(), effort, ttl_hours, worker)
+        return self.open_standalone_attempt(tid, owner.strip(), worker)
 
-    def open_standalone_attempt(self, tid: str, owner: str) -> dict:
+    def open_standalone_attempt(self, tid: str, owner: str, worker: dict | None = None) -> dict:
+        worker = worker or normalize_worker_binding(None, None)
         with self.store.lock("meta"):
             base = self.workspace.trunk()
             meta, _ = self.tickets.ticket(tid, base)
@@ -138,15 +149,23 @@ class Collab:
             branch = self.attempt_branch(owner, tid, aid)
             path = Path(self.require_config()["workspace_root"]) / aid
             with self.store.tx() as con:
-                self.store.insert_attempt(con, aid, tid, owner, base, meta["sha256"], path, branch)
-                self.store.event(con, aid, "allocating", ticket=tid, owner=owner, base=base)
+                self.store.insert_attempt(con, aid, tid, owner, base, meta["sha256"], path, branch, **worker)
+                self.store.event(con, aid, "allocating", ticket=tid, owner=owner, base=base, **worker)
             failpoint("after_claim_record")
             self.workspace.create_attempt_worktree(self.store.row(aid))
             failpoint("after_worktree_add")
             self.store.change(aid, "working")
         return self.store.row(aid)
 
-    def open_corenius_attempt(self, tid: str, owner: str, effort: str, ttl_hours: float) -> dict:
+    def open_corenius_attempt(
+        self,
+        tid: str,
+        owner: str,
+        effort: str,
+        ttl_hours: float,
+        worker: dict | None = None,
+    ) -> dict:
+        worker = worker or normalize_worker_binding(None, None)
         source_id = corenius_ticket_id(effort, tid)
         with self.store.lock("meta"):
             self.workspace.primary()
@@ -157,8 +176,8 @@ class Collab:
             branch = self.attempt_branch(owner, f"{effort}-{tid}", aid)
             path = Path(self.require_config()["workspace_root"]) / aid
             with self.store.tx() as con:
-                self.store.insert_attempt(con, aid, source_id, owner, base, meta["sha256"], path, branch)
-                self.store.event(con, aid, "allocating", ticket=source_id, owner=owner, base=base)
+                self.store.insert_attempt(con, aid, source_id, owner, base, meta["sha256"], path, branch, **worker)
+                self.store.event(con, aid, "allocating", ticket=source_id, owner=owner, base=base, **worker)
             failpoint("after_claim_record")
             claimed, _ = self.tickets.claim_corenius(effort, tid, owner, ttl_hours)
             failpoint("after_tracker_claim")
@@ -225,6 +244,20 @@ class Collab:
 
     def sweep(self, apply: bool = False) -> dict:
         return self.sweeper.sweep(apply)
+
+    def inspect(self, aid: str) -> dict:
+        self.require_config()
+        attempt = self.store.row(aid)
+        blockers = []
+        blockers.extend(liveness_blockers(attempt))
+        blockers.extend(self.store.busy_locks())
+        blockers.extend(self.workspace.attempt_blockers(attempt))
+        return {
+            "attempt": aid,
+            "state": attempt["state"],
+            "blockers": blockers,
+            "blocked": bool(blockers),
+        }
 
     def status(self) -> dict:
         self.require_config()

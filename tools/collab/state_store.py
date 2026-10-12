@@ -21,6 +21,7 @@ CREATE TABLE attempts (
  id TEXT PRIMARY KEY, ticket TEXT NOT NULL, owner TEXT NOT NULL,
  state TEXT NOT NULL, base TEXT NOT NULL, ticket_hash TEXT NOT NULL,
  path TEXT NOT NULL UNIQUE, branch TEXT NOT NULL UNIQUE,
+ worker_pid INTEGER, worker_pid_start_ticks TEXT, worker_run_dir TEXT,
  candidate TEXT, integration TEXT, check_path TEXT, log TEXT,
  created TEXT NOT NULL, updated TEXT NOT NULL
 );
@@ -33,6 +34,11 @@ CREATE TABLE events (
 """
 
 UNRESOLVED_LANDING = ("landing_prepared", "landing_started", "landing")
+ATTEMPT_LIVENESS_COLUMNS = {
+    "worker_pid": "INTEGER",
+    "worker_pid_start_ticks": "TEXT",
+    "worker_run_dir": "TEXT",
+}
 
 
 class StateStore:
@@ -47,10 +53,19 @@ class StateStore:
         if not self.db_path.is_file():
             raise Refused("Partial initialization; inspect, do not overwrite")
         with self.db() as con:
+            self._ensure_schema(con)
             row = con.execute("SELECT value FROM config WHERE id=1").fetchone()
         if row:
             return json.loads(row[0])
         return None
+
+    def _ensure_schema(self, con) -> None:
+        if not con.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='attempts'").fetchone():
+            return
+        columns = {row["name"] for row in con.execute("PRAGMA table_info(attempts)")}
+        for name, kind in ATTEMPT_LIVENESS_COLUMNS.items():
+            if name not in columns:
+                con.execute(f"ALTER TABLE attempts ADD COLUMN {name} {kind}")
 
     def require_initialized(self) -> None:
         if not self.db_path.is_file():
@@ -144,17 +159,52 @@ class StateStore:
         ticket_hash: str,
         path: Path,
         branch: str,
+        worker_pid: int | None = None,
+        worker_pid_start_ticks: str | None = None,
+        worker_run_dir: str | None = None,
     ) -> None:
         try:
             con.execute(
                 """
-                INSERT INTO attempts(id,ticket,owner,state,base,ticket_hash,path,branch,created,updated)
-                VALUES(?,?,?,?,?,?,?,?,?,?)
+                INSERT INTO attempts(
+                    id,ticket,owner,state,base,ticket_hash,path,branch,
+                    worker_pid,worker_pid_start_ticks,worker_run_dir,created,updated
+                )
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
                 """,
-                (aid, ticket, owner, "allocating", base, ticket_hash, str(path), branch, now(), now()),
+                (
+                    aid,
+                    ticket,
+                    owner,
+                    "allocating",
+                    base,
+                    ticket_hash,
+                    str(path),
+                    branch,
+                    worker_pid,
+                    worker_pid_start_ticks,
+                    worker_run_dir,
+                    now(),
+                    now(),
+                ),
             )
         except sqlite3.IntegrityError as exc:
             raise Refused("Ticket already has an active claim") from exc
+
+    def busy_locks(self, names: tuple[str, ...] = ("check", "lane", "meta")) -> list[dict]:
+        blockers = []
+        for name in names:
+            path = self.home / (name + ".lock")
+            if not path.exists():
+                continue
+            with path.open("a+") as lockfile:
+                try:
+                    fcntl.flock(lockfile.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError:
+                    blockers.append({"kind": "lock", "name": name, "path": str(path)})
+                else:
+                    fcntl.flock(lockfile.fileno(), fcntl.LOCK_UN)
+        return blockers
 
     def change(self, aid: str, state: str, **fields) -> None:
         permitted = {"base", "candidate", "integration", "check_path", "log"}

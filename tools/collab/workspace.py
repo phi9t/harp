@@ -102,7 +102,7 @@ class RepositoryWorkspace:
         )
 
     def clean(self, path: Path, include_ignored: bool = False) -> None:
-        if self.hidden_index(path):
+        if self.hidden_index_entries(path):
             raise Refused(f"Workspace has hidden index entries: {path}; preserve files and classify flags manually")
         args = ["status", "--porcelain=v1", "-z", "--untracked-files=all"]
         if include_ignored:
@@ -111,9 +111,70 @@ class RepositoryWorkspace:
             raise Refused(f"Workspace is not clean: {path}; preserve/classify files manually")
 
     def hidden_index(self, path: Path) -> bool:
+        return bool(self.hidden_index_entries(path))
+
+    def hidden_index_entries(self, path: Path) -> list[dict]:
         # Lowercase -v tags mean assume-unchanged; S/s means skip-worktree.
         entries = self.git("ls-files", "-v", "-z", cwd=path).split("\0")
-        return any(entry and (entry[0].islower() or entry[0] == "S") for entry in entries)
+        hidden = []
+        for entry in entries:
+            if not entry:
+                continue
+            tag = entry[0]
+            if tag.upper() == "S":
+                hidden.append({"path": entry[2:], "flag": "skip-worktree"})
+            elif tag.islower():
+                hidden.append({"path": entry[2:], "flag": "assume-unchanged"})
+        return hidden
+
+    def status_blockers(self, path: Path, workspace: str, include_ignored: bool = False) -> list[dict]:
+        args = ["status", "--porcelain=v1", "-z", "--untracked-files=all"]
+        if include_ignored:
+            args.append("--ignored")
+        entries = self.git(*args, cwd=path).split("\0")
+        blockers = []
+        index = 0
+        while index < len(entries):
+            entry = entries[index]
+            index += 1
+            if not entry:
+                continue
+            status = entry[:2]
+            name = entry[3:]
+            if status == "!!":
+                blockers.append({"kind": "ignored_file", "workspace": workspace, "path": name})
+            elif status == "??":
+                blockers.append({"kind": "untracked_file", "workspace": workspace, "path": name})
+            else:
+                blockers.append({"kind": "tracked_change", "workspace": workspace, "path": name, "status": status})
+            if status[0] in ("R", "C") or status[1] in ("R", "C"):
+                index += 1
+        return blockers
+
+    def attempt_blockers(self, attempt: dict) -> list[dict]:
+        blockers = []
+        for name in ("path", "check_path"):
+            raw = attempt.get(name)
+            if not raw:
+                continue
+            path = Path(raw)
+            if not path.exists():
+                blockers.append({"kind": "missing_workspace", "workspace": name, "path": str(path)})
+                continue
+            try:
+                self.validate_attempt(attempt, name)
+            except Refused as exc:
+                blockers.append({
+                    "kind": "workspace_identity",
+                    "workspace": name,
+                    "path": str(path),
+                    "reason": str(exc),
+                })
+                continue
+            for entry in self.hidden_index_entries(path):
+                blockers.append({"kind": "hidden_index", "workspace": name, **entry})
+            blockers.extend(self.status_blockers(path, name, include_ignored=True))
+        return blockers
 
     def primary(self) -> None:
         self.primary_identity()

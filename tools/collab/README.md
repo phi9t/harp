@@ -51,8 +51,11 @@ choose their protected path list with `--protected-paths-json`; omit it for the
 Corenius defaults.
 
 `open-attempt` returns an attempt ID, an `owner/topic` branch, and a locked
-worktree. Start the chosen agent in that worktree. Commit a nonempty, linear
-contribution on its assigned branch, then run:
+worktree. A launcher can record the worker with `--worker-pid PID` or
+`--worker-run-dir RUN_DIR`; run directories are the `worker.py` layout with
+`run.json` and, after exit, `exit_code`. Start the chosen agent in that
+worktree. Commit a nonempty, linear contribution on its assigned branch, then
+run:
 
 ```sh
 collab submit a-ACTUAL-ID
@@ -160,11 +163,16 @@ Changing the ticket also requires explicit abandonment and a fresh claim.
 
 ## Recovery, cleanup, and backup
 
-Use `status` for committed tickets and attempt history, and `show <attempt>`
-for one attempt. Before recovery or release, inspect and stop the old CLI,
-Git, check, and agent processes. Confirmation does not stop them:
+Use `status` for committed tickets and attempt history, `show <attempt>` for
+one attempt, and `inspect <attempt>` to list blockers such as live recorded
+workers, hidden index flags, dirty files, ignored files, missing or substituted
+worktrees, and busy collab locks. Before recovery or release, inspect and stop
+the old CLI, Git, check, and agent processes. Confirmation does not stop them;
+`recover` and `abandon` still refuse while a recorded worker PID or worker run
+directory is live:
 
 ```sh
+collab inspect a-ACTUAL-ID
 collab recover a-ACTUAL-ID --confirm-stopped
 collab abandon a-ACTUAL-ID --confirm-stopped
 collab gc a-ACTUAL-ID --confirm-stopped

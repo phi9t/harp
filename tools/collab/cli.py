@@ -59,10 +59,19 @@ def _add_open_attempt(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--owner", required=True)
     parser.add_argument("--effort")
     parser.add_argument("--ttl-hours", type=float, default=24.0)
+    parser.add_argument("--worker-pid", type=int)
+    parser.add_argument("--worker-run-dir")
 
 
 def _run_open_attempt(collab: Collab, args: argparse.Namespace) -> object:
-    return collab.open_attempt(args.ticket, args.owner, args.effort, args.ttl_hours)
+    return collab.open_attempt(
+        args.ticket,
+        args.owner,
+        args.effort,
+        args.ttl_hours,
+        args.worker_pid,
+        args.worker_run_dir,
+    )
 
 
 def _add_attempt(parser: argparse.ArgumentParser) -> None:
@@ -114,6 +123,9 @@ def _add_sweep(parser: argparse.ArgumentParser) -> None:
 def _run_sweep(collab: Collab, args: argparse.Namespace) -> object:
     return collab.sweep(args.apply)
 
+def _run_inspect(collab: Collab, args: argparse.Namespace) -> object:
+    return collab.inspect(args.attempt)
+
 
 def _add_no_args(parser: argparse.ArgumentParser) -> None:
     del parser
@@ -149,6 +161,8 @@ COMMANDS = {
     "abandon": Command(_add_confirmed_attempt, _run_abandon),
     "gc": Command(_add_confirmed_attempt, _run_gc),
     "sweep": Command(_add_sweep, _run_sweep),
+
+    "inspect": Command(_add_attempt, _run_inspect),
     "status": Command(_add_no_args, _run_status),
     "ready": Command(_add_no_args, _run_ready),
     "backup": Command(_add_backup, _run_backup),

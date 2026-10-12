@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from common import Refused, digest, failpoint
+from liveness import require_worker_stopped
 from state_store import UNRESOLVED_LANDING
 
 
@@ -84,8 +85,10 @@ class LandingManager:
     def recover(self, aid: str, confirmed: bool) -> dict:
         if not confirmed:
             raise Refused("Requires --confirm-stopped: inspect old CLI/Git/check processes first")
+        require_worker_stopped(self.store.row(aid))
         with self.store.lock("check"), self.store.lock("lane"), self.store.lock("meta"):
             attempt = self.store.row(aid)
+            require_worker_stopped(attempt)
             if attempt["state"] in UNRESOLVED_LANDING:
                 self._recover_landing(attempt, aid)
             elif attempt["state"] == "allocating":
@@ -164,8 +167,10 @@ class LandingManager:
     def abandon(self, aid: str, confirmed: bool) -> dict:
         if not confirmed:
             raise Refused("Requires --confirm-stopped; this command does not stop processes")
+        require_worker_stopped(self.store.row(aid))
         with self.store.lock("lane"), self.store.lock("meta"):
             attempt = self.store.row(aid)
+            require_worker_stopped(attempt)
             if attempt["state"] in (*UNRESOLVED_LANDING, "landed", "abandoned"):
                 raise Refused("Cannot abandon this state; reconcile landing first")
             self.store.change(aid, "abandoned")

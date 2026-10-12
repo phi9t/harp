@@ -1,5 +1,6 @@
 """Public CLI proof using real disposable Git repositories and process death."""
 import hashlib
+import fcntl
 import io
 import json
 import os
@@ -125,6 +126,16 @@ class CollabTests(unittest.TestCase):
 
     def claim(self, tid="T-one"):
         return self.cli("open-attempt", tid, "--owner", "test-worker")
+
+    def sleeper(self):
+        process = subprocess.Popen(
+            [sys.executable, "-c", "import time; time.sleep(30)"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+        self.addCleanup(lambda: process.kill() if process.poll() is None else None)
+        return process
 
     def open_corenius_attempt(self, tid="01", owner="agent-a", effort="sample-effort", failpoint=None, ok=True):
         env = dict(self.env, CORENIUS_TRACKER_NOW="2026-10-12T00:00:00Z")
@@ -792,6 +803,86 @@ class CollabTests(unittest.TestCase):
         recovered = self.cli("recover", a["id"], "--confirm-stopped")
         self.assertEqual(recovered["state"], "working")
         self.assertEqual(self.git("worktree", "list", "--porcelain"), before)
+
+    def test_recover_and_abandon_refuse_live_recorded_worker_then_proceed_after_exit(self):
+        self.init()
+        self.ticket("T-one")
+        self.ticket("T-two")
+        self.commit("tickets")
+
+        first_process = self.sleeper()
+        result = self.cli(
+            "open-attempt",
+            "T-one",
+            "--owner",
+            "worker",
+            "--worker-pid",
+            str(first_process.pid),
+            failpoint="after_worktree_add",
+            ok=False,
+        )
+        self.assertEqual(result.returncode, 86)
+        first = self.cli("status")["attempts"][0]
+        blocked = self.cli("recover", first["id"], "--confirm-stopped", ok=False)
+        self.assertIn("worker still running", blocked.stderr)
+        first_process.terminate()
+        first_process.wait(timeout=5)
+        recovered = self.cli("recover", first["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "working")
+
+        run_dir = self.root / "worker-run"
+        run_dir.mkdir()
+        second_process = self.sleeper()
+        (run_dir / "run.json").write_text(json.dumps({
+            "run_dir": str(run_dir),
+            "pid": second_process.pid,
+            "process_group_id": os.getpgid(second_process.pid),
+            "process_session_id": os.getsid(second_process.pid),
+        }))
+        second = self.cli("open-attempt", "T-two", "--owner", "worker", "--worker-run-dir", str(run_dir))
+        self.assertEqual(second["worker_run_dir"], str(run_dir.resolve()))
+        blocked = self.cli("abandon", second["id"], "--confirm-stopped", ok=False)
+        self.assertIn("worker still running", blocked.stderr)
+        second_process.terminate()
+        second_process.wait(timeout=5)
+        (run_dir / "exit_code").write_text(str(second_process.returncode))
+        abandoned = self.cli("abandon", second["id"], "--confirm-stopped")
+        self.assertEqual(abandoned["state"], "abandoned")
+
+    def test_inspect_names_hidden_index_ignored_files_and_busy_locks(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        worker = Path(attempt["path"])
+        ignored = worker / "build/output"
+        ignored.parent.mkdir()
+        ignored.write_text("ignored but relevant\n")
+        self.git("update-index", "--assume-unchanged", "code.txt", cwd=worker)
+        (worker / "code.txt").write_text("hidden worker edit\n")
+
+        lock_path = self.repo / ".git/collab/meta.lock"
+        with lock_path.open("a+") as handle:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            inspected = self.cli("inspect", attempt["id"])
+
+        blockers = inspected["blockers"]
+        self.assertIn({
+            "kind": "hidden_index",
+            "workspace": "path",
+            "path": "code.txt",
+            "flag": "assume-unchanged",
+        }, blockers)
+        self.assertIn({
+            "kind": "ignored_file",
+            "workspace": "path",
+            "path": "build/output",
+        }, blockers)
+        self.assertIn({
+            "kind": "lock",
+            "name": "meta",
+            "path": str(lock_path),
+        }, blockers)
 
     def test_lost_landing_acknowledgment_recovers_attributed_integration_ancestry(self):
         a = self.prepared()
