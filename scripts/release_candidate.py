@@ -65,7 +65,7 @@ def create_candidate(root):
         raise ReleaseError("dist/ must be ignored before creating release artifacts")
 
     # A candidate cannot bypass verification through a CLI option or environment flag.
-    subprocess.run(["mise", "run", "verify"], cwd=root, check=True)
+    subprocess.run(["mise", "run", "verify-all"], cwd=root, check=True)
     clean_commit(root, commit)
     metadata = json.loads(capture(root, "cargo", "metadata", "--locked", "--no-deps", "--format-version", "1"))
     version = next(package["version"] for package in metadata["packages"] if package["name"] == "harp")
@@ -103,7 +103,7 @@ def create_candidate(root):
             f"# Harp {version} native release candidate\n\n"
             f"Commit: `{commit}`\n\nTarget: `{target}`\n\n"
             "Built with the locked Cargo dependency graph and size profile after "
-            "the complete `mise run verify` gate. The extracted executable passed "
+            "the complete `mise run verify-all` gate. The extracted executable passed "
             "`harp --version` on the build host.\n\n"
             "Verify SHA256SUMS, extract the archive, and install `harp` into a "
             "directory on PATH. Repository commands require a matching content "
@@ -149,7 +149,7 @@ def create_candidate(root):
             "profile": "size",
             "rustc": compiler,
             "build_host": {"system": platform.system(), "release": platform.release(), "machine": platform.machine()},
-            "verification": {"command": "mise run verify", "result": "passed", "smoke": observed},
+            "verification": {"command": "mise run verify-all", "result": "passed", "smoke": observed},
             "binary": {"name": "harp", "sha256": binary_digest, "size": extracted.stat().st_size},
             "archive": {"name": archive.name, "sha256": digest(archive), "size": archive.stat().st_size},
         }

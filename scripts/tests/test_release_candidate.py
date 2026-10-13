@@ -41,7 +41,7 @@ class CandidateTests(unittest.TestCase):
         (self.repo / "input").write_text("tracked input\n")
         self.git("add", ".gitignore", "input")
         self.git("commit", "-qm", "fixture")
-        self.tool("mise", "exit 0")
+        self.tool("mise", 'test "$1" = run; test "$2" = verify-all')
         self.tool("rustc", "printf 'rustc fixture\\nhost: aarch64-apple-darwin\\n'")
         self.tool("cargo", '''if [ "$1" = metadata ]; then
 printf '%s\n' '{"packages":[{"name":"harp","version":"0.1.0"}]}'
@@ -67,6 +67,7 @@ fi''')
         manifest = json.loads((output / "manifest.json").read_text())
         self.assertEqual(manifest["commit"], self.git("rev-parse", "HEAD"))
         self.assertEqual(manifest["version"], "0.1.0")
+        self.assertEqual(manifest["verification"]["command"], "mise run verify-all")
         self.assertEqual(manifest["target"], "aarch64-apple-darwin")
         archive = output / manifest["archive"]["name"]
         self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(), manifest["archive"]["sha256"])

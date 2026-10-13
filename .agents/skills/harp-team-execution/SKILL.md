@@ -35,4 +35,4 @@ This checkpoint does not waive blocking defects or require another user approval
 
 ## Integration
 
-Review the composed candidate against the full request, applicable repository gates, and current risks. Reverify affected behavior after repairs. Advisory findings alone do not block acceptance; unresolved required behavior and concrete current-operation risks do. Follow Harp's landing rules and existing authority. An initial useful result does not complete the remaining plan.
+Review the composed candidate against the full request, [changed-surface verification](../../../docs/agents/verification.md), and current risks. Select from the integrated diff and include consumer checks across worker boundaries; do not promote the release gate into every local landing. Reverify affected behavior after repairs. Advisory findings alone do not block acceptance; unresolved required behavior and concrete current-operation risks do. Follow Harp's landing rules and existing authority. An initial useful result does not complete the remaining plan.

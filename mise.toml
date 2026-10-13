@@ -1,3 +1,6 @@
+[settings.task]
+run_auto_install = false
+
 [tools]
 node = "22.22.3"
 rust = "1.92.0"
@@ -94,7 +97,6 @@ python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v
 
 [tasks.verify-atlas]
 description = "Run Atlas lint, types, tests, production build, and decoded export test"
-depends = ["crouzeix-textbook-publication"]
 run = """
 set -euo pipefail
 config_root="{{config_root}}"
@@ -295,8 +297,12 @@ mise run build
 """
 
 [tasks.verify]
-description = "Provider-neutral Harp release gate"
-run = "mise run verify-atlas && mise run verify-rust && mise run lean-all && sh scripts/check_cauchy_schwarz_audit.sh && mise run verify-repository"
+description = "Verify changed surfaces for local landing without unrelated prerequisites"
+run = "python3 scripts/verify_changes.py"
+
+[tasks.verify-all]
+description = "Provider-neutral Harp release gate across all surfaces"
+run = "mise run crouzeix-textbook-publication && mise run verify-atlas && mise run verify-rust && mise run lean-all && sh scripts/check_cauchy_schwarz_audit.sh && mise run verify-repository"
 
 [tasks.release-candidate]
 description = "Verify, package, and smoke-test a clean native release candidate"

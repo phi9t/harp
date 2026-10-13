@@ -32,13 +32,17 @@ documentation dependencies on another local checkout.
 
 ## Verification
 
-Run `mise run verify` before committing. Use focused tests while iterating:
+Run `mise run verify` before local landing. It selects checks from changed paths;
+inspect `mise run verify -- --plan` and use `--base <commit-or-ref>` to cover an
+entire candidate spanning multiple commits. See
+[the verification contract](docs/agents/verification.md) for selection, affected
+consumers, and prerequisite handling. Supplement the selected checks when a
+change affects a contract beyond its path; record that evidence in its ticket.
 
-```sh
-cargo test -p harp corpus::tests --lib -- --test-threads=1
-cargo test -p harp --test cli
-cd atlas && corepack pnpm run test
-```
+`mise run verify-all` is the explicit release gate. Release candidates always use
+it. Ordinary local landings do not require unrelated Lean, React, or repository
+import prerequisites. A missing dependency for a selected check remains blocking;
+never silently skip it or install/hydrate prerequisites without authorization.
 
 Keep Rust errors typed, validate JSON at boundaries, reject symlinked generated
 targets, and preserve strict TypeScript boundary parsing and exhaustive variant
@@ -75,8 +79,8 @@ handling.
   `mise run lean-cache` unless the project owner explicitly requests cache
   maintenance. Missing cache state is a blocked precondition.
 - Rebuilding Harp-owned modules against the warm cache is expected. Run the
-  narrow route target while iterating; run `lean-all` and the full repository
-  gate only after the candidate is frozen.
+  relevant route target for iteration and local landing. Use `lean-all` for
+  shared proof infrastructure changes or the explicit release gate.
 - The shared `.lake/build` also contains Harp-owned artifacts. Serialize
   writes from different worktrees through receipt extraction; another
   worktree can otherwise replace the candidate's `.olean` files. Concurrent
@@ -98,12 +102,12 @@ handling.
 - If the primary checkout is dirty, classify every path before acting:
   restore accidental derived-file deletions, ignore editor/build scratch, and
   commit only coherent repo-owned artifacts.
-- Refresh `docs/import-receipt.md` only after the rest of the tracked payload is
-  settled. Copy the digest reported by `harp repository verify`, then rerun the
-  relevant verifier.
-- Run `mise run verify` before a local landing unless the owner explicitly asks
-  for a narrower gate. Use focused tests while iterating, but do not treat them
-  as a release gate.
+- When repository/import verification applies, refresh `docs/import-receipt.md`
+  only after the tracked payload is settled. Copy the digest reported by
+  `harp repository verify`, then rerun that verifier.
+- Run the changed-surface `mise run verify` gate before local landing. Review its
+  selected paths/checks against the complete candidate and add relevant consumer
+  checks as needed. Run `verify-all` for releases or when explicitly requested.
 - Preserve unrelated local changes. If a dirty path is not part of the current
   landing, leave it alone or add an ignore rule for clearly local scratch.
 

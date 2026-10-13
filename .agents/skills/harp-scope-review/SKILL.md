@@ -9,7 +9,7 @@ Review the actual candidate against the user's request, accepted requirements, r
 
 ## Review input
 
-Identify the source range or exact candidate, intended behavior, operating conditions, acceptance criteria, and checks already run. Inspect the relevant diff and artifacts. Distinguish commands executed, evidence inspected, and conclusions inferred.
+Identify the source range or exact candidate, intended behavior, operating conditions, acceptance criteria, and checks already run. Review [the selected verification plan](../../../docs/agents/verification.md) against affected contracts and consumers. Require relevant missing checks; reserve the full gate for releases or explicit requests. Inspect the relevant diff and artifacts. Distinguish commands executed, evidence inspected, and conclusions inferred.
 
 ## Findings
 
