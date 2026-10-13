@@ -9,7 +9,7 @@ Read the current intent, plan, repository instructions, existing changes, and re
 
 ## Execute and repair
 
-1. Use an isolated worktree for feature work and preserve unrelated changes. Reuse the repository's existing tools and issue tracker; execution does not require a new coordinator.
+1. Use an isolated worktree for feature work and preserve unrelated changes. Claim and update the relevant [local Markdown ticket](../../../docs/agents/issue-tracker.md), including verification evidence. Reuse existing tools; execution does not require a new coordinator.
 2. Execute the next bounded operation under existing authorization. Adapt routine mechanics to evidence while preserving constraints and acceptance.
 3. Run the relevant checks and inspect their actual outputs. Capture source identity, commands, results, and material limits where needed to reproduce the claim.
 4. Diagnose failed checks, repair within scope, and rerun affected verification. Retry with new evidence or a changed hypothesis, rather than repeating the same failing action.

@@ -133,22 +133,26 @@ result does not complete the full request. Use the
 
 ## Local agentic engineering tools
 
-- Kata is the local intent ledger for this repository. The committed
-  `.kata.toml` binds the workspace to the `harp` project; `.kata.local.toml`
-  is ignored for per-machine daemon overrides.
-- Use Kata for real Harp work only. Search before creating issues, prefer
-  updating existing issues, and close only when work is verified with evidence.
-  Do not run `kata init --with-agents`; Harp owns this guidance.
+- Git-managed Markdown is the intent and issue tracker. Read
+  [the tracker contract](docs/agents/issue-tracker.md) before creating or updating
+  tickets. Use `.scratch/<feature>/spec.md` and one file per issue under
+  `.scratch/<feature>/issues/`; search existing records before adding another.
+- Use the Matt Pocock skills' local-Markdown tracker convention. Publishing means
+  editing and committing repository files, with no tracker service or CLI required.
+  [Triage roles](docs/agents/triage-labels.md) use the default label names.
+- Kata is retired for Harp. Do not initialize, query, or update it for new work.
+  Historical Kata references are context, not instructions; carry active work into
+  a local ticket when resumed, preserving its old identifier and available evidence.
 - roborev is an independent verification tool, not merge authority. Do not run
   `roborev init`, install hooks, start daemons, configure GitHub integration,
   or post PR comments unless explicitly requested.
 - AgentsView is observability for local agent sessions and token/activity
   analysis. Do not treat AgentsView records as durable project guidance until
   a lesson is distilled into shared repo files.
-- For no-daemon smoke checks, use `kata version`, `roborev version`, and
-  `agentsview --version`. Commands such as `kata list`, `roborev status`, and
+- For no-daemon smoke checks, use `roborev version` and
+  `agentsview --version`. Commands such as `roborev status` and
   `agentsview projects` may start local services.
-- Forge, Ghosthub, Kata federation, remote daemons, GitHub sync, PostgreSQL
+- Forge, Ghosthub, remote daemons, GitHub sync, PostgreSQL
   sync, and persistent background services require explicit approval before
   setup.
 

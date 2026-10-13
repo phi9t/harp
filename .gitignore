@@ -27,3 +27,8 @@
 *.part
 .DS_Store
 .kata.local.toml
+
+# The local Markdown issue tracker is shared, versioned project state.
+!/.scratch/
+!/.scratch/**/
+!/.scratch/**/*.md

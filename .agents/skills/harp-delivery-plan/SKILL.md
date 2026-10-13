@@ -9,7 +9,7 @@ Turn the requested outcome into an executable sequence with an early useful resu
 
 ## Plan the next useful operation
 
-Use the existing workstream tracker or plan under `docs/workstream/<workstream>/`. Scale detail to the task. Capture:
+Use [the local Markdown tracker](../../../docs/agents/issue-tracker.md) for intent and tickets. Link existing plans under `docs/workstream/<workstream>/` instead of duplicating them. Scale detail to the task. Capture:
 
 - **Outcome:** the full requested result and final acceptance.
 - **First useful result:** the real operation, inputs, expected evidence, and stop condition.
