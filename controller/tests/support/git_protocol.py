@@ -12,7 +12,7 @@ _temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_p
 _temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
 _temp_policy_tempfile.tempdir = _temp_policy_root
 _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
-BIN=pathlib.Path(sys.argv[1]).resolve(); HERE=pathlib.Path(__file__).resolve().parents[2]
+BIN=pathlib.Path(sys.argv[1]).resolve(); HERE=pathlib.Path(__file__).resolve().parents[2]; REPO=_temp_policy_file.parents[1]
 TOKEN='operator-git-secret'; SUPERVISOR='git-supervisor-secret'
 def pin(path):
  p=pathlib.Path(path);return {'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
@@ -259,7 +259,7 @@ while not (s/'finish').exists():
    dispositions.append({'pid':pid,'start_ticks':start,'handle':e['handle'],'pid_namespace':e['pid_namespace'],'stopped_before_fixture_cleanup':stopped,'whole_process_terminated':terminated})
   for record,(p,_) in zip(self.records,self.processes):record['exit']=p.returncode
   (self.r/'process-dispositions.json').write_text(json.dumps({'processes':self.records,'namespaces':dispositions},indent=2))
-  root=HERE.parents[1]/('.scratch/sqlite-controller/05/git-fixtures' if self.mode=='observer-authority' else '.scratch/sqlite-controller/04/fixtures');root.mkdir(parents=True,exist_ok=True)
+  root=REPO/('.scratch/sqlite-controller/05/git-fixtures' if self.mode=='observer-authority' else '.scratch/sqlite-controller/04/fixtures');root.mkdir(parents=True,exist_ok=True)
   archive=root/(self.mode+'-'+self.r.name+'.tar.gz')
   with tarfile.open(archive,'w:gz') as a:a.add(self.r,arcname=self.r.name)
   print('retained_actual_fixture',json.dumps({'mode':self.mode,'archive':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'processes':self.records,'namespaces':dispositions}),flush=True)

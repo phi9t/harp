@@ -312,7 +312,7 @@ teardown ordering. Callers never build repository history through shell text.
 
 ### 6.3 Controller and runtime seams
 
-I2 remains in `crates/sqlite-controller`; this effort does not introduce a second
+I2 remains in `controller`; this effort does not introduce a second
 controller crate or ledger. New controller behavior enters through existing
 authenticated command, query, runtime, Git, work-ledger and control interfaces.
 

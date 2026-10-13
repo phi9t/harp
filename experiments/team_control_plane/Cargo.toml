@@ -3,7 +3,7 @@ name = "team-control-plane"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.95"
-[workspace]
+
 [dependencies]
 libc = "=0.2.189"
 axum = "=0.8.8"

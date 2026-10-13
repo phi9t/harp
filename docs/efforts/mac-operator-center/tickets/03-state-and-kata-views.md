@@ -15,7 +15,7 @@ worker binding. Preserve implementation and product trial identities.
 
 ## Bounded implementation
 
-Own tools/agents/mac_state_view.py and tools/agents/test_mac_state_view.py only.
+Own controller/operator/mac_state_view.py and controller/operator/mac_state_view_test.py only.
 Use the existing version1 config and standard-library terminal rendering.
 Offer --view controller|kata|workspaces and --render, plus a refresh loop.
 Read CURRENT and the maintained native-view manifest. Optional

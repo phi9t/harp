@@ -41,7 +41,7 @@ class TemporaryRootTests(unittest.TestCase):
         self.assertIn('outside the system temporary directory', denied.stderr)
 
     def test_temporal_script_rejects_forbidden_root_before_startup(self):
-        command = ['bash', str(module.ROOT / 'crates' / 'team-control-plane' / 'tests' / 'run-temporal.sh')]
+        command = ['bash', str(module.ROOT / 'experiments' / 'team_control_plane' / 'tests' / 'run-temporal.sh')]
         forbidden = str(Path('/') / 'tmp')
         for overrides in ({'TMPDIR': forbidden},
                           {'TEMPORAL_FIXTURE_EVIDENCE': forbidden + '/corenius-forbidden-evidence'}):

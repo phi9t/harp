@@ -109,7 +109,7 @@ Landed: M1 capsule builder, M2 harness and single-ticket tracks, M3 blade ladder
 ## Open questions
 
 - Is a docker-exported hermetic base layer wanted, or is host `/usr` (non-hermetic, labelled) acceptable for the benchmark?
-- Should the Rust `src/insula.rs` runner and the Python capsule builder be unified? (Recorded follow-up, not started.)
+- Should the Rust `terminal_agent/src/insula.rs` runner and the Python capsule builder be unified? (Recorded follow-up, not started.)
 - How many repeats per task for the first pilot? Sizing gave about 93 observations per arm for 0.5 vs 0.7 (an assumption).
 
 ## Traps

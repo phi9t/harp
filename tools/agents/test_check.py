@@ -91,14 +91,14 @@ raise SystemExit(1)
     def test_default_retains_sqlite_but_excludes_parked_services(self):
         result, calls = self.dispatch()
         self.assertEqual(result.returncode, 0)
-        self.assertTrue(any("crates/sqlite-controller/Cargo.toml" in call for call in calls))
-        self.assertFalse(any("crates/team-control-plane/tests/run-temporal.sh" in call for call in calls))
+        self.assertTrue(any("controller/Cargo.toml" in call for call in calls))
+        self.assertFalse(any("experiments/team_control_plane/tests/run-temporal.sh" in call for call in calls))
 
     def test_all_options_include_parked_integration_and_optional_suites(self):
         result, calls = self.dispatch(CHECK_TEAM_CONTROL_PLANE="1", CHECK_BENCH="1",
                                       CHECK_SYNC="1", CHECK_CARGO="1")
         self.assertEqual(result.returncode, 0)
-        self.assertEqual(sum("crates/team-control-plane/tests/run-temporal.sh" in call for call in calls), 1)
+        self.assertEqual(sum("experiments/team_control_plane/tests/run-temporal.sh" in call for call in calls), 1)
         self.assertEqual(sum("bench/harness/test_lead_driven.py" in call for call in calls), 1)
         self.assertIn(["cargo", "test", "--offline", "--", "--test-threads=1"], calls)
         self.assertIn(["python3", "tools/sync_agentic_workflow.py", "--check"], calls)
@@ -109,7 +109,7 @@ raise SystemExit(1)
         self.assertEqual(result.returncode, 1)
         self.assertIn("FAILED:", result.stdout)
         self.assertIn("check: FAILED", result.stdout)
-        self.assertTrue(any("crates/sqlite-controller/Cargo.toml" in call for call in calls))
+        self.assertTrue(any("controller/Cargo.toml" in call for call in calls))
 
     def test_collab_suite_skips_when_change_set_is_outside_toolset(self):
         result, calls = self.dispatch(GATE_CHANGED_FILES="README.md")

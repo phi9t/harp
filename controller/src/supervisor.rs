@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::{
-    collections::HashMap,
+    collections::{BTreeSet, HashMap},
     fs::{self, File, OpenOptions},
     io::Write,
     os::fd::{AsRawFd, FromRawFd, OwnedFd},
@@ -133,6 +133,86 @@ fn private_file(path: &Path) -> Result<File> {
         .custom_flags(libc::O_NOFOLLOW)
         .open(path)
         .map_err(|e| e.to_string())
+}
+fn nix_store_package(path: &Path) -> Option<PathBuf> {
+    let mut components = path.components();
+    if components.next()?.as_os_str() != "/" {
+        return None;
+    }
+    if components.next()?.as_os_str() != "nix" {
+        return None;
+    }
+    if components.next()?.as_os_str() != "store" {
+        return None;
+    }
+    let package = components.next()?.as_os_str();
+    Some(Path::new("/nix").join("store").join(package))
+}
+fn executable_interpreter(binary: &Path) -> Result<Option<PathBuf>> {
+    let bytes = fs::read(binary).map_err(|e| e.to_string())?;
+    let mut offset = 0;
+    while let Some(relative) = bytes[offset..].iter().position(|byte| *byte == b'/') {
+        let start = offset + relative;
+        let end = bytes[start..]
+            .iter()
+            .position(|byte| *byte == 0)
+            .map(|end| start + end)
+            .unwrap_or(bytes.len());
+        let candidate = &bytes[start..end];
+        offset = start + 1;
+        if !candidate
+            .windows(b"ld-linux".len())
+            .any(|w| w == b"ld-linux")
+        {
+            continue;
+        }
+        if let Ok(text) = std::str::from_utf8(candidate) {
+            let path = PathBuf::from(text);
+            if path.is_absolute() && path.exists() {
+                return Ok(Some(path));
+            }
+        }
+    }
+    Ok(None)
+}
+fn add_host_runtime_mount(mounts: &mut BTreeSet<PathBuf>, path: PathBuf) -> Result<()> {
+    let path = path.canonicalize().map_err(|e| e.to_string())?;
+    if path.starts_with("/usr") || path.starts_with("/lib") || path.starts_with("/lib64") {
+        return Ok(());
+    }
+    if let Some(package) = nix_store_package(&path) {
+        mounts.insert(package);
+    } else {
+        mounts.insert(path);
+    }
+    Ok(())
+}
+fn add_gate_runtime_mounts(command: &mut Command, gate_executable: &Path) -> Result<()> {
+    let mut mounts = BTreeSet::new();
+    if let Some(interpreter) = executable_interpreter(gate_executable)? {
+        add_host_runtime_mount(&mut mounts, interpreter)?;
+    }
+    if Path::new("/usr/bin/ldd").is_file() {
+        let output = Command::new("/usr/bin/ldd")
+            .arg(gate_executable)
+            .output()
+            .map_err(|e| e.to_string())?;
+        let text = String::from_utf8_lossy(&output.stdout);
+        for token in text.split_whitespace() {
+            let path = token.trim_end_matches([',', ':', ';']);
+            if !path.starts_with('/') {
+                continue;
+            }
+            let path = PathBuf::from(path);
+            if path.is_file() {
+                add_host_runtime_mount(&mut mounts, path)?;
+            }
+        }
+    }
+    for path in mounts {
+        command.arg("--ro-bind").arg(&path).arg(&path);
+    }
+    Ok(())
 }
 fn persist(root: &Path, execution: &Execution) -> Result<()> {
     let temporary = root.join(format!(".{}.tmp", execution.binding.operation));
@@ -794,6 +874,7 @@ impl Supervisor {
                     .arg(&gate_executable)
                     .arg("/run/attempt-gate")
                     .args(["--info-fd", "4"]);
+                add_gate_runtime_mounts(&mut command, &gate_executable)?;
                 let _native_mounts = if let Some(native) = &self.config.profile.codex {
                     {
                         let secrets = self.config.root.join("native-authority");

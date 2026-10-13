@@ -9,7 +9,7 @@ Spec: ../EFFORT.md
 
 ## Requirements
 
-Own tools/agents/mac_dashboard.py and tools/agents/test_mac_dashboard.py only.
+Own controller/operator/mac_dashboard.py and controller/operator/mac_dashboard_test.py only.
 Implement the dashboard sections and config/manifest read interface in the spec.
 Keep the current simple happy-path view usable while adding section navigation.
 Use standard-library Python and curses, no product dependencies or model calls.

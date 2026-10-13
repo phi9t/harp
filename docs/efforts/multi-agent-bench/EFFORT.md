@@ -16,7 +16,7 @@ inside an insula capsule (layered bwrap bundle built from a request).
 
 In: `bench/` (tasks, harness, validate), `tools/insula/capsule.py` (layered capsule builder), `worker.py --insula`.
 Out for this milestone: any model spend (offline validation only), bazel, calibrating the simulator, unifying the
-capsule builder with `src/insula.rs`, editing `src/cli.rs` or the other agent's AIME files.
+capsule builder with `terminal_agent/src/insula.rs`, editing `terminal_agent/src/cli.rs` or the other agent's AIME files.
 
 Plan: `~/.claude/plans/tidy-questing-alpaca.md` (approved 2026-09-29, amended for erdos and capsules).
 

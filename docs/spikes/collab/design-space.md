@@ -719,7 +719,7 @@ Components:
 | **Scout** | conflict prediction: overlap, `merge-tree` probes, read-set staleness | `src/coord/scout.rs` |
 | **Courier** | inbox and notices delivered at turn start; outbox from tools | integrates with `TurnRunner` |
 | **Board** | TUI/markdown projection for the human; the only human write path is decisions | `tui.rs` view + generated `board.md` |
-| **Tools** | `coord.claim`, `coord.release`, `coord.gpu` (run under a lease), `coord.land`, `coord.status`, `coord.send`, `coord.inbox`, `coord.handoff` | `src/tools.rs`, registered behind capabilities |
+| **Tools** | `coord.claim`, `coord.release`, `coord.gpu` (run under a lease), `coord.land`, `coord.status`, `coord.send`, `coord.inbox`, `coord.handoff` | `terminal_agent/src/tools.rs`, registered behind capabilities |
 
 ### 6.2 Data model
 

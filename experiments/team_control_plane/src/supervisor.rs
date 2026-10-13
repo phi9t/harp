@@ -2177,9 +2177,9 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
             "/dev",
             "--tmpfs",
             "/run/corenius-tmp",
-                        "--setenv",
-                        "TMPDIR",
-                        "/run/corenius-tmp",
+            "--setenv",
+            "TMPDIR",
+            "/run/corenius-tmp",
             "--ro-bind",
         ])
         .arg(&manifest.path)

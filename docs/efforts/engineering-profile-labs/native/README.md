@@ -29,7 +29,7 @@ python3 tools/temp_root.py -- python3 -m unittest discover -s docs/efforts/engin
 
 The model-free Insula probes require Linux, `bwrap`, working user namespaces,
 the installed native binary, and the host's `/usr` closure. They adapt the
-existing `crates/sqlite-controller/tests/support/native_init.py` boundary.
+existing `controller/tests/support/native_init.py` boundary.
 They unshare namespaces, clear the environment, expose no credential store,
 and allocate private sandbox temporary files at `/run/corenius-tmp`.
 Their `/usr` input is an ambient read-only dependency closure; these probes

@@ -58,7 +58,7 @@ attempt, reservation and prepared-operation records, not credential hashes.
 
 The CLI reads `TEAM_CONTROL_PLANE_DSN` and
 `TEAM_CONTROL_PLANE_RECOVERY_EPOCH` from its environment. Run with
-`cargo run --manifest-path crates/team-control-plane/Cargo.toml -- migrate`,
+`cargo run --manifest-path experiments/team_control_plane/Cargo.toml -- migrate`,
 then `-- bootstrap`, then `-- serve 127.0.0.1:8080`. Bootstrap intentionally writes
 the new bearer only to stdout for secure capture by the local administrator;
 do not put that output in public logs. `-- rotate-epoch NEW_UUID` additionally
@@ -71,7 +71,7 @@ are not supported. Do not expose this loopback fixture server to public networks
 ## Verification
 
 Docker daemon access, Rust1.95/Cargo and access to the pinned PostgreSQL image are
-required. Run `bash crates/team-control-plane/tests/run-postgres.sh` from the repo,
+required. Run `bash experiments/team_control_plane/tests/run-postgres.sh` from the repo,
 or `tools/agents/check.sh` which invokes the dedicated checks.d shim. The runner
 uses a uniquely named auto-removed container, loopback ephemeral port and tmpfs;
 readiness is bounded, the container is stopped on exit, and cargo failures
@@ -85,7 +85,7 @@ Database tests fail explicitly when no fixture DSN is supplied;
 there is no ignored or in-memory fallback. Direct administrative SQL inside
 fixtures installs constraint-trigger failures; no production test callbacks exist.
 
-`bash crates/team-control-plane/tests/run-temporal.sh --offline` additionally
+`bash experiments/team_control_plane/tests/run-temporal.sh --offline` additionally
 starts owned loopback Temporal and runs the complete PostgreSQL/Temporal suite,
 including actual supervisor capsules, SDK worker restart and retained-history
 replay. Persistent-use readiness, backup/restore, production role separation

@@ -25,7 +25,7 @@ subagent patterns, and committed UI projections. Env adds a relatively small Rus
 filesystem/command daemon with a TypeScript client. Neither package replaces an
 authority-bearing engineering controller or proves that an external effect has
 stopped. [Durable overview][durable-readme], [Env protocol][protocol],
-[Corenius runtime](../../../crates/sqlite-controller/src/runtime.rs).
+[Corenius runtime](../../../controller/src/runtime.rs).
 
 The most useful distinction is three separate lifetimes:
 
@@ -97,7 +97,7 @@ provides no cross-process lifetime lock. Node SQLite selects WAL with
 `FULL` setting for controller state. JSONL's `fsync` option also needs its exact
 marker/sidecar ordering understood; the detailed review distinguishes the source
 behavior from a claim of host-power-loss durability. [Storage overview][durable-readme],
-[Corenius storage open](../../../crates/sqlite-controller/src/lib.rs).
+[Corenius storage open](../../../controller/src/lib.rs).
 
 The existing experimental Pi coding agent demonstrates the library end to end:
 SQLite sessions, committed conversation views, subagent navigation and a task
@@ -149,26 +149,26 @@ prototype materially understates the existing implementation.
 
 | Layer | Source observation | Implication for reuse |
 | --- | --- | --- |
-| Terminal prototype | `Coordinator`, `ProviderSession`, `ToolRegistryLike`, policy/approval handling and append-only transcript in `src/core`; Insula shell runner in `src/insula.rs` | Durable offers richer recovery and conversation machinery, but inserting it changes who owns the agent loop. |
-| Current local controller | Rust `crates/sqlite-controller`, private SQLite/socket, principal/epoch authority, expected revisions, argument-checked idempotency receipts, operation journal | Retain this as authority. A Pi conversation database has a different job. |
+| Terminal prototype | `Coordinator`, `ProviderSession`, `ToolRegistryLike`, policy/approval handling and append-only transcript in `terminal_agent/src/core`; Insula shell runner in `terminal_agent/src/insula.rs` | Durable offers richer recovery and conversation machinery, but inserting it changes who owns the agent loop. |
+| Current local controller | Rust `controller`, private SQLite/socket, principal/epoch authority, expected revisions, argument-checked idempotency receipts, operation journal | Retain this as authority. A Pi conversation database has a different job. |
 | Independent execution supervisor | Operation-bound execution identity, lookup before ambiguous dispatch, cancellation tombstones, namespace and pidfd validation, capacity held on unknown effects | A connection-scoped Env daemon cannot replace this lifecycle. |
 | Git/Kata integration | Admitted source identity, isolated private repositories, retained immutable candidates, independent verification, acceptance and conditional fast-forward effects | Pi tools may request scoped actions; they must not turn transcript completion into acceptance or landing. |
 | Operator views/native bindings | Authenticated projections, retained public inputs, native identity checks and explicit coverage gaps | Pi's views and output bounds offer design ideas, but their transient observation stream is not evidence coverage. |
 
-Source map: [runner](../../../src/core/runner.rs),
-[transcript](../../../src/core/transcript.rs),
-[controller](../../../crates/sqlite-controller/src/lib.rs),
-[runtime reconciler](../../../crates/sqlite-controller/src/runtime.rs),
-[supervisor](../../../crates/sqlite-controller/src/supervisor.rs),
-[Git effects](../../../crates/sqlite-controller/src/git.rs),
-[Git workspace backend](../../../crates/sqlite-controller/src/git_workspace.rs),
-[monitor](../../../crates/sqlite-controller/src/monitor.rs).
+Source map: [runner](../../../terminal_agent/src/core/runner.rs),
+[transcript](../../../terminal_agent/src/core/transcript.rs),
+[controller](../../../controller/src/lib.rs),
+[runtime reconciler](../../../controller/src/runtime.rs),
+[supervisor](../../../controller/src/supervisor.rs),
+[Git effects](../../../controller/src/git.rs),
+[Git workspace backend](../../../controller/src/git_workspace.rs),
+[monitor](../../../controller/src/monitor.rs).
 
 **Qualification limit.** The current [implementation status](../../efforts/sqlite-controller/IMPLEMENTATION-STATUS.md)
 says the complete live two-worker baseline remains unqualified. The richer
 PostgreSQL/Temporal roadmap is parked historical material. The interfaces above
 are observed implementation, not a new claim of complete production readiness.
-Likewise the original `src/insula.rs` boundary and the controller supervisor's
+Likewise the original `terminal_agent/src/insula.rs` boundary and the controller supervisor's
 stricter namespace boundary are different implementations; don't infer the
 supervisor's properties from the terminal prototype's shell plan.
 
@@ -189,7 +189,7 @@ supervisor's properties from the terminal prototype's shell plan.
 
 Source: [Corenius domain language](../../../CONTEXT.md), [Pi concepts][durable-readme],
 [submission implementation][submissions], [environment contract][env-contract],
-[Corenius receipts](../../../crates/sqlite-controller/src/lib.rs).
+[Corenius receipts](../../../controller/src/lib.rs).
 
 ## Reuse options, ranked
 
@@ -212,10 +212,10 @@ Source: [Corenius domain language](../../../CONTEXT.md), [Pi concepts][durable-r
   `completing` states for presentation or worker-local orchestration where they
   reduce ambiguity. Do not add a second global work allocator.
 
-Concrete seams: terminal [tool registry](../../../src/tools.rs) and
-[runner](../../../src/core/runner.rs); controller
-[bounded query/view](../../../crates/sqlite-controller/src/query.rs) and
-[monitor](../../../crates/sqlite-controller/src/monitor.rs); future environment
+Concrete seams: terminal [tool registry](../../../terminal_agent/src/tools.rs) and
+[runner](../../../terminal_agent/src/core/runner.rs); controller
+[bounded query/view](../../../controller/src/query.rs) and
+[monitor](../../../controller/src/monitor.rs); future environment
 adapter. Sources: [tool recovery][tool], [environment contract][env-contract],
 [Env tests][env-tests], [task specification][spec].
 

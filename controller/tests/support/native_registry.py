@@ -17,6 +17,7 @@ _temp_policy_tempfile.tempdir = _temp_policy_root
 _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 BIN=pathlib.Path('/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin')
 HERE=pathlib.Path(__file__).resolve().parents[2]
+REPO=_temp_policy_file.parents[1]
 ORIGIN=pathlib.Path('/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg')
 TOKEN='operator-registry-secret'; SUPERVISOR='native-executor-secret'; CONTROL='native-controlplane-secret'
 SCHEMA='e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455'
@@ -866,7 +867,7 @@ def run(topology):
    release.set();event_b_release.set();cancel_hold.set();owned.stop();provider.shutdown();provider.server_close();guard.close()
    if os.environ.get('CORENIUS_TEST_RETAIN_RAW')=='1' or os.environ.get('CORENIUS_TEST_EMPTY_RESTART')=='1' or os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1' or os.environ.get('CORENIUS_TEST_PRE_UNSUBSCRIBE_FIXTURE')=='1' or os.environ.get('CORENIUS_TEST_CONTROL_CENTER')=='1' or os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1':
     import tarfile
-    destination=HERE.parents[1]/'.scratch/sqlite-controller/native';destination.mkdir(parents=True,exist_ok=True)
+    destination=REPO/'.scratch/sqlite-controller/native';destination.mkdir(parents=True,exist_ok=True)
     with tarfile.open(destination/(topology+'-'+r.name+'.tar.gz'),'w:gz') as archive:archive.add(r,arcname=r.name)
    for log in list(r.glob('*.stderr'))+list(r.glob('*/**/output.log')):
     if log.stat().st_size:print('owned_log',log.name,log.read_text()[-3000:],flush=True)

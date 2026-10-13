@@ -9,7 +9,7 @@ runtime, a Codex direct Responses transport, permissioned tools, and an
 The retained SQLite controller, Kata/Git integrations, Codex runtime adapters and
 MAC terminal views now live in this repository. See
 [implementation status and code map](docs/efforts/sqlite-controller/IMPLEMENTATION-STATUS.md),
-[controller usage](crates/sqlite-controller/README.md) and
+[controller usage](controller/README.md) and
 [operator controls](docs/efforts/mac-operator-center/README.md).
 The complete live two-worker baseline remains unqualified; see the status record
 before treating a source landing as product acceptance.
@@ -64,7 +64,9 @@ fetching missing JSONL data into `.scratch/aime-benchmark/data/` and writing
 to refetch the GAIR data cache.
 
 `eval aime-sanity` runs a tracked five-case AIME sanity set from
-`evals/aime_sanity.jsonl` through the TraeCLI ACP provider and writes
+`terminal_agent/evals/aime_sanity.jsonl`. The CLI keeps the documented
+root-relative `evals/aime_sanity.jsonl` argument working from root commands.
+It sends prompts through the TraeCLI ACP provider and writes
 `samples.jsonl`, `summary.json`, and `triage.md` under `.scratch/aime-sanity/latest`
 by default. The default run skips the known timeout probe and evaluates five
 representative pass cases, including three easy cases; add

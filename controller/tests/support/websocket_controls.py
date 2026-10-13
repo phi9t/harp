@@ -68,7 +68,7 @@ finally:
   if p.poll() is None:signal.pidfd_send_signal(fd,signal.SIGTERM)
   p.wait(timeout=5);os.close(fd);records.append({'pid':p.pid,'start_stat':start,'argv':args,'exit':p.returncode,'waited':True})
  (root/'resources.json').write_text(json.dumps(records,indent=2))
- destination=pathlib.Path(__file__).resolve().parents[4]/'.scratch/sqlite-controller/05-repair3/fixtures';destination.mkdir(parents=True,exist_ok=True)
+ destination=_temp_policy_file.parents[1]/'.scratch/sqlite-controller/05-repair3/fixtures';destination.mkdir(parents=True,exist_ok=True)
  archive=destination/(root.name+'.tar.gz')
  with tarfile.open(archive,'w:gz') as out:out.add(root,arcname=root.name)
  print('retained_websocket_fixture',json.dumps({'root':str(root),'archive':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'resources':records}),flush=True)

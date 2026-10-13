@@ -1,8 +1,8 @@
 # 01 explicit-controller-launch: Make controller launch inputs explicit
 
 Type: task
-Status: open
-Owner:
+Status: resolved
+Owner: TRAE
 Blocked by:
 Claimed:
 
@@ -16,12 +16,12 @@ Triage: ready-for-agent
 
 ## Acceptance
 
-- [ ] Launch-only mode accepts an explicit binary directory and uses the existing controller, supervisor and gate executable identities from that directory.
-- [ ] Missing or non-executable required binaries fail clearly before creating sessions or starting services; no mixing with another target directory or implicit Cargo invocation occurs.
-- [ ] The existing start convenience command preserves target-directory selection, builds explicitly, and delegates to the same launch implementation.
-- [ ] Pinned executable evidence, relay discovery, argument handling, process ownership and existing operational behavior are preserved.
-- [ ] Existing launcher and relay suites pass; new launcher behavior has meaningful failing-then-passing evidence through the existing public CLI seam, without real-model calls.
-- [ ] Current launcher documentation covers both modes and retains live-baseline qualification caveats.
+- [x] Launch-only mode accepts an explicit binary directory and uses the existing controller, supervisor and gate executable identities from that directory.
+- [x] Missing or non-executable required binaries fail clearly before creating sessions or starting services; no mixing with another target directory or implicit Cargo invocation occurs.
+- [x] The existing start convenience command preserves target-directory selection, builds explicitly, and delegates to the same launch implementation.
+- [x] Pinned executable evidence, relay discovery, argument handling, process ownership and existing operational behavior are preserved.
+- [x] Existing launcher and relay suites pass; new launcher behavior has meaningful failing-then-passing evidence through the existing public CLI seam, without real-model calls.
+- [x] Current launcher documentation covers both modes and retains live-baseline qualification caveats.
 
 ## Exclusions
 
@@ -37,3 +37,4 @@ Linux only. Use an isolated working tree with one writer. Preserve existing work
 
 ## Comments
 - 2026-10-07T08:23:48Z codex: Publication normalization preserves ready-for-agent triage, acceptance and blocker graph; implementation remains unstarted.
+- 2026-10-13T00:10:32Z TRAE: implemented explicit `--binary-dir` launch-only mode with required adjacent `corenius-sqlite-controller`, `corenius-attempt-supervisor` and `corenius-attempt-gate` executables. Verified with `python3 tools/temp_root.py -- sh tools/agents/checks.d/75-controller-python.sh` and `python3 tools/temp_root.py -- sh tools/agents/checks.d/70-sqlite-controller.sh`, both exit 0.

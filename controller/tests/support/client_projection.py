@@ -89,5 +89,5 @@ with tempfile.TemporaryDirectory(prefix='cnr-projection-') as directory:
   if proc.poll() is None:signal.pidfd_send_signal(fd,signal.SIGTERM)
   proc.wait(timeout=5);os.close(fd)
   print('owned_projection_resources',json.dumps([{'pid':proc.pid,'start_stat':start,'exit':proc.returncode,'executed_binary':{'path':str(binary),'sha256':hashlib.sha256(binary.read_bytes()).hexdigest()},'waited':True}]),flush=True)
-  destination=pathlib.Path(__file__).resolve().parents[4]/'.scratch/sqlite-controller/05/projection-fixtures';destination.mkdir(parents=True,exist_ok=True)
+  destination=_temp_policy_file.parents[1]/'.scratch/sqlite-controller/05/projection-fixtures';destination.mkdir(parents=True,exist_ok=True)
   with tarfile.open(destination/(root.name+'.tar.gz'),'w:gz') as archive:archive.add(root,arcname=root.name)

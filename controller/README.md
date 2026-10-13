@@ -3,7 +3,7 @@
 The retained disposable real-model demo is launched from the repository root:
 
 ```sh
-python3 tools/agents/sqlite_baseline.py start
+python3 controller/launch/sqlite_baseline.py start
 ```
 
 It builds into its own scratch target, creates a new `corenius-baseline-<run-id>`
@@ -30,20 +30,33 @@ is not a completed trial. `result.json` appears only after all three tasks land;
 created tmux session, services, candidate artifacts, proofs, dashboard snapshots
 and process records for observation. Existing sessions and repositories are
 preserved. A separate manual lead input can be sent with
-`python3 tools/agents/sqlite_baseline.py input RUN_DIRECTORY --file UTF8_INPUT`.
+`python3 controller/launch/sqlite_baseline.py input RUN_DIRECTORY --file UTF8_INPUT`.
+Operators with prebuilt controller artifacts can skip Cargo by supplying the
+directory that contains `corenius-sqlite-controller`,
+`corenius-attempt-supervisor`, and `corenius-attempt-gate`:
+
+```sh
+python3 controller/launch/sqlite_baseline.py start --binary-dir .scratch/sqlite06-happy-path/target/debug
+```
+
+The launcher validates those three executables before creating a tmux session or
+starting services. `--binary-dir` is mutually exclusive with `--target-dir`.
 Every invocation starts a fresh disposable project. This demonstration does not
 qualify the permanent baseline, backup/restore, or broader failure recovery.
 
 Standalone storage and deterministic supervised runtime baseline; no PostgreSQL
-or Temporal dependency or service. Build and
-run from this directory, or pass `--manifest-path crates/sqlite-controller/Cargo.toml`.
+or Temporal dependency or service. Build and run from this directory, or pass
+`--manifest-path controller/Cargo.toml` from the repository root. The root Cargo
+workspace owns the lockfile and shared target directory, so component-local
+commands still place binaries under `../target/debug`.
 
 ```sh
 cargo test --locked --offline --features fault-injection
 cargo build --locked --offline
-mkdir -m 700 /tmp/corenius-private
+export RUN_ROOT="$(python3 ../tools/temp_root.py)"
+mkdir -m 700 "$RUN_ROOT/corenius-private"
 # Set a retained random CORENIUS_OPERATOR_TOKEN through your secret handling.
-./target/debug/corenius-sqlite-controller /tmp/corenius-private/state.db /tmp/corenius-private/api.sock
+../target/debug/corenius-sqlite-controller "$RUN_ROOT/corenius-private/state.db" "$RUN_ROOT/corenius-private/api.sock"
 ```
 
 The database directory must already exist on persistent supported local storage
@@ -75,7 +88,7 @@ request = {
     },
 }
 with socket.socket(socket.AF_UNIX) as s:
-    s.connect("/tmp/corenius-private/api.sock")
+    s.connect(os.environ["RUN_ROOT"] + "/corenius-private/api.sock")
     s.sendall((json.dumps(request) + "\n").encode())
     print(s.makefile().readline())
 ```
@@ -171,7 +184,7 @@ For example, create a private configuration with an operator-selected executable
 and literal argument vector (no shell expansion):
 
 ```json
-{"root":"/tmp/corenius-runtime/executions","profile":{"executable":"/usr/bin/sleep","args":["120"]}}
+{"root":"/owned/corenius-runtime/executions","profile":{"executable":"/usr/bin/sleep","args":["120"]}}
 ```
 
 The root directory must already exist, use its canonical absolute path, and be
@@ -180,9 +193,10 @@ dedicated to this controller deployment. Set distinct retained secrets
 handling. Start these as separate services:
 
 ```sh
-./target/debug/corenius-attempt-supervisor /tmp/corenius-runtime/supervisor.json /tmp/corenius-runtime/supervisor.sock
-CORENIUS_SUPERVISOR_SOCKET=/tmp/corenius-runtime/supervisor.sock \
-  ./target/debug/corenius-sqlite-controller /tmp/corenius-private/state.db /tmp/corenius-private/api.sock
+export RUN_ROOT="$(python3 ../tools/temp_root.py)"
+../target/debug/corenius-attempt-supervisor "$RUN_ROOT/corenius-runtime/supervisor.json" "$RUN_ROOT/corenius-runtime/supervisor.sock"
+CORENIUS_SUPERVISOR_SOCKET="$RUN_ROOT/corenius-runtime/supervisor.sock" \
+  ../target/debug/corenius-sqlite-controller "$RUN_ROOT/corenius-private/state.db" "$RUN_ROOT/corenius-private/api.sock"
 ```
 
 The configured daemon automatically drains and reconciles all projects on startup
@@ -261,8 +275,8 @@ unavailable, rather than silently skipping isolation):
 
 ```sh
 sh tools/agents/checks.d/70-sqlite-controller.sh
-cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml --check
-cargo clippy --manifest-path crates/sqlite-controller/Cargo.toml --locked --offline --all-targets --features fault-injection -- -D warnings
+cargo fmt --manifest-path controller/Cargo.toml --check
+cargo clippy --manifest-path controller/Cargo.toml --locked --offline --all-targets --features fault-injection -- -D warnings
 ```
 
 
@@ -279,15 +293,15 @@ baseline; an empty `servers` array is a schema diagnostic, not a qualified runti
 {
   "schema_migration":"1-to-2",
   "topology":"shared",
-  "transport_root":"/tmp/corenius-native/t-app",
+  "transport_root":"/owned/corenius-native/t-app",
   "servers":[{
     "id":"native",
-    "supervisor_socket":"/tmp/corenius-native/controlplanes.sock",
+    "supervisor_socket":"/owned/corenius-native/controlplanes.sock",
     "auth_ref":"CONTROLPLANE_SECRET",
-    "transport_root":"/tmp/corenius-native/t-app",
-    "worker_supervisor_socket":"/tmp/corenius-native/workers.sock",
+    "transport_root":"/owned/corenius-native/t-app",
+    "worker_supervisor_socket":"/owned/corenius-native/workers.sock",
     "worker_auth_ref":"CORENIUS_SUPERVISOR_TOKEN",
-    "worker_transport_root":"/tmp/corenius-native/t-exec",
+    "worker_transport_root":"/owned/corenius-native/t-exec",
     "schema_digest":"e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455"
   }]
 }

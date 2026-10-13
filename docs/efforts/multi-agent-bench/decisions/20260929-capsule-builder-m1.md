@@ -9,7 +9,7 @@ Supersedes:
 (host `/usr`, labelled non-hermetic), `host-ro` (host paths bound read-only, fingerprint-digested, non-hermetic) and
 `tree` (copied into a content-addressed store, hermetic). The root is a bwrap tmpfs, layers are bound at fixed paths,
 env is an allowlist, net defaults to none. Requests live in `bench/insula/requests/`; `toolchains.json` is the first.
-`src/insula.rs` is untouched.
+`terminal_agent/src/insula.rs` is untouched.
 
 ## Evidence (lead ran everything)
 

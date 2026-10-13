@@ -155,7 +155,7 @@ These are proposals for evaluation, not decisions to replace current Corenius co
 
 The highest-value borrowing is the **failure matrix and tests**, even if no TypeScript ships: interrupted pre-intent vs post-intent effects, safe/unsafe replay, unknown persistence outcomes, cancellation racing a commit, child outcome held during descendants, and unavailable definitions after restart. A direct runtime adoption needs a protocol for immutable operation identity, authority revocation, workspace identity, external receipt reconciliation, and crash-safe host ownership beyond what the package supplies.
 
-Corenius context: the current retained controller is Rust in `crates/sqlite-controller`; Python tools are launch/operator adapters. Its live two-worker qualification remains explicitly incomplete in `docs/efforts/sqlite-controller/IMPLEMENTATION-STATUS.md`. Neither that roadmap nor Corenius's glossary should be treated as already implemented guarantees when comparing against pi. This report does not audit those implementations; the parent spike owns that comparison.
+Corenius context: the current retained controller is Rust in `controller`; Python tools are launch/operator adapters. Its live two-worker qualification remains explicitly incomplete in `docs/efforts/sqlite-controller/IMPLEMENTATION-STATUS.md`. Neither that roadmap nor Corenius's glossary should be treated as already implemented guarantees when comparing against pi. This report does not audit those implementations; the parent spike owns that comparison.
 
 ## Maturity, dependencies, and licensing
 

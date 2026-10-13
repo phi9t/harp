@@ -1319,7 +1319,7 @@ def build_controller(root: Path, budget=None) -> dict:
                     "cargo",
                     "build",
                     "--manifest-path",
-                    str(tasklib.ROOT / "crates/sqlite-controller/Cargo.toml"),
+                    str(tasklib.ROOT / "controller/Cargo.toml"),
                     "--target-dir",
                     str(target),
                     "--locked",
@@ -1341,7 +1341,7 @@ def build_controller(root: Path, budget=None) -> dict:
     supervisor = target / "debug/corenius-attempt-supervisor"
     gate = target / "debug/corenius-attempt-gate"
     record = {
-        "command": "cargo build --manifest-path crates/sqlite-controller/Cargo.toml --target-dir .scratch/controller-backed-bench/target --locked --offline --bins",
+        "command": "cargo build --manifest-path controller/Cargo.toml --target-dir .scratch/controller-backed-bench/target --locked --offline --bins",
         "exit": proc.returncode,
         "seconds": elapsed,
         "log": str(log),

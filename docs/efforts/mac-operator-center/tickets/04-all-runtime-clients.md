@@ -12,7 +12,7 @@ product worker slots once their runtime bindings exist.
 
 ## Requirements
 
-Own tools/agents/mac_tmux.py and tools/agents/test_mac_tmux.py only. Add optional
+Own controller/operator/mac_tmux.py and controller/operator/mac_tmux_test.py only. Add optional
 runtime_bindings_path to config version1. Read the explicitly configured public
 JSON roster on each reconciliation: {observed_at, bindings:[{role,thread,cwd,
 endpoint,current}]}. Each binding includes its concrete endpoint and canonical

@@ -10,9 +10,9 @@ admit authority. The originals are archived separately and remain unedited.
 
 ## Compatibility before implementation
 
-The retained product is I2 (`crates/sqlite-controller`), with Kata as its work
+The retained product is I2 (`controller`), with Kata as its work
 ledger and retained Git seams. Git is required; optional jj support remains
-pending its own qualification. I3 (`crates/team-control-plane`) is explicitly
+pending its own qualification. I3 (`experiments/team_control_plane`) is explicitly
 parked by the owner decision of 2026-10-04. The selected design instead proposes
 GitMarkdownWorkStore, PostgreSQL authority and Temporal continuation. This plan
 reopens that choice for ticket 01; it neither supersedes that owner decision nor

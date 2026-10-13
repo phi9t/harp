@@ -1,8 +1,10 @@
 # Lab 2: Temporal wait, restart, rollover and replay
 
 Source read: `b7bee20e00c822feec48362a1dbd8d62fe9c3641`.
-The executable assertions are in
+At that revision, the executable assertions are in
 `crates/team-control-plane/tests/temporal.rs`.
+After the semantic layout migration, the active relocated path is
+`experiments/team_control_plane/tests/temporal.rs`.
 The bridge and workflows are in `src/temporal.rs` under that component.
 The exact Rust SDK/client/workflow/macros dependencies are version 1.0.0;
 the lockfile resolves SDK Core 0.9.0.
@@ -198,7 +200,7 @@ Create an owned evidence directory and keep it outside `/tmp`:
 
 ```bash
 python3 tools/temp_root.py -- mkdir -p "$PWD/.scratch/engineering-profile-labs/mailbox-focused"
-python3 tools/temp_root.py -- env CARGO_TARGET_DIR="$PWD/.scratch/engineering-profile-labs/cargo-target" TEMPORAL_FIXTURE_EVIDENCE="$PWD/.scratch/engineering-profile-labs/mailbox-focused" bash crates/team-control-plane/tests/run-temporal.sh --offline --test temporal real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint -- --exact --test-threads=1
+python3 tools/temp_root.py -- env CARGO_TARGET_DIR="$PWD/.scratch/engineering-profile-labs/cargo-target" TEMPORAL_FIXTURE_EVIDENCE="$PWD/.scratch/engineering-profile-labs/mailbox-focused" bash experiments/team_control_plane/tests/run-temporal.sh --offline --test temporal real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint -- --exact --test-threads=1
 ```
 
 Prefer the full runner for indexed, deadline-bound acceptance evidence.

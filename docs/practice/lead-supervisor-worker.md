@@ -139,7 +139,7 @@ it may be landed.
 ## What this maps to
 
 - The worker is a provider process. Corenius already speaks ACP to `traecli acp
-  serve` and has a `ProcessSupervisor` (`src/supervisor.rs`); the runtime version
+  serve` and has a `ProcessSupervisor` (`terminal_agent/src/supervisor.rs`); the runtime version
   of this form factor is corenius spawning the worker and running the
   supervisor's checks itself (roadmap M4).
 - Per the interception spike, claims and path limits are advisory at the

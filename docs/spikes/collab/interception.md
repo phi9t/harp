@@ -11,7 +11,7 @@ provider may never use. Corenius today does not implement it at all.
 
 ## 1. What corenius implements today
 
-- **[V]** `initialize` advertises `"clientCapabilities": {}` (`src/provider/acp.rs:199`). No `fs`, no
+- **[V]** `initialize` advertises `"clientCapabilities": {}` (`terminal_agent/src/provider/acp.rs:199`). No `fs`, no
   `terminal`. A spec-following agent must then not call `fs/*` or `terminal/*` on us.
 - **[V]** Corenius handles exactly three inbound shapes: responses to ids 1/2 (`expect_response`,
   `acp.rs:320-338`), the response to id 3 (`acp.rs:247`), and `session/update` notifications, of which
@@ -23,19 +23,19 @@ provider may never use. Corenius today does not implement it at all.
   the prompt response and ends the turn early (`acp.rs:247`). Pinned by test
   `agent_request_reusing_prompt_id_ends_turn_early`.
 - **[V]** Tool declarations and the executor are discarded for ACP (`acp.rs:75-77`, `104-106`). The
-  provider runs its own tool loop; `PolicyGate` (`src/core/policy.rs:27-46`) and the tool registry
-  (`src/tools.rs:44-103`, only `read_file` and `shell`, no write tool) never see its actions.
+  provider runs its own tool loop; `PolicyGate` (`terminal_agent/src/core/policy.rs:27-46`) and the tool registry
+  (`terminal_agent/src/tools.rs:44-103`, only `read_file` and `shell`, no write tool) never see its actions.
 - **[V]** The provider process is spawned directly on the host with `current_dir(cwd)`
   (`acp.rs:161-169`), not inside insula. Only corenius's own `shell` tool goes through
-  `InsulaSandbox` (`src/cli.rs:510-521`).
+  `InsulaSandbox` (`terminal_agent/src/cli.rs:510-521`).
 - **[V]** Insula plan: rootfs `--ro-bind` to `/`, the whole workspace `--bind` read-write at
-  `/workspace` (`src/insula.rs:177-182`), `--unshare-pid` only (no `--unshare-net`, no user/ipc unshare;
+  `/workspace` (`terminal_agent/src/insula.rs:177-182`), `--unshare-pid` only (no `--unshare-net`, no user/ipc unshare;
   `insula.rs:174-200`). There is no per-path write scope today, and the plan is built per shell command,
   not per provider.
 - **[V]** The Codex provider is not ACP: it calls the Responses endpoint directly and runs tools through
-  corenius's executor (`src/provider/codex.rs:65,116-118,268`). Its writes are as gateable as our tool
+  corenius's executor (`terminal_agent/src/provider/codex.rs:65,116-118,268`). Its writes are as gateable as our tool
   registry (which has no write tool; `shell` is policy-`Ask`, `policy.rs:32-33`). Only TraeCLI is ACP.
-- **[V]** `scripted_acp.rs` (`tests/support/scripted_acp.rs:54-59`) scripts only text, error, stall and
+- **[V]** `scripted_acp.rs` (`terminal_agent/tests/support/scripted_acp.rs:54-59`) scripts only text, error, stall and
   malformed-line steps; it cannot emit agent requests, so this spike added its own fixture inside
   `tests/interception.rs`.
 

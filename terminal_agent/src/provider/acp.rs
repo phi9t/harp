@@ -566,7 +566,10 @@ mod tests {
         let profile = AcpSessionProfile::default();
         assert!(profile.serve_args().is_empty());
         let params = profile.session_new_params(&PathBuf::from("/run/corenius-tmp/ws"));
-        assert_eq!(params, json!({"cwd": "/run/corenius-tmp/ws", "mcpServers": []}));
+        assert_eq!(
+            params,
+            json!({"cwd": "/run/corenius-tmp/ws", "mcpServers": []})
+        );
     }
 
     #[test]

@@ -1,6 +1,6 @@
 # Semantic polyglot repository layout
 
-Status: specification published; implementation not started.
+Status: implementation complete on branch `worktree-semantic_grouping_refactor`; tickets 01-06 are resolved with final repository gate, optional parked-control-plane gate and independent review evidence green. Push, pull-request creation and merge remain human-owned.
 
 ## Intent
 
@@ -9,6 +9,10 @@ Agree a Corenius-only principle that first-party directories express conceptual 
 ## Authority
 
 The user authorized the design interview and recording its settled decisions. Product implementation, commits, pushes, pull requests and merges are not authorized by this interview.
+
+## Implementation authority update - 2026-10-13
+
+The user later authorized implementation and a local commit for this semantic grouping refactor. No push, pull-request creation or merge authority was granted.
 
 ## Classification
 
@@ -94,3 +98,13 @@ Published SPEC.md to the durable local tracker with Label: ready-for-agent. Exis
 No Rust/Python runtime tests were run or product sources changed. Next phase: blocker-linked tickets after specification review. Git publication and merge authority remain absent.
 
 Independent adversarial specification review found no blocking gaps after reconciliation. This is design/specification evidence only, not proof of migration behavior.
+
+## Implementation completion - 2026-10-13
+
+The semantic grouping refactor moved the terminal agent to `terminal_agent/`, the active SQLite-backed controller to `controller/`, and the parked PostgreSQL/Temporal implementation to `experiments/team_control_plane/`. Controller-owned launchers, relay helpers, operator views and their tests moved with the controller; repository engineering tools remain under `tools/agents/`.
+
+Cargo consolidation succeeded with all three Rust packages in the root workspace, `terminal_agent` as the only default member and the root `Cargo.lock` as the authoritative lockfile. Component-local package and binary identities are preserved. The parked control plane remains outside default Cargo selection while retaining its explicit service-backed gate.
+
+Final evidence: `cargo metadata --locked --offline --format-version 1 --no-deps`, `cargo run --locked --offline -- --help`, `cargo run --locked --offline -- eval aime-sanity --help`, root default `cargo test --locked --offline -- --test-threads=1`, `sh tools/agents/checks.d/75-controller-python.sh`, `sh tools/agents/checks.d/70-sqlite-controller.sh`, `python3 bench/harness/test_run.py`, `python3 tools/agents/test_check.py`, `python3 tools/test_temp_root.py`, `cargo test --locked --offline --manifest-path experiments/team_control_plane/Cargo.toml --no-run`, `bash -n experiments/team_control_plane/tests/run-temporal.sh`, optional `CHECK_TEAM_CONTROL_PLANE=1 sh tools/agents/checks.d/70-team-control-plane.sh`, `cargo fmt --all -- --check`, `git diff --check`, and final `sh tools/agents/check.sh` all exited 0 under `python3 tools/temp_root.py --`.
+
+Independent Standards and Spec reviews passed after repairs: the root `Cargo.toml` is tracked, and historical or commit-specific path references were restored or annotated instead of silently rewritten. The remaining qualification caveat is unchanged: `experiments/team_control_plane/` is retained as parked experimental code, not revived as the active product or included in the default Cargo member set.

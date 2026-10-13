@@ -1,8 +1,8 @@
 # 04 relocate-parked-control-plane: Relocate the parked control plane
 
 Type: task
-Status: open
-Owner:
+Status: resolved
+Owner: TRAE
 Blocked by:
 Claimed:
 
@@ -16,13 +16,13 @@ Triage: ready-for-agent
 
 ## Acceptance
 
-- [ ] The retained implementation moves into the experimental boundary with its tests, SQL/runtime support and documentation relationships intact.
-- [ ] Current navigation clearly states parked, preserved and unfinished status; no frozen unaccepted source is imported and no existing evidence is deleted.
-- [ ] Preserve its package/binary identities, current service-backed runner semantics and failure behavior.
-- [ ] The engineering repository gate continues invoking the PostgreSQL/Temporal check; relocation does not make it optional.
-- [ ] The direct experimental verification entry point works after relocation and relative-root/asset assumptions are corrected.
-- [ ] Keep the experiment outside default Cargo product selection while retaining its independent workspace until consolidation.
-- [ ] Run service-backed verification when prerequisites are available; record missing Docker, service images or dependencies as unverified, never passing, evidence.
+- [x] The retained implementation moves into the experimental boundary with its tests, SQL/runtime support and documentation relationships intact.
+- [x] Current navigation clearly states parked, preserved and unfinished status; no frozen unaccepted source is imported and no existing evidence is deleted.
+- [x] Preserve its package/binary identities, current service-backed runner semantics and failure behavior.
+- [x] The engineering repository gate continues invoking the PostgreSQL/Temporal check; relocation does not make it optional.
+- [x] The direct experimental verification entry point works after relocation and relative-root/asset assumptions are corrected.
+- [x] Keep the experiment outside default Cargo product selection while retaining its independent workspace until consolidation.
+- [x] Run service-backed verification when prerequisites are available; record missing Docker, service images or dependencies as unverified, never passing, evidence.
 
 ## Exclusions
 
@@ -38,3 +38,4 @@ Linux only. Use an isolated working tree with one writer. Preserve existing work
 
 ## Comments
 - 2026-10-07T08:23:48Z codex: Publication normalization preserves ready-for-agent triage, acceptance and blocker graph; implementation remains unstarted.
+- 2026-10-13T00:10:32Z TRAE: moved the parked implementation to `experiments/team_control_plane/`, retained its opt-in repository gate registration and kept it out of default Cargo selection. Verified `cargo test --locked --offline --manifest-path experiments/team_control_plane/Cargo.toml --no-run`, `bash -n experiments/team_control_plane/tests/run-temporal.sh` and `CHECK_TEAM_CONTROL_PLANE=1 sh tools/agents/checks.d/70-team-control-plane.sh`, all under `python3 tools/temp_root.py --`, exit 0.

@@ -298,7 +298,7 @@ def protocol(kind, timeout):
             "network_isolated": True,
             "credentials_mounted": False,
             "provider_turns": 0,
-            "boundary_source": "crates/sqlite-controller/tests/support/native_init.py",
+            "boundary_source": "controller/tests/support/native_init.py",
         }
         try:
             if kind == "app-server":

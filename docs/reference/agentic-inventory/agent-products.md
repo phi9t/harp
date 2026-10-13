@@ -19,18 +19,18 @@ Checkouts:
 - `corenius-aime-hardening` (branch `aime-harness-hardening`, clean, same commit).
 - `corenius-collab-spike` (branch `claude/collab-spike`, 3 commits on the same base).
 
-**Problem.** A standalone Rust terminal agent (`corenius/README.md`, about 5.3k lines in `src/`). The spike's `docs/practice/README.md` also designates it the home for agentic-engineering practice.
+**Problem.** A standalone Rust terminal agent (`corenius/README.md`, about 5.3k lines now under `terminal_agent/src/`). The spike's `docs/practice/README.md` also designates it the home for agentic-engineering practice.
 
 **Design.**
-- Turn-scoped runtime: `src/core/{types,runner,policy,transcript}.rs`. `ProviderSession` is a trait with `run_turn` and `stream_turn`. Events are `AssistantDelta | ToolResult | Done`.
+- Turn-scoped runtime: `terminal_agent/src/core/{types,runner,policy,transcript}.rs`. `ProviderSession` is a trait with `run_turn` and `stream_turn`. Events are `AssistantDelta | ToolResult | Done`.
 - Providers:
-  - `src/provider/codex.rs` is the direct Responses transport.
-  - `src/provider/acp.rs` speaks JSON-RPC to `traecli acp serve`. It is prompt-only, one process per prompt, with no Corenius-side tool loop (inference from `run_acp_prompt_inner`).
-- `PolicyGate` (`src/core/policy.rs`, 47 lines) auto-allows read-only tools and returns `Ask` for writes and shell. It has no scopes, no remembered decisions and no audit log.
-- `src/insula.rs`: bubblewrap rootfs sandbox with a digest-enforced selection file.
-- Also present: TUI (`src/tui.rs`), supervisor (`src/supervisor.rs`), `docs/observability/durable-execution.md` (design only).
+  - `terminal_agent/src/provider/codex.rs` is the direct Responses transport.
+  - `terminal_agent/src/provider/acp.rs` speaks JSON-RPC to `traecli acp serve`. It is prompt-only, one process per prompt, with no Corenius-side tool loop (inference from `run_acp_prompt_inner`).
+- `PolicyGate` (`terminal_agent/src/core/policy.rs`, 47 lines) auto-allows read-only tools and returns `Ask` for writes and shell. It has no scopes, no remembered decisions and no audit log.
+- `terminal_agent/src/insula.rs`: bubblewrap rootfs sandbox with a digest-enforced selection file.
+- Also present: TUI (`terminal_agent/src/tui.rs`), supervisor (`terminal_agent/src/supervisor.rs`), `docs/observability/durable-execution.md` (design only).
 
-**AIME harness** (`src/eval.rs`, 1934 lines; `src/cli.rs`; `evals/aime_sanity.jsonl`).
+**AIME harness** (`terminal_agent/src/eval.rs`, 1934 lines; `terminal_agent/src/cli.rs`; `terminal_agent/evals/aime_sanity.jsonl`).
 - Commands: `eval aime`, `aime-sanity`, `aime-replay`, `aime-regrade`.
 - Data: GAIR AIME 2024/2025-I/2025-II (60 problems), fetched into gitignored `.scratch/aime-benchmark/data/` and count-validated. Tracked sanity set has 6 lines (5 pass cases plus a skipped `timeout-probe`).
 - Prompt forbids tools and skills and requires a final `FINAL: <integer>`. The scorer takes the last `FINAL:` line and its first integer of at most 3 digits. There is no last-number fallback. Score is binary.
@@ -38,7 +38,7 @@ Checkouts:
 - Artifacts per run: `samples.jsonl` (appended per sample), `manifest.json` (argv, git commit and `git status --short`, dataset sha256, model, timeout, mode, provider profile), `summary.json`, `run_metrics.json`, `triage.md`.
 - Offline regrade writes independent artifacts plus a scorer-delta report.
 - Uncommitted change in `corenius` (7 files, about +686/-74): `AcpSessionProfile` disables 8 features and 20 tools, sends empty skills/MCP in `session/new`, pins reasoning effort, adds idle-stall detection with retries, raises the default timeout from 300 s to 600 s.
-- Scripted fake ACP server: `tests/support/scripted_acp.rs`. Steps are `Success`, `ProviderError`, `Stall`, `PartialThenStall`, `MalformedLine`. It validates argv and prompt shape, and has `assert_consumed`.
+- Scripted fake ACP server: `terminal_agent/tests/support/scripted_acp.rs`. Steps are `Success`, `ProviderError`, `Stall`, `PartialThenStall`, `MalformedLine`. It validates argv and prompt shape, and has `assert_consumed`.
 - Lineage: DeepSeek Harness (fresh child processes, scripted provider, replay) and DS4 `ds4-eval` regrade (from the AIME spec under `docs/superpowers/`).
 
 **SDD workflow artifacts.**
@@ -396,7 +396,7 @@ Read for these: README, AGENTS/CONTEXT, doc indexes and grep hits. Depth is ligh
 ### Ideas that recur
 
 1. **Evidence-bound claims.** Nothing counts as done without a fresh, recorded, checkable artifact. Corenius manifests; monarch `evidence-boundary.md` and non-evidence list; ferric candidate/evidence/promotion split; skaffen promotion gates; stratum hash-bound receipts and tri-state results; devx certificate; roborev per-job stored prompt, diff and verdict; harbor `reward.txt` plus trial `results.json`; milano's `AGENTS.md` (`b200-release` gate, receipts under `evidence/`).
-2. **Isolated execution.** Worktree per task (roborev refine, bytedcli develop-to-merge, monarch gated path, ferric Task Run, milano `scm new`). Namespace sandboxes: bwrap in corenius `src/insula.rs`, soma, myriatron, monarch, milano. Container sandboxes: harbor. Workspaces: jj.
+2. **Isolated execution.** Worktree per task (roborev refine, bytedcli develop-to-merge, monarch gated path, ferric Task Run, milano `scm new`). Namespace sandboxes: bwrap in corenius `terminal_agent/src/insula.rs`, soma, myriatron, monarch, milano. Container sandboxes: harbor. Workspaces: jj.
 3. **Review loops with a bound.** roborev `refine --max-iterations 10`, monarch 3-iteration repair budget, Corenius SDD "fix round N/5", bytedcli Disposition Ledger with terminal states. All end in human-only merge.
 4. **Ledgers.** roborev SQLite, jj operation log, ferric `events.jsonl`, bytedcli MR body and Lark thread, Corenius SDD `progress.md`, monarch `evalrun-state.json`, kube stage manifests.
 5. **Fail closed, no silent fallback.** monarch "No fallback", soma network policy, devx aggregate failures, bytedcli banned silent returns and required `hint`, Corenius no last-number fallback.

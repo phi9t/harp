@@ -4,7 +4,7 @@ Source baseline: `b7bee20e00c822feec48362a1dbd8d62fe9c3641`.
 
 ## Approved learning seam
 
-Reuse the public native fixtures in `crates/team-control-plane/tests/kernel.rs`
+Reuse the public native fixtures in `experiments/team_control_plane/tests/kernel.rs`
 and `tests/temporal.rs`. Use the current parked implementation as an experiment,
 not a new controller architecture or an adoption decision. The fixture migrations
 target an owned disposable database only.

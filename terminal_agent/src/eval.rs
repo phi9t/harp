@@ -940,6 +940,12 @@ fn resolve_dataset(path: &Path) -> anyhow::Result<PathBuf> {
         return Ok(path.to_path_buf());
     }
     let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    if let Some(repo_root) = manifest_dir.parent() {
+        let root_relative = repo_root.join(path);
+        if root_relative.exists() {
+            return Ok(root_relative);
+        }
+    }
     Ok(manifest_dir.join(path))
 }
 

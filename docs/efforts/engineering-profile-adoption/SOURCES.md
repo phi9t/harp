@@ -24,19 +24,19 @@ archival files; SHA-256 and byte comparison verify their preservation.
 - [Retained controller decision](../team-control-plane/decisions/20261004-owner-sqlite-controller-first-supersession.md)
   and [portfolio specification](../controller-portfolio-stabilization/SPEC.md):
   I2 product core, I3 parked; promotion of mechanisms rather than wholesale imports.
-- Concrete retained seams: `crates/sqlite-controller/src/git.rs` (`recover_git`,
+- Concrete retained seams: `controller/src/git.rs` (`recover_git`,
   outstanding promotion reconciliation), `git_workspace.rs` (private workspaces),
   and `codex.rs` (unknown-start history reconciliation). The parked source
-  `crates/team-control-plane/src/admission.rs`, `storage.rs`, `auth.rs` and
+  `experiments/team_control_plane/src/admission.rs`, `storage.rs`, `auth.rs` and
   `temporal.rs` supplies the tested admission/Bridge mechanisms. Qualify these mechanisms
   before proposing replacements; current tests are not blanket production proof.
 - [I2 specification](../sqlite-controller/SPEC.md),
   [current assignment](../sqlite-controller/CURRENT.json) and
-  [controller source](../../../crates/sqlite-controller/README.md): sole writer,
+  [controller source](../../../controller/README.md): sole writer,
   durable execution, native identities, unknown effects, workspace and Git seams.
-- [I3 retained source](../../../crates/team-control-plane/README.md) and
-  [kernel fixtures](../../../crates/team-control-plane/tests/kernel.rs),
-  [Temporal fixtures](../../../crates/team-control-plane/tests/temporal.rs):
+- [I3 retained source](../../../experiments/team_control_plane/README.md) and
+  [kernel fixtures](../../../experiments/team_control_plane/tests/kernel.rs),
+  [Temporal fixtures](../../../experiments/team_control_plane/tests/temporal.rs):
   bounded evidence sources for admission, fencing, waits and replay; not current
   product assignments or blanket accepted code.
 - [Current landing tool](../../../tools/agents/land.py) and

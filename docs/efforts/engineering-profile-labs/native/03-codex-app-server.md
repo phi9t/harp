@@ -6,7 +6,7 @@ probe also resumed the same empty stored thread after replacing the process.
 Stored-thread persistence does not prove active-turn recovery.
 
 Source revision: `b7bee20e00c822feec48362a1dbd8d62fe9c3641`.
-Read `crates/sqlite-controller/src/native_ws.rs`, `codex.rs`, `native_ui.rs`,
+Read `controller/src/native_ws.rs`, `codex.rs`, `native_ui.rs`,
 and `support/codex_insula.py`. The WebSocket adapter already observes
 turn notifications, handles early notifications, and binds mutations to native
 identities. The Insula launcher fences connections with process start identity.

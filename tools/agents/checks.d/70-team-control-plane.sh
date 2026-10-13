@@ -6,4 +6,4 @@ if [ "${CHECK_TEAM_CONTROL_PLANE:-0}" != 1 ]; then
   exit 0
 fi
 cd "$(dirname "$0")/../../.." || exit 2
-exec bash crates/team-control-plane/tests/run-temporal.sh
+exec bash experiments/team_control_plane/tests/run-temporal.sh

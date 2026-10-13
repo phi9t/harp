@@ -4,7 +4,7 @@ Status: approved by user request to fix this situation on 2026-10-05; execution 
 
 ## Observed gap
 
-Ticket01 passes real deterministic title-case verification, but the Git backend mounts mutable host `/usr`. Its verifier environment identity hashes executable and script bytes, omitting Python standard library/extensions and shared libraries. Source: `crates/sqlite-controller/src/git_workspace.rs` boundary around lines 704–728 and verifier identity around 900–907, baseline d7f674829e9844d011869b711d64fcf55313f7f1. An ambient before/after manifest does not prevent in-run changes/restoration.
+Ticket01 passes real deterministic title-case verification, but the Git backend mounts mutable host `/usr`. Its verifier environment identity hashes executable and script bytes, omitting Python standard library/extensions and shared libraries. Source at the recorded baseline was `crates/sqlite-controller/src/git_workspace.rs` boundary around lines 704–728 and verifier identity around 900–907; after the semantic layout migration the active path is `controller/src/git_workspace.rs`. Baseline d7f674829e9844d011869b711d64fcf55313f7f1. An ambient before/after manifest does not prevent in-run changes/restoration.
 
 ## Bounded proposal
 

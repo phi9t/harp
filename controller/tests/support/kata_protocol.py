@@ -30,7 +30,7 @@ _temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["tem
 _temp_policy_tempfile.tempdir = _temp_policy_root
 _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 
-REPO = Path(__file__).resolve().parents[4]
+REPO = _temp_policy_file.parents[1]
 SHA = '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6'
 PIN = Path(os.environ.get(
     'KATA_PINNED_BINARY',

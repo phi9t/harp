@@ -10,7 +10,8 @@ import runpy
 import tempfile
 import unittest
 
-REPO = pathlib.Path(__file__).resolve().parents[4]
+REPO = next(parent for parent in pathlib.Path(__file__).resolve().parents
+            if (parent / 'tools/temp_root.py').is_file())
 TEMP_ROOT = str(runpy.run_path(str(REPO / 'tools/temp_root.py'))['temporary_root']())
 tempfile.tempdir = TEMP_ROOT
 os.environ['TMPDIR'] = TEMP_ROOT

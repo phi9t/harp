@@ -1,4 +1,3 @@
-import os
 import pathlib
 import subprocess
 import importlib.util
@@ -41,8 +40,8 @@ import ast, hashlib, json, os, pathlib, runpy, sys
 repo = pathlib.Path(sys.argv[1])
 sys.path.insert(0, str(repo / 'bench/harness'))
 controller = runpy.run_path(str(repo / 'bench/harness/controller_mode.py'))
-baseline = runpy.run_path(str(repo / 'tools/agents/sqlite_baseline.py'))
-fixture = repo / 'crates/sqlite-controller/tests/support/kata_protocol.py'
+baseline = runpy.run_path(str(repo / 'controller/launch/sqlite_baseline.py'))
+fixture = repo / 'controller/tests/support/kata_protocol.py'
 tree = ast.parse(fixture.read_text(), filename=str(fixture))
 # Execute the fixture's actual imports, lookup and mandatory hash guard;
 # stop before it allocates a run or starts any service.
@@ -79,8 +78,20 @@ print(json.dumps([str(path) for path in paths]))
         script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
         result = subprocess.run(['python3', str(script), 'start', '--help'], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0)
-        for option in ['--session', '--reuse-kata', '--target-dir', '--model']:
+        for option in ['--session', '--reuse-kata', '--target-dir', '--binary-dir', '--model']:
             self.assertIn(option, result.stdout)
+
+    def test_start_rejects_incomplete_binary_directory_before_side_effects(self):
+        script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
+        with tempfile.TemporaryDirectory(prefix='cb-binaries-', dir=self.tmp.name) as directory:
+            result = subprocess.run(
+                ['python3', str(script), 'start', '--binary-dir', directory],
+                capture_output=True,
+                text=True,
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('binary directory incomplete', result.stderr)
+        self.assertIn('corenius-sqlite-controller', result.stderr)
 
     def test_reuse_kata_qualifies_instance_before_copying_private_grant(self):
         # Ignoring the pinned instance would attach the new project to an

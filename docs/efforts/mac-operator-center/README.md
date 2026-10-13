@@ -1,7 +1,7 @@
 # MAC operator center
 
-Use `tools/agents/mac_dashboard.py --config PATH` for the TUI. Use
-`tools/agents/mac_tmux.py --config PATH --watch` to maintain agent views.
+Use `controller/operator/mac_dashboard.py --config PATH` for the TUI. Use
+`controller/operator/mac_tmux.py --config PATH --watch` to maintain agent views.
 Both tools use Python's standard library; the session manager also requires tmux.
 
 The seven tabs show Overview, Tasks, Agents, Work, Evidence, VCS and Infra.
@@ -26,15 +26,15 @@ Run `--once` before `--watch` to inspect adoption and health. Keep the config
 outside tracked source when it contains host-specific paths.
 
 For plain text, run `mac_dashboard.py --config PATH --render`. For focused checks,
-run `python3 tools/agents/test_mac_dashboard.py` and
-`python3 tools/agents/test_mac_tmux.py`. Their terminal tests use disposable
+run `python3 controller/operator/mac_dashboard_test.py` and
+`python3 controller/operator/mac_tmux_test.py`. Their terminal tests use disposable
 clients and tmux sessions.
 
 This operator tooling remains separate from the product controller. Controller
 assignments, writer admission and corrections remain with corenius-impl.
 
 For controller, Kata and workspace detail, use
-`tools/agents/mac_state_view.py --config PATH --view controller`.
+`controller/operator/mac_state_view.py --config PATH --view controller`.
 The other views are `kata` and `workspaces`; keys 1–3 switch views.
 `--render` prints the bounded public projection. The tool reads explicit
 `controller_snapshot_path` and `kata_snapshot_path` files. It does not query a

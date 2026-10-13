@@ -28,14 +28,14 @@ bounded public-action batches, coverage/cursors and context-efficiency evidence.
 
 | Path | Responsibility |
 | --- | --- |
-| crates/sqlite-controller/src/service.rs, query.rs, schema.sql | Authenticated command transactions, SQLite state and scoped queries |
-| crates/sqlite-controller/src/runtime.rs, supervisor.rs | Attempt admission, process ownership and uncertain-effect reconciliation |
-| crates/sqlite-controller/src/codex.rs, native_ws.rs, native_ui.rs | Native thread/turn bindings and selected-model delivery |
-| crates/sqlite-controller/src/kata.rs | Source admission and visible Kata synchronization |
-| crates/sqlite-controller/src/git.rs, git_workspace.rs | Candidate, verification and landing lifecycle |
-| crates/sqlite-controller/src/control.rs, view.rs, monitor.rs | Lead controls, public projections and advisory monitoring |
-| tools/agents/sqlite_baseline.py, sqlite_responses_relay.py | Disposable real-runtime trial and host relay |
-| tools/agents/mac_dashboard.py, mac_state_view.py, mac_tmux.py | Operator TUI, state views and preserved native clients |
+| controller/src/service.rs, query.rs, schema.sql | Authenticated command transactions, SQLite state and scoped queries |
+| controller/src/runtime.rs, supervisor.rs | Attempt admission, process ownership and uncertain-effect reconciliation |
+| controller/src/codex.rs, native_ws.rs, native_ui.rs | Native thread/turn bindings and selected-model delivery |
+| controller/src/kata.rs | Source admission and visible Kata synchronization |
+| controller/src/git.rs, git_workspace.rs | Candidate, verification and landing lifecycle |
+| controller/src/control.rs, view.rs, monitor.rs | Lead controls, public projections and advisory monitoring |
+| controller/launch/sqlite_baseline.py, sqlite_responses_relay.py | Disposable real-runtime trial and host relay |
+| controller/operator/mac_dashboard.py, mac_state_view.py, mac_tmux.py | Operator TUI, state views and preserved native clients |
 
 ## Current demonstrated scope
 
@@ -57,8 +57,8 @@ views; they are not proof of native worker clients or active execution.
 Build/test the controller with:
 
 ```sh
-cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml
-cargo build --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml
+cargo test --locked --offline --manifest-path controller/Cargo.toml
+cargo build --locked --offline --manifest-path controller/Cargo.toml
 ```
 
 Its README specifies private storage and authenticated socket requests. Start a

@@ -9,7 +9,7 @@ Spec: ../EFFORT.md
 
 ## Requirements
 
-Own tools/agents/mac_tmux.py and tools/agents/test_mac_tmux.py only.
+Own controller/operator/mac_tmux.py and controller/operator/mac_tmux_test.py only.
 Implement the shared config, atomic manifest and --once/--watch interface.
 Adopt the existing operator session's ownership only when explicitly configured.
 Preserve all existing windows and native clients. Add views for exact admitted

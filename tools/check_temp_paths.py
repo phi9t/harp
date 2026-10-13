@@ -12,7 +12,7 @@ def main():
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     root = parser.parse_args().root.resolve()
     failures = []
-    for base in ['src', 'tools', 'crates', 'bench', 'experiments']:
+    for base in ['terminal_agent', 'controller', 'tools', 'bench', 'experiments']:
         for path in (root / base).rglob('*'):
             if not path.is_file() or path.suffix not in {'.py', '.rs', '.sh'}:
                 continue

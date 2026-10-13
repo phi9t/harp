@@ -18,7 +18,7 @@ completion with persistent app-server thread and turn events.
 ## Scope and authority
 
 This private clone owns lab documentation and a bounded fixture runner. Reuse
-`crates/team-control-plane` at the recorded source revision. The source checkout
+`experiments/team_control_plane` at the recorded source revision. The source checkout
 was untouched during development. No product semantics, user database migrations,
 deployment, GPU run or secret-bearing environment capture is authorized. The
 user's subsequent request, "land these labs first", authorizes committing and

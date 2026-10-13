@@ -34,8 +34,8 @@ task scheduler or a replacement for the existing review timer.
 
 ## Shared interface
 
-New standalone Python tools live at tools/agents/mac_dashboard.py and
-tools/agents/mac_tmux.py. Both accept --config PATH. Config version1 contains:
+New standalone Python tools live at controller/operator/mac_dashboard.py and
+controller/operator/mac_tmux.py. Both accept --config PATH. Config version1 contains:
 session, owner, state_dir, current_path, luna_path, codex_executable, endpoint,
 coordinator:{role,thread,cwd,endpoint}, extra_bindings:[{role,thread,cwd,endpoint}],
 refresh_seconds, and dashboard_argv (literal argument vector).

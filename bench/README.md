@@ -58,7 +58,7 @@ worktree uses `/data02/home/philip.yang/.cbt`.
 Controller mode requires the pinned Kata binary
 `~/.local/share/corenius/pinned-tools/kata/8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6/kata-pinned` with SHA-256
 `8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6`, plus the Rust controller binaries buildable offline with
-`cargo build --manifest-path crates/sqlite-controller/Cargo.toml --target-dir .scratch/controller-backed-bench/target --locked
+`cargo build --manifest-path controller/Cargo.toml --target-dir .scratch/controller-backed-bench/target --locked
 --offline --bins`. The controller record pins the verifier adapter script, protected test file, configured executables and
 policy/config digests. Git-backed verification uses a private verifier-only runtime snapshot mounted read-only at `/usr`, and
 the controller validates that snapshot's manifest before dispatch and before trusted-proof acceptance. The benchmark-built

@@ -32,7 +32,7 @@ _temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["tem
 _temp_policy_tempfile.tempdir = _temp_policy_root
 _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 
-REPO = pathlib.Path(__file__).resolve().parents[2]
+REPO = _temp_policy_file.parents[1]
 SELF = pathlib.Path(__file__).resolve()
 BIN = pathlib.Path('/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin')
 KATA_SHA256 = '8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6'
@@ -45,7 +45,13 @@ CONFIG = CATALOG.parent / 'codex/config.toml'
 MODELS = ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna',
           'gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-5.5']
 TARGET = REPO / '.scratch/sqlite06-happy-path/target'
-CONTROLLER = TARGET / 'debug/corenius-sqlite-controller'
+BINARY_DIR = TARGET / 'debug'
+CONTROLLER = BINARY_DIR / 'corenius-sqlite-controller'
+REQUIRED_BINARIES = (
+    'corenius-sqlite-controller',
+    'corenius-attempt-supervisor',
+    'corenius-attempt-gate',
+)
 SCHEMA = 'e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455'
 
 
@@ -70,6 +76,26 @@ def checked(argv, **kwargs):
 def pin(path):
     path = pathlib.Path(path).resolve()
     return {'path':str(path), 'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def require_binary_dir(path):
+    path = pathlib.Path(path).resolve()
+    missing = []
+    binaries = {}
+    for name in REQUIRED_BINARIES:
+        candidate = path / name
+        binaries[name] = candidate
+        if not candidate.is_file() or not os.access(candidate, os.X_OK):
+            missing.append(name)
+    if missing:
+        raise RuntimeError('binary directory incomplete: missing executable ' + ', '.join(missing))
+    return binaries
+
+
+def scratch_root():
+    work = REPO / '.scratch/sqlite06-happy-path'
+    work.mkdir(parents=True, exist_ok=True)
+    return work
 
 
 def write(path, value):
@@ -385,7 +411,7 @@ def run(root):
         (root / 'runtime.toml').write_text(CONFIG.read_text().replace(str(CATALOG),'/run/codex/catalog.json').replace('35361','8777'))
         assets = {'binary':pin(BIN / 'codex'),'companion':pin(BIN / 'codex-code-mode-host'),
                   'catalog':pin(root / 'catalog.json'),'config':pin(root / 'runtime.toml'),
-                  'launcher':pin(REPO / 'crates/sqlite-controller/support/codex_insula.py')}
+                  'launcher':pin(REPO / 'controller/support/codex_insula.py')}
         for name, kind, transport in [('workers','exec','t-exec'),('controlplanes','app','t-app')]:
             profile = dict(assets,kind=kind,transport_root=str(root / transport))
             if kind == 'app':
@@ -497,20 +523,27 @@ def run(root):
 
 
 def start(args):
-    global TARGET, CONTROLLER
+    global TARGET, BINARY_DIR, CONTROLLER
     if args.target_dir:
         TARGET = args.target_dir.resolve()
-        CONTROLLER = TARGET / 'debug/corenius-sqlite-controller'
+        BINARY_DIR = TARGET / 'debug'
+        CONTROLLER = BINARY_DIR / 'corenius-sqlite-controller'
+    if args.binary_dir:
+        BINARY_DIR = args.binary_dir.resolve()
+        CONTROLLER = BINARY_DIR / 'corenius-sqlite-controller'
+        binaries = require_binary_dir(BINARY_DIR)
+    else:
+        work = scratch_root()
+        with (work / 'retained-build.log').open('ab') as log:
+            result = subprocess.run(['cargo','build','--manifest-path',str(REPO / 'controller/Cargo.toml'),
+                                     '--target-dir',str(TARGET),'--locked','--offline'],stdout=log,stderr=subprocess.STDOUT)
+        write(work / ('build-' + str(time.time_ns()) + '.json'),{'exit':result.returncode,'controller':pin(CONTROLLER) if result.returncode == 0 else None})
+        if result.returncode:
+            raise SystemExit(result.returncode)
+        binaries = require_binary_dir(BINARY_DIR)
     if args.session:
         checked(['tmux','has-session','-t','=' + args.session])
-    work = REPO / '.scratch/sqlite06-happy-path'
-    work.mkdir(parents=True,exist_ok=True)
-    with (work / 'retained-build.log').open('ab') as log:
-        result = subprocess.run(['cargo','build','--manifest-path',str(REPO / 'crates/sqlite-controller/Cargo.toml'),
-                                 '--target-dir',str(TARGET),'--locked','--offline'],stdout=log,stderr=subprocess.STDOUT)
-    write(work / ('build-' + str(time.time_ns()) + '.json'),{'exit':result.returncode,'controller':pin(CONTROLLER) if result.returncode == 0 else None})
-    if result.returncode:
-        raise SystemExit(result.returncode)
+    work = scratch_root()
     if pin(BIN / 'codex')['sha256'] != '8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479':
         raise RuntimeError('Codex pin changed')
     if pin(KATA)['sha256'] != KATA_SHA256:
@@ -521,7 +554,10 @@ def start(args):
     manifest = {'run_id':run_id,'root':str(root),'session':args.session or 'corenius-baseline-' + run_id,
                 'selected_model':args.model or 'gpt-6-sol',
                 'source_commit':git(REPO,'rev-parse','HEAD'),'source_tree':git(REPO,'rev-parse','HEAD^{tree}'),
-                'runner':pin(SELF),'relay':pin(SELF.with_name('sqlite_responses_relay.py')),'controller':pin(CONTROLLER),
+                'runner':pin(SELF),'relay':pin(SELF.with_name('sqlite_responses_relay.py')),
+                'controller':pin(binaries['corenius-sqlite-controller']),
+                'supervisor':pin(binaries['corenius-attempt-supervisor']),
+                'gate':pin(binaries['corenius-attempt-gate']),
                 'codex':pin(BIN / 'codex'),'kata':pin(KATA),'launch':['python3',str(SELF),'start'],
                  'scope':'owner c9 happy-path-first; disposable targets only; baseline remains unqualified'}
     if args.session:
@@ -547,7 +583,9 @@ def main():
     p = commands.add_parser('start')
     p.add_argument('--session', help='use this existing tmux session with uniquely named trial windows')
     p.add_argument('--reuse-kata', type=pathlib.Path, help='reuse this exact private Kata configuration and authenticated instance')
-    p.add_argument('--target-dir', type=pathlib.Path, help='build continuation binaries separately')
+    binaries = p.add_mutually_exclusive_group()
+    binaries.add_argument('--target-dir', type=pathlib.Path, help='build continuation binaries separately')
+    binaries.add_argument('--binary-dir', type=pathlib.Path, help='use an explicit directory containing all controller binaries')
     p.add_argument('--model', choices=MODELS, help='select an installed model for this new disposable run')
     for name in ['status','input','_run','_service','_role']:
         p = commands.add_parser(name)

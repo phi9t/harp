@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-COMPONENT = ROOT / "crates/team-control-plane"
+COMPONENT = ROOT / "experiments/team_control_plane"
 IMAGE = (
     "postgres@sha256:f3bd19c606e442c3d7bdfa8002e03fe260a1023351e0ea4598032022b68dd6e3"
 )

@@ -1,10 +1,12 @@
 # Lab 1: PostgreSQL as the transactional authority
 
 Source read: `b7bee20e00c822feec48362a1dbd8d62fe9c3641`.
-The executable assertions are in
+At that revision, the executable assertions are in
 `crates/team-control-plane/tests/kernel.rs`.
+After the semantic layout migration, the active relocated path is
+`experiments/team_control_plane/tests/kernel.rs`.
 The implementation anchors are `src/storage.rs`, `src/admission.rs`,
-`src/auth.rs`, and `migrations/0001.sql` under the same component.
+`src/auth.rs`, and `migrations/0001.sql` under that component.
 
 ## Learning model
 
@@ -166,7 +168,7 @@ covered separately.
 For focused exploration, select one exact test and keep the private target:
 
 ```bash
-python3 tools/temp_root.py -- env CARGO_TARGET_DIR="$PWD/.scratch/engineering-profile-labs/cargo-target" bash crates/team-control-plane/tests/run-postgres.sh --offline --test kernel rejected_command_is_durable_and_cannot_be_reused -- --exact --test-threads=1
+python3 tools/temp_root.py -- env CARGO_TARGET_DIR="$PWD/.scratch/engineering-profile-labs/cargo-target" bash experiments/team_control_plane/tests/run-postgres.sh --offline --test kernel rejected_command_is_durable_and_cannot_be_reused -- --exact --test-threads=1
 ```
 
 This focused command provides libtest output; the full runner additionally

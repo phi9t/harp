@@ -10,7 +10,7 @@ Supersedes:
 2. The capsule env allowlist excludes `LIBRARY_PATH` (and all spack variables).
 3. Capsules are layered and built from request files; layers are bound read-only at canonical paths because
    bwrap 0.8 has no overlayfs.
-4. The capsule builder is Python under `tools/insula/`; `src/insula.rs` is not edited in this effort.
+4. The capsule builder is Python under `tools/insula/`; `terminal_agent/src/insula.rs` is not edited in this effort.
 
 ## Why
 
