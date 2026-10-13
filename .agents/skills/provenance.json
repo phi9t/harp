@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "upstream_revision": "not established for locally revised inputs",
+  "upstream_license_sha256": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+  "adaptations": [
+    {
+      "source_skill": "brainstorming",
+      "source_sha256": "c2a71236fe32449aac51e754473391e5329ee755e28408a2accf06c650d8c92e",
+      "owned_skill": "harp-outcome-design"
+    },
+    {
+      "source_skill": "writing-plans",
+      "source_sha256": "2710c86449897e26c00300fbb1c663965339ba48c99b14b2e01f7c4730c5e317",
+      "owned_skill": "harp-delivery-plan"
+    },
+    {
+      "source_skill": "executing-plans",
+      "source_sha256": "9c7b7369d5a6931f011c43a34f5e94a1315e951348eb2c35cb383a194fcebb10",
+      "owned_skill": "harp-task-execution"
+    },
+    {
+      "source_skill": "subagent-driven-development",
+      "source_sha256": "9898ec5b230b50bf44d9a9ef04de4a2392e4b075ec0f2a5a63f50c31b671b1ef",
+      "owned_skill": "harp-team-execution"
+    },
+    {
+      "source_skill": "requesting-code-review",
+      "source_sha256": "f758dc157f7d0e8d89016e3296ba80980877cf714b980a5b8bd8db225ce720f5",
+      "owned_skill": "harp-scope-review"
+    }
+  ]
+}

@@ -105,6 +105,32 @@ handling.
   docs, tests, and code. Do not let private agent memory or raw execution notes
   become the durable project interface.
 
+## Repository-owned workflow skills
+
+Use the Harp skills in `.agents/skills/` for this repository. Do not invoke the
+upstream Superpowers skillset, its `superpowers:*` commands, or renamed
+`superpowers-*` wrappers. Historical documents and license attribution do not
+select an execution workflow. Specialized skills outside that workflow family
+remain available when relevant.
+
+- [harp-outcome-design](.agents/skills/harp-outcome-design/SKILL.md): resolve open
+  design decisions around the first useful result and existing authorization.
+- [harp-delivery-plan](.agents/skills/harp-delivery-plan/SKILL.md): plan verifiable
+  slices; justify each prerequisite by the operation it enables and why needed now.
+- [harp-task-execution](.agents/skills/harp-task-execution/SKILL.md): execute and
+  repair authorized work through complete verification and repository landing rules.
+- [harp-team-execution](.agents/skills/harp-team-execution/SKILL.md): coordinate
+  permitted workers with bounded ownership and independent integration evidence.
+- [harp-scope-review](.agents/skills/harp-scope-review/SKILL.md): distinguish current
+  defects and requirements from optional future infrastructure.
+
+These files are operational agent instructions, not additional technical-prose
+or intent authorities. Read only the skill relevant to the current decision;
+there is no mandatory five-skill ceremony. Existing intent, safety, cache,
+verification, and human merge/release boundaries still apply. An initial useful
+result does not complete the full request. Use the
+[behavior cases](.agents/skills/evaluation-cases.md) when changing these workflows.
+
 ## Local agentic engineering tools
 
 - Kata is the local intent ledger for this repository. The committed
