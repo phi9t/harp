@@ -3311,10 +3311,7 @@ mod tests {
     }
 
     #[test]
-    fn production_reader_is_bounded_and_does_not_use_fs_read() {
-        let source = include_str!("route.rs");
-        let production = source.split("#[cfg(test)]").next().unwrap();
-        assert!(!production.contains("fs::read("));
+    fn artifact_reader_rejects_oversized_input() {
         let root = TempDir::new().unwrap();
         fs::write(
             root.path().join("oversize"),

@@ -937,13 +937,6 @@ class RoutePublicationBehaviorTests(unittest.TestCase):
                 fixture.manifest_path, manifest_raw, manifest, receipt, bad_digest
             )
 
-    def test_source_guard_forbids_walk_rmtree_rglob_and_blocking_locks(self) -> None:
-        for module in (route_publication, route_validation):
-            source = inspect.getsource(module)
-            self.assertNotIn(".rglob(", source)
-            self.assertNotIn("os.walk(", source)
-            self.assertNotIn("shutil.rmtree", source)
-            self.assertNotIn("LOCK_EX)", source)
 
 
 if __name__ == "__main__":

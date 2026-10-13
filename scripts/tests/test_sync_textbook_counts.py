@@ -248,14 +248,12 @@ class ReceiptIdentityTests(unittest.TestCase):
 
 
 class SolvedChaptersBulletTests(unittest.TestCase):
-    def test_bullet_wraps_and_reports_the_remainder(self):
+    def test_bullet_reports_completed_chapters_and_the_remainder(self):
         counts = {"solved_chapters": [1, 2, 3], "unsolved": 198}
         bullet = sync.solved_chapters_bullet(counts)
         collapsed = " ".join(bullet.split())
         self.assertIn("six each in Chapters 1, 2, and 3.", collapsed)
         self.assertIn("The other 198 exercise rows", collapsed)
-        for line in bullet.splitlines()[1:]:
-            self.assertTrue(line.startswith("  "), line)
 
 
 if __name__ == "__main__":

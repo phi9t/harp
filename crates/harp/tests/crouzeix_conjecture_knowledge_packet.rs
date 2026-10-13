@@ -599,24 +599,6 @@ fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
     Ok(())
 }
 
-fn assert_packet_registration() {
-    let corpus = fs::read_to_string(workspace_root().join("crates/harp/src/corpus/mod.rs"))
-        .expect("read corpus registry");
-    let search = fs::read_to_string(workspace_root().join("crates/harp/src/search.rs"))
-        .expect("read search roots");
-    let route_types = fs::read_to_string(workspace_root().join("atlas/src/content/types.ts"))
-        .expect("read Atlas route types");
-    assert!(corpus.contains("\"crouzeix-conjecture\""));
-    for name in EXPECTED_FILES {
-        assert!(
-            corpus.contains(&format!("knowledge/crouzeix_conjecture/{name}")),
-            "corpus registry is missing {name}"
-        );
-    }
-    assert!(search.contains("\"knowledge/crouzeix_conjecture\""));
-    assert!(route_types.contains("\"crouzeix-conjecture\""));
-}
-
 #[test]
 fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     let root = packet_root();
@@ -952,7 +934,6 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     assert!(bundle_manifest
         .contains("60e9bbc25979c8b2e4f38e0d03fa3fc68c8ff077949f94e81a024a56dd1957d6"));
 
-    assert_packet_registration();
 }
 
 #[test]

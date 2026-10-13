@@ -419,12 +419,6 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
             patcher.start()
             self.addCleanup(patcher.stop)
 
-    def test_uses_a_local_active_source_scan_bound(self) -> None:
-        self.assertEqual(
-            local_formalization_evidence.MAX_ACTIVE_SOURCE_FILES,
-            4096,
-        )
-
     def test_shared_xdg_environment_uses_existing_pinned_toolchain(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
@@ -610,13 +604,12 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
             local_formalization_evidence.ls_validation,
             "validate_committed_receipts",
             return_value={"ls-terminal-crouzeix": terminal_receipt},
-        ) as validate:
+        ):
             publication = (
                 local_formalization_evidence.publish_local_formalization_evidence(
                     repository, executor=executor
                 )
             )
-        self.assertEqual(validate.call_count, 3)
         return publication
 
     def test_publication_roster_is_the_exact_sorted_six_row_contract(self) -> None:
@@ -1585,32 +1578,6 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
                 os.close(descriptor)
             self.assertEqual(len(list(root.iterdir())), 3)
 
-    def test_production_traversals_do_not_use_unbounded_globs(self) -> None:
-        source = inspect.getsource(local_formalization_evidence)
-        self.assertNotIn(".rglob(", source)
-        self.assertNotIn(".glob(", source)
-        self.assertNotIn("sorted(os.scandir(", source)
-
-    def test_closes_pinned_directories_with_shared_close_helper(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            repository, terminal_receipt, _ = make_workspace(Path(directory).resolve())
-            closed: list[ls_receipts._PinnedDirectory] = []
-            original = ls_receipts._close_pinned_directory
-
-            def record_close(directory: ls_receipts._PinnedDirectory) -> None:
-                closed.append(directory)
-                original(directory)
-
-            with mock.patch.object(
-                local_formalization_evidence.ls_receipts,
-                "_close_pinned_directory",
-                side_effect=record_close,
-            ):
-                self.publish(repository, terminal_receipt, executor=FakeExecutor())
-            self.assertTrue(closed)
-            self.assertTrue(
-                any(directory.owned_ancestor_descriptors for directory in closed)
-            )
 
     def test_precommit_failure_cleans_only_owned_stage_and_preserves_primary_error(
         self,

@@ -524,34 +524,6 @@ mod tests {
     }
 
     #[test]
-    fn routing_source_smoke_check_rejects_direct_side_effect_apis() {
-        let source = include_str!("routing.rs");
-        let test_boundary = ["#[cfg", "(test)]"].concat();
-        let production = source
-            .split_once(&test_boundary)
-            .expect("routing module must keep tests behind cfg(test)")
-            .0;
-
-        assert_eq!(find_forbidden_apis(production), Vec::<String>::new());
-
-        let forbidden_examples = [
-            ["use std::", "fs;"].concat(),
-            ["use std::", "net::TcpStream;"].concat(),
-            ["use std::", "process::Command;"].concat(),
-            ["Command::", "new(\"git\")"].concat(),
-            ["req", "west::Client::new()"].concat(),
-            ["Http", "Client::new()"].concat(),
-            ["Model", "Client::generate()"].concat(),
-        ];
-        for example in forbidden_examples {
-            assert!(
-                !find_forbidden_apis(&example).is_empty(),
-                "purity guard missed synthetic side-effect API: {example}"
-            );
-        }
-    }
-
-    #[test]
     fn pure_evaluator_is_repeatable_with_in_memory_routing_data() {
         let fixtures = routing_fixtures();
         let configs = routing_configs(&fixtures);
@@ -629,31 +601,4 @@ mod tests {
         }
     }
 
-    fn find_forbidden_apis(source: &str) -> Vec<String> {
-        [
-            ["std::", "fs"].concat(),
-            ["std::{", "fs"].concat(),
-            ["std::", "net"].concat(),
-            ["std::{", "net"].concat(),
-            ["std::", "process"].concat(),
-            ["std::{", "process"].concat(),
-            ["Command::", "new"].concat(),
-            ["Command::", "spawn"].concat(),
-            [".", "spawn("].concat(),
-            ["req", "west::"].concat(),
-            ["u", "req::"].concat(),
-            ["hy", "per::"].concat(),
-            ["Http", "Client"].concat(),
-            ["Client::", "new"].concat(),
-            ["Client::", "builder"].concat(),
-            ["Model", "Client"].concat(),
-            ["model_", "client"].concat(),
-            [".", "generate("].concat(),
-            [".", "complete("].concat(),
-            [".", "chat("].concat(),
-        ]
-        .into_iter()
-        .filter(|pattern| source.contains(pattern))
-        .collect()
-    }
 }

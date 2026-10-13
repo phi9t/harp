@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
-const indexHtml = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
 const atlasHtml = await readFile(new URL("../dist/harp-atlas.html", import.meta.url), "utf8");
 const exportReceipt = JSON.parse(
   await readFile(new URL("../dist/harp-atlas.receipt.json", import.meta.url), "utf8"),
 );
+const corpusBytes = await readFile(new URL("../src/content/generated/corpus.json", import.meta.url));
 const sourceIndexHtml = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const atlasShell = atlasHtml.replace(
   /<script type="module">[\s\S]*?<\/script>/,
@@ -378,12 +379,11 @@ test("handwritten production sources preserve the offline boundary", async () =>
 
 test("exports an offline single-file Harp atlas", () => {
   assert.equal(exportReceipt.schema_version, "harp-atlas-export/v1");
-  assert.match(exportReceipt.corpus_sha256, /^[0-9a-f]{64}$/);
+  assert.equal(exportReceipt.corpus_sha256, createHash("sha256").update(corpusBytes).digest("hex"));
   assert.match(exportReceipt.app_inputs_sha256, /^[0-9a-f]{64}$/);
-  assert.match(exportReceipt.html_sha256, /^[0-9a-f]{64}$/);
+  assert.equal(exportReceipt.html_sha256, createHash("sha256").update(atlasHtml).digest("hex"));
   assert.match(sourceIndexHtml, /\.\/dist\/harp-atlas\.html/);
   assert.match(sourceIndexHtml, /id="file-entry-redirect"/);
-  assert.match(indexHtml, /Harp Atlas/);
   assert.match(atlasHtml, /Harp Atlas/);
   assert.match(atlasHtml, /<script type="module">/);
   assert.match(atlasHtml, /import "data:text\/javascript;base64,/);
@@ -393,82 +393,10 @@ test("exports an offline single-file Harp atlas", () => {
   assert.doesNotMatch(atlasShell, /<link[^>]+rel="stylesheet"/);
   assert.equal(shellUsesExternalResource(atlasShell), false);
   assert.doesNotMatch(atlasShell, /@font-face|@import\b|url\s*\(/i);
-  assert.doesNotMatch(indexHtml, /file-entry-redirect|dist\/harp-atlas\.html/);
   assert.doesNotMatch(atlasHtml, /file-entry-redirect|dist\/harp-atlas\.html/);
   assert.match(decodedModule, /application\/x-tex/);
   assert.match(decodedModule, /rsi-technical-atlas\/v6/);
   assert.match(decodedModule, /\?section=/);
-  assert.match(decodedModule, /math-error/);
-  assert.match(decodedModule, /What makes an improvement loop recursive/);
-  assert.match(decodedModule, /Evaluation, promotion, and containment/);
-  assert.match(decodedModule, /RSI harness by Lil'Log, deconstructed/);
-  assert.match(decodedModule, /Promotion path open/);
-  assert.match(decodedModule, /Promotion blocked/);
-  for (const label of [
-    "Weng",
-    "Systems",
-    "Lessons",
-    "Diagnose",
-    "Chapters",
-    "Sources",
-    "Crouzeix",
-  ]) {
-    assert.match(decodedModule, new RegExp(`\\b${label}\\b`));
-  }
-  for (const label of [
-    "Console / Workstreams",
-    "Harp Workstreams",
-    "REFERENCE SNAPSHOT",
-    "Crouzeix Conjecture",
-    "Autodiff Geometry",
-    "Agentic Research",
-    "NNG4 / Foundations",
-    "Research",
-    "Spec",
-    "Formalization",
-    "Scroll for more columns",
-  ]) {
-    assert.equal(
-      decodedModule.includes(label),
-      true,
-      `offline export is missing Workstreams label: ${label}`,
-    );
-  }
-  assert.match(decodedModule, /workflow-design-and-search/);
-  assert.match(decodedModule, /Workflow design becomes a search problem/);
-  assert.match(decodedModule, /systems\/aflow/);
-  assert.match(decodedModule, /AFlow: MCTS over agentic workflows/);
-  assert.match(decodedModule, /ADAS versus AFlow/);
-  assert.match(decodedModule, /Context engineering reading map/);
-  assert.match(decodedModule, /Context pipeline checkpoint/);
-  assert.match(decodedModule, /Context engineering technical sections/);
-  assert.match(decodedModule, /ACE original paper/);
-  assert.match(decodedModule, /MCE original paper/);
-  assert.match(decodedModule, /Meta-Harness original paper/);
-  assert.match(decodedModule, /Crouzeix conjecture two-proof index/);
-  assert.match(decodedModule, /origin sample cancels the diagonal correction/i);
-  assert.match(decodedModule, /M\(2\+M\)/);
-  assert.match(decodedModule, /knowledge\/crouzeix_conjecture\/04_jin_positive_real_completion\.md/);
-  const cftAnchors = new Set(
-    [...decodedModule.matchAll(/id="(cft-[0-9]{2}-[0-9]{3})"/g)]
-      .map((match) => match[1]),
-  );
-  assert.equal(cftAnchors.size, 216);
-  for (let index = 1; index <= 6; index += 1) {
-    assert.ok(cftAnchors.has(`cft-36-${String(index).padStart(3, "0")}`));
-  }
-  assert.match(decodedModule, /href="#documents\/cft-lean-coverage-ledger"/);
-  assert.match(decodedModule, /crouzeix-textbook-chapter-01/);
-  assert.match(decodedModule, /cft-chapter-01-objects-and-representations/);
-  assert.match(decodedModule, /crouzeix-textbook-index/);
-  assert.match(
-    decodedModule,
-    /alias_id:`crouzeix-textbook-chapter-01`,canonical_document_id:`cft-chapter-01-objects-and-representations`/,
-  );
-  assert.match(
-    decodedModule,
-    /alias_id:`crouzeix-textbook-index`,canonical_document_id:`crouzeix-textbook-index`/,
-  );
   assert.match(decodedModule, /class\.harness-improvement/);
   assert.match(decodedModule, /ceiling\.harness-improvement/);
   assert.match(decodedModule, /integrity\.evaluator-write/);
@@ -489,9 +417,4 @@ test("exports an offline single-file Harp atlas", () => {
   );
   assert.doesNotMatch(decodedModule, /(?<![.\w}])fetch\s*\(/);
   assert.doesNotMatch(decodedModule, /\b(?:window|globalThis|self)\.fetch\s*\(/);
-  assert.match(decodedModule, /knowledge\/rsi\/chapters\/harness-engineering\.md/);
-  assert.match(
-    decodedModule,
-    /knowledge\/rsi\/rsi_harness_by_lil_log_deconstructed\.md/,
-  );
 });

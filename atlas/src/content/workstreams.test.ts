@@ -11,15 +11,7 @@ describe("workstreams snapshot boundary", () => {
 
     expect(snapshot.schemaVersion).toBe("harp-workstreams/v1");
     expect(snapshot.source).toBe("repository-reference");
-    expect(snapshot.workstreams.map((workstream) => workstream.title)).toEqual([
-      "Crouzeix Conjecture",
-      "Autodiff Geometry",
-      "Agentic Research",
-      "NNG4 / Foundations",
-    ]);
-    expect(snapshot.agent.velocity.samples).toHaveLength(12);
-    expect(snapshot.insights).toHaveLength(3);
-    expect(snapshot.watchlist).toHaveLength(4);
+    expect(snapshot).toEqual(workstreamsReference);
   });
 
   it("rejects duplicate workstream ids", () => {

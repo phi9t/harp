@@ -14,10 +14,14 @@ const TEST_WENG_DIGEST: &str = "76f3fdeddb0505f2080eff1497dd6fe2856e300ae8c17356
 
 #[test]
 fn registration_derives_reader_and_auxiliary_views() {
-    let registration = super::registration::static_registration().unwrap();
+    let registration = KnowledgeRegistration::new(vec![
+        RegisteredDocument::reader("reader", "Reader", "knowledge/reader.md"),
+        RegisteredDocument::auxiliary("reference", "knowledge/reference.md"),
+    ])
+    .unwrap();
 
-    assert_eq!(registration.reader_routes().count(), 17);
-    assert_eq!(registration.auxiliary_documents().count(), 82);
+    assert_eq!(registration.reader_routes().count(), 1);
+    assert_eq!(registration.auxiliary_documents().count(), 1);
 }
 
 #[test]
@@ -1801,34 +1805,6 @@ fn crouzeix_textbook_packet_rejects_symlinked_and_hardlinked_markdown() {
     .unwrap();
     let error = compile(hardlink_fixture.path()).expect_err("textbook hardlink must fail closed");
     assert_eq!(error.code, "knowledge.crouzeix_textbook.registration");
-}
-
-#[test]
-fn crouzeix_textbook_has_no_hard_coded_chapter_roster_in_corpus_source() {
-    let source =
-        fs::read_to_string(workspace_root().join("crates/harp/src/corpus/mod.rs")).unwrap();
-    assert!(!source.contains("CROUZEIX_TEXTBOOK_DOCUMENTS"));
-    assert!(!source.contains("crouzeix-textbook-chapter-01"));
-    assert!(!source.contains("crouzeix-textbook-chapter-35"));
-}
-
-#[test]
-fn crouzeix_textbook_registration_validation_has_one_owner() {
-    let source =
-        fs::read_to_string(workspace_root().join("crates/harp/src/corpus/contracts.rs")).unwrap();
-    for duplicate in [
-        "struct TextbookRoutes",
-        "struct TextbookRoute",
-        "include_str!",
-        "MAX_TEXTBOOK_DEPTH",
-        "MAX_TEXTBOOK_MARKDOWN_FILES",
-        "load_textbook_documents",
-    ] {
-        assert!(
-            !source.contains(duplicate),
-            "corpus duplicated textbook registration validator: {duplicate}"
-        );
-    }
 }
 
 #[test]

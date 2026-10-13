@@ -9,7 +9,7 @@ test('reading editions preserve Chapter 1 and add the actual Harp chapter', () =
     'crouzeix-foundations', 'chapter-01-objects-and-representations',
     'chapter-36-harp-finite-horizon-proof',
   ]);
-  assert.equal(editions[0].list,chapters);
+  assert.deepEqual(editions[0].list,chapters);
   assert.equal(editions[0].full,true);
   assert.equal(editions[1].title,'Objects and Representations');
   assert.deepEqual(editions[1].list,[chapters[0]]);

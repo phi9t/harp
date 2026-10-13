@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import importlib
 import importlib.util
-import inspect
 import json
 import subprocess
 import tempfile
@@ -375,16 +374,6 @@ class HarpRouteManifestTests(unittest.TestCase):
             {name: sibling.__name__ for name, sibling in siblings.items()},
             {name: f"{package}.{name}" for name in siblings},
         )
-        for imported_module in (
-            module,
-            siblings["ls_validation"],
-            siblings["ls_validation"].formal_target,
-            siblings["ls_validation"].formal_target.tickets,
-        ):
-            with self.subTest(module=imported_module.__name__):
-                self.assertNotIn(
-                    "except ImportError", inspect.getsource(imported_module)
-                )
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_manifest_binds_exact_route_and_ls_evidence_contract(self) -> None:

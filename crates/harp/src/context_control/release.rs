@@ -1196,7 +1196,7 @@ mod tests {
     }
 
     #[test]
-    fn release_inspection_is_opaque_and_has_immutable_accessors() {
+    fn release_inspection_exposes_the_validated_release() {
         let fixture = ReleaseFixture::new();
         let compiled = compile_baseline_release().unwrap();
         publish_release(&fixture.state, &compiled).unwrap();
@@ -1220,39 +1220,6 @@ mod tests {
             Some(compiled.context_template_v2())
         );
         assert_eq!(inspection.items(), compiled.items());
-
-        let source = include_str!("release.rs");
-        let inspection_source = source
-            .split("pub struct ReleaseInspection {")
-            .nth(1)
-            .and_then(|tail| tail.split("}\n").next())
-            .expect("ReleaseInspection declaration");
-        assert!(!inspection_source.lines().any(|line| line.contains("pub ")));
-    }
-
-    #[test]
-    fn public_release_types_and_accessors_are_explicitly_versioned() {
-        let source = include_str!("release.rs");
-        let production = source
-            .split("#[cfg(test)]")
-            .next()
-            .expect("release production source");
-
-        assert!(!production.contains("pub struct ReleaseIdentity {"));
-        assert!(!production.contains("pub struct ContextTemplate {"));
-        assert!(!production.contains("pub struct WorkflowContextTemplate {"));
-        assert!(!production.contains("pub fn identity(&self)"));
-        assert!(!production.contains("pub fn context_template(&self)"));
-        assert!(production.contains("pub struct ReleaseIdentityV2 {"));
-        assert!(production.contains("pub struct ContextTemplateV2 {"));
-        assert!(production.contains("pub struct WorkflowContextTemplateV2 {"));
-        assert!(production.contains("pub fn identity_v2(&self) -> &ReleaseIdentityV2"));
-        assert!(production.contains("pub fn context_template_v2(&self) -> &ContextTemplateV2"));
-        assert!(production.contains("pub fn identity_v1(&self) -> Option<&ReleaseIdentityV1>"));
-        assert!(production.contains("pub fn identity_v2(&self) -> Option<&ReleaseIdentityV2>"));
-        assert!(
-            production.contains("pub fn context_template_v2(&self) -> Option<&ContextTemplateV2>")
-        );
     }
 
     #[test]

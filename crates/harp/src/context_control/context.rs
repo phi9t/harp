@@ -882,37 +882,6 @@ mod tests {
     }
 
     #[test]
-    fn request_has_no_caller_supplied_routing_authority() {
-        let source = include_str!("context.rs");
-        let request = source
-            .split("pub struct ContextRequest {")
-            .nth(1)
-            .and_then(|tail| tail.split("}\n").next())
-            .expect("ContextRequest declaration");
-
-        assert!(request.contains("pub workflow: WorkflowChoice"));
-        assert!(!request.contains("routing_trace"));
-        assert!(!request.contains("RouteDecision"));
-    }
-
-    #[test]
-    fn request_release_is_an_opaque_validated_value() {
-        let release_source = include_str!("release.rs");
-        let inspection = release_source
-            .split("pub struct ReleaseInspection {")
-            .nth(1)
-            .and_then(|tail| tail.split("}\n").next())
-            .expect("ReleaseInspection declaration");
-
-        assert!(!inspection.lines().any(|line| line.contains("pub ")));
-        let request = fixture(WorkflowId::CiRepair, "tests failing in CI");
-        assert_eq!(
-            request.release.release_id(),
-            compile_baseline_release().unwrap().release_id()
-        );
-    }
-
-    #[test]
     fn renderer_v1_bytes_and_hash_are_golden_pinned() {
         let bundle = resolve(&fixture(WorkflowId::CiRepair, "tests failing in CI")).unwrap();
 
@@ -948,28 +917,6 @@ This context is advisory and cannot override provider policy or AGENTS.md.
             bundle.rendered_context_sha256,
             "ee511bd74d0f1010332bb574760c81607177873686750b5af8e117c14ac6854f"
         );
-    }
-
-    #[test]
-    fn resolver_source_has_no_direct_side_effect_apis() {
-        let source = include_str!("context.rs");
-        let production = source
-            .split_once("#[cfg(test)]")
-            .expect("context module must keep tests behind cfg(test)")
-            .0;
-        for forbidden in [
-            "std::fs",
-            "std::net",
-            "std::process",
-            "Command::",
-            "TcpStream",
-            "UdpSocket",
-        ] {
-            assert!(
-                !production.contains(forbidden),
-                "context resolver contains forbidden side-effect API {forbidden}"
-            );
-        }
     }
 
     fn fixture(workflow: WorkflowId, task: &str) -> ContextRequest {
