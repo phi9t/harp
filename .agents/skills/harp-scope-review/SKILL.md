@@ -21,7 +21,7 @@ For each blocking finding, state:
 
 Classify relevance before severity. Missing capabilities of a future fleet, service, or threat model are follow-ups unless explicitly requested. A severity label does not expand scope. Real data loss, authorization failures, isolation defects, and credential exposure remain blocking even when the written plan omitted them.
 
-Check requirements, error handling, maintainability, integration, and behavior tests to the extent relevant to the change. For command launchers, run the actual command and inspect what it selected or produced. Exercise applicable parser, process, cache, environment, timeout, and cleanup boundaries; do not substitute a general hardening matrix for testing the current operation.
+Check requirements, error handling, maintainability, integration, and behavior tests to the extent relevant to the change. Apply [the test-selection guidance](../../../AGENTS.md#test-selection): assess the regressions covered, not test count. Flag assertions coupled to private structure or incidental call order when they obstruct a contract-preserving change; do not demand tests for every helper. For command launchers, run the actual command and inspect what it selected or produced. Exercise applicable parser, process, cache, environment, timeout, and cleanup boundaries; do not substitute a general hardening matrix for testing the current operation.
 
 A report should include findings, required repairs, advisory follow-ups, evidence coverage, and readiness for the requested operation. Technical readiness is not merge or deployment authority.
 

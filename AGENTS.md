@@ -44,6 +44,27 @@ Keep Rust errors typed, validate JSON at boundaries, reject symlinked generated
 targets, and preserve strict TypeScript boundary parsing and exhaustive variant
 handling.
 
+### Test selection
+
+- Prefer the smallest set of tests that protects useful observable behavior:
+  public API and CLI contracts, data schemas, boundary validation, and meaningful
+  integration outcomes. Choose checks by the regression they can catch, not a
+  coverage percentage or test count.
+- Leave private helpers, internal call order, class layout, incidental formatting,
+  and intermediate representations free to change unless they are part of an
+  explicit contract. A refactor that preserves the contract should usually pass
+  existing tests. Use internal tests when they protect a meaningful algorithmic
+  invariant that boundary tests cannot expose economically.
+- Before adding a test, name the behavior or invariant it protects. Reuse existing
+  coverage where sufficient; avoid duplicate assertions and mocks that reproduce
+  the implementation. For reversible prose-only edits, inspect the diff and
+  validate document/skill structure rather than adding wording-matching tests.
+- When a test fails, determine whether a required contract regressed or the test
+  freezes an incidental implementation choice. For the latter, update or remove
+  the test within the affected scope while retaining meaningful contract coverage.
+  Do not weaken a real contract to make a failure disappear or undertake unrelated
+  test deletion. Existing required gates still apply unless explicitly narrowed.
+
 ### Lean cache discipline
 
 - Treat the primary checkout's `formalization/lean/.lake` as the canonical

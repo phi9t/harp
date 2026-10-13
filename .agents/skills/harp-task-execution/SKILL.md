@@ -11,8 +11,8 @@ Read the current intent, plan, repository instructions, existing changes, and re
 
 1. Use an isolated worktree for feature work and preserve unrelated changes. Claim and update the relevant [local Markdown ticket](../../../docs/agents/issue-tracker.md), including verification evidence. Reuse existing tools; execution does not require a new coordinator.
 2. Execute the next bounded operation under existing authorization. Adapt routine mechanics to evidence while preserving constraints and acceptance.
-3. Run the relevant checks and inspect their actual outputs. Capture source identity, commands, results, and material limits where needed to reproduce the claim.
-4. Diagnose failed checks, repair within scope, and rerun affected verification. Retry with new evidence or a changed hypothesis, rather than repeating the same failing action.
+3. Select checks using [the test-selection guidance](../../../AGENTS.md#test-selection), prioritizing observable contracts over implementation details. Run the relevant checks and inspect their actual outputs. Capture source identity, commands, results, and material limits where needed to reproduce the claim.
+4. Diagnose failed checks against the required behavior. Repair contract regressions; update or remove affected tests that only freeze incidental implementation choices, preserving meaningful coverage. Stay within scope and rerun affected verification. Retry with new evidence or a changed hypothesis, rather than repeating the same failing action.
 5. Continue through the remaining requested work. Use [harp-scope-review](../harp-scope-review/SKILL.md) for independent review when required by the task or repository.
 
 ## When supporting work grows

@@ -23,7 +23,7 @@ For the next slice, name owned files, inputs, commands, expected observations, r
 
 ## Verification and dependencies
 
-Use behavior tests and real artifacts. Keep focused iteration checks distinct from Harp's full gate before commit or landing. Pair a contract test with the implementation it needs in the same coherent landing. A partial slice cannot satisfy full-task acceptance.
+Follow [the test-selection guidance](../../../AGENTS.md#test-selection): choose the smallest set of checks that protects the slice’s observable contracts and meaningful invariants. Reuse sufficient existing coverage and name the regression each proposed test would catch. Use real artifacts. Keep focused iteration checks distinct from Harp's full gate before commit or landing. Pair a contract test with the implementation it needs in the same coherent landing. A partial slice cannot satisfy full-task acceptance.
 
 For permitted external executables, specify an authoritative pinned release, integrity check, confined location, and command proving it works. Honor Harp's cache rules; never hydrate Lean dependencies as an incidental prerequisite. Tests use isolated inputs and do not mutate canonical data.
 
