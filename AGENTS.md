@@ -22,7 +22,8 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   (handoff messages), `evidence.py` (content-addressed run records), `claims.py` (sample and record claim checks). The repo gate is
   `tools/agents/check.sh`.
 - `docs/efforts/`: durable efforts (charter, decisions, state). Session start:
-  `python3 tools/agents/effort.py rehydrate <effort>`; session end: `dehydrate`.
+  `python3 tools/agents/effort.py rehydrate <effort>`; session end: `snapshot`.
+  Use `dehydrate` when committing is explicitly authorized.
   Working detail goes in gitignored `.scratch/<effort>/`.
 - `bench/` and `tools/insula/`: the multi-agent benchmark (validated tasks, harness, results) and the layered
   capsule builder every step runs in. Start at `bench/README.md`; validate with `python3 bench/harness/validate.py`;
@@ -33,7 +34,8 @@ boundary) and the owner of agentic-engineering practice for the workspace.
 ## Rules for working here
 
 - Use `python3 tools/temp_root.py -- <command>` for host execution. It preserves a
-  safe absolute owned `TMPDIR`, or creates `.scratch/tmp`; children inherit it.
+  safe absolute owned `TMPDIR`, or creates `.scratch/tmp` (private `~/.ctmp`
+  when the default path exceeds the socket budget); children inherit it.
   Host and sandbox execution must not allocate under `/tmp`. Private sandbox
   temporary files belong in a private tmpfs at `/run/corenius-tmp`, with `TMPDIR`
   set to that path. Preserve sandbox isolation; never bind host temporary roots

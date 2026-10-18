@@ -20,6 +20,12 @@ checks, explicit operator landing, recovery, and archive-backed cleanup. The old
 worktree and landing commands remain compatibility entry points. Adoption and
 ledger migration remain operator decisions.
 
+For local replayable workflows and supervised executable activities, see
+[Insula-local durable execution](controller/durable/README.md). It provides a
+Python reference runtime and an admitted Insula launcher with process-group or
+delegated cgroup v2 activity cleanup. It does not replace the team's controller
+or ticket and acceptance authority.
+
 ## Commands
 
 - `cargo run -- run --workspace <path>`
@@ -90,3 +96,6 @@ or Esc to cancel and exit.
   `node_path`, and optional `dependency_lock_digest`
 - The selected rootfs must live under `store_root`, must not be a symlink, and
   the saved digest must match the current marker digest when loaded.
+
+Repository tooling: [validation and qualification](tools/agents/VALIDATION.md),
+[complete WIP review snapshots](tools/agents/review_snapshot.md).

@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "selected_suites": [
+    "27-review-snapshot",
+    "73-durable-qualification"
+  ],
+  "remaining_suites": [],
+  "duration_seconds": 1.606552940000256,
+  "timeout_seconds": 60.0,
+  "results": [
+    {
+      "suite": "27-review-snapshot",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/27-review-snapshot.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 1.3450052159969346
+    },
+    {
+      "suite": "73-durable-qualification",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/73-durable-qualification.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.2614778400020441
+    }
+  ]
+}

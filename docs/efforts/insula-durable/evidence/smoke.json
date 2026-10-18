@@ -1,0 +1,17 @@
+{
+  "process_group": {
+    "status": "SUCCEEDED",
+    "result": {
+      "gpu_devices": "",
+      "sum": 181
+    },
+    "attempts": 4,
+    "inside_insula": true,
+    "disposable_sqlite_override": true
+  },
+  "cgroup": {
+    "admission": "refused",
+    "reason": "durable Insula: delegated cgroup root is not writable",
+    "kernel_execution_verified": false
+  }
+}

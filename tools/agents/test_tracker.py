@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import hashlib
 import json
 import os
 import shutil
@@ -128,6 +129,104 @@ class TrackerTest(unittest.TestCase):
 
     def write_lead_handoffs(self, text: str) -> Path:
         return self.write_report("lead-handoffs.md", text)
+
+    def test_handoff_records_evidence_without_resolving_or_changing_git(self):
+        path = self.write_ticket("01-work.md", ticket_text("01", "work", triage="ready-for-agent"))
+        self.write_ticket("02-dependent.md", ticket_text("02", "dependent", blocked_by="01", triage="ready-for-agent"))
+        evidence = self.write_report("checks.txt", "focused checks passed\n")
+        self.call(["claim", "demo", "01", "--owner", "alice"])
+        index = self.repo / ".git/index"
+        before = (index.read_bytes(), git(self.repo, "rev-parse", "HEAD"), git(self.repo, "show-ref"))
+
+        self.call(["handoff", "demo", "01", "--owner", "alice", "--evidence", str(evidence)])
+
+        self.assertEqual(self.code, tracker.OK, self.err)
+        self.assertEqual(before, (index.read_bytes(), git(self.repo, "rev-parse", "HEAD"), git(self.repo, "show-ref")))
+        rows = json.loads(self.call(["list", "demo", "--json"]))
+        submitted = next(row for row in rows if row["id"] == "01")
+        self.assertEqual(submitted["status"], "claimed")
+        self.assertEqual(submitted["implementation"], "implemented-awaiting-acceptance")
+        self.assertEqual(submitted["handoff_evidence"][0]["path"], str(evidence))
+        self.assertEqual(len(submitted["handoff_evidence"][0]["sha256"]), 64)
+        self.assertIn("implemented-awaiting-acceptance", self.call(["list", "demo"]))
+        self.assertEqual(json.loads(self.call(["launchable", "demo", "--json"])), [])
+        self.call(["resolve", "demo", "01", "--owner", "alice"])
+        self.assertEqual(self.code, tracker.REFUSED)
+        self.assertIn("Status: claimed", path.read_text())
+        self.call(["claim", "demo", "02", "--owner", "bob"])
+        self.assertEqual(self.code, tracker.REFUSED)
+        self.call(["lint", "demo"])
+        self.assertEqual(self.code, tracker.OK, self.err)
+
+    def test_handoff_refuses_wrong_owner_expired_claim_and_missing_evidence(self):
+        path = self.write_ticket("01-work.md", ticket_text("01", "work"))
+        evidence = self.write_report("checks.txt", "passed\n")
+        self.call(["claim", "demo", "01", "--owner", "alice", "--ttl-hours", "1"], now="2026-09-30T00:00:00Z")
+        before = path.read_bytes()
+        for owner, when, source in (
+            ("bob", "2026-09-30T00:30:00Z", evidence),
+            ("alice", "2026-09-30T01:00:00Z", evidence),
+            ("alice", "2026-09-30T00:30:00Z", evidence.parent / "missing"),
+            ("alice", "2026-09-30T00:30:00Z", path),
+        ):
+            with self.subTest(owner=owner, when=when, evidence=source):
+                self.call(["handoff", "demo", "01", "--owner", owner, "--evidence", str(source)], now=when)
+                self.assertEqual(self.code, tracker.REFUSED, self.err)
+                self.assertEqual(path.read_bytes(), before)
+
+    def test_handoff_survives_expiry_blocks_release_and_allows_owner_repair(self):
+        path = self.write_ticket("01-work.md", ticket_text("01", "work", triage="ready-for-agent"))
+        evidence = self.write_report("checks.txt", "passed\n")
+        self.call(["claim", "demo", "01", "--owner", "alice", "--ttl-hours", "1"], now="2026-09-30T00:00:00Z")
+        self.call(["handoff", "demo", "01", "--owner", "alice", "--evidence", str(evidence)], now="2026-09-30T00:30:00Z")
+        self.assertEqual(self.code, tracker.OK, self.err)
+        before = path.read_bytes()
+        for command in (
+            ["claim", "demo", "01", "--owner", "bob"],
+            ["claim", "demo", "01", "--owner", "alice"],
+            ["resume", "demo", "01", "--owner", "bob"],
+            ["release", "demo", "01", "--owner", "alice", "--attempt", "a-" + "a" * 16,
+             "--expected-sha256", hashlib.sha256(before).hexdigest()],
+        ):
+            self.call(command, now="2026-10-01T00:00:00Z")
+            self.assertEqual(self.code, tracker.REFUSED, self.err)
+            self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(json.loads(self.call(["launchable", "demo", "--json"])), [])
+        self.call(["resume", "demo", "01", "--owner", "alice", "--ttl-hours", "2"], now="2026-10-01T00:00:00Z")
+        self.assertEqual(self.code, tracker.OK, self.err)
+        row = json.loads(self.call(["list", "demo", "--json"]))[0]
+        self.assertEqual(row["implementation"], "")
+        self.assertEqual(row["handoff_evidence"], [])
+        self.assertIn("expires 2026-10-01T02:00:00Z", row["claimed"])
+        self.assertEqual(row["status"], "claimed")
+        self.call(["handoff", "demo", "01", "--owner", "alice", "--evidence", str(evidence)], now="2026-10-01T01:00:00Z")
+        self.assertEqual(self.code, tracker.OK, self.err)
+
+    def test_handoff_cannot_force_closure_and_normal_accepted_landed_resolution_unblocks(self):
+        path = self.write_ticket("01-work.md", ticket_text("01", "work"))
+        self.write_ticket("02-dependent.md", ticket_text("02", "dependent", blocked_by="01", triage="ready-for-agent"))
+        evidence = self.write_report("checks.txt", "passed\n")
+        self.call(["claim", "demo", "01", "--owner", "alice"])
+        self.call(["handoff", "demo", "01", "--owner", "alice", "--evidence", str(evidence)])
+        before = path.read_bytes()
+        self.call(["resolve", "demo", "01", "--owner", "alice", "--force"])
+        self.assertEqual(self.code, tracker.REFUSED, self.err)
+        self.assertEqual(path.read_bytes(), before)
+        candidate = "4" * 40
+        self.write_acceptance_record("01", candidate)
+        self.call(["resolve", "demo", "01", "--owner", "alice", "--mark-reviewed"])
+        self.assertEqual(self.code, tracker.REFUSED, self.err)
+        self.write_landing_record("01", candidate)
+        self.call(["resolve", "demo", "01", "--owner", "alice", "--force"])
+        self.assertEqual(self.code, tracker.REFUSED, self.err)
+        self.call(["resolve", "demo", "01", "--owner", "alice", "--mark-reviewed"])
+        self.assertEqual(self.code, tracker.OK, self.err)
+        row = next(row for row in json.loads(self.call(["list", "demo", "--json"])) if row["id"] == "01")
+        self.assertEqual(row["status"], "resolved")
+        self.assertEqual(row["implementation"], "")
+        self.assertEqual([row["id"] for row in json.loads(self.call(["launchable", "demo", "--json"]))], ["02"])
+        self.call(["lint", "demo"])
+        self.assertEqual(self.code, tracker.OK, self.err)
 
     def integration_worktree(self) -> Path:
         integration = self.repo.parent / "integration"

@@ -1,4 +1,4 @@
-<!-- Issue Tracker v2026.10.05.3. Canonical source: corenius/docs/agents/issue-tracker.md. -->
+<!-- Issue Tracker v2026.10.13.1. Canonical source: corenius/docs/agents/issue-tracker.md. -->
 # Issue tracker: Local Markdown
 
 Issues and specs live in tracked `docs/efforts/<effort>/`.
@@ -17,6 +17,11 @@ Working detail lives in gitignored `.scratch/<effort>/`.
   record-branch evidence.
 - Use `tools/agents/tracker.py` to create, claim, list, resolve and lint tickets.
 - Ticket lifecycle uses `Status: open`, `claimed`, or `resolved`.
+- Implementation handoff is separate: `tracker.py handoff <effort> <ticket>
+  --owner <owner> --evidence <file>` preserves the claim and records
+  `Implementation: implemented-awaiting-acceptance`. Dependencies remain blocked.
+  Use owner-only `tracker.py resume` to renew the claim for repairs. Normal
+  resolution still requires accepted, landed evidence; handoff does not grant it.
 - Record triage separately as `Triage: <role>` in the ticket body,
   using `triage-labels.md`.
 - Preserve the tracker’s header order and required ticket sections.
