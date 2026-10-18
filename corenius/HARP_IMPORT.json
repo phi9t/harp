@@ -1831,8 +1831,8 @@
       "sha256": "76761eeabfabdd38e53b0e1e6a40faea6f677e112a6b774c24573c911815c0a3"
     },
     "Cargo.lock": {
-      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
-      "sha256": "47031cad404afad1f811fc8d78f44814900542a409f4751ff5ff4f79405de161"
+      "reason": "Use Cargo 1.95.0 emitted lock after retiring the PostgreSQL/Temporal workspace member, preserving retained package versions/checksums while reducing feature-dependent edges.",
+      "sha256": "5f256da84fdc5d84ba3dd3086079164d697dfcb2a4e7239dfba179861bbd1539"
     },
     "Cargo.toml": {
       "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
