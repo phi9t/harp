@@ -67,3 +67,24 @@ Master remains at the original base with overlapping unrelated dirty work. No
 reset, stash, primary-checkout overwrite, push or source retirement occurred.
 Continue from the isolated candidate after prerequisites and safe landing state
 are resolved.
+
+Owner authorization on 2026-10-18: retain PDF publication, install its pinned
+dependencies and create a lockfile without browser downloads, and restore the
+pinned Lean cache. Prerequisite restoration and renewed verification are underway.
+
+## Authorized prerequisite restoration
+
+The pinned PDF packages are installed without browser downloads. The new lockfile
+uses public npm URLs with package integrity hashes; a public-registry `npm ci`
+passed. All 25 renderer tests pass. The existing Chrome produced the foundations
+book (673 pages), Chapter 1 (19 pages) and Chapter 36 (48 pages). The bundle checker
+passed content, source-snapshot, relative-link and page-boundary checks across
+145 snapshots. Cover, contents and mathematical pages were visually inspected.
+
+All nine Lean dependency revisions match the unchanged lockfile. The existing
+Lean 4.32.1 toolchain was reused, and the explicit cache task completed successfully.
+Source verification exposed derived JSON being scanned as raw authored locators;
+the scan now excludes content/generated, whose freshness and canonical links are
+checked by the compiler. Six source-manifest tests pass, including a regression
+that still rejects a missing authored locator. Independent review found no
+weakened retained source contract. Renewed proof checks are in progress.

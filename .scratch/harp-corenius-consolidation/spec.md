@@ -146,3 +146,7 @@ The primary master checkout also has unrelated overlapping uncommitted changes,
 so no safe fast-forward landing has been attempted. No push or source-checkout
 retirement was performed. Continue from this integration branch, not by resetting
 or stashing the primary checkout.
+
+Owner authorization on 2026-10-18: retain PDF publication, install its pinned
+dependencies and create a lockfile without browser downloads, and restore the
+pinned Lean cache. Prerequisite restoration and renewed verification are underway.

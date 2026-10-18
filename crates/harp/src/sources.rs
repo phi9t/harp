@@ -1074,7 +1074,14 @@ fn read_key_value_tsv(path: &Path) -> Result<BTreeMap<String, String>, AppError>
 
 fn verify_content_locators(repo_root: &Path) -> Result<usize, AppError> {
     let mut locators = BTreeSet::new();
-    for entry in WalkDir::new(repo_root.join("content")).follow_links(false) {
+    // Generated corpus strings are escaped projections, not authored locators.
+    // Their canonical links and exact output bytes are checked by the compiler.
+    let generated = repo_root.join("content/generated");
+    for entry in WalkDir::new(repo_root.join("content"))
+        .follow_links(false)
+        .into_iter()
+        .filter_entry(|entry| entry.path() != generated)
+    {
         let entry = entry.map_err(|error| {
             AppError::external(
                 "sources.locator_walk",
@@ -1476,6 +1483,28 @@ fn slash_path(path: &Path) -> String {
 mod tests {
     use super::*;
     use tempfile::tempdir;
+
+    #[test]
+    fn authored_locators_remain_required_without_scanning_generated_projections() {
+        let repo = tempdir().unwrap();
+        fs::create_dir_all(repo.path().join("content/generated")).unwrap();
+        fs::create_dir_all(repo.path().join("evidence/example")).unwrap();
+        let artifact = repo.path().join("evidence/example/source.txt");
+        fs::write(&artifact, "retained source").unwrap();
+        fs::write(
+            repo.path().join("content/manifest.tsv"),
+            "locator\nevidence/example/source.txt\n",
+        )
+        .unwrap();
+        fs::write(
+            repo.path().join("content/generated/corpus.json"),
+            r#"{"html":"<a href=\"evidence/derived-copy.txt\">source</a>"}"#,
+        )
+        .unwrap();
+        assert_eq!(verify_content_locators(repo.path()).unwrap(), 1);
+        fs::remove_file(artifact).unwrap();
+        assert!(verify_content_locators(repo.path()).is_err());
+    }
 
     #[test]
     fn implementation_license_status_accepts_explicit_mit() {

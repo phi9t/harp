@@ -1,6 +1,6 @@
 # Migrate the committed operational component
 
-Status: blocked
+Status: in-progress
 Owner: Codex
 Parent: [consolidation intent](../spec.md)
 
@@ -49,3 +49,7 @@ Checks used existing toolchains/caches, disposable repositories and model-free
 fixtures. Paid providers, live two-worker acceptance, delegated-cgroup checks,
 full native controller integration and parked database/service labs were not run.
 Original source checkouts and worktrees remain unchanged.
+
+Owner authorization on 2026-10-18: retain PDF publication, install its pinned
+dependencies and create a lockfile without browser downloads, and restore the
+pinned Lean cache. Prerequisite restoration and renewed verification are underway.

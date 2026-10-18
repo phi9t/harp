@@ -1,6 +1,6 @@
 # Reduce RSI research to a brief article survey
 
-Status: blocked
+Status: in-progress
 Owner: Codex
 Branch: codex/harp-corenius-consolidation
 Parent: [consolidation intent](../spec.md)
@@ -84,3 +84,7 @@ The source gate currently reports a missing canonical XDG Lean cache; the
 packages symlink targets a nonexistent directory. PDF checks lack their pinned
 standalone Node dependencies. No dependency installation or cache hydration was
 performed; explicit owner authorization is pending. These checks remain required.
+
+Owner authorization on 2026-10-18: retain PDF publication, install its pinned
+dependencies and create a lockfile without browser downloads, and restore the
+pinned Lean cache. Prerequisite restoration and renewed verification are underway.
