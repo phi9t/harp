@@ -12,6 +12,7 @@ task code, so it must run inside the capsule (see run_in_capsule); the fleet nev
 from __future__ import annotations
 
 import itertools
+import os
 import shutil
 import threading
 from concurrent.futures import ThreadPoolExecutor
@@ -34,7 +35,21 @@ _temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["tem
 _temp_policy_tempfile.tempdir = _temp_policy_root
 _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
 
-GIT_ENV = ["-c", "user.email=bench@corenius", "-c", "user.name=bench", "-c", "commit.gpgsign=false"]
+GIT_ENV = [
+    "-c", "user.email=bench@corenius",
+    "-c", "user.name=bench",
+    "-c", "commit.gpgsign=false",
+    "-c", "core.hooksPath=/dev/null",
+    "-c", "core.fsmonitor=false",
+    "-c", "gc.auto=0",
+]
+GIT_TIMEOUT_SECONDS = float(os.environ.get("CORENIUS_BENCH_GIT_TIMEOUT_SECONDS", "300"))
+GIT_PROCESS_ENV = {
+    **os.environ,
+    "GIT_TERMINAL_PROMPT": "0",
+    "GIT_ASKPASS": "true",
+    "GIT_EDITOR": "true",
+}
 # Build and tool artifacts are not contamination: they are byproducts of running the project's own build.
 IGNORED = (".uvcache/", "target/", "build/", "__pycache__/", ".pytest_cache/", ".blade_tools/", "build64_release/",
            "blade-bin/", ".sailfish/", "sailfish_runtime_auto_conf/", "build.ninja", ".trace.log", ".test-tmp/",
@@ -63,7 +78,20 @@ def load_tickets(task: tasklib.Task) -> list[Ticket]:
 
 
 def git(cwd, *args: str, check: bool = True) -> subprocess.CompletedProcess:
-    proc = subprocess.run(["git", *GIT_ENV, "-C", str(cwd), *args], capture_output=True, text=True)
+    command = ["git", *GIT_ENV, "-C", str(cwd), *args]
+    try:
+        proc = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=GIT_TIMEOUT_SECONDS,
+            env=GIT_PROCESS_ENV,
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout if isinstance(exc.stdout, str) else (exc.stdout or b"").decode(errors="replace")
+        stderr = exc.stderr if isinstance(exc.stderr, str) else (exc.stderr or b"").decode(errors="replace")
+        message = f"git {' '.join(args)} timed out after {GIT_TIMEOUT_SECONDS:g}s"
+        proc = subprocess.CompletedProcess(command, 124, stdout, (stderr + "\n" + message).strip())
     if check and proc.returncode != 0:
         raise RuntimeError(f"git {' '.join(args)} failed in {cwd}: {proc.stderr.strip() or proc.stdout.strip()}")
     return proc

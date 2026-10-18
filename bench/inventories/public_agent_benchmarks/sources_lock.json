@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "root_artifacts_sha256": {
+    "README.md": "d0c6515d83c1b48d299e81cea5dcc80e7d0b0d5f69cf6dbb6e07af30f568fca7"
+  },
+  "groups": [
+    {
+      "group_id": "coding_terminal_swe_program",
+      "path": "coding_terminal_swe_program",
+      "description": "Public coding, terminal, SWE, and ProgramBench task inventories.",
+      "generated_row_counts": {
+        "deepswe_tasks": 113,
+        "programbench_tasks": 201,
+        "swe_bench_full_dev": 225,
+        "swe_bench_full_test": 2294,
+        "swe_bench_lite_dev": 23,
+        "swe_bench_lite_test": 300,
+        "swe_bench_verified_test": 500,
+        "terminal_bench_original_tasks": 241
+      },
+      "sources": [
+        {
+          "artifact_stems": [
+            "terminal_bench_original_tasks"
+          ],
+          "source_url": "https://github.com/harbor-framework/terminal-bench-1",
+          "source_commit": "d28711d0da2675d0bb1d56de45ae5df6082438a3",
+          "source_scope": "original-tasks/*/task.yaml",
+          "access_caveat": "Public GitHub repository. Inventory includes the original public task set only, not adapter templates or model result tables."
+        },
+        {
+          "artifact_stems": [
+            "deepswe_tasks"
+          ],
+          "source_url": "https://github.com/datacurve-ai/deep-swe",
+          "source_commit": "0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea",
+          "source_scope": "tasks/*/task.toml plus instruction.md",
+          "access_caveat": "Public GitHub repository. Inventory includes public task metadata and instruction previews only."
+        },
+        {
+          "artifact_stems": [
+            "programbench_tasks"
+          ],
+          "source_url": "https://github.com/facebookresearch/ProgramBench",
+          "source_commit": "27f02157c785f8da3647aa6dbbe6b9137f99f10e",
+          "source_scope": "src/programbench/data/tasks/*/task.yaml",
+          "access_caveat": "Public GitHub repository. Inventory records public task metadata and test JSON URLs, not vendored evaluator files."
+        },
+        {
+          "artifact_stems": [
+            "swe_bench_full_dev",
+            "swe_bench_full_test"
+          ],
+          "dataset_id": "SWE-bench/SWE-bench",
+          "source_url": "https://huggingface.co/datasets/SWE-bench/SWE-bench",
+          "splits": [
+            "dev",
+            "test"
+          ],
+          "access_caveat": "Rows were fetched from the public HuggingFace dataset-server default config. No source commit is exposed by the row API; the committed CSV/JSONL hashes are the snapshot identity."
+        },
+        {
+          "artifact_stems": [
+            "swe_bench_verified_test"
+          ],
+          "dataset_id": "SWE-bench/SWE-bench_Verified",
+          "source_url": "https://huggingface.co/datasets/SWE-bench/SWE-bench_Verified",
+          "splits": [
+            "test"
+          ],
+          "access_caveat": "Rows were fetched from the public HuggingFace dataset-server default config. No source commit is exposed by the row API; the committed CSV/JSONL hashes are the snapshot identity."
+        },
+        {
+          "artifact_stems": [
+            "swe_bench_lite_dev",
+            "swe_bench_lite_test"
+          ],
+          "dataset_id": "SWE-bench/SWE-bench_Lite",
+          "source_url": "https://huggingface.co/datasets/SWE-bench/SWE-bench_Lite",
+          "splits": [
+            "dev",
+            "test"
+          ],
+          "access_caveat": "Rows were fetched from the public HuggingFace dataset-server default config. No source commit is exposed by the row API; the committed CSV/JSONL hashes are the snapshot identity."
+        }
+      ],
+      "artifacts_sha256": {
+        "README.md": "5678d8c382ca04ad1f03853bf1a680028e60288c9909732101a39db0fe6df960",
+        "counts.json": "651784654a2d5896ea74dc80d96b7a8c020591ac69104a63431f0cfe7b2fdf95",
+        "deepswe_tasks.csv": "31f7bc54b3b5ae234ba3757285565c5e5b0d8ad12a38f8c249209051fad552bb",
+        "deepswe_tasks.jsonl": "a103202af63b2e265433911bfacf39fad5b7d2199a0b39852fe9f62633dcdf0f",
+        "programbench_tasks.csv": "80c1a8a870fd9d6e5c05557f31c108b6ce80426d1dcb2fdcef8ee4bdfc5d3c3e",
+        "programbench_tasks.jsonl": "51cef17c0433ec4fef176676894f46a3da3d278f4faba2c5748f11c3cb95d2ec",
+        "swe_bench_full_dev.csv": "0666b913f130a76b202dfda06b9e8da2707c0d88469007498561e8763bf3009d",
+        "swe_bench_full_dev.jsonl": "69a42ab0e302d10a99eb5b8ea3d07a4355150f17c05e279bb2716f42aaf370e2",
+        "swe_bench_full_test.csv": "b913975194535ec35fa856ae7a8b052235c5e8b6e793d09482888c40f56329b2",
+        "swe_bench_full_test.jsonl": "b12421d428efcd4b1b555ce7dba959278d15fe5ff7dc7149d5dcb2b8ec38a6dd",
+        "swe_bench_lite_dev.csv": "4cc42b76431de680ef1c69c45b6691ee22587f64d5992428e179068268683dce",
+        "swe_bench_lite_dev.jsonl": "90dc77bea604852af5bfc07628c5931dd969bb192ae8b6d1763a750183348608",
+        "swe_bench_lite_test.csv": "8b5c7b9741f1e48c0d28c73e5174e87f15218ebdffbb03b0685ea9c1584993b8",
+        "swe_bench_lite_test.jsonl": "4b75eb558ac8c0a290f24e24f8d093c24719890b48d9d0c1b142ba91ebaa1e18",
+        "swe_bench_verified_test.csv": "ad172125df35792cbe40b743f0ba3dabd9718ac3e6d65c3dbac66c6b2b4c4b81",
+        "swe_bench_verified_test.jsonl": "5c67beaab1f60dc71c0fe51377759a9f28ad754866c325a05322955029ec4ae1",
+        "terminal_bench_original_tasks.csv": "8536214a38db69020fcb8d55d74d93ece242813a3b62ce07fad1b083da873e44",
+        "terminal_bench_original_tasks.jsonl": "fef97e1b6b216a56e271b27d862e37cdaac46cd508f6b1dc2c55341d0a0ba5b9"
+      }
+    },
+    {
+      "group_id": "retrieval_professional",
+      "path": "retrieval_professional",
+      "description": "Public retrieval-heavy and professional reasoning benchmark inventories.",
+      "generated_row_counts": {
+        "finance_agent_v2_public_questions": 27,
+        "gdp_pdf_artificial_analysis_examples": 5,
+        "gdp_pdf_official_public_samples": 2,
+        "gdp_pdf_public_mirror_tasks": 100,
+        "harvey_lab_public_tasks": 2010
+      },
+      "sources": [
+        {
+          "artifact_stems": [
+            "finance_agent_v2_public_questions"
+          ],
+          "source_url": "https://github.com/vals-ai/finance-agent-v2",
+          "source_commit": "502aab6fdaa3fb9294905c7453f89882baa8d39b",
+          "source_scope": "data/public.csv",
+          "access_caveat": "Public GitHub repository. Inventory includes the public questions only; private validation and test splits are not public artifacts."
+        },
+        {
+          "artifact_stems": [
+            "gdp_pdf_official_public_samples"
+          ],
+          "source_url": "https://github.com/surge-ai/gdp-pdf",
+          "source_commit": "7a72a514a6ab19c90babb00adc817e4ae86b9c1b",
+          "source_scope": "task_packs/sample_pdf/tasks/*.yaml",
+          "access_caveat": "Official public GitHub harness samples only. The full official dataset is not fetched from this repository."
+        },
+        {
+          "artifact_stems": [
+            "gdp_pdf_public_mirror_tasks"
+          ],
+          "dataset_id": "cloudybean/GDP.pdf",
+          "source_url": "https://huggingface.co/datasets/cloudybean/GDP.pdf",
+          "splits": [
+            "test"
+          ],
+          "access_caveat": "Public HuggingFace mirror used because unauthenticated access to the official surgeai/GDP.pdf rows returned 401 during the inventory run."
+        },
+        {
+          "artifact_stems": [
+            "gdp_pdf_artificial_analysis_examples"
+          ],
+          "source_url": "https://artificialanalysis.ai/evaluations/gdp-pdf",
+          "source_scope": "public leaderboard examples embedded in the page payload",
+          "access_caveat": "Dynamic public web page with no source commit. The committed CSV/JSONL hashes are the snapshot identity."
+        },
+        {
+          "artifact_stems": [
+            "harvey_lab_public_tasks"
+          ],
+          "source_url": "https://github.com/harveyai/harvey-labs",
+          "source_commit": "a15650fe74bb20b86f160aaabdad75b87a91b6e8",
+          "source_scope": "tasks/**/task.json",
+          "access_caveat": "Public GitHub repository. Inventory includes the public repository tasks, not the private 120-task Artificial Analysis evaluation."
+        }
+      ],
+      "artifacts_sha256": {
+        "README.md": "818a7f20cbf5658a7518830975fd5b652992aded55c8650d7243ccd701adea65",
+        "counts.json": "92a344b17e66df0279577558c50636d364cf610ba4f47a0f7d76c3df07be33b2",
+        "finance_agent_v2_public_questions.csv": "06866c436389a0edbbc60e9b1d5e9338687c6d22c53c454233bd791c8acf85c3",
+        "finance_agent_v2_public_questions.jsonl": "161fa76b66d221e8a12899104ca16136fbaddd807ea639aaa680ee2baaa9664e",
+        "gdp_pdf_artificial_analysis_examples.csv": "23cddb629bd99aa5245ae0dce3347a10c2690d30139145d193731c0acd704b04",
+        "gdp_pdf_artificial_analysis_examples.jsonl": "2c839d0060192f171a6ab7784254a3f3974c5c60180706f002681b3f4b134bf8",
+        "gdp_pdf_official_public_samples.csv": "3343edb278e00dbfa82f9a644fda734c0d4e951dc3fc2d95bc23bb33f28e34a9",
+        "gdp_pdf_official_public_samples.jsonl": "dabe36218437dcc331c25ea692bd69de2740ce1e5903426cbabd5b98ab75c70b",
+        "gdp_pdf_public_mirror_tasks.csv": "bf58c00c04c19d29aa3f73420c1a67bf26f2ce2a416e68fc3fa83e8570e3eee5",
+        "gdp_pdf_public_mirror_tasks.jsonl": "0d3c80fa188d765f4e6c6b7a7dd229a68fa1f349a83de2051ce48e9c832b676e",
+        "harvey_lab_public_tasks.csv": "1eb658a7397359884669d6fff783c561723e4607137abf1ab7b2ff4356b6bba8",
+        "harvey_lab_public_tasks.jsonl": "62cd0496503aadef30c9a549e8b21bfcd61497a6b1671c736ebc1dc26eb08f64"
+      }
+    }
+  ]
+}

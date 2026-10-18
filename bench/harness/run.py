@@ -77,7 +77,7 @@ class Agent:
     def capsule_request(self, task: tasklib.Task) -> Path:
         if self.kind == "traecli":
             return tasklib.REQUESTS / "agent.json"
-        return tasklib.REQUESTS / f"{task.bench.get('capsule', 'toolchains')}.json"
+        return tasklib.capsule_request_path(task)
 
     def capsule_record(self, task: tasklib.Task) -> dict:
         return tasklib.capsule.build(str(self.capsule_request(task)))
@@ -86,37 +86,42 @@ class Agent:
         """The capsule invocation for one unit. Files the agent needs (instruction, prompt) are written into `workdir`."""
         timeout = self.timeout or float(task.cfg.get("agent", {}).get("timeout_sec", 900))
         request = str(self.capsule_request(task))
+        agent_env = dict(task.cfg.get("agent", {}).get("env", {}))
+        agent_net = task.cfg.get("agent", {}).get("net", "none")
         if self.kind == "noop":
-            return Plan("true", {}, "none", False, [], 30.0, request)
+            return Plan("true", agent_env, "none", False, [], 30.0, request)
         if self.kind == "reference":
             if solution_or_ticket is None:
-                return Plan("sh /run/corenius-tmp/solution/solve.sh", {}, "none", False, [[str(task.path / "solution"), "/run/corenius-tmp/solution"]],
+                return Plan(tasklib.SOLUTION_COMMAND, agent_env, agent_net, False, [[str(task.path / "solution"), "/run/corenius-tmp/solution"]],
                             120.0, request)
             command = ("sh /run/corenius-tmp/ticket/apply.sh" if (solution_or_ticket / "apply.sh").exists()
                        else "cp -r /run/corenius-tmp/ticket/overlay/. /workspace/")
-            return Plan(command, {}, "none", False, [[str(solution_or_ticket), "/run/corenius-tmp/ticket"]], 120.0, request)
+            return Plan(command, agent_env, agent_net, False, [[str(solution_or_ticket), "/run/corenius-tmp/ticket"]], 120.0, request)
         workdir.mkdir(parents=True, exist_ok=True)
         (workdir / "instruction.md").write_text(instruction)
         if self.kind == "cmd":
-            return Plan(self.arg, {"TASK_INSTRUCTION": "/run/corenius-tmp/task/instruction.md"}, "none", False,
+            return Plan(self.arg, {**agent_env, "TASK_INSTRUCTION": "/run/corenius-tmp/task/instruction.md"}, agent_net, False,
                         [[str(workdir / "instruction.md"), "/run/corenius-tmp/task/instruction.md"]], timeout, request)
         model = self.arg or "GPT-5.5"
         (workdir / "prompt.md").write_text(PROMPT_HEADER + instruction)
         command = (f"traecli exec -m {model} -c model_reasoning_effort=xhigh -c model_reasoning_summary=detailed "
                    f"--json --skip-git-repo-check -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /run/corenius-tmp/task/prompt.md")
-        return Plan(command, {}, "host", bool(task.bench.get("gpu", False)), [[str(workdir / "prompt.md"), "/run/corenius-tmp/task/prompt.md"]],
+        return Plan(command, agent_env, "host", bool(task.bench.get("gpu", False)), [[str(workdir / "prompt.md"), "/run/corenius-tmp/task/prompt.md"]],
                     timeout, request)
 
     @staticmethod
-    def execute(plan: Plan, record: dict, ws: Path, on_line=None) -> dict:
+    def execute(plan: Plan, record: dict, ws: Path, on_line=None, services: list[dict] | None = None) -> dict:
         return tasklib.run_in_capsule(record, ws, plan.command, plan.env, plan.net, plan.timeout,
-                                      ro=[tuple(x) for x in plan.ro], gpu=plan.gpu, on_line=on_line)
+                                      ro=[tuple(x) for x in plan.ro], gpu=plan.gpu, on_line=on_line,
+                                      services=services)
 
     def run(self, instruction: str, ws: Path, record: dict, solution_or_ticket: Path | None, task: tasklib.Task) -> dict:
         if self.kind == "noop":
             return {"rc": 0, "seconds": 0.0}
         with tempfile.TemporaryDirectory(prefix="agent-", dir=str(tasklib.ROOT / ".scratch")) as tmp:
-            return self.execute(self.plan(instruction, task, solution_or_ticket, Path(tmp)), record, ws)
+            services = [service for service in task.services if "agent" in service["phases"]]
+            return self.execute(self.plan(instruction, task, solution_or_ticket, Path(tmp)), record, ws,
+                                services=services)
 
 
 def parse_usage(text: str) -> dict | None:
@@ -233,6 +238,7 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("task", nargs="*")
     p.add_argument("--all", action="store_true")
+    p.add_argument("--tasks-root", default=str(tasklib.TASKS), help="directory containing task subdirectories")
     p.add_argument("--condition", default="solo")
     p.add_argument("--agent", default="reference")
     p.add_argument("--repeat", type=int, default=1)
@@ -249,7 +255,7 @@ def main(argv=None) -> int:
         return 0
     (tasklib.ROOT / ".scratch").mkdir(exist_ok=True)
     agent = Agent(args.agent, args.authorize_model_spend, args.timeout)
-    tasks = tasklib.load_tasks(only=None if args.all else args.task)
+    tasks = tasklib.load_tasks(root=Path(args.tasks_root), only=None if args.all else args.task)
     if not (args.condition == "solo" or re.fullmatch(r"fleet:\d+", args.condition)
             or re.fullmatch(r"controller:[A-Za-z0-9_.-]+", args.condition)):
         raise SystemExit("condition must be solo, fleet:N, or controller:TICKET")
