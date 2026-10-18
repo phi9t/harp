@@ -45,6 +45,8 @@ class AdmissionTests(unittest.TestCase):
         self.assertNotEqual(first.contract, self.execution().contract)
         with self.assertRaisesRegex(ValueError, "code.*changed"):
             first.verify()
+        with self.assertRaisesRegex(ValueError, "code.*changed"):
+            first.verify(require_backend=False)
 
     def test_configuration_tampering_refused(self):
         config = self.execution().config
@@ -129,6 +131,68 @@ class AdmissionTests(unittest.TestCase):
         self.assertEqual(request["attempt_dir"], "/home/bench/run")
         self.assertIn("--ro-bind", argv)
         self.assertIn("/run/corenius-tmp", argv)
+
+    def test_admitted_inputs_are_readonly_and_other_bundles_and_state_are_absent(self):
+        import hashlib
+        from controller.durable.common import atomic_json, digest
+        inputs = self.root / "inputs"
+        inputs.mkdir(mode=0o700)
+        manifest = {"schema": 1, "files": {"task.md": {"sha256": hashlib.sha256(b"pinned").hexdigest(), "size": 6}}}
+        key = digest(manifest)
+        bundle = inputs / key
+        bundle.mkdir()
+        (bundle / "task.md").write_bytes(b"pinned")
+        atomic_json(bundle / "manifest.json", manifest)
+        (inputs / "another-bundle").mkdir()
+        execution = InsulaExecution.create(self.record, self.code, self.root / "state", inputs_root=inputs)
+        self.assertNotEqual(execution.contract, self.execution().contract)
+        attempt = self.root / "input-attempt"
+        attempt.mkdir()
+        request = {"attempt_dir": str(attempt), "spec": {"cwd": None, "env": {}, "inputs": key}}
+        argv, _ = execution.payload(attempt, request)
+        result = subprocess.run(argv + ["--", "/usr/bin/python3", "-c",
+            "from pathlib import Path; "
+            "assert Path('/home/bench/input/task.md').read_bytes() == b'pinned'; "
+            "assert not Path('/home/bench/input/another-bundle').exists(); "
+            f"assert not Path({str(inputs)!r}).exists(); assert not Path({str(self.root / 'state')!r}).exists(); "
+            "Path('/home/bench/run/output').write_text('owned'); "
+            "\ntry: Path('/home/bench/input/task.md').write_text('forged')"
+            "\nexcept OSError: pass"
+            "\nelse: raise AssertionError('input mount is writable')"], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((attempt / "output").read_text(), "owned")
+        self.assertEqual((bundle / "task.md").read_bytes(), b"pinned")
+        with self.assertRaises(ValueError):
+            self.execution().payload(attempt, request)
+        (bundle / "task.md").write_bytes(b"forged")
+        with self.assertRaises(ValueError):
+            execution.payload(attempt, request)
+        from controller.durable import Activity
+        def workflow(ctx, _args):
+            return ctx.activity("coding", Activity(argv=("/usr/bin/true",), inputs=key))
+        with closing(Store(self.root / "state", allow_unpatched_sqlite=True)) as store:
+            store.submit("bad-input", "coding", "v1", {}, execution.contract)
+            with Runtime(store, {"coding": ("v1", workflow)}, execution.contract, execution=execution) as runtime:
+                with self.assertRaises(ValueError):
+                    runtime.drive(timeout=1)
+            self.assertEqual(store.status("bad-input")["attempts"], [])
+
+    def test_old_execution_contract_is_unchanged_and_inputs_root_is_bound(self):
+        config = self.execution().config
+        from tools.insula import capsule
+        expected = "insula-durable-v1:" + capsule.sha(capsule.canonical({
+            key: config[key] for key in ("capsule", "capsule_store", "code", "code_digest", "state", "backend", "cgroup_root", "cgroup_identity")
+        }))
+        self.assertEqual(config["contract"], expected)
+        self.assertNotIn("inputs_root", config)
+        inputs = self.root / "inputs"
+        inputs.mkdir(mode=0o700)
+        execution = InsulaExecution.create(self.record, self.code, self.root / "state", inputs_root=inputs)
+        execution.config["inputs_root"] = str(self.root / "substitute")
+        with self.assertRaises(ValueError):
+            execution.verify()
+        with self.assertRaises(ValueError):
+            execution.verify(require_backend=False)
 
     def test_real_insula_activity_environment_and_write_boundary(self):
         execution = self.execution()

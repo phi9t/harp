@@ -19,7 +19,7 @@ import time
 from typing import Any, Callable, Iterator, Mapping
 import uuid
 
-from .common import MANAGED_TEMP_ENV, atomic_json, digest, durable_mkdir, encode, read_json, temporary_environment
+from .common import MANAGED_TEMP_ENV, atomic_json, digest, durable_mkdir, encode, input_digest, read_json, temporary_environment
 from .insula import InsulaExecution
 
 
@@ -58,6 +58,7 @@ class Activity:
     recovery: str = "manual"  # Opt in to retry_safe only for safe/idempotent effects.
     cpus: int = 1
     gpus: int = 0
+    inputs: str | None = None
 
     def spec(self) -> dict[str, Any]:
         if not self.argv or not os.path.isabs(self.argv[0]):
@@ -87,6 +88,8 @@ class Activity:
                       timeout=float(self.timeout), max_attempts=self.max_attempts,
                       backoff=float(self.backoff), recovery=self.recovery,
                       cpus=self.cpus, gpus=self.gpus)
+        if self.inputs is not None:
+            result["inputs"] = input_digest(self.inputs)
         encode(result)
         return result
 
@@ -539,6 +542,10 @@ class Runtime:
 
     def _launch(self, op: sqlite3.Row, devices: list[str]) -> None:
         spec = json.loads(op["spec"])
+        if "inputs" in spec:
+            if self.execution is None:
+                raise ValueError("activity inputs require an admitted Insula execution")
+            self.execution.input_bundle(spec["inputs"])
         aid, number = uuid.uuid4().hex, op["attempt_count"] + 1
         directory = self.store.root / "attempts" / aid
         durable_mkdir(directory)

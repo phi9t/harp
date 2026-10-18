@@ -5,13 +5,92 @@ import hashlib
 import json
 import os
 import stat
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import tempfile
 from typing import Any
 from tools.temp_root import temporary_root
 
 MAX_JSON = 1 << 20  # Small control data only; large artifacts are external files.
 MANAGED_TEMP_ENV = frozenset({"TMPDIR", "TMP", "TEMP", "TMUX_TMPDIR", "TMPPREFIX"})
+
+
+def input_digest(value: Any) -> str:
+    if not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
+        raise ValueError("input digest must be 64 lowercase hexadecimal characters")
+    return value
+
+
+def verify_inputs_root(root: Path) -> Path:
+    """Validate an existing private store without resolving away symlink ancestry."""
+    root = Path(root)
+    if not root.is_absolute() or ".." in root.parts:
+        raise ValueError("inputs root must be an absolute path without traversal")
+    for parent in (root, *root.parents):
+        if parent.is_symlink():
+            raise ValueError("inputs root must not contain symlinks")
+    info = root.stat()
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
+        raise ValueError("inputs root must be an owned private directory (mode 0700)")
+    return root
+
+
+def verify_input_bundle(root: Path, bundle_digest: str) -> Path:
+    """Verify precisely the declared immutable inputs before projecting them read-only."""
+    root = verify_inputs_root(root)
+    bundle = root / input_digest(bundle_digest)
+    info = bundle.lstat()
+    if not stat.S_ISDIR(info.st_mode):
+        raise ValueError("input bundle must be a regular directory, not a symlink")
+    manifest_path = bundle / "manifest.json"
+    manifest = read_json(manifest_path)
+    if (not isinstance(manifest, dict) or set(manifest) != {"schema", "files"}
+            or type(manifest["schema"]) is not int or manifest["schema"] != 1
+            or not isinstance(manifest["files"], dict)):
+        raise ValueError("invalid input manifest")
+    if digest(manifest) != bundle_digest or manifest_path.read_bytes() != encode(manifest).encode():
+        raise ValueError("input manifest digest or canonical encoding changed")
+    directories = set()
+    for name, description in manifest["files"].items():
+        if (not isinstance(name, str) or not name or "\\" in name or "\x00" in name
+                or PurePosixPath(name).is_absolute() or PurePosixPath(name).as_posix() != name
+                or any(part in {".", ".."} for part in PurePosixPath(name).parts)
+                or name == "manifest.json"):
+            raise ValueError("input manifest paths must be canonical relative file paths")
+        if (not isinstance(description, dict) or set(description) != {"sha256", "size"}
+                or type(description["size"]) is not int or description["size"] < 0):
+            raise ValueError("invalid input file description")
+        input_digest(description["sha256"])
+        directories.update(str(parent) for parent in PurePosixPath(name).parents if str(parent) != ".")
+    actual_files = set()
+    actual_directories = set()
+    for directory, names, files in os.walk(bundle, followlinks=False):
+        for name in [*names, *files]:
+            path = Path(directory) / name
+            info = path.lstat()
+            relative = path.relative_to(bundle).as_posix()
+            if stat.S_ISDIR(info.st_mode):
+                actual_directories.add(relative)
+            elif stat.S_ISREG(info.st_mode):
+                actual_files.add(relative)
+            else:
+                raise ValueError("input bundle contains a symlink or special file")
+    if (actual_files != {"manifest.json", *manifest["files"]}
+            or actual_directories != directories):
+        raise ValueError("input bundle files or directories differ from its manifest")
+    for name, description in manifest["files"].items():
+        fd = os.open(bundle / name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(fd, "rb") as source:
+            info = os.fstat(source.fileno())
+            if not stat.S_ISREG(info.st_mode) or info.st_size != description["size"]:
+                raise ValueError("input file type or size changed")
+            hashed = hashlib.sha256()
+            size = 0
+            while block := source.read(1 << 20):
+                hashed.update(block)
+                size += len(block)
+            if size != description["size"] or hashed.hexdigest() != description["sha256"]:
+                raise ValueError("input file bytes changed")
+    return bundle
 
 
 def temporary_environment() -> dict[str, str]:

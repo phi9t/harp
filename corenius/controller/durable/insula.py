@@ -12,6 +12,7 @@ import shutil
 from typing import Any
 
 from tools.insula import capsule
+from .common import verify_input_bundle, verify_inputs_root
 
 REPOSITORY = Path(__file__).resolve().parents[2]
 PAYLOAD_ATTEMPT = "/home/bench/run"
@@ -59,7 +60,9 @@ class InsulaExecution:
 
     @classmethod
     def create(cls, record: dict[str, Any], code: Path, state: Path, *,
-               backend: str = "process-group", cgroup_root: Path | None = None) -> InsulaExecution:
+               backend: str = "process-group", cgroup_root: Path | None = None,
+               inputs_root: Path | None = None,
+               native_manifest: dict[str, Any] | None = None) -> InsulaExecution:
         if backend not in {"process-group", "cgroup"}:
             raise ValueError("unknown activity backend")
         if backend == "cgroup" and cgroup_root is None:
@@ -72,6 +75,10 @@ class InsulaExecution:
                   "state": str(state.resolve()), "backend": backend,
                   "cgroup_root": str(cgroup_root.resolve()) if cgroup_root else None,
                   "cgroup_identity": None}
+        if inputs_root is not None:
+            config["inputs_root"] = str(verify_inputs_root(inputs_root))
+        if native_manifest is not None:
+            config["native_manifest"] = copy.deepcopy(native_manifest)
         if cgroup_root is not None:
             from .cgroup import Cgroup
             config["cgroup_identity"] = Cgroup.validate_root(cgroup_root)
@@ -80,12 +87,16 @@ class InsulaExecution:
 
     @staticmethod
     def _contract(config: dict[str, Any]) -> str:
-        return "insula-durable-v1:" + capsule.sha(capsule.canonical({
+        binding = {
             "capsule": config["capsule"], "capsule_store": config["capsule_store"],
             "code": config["code"], "code_digest": config["code_digest"],
             "state": config["state"], "backend": config["backend"],
             "cgroup_root": config["cgroup_root"], "cgroup_identity": config["cgroup_identity"],
-        }))
+        }
+        for optional in ("inputs_root", "native_manifest"):
+            if optional in config:
+                binding[optional] = config[optional]
+        return "insula-durable-v1:" + capsule.sha(capsule.canonical(binding))
 
     @property
     def contract(self) -> str:
@@ -95,7 +106,8 @@ class InsulaExecution:
     def backend(self) -> str:
         return self.config["backend"]
 
-    def verify(self) -> None:
+    def verify(self, *, require_backend: bool = True) -> None:
+        """Inspect retained identity; dispatch also requires the live delegated backend."""
         config = self.config
         if config["protocol"] != 1 or self._contract(config) != self.contract:
             raise ValueError("execution configuration binding changed")
@@ -107,10 +119,20 @@ class InsulaExecution:
         if capsule.tree_digest(Path(config["code"])) != config["code_digest"]:
             raise ValueError("admitted code changed")
         capsule.verify_host_layers(config["capsule"])
-        if self.backend == "cgroup":
+        if "inputs_root" in config:
+            verify_inputs_root(Path(config["inputs_root"]))
+        if "native_manifest" in config:
+            from harp_durable.setup import verify_native_manifest
+            verify_native_manifest(config["native_manifest"])
+        if self.backend == "cgroup" and require_backend:
             from .cgroup import Cgroup
             if Cgroup.validate_root(Path(config["cgroup_root"])) != config["cgroup_identity"]:
                 raise ValueError("delegated cgroup generation changed")
+
+    def input_bundle(self, bundle_digest: str) -> Path:
+        if "inputs_root" not in self.config:
+            raise ValueError("activity inputs require an admitted input store")
+        return verify_input_bundle(Path(self.config["inputs_root"]), bundle_digest)
 
     def payload(self, directory: Path, request: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
         self.verify()
@@ -128,9 +150,11 @@ class InsulaExecution:
                        "TMP": "/run/corenius-tmp", "TEMP": "/run/corenius-tmp",
                        "TMUX_TMPDIR": "/run/corenius-tmp", "TMPPREFIX": "/run/corenius-tmp/zsh",
                        "PYTHONDONTWRITEBYTECODE": "1", "CORENIUS_DURABLE_CONTRACT": self.contract}
+        inputs = self.input_bundle(spec["inputs"]) if "inputs" in spec else None
         argv = capsule.run_argv(self.config["capsule"], str(code),
                                [(str(directory), PAYLOAD_ATTEMPT)], environment,
-                               ro_workspace=True, cwd=cwd)
+                               ro_workspace=True, cwd=cwd,
+                               ro=[(str(inputs), "/home/bench/input")] if inputs else None)
         # GPU admission projects readonly sysfs. Hide cgroup controls even
         # there; only the host guardian may manage attempt membership.
         argv += ["--tmpfs", "/sys/fs/cgroup"]

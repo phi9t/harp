@@ -1857,6 +1857,26 @@
     "docs/efforts/engineering-profile-labs/README.md": {
       "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
       "sha256": "99d7c6620e4998eb8af377a3e85caa2beba9c8ff03df107f73e32a400901d938"
+    },
+    "controller/durable/common.py": {
+      "reason": "Verify content-addressed task input bundles, canonical manifests, private input stores and exact regular-file bytes before readonly projection.",
+      "sha256": "3722cf0c32881a81602da4c8de19f55ca36576dddd62a6d3bdf3344eb4589130"
+    },
+    "controller/durable/engine.py": {
+      "reason": "Bind optional immutable input identities into activity specifications without changing legacy replay digests; refuse unsupported or invalid input projection before claiming work.",
+      "sha256": "30f4de70ed17edf598b67f97e5f0338298ecb1fd72a362c2b169d79565b30c5e"
+    },
+    "controller/durable/insula.py": {
+      "reason": "Bind optional private input stores and full native manifests into execution contracts, project only the selected verified bundle readonly, and permit retained inspection without weakening dispatch backend checks.",
+      "sha256": "b6d3a5711bdcb263b7fc862d915a07c3da295e5f330e8779a2ff325dd926402d"
+    },
+    "controller/durable/runtime_test.py": {
+      "reason": "Protect immutable input bytes and traversal/type/digest refusal, legacy specification compatibility, and refusal before claiming attempts without admitted isolation.",
+      "sha256": "ccac6156daf0bcc5e1387fbf8ff3514f6fd16938dda2ebc979704a26933932d0"
+    },
+    "controller/durable/insula_test.py": {
+      "reason": "Exercise real readonly selected-input projection, absence of authoritative state and other bundles, forged-input refusal before dispatch, and unchanged legacy execution contracts.",
+      "sha256": "f871914197c0790135d4fc5e05c0635858f648fd9586b16bdf5a5fda24c481cd"
     }
   },
   "retirements": {

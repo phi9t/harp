@@ -12,7 +12,7 @@ import unittest
 from unittest.mock import patch
 
 from controller.durable import Activity, Context, Runtime, Store
-from controller.durable.common import atomic_json, digest, read_json
+from controller.durable.common import atomic_json, digest, read_json, verify_input_bundle, verify_inputs_root
 from controller.durable.engine import CleanupUnproven, ControllerBusy
 from controller.durable.workflows import DEMO_CONTRACT, DEMO_VERSION, REGISTRY, command
 from tools.temp_root import temporary_root
@@ -489,6 +489,16 @@ class RuntimeTests(unittest.TestCase):
             with self.subTest(key=key), self.assertRaisesRegex(ValueError, "managed temporary"):
                 command({}, env={key: str(self.root)}).spec()
 
+    def test_inputs_without_insula_refuse_before_claiming_an_attempt(self):
+        def workflow(ctx, _args):
+            return ctx.activity("coding", Activity(argv=("/usr/bin/true",), inputs="a" * 64))
+        registry = {"coding": ("v1", workflow)}
+        self.store.submit("r", "coding", "v1", {}, DEMO_CONTRACT)
+        with Runtime(self.store, registry, DEMO_CONTRACT) as runtime:
+            with self.assertRaisesRegex(ValueError, "admitted Insula"):
+                runtime.drive(timeout=1)
+        self.assertEqual(self.store.status("r")["attempts"], [])
+
     def test_activity_spec_does_not_depend_on_host_temporary_root(self):
         activity = command({})
         with patch.dict(os.environ, {"TMPDIR": str(self.root / "first")}):
@@ -573,6 +583,105 @@ def crash_test(point):
 
 for _point in ["after_claim", "after_guard_spawn", "before_release", "after_release", "after_receipt", "after_commit"]:
     setattr(RuntimeTests, f"test_crash_{_point}", crash_test(_point))
+
+class InputBundleTests(unittest.TestCase):
+    """Content-addressed inputs remain bounded by their manifest and private store."""
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name).resolve() / "inputs"
+        self.root.mkdir(mode=0o700)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def bundle(self, files=None):
+        import hashlib
+        files = files if files is not None else {"task.md": b"pinned intent", "source/base.bundle": b"source bytes"}
+        manifest = {"schema": 1, "files": {name: {"sha256": hashlib.sha256(data).hexdigest(), "size": len(data)}
+                                          for name, data in files.items()}}
+        key = digest(manifest)
+        directory = self.root / key
+        directory.mkdir()
+        for name, data in files.items():
+            path = directory / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        atomic_json(directory / "manifest.json", manifest)
+        return key, directory
+
+    def test_complete_bundle_preserves_bytes_and_stable_activity_spec(self):
+        key, directory = self.bundle()
+        self.assertEqual(verify_input_bundle(self.root, key), directory)
+        self.assertEqual((directory / "task.md").read_bytes(), b"pinned intent")
+        activity = Activity(argv=("/usr/bin/true",))
+        self.assertNotIn("inputs", activity.spec())
+        self.assertEqual(Activity(argv=activity.argv, inputs=key).spec(), {**activity.spec(), "inputs": key})
+        for value in ["../escape", "a" * 63, "A" * 64, "z" * 64, True, 1]:
+            with self.subTest(digest=value), self.assertRaises(ValueError):
+                Activity(argv=activity.argv, inputs=value).spec()
+
+    def test_changed_missing_extra_and_symlinked_files_are_refused(self):
+        def changed(directory):
+            (directory / "task.md").write_bytes(b"altered data!")
+        def missing(directory):
+            (directory / "task.md").unlink()
+        def extra(directory):
+            (directory / "undeclared").write_bytes(b"extra")
+        def symlink(directory):
+            (directory / "task.md").unlink()
+            (directory / "task.md").symlink_to(directory / "source/base.bundle")
+        def directory_link(directory):
+            (directory / "unlisted").symlink_to(self.root, target_is_directory=True)
+        def fifo(directory):
+            os.mkfifo(directory / "fifo")
+        for i, mutate in enumerate([changed, missing, extra, symlink, directory_link, fifo]):
+            with self.subTest(mutation=mutate.__name__):
+                key, directory = self.bundle({"task.md": b"pinned intent", f"source/{i}": b"source bytes"})
+                mutate(directory)
+                with self.assertRaises((ValueError, OSError)):
+                    verify_input_bundle(self.root, key)
+
+    def test_manifest_identity_paths_size_and_canonical_bytes_are_checked(self):
+        manifests = [
+            {"schema": True, "files": {}},
+            {"schema": 1, "files": {"../outside": {"sha256": "a" * 64, "size": 1}}},
+            {"schema": 1, "files": {"/absolute": {"sha256": "a" * 64, "size": 1}}},
+            {"schema": 1, "files": {"nested//file": {"sha256": "a" * 64, "size": 1}}},
+            {"schema": 1, "files": {"file": {"sha256": "a" * 64, "size": True}}},
+            {"schema": 1, "files": {"file": {"sha256": "a" * 64, "size": -1}}},
+        ]
+        for manifest in manifests:
+            key = digest(manifest)
+            directory = self.root / key
+            directory.mkdir()
+            atomic_json(directory / "manifest.json", manifest)
+            with self.subTest(manifest=manifest), self.assertRaises(ValueError):
+                verify_input_bundle(self.root, key)
+        key, directory = self.bundle()
+        path = directory / "manifest.json"
+        original = path.read_bytes()
+        path.write_bytes(original + b"\n")
+        with self.assertRaises(ValueError):
+            verify_input_bundle(self.root, key)
+        path.write_bytes(original.replace(b'"schema":1', b'"schema":2'))
+        with self.assertRaises(ValueError):
+            verify_input_bundle(self.root, key)
+
+    def test_store_and_bundle_symlinks_and_nonprivate_store_are_refused(self):
+        key, directory = self.bundle()
+        alias = self.root.parent / "alias"
+        alias.symlink_to(self.root, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            verify_input_bundle(alias, key)
+        outside = self.root.parent / "bundle"
+        directory.rename(outside)
+        directory.symlink_to(outside, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            verify_input_bundle(self.root, key)
+        self.root.chmod(0o755)
+        with self.assertRaises(ValueError):
+            verify_inputs_root(self.root)
+
 
 if __name__ == "__main__":
     unittest.main()
