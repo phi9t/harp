@@ -1,0 +1,12 @@
+{
+  "name": "terminal_bench",
+  "extends": "toolchains.json",
+  "policy": {
+    "workspace_aliases": [
+      "/app"
+    ],
+    "workspace_path_aliases": {
+      "/tests": "tests"
+    }
+  }
+}

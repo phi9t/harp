@@ -1,0 +1,40 @@
+{
+  "observed_at": "2026-10-05T05:16:38.885903+00:00",
+  "actor": "/root/sqlite06_replacement_launch",
+  "thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282",
+  "base": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "decision": "Admit one narrow selected-model propagation slice for same approved runtime/relay",
+  "model": "gpt-6.1-sol",
+  "probe": "exactly one; installed listed; HTTP200 response.completed; actualexit0",
+  "requirements": [
+    "durable operation intent binds selected model",
+    "lead native UI passes selection through authenticated binding path",
+    "worker observer UI cannot turn-start",
+    "same relay/provider scope",
+    "focused causal RED/GREEN and independent exact-source review before live continuation"
+  ],
+  "caps_reset": false,
+  "scope_exclusions": [
+    "old C1/S2 hardening",
+    "new scheduler",
+    "arbitrary provider/network/auth",
+    "acceptance mutation"
+  ],
+  "pins": [
+    {
+      "path": "supported-models.json",
+      "bytes": 1512,
+      "sha256": "d162de7fe7f5d6532c5a017ddccea2c848177e0040e19453b73cb540cb2e4fc7"
+    },
+    {
+      "path": "alternate-model-probe-result.json",
+      "bytes": 986,
+      "sha256": "a58376c0daa1942687c4a87bcc7bfc350f3d76b38fe5074a89b0b7b987014767"
+    },
+    {
+      "path": "model-selection-diagnosis.json",
+      "bytes": 4398,
+      "sha256": "3f8eee9a07350c2a8f15f3679b6d5a5dac33e2ee08b4cc20dd65b16fbece5efa"
+    }
+  ]
+}

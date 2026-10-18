@@ -1,0 +1,33 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review584-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.83s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... FAILED
+
+failures:
+
+---- public_cancel_stops_actual_nested_writers_and_never_refunds_unknown stdout ----
+
+thread 'public_cancel_stops_actual_nested_writers_and_never_refunds_unknown' (774684) panicked at tests/assembled_cancellation.rs:2745:5:
+owned nested cancellation failed: 
+running 1 test
+test owned_nested_cancel_worker ... FAILED
+
+failures:
+
+failures:
+    owned_nested_cancel_worker
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 29 filtered out; finished in 0.76s
+
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    public_cancel_stops_actual_nested_writers_and_never_refunds_unknown
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 29 filtered out; finished in 0.76s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

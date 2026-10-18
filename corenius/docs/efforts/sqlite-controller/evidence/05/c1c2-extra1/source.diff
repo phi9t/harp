@@ -1,0 +1,348 @@
+diff --git a/crates/sqlite-controller/src/monitor.rs b/crates/sqlite-controller/src/monitor.rs
+index 7e1c349..dca6c93 100644
+--- a/crates/sqlite-controller/src/monitor.rs
++++ b/crates/sqlite-controller/src/monitor.rs
+@@ -903,15 +903,40 @@ pub(super) fn apply(
+             for k in ["action", "prohibited_scope", "next_checkpoint", "rationale"] {
+                 text(a, k)?;
+             }
+-            let existing: Option<String> = db(tx
++            let existing: Option<(String, String, String, Option<String>, String)> = db(tx
+                 .query_row(
+-                    "SELECT id FROM monitor_corrections WHERE finding=?1 AND epoch=?2",
++                    "SELECT m.id,m.decision,m.state,m.operation,d.author FROM monitor_corrections m JOIN decisions d ON d.id=m.decision WHERE m.finding=?1 AND m.epoch=?2",
+                     params![finding, epoch],
+-                    |r| r.get(0),
+-                )
+-                .optional())?;
+-            if let Some(correction) = existing {
+-                return Ok(json!({"correction":correction,"existing":true}));
++                    |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)),
++                ).optional())?;
++            if let Some((correction, old_decision, state, operation, author)) = existing {
++                if correction_authority(tx, project, &author)?.is_some()
++                    || !matches!(state.as_str(), "requested" | "authorization-stale")
++                {
++                    return Ok(json!({"correction":correction,"existing":true}));
++                }
++                // A fresh grant never retries an effect whose outcome is unresolved or applied.
++                if let Some(operation) = &operation {
++                    let outcome: Option<String> = db(tx
++                        .query_row(
++                            "SELECT state FROM codex_operations WHERE id=?1",
++                            [operation],
++                            |r| r.get(0),
++                        )
++                        .optional())?;
++                    if outcome.as_deref() != Some("failed") {
++                        return Err(
++                            "correction authorization requires reconciliation of prior operation"
++                                .into(),
++                        );
++                    }
++                }
++                let decision = id();
++                db(tx.execute("INSERT INTO decisions VALUES(?1,?2,?3,?4)",params![decision,project,p.id,json!({"finding":finding,"authorization":a,"supersedes":old_decision,"prior_correction":{"state":state,"operation":operation,"disposition":"authorization-stale"}}).to_string()]))?;
++                db(tx.execute("UPDATE monitor_corrections SET decision=?2,document=?3,state='requested',operation=NULL WHERE id=?1",params![correction,decision,a.to_string()]))?;
++                return Ok(
++                    json!({"correction":correction,"decision":decision,"state":"requested","supersedes":old_decision}),
++                );
+             }
+             let correction = id();
+             let decision = id();
+@@ -1153,6 +1178,20 @@ pub(super) fn validate_evidence(
+     Ok(Some(checked))
+ }
+ 
++fn correction_authority(c: &Connection, project: &str, principal: &str) -> Result<Option<i64>> {
++    let (role, epoch): (String, i64) = db(c.query_row(
++        "SELECT role,epoch FROM principals WHERE id=?1",
++        [principal],
++        |r| Ok((r.get(0)?, r.get(1)?)),
++    ))?;
++    let lead_epoch: i64 = db(c.query_row(
++        "SELECT lead_epoch FROM projects WHERE id=?1",
++        [project],
++        |r| r.get(0),
++    ))?;
++    Ok((role == "operator" || (role == "lead" && epoch == lead_epoch)).then_some(epoch))
++}
++
+ pub(super) fn prepare_correction(
+     tx: &Transaction<'_>,
+     binding: &str,
+@@ -1170,23 +1209,29 @@ pub(super) fn prepare_correction(
+     if pending != 0 {
+         return Ok(());
+     }
+-    let row:Option<(String,String,String)>=db(tx.query_row("SELECT m.id,m.document,d.author FROM monitor_corrections m JOIN decisions d ON d.id=m.decision WHERE m.project=?1 AND m.attempt=?2 AND m.epoch=?3 AND m.state='requested' ORDER BY m.rowid LIMIT 1",params![project,attempt,epoch],|r|Ok((r.get(0)?,r.get(1)?,r.get(2)?))).optional())?;
+-    let Some((correction, raw, principal)) = row else {
+-        return Ok(());
++    let (correction, raw, principal, principal_epoch) = loop {
++        let row:Option<(String,String,String,Option<String>)>=db(tx.query_row("SELECT m.id,m.document,d.author,m.operation FROM monitor_corrections m JOIN decisions d ON d.id=m.decision WHERE m.project=?1 AND m.attempt=?2 AND m.epoch=?3 AND m.state='requested' ORDER BY m.rowid LIMIT 1",params![project,attempt,epoch],|r|Ok((r.get(0)?,r.get(1)?,r.get(2)?,r.get(3)?))).optional())?;
++        let Some((correction, raw, principal, operation)) = row else {
++            return Ok(());
++        };
++        if let Some(principal_epoch) = correction_authority(tx, project, &principal)? {
++            break (correction, raw, principal, principal_epoch);
++        }
++        if let Some(operation) = operation {
++            let outcome: Option<String> = db(tx
++                .query_row(
++                    "SELECT state FROM codex_operations WHERE id=?1",
++                    [operation],
++                    |r| r.get(0),
++                )
++                .optional())?;
++            if outcome.as_deref() != Some("failed") {
++                return Ok(());
++            }
++        }
++        // Retain the withdrawn grant, visibly disposition it, then consider the next request.
++        db(tx.execute("UPDATE monitor_corrections SET state='authorization-stale' WHERE id=?1 AND state='requested'",[correction]))?;
+     };
+-    let (role, principal_epoch): (String, i64) = db(tx.query_row(
+-        "SELECT role,epoch FROM principals WHERE id=?1",
+-        [&principal],
+-        |r| Ok((r.get(0)?, r.get(1)?)),
+-    ))?;
+-    let lead_epoch: i64 = db(tx.query_row(
+-        "SELECT lead_epoch FROM projects WHERE id=?1",
+-        [project],
+-        |r| r.get(0),
+-    ))?;
+-    if role != "operator" && (role != "lead" || principal_epoch != lead_epoch) {
+-        return Ok(());
+-    }
+     let status = document["native_turns"]
+         .as_array()
+         .and_then(|ts| ts.last())
+diff --git a/crates/sqlite-controller/src/view.rs b/crates/sqlite-controller/src/view.rs
+index 3966882..fc6a326 100644
+--- a/crates/sqlite-controller/src/view.rs
++++ b/crates/sqlite-controller/src/view.rs
+@@ -31,6 +31,11 @@ fn selection(collection: &str) -> Result<(&'static str, &'static str, &'static [
+             "SELECT rowid AS cursor,id,sender,recipient,text,acknowledged FROM messages WHERE project=?1 AND (?3 IS NULL OR sender=?4 OR recipient=?4)",
+             &[][..],
+         ),
++        "progress_reports" => (
++            "events",
++            "SELECT e.seq AS cursor,e.task,p.attempt,CASE WHEN p.role='attempt' THEN 'attempt' ELSE 'task' END AS report_scope,p.id AS principal,e.body FROM events e JOIN principals p ON p.id=json_extract(e.body,'$.principal') WHERE e.project=?1 AND e.kind='report_progress' AND (?2 IS NULL OR e.task=?2) AND (?3 IS NULL OR p.attempt=?3 OR p.role!='attempt')",
++            &["body"][..],
++        ),
+         "decisions" => (
+             "decisions",
+             "SELECT rowid AS cursor,id,author,text FROM decisions WHERE project=?1",
+@@ -470,6 +475,7 @@ pub(super) fn context(c: &Connection, p: &Principal, project: &str, args: &Value
+     for collection in [
+         "brief_proposals",
+         "repair_history",
++        "progress_reports",
+         "candidates",
+         "verification",
+         "acceptance",
+@@ -564,7 +570,7 @@ pub(super) fn context(c: &Connection, p: &Principal, project: &str, args: &Value
+     )?;
+     let mut workers = Vec::new();
+     for attempt in active.as_array().unwrap() {
+-        let report:Option<(i64,String)>=db(c.query_row("SELECT seq,body FROM events WHERE project=?1 AND task=?2 AND kind='report_progress' ORDER BY seq DESC LIMIT 1",params![project,attempt["task"].as_str()],|r|Ok((r.get(0)?,r.get(1)?))).optional())?;
++        let report:Option<(i64,String)>=db(c.query_row("SELECT e.seq,e.body FROM events e JOIN principals p ON p.id=json_extract(e.body,'$.principal') WHERE e.project=?1 AND e.task=?2 AND e.kind='report_progress' AND p.role='attempt' AND p.attempt=?3 ORDER BY e.seq DESC LIMIT 1",params![project,attempt["task"].as_str(),attempt["id"].as_str()],|r|Ok((r.get(0)?,r.get(1)?))).optional())?;
+         let reported = if let Some((cursor, raw)) = report {
+             let mut body: Value = if raw.len() > 8192 {
+                 json!(raw)
+@@ -572,6 +578,13 @@ pub(super) fn context(c: &Connection, p: &Principal, project: &str, args: &Value
+                 serde_json::from_str(&raw).map_err(|e| e.to_string())?
+             };
+             compact(&mut body, "events", cursor, "/body");
++            let attribution =
++                json!({"scope":"attempt","attempt":attempt["id"],"event_cursor":cursor});
++            if let Some(fields) = body.as_object_mut() {
++                fields.insert("attribution".into(), attribution);
++            } else {
++                body = json!({"body":body,"attribution":attribution});
++            }
+             body
+         } else {
+             Value::Null
+diff --git a/crates/sqlite-controller/tests/codex.rs b/crates/sqlite-controller/tests/codex.rs
+index 63ac640..d8316e6 100644
+--- a/crates/sqlite-controller/tests/codex.rs
++++ b/crates/sqlite-controller/tests/codex.rs
+@@ -559,3 +559,24 @@ fn repair3_native_ui_unadmitted_revision_retry() {
+         ("CORENIUS_TEST_REPAIR3_UI", "1"),
+     ]);
+ }
++
++#[test]
++#[cfg(feature = "fault-injection")]
++fn stale_correction_authority_preserves_history_and_allows_current_delivery() {
++    let output = Command::new("/usr/bin/python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/support/native_registry.py"
++        ))
++        .arg(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
++        .env("CORENIUS_TEST_CONTROL_CENTER", "1")
++        .env("CORENIUS_TEST_CORRECTION_AUTHORITY", "1")
++        .output()
++        .unwrap();
++    assert!(
++        output.status.success(),
++        "{}\n{}",
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++}
+diff --git a/crates/sqlite-controller/tests/git.rs b/crates/sqlite-controller/tests/git.rs
+index 1111a85..73a83cb 100644
+--- a/crates/sqlite-controller/tests/git.rs
++++ b/crates/sqlite-controller/tests/git.rs
+@@ -100,3 +100,23 @@ fn repair3_landing_unknown_refuses_competing_repair() {
+         .unwrap();
+     assert!(status.success(), "repair must preserve admitted landing");
+ }
++
++#[test]
++#[cfg(feature = "fault-injection")]
++fn current_attempt_progress_excludes_predecessor_and_task_reports() {
++    let output = std::process::Command::new("/usr/bin/python3")
++        .arg(concat!(
++            env!("CARGO_MANIFEST_DIR"),
++            "/tests/support/git_protocol.py"
++        ))
++        .arg(env!("CARGO_BIN_EXE_corenius-sqlite-controller"))
++        .env("CORENIUS_TEST_GIT_MODES", "attempt-progress")
++        .output()
++        .unwrap();
++    assert!(
++        output.status.success(),
++        "{}\n{}",
++        String::from_utf8_lossy(&output.stdout),
++        String::from_utf8_lossy(&output.stderr)
++    );
++}
+diff --git a/crates/sqlite-controller/tests/support/correction_authority.py b/crates/sqlite-controller/tests/support/correction_authority.py
+new file mode 100644
+index 0000000..0dd0b44
+--- /dev/null
++++ b/crates/sqlite-controller/tests/support/correction_authority.py
+@@ -0,0 +1,61 @@
++"""Public/native regression for stale correction authorization and fresh grants."""
++import json,sqlite3,time,uuid,pathlib
++def exercise(root,query,command,request,grants,lead,wait,topology,token):
++ out=root
++ operator={'principal':'operator','token':token};oldlead={k:lead[k] for k in ['principal','token']}
++ def cmd(kind,args,actor=operator):
++  value=request(root/'controller.sock',{'auth':actor,'project':'p','command':{'kind':kind,'idempotency_key':str(uuid.uuid4()),'expected_revision':query('snapshot')['revision'],'args':args}})
++  assert 'ok' in value,value
++  return value['ok']['result']
++ def correction_rows():
++  return query('monitor_records',{'collection':'corrections','limit':20})['items']
++ def byid(id):return next(x for x in correction_rows() if x['id']==id)
++ for grant in grants:
++  wait(lambda:any(b['attempt']==grant['attempt'] and b['document'].get('ui_input_ready') and b['document'].get('current_turn',{}).get('state')=='terminal' for b in query('codex_registry')['bindings']))
++ (root/'hold-codex').write_text('owned focused correction admission ordering; no product state edits')
++ try:
++  findings=[]
++  for j,g in enumerate(grants):
++   stream=cmd('register_monitor_stream',{'attempt':g['attempt'],'source':{'deployment':'independent-public-fixture','store':'retained','thread':'review-'+str(j),'segment':'one','parser':'visible-v1','identity':'explicit-fixture-observation'},'live_baseline':0})['stream']
++   cmd('ingest_monitor_events',{'stream':stream,'expected_ordinal':0,'previous_digest':'','events':[{'item':'one','turn':'declared-observation','kind':'public_message','text':'independent public protocol input; not claimed model analysis','ordinal':1,'byte_end':20,'digest':'d1'}]})
++   batch=cmd('seal_monitor_batch',{'stream':stream,'lane':'history','through':1,'boundary':'manual'})['batch']
++   cmd('publish_monitor_assessment',{'batch':batch,'analyst':'independent-fixture','version':'1','steps':[{'item':'one','criterion':'admitted-intent','hypothesis':'test authority transition','rationale':'declared API test','observation':'public fixture input','assessment':'valid_learning','next_test':'exact correction admission'}],'findings':[{'issue':'independent-'+str(j)+'-'+str(n),'criterion':'admitted-intent','text':'fixture finding requires authenticated decision','items':['one']} for n in range(2 if j==0 else 1)],'evidence':[]})
++   fs=[x for x in query('monitor_context')['findings'] if x['attempt']==g['attempt'] and x['issue'].startswith('independent-')];assert len(fs)==(2 if j==0 else 1);findings.append(fs)
++  def args(f):return {'finding':f['id'],'expected_epoch':f['epoch'],'criterion':'admitted-intent','action':'Independent bounded correction delivery','prohibited_scope':'no expanded authority','next_checkpoint':'explicit actor response','rationale':'independent regression test'}
++  old=findings[0][0];cmd('adjudicate_monitor_finding',{'finding':old['id'],'decision':'accepted','rationale':'old lead authenticated decision'},oldlead)
++  first=cmd('authorize_correction',args(old),oldlead)
++  assert byid(first['correction'])['state']=='requested'
++  replacement=cmd('replace_lead',{})
++  currentlead={k:replacement[k] for k in ['principal','token']}
++  others=[]
++  for f,actor in [(findings[0][1],currentlead),(findings[1][0],operator)]:
++   cmd('adjudicate_monitor_finding',{'finding':f['id'],'decision':'accepted','rationale':'current authenticated decision'},actor)
++   others.append(cmd('authorize_correction',args(f),actor))
++  before=correction_rows()
++ finally:(root/'hold-codex').unlink(missing_ok=True)
++ # Peer correction proves actual autonomous native dispatch is progressing, without allowing stale authority.
++ wait(lambda:byid(others[1]['correction'])['state']=='presented',20)
++ try:wait(lambda:byid(others[0]['correction'])['state'] in ('presented','acknowledged'),12)
++ except AssertionError:pass
++ registry=query('codex_registry');after=correction_rows()
++ positive=byid(others[1]['correction']);blocked=byid(others[0]['correction']);stale=byid(first['correction'])
++ original_author=next(x for x in query('control_center')['decisions'] if x['id']==stale['decision'])['author']
++ with sqlite3.connect((root/'state.db').as_uri()+'?mode=ro',uri=True) as db:
++  ops=db.execute("SELECT id,state,intent FROM codex_operations WHERE json_extract(intent,'$.correction') IN (?,?,?)",(first['correction'],others[0]['correction'],others[1]['correction'])).fetchall()
++ old_refusal=request(root/'controller.sock',{'auth':oldlead,'project':'p','query':{'kind':'monitor_context','args':{}}});assert 'error' in old_refusal
++ result={'topology':topology,'old_lead':oldlead['principal'],'current_lead':currentlead['principal'],'original_author_retained':original_author,'reauthorization':'not attempted before fairness discriminator','before':before,'after':after,'native_correction_operations':ops,'peer_positive':positive,'current_authorized_behind_stale':blocked,'stale':stale,'old_lead_refused':old_refusal,'contract_pass':blocked['state'] in ('presented','acknowledged'),'qualification':'Actual native shared runtime; public fixture observations/findings explicitly synthetic; all auth/replacement/correction requests real. Peer presented proves dispatch progress; no old-grant execution allowed.'}
++ (out/'correction-result.json').write_text(json.dumps(result,indent=2));(root/'independent-correction-result.json').write_text(json.dumps(result,indent=2));print('independent_correction_authority_queue',json.dumps(result),flush=True)
++ assert positive['state'] in ('presented','acknowledged'), positive
++ assert result['contract_pass'], 'superseded authorization starves later current correction'
++ assert stale['state']=='authorization-stale' and stale['operation'] is None, stale
++ reauthorized=cmd('authorize_correction',args(old),operator)
++ assert reauthorized['correction']==first['correction'] and reauthorized['decision']!=stale['decision'], reauthorized
++ wait(lambda:byid(first['correction'])['state'] in ('presented','acknowledged'),20)
++ history=query('control_center')['decisions']
++ assert any(d['id']==stale['decision'] and d['author']==oldlead['principal'] for d in history)
++ assert any(d['id']==reauthorized['decision'] and d['author']=='operator' for d in history)
++ again=cmd('authorize_correction',args(old),operator)
++ assert again['existing'] and again['correction']==first['correction']
++ result['reauthorization']=reauthorized;result['final']=correction_rows();result['decision_history']=history
++ (out/'correction-result.json').write_text(json.dumps(result,indent=2));(root/'independent-correction-result.json').write_text(json.dumps(result,indent=2));print('fresh_authenticated_regrant',json.dumps(result),flush=True)
++ return
+diff --git a/crates/sqlite-controller/tests/support/git_protocol.py b/crates/sqlite-controller/tests/support/git_protocol.py
+index 230599e..2d6829e 100644
+--- a/crates/sqlite-controller/tests/support/git_protocol.py
++++ b/crates/sqlite-controller/tests/support/git_protocol.py
+@@ -175,6 +175,28 @@ while not (s/'finish').exists():
+   with tarfile.open(archive,'w:gz') as a:a.add(self.r,arcname=self.r.name)
+   print('retained_actual_fixture',json.dumps({'mode':self.mode,'archive':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'processes':self.records,'namespaces':dispositions}),flush=True)
+   self.temp.cleanup()
++def attempt_progress():
++ f=Fixture('attempt-progress')
++ try:
++  a=f.admit('a');f.ready(a,'a');old_auth={k:a[k] for k in ['principal','token']}
++  f.command('report_progress',{'task':'a','text':'OLD_ATTEMPT_ONLY_CHECKPOINT'},auth=old_auth)
++  c=f.capture(a);f.accept(c);f.stop_attempt(a)
++  f.command('request_repair',{'task':'a','candidate':c['candidate'],'rationale':'new independent repair attempt'})
++  b=f.command('admit',{'task':'a'});wait(lambda:next(x for x in f.query('snapshot')['attempts'] if x['id']==b['attempt'])['state']=='running')
++  f.command('report_progress',{'task':'a','text':'OPERATOR_TASK_CHECKPOINT'})
++  before=f.query('control_center');worker=next(x for x in before['workers'] if x['attempt']['id']==b['attempt'])
++  old_denied=f.command('report_progress',{'task':'a','text':'REVOKED_PROGRESS'},auth=old_auth,allow_error=True);assert 'error' in old_denied
++  assert worker['reported_progress'] is None, 'fresh Attempt must not inherit predecessor or task-level progress'
++  history=before['progress_reports']
++  assert any(x['attempt']==a['attempt'] and x['report_scope']=='attempt' and 'OLD_ATTEMPT_ONLY_CHECKPOINT' in json.dumps(x) for x in history)
++  assert any(x['attempt'] is None and x['report_scope']=='task' and 'OPERATOR_TASK_CHECKPOINT' in json.dumps(x) for x in history)
++  f.command('report_progress',{'task':'a','text':'NEW_ATTEMPT_CHECKPOINT'},auth={k:b[k] for k in ['principal','token']})
++  after=f.query('control_center');reported=next(x for x in after['workers'] if x['attempt']['id']==b['attempt'])['reported_progress']
++  assert reported['attribution']['attempt']==b['attempt'] and 'NEW_ATTEMPT_CHECKPOINT' in json.dumps(reported)
++  events=f.query('events');assert any('OLD_ATTEMPT_ONLY_CHECKPOINT' in json.dumps(x) for x in events)
++  (f.r/'attempt-progress-result.json').write_text(json.dumps({'old_attempt':a['attempt'],'new_attempt':b['attempt'],'before':before,'after':after,'old_denied':old_denied},indent=2))
++  print('actual_current_attempt_progress_and_attributed_history_PASS',json.dumps({'old_attempt':a['attempt'],'new_attempt':b['attempt']}),flush=True)
++ finally:f.close()
+ def normal():
+  f=Fixture('normal')
+  try:
+@@ -591,6 +613,7 @@ if __name__=='__main__':
+   if mode in ['repair3-applying','repair3-unknown']:repair_landing(mode)
+   elif mode=='bounded-inventory':bounded_inventory()
+   elif mode=='observer-authority':observer_authority()
++  elif mode=='attempt-progress':attempt_progress()
+   elif mode=='normal':normal()
+   elif mode=='hostile':hostile()
+   elif mode=='bounded-output':bounded_output()
+diff --git a/crates/sqlite-controller/tests/support/native_registry.py b/crates/sqlite-controller/tests/support/native_registry.py
+index e03324d..13cd559 100644
+--- a/crates/sqlite-controller/tests/support/native_registry.py
++++ b/crates/sqlite-controller/tests/support/native_registry.py
+@@ -653,6 +653,12 @@ def run(topology):
+     wait(lambda:(workspace/(task+'-shell')).exists() and any(workspace.glob(task+'-patch-*')),20)
+     assert not any((workspace/(peer+'-shell')).exists() for peer in ['TASK_A','TASK_B'] if peer!=task)
+     print('actual_native_effects',topology,task,(workspace/(task+'-probe')).read_text(),flush=True)
++   if os.environ.get('CORENIUS_TEST_CORRECTION_AUTHORITY')=='1':
++    lead=command('replace_lead',{})
++    wait(lambda:any(b['role']=='lead' and b['document'].get('turn_id') for b in query('codex_registry')['bindings']))
++    import correction_authority
++    correction_authority.exercise(r,query,command,request,grants,lead,wait,topology,TOKEN)
++    return
+    # Controller connection restart must reconnect subscriptions without new threads/turns.
+    durable=query('codex_registry');controller.kill();controller.wait(timeout=5)
+    restarted_env=dict(env)

@@ -1,0 +1,506 @@
+{
+  "authority": "root retained bounded repair decision and immutable both-axis reviews archived in inputs; no new permission ceremony",
+  "checks": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/checks.json"
+  },
+  "cleanup": "distinguish runner EXIT trap, measured namespace stop, explicit fixture finish and assertion-unwound retained files; see report and retained fixture maps",
+  "excluded_proof_paths": [
+    "ignored scratch/targets/caches",
+    "original temporary physical paths (recorded as provenance with durable byte archives)"
+  ],
+  "ledger": {
+    "bytes": 78540,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/runs.jsonl",
+    "sha256": "67e8cb7deff51fd1783e23cc7772446858f51b066f1a3ae1443e40e7b692a053"
+  },
+  "pending": [
+    "root new Standards and Spec reviews",
+    "root independent branch and landing gates"
+  ],
+  "public_record_count": 596,
+  "public_records": {
+    "bytes": 547446,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/public-records.jsonl",
+    "sha256": "da85a1a562bfe31713ca0a1b85a7f0c3aca55268f52c2f8afd2df9649dc82022"
+  },
+  "repair_patch": {
+    "bytes": 40843,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/repair.patch",
+    "sha256": "762018f6ec8a93a6d80b36f7c8b3b3d49e90155326731303acf0c06802fa2555"
+  },
+  "report": {
+    "bytes": 6796,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/report.md",
+    "sha256": "a273996d8b8f8de80e36dd04201f925d166d176cd79642c8015882819dd04926"
+  },
+  "resource_slot": "released after final terminal81/81; no further resource invocation",
+  "retained_red1_fixture": {
+    "bytes": 31544,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/retained-red1-fixture.json",
+    "sha256": "8012584afa15868ec139537af95ce26dee719bf816e2a020d7f8a128dd1bbfb8"
+  },
+  "retained_red2_fixture": {
+    "bytes": 40694,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/retained-red2-fixture.json",
+    "sha256": "0d523dad37475255fb7bcd812320453a1b41ad66cb1ba89dbe16b33889a52ea0"
+  },
+  "round0_archive_map": {
+    "bytes": 26329,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/round0-archive-map.json",
+    "sha256": "1c8f440084ff3bcb1a27d450f593fc04941ff329423fbd883888058704b8f601"
+  },
+  "run_harness_snapshot": {
+    "bytes": 1535,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/f0dc9db374a14faa6fe11697f8bd468fdfaa64f84d13d7bf81bbefc5ea663278.txt",
+    "sha256": "f0dc9db374a14faa6fe11697f8bd468fdfaa64f84d13d7bf81bbefc5ea663278"
+  },
+  "run_source_deltas": {
+    "bytes": 68100,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/run-source-deltas.json",
+    "sha256": "a56376bbc07ced6262b5240ac28adc1b2ca95ccda40909c264a93d6731c4d401"
+  },
+  "runs": [
+    {
+      "archive": {
+        "bytes": 671,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-episode-start-after-suspension.log.txt",
+        "sha256": "2c2bd538bf278d14879bcd4aaf0080f946ba6bbc202df6618321f977bc8ae6f4"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "test_setup_compile_failure",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 1,
+      "name": "red-episode-start-after-suspension",
+      "test_summaries": []
+    },
+    {
+      "archive": {
+        "bytes": 5837,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-episode-start-after-suspension-2.log.txt",
+        "sha256": "e5ba01c2c49292cadda08238b32ca248751a695598d0191be9e8517373bbff92"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "test_setup_existing_episode_fence",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 2,
+      "name": "red-episode-start-after-suspension-2",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 6927,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-episode-start-after-suspension-3.log.txt",
+        "sha256": "653e188bfadab316e16c01f7a4a2fa1ea940913827ca052374270a1dc20c243b"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "behavioral_red",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 3,
+      "name": "red-episode-start-after-suspension-3",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 12101,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-episode-start-after-suspension.log.txt",
+        "sha256": "201cbf8df4cdf34a24065f09f7fc81d9c60c68ddac03e96606b7e104e609be7a"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "supersession",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 4,
+      "name": "green-episode-start-after-suspension",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 2,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 4759,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-mapped-legacy-accept.log.txt",
+        "sha256": "9a0efa1aa2d68ff50e078bd0ebb33e864cc14a01406d2ade9a1b424ae94a5bb2"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "behavioral_red",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 5,
+      "name": "red-mapped-legacy-accept",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 36945,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-mapped-and-historical-acceptance.log.txt",
+        "sha256": "6214839b91ae542a0c30fd0b90896c7a1c3ef564cda62607b7046e0a1030383b"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 6,
+      "name": "green-mapped-and-historical-acceptance",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 11,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 9009,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-delegated-prerequisite-removal.log.txt",
+        "sha256": "e169ab192a81fa34cba9728565d62c6e2e0f1f80e66556afcfa27ae43b0a416b"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "delegated_lead_cannot_remove_suspended_prerequisites_but_owner_can_amend_explicitly",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "behavioral_red",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 7,
+      "name": "red-delegated-prerequisite-removal",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 43563,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-delegated-prerequisite-removal.log.txt",
+        "sha256": "846c0d0e94554b865bf81a89a76aa358082f2bd5649b8499298e095f34271d82"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 8,
+      "name": "green-delegated-prerequisite-removal",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 12,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 41753,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-cancelled-contract-results.log.txt",
+        "sha256": "92ca61b3862e03b5d815515817af5bb8d13cf1bb0f46c1b5f57b99ac1841947f"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "cancellation_fences",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "behavioral_red",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_line": 9,
+      "name": "red-cancelled-contract-results",
+      "test_summaries": [
+        {
+          "failed": 3,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 82203,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-cancelled-contract-results.log.txt",
+        "sha256": "c45ed867037d8d3cf67ce21cbcb8cd70478510ea90575eb0dc866af48942776f"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 10,
+      "name": "green-cancelled-contract-results",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 15,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 92027,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-final-repair1-compatibility.log.txt",
+        "sha256": "2c7b00ca43fc79fb6bf258c2f4a681189b3f7bfd12b3f57d59239fb849bcbce9"
+      },
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--lib",
+        "--test",
+        "artifacts",
+        "--test",
+        "kernel",
+        "--test",
+        "mailbox",
+        "--test",
+        "mailbox_delivery",
+        "--test",
+        "mailbox_artifacts",
+        "--test",
+        "supervisor",
+        "--test",
+        "gateway",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "classification": "green",
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_line": 11,
+      "name": "green-final-repair1-compatibility",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 11,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 4,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 15,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 16,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 2,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 3,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 20,
+          "result": "ok"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "scope": "repair1 public real PostgreSQL/ArtifactService/EpisodeGateway proof; root review pending",
+  "source_manifest": {
+    "bytes": 24545,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/source-manifest.json",
+    "sha256": "b2afcbf12715a918a6fe39e52af1162212e73543f90df19c7040c9a7accce1fb"
+  },
+  "source_patch": {
+    "bytes": 155006,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/source.patch",
+    "sha256": "82b8a5bf3159a1dc890023526110a413d66cee1de781e50a89e3f89cb9a56cbc"
+  }
+}

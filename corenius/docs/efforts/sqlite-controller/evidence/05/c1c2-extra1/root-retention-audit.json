@@ -1,0 +1,347 @@
+{
+  "recorded_at": "2026-10-05T03:35:57.209659+00:00",
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "source_files_verified": 50,
+  "changed_source_inputs": 7,
+  "mismatches": [],
+  "archives_verified": 7,
+  "archive_members": 1931,
+  "original_process_births": [
+    {
+      "pid": 115453,
+      "start_ticks": "58591987",
+      "state": "absent"
+    },
+    {
+      "pid": 115495,
+      "start_ticks": "58592047",
+      "state": "absent"
+    },
+    {
+      "pid": 115727,
+      "start_ticks": "58592175",
+      "state": "absent"
+    },
+    {
+      "pid": 116226,
+      "start_ticks": "58592562",
+      "state": "absent"
+    },
+    {
+      "pid": 158112,
+      "start_ticks": "58630233",
+      "state": "absent"
+    },
+    {
+      "pid": 158156,
+      "start_ticks": "58630294",
+      "state": "absent"
+    },
+    {
+      "pid": 158220,
+      "start_ticks": "58630422",
+      "state": "absent"
+    },
+    {
+      "pid": 158667,
+      "start_ticks": "58630809",
+      "state": "absent"
+    },
+    {
+      "pid": 141500,
+      "start_ticks": "58612355",
+      "state": "absent"
+    },
+    {
+      "pid": 141530,
+      "start_ticks": "58612415",
+      "state": "absent"
+    },
+    {
+      "pid": 141639,
+      "start_ticks": "58612544",
+      "state": "absent"
+    },
+    {
+      "pid": 142048,
+      "start_ticks": "58612931",
+      "state": "absent"
+    },
+    {
+      "pid": 117985,
+      "start_ticks": "58593667",
+      "state": "absent"
+    },
+    {
+      "pid": 117987,
+      "start_ticks": "58593668",
+      "state": "absent"
+    },
+    {
+      "pid": 118469,
+      "start_ticks": "58593721",
+      "state": "absent"
+    },
+    {
+      "pid": 120082,
+      "start_ticks": "58594896",
+      "state": "absent"
+    },
+    {
+      "pid": 120816,
+      "start_ticks": "58595556",
+      "state": "absent"
+    },
+    {
+      "pid": 132922,
+      "start_ticks": "58606565",
+      "state": "absent"
+    },
+    {
+      "pid": 132924,
+      "start_ticks": "58606567",
+      "state": "absent"
+    },
+    {
+      "pid": 133893,
+      "start_ticks": "58606619",
+      "state": "absent"
+    },
+    {
+      "pid": 135243,
+      "start_ticks": "58607795",
+      "state": "absent"
+    },
+    {
+      "pid": 136556,
+      "start_ticks": "58608455",
+      "state": "absent"
+    },
+    {
+      "pid": 159262,
+      "start_ticks": "58631935",
+      "state": "absent"
+    },
+    {
+      "pid": 159264,
+      "start_ticks": "58631937",
+      "state": "absent"
+    },
+    {
+      "pid": 159722,
+      "start_ticks": "58631989",
+      "state": "absent"
+    },
+    {
+      "pid": 161495,
+      "start_ticks": "58633164",
+      "state": "absent"
+    },
+    {
+      "pid": 167737,
+      "start_ticks": "58635621",
+      "state": "absent"
+    },
+    {
+      "pid": 167744,
+      "start_ticks": "58635622",
+      "state": "absent"
+    },
+    {
+      "pid": 168290,
+      "start_ticks": "58635674",
+      "state": "absent"
+    },
+    {
+      "pid": 168292,
+      "start_ticks": "58635676",
+      "state": "absent"
+    },
+    {
+      "pid": 175136,
+      "start_ticks": "58636888",
+      "state": "absent"
+    },
+    {
+      "pid": 175516,
+      "start_ticks": "58636925",
+      "state": "absent"
+    }
+  ],
+  "unknown_process_reads": [],
+  "retained_files": [
+    {
+      "path": "checkpoint-initial.json",
+      "sha256": "c3c1b7f608da843c9887d34acceb189efba892c07a110edc8829b915aa0491b3",
+      "bytes": 1193
+    },
+    {
+      "path": "owned-process-dispositions.json",
+      "sha256": "2c10ca2a18597bb8cfbf4978dfd41ea94a0ab9a821935e150d0ad188f4f73f4f",
+      "bytes": 24338
+    },
+    {
+      "path": "C2-GREEN.json",
+      "sha256": "6fe514226bc0711c7b8c6a2ea429a6ca2cc84fb3d585903ad8b763de4c35364d",
+      "bytes": 580
+    },
+    {
+      "path": "checkpoint-red-boundary.json",
+      "sha256": "98676348aaa38f639f659cd2fcc95d8246e138b45806e2fd8e9bff689aa8be3e",
+      "bytes": 2160
+    },
+    {
+      "path": "focused-default.json",
+      "sha256": "709c9226d543e9a055b00f0bf44df221e531416f6169b3e0bbea03b6e66c46e5",
+      "bytes": 563
+    },
+    {
+      "path": "C2-RED.json",
+      "sha256": "9dd56fb23d912ba22ef1f97c346ab311ca5a23415491c7473c32a87d6dad9b4f",
+      "bytes": 446
+    },
+    {
+      "path": "evidence-index.json",
+      "sha256": "48d4ed662445a86e9d6d03ec98b2f21fa8290a448e21425e2749b5e0b31758a3",
+      "bytes": 4808
+    },
+    {
+      "path": "source-freeze.json",
+      "sha256": "fcef53665bd1e7d2aa89e5757a2f9f777a5adc2c10e0094342e80bee133af730",
+      "bytes": 2260
+    },
+    {
+      "path": "C1-GREEN.json",
+      "sha256": "bc70bb99b8ac3105f9a9dd3cbc71c208d0819e9f911f670961de3f3fe6436e1b",
+      "bytes": 651
+    },
+    {
+      "path": "archive-index.json",
+      "sha256": "d510201afb79ad42335722818d4f42dd20c2cee7f5cf119e281afb4d56be38e3",
+      "bytes": 2053
+    },
+    {
+      "path": "green-build.json",
+      "sha256": "3eea180b887dfaf07709167e7f457a30e3fa99d0d3071c7ecf87a9ceff0663ea",
+      "bytes": 620
+    },
+    {
+      "path": "green-build-final.json",
+      "sha256": "943a797f77910a13f835a7ccba0a70dbf363ec7757292e3347ef95e513674c05",
+      "bytes": 620
+    },
+    {
+      "path": "source.diff",
+      "sha256": "d25ed6b3ae4431a7fc413e2790eb5a0b98da39c83fdc7464b66857cd3ee3c8e7",
+      "bytes": 22822
+    },
+    {
+      "path": "setup-build.json",
+      "sha256": "a3009d13dc8c8fb08af43e8b111e46ef9ae59501cae3a72c335e161a8c00e7f4",
+      "bytes": 620
+    },
+    {
+      "path": "reproducer-provenance.json",
+      "sha256": "d5e933c314da7951627e0fc8865ef08a3a33268896eb9ba13789efe498b5d4d5",
+      "bytes": 2657
+    },
+    {
+      "path": "C2-tracked-RED.json",
+      "sha256": "7e7584c497a0cc8b235c2ba30af611de43a68e8330ecf6b945423ecd0b0933a5",
+      "bytes": 580
+    },
+    {
+      "path": "focused-affected.json",
+      "sha256": "53ed1c2fdfec432064f390194f6aea3bab905cc84dd624b66fcc51935d2fd746",
+      "bytes": 681
+    },
+    {
+      "path": "inherited-five-labels.json",
+      "sha256": "2f08bcbb89b15143ebac035e1537ec7d549fd002884b61252ff7ee9f2b0ae673",
+      "bytes": 1085
+    },
+    {
+      "path": "checkpoint-source-freeze.json",
+      "sha256": "9cb6a46bf2570e4ce68cdb96488e1a41f8121b7f89eaf885dc0bceedb907b664",
+      "bytes": 1644
+    },
+    {
+      "path": "pre-freeze-nine-plus-five.json",
+      "sha256": "3effd2238a54edb0e758f11a431704d89e1a40e04c683c1d4d2941997cae6262",
+      "bytes": 11487
+    },
+    {
+      "path": "handoff.md",
+      "sha256": "a3df80c3233d42c7eb93db54931ee4d75f643a7fb817dec73f9b9aa855c4cefb",
+      "bytes": 4215
+    },
+    {
+      "path": "C1-RED.json",
+      "sha256": "3bc5b8cb45a0863a4c113008dc14c781501400862bfb4084ebd0a8fb749ee49e",
+      "bytes": 689
+    },
+    {
+      "path": "C1-RED-corrected.json",
+      "sha256": "0056ba013b8af92c925bd248a4a2e056427d7e246bd3acd1cc607e1f58d373c9",
+      "bytes": 689
+    },
+    {
+      "path": "logs/C2-RED.log.gz",
+      "sha256": "fa6f5a7c364d83c5346e7eee0ff31d142a846e5b52825db58b745584310eeeaa",
+      "bytes": 1619
+    },
+    {
+      "path": "logs/C1-RED.log.gz",
+      "sha256": "90f1bb1aa7b89ea7a84ca672b824093ab0e66547e78797b266b0c6d21f9c30a9",
+      "bytes": 8100
+    },
+    {
+      "path": "logs/focused-affected.log.gz",
+      "sha256": "b1f7a762d6e504d46ffe3f3fc6495c1b229d95a13717d90fcb820e55652899b6",
+      "bytes": 2404
+    },
+    {
+      "path": "logs/C1-RED-corrected.log.gz",
+      "sha256": "9f10786385f3fb10e49af4dbadab0bb16ea07edd074a645f3517f04de78124ff",
+      "bytes": 8118
+    },
+    {
+      "path": "logs/C1-GREEN.log.gz",
+      "sha256": "a6c76e18dc99d7ebe539530c98e3ecff379f9ccf7cee7399b8f20f5b55e5c657",
+      "bytes": 15843
+    },
+    {
+      "path": "logs/green-build-final.log.gz",
+      "sha256": "0eee60f2fbc80de9e9f9b0e5b334e203f7fcbc5d9da170241397cf008b6ba660",
+      "bytes": 194
+    },
+    {
+      "path": "logs/focused-default.log.gz",
+      "sha256": "cb2b6357891a4c02d5dbb8d9a1eaf7d91852173e121e3d6f53564fdacf0b4cc1",
+      "bytes": 3539
+    },
+    {
+      "path": "logs/C2-GREEN.log.gz",
+      "sha256": "3dcc4dd6f8314d3c2ddb8ce70e8019f0f88c539ea726ab514e406e1ac8cd21ec",
+      "bytes": 629
+    },
+    {
+      "path": "logs/setup-build.log.gz",
+      "sha256": "e72b5a4f6aa9ffc837ac33cc6f55c45f5902464f61067b7361ec2d3b51620061",
+      "bytes": 583
+    },
+    {
+      "path": "logs/green-build.log.gz",
+      "sha256": "1ac1ce87a324106a1b6e3462c005f58a9e7e19d58a1655ebef2f5e5524610583",
+      "bytes": 189
+    },
+    {
+      "path": "logs/C2-tracked-RED.log.gz",
+      "sha256": "42e60f0e96c950b6ed31ada5e11450f7bf4f07eea7e27655c2537c3a9645139a",
+      "bytes": 749
+    }
+  ],
+  "writer_state": "completed/quiescent; new trial writer not yet admitted",
+  "qualification": "Retention/source/quiescence only. Final RED-script per-run hash unavailable as author honestly records; independent source/contract checks adjudicate this limit. No baseline or live-model acceptance."
+}

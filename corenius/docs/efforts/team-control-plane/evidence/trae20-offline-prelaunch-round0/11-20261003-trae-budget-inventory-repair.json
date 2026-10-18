@@ -1,0 +1,99 @@
+{
+  "commit_read": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "status": "pure_inventory_repair_verified_physical_case_unadmitted",
+  "pure_tests": 8,
+  "terminal_exit": 0,
+  "real_red": "inventory-repair/actual-host-red.log",
+  "same_command_green": "inventory-repair/actual-host-green.log",
+  "new_standin_processes": 0,
+  "new_namespaces": 0,
+  "signals_sent": 0,
+  "trae_launches": 0,
+  "historical_namespace_quarantines": [
+    1749400,
+    1793051
+  ],
+  "scope": "qualified readable host-proc single-component NSpid exclusion; nested/unavailable identity still refuses",
+  "remaining_unknowns": [
+    "positive revised pidfd signal and physical namespace cleanup",
+    "custom retry/cap semantics",
+    "native turn ID ordering",
+    "nested runtime/guard integration",
+    "external token/quota/billing enforcement"
+  ],
+  "public_freeze": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/inventory-repair/freeze",
+  "source_hashes": [
+    {
+      "path": "tools/probes/test_trae_candidate.py",
+      "bytes": 1360,
+      "sha256": "3daddf2b65885eece36d81dd2a04430c9447d951a6fd2ae631bd61fcf1c10db3"
+    },
+    {
+      "path": "tools/probes/test_trae_inventory.py",
+      "bytes": 4133,
+      "sha256": "4da0304f43b0c183e7ac72d71fcb83ab6341f73eb750eca082e13d01724d1838"
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 2767,
+      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+    },
+    {
+      "path": "tools/probes/test_trae_round.py",
+      "bytes": 6219,
+      "sha256": "0c3402b6e5400ef8ee0ea88fb76f01adc6e998022dc58a46ae295cd6eaeaeaaf"
+    },
+    {
+      "path": "tools/probes/test_trae_synthetic_guard.py",
+      "bytes": 6150,
+      "sha256": "7884adc86cb888c14679597249f164fa5b10413b1cb575388fb4febd723b8657"
+    },
+    {
+      "path": "tools/probes/test_trae_transport.py",
+      "bytes": 7117,
+      "sha256": "0edca413d7ab7e019210be31194f3ff61e4f2e892259fe8f431a7feaa566df6a"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.py",
+      "bytes": 1948,
+      "sha256": "55b399fc2e2ebc05a8e1448756eeb28ec9acf8374da7b09c0a7ac918466b7c9b"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.toml",
+      "bytes": 580,
+      "sha256": "62472f9c00526067c118ed3345c3bea60e36ecf79ecfaebef94e4e3c42fcbf26"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_guard.py",
+      "bytes": 25293,
+      "sha256": "99ef23a101efa15214497d886ae36da7b3e23dacafdfb028a6f1d4a59a973556"
+    }
+  ],
+  "physical_case_sources": [
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 2767,
+      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_blade_build.sh settler-dynamic-bad //:uses_dual
+(22:41:15)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fd8969496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:41:15)Blade(warning): Read Tcc config from buildcloud failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fd8969496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:41:15)Blade(warning): can't find available distribution cache and execute service from remote
+(22:41:15)Blade(warning): 当前环境下无法使用CAS分布式构建集群: not found remote service
+(22:41:15)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fd896588a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:41:15)Blade(warning): Request build id failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fd896588a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:41:15)Blade(warning): Failed to fetch idc meta data with api
+(22:41:15)Blade(error): soname can't find in dual
+Traceback (most recent call last):
+  File "/opt/tiger/typhoon-blade/src/blade/utils/util.py", line 538, in run
+    self.ret = self._Thread__target(*self._Thread__args, **self._Thread__kwargs)
+  File "/opt/tiger/typhoon-blade/src/blade/core/rules_generator.py", line 55, in generate_rule_from_target
+    registered_target.ninja_rules(stage_name)
+  File "/opt/tiger/typhoon-blade/src/blade/common/profile.py", line 31, in wrapper_profile
+    value = func(*args, **kwargs)
+  File "/opt/tiger/typhoon-blade/src/blade/targets/cc/target_cc_library.py", line 411, in ninja_rules
+    if self.prebuilt_library_processing_rule(bc_archive):
+  File "/opt/tiger/typhoon-blade/src/blade/targets/cc/target_cc_library.py", line 390, in prebuilt_library_processing_rule
+    self._prebuilt_cc_library()
+  File "/opt/tiger/typhoon-blade/src/blade/targets/cc/target_cc_library.py", line 691, in _prebuilt_cc_library
+    paths = self._prebuilt_cc_library_ninja_rules()
+  File "/opt/tiger/typhoon-blade/src/blade/targets/cc/target_cc_library.py", line 609, in _prebuilt_cc_library_ninja_rules
+    console.error_exit("soname can't find in {0}".format(self.name))
+  File "/opt/tiger/typhoon-blade/src/blade/utils/console.py", line 135, in error_exit
+    raise exception.BladeConsoleExit(code, message=msg, **kwargs)
+BladeConsoleExit: soname can't find in dual
+(22:41:15)Blade(error): failed to run blade
+(22:41:16)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fd8954bb550>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:41:16)Blade(error): Report data server error: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fd8954bb550>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:41:15)Blade(info): get tcc basic_conf from online failed
+(22:41:15)Blade(info): percent=0, num=73
+No required grpc dependencies, buildboard is disabled
+(22:41:15)Blade(info): InvocationID: 499de3da-8746-4702-8d0f-a9b8f318e141
+(22:41:15)Blade(info): TOOLCHAIN MODE: INSIDE
+(22:41:15)Blade(info): Get toolchain env file /opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/env.sh success
+(22:41:15)Blade(info): load toolchain env file done
+(22:41:15)Blade(info): get real toolchain name=x86_64-gcc494
+(22:41:15)Blade(info): get rule toolchain name=x86_64-x86_64-gcc-494
+(22:41:15)Blade(info): strategy-build-compile-priority: 
+(22:41:15)Blade(info): User Building Command: /bin/bash -lc set -e base=docs/efforts/multi-agent-bench/evidence/research-blade/projects for project in settler-dynamic-bad settler-dynamic-fixed; do   dir="$PWD/$base/$project"   env -i PATH=/usr/bin:/bin /usr/bin/g++ -I"$dir" -c "$dir/cpp3rdlib/dual/dual_impl.cc" -o "$dir/cpp3rdlib/dual/lib/dual_impl.o"   env -i PATH=/usr/bin:/bin /usr/bin/ar rcs "$dir/cpp3rdlib/dual/lib/libdual.a" "$dir/cpp3rdlib/dual/lib/dual_impl.o" done set +e root=docs/efforts/multi-agent-bench/evidence/research-blade for spec in "settler-dynamic-bad //:uses_dual" "settler-dynamic-fixed //:uses_dual"; do   project=${spec%% *}   target=${spec#* }   log="$root/logs/probe-${project}.log"   echo "COMMAND: $root/run_blade_build.sh $project $target" > "$log"   "$root/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done
+(22:41:15)Blade(info): Blade version: blade-1.2.2.1469
+(22:41:15)Blade(info): Language version: 2.7.13
+(22:41:15)Blade(info): loading BUILD files...
+(22:41:15)Blade(info): loading done.
+(22:41:15)Blade(info): pull cost time is 0.134428977966s
+(22:41:15)Blade(info): depinfo cache loaded (4 entries)
+(22:41:15)Blade(info): analyzing dependency graph...
+(22:41:15)Blade(info): Deps Graph Analyze ...
+(22:41:15)Blade(info): DepGraph depinfo cache preloaded (4 entries)
+(22:41:15)Blade(info): DepGraph BuildEnv cost time is 0:00:00s
+(22:41:15)Blade(info): analyzing done.
+(22:41:15)Blade(info): analyze cost time is 0.023983001709s
+(22:41:15)Blade(info): generating build rules...
+(22:41:15)Blade(info): CC=/opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/bin/gcc
+(22:41:15)Blade(info): CXX=/opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/bin/g++
+(22:41:15)Blade(info): Build With Cas, Configure Recc-Output: 
+(22:41:15)Blade(info): Build With Cas, Configure Recc-Output: 
+(22:41:15)Blade(info): genereating rule start
+(22:41:15)Blade(info): generate cost time is 0.108077049255s
+(22:41:15)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/d9f5189ce762f99cf7c2cdb83dd23494a74c290d/cache_manager/build_file_env.cache
+(22:41:16)Blade(info): basics: {"BPT-platform": "x86_64-gcc494", "build_command": "/opt/tiger/typhoon-blade/src/blade/bootstrap.py build //:uses_dual", "env": "devbox", "ip": "invalid", "region": "us", "dc": "maliva", "device_type": "devbox", "build_toolchain_version": "gcc494", "os_version": "debian-12", "toolchain_name(GCC)": "x86_64-gcc494", "git_branch": "worker/research-blade", "build_tool_version": "blade-1.2.2.1469", "git_repo": "unknow", "user": "philip.yang"}, build_path: /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/settler-dynamic-bad
+(22:41:16)Blade(help): You have entered the ninja build phase. Next time run blade fast-build instead of /bin/bash -lc set -e base=docs/efforts/multi-agent-bench/evidence/research-blade/projects for project in settler-dynamic-bad settler-dynamic-fixed; do   dir="$PWD/$base/$project"   env -i PATH=/usr/bin:/bin /usr/bin/g++ -I"$dir" -c "$dir/cpp3rdlib/dual/dual_impl.cc" -o "$dir/cpp3rdlib/dual/lib/dual_impl.o"   env -i PATH=/usr/bin:/bin /usr/bin/ar rcs "$dir/cpp3rdlib/dual/lib/libdual.a" "$dir/cpp3rdlib/dual/lib/dual_impl.o" done set +e root=docs/efforts/multi-agent-bench/evidence/research-blade for spec in "settler-dynamic-bad //:uses_dual" "settler-dynamic-fixed //:uses_dual"; do   project=${spec%% *}   target=${spec#* }   log="$root/logs/probe-${project}.log"   echo "COMMAND: $root/run_blade_build.sh $project $target" > "$log"   "$root/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done for faster iteration
+real	0m0.795s
+user	0m0.483s
+sys	0m0.332s
+EXIT: 1

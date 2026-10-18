@@ -1,0 +1,30 @@
+Reviewing branch "codex/reference-design": 1 commits since 1f164156261a3aa927c823919bf73d6e6d11a771
+Enqueued job 553 for 1f16415..2316e09 (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: High
+- **Location**: `crates/team-control-plane/src/artifacts.rs:607`
+- **Problem**: The repair budget can be bypassed. Failed verification leaves the task `verifying`, and Workers can submit another candidate from that state without invoking `Repair`. Worker continuation admission also requires no repair authorization. Consequently, repairs can continue after `max_repairs` is exhausted without increasing `consumed_repairs`.
+- **Fix**: Require a charged, authorized repair transition before admitting implementation or replacing a candidate following failed verification. Test continuation after repair-budget exhaustion.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:1926`
+- **Problem**: The monitor commits `stopped` before persisting its execution result. An operator can immediately release the workspace, causing the subsequent directory open to fail and preventing insertion into `kernel_execution_results`. This permanently loses verification evidence; the new exit-status test also assumes the result exists immediately upon observing `stopped`.
+- **Fix**: For launched episodes, prevent workspace deletion until monitor finalization and result persistence complete. Preserve release support for executions cancelled before launch.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/gateway.rs:499`
+- **Problem**: The new dispatch fence runs before the existing-journal return. Once a task is accepted or cancellation is requested, even querying an already confirmed operation through `GatewayOperationDriver` returns `DependencyUnmet`. The next Temporal drain converts this into a nonretryable Activity failure, causing the still-open workflow to fail instead of reporting its retained operations.
+- **Fix**: Apply the dispatch fence only to fresh effects, retain authenticated observation of existing journals, and report fenced pending operations without failing the entire workflow.
+
+## Summary
+
+The change assembles durable episode execution, supervised verification, operator recovery, cancellation, and usage accounting with extensive integration fixtures.

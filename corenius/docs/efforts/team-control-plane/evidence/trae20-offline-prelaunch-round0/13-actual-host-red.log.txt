@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_readable_host_nspid_excludes_actual_hidden_host_namespace_link (test_trae_inventory.HostInventoryBehavior.test_readable_host_nspid_excludes_actual_hidden_host_namespace_link)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_inventory.py", line 17, in test_readable_host_nspid_excludes_actual_hidden_host_namespace_link
+    self.assertIsNone(error,'host-profile exclusion must precede namespace-link read: '+repr(error))
+AssertionError: PermissionError(13, 'Permission denied') is not None : host-profile exclusion must precede namespace-link read: PermissionError(13, 'Permission denied')
+
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+FAILED (failures=1)

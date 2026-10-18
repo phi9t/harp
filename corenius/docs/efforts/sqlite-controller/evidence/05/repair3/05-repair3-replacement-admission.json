@@ -1,0 +1,21 @@
+{
+  "admitted_at": "2026-10-05T01:24:37.803930+00:00",
+  "coordinator": "/root",
+  "logical_claim": "sqlite-controller-05",
+  "claim_expires": "2026-10-05T19:11:38Z",
+  "previous_writer": "/root/sqlite05_control_center_author",
+  "previous_state": "completed cleanEVIDd529/all32runs terminal/119processes+128namespaces original identities absent; execution resume/message fail agent thread limit",
+  "replacement_writer": "/root/intent26_candidate_import2_author",
+  "writer_tree": "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3",
+  "writer_branch": "sqlite05/repair3",
+  "base": "d529d1f55c1f7183fd801734e5d35405d9bee676",
+  "brief_sha256": "ecb817b8c8b260deefd2dad9558a23a124225491702a824eccd9c6551dcc7424",
+  "original_admission_sha256": "2c439efa0189908c40b3f9b3061d9a4227dec76ce2b0b17f5de145cb6c3c4c21",
+  "handoff_reason": "Unavailable execution transport, not goal drift; safe completed boundary and separate preserved trees",
+  "generation": 2,
+  "ownership": "one replacement product writer; old writer frozen and not resumed",
+  "caps": "same05finalrepair3of3,02/04 3of3 andEMPTY2of2 unchanged; no reset",
+  "canonical_status": "05claimed/unaccepted unchanged, accepted01\u201304 unchanged",
+  "root_gate": "73241 untouched separately frozenSOURCE6f2",
+  "execution": "dispatch and actual actorACK pending; admission not execution"
+}

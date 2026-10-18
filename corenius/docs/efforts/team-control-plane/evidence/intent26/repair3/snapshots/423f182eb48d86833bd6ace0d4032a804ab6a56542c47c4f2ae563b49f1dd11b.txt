@@ -1,0 +1,121 @@
+from pathlib import Path
+import subprocess,json,hashlib,re,datetime
+root=Path.cwd();top=Path('docs/efforts/team-control-plane/evidence/intent26');prefix=top/'repair3';base='720ab7783e1b36e9e8a675f497f9c66ef2b1d87b'
+def sha(b):return hashlib.sha256(b).hexdigest()
+def git(*args):return subprocess.check_output(['git',*args])
+def ref(p):return {'path':str(p),'sha256':sha(p.read_bytes()),'bytes':p.stat().st_size}
+def write(name,data):
+ p=prefix/name;p.write_text(json.dumps(data,indent=2,sort_keys=True)+'\n');return ref(p)
+def snapshot(b):
+ p=prefix/'snapshots'/(sha(b)+'.txt');p.parent.mkdir(exist_ok=True)
+ if p.exists():assert p.read_bytes()==b
+ else:p.write_bytes(b)
+ return ref(p)
+def selection():return set(git('diff','--name-only','HEAD').decode().splitlines())|set(git('ls-files','--others','--exclude-standard').decode().splitlines())
+assert git('rev-parse','HEAD').decode().strip()==base
+assert not git('diff','--cached','--name-only').strip()
+sources=sorted(p for p in selection() if p.startswith('crates/team-control-plane/'));assert len(sources)==20
+old=json.loads((top/'repair2/source-manifest.json').read_text());old_sources={e['path']:e for e in old['source_changes']};archive_map=json.loads((prefix/'repair2-archive-map.json').read_text())
+for e in archive_map['entries']:assert sha(Path(e['archive']).read_bytes())==e['sha256']
+changes=[];deltas=[]
+for p in sources:
+ b=Path(p).read_bytes();prior=prefix/'preimages'/p if p in old_sources else None
+ if prior:assert sha(prior.read_bytes())==old_sources[p]['sha256']
+ frozen=prefix/'source-snapshots'/p;frozen.parent.mkdir(parents=True,exist_ok=True);frozen.write_bytes(b)
+ before=old_sources[p]['base_preimage'] if p in old_sources else None
+ if before:assert git('show',base+':'+p)==Path(before['path']).read_bytes()
+ entry=dict(path=p,sha256=sha(b),bytes=len(b),base_preimage=before,repair2_preimage=ref(prior) if prior else None,final_snapshot=ref(frozen));changes.append(entry)
+ if not prior or sha(prior.read_bytes())!=sha(b):deltas.append(dict(path=p,repair2_sha256=sha(prior.read_bytes()) if prior else None,final_sha256=sha(b),repair2_archive=str(prior) if prior else None))
+assert len(deltas)==7
+ledger=list(map(json.loads,(prefix/'runs.jsonl').read_text().splitlines()));assert len(ledger)==17
+final=ledger[-1];assert final['name']=='green-final-repair3-compatibility' and final['exit_code']==0
+assert all(sha(Path(p).read_bytes())==h for p,h in final['sources'].items())
+assert len(final['sources'])==56
+manifest=write('source-manifest.json',dict(schema_version=1,base=base,branch='codex-intent26/contracts',scope='ticket26 FINAL repair iteration3 explicit later work, generation Attempt identity, event-bound historical retirement, all-caller immutable Plan ceilings',source_changes=changes,repair2_delta=deltas,canonical_inputs=old['canonical_inputs'],repair_inputs=archive_map['entries'][381:],repair2_archive_map=ref(prefix/'repair2-archive-map.json'),session_authority=ref(prefix/'session-authority.json'),consumer_audit=ref(prefix/'attempt-consumer-audit.md'),final_passing_run=final['name'],final_run_sources_match_worktree=True,older_source_proof='all round0/repair1/repair2/repair3 runs bound and compared in run-source-deltas.json; provisional Owner exception is superseded history',implementation_committed=False))
+patch=git('diff','--binary',base,'--',*[e['path']for e in changes if e['base_preimage']])
+for e in changes:
+ if not e['base_preimage']:
+  r=subprocess.run(['git','diff','--no-index','--binary','--','/dev/null',e['path']],stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert r.returncode==1 and not r.stderr;patch+=r.stdout
+(prefix/'source.patch').write_bytes(patch)
+repair=b''
+for d in deltas:
+ origin=d['repair2_archive'] or '/dev/null'
+ r=subprocess.run(['git','diff','--no-index','--binary','--',origin,d['path']],stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert r.returncode==1 and not r.stderr
+ for line in r.stdout.splitlines(keepends=True):
+  if d['repair2_archive'] and line.startswith((b'diff --git ',b'--- ')):line=line.replace(('a/'+d['repair2_archive']).encode(),('a/'+d['path']).encode())
+  repair+=line
+(prefix/'repair.patch').write_bytes(repair)
+classes={
+ 'red-plan-source-ceilings':'genuine_behavioral_red_lead_source_pointer_reset_200_vs409_or401',
+ 'red-production-amendment':'fixture_strict_JSON_grant_principal_vs_principal_id400',
+ 'red-production-amendment-2':'genuine_behavioral_red_accepted_task_stranded_assignment409_vs200',
+ 'green-plan-source-ceilings':'historical_delegated_green_with_provisional_Owner_exception_superseded',
+ 'red-amendment-retirement':'implementation_SQL_events_envelope_correction503_before_consumer',
+ 'red-amendment-retirement-2':'fixture_expected_worker401_but_correct_stale_generation409',
+ 'red-amendment-retirement-3':'genuine_behavioral_red_unique_task_attempt_second_assignment503',
+ 'red-amendment-retirement-4':'fixture_legacy_attempt_allocation_has_no_persisted_episode_result_timeout',
+ 'red-amendment-retirement-5':'fixture_original_verifier_credential_stale_after_generation3',
+ 'red-amendment-retirement-6':'genuine_behavioral_red_expired_stopped_released_old_episode_refuses_fresh_admission409',
+ 'green-production-amendment':'historical_lifecycle_green_fresh_measured_candidate_binding_report_proof_and_dependency_revalidation',
+ 'green-amendment-controls':'fixture_expected_binding_error_correction_and_provisional_Owner_test_contract_change_1pass3fail',
+ 'green-expanded-contract-controls':'historical_20pass1fail_old_generation_Gateway_read_fenced_after_negative_retirement_control',
+ 'green-unresolved-retirement-control':'green_exact_original_attempt_controlled_synthetic_effect_unknown_refuses_retirement',
+ 'red-owner-plan-ceilings':'genuine_behavioral_red_all_six_Owner_source_pointer_reset_expansions200_vs409_or401_after_canonical_clarification',
+ 'green-all-caller-plan-ceilings':'green_final_all_caller_six_dimensions_refusal_unchanged_narrower_positive',
+ 'green-final-repair3-compatibility':'final_green87_exact56_run_inputs'
+}
+run_deltas=[];run_index=[];records=[];measured=[];cleanup=[];controlled=[]
+markers=['public_contract_response','public_artifact_response','public_episode_operation','public_dependency_after_lead_amendment','public_dependency_grant','public_cancellation','public_cancelled_outcome_read','independent_measured_subject','migration_original_provenance','measured_fixture','measured_gate_bytes','public_current_gate','measured_fixture_cleanup','public_episode_expiry','public_v1_response','public_mailbox_response','public_plan_ceiling','public_owner_plan_ceiling','public_strategy_accounting','public_retirement_observation','public_accepted_revision','controlled_synthetic_effect','public_unresolved_retirement']
+for kind,area in [('round0',top/'round0'),('repair1',top/'repair1'),('repair2',top/'repair2'),('repair3',prefix)]:
+ runs=list(map(json.loads,(area/'runs.jsonl').read_text().splitlines()))
+ for n,r in enumerate(runs,1):
+  delta=[dict(path=p,run_sha256=r['sources'].get(p),final_sha256=final['sources'].get(p))for p in sorted(set(r['sources'])|set(final['sources']))if r['sources'].get(p)!=final['sources'].get(p)]
+  run_deltas.append(dict(round=kind,run=r['name'],changes_from_final=delta,final_source_match=not delta))
+  if kind!='repair3':continue
+  log=area/r['log'];assert sha(log.read_bytes())==r['log_sha256'];summaries=[dict(result=a,passed=int(b),failed=int(c))for a,b,c in re.findall(r'test result: (\w+)\. (\d+) passed; (\d+) failed',log.read_text())]
+  run_index.append(dict(name=r['name'],archive=ref(log),exit_code=r['exit_code'],classification=classes[r['name']],test_summaries=summaries,ledger_line=n,argv=r['argv'],env=r['env'],bounded_timeout_seconds=1800))
+  for line_number,line in enumerate(log.read_bytes().splitlines(keepends=True),1):
+   for marker in markers:
+    needle=(marker+' ').encode();at=line.find(needle)
+    if at==-1:continue
+    payload=line[at+len(needle):].decode().strip();value=json.loads(payload)
+    entry=dict(run=r['name'],marker=marker,source_log=str(log),source_line=line_number,source_line_sha256=sha(line),payload_sha256=sha(payload.encode()),value=value);records.append(entry)
+    if marker=='measured_gate_bytes':
+     b=bytes(value['artifact_bytes']);assert sha(b)==value['logs'];body=json.loads(b);monitor=body['trusted_monitor_result'];assert monitor['execution']==value['execution'];assert sha(body['output'].encode())==monitor['logs'];assert monitor['namespace_stopped'] and monitor['exit_code']==0
+     measured.append(dict(run=r['name'],source_log=str(log),source_line=line_number,source_line_sha256=sha(line),evidence_digest=value['logs'],evidence_bytes=snapshot(b),execution=value['execution'],monitor_result=monitor,output_bytes=snapshot(body['output'].encode()),claim='exact ArtifactService uploaded evidence bytes and independently measured monitor result; no fabricated physical failure'))
+    if marker=='controlled_synthetic_effect':
+     files=[dict(name=f['name'],bytes=snapshot(bytes(f['bytes'])))for f in value['files']]
+     controlled.append(dict(run=r['name'],source_log=str(log),source_line=line_number,attempt=value['attempt'],journal=value['journal'],files=files,claim=value['kind'],limits='existing bounded Python synthetic file effect only; no provider/Trae/shutdown inference'))
+    if marker in ['measured_fixture','measured_fixture_cleanup','public_episode_expiry','public_retirement_observation','public_unresolved_retirement']:cleanup.append(entry)
+assert sum(e['passed']for e in run_index[-1]['test_summaries'])==87 and all(e['failed']==0 for e in run_index[-1]['test_summaries'])
+write('run-source-deltas.json',dict(final_run=final['name'],runs=run_deltas,README='README separately frozen; runner hashes executable/test/migration/package inputs. Earlier passes and provisional Owner exception are historical, not final-source conformance.'))
+(prefix/'public-records.jsonl').write_text(''.join(json.dumps(r,sort_keys=True)+'\n'for r in records))
+write('measured-evidence-index.json',dict(schema_version=1,entries=measured,controlled_synthetic_effects=controlled))
+fixture_maps=sorted(prefix.glob('retained-*-fixture*.json'))
+write('cleanup-records.json',dict(schema_version=1,observations=cleanup,retained_fixtures=[ref(p)for p in fixture_maps],postgres='Every terminal runner returns through existing run-postgres.sh EXIT trap. Final separate Docker prefix inventory empty. PG cleanup is distinct from measured namespace stop, Supervisor release and Fixture.finish.',worker_seam_failure='Legacy Attempt monitor intentionally does not persist kernel result. Actual retained worker output and info/zero monitor process inventory are separately recorded; no persisted namespace-stop or full-cleanup claim is inferred.',original_older_fixtures='Original59/72/41 files from earlier rounds remain retained and byte-identical.'))
+checks=json.loads(Path('.scratch/team-control-plane/ticket26/repair3-checks-initial.json').read_text())
+for name,field in [('source.patch','base_preimage'),('repair.patch','repair2_preimage')]:
+ baseline=root/'.scratch/team-control-plane/ticket26'/('repair3-patch-check-'+name.replace('.','-'));baseline.mkdir(exist_ok=False)
+ for e in changes:
+  if e[field]:
+   p=baseline/e['path'];p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(Path(e[field]['path']).read_bytes())
+ for flags in [['--check'],[]]:
+  argv=['git','apply',*flags,'--unsafe-paths','--directory='+str(baseline),str(prefix/name)];r=subprocess.run(argv,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);checks.append(dict(argv=argv,exit_code=r.returncode,output=r.stdout));assert r.returncode==0
+ assert all(sha((baseline/e['path']).read_bytes())==e['sha256']for e in changes);checks.append(dict(check=name+' reconstructs all20 final source bytes',passed=True))
+for p in [top/'repair1/retained-red1-fixture.json',top/'repair1/retained-red2-fixture.json',top/'repair2/retained-setup-fixture.json',*fixture_maps]:
+ j=json.loads(p.read_text());groups=j.get('fixtures',[j]);count=0
+ for group in groups:
+  for e in group['files']:
+   assert sha(Path(e['origin']).read_bytes())==e['sha256'];assert sha(Path(e['archive']).read_bytes())==e['sha256'];count+=1
+ checks.append(dict(check='original owned fixture and durable archive exact bytes',map=str(p),files=count,passed=True))
+checks.extend([dict(check='all381 repair2 selected/seal bytes resolved through immutable archive map',passed=True),dict(check='all56 final run inputs match worktree',inputs=len(final['sources']),passed=True),dict(check='all17 raw logs exact source-bound ledger hashes',passed=True),dict(check='migration0008 preserved exact repair2 bytes',passed=sha(Path('crates/team-control-plane/migrations/0008.sql').read_bytes())==old_sources['crates/team-control-plane/migrations/0008.sql']['sha256'])])
+index=write('public-proof-index.json',dict(schema_version=1,scope='FINAL repair3 actual HTTP/PostgreSQL revised-work/strategy/retirement conformance candidate; root independent reviews pending',source_manifest=manifest,source_patch=ref(prefix/'source.patch'),repair_patch=ref(prefix/'repair.patch'),ledger=ref(prefix/'runs.jsonl'),run_harness_snapshot=snapshot(Path('.scratch/team-control-plane/ticket26/run-repair3.py').read_bytes()),freeze_harness_snapshot=snapshot(Path('.scratch/team-control-plane/ticket26/freeze-repair3.py').read_bytes()),run_source_deltas=ref(prefix/'run-source-deltas.json'),public_records=ref(prefix/'public-records.jsonl'),public_record_count=len(records),runs=run_index,measured_evidence=ref(prefix/'measured-evidence-index.json'),cleanup_records=ref(prefix/'cleanup-records.json'),repair2_archive_map=ref(prefix/'repair2-archive-map.json'),provisional_owner_history=ref(prefix/'provisional-owner-preimages.json'),session_authority=ref(prefix/'session-authority.json'),consumer_audit=ref(prefix/'attempt-consumer-audit.md'),report=ref(prefix/'report.md'),checks={'path':str(prefix/'checks.json')},authority='root final repair3 branch632 decision, retirement decision and canonical all-caller Plan clarification; incremental0009 and controlled fault fixture explicitly admitted in session; no reset',excluded_proof_paths=['ignored scratch/build/cache/targets','temporary physical origins are provenance with exact durable byte archives'],pending=['fresh independent Standards/Spec axes','root independent verification and fixed-range branch/landing gate'],resource_slot='released after final terminal87/87; no subsequent Cargo/PG invocation'))
+normal=selection();planned={str(prefix/'checks.json'),str(prefix/'author-freeze.json')}
+assert all(p.startswith('crates/team-control-plane/')or p.startswith(str(top)+'/')for p in normal)
+ignore=subprocess.run(['git','check-ignore','--no-index','--',*sorted(normal|planned)],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert ignore.returncode==1 and not ignore.stdout and not ignore.stderr
+checks.append(dict(check='normal Git selection contains all durable referenced source/proof/input/archive records',passed=True,selected_paths=sorted(normal),planned_seals=sorted(planned)))
+checks.append(dict(check='git check-ignore --no-index selected and planned durable paths',exit_code=ignore.returncode,stdout=ignore.stdout,stderr=ignore.stderr,passed=True))
+write('checks.json',dict(schema_version=1,utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),checks=checks,resource_slot_released=True))
+normal=selection();seal=write('author-freeze.json',dict(schema_version=1,frozen_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),base=base,branch='codex-intent26/contracts',writer='/root/corenius_jj19_verification_repair/intent26_implementer',repair_iteration=3,source_file_count=20,repair2_delta_files=7,source_manifest=ref(prefix/'source-manifest.json'),source_patch=ref(prefix/'source.patch'),repair_patch=ref(prefix/'repair.patch'),public_proof_index=ref(prefix/'public-proof-index.json'),report=ref(prefix/'report.md'),checks=ref(prefix/'checks.json'),selected_changes=[ref(Path(p))for p in sorted(normal)],self_exclusion=str(prefix/'author-freeze.json'),self_hash_location='root handoff',resource_slot_released=True,commits_created=False,scope='bounded FINAL repair3 implementation candidate; previous rounds/seals and provisional choices immutable history; ticket remains claimed pending root gates'))
+assert selection()==normal|{str(prefix/'author-freeze.json')};assert not git('diff','--cached','--name-only').strip()
+print(json.dumps(dict(author_freeze=seal,source_manifest=ref(prefix/'source-manifest.json'),source_patch=ref(prefix/'source.patch'),repair_patch=ref(prefix/'repair.patch'),public_proof_index=ref(prefix/'public-proof-index.json'),report=ref(prefix/'report.md'),public_records=len(records),measured_evidence_blobs=len(measured),controlled_effect_records=len(controlled),selected_changes=len(selection()),source_files=len(sources),repair2_delta_files=len(deltas)),indent=2))

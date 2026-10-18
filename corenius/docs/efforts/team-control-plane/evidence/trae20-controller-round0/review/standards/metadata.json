@@ -1,0 +1,100 @@
+{
+  "author_root_git_mutations": false,
+  "authority_decision_commit": "c5162e3",
+  "authority_decision_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-launch-controller-provenance-repair.md",
+  "base_commit": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "blocking_findings": [
+    "missing retained red evidence for seven durable-controller behavior slices",
+    "healthy-storage post-reservation error leaves empty terminal record"
+  ],
+  "candidate_root": "/tmp/corenius-trae20-budget-repair-author",
+  "historical_namespace_source_hashes_match_planned_case": true,
+  "indexed_records_verified": [
+    {
+      "bytes": 7366,
+      "path": "tools/probes/trae_case_control.py",
+      "sha256": "21fc6e726595a523f2f7ee5de11e6c9ab0de403c9c9ee15e8d2cb8903da2778f",
+      "verified": true
+    },
+    {
+      "bytes": 6689,
+      "path": "tools/probes/test_trae_case_control.py",
+      "sha256": "7d95e1d7f44b1f0ca9d6c650ef3b5cc9b178aa020470dc336d9723149fc77239",
+      "verified": true
+    },
+    {
+      "bytes": 1074,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/handoff.md",
+      "sha256": "6728a8d316e66b5d9497363237b3331e6349a4f7205937d9c46d4b10ab2e4305",
+      "verified": true
+    },
+    {
+      "bytes": 1268,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/planned-case.json",
+      "sha256": "4caf387c09bf304597c7acab6734c52d73168f6f61233b93642d8a36cba95351",
+      "verified": true
+    },
+    {
+      "bytes": 106,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/controller-green.log.txt",
+      "sha256": "31d461d4f5ea9a76ac910ab10c6f0bdaffcf73105fffad0bef6b67b23d0e121f",
+      "verified": true
+    },
+    {
+      "bytes": 98,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/missing-control-green.log.txt",
+      "sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad",
+      "verified": true
+    },
+    {
+      "bytes": 954,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/missing-control-red.log.txt",
+      "sha256": "06a1e921fc6b675f159332c829f8a354bc827ee5fae639b1facc779598bde7bf",
+      "verified": true
+    },
+    {
+      "bytes": 215,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/runs.jsonl",
+      "sha256": "a5cf80e61f08818e3d17a04c479b7539291158a9eb808bd5dc6340be3bc327d7",
+      "verified": true
+    },
+    {
+      "bytes": 241,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/microplan.md",
+      "sha256": "f0e2d0965887d7b7c4382ddc6fde26d743d26125aa4b5331cd204fcc044ddc5c",
+      "verified": true
+    },
+    {
+      "bytes": 309,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/unsafe-red-source.py",
+      "sha256": "edfe919046717f4a4c5ecf6cf5dd30d31b09a408990ee4902928faa9f3ed9574",
+      "verified": true
+    },
+    {
+      "bytes": 14869,
+      "path": ".scratch/team-control-plane/trae20-budget-repair/controller-prep-20261003-v1/freeze/source.patch",
+      "sha256": "13d3b5f736aa34959928649645ef0c81bce73cbc5cafa3b316fd3fa7c80283f2",
+      "verified": true
+    }
+  ],
+  "ordinary_git_retention_mapping_present": false,
+  "patch_reconstructs_exactly_two_new_source_files": true,
+  "physical_launch_count": 0,
+  "public_index_sha256": "afe65998efa61e5b0d8157ed4ef6bdba6962c791eb85ee3edf29740dc5d4f7fa",
+  "qualifications": [
+    "ordinary Git retention required before durable completion",
+    "path ancestor replacement and post-check immutability unproved",
+    "recording executor and committed-reader fixtures qualify controller decisions only",
+    "timeout passed to executor is not physical enforcement",
+    "historical offline result remains PARTIAL"
+  ],
+  "report_sha256": "a4ca5d5f5ec0524b2bea86913c595e91036eafd550208823d1849a7ecde25b46",
+  "report_words": 323,
+  "review_axis": "standards",
+  "review_mode": "read-only static source and frozen evidence review; report artifacts only",
+  "source_patch_sha256": "13d3b5f736aa34959928649645ef0c81bce73cbc5cafa3b316fd3fa7c80283f2",
+  "source_sha256": "21fc6e726595a523f2f7ee5de11e6c9ab0de403c9c9ee15e8d2cb8903da2778f",
+  "status": "blocked-controller-completion-evidence-not-physically-admitted",
+  "test_sha256": "7d95e1d7f44b1f0ca9d6c650ef3b5cc9b178aa020470dc336d9723149fc77239",
+  "tests_run": false
+}

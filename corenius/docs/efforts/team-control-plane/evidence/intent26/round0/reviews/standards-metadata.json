@@ -1,0 +1,470 @@
+{
+  "additional_consumer_inputs": [
+    {
+      "bytes": 6455,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/auth.rs",
+      "sha256": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594"
+    },
+    {
+      "bytes": 21853,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/kernel.rs",
+      "sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6"
+    },
+    {
+      "bytes": 42667,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+    }
+  ],
+  "audit": {
+    "audit_errors": [],
+    "canonical_current_spec_plan_reconciliation_ticket_match": true,
+    "canonical_input_snapshots": 15,
+    "compatibility_source_delta": [
+      "crates/team-control-plane/src/contracts/dependencies.rs",
+      "crates/team-control-plane/tests/intent_contracts.rs"
+    ],
+    "compatibility_tests_retained": {
+      "failed": 0,
+      "passed": 75
+    },
+    "final_run_source_hashes": 54,
+    "final_run_source_mismatches": 0,
+    "final_tests_retained": {
+      "failed": 0,
+      "passed": 39
+    },
+    "ignored_selected_paths": 0,
+    "in_memory_patch_postimages_matched": 17,
+    "log_linked_observations": 70,
+    "measured_subjects": 1,
+    "migration_original_provenance": 1,
+    "new_files_absent_at_base": 7,
+    "proof_index_hash_references": 49,
+    "public_responses": 68,
+    "raw_run_hashes": 17,
+    "saved_base_preimages": 10,
+    "selected_hashes": 69,
+    "selected_paths_with_freeze": 70,
+    "source_postimages": 17
+  },
+  "author_branch": "codex-intent26/contracts",
+  "author_worktree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+  "base": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "blocking_findings": 2,
+  "canonical_input_snapshots": [
+    {
+      "archive": {
+        "bytes": 3080,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9.txt",
+        "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "AGENTS.md"
+    },
+    {
+      "archive": {
+        "bytes": 3484,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097.txt",
+        "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "CONSTITUTION.md"
+    },
+    {
+      "archive": {
+        "bytes": 2816,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173.txt",
+        "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "CONTEXT.md"
+    },
+    {
+      "archive": {
+        "bytes": 9722,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926.txt",
+        "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/agentic-engineering.md"
+    },
+    {
+      "archive": {
+        "bytes": 2045,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99.txt",
+        "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/domain.md"
+    },
+    {
+      "archive": {
+        "bytes": 9818,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0.txt",
+        "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/skill-orchestration.md"
+    },
+    {
+      "archive": {
+        "bytes": 33123,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c.txt",
+        "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/SPEC.md"
+    },
+    {
+      "archive": {
+        "bytes": 17345,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924.txt",
+        "sha256": "93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/PLAN.md"
+    },
+    {
+      "archive": {
+        "bytes": 21340,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c.txt",
+        "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/v02-reconciliation.md"
+    },
+    {
+      "archive": {
+        "bytes": 3534,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513.txt",
+        "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md"
+    },
+    {
+      "archive": {
+        "bytes": 6970,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4.txt",
+        "sha256": "b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4"
+      },
+      "authority": "session_micro_plan",
+      "origin": ".scratch/team-control-plane/ticket26/micro-plan.md"
+    },
+    {
+      "archive": {
+        "bytes": 1912,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989.txt",
+        "sha256": "70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/conformance.json"
+    },
+    {
+      "archive": {
+        "bytes": 2302,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655.txt",
+        "sha256": "37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/final-contract-inputs.json"
+    },
+    {
+      "archive": {
+        "bytes": 2660,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d.txt",
+        "sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/revised-report.md"
+    },
+    {
+      "archive": {
+        "bytes": 2253,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349.txt",
+        "sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/spec/report.md"
+    }
+  ],
+  "canonical_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "comparison": "git diff 720ab7783e1b36e9e8a675f497f9c66ef2b1d87b plus seven new files; authoritative retained source.patch covers 17 source/README paths",
+  "created_utc": "2026-10-03T19:20:50.948566+00:00",
+  "findings": [
+    {
+      "id": "STANDARDS-1",
+      "kind": "documented_violation",
+      "rule": "crates/team-control-plane/README.md:176-178; canonical SPEC.md:185-190 cancellation and late authoritative completion",
+      "severity": "Important/P1",
+      "source_hunk": "crates/team-control-plane/src/contracts.rs:223-250; crates/team-control-plane/src/contracts/outcomes.rs:240",
+      "summary": "V2 outcome mutation/replay omits existing task cancellation fence."
+    },
+    {
+      "id": "STANDARDS-2",
+      "kind": "documented_violation",
+      "rule": "crates/team-control-plane/README.md:253-257; ticket26 exact prerequisite fresh-grant suspension",
+      "severity": "Important/P1",
+      "source_hunk": "crates/team-control-plane/src/gateway.rs:420-426; unchanged episode_runtime.rs:390-403 consumer",
+      "summary": "New EpisodeGateway operation insertion does not check suspended v2 dependencies."
+    },
+    {
+      "id": "SMELL-1",
+      "kind": "heuristic",
+      "name": "possible Data Clumps",
+      "severity": "nonblocking",
+      "source_hunk": "crates/team-control-plane/src/contracts/strategy.rs:40; outcomes.rs:14,265,293,330",
+      "summary": "Repeated unnamed tuple bundles two contract digest identities and their intent."
+    }
+  ],
+  "limitations": [
+    "Read-only review; no remediation, staging, commit, branch movement or source modification.",
+    "No new tests or namespace/provider/Cargo/PostgreSQL/Temporal invocation; root detached gate was active.",
+    "Blocking sequences are statically traced, not newly reproduced.",
+    "Historical databases/workspaces and candidate bundle bytes were cleaned; reviewed retained logs are fixture observations, not live/whole-v2 acceptance."
+  ],
+  "nonblocking_smells": 1,
+  "report": {
+    "bytes": 2804,
+    "path": "/tmp/corenius-intent26-standards-review-20261003/report.md",
+    "sha256": "8aa76c1263456bdfdc5063f0c086477df9532c3cd83b8674a410adb0c7cd7b5f",
+    "word_count": 330
+  },
+  "review_axis": "Standards",
+  "schema_version": 1,
+  "sealed_inputs": {
+    "author-freeze.json": {
+      "bytes": 17243,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/author-freeze.json",
+      "sha256": "95f280c11adbda87950e563898167ad6ed317b298c779ab5bbfeb58511be1464"
+    },
+    "checks.json": {
+      "bytes": 16941,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/checks.json",
+      "sha256": "04f69020715b62d5752451a859a1d5052a396d4aaaacfbdc51556ccbf926d08a"
+    },
+    "contract-inputs.json": {
+      "bytes": 1282,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/contract-inputs.json",
+      "sha256": "b0a0d7a4c05666f12440f16baaa23fd4209cfaa54cf10fe6e5689291b443cd03"
+    },
+    "public-proof-index.json": {
+      "bytes": 26100,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/public-proof-index.json",
+      "sha256": "06cbf5ef3d2ad5e6f3c268386d410b64f4e3807cf562f6d3b5562472657f9716"
+    },
+    "public-records.jsonl": {
+      "bytes": 47877,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/public-records.jsonl",
+      "sha256": "1637dc3d4e89d20e88272efaf333479828d3592ef6d4cbf2095fa8801dfbda24"
+    },
+    "report.md": {
+      "bytes": 6047,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/report.md",
+      "sha256": "9ede4e6d55a21f6ad11d5c6a4e52abdde4bc3e568e4cac6b3f9454c3e3a628cb"
+    },
+    "runs.jsonl": {
+      "bytes": 117082,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/runs.jsonl",
+      "sha256": "be4a763bbe8315e8bb7ea6245ca1987510ec0593ee4ef34e8870f9d280cfb75d"
+    },
+    "source-manifest.json": {
+      "bytes": 13463,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/source-manifest.json",
+      "sha256": "72dfe3d9e5bdf7b8885c6934713f0ff3f95a5db10518882d0060438e863e6aba"
+    },
+    "source.patch": {
+      "bytes": 127702,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/source.patch",
+      "sha256": "c91fd436ef8046e4d41b9b1633209a4a1eefed2e1b59605193e2f26d00d24120"
+    }
+  },
+  "source_inputs": [
+    {
+      "bytes": 18433,
+      "path": "crates/team-control-plane/README.md",
+      "preimage": {
+        "bytes": 15041,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109.txt",
+        "sha256": "eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109"
+      },
+      "sha256": "2f661392cb45f26f56a9c233f1387ccd64e275b9ba272f2114454035f2a17cc3"
+    },
+    {
+      "bytes": 7639,
+      "path": "crates/team-control-plane/migrations/0008.sql",
+      "preimage": null,
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+    },
+    {
+      "bytes": 19683,
+      "path": "crates/team-control-plane/src/admission.rs",
+      "preimage": {
+        "bytes": 19619,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c.txt",
+        "sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+      },
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+    },
+    {
+      "bytes": 52963,
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "preimage": {
+        "bytes": 52941,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57.txt",
+        "sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+      },
+      "sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+    },
+    {
+      "bytes": 22518,
+      "path": "crates/team-control-plane/src/contracts.rs",
+      "preimage": null,
+      "sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+    },
+    {
+      "bytes": 7984,
+      "path": "crates/team-control-plane/src/contracts/authority.rs",
+      "preimage": null,
+      "sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+    },
+    {
+      "bytes": 6003,
+      "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "preimage": null,
+      "sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+    },
+    {
+      "bytes": 17662,
+      "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "preimage": null,
+      "sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+    },
+    {
+      "bytes": 6716,
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "preimage": null,
+      "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+    },
+    {
+      "bytes": 3781,
+      "path": "crates/team-control-plane/src/domain.rs",
+      "preimage": {
+        "bytes": 3760,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966.txt",
+        "sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+      },
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+    },
+    {
+      "bytes": 37187,
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "preimage": {
+        "bytes": 36901,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1.txt",
+        "sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+      },
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+    },
+    {
+      "bytes": 10472,
+      "path": "crates/team-control-plane/src/http.rs",
+      "preimage": {
+        "bytes": 9410,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92.txt",
+        "sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92"
+      },
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+    },
+    {
+      "bytes": 386,
+      "path": "crates/team-control-plane/src/lib.rs",
+      "preimage": {
+        "bytes": 367,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa.txt",
+        "sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa"
+      },
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+    },
+    {
+      "bytes": 104271,
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "preimage": {
+        "bytes": 104201,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a.txt",
+        "sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+      },
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+    },
+    {
+      "bytes": 16160,
+      "path": "crates/team-control-plane/src/storage.rs",
+      "preimage": {
+        "bytes": 16071,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68.txt",
+        "sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68"
+      },
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+    },
+    {
+      "bytes": 126040,
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "preimage": {
+        "bytes": 125877,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3.txt",
+        "sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+      },
+      "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+    },
+    {
+      "bytes": 43563,
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "preimage": null,
+      "sha256": "7b3226287f174dffc85054cc6e6b21841d1c4ee3fb24af7ed18dbf19583c1b4b"
+    }
+  ],
+  "standards_inputs": [
+    {
+      "bytes": 3080,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "bytes": 3484,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "bytes": 2816,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "bytes": 2045,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+    },
+    {
+      "bytes": 9722,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "bytes": 9818,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+    },
+    {
+      "bytes": 15772,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/agents/evidence-bound-method.md",
+      "sha256": "4bcd61bea24b101808694cac00b5ce1bcb0c980ad5938c96c86f20fa49238ef1"
+    },
+    {
+      "bytes": 18433,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/README.md",
+      "sha256": "2f661392cb45f26f56a9c233f1387ccd64e275b9ba272f2114454035f2a17cc3"
+    }
+  ],
+  "status": "blocking_findings"
+}

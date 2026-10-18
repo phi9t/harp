@@ -1,0 +1,27 @@
+{
+  "status": "early integration controls retained; not acceptance or adoption",
+  "base": "264756edd550225449202b6f20ac4b560808d14e",
+  "files": [
+    {
+      "path": "integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "integration-red.json",
+      "bytes": 26606,
+      "sha256": "b7e6a4f14ec334510c4ccd25910aa7fdb311c4c412ff9e39d90ec9dd924442d2"
+    },
+    {
+      "path": "integration-green.json",
+      "bytes": 42482,
+      "sha256": "1cc52bc2dfaf2b6ac2d27606597618c1807e4ec069f485639bbb138e17d6ea43"
+    }
+  ],
+  "limits": "Author final source freeze and independent conformance pending; raw author fixture records preserved unchanged."
+}

@@ -1,0 +1,13 @@
+--- before97/native_registry.py
++++ after97/native_registry.py
+@@ -163,8 +163,8 @@
+     return (r/'controller.sock').exists()
+    wait(startup)
+    auth={'principal':'operator','token':TOKEN}
+-   def query(kind):
+-    value=request(r/'controller.sock',{'auth':auth,'project':'p','query':{'kind':kind,'args':{}}});assert 'ok' in value,value
++   def query(kind,args=None):
++    value=request(r/'controller.sock',{'auth':auth,'project':'p','query':{'kind':kind,'args':args or {}}});assert 'ok' in value,value
+     if kind=='codex_registry':owned.capture(value['ok'])
+     return value['ok']
+    def command(kind,args):

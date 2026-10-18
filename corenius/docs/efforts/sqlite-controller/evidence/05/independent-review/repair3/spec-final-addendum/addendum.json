@@ -1,0 +1,145 @@
+{
+  "axis": "Spec",
+  "verdict": "FAIL",
+  "findings": [
+    {
+      "id": "S05-R3-C1",
+      "severity": "medium",
+      "status": "confirmed actual native/public contract failure",
+      "path": "crates/sqlite-controller/src/monitor.rs",
+      "lines": [
+        1171,
+        1187,
+        913
+      ],
+      "requirement": {
+        "source": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/SPEC.md",
+        "quotes": [
+          "A correction names the exact finding, cited steps, unchanged acceptance criterion, smallest next action, prohibited scope expansion and next checkpoint.",
+          "Recheck current binding and authority before delivery. An old report cannot steer a replacement worker."
+        ],
+        "implication": "Current-authorized correction delivery must remain possible through lead replacement; refusing revoked authority must not permanently starve subsequent valid corrections."
+      },
+      "trigger": "Lead L1 authorizes requested correction for current attempt A; L2 replaces L1 before dispatch; L2 authorizes a different correction for A. Operator also reauthorizes the first finding.",
+      "actual": "First and newer A corrections remain requested with NULL operation. Existing reauthorization returns same correction and keeps L1 decision. Peer B operator correction is presented with exactly one confirmed real native operation. Superseded L1 authentication refuses correctly.",
+      "mechanism": "Oldest requested row selected first; stale decision principal returns Ok without durable disposition/selection progress. Existing correction early return never records fresh authorization. Each later preparation reselects the same stale row.",
+      "required_correction": "Preserve old decision/history while explicitly disposing or skipping stale unauthorized requests and allowing other current-authorized requests to proceed; provide authenticated fresh authorization semantics that cannot replay old authority or duplicate uncertain native effects.",
+      "evidence": [
+        "correction-result.json",
+        "correction-v2.log",
+        "correction-v2.run.json",
+        "native-fixtures-v2/"
+      ],
+      "execution": "measurement exit0, target contractFAIL;36.658s; actual shared pinned native Codex deterministic provider. No separate-topology necessity inferred; pure common SQL selection path."
+    },
+    {
+      "id": "S05-R3-C2",
+      "severity": "medium",
+      "status": "confirmed public physical lifecycle contract failure",
+      "path": "crates/sqlite-controller/src/view.rs",
+      "lines": [
+        567,
+        654
+      ],
+      "requirement": {
+        "source": "docs/efforts/sqlite-controller/SPEC.md",
+        "quote": "Worker progress is a controller projection for dashboard and lead: task/attempt, pinned brief, runtime binding, current execution state, latest reported progress, last model/tool activity, latest material evidence, pending questions, cancellation desired/observed and unknown effects.",
+        "implication": "Current worker progress must preserve attempt provenance and distinguish predecessor history before any current report."
+      },
+      "trigger": "A worker reports progress, creates accepted physical candidate and exits; operator requests repair and admits a new attempt for same task.",
+      "actual": "New current worker projection before first report contains OLD_ATTEMPT_ONLY_CHECKPOINT and predecessor principal under reported_progress. Own new report later replaces it; old principal reporting refuses and old event remains history.",
+      "mechanism": "Latest report query filters project/task only, so predecessor event is associated with current occupied attempt. Raw old principal survives, but field is presented as current worker progress without historical/stale attribution.",
+      "required_correction": "Scope current-attempt progress to authenticated attempt identity/admission lineage (define explicit task-level operator reports separately); preserve predecessor events as clearly labelled history. Before any current report expose absence rather than predecessor progress.",
+      "evidence": [
+        "progress-result.json",
+        "progress.log",
+        "progress.run.json",
+        "probe-retention/"
+      ],
+      "execution": "measurement exit0, target contractFAIL;6.464s; actual public commands, real Git candidate/acceptance/exit/repair/re-admission; no SQL state seeding."
+    }
+  ],
+  "source": {
+    "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+    "tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+    "snapshot": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/source",
+    "target": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target",
+    "source_pins_sha256": "224d8538bd25e1523444836efc18619a914a9cf52214b021a6032aa58973f2c5",
+    "prior_frozen_report_sha256": "c6d2b48910353d0c426f0ccf572bb545e14d9c4479c68b89e80cc4cbfd8b5b51",
+    "ownership": "Read-only exact prior own snapshot/binaries; new drivers/evidence isolated; no product modification."
+  },
+  "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+  "prior_scope": "Frozen five-control/prior-contract SCOPED PASS unchanged; this addendum supplies two new blockers and prevents global Spec acceptance.",
+  "actual_runs": {
+    "correction.run.json": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "CORENIUS_TEST_TOPOLOGY=shared",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:16:43.635085+00:00",
+      "pid": 3266417,
+      "start_ticks": "58218393",
+      "exit": 1,
+      "seconds": 56.80624371999875,
+      "log_sha256": "be2eb007456e6cdb1d57cfcecf74ad3bfdb91a8e9a94e56101100c55adeacb40",
+      "finished_utc": "2026-10-05T02:17:40.441027+00:00"
+    },
+    "progress.run.json": {
+      "command": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress-probe.py"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:15:29.583090+00:00",
+      "pid": 3253914,
+      "start_ticks": "58210988",
+      "exit": 0,
+      "seconds": 6.463947333046235,
+      "log_sha256": "45fe29c91aadc0af6f86705c1fae8c1aea4aa2e9763fcf33a1e2d49e5094e339",
+      "finished_utc": "2026-10-05T02:15:36.046641+00:00"
+    },
+    "correction-v2.run.json": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "CORENIUS_TEST_TOPOLOGY=shared",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver-v2.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:19:07.140988+00:00",
+      "pid": 3305359,
+      "start_ticks": "58232743",
+      "exit": 0,
+      "seconds": 36.65800627192948,
+      "log_sha256": "cd9b8c8a332e93066069746d00390101de1ebcdbbf496acc12f9ac5fab64682a",
+      "finished_utc": "2026-10-05T02:19:43.798692+00:00"
+    }
+  },
+  "qualification": [
+    "Original first correction setup failure retained and separately explained; no product target RED credited before correction admissions.",
+    "Native raw archives preserved; public typed outputs only analyzed; deterministic local provider is not live paid model qualification.",
+    "Root full gates/EVID retention remain independent; no accepted status, source edits, integration or fourth repair.",
+    "05 final3/3;02/04 3/3;EMPTY2/2 unchanged. Historical failures/gaps retained, including04history122\u20131262."
+  ],
+  "cleanup": "cleanup.json",
+  "context_efficiency": {
+    "adopted_policy": "/tmp/corenius-sqlite-controller-baseline/docs/efforts/worker-monitoring/SPEC.md:104",
+    "latest_request_tokens": null,
+    "reported_context_window": null,
+    "telemetry": "not available in exposed agent controls; not inferred from cumulative counts or file size",
+    "supported_child_compaction": "unavailable; no successful compaction claim",
+    "safe_boundary": "All own jobs terminal and effects retained; root may use fresh non-inheriting context for any next authorized phase. Handoff retains facts, source, negative controls, caps and uncertainties."
+  },
+  "root_acceptance": false
+}

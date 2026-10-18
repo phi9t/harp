@@ -1,0 +1,153 @@
+// Included by intent_contracts: public HTTP behavior against the same real fixtures.
+use super::*;
+
+#[tokio::test]
+async fn lifecycle_research_terminal_commands_and_current_projection() {
+    let api = Api::new().await;
+    let intent = api.research_intent("terminal", 0, "terminal-r1").await;
+    let plan = json!({"schema_version":1,"interpreter_version":"declarative-v1","intent":intent["intent"],"acceptance":intent["acceptance"],"allowed_effects":["read"],"resources":{"attempts":8,"episodes":8,"repairs":3,"execution_seconds":30},"max_repairs":3,"steps":[{"id":"inspect","kind":"action","depends_on":[],"join":"all","effects":["read"],"max_iterations":1}]});
+    let admitted_plan = api.post(&api.fixture.owner, &api.command("terminal-plan",1,json!({"kind":"plan.admit","plan":plan}))).await;
+    assert_eq!(admitted_plan.0,200);
+    let input=Uuid::new_v4();
+    let capture=json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"implementation","limit":4});
+    assert_eq!(api.mail("assembled-worker","terminal-input",capture.clone()).await.0,200);
+    let packet=team_control_plane::mailbox::MailboxService::new(api.fixture.broker.clone()).record("assembled-worker",team_control_plane::mailbox::RecordKind::Input,input).await.unwrap();
+    let episode=Uuid::new_v4();
+    let admission=json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]});
+    assert_eq!(api.mail("assembled-worker","terminal-episode",admission.clone()).await.0,200);
+    let accepted = api.accept_research(&intent, 2, "terminal").await;
+    let before=api.snapshot().await;
+    let mut failures=Vec::new();
+    let proof=before["accepted"][0]["proof_id"].clone();
+    let receipt=api.command("terminal-accept",3,json!({"kind":"outcome.accept","proof":proof}));
+    assert_eq!(api.post(&api.fixture.owner,&receipt).await,(200,accepted.clone()));
+    let evidence=api.upload("assembled-worker",b"physical log bytes remain storable after acceptance").await;
+    let mutations=vec![
+      ("assembled-worker".to_owned(),api.command("new-proposal",4,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}))),
+      (api.fixture.owner.clone(),api.command("new-accept",4,receipt["command"].clone())),
+      (api.fixture.owner.clone(),api.command("terminal-plan",1,json!({"kind":"plan.admit","plan":plan}))),
+      (api.fixture.owner.clone(),api.command("terminal-revalidate",4,json!({"kind":"dependency.revalidate","intent":intent["intent"],"dependencies":[]}))),
+    ];
+    for (token,command) in mutations {let result=api.post(&token,&command).await;if result.0!=409 {failures.push(json!({"command":command,"result":result}));}}
+    for (key,command) in [("terminal-input",capture),("terminal-episode",admission)] {let r=api.mail("assembled-worker",key,command).await;if r.0!=409 {failures.push(json!({"key":key,"result":r}));}}
+    for command in [json!({"kind":"prepare_delivery","id":Uuid::new_v4(),"message":Uuid::new_v4(),"episode":episode,"required_decision":null,"required_approval":null}),json!({"kind":"bind_runtime_turn","episode":episode,"start_operation":Uuid::new_v4(),"runtime_turn":"terminal-turn"})] {
+      let r=api.mail(&api.fixture.owner,&Uuid::new_v4().to_string(),command.clone()).await;
+      if r.1["code"]!="dependency_unmet" {failures.push(json!({"target_guard":command,"result":r}));}
+    }
+    let policy=team_control_plane::kernel::Kernel::new(api.fixture.broker.clone()).require_supervised_verification(&api.fixture.owner,api.fixture.task).await;
+    if policy.is_ok(){failures.push(json!("verification policy activation admitted"));}
+    let task=api.legacy_task(api.fixture.task).await;
+    let cancelled=api.v1("terminal-cancel",task["revision"].as_i64().unwrap(),None,json!({"kind":"cancel_attempt","task_id":api.fixture.task,"attempt_id":api.fixture.attempt,"reason":"must refuse accepted work"})).await;
+    if cancelled.1["code"]!="dependency_unmet" {failures.push(json!({"cancel":cancelled}));}
+    if before["current_accepted"]["subject"]!=accepted["subject"] || before["fresh_grant_eligible"]!=false {failures.push(json!({"projection":before}));}
+    println!("lifecycle_terminal_observations {}",json!({"failures":failures,"snapshot":before}));
+    assert!(failures.is_empty(),"terminal lifecycle failures: {failures:?}");
+    api.finish().await;
+}
+
+#[tokio::test]
+async fn lifecycle_research_amendment_fences_before_assignment_and_preserves_receipt() {
+    let api=Api::new().await;
+    let intent=api.research_intent("amend",0,"amend-r1").await;
+    let accepted=api.accept_research(&intent,1,"amend").await;
+    let old=api.snapshot().await;
+    let before=api.legacy_task(api.fixture.task).await;
+    let amended=api.research_intent("amend-next",3,"amend-r2").await;
+    let after=api.legacy_task(api.fixture.task).await;
+    let source=api.command("fenced-worker",4,json!({"kind":"source.propose","work":api.admission("x",0)["command"]["work"],"source":api.admission("x",0)["command"]["source"]}));
+    let worker=api.post("assembled-worker",&source).await;
+    let verify=api.command("fenced-verifier",4,json!({"kind":"research.verify","intent":amended["intent"],"acceptance":amended["acceptance"],"proposal":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
+    let verifier=api.post("assembled-verifier",&verify).await;
+    let receipt=api.command("amend-accept",2,json!({"kind":"outcome.accept","proof":old["accepted"][0]["proof_id"]}));
+    let replay=api.post(&api.fixture.owner,&receipt).await;
+    println!("lifecycle_amendment_observations {}",json!({"before":before,"after":after,"worker":worker,"verifier":verifier,"replay":replay}));
+    assert_eq!(after["data"]["generation"],2,"accepted research immediately fences original generation");
+    assert_eq!(worker.1["code"],"stale_generation");assert_eq!(verifier.1["code"],"stale_generation");
+    assert_eq!(replay,(200,accepted));
+    assert_eq!(after["data"]["attempts"],before["data"]["attempts"]);
+    assert_eq!(after["data"]["reservations"],before["data"]["reservations"]);
+    api.finish().await;
+}
+
+#[tokio::test]
+async fn lifecycle_research_wait_is_attention_and_historical_satisfaction_survives_amendment() {
+    use team_control_plane::{temporal,mailbox};
+    let api=Api::new().await;
+    let intent=api.research_intent("wait-intent",0,"wait-r1").await;
+    let bridge=temporal::Bridge::new(api.fixture.broker.clone());
+    let workflow=bridge.register(&api.fixture.owner,temporal::AggregateKind::Mission,api.fixture.mission,0).await.unwrap();
+    let episode=api.fixture.lead_episode("waiting-lead").await;
+    let yielded=api.mail("assembled-lead","wait-for-research",json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"Attention only; exact dependent authority is separate","artifacts":[]},"questions":[],"dependencies":[api.fixture.task],"executions":[]})).await;
+    assert_eq!(yielded.0,200,"{yielded:?}");
+    let before=serde_json::to_value(bridge.progress(&api.fixture.owner,&workflow).await.unwrap()).unwrap();
+    assert_eq!(before["mailbox_attention"][0]["satisfied"],false);
+    api.accept_research(&intent,1,"wait").await;
+    let accepted=serde_json::to_value(bridge.progress(&api.fixture.owner,&workflow).await.unwrap()).unwrap();
+    api.research_intent("wait-amend",3,"wait-r2").await;
+    let after=serde_json::to_value(bridge.progress(&api.fixture.owner,&workflow).await.unwrap()).unwrap();
+    let record=mailbox::MailboxService::new(api.fixture.broker.clone()).record(&api.fixture.owner,mailbox::RecordKind::Episode,episode).await.unwrap();
+    println!("lifecycle_wait_attention {}",json!({"before":before,"accepted":accepted,"after":after,"lead_episode":record}));
+    assert_eq!(accepted["mailbox_attention"][0]["satisfied"],true,"research acceptance wakes bare task waits");
+    assert_eq!(after["mailbox_attention"][0]["satisfied"],true,"recorded satisfaction remains historical");
+    assert!(record["attempt_id"].is_null());
+    api.finish().await;
+}
+
+#[tokio::test]
+async fn lifecycle_research_artifact_and_cached_result_mutations_refuse() {
+    let api=Api::new().await;
+    let intent=api.research_intent("cached",0,"cached-r1").await;
+    let evidence=api.upload("assembled-worker",b"retained investigation: no feasible candidate under admitted constraints").await;
+    let proposal=api.command("cached-proposal",1,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}));
+    let proposed=api.post("assembled-worker",&proposal).await;
+    assert_eq!(proposed.0,200);
+    let proposed_id=proposed.1["proposal"].clone();
+    let accepted=api.accept_research(&intent,1,"cached").await;
+    let old_proposal=api.post("assembled-worker",&proposal).await;
+    let verify=api.command("cached-verify",1,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed_id,"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}));
+    let old_verify=api.post("assembled-verifier",&verify).await;
+    let configure=api.artifact_request("configure-completed-research",json!({"kind":"configure","verifier":api.fixture.verifier,"lead_acceptance":true,"base":api.fixture.base,"suite":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","mandatory_commands":[["true"]]})).await;
+    let configured=api.artifact_response(&api.fixture.owner,&configure).await;
+    println!("lifecycle_cached_mutations {}",json!({"proposal":old_proposal,"verify":old_verify,"artifact":configured,"accepted":accepted}));
+    assert_eq!((old_proposal.0,old_verify.0,configured.0),(409,409,409));
+    api.finish().await;
+}
+
+#[tokio::test]
+async fn lifecycle_research_verifier_uses_exact_contract_without_production_candidate() {
+    use team_control_plane::{kernel,mailbox,supervisor};
+    let api=Api::measured().await;
+    let intent=api.research_intent("measured-research",0,"measured-r1").await;
+    let mailbox=mailbox::MailboxService::new(api.fixture.broker.clone());
+    let input=Uuid::new_v4();
+    assert_eq!(api.mail("assembled-verifier","research-verifier-input",json!({"kind":"capture_input","mission":api.fixture.mission,"id":input,"attempt":api.fixture.attempt,"purpose":"verification","limit":4})).await.0,200);
+    let packet=mailbox.record("assembled-verifier",mailbox::RecordKind::Input,input).await.unwrap();
+    let episode=Uuid::new_v4();
+    let admission=json!({"kind":"admit_episode","mission":api.fixture.mission,"id":episode,"attempt":api.fixture.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]});
+    assert_eq!(api.mail("assembled-worker","research-wrong-role",admission.clone()).await.0,401);
+    let admitted=api.mail("assembled-verifier","research-verifier-episode",admission.clone()).await;
+    assert_eq!(admitted.0,200,"exact research contract authorizes a bounded independent Verifier Episode without production candidate: {admitted:?}");
+    let supervisor=api.fixture.supervisor().await;
+    let execution=supervisor.create_episode("assembled-verifier",episode,vec![],supervisor::CreateFault::None).await.unwrap();
+    supervisor.start("assembled-verifier",execution.id,vec!["/bin/sh".into(),"-c".into(),"test ! -e src/result && printf 'negative research: no result at admitted base\\n'".into()],10).await.unwrap();
+    let deadline=std::time::Instant::now()+std::time::Duration::from_secs(10);
+    let measured=loop {if let Some(result)=supervisor.result("assembled-verifier",execution.id).await.unwrap(){break result;}assert!(std::time::Instant::now()<deadline);tokio::time::sleep(std::time::Duration::from_millis(20)).await;};
+    assert_eq!(measured.exit_code,Some(0));assert!(measured.namespace_stopped);assert!(measured.candidate.is_none());
+    let view=supervisor.inspect("assembled-verifier",execution.id).await.unwrap();
+    let output=std::fs::read(&view.manifest.log_path).unwrap();
+    let bytes=serde_json::to_vec(&json!({"trusted_monitor_result":measured,"output":String::from_utf8(output).unwrap(),"intent":intent["intent"],"acceptance":intent["acceptance"]})).unwrap();
+    let evidence=api.upload("assembled-worker",&bytes).await;
+    let proposed=api.post("assembled-worker",&api.command("measured-research-proposal",1,json!({"kind":"outcome.propose","intent":intent["intent"],"evidence":evidence,"negative":true,"evaluator_change":false}))).await;
+    assert_eq!(proposed.0,200);
+    let verified=api.post("assembled-verifier",&api.command("measured-research-proof",1,json!({"kind":"research.verify","intent":intent["intent"],"acceptance":intent["acceptance"],"proposal":proposed.1["proposal"],"policy":"suite-v2","environment":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}))).await;
+    assert_eq!(verified.0,200);
+    let accepted=api.post(&api.fixture.owner,&api.command("measured-research-accept",2,json!({"kind":"outcome.accept","proof":verified.1["proof"]}))).await;
+    assert_eq!(accepted.0,200);
+    assert_eq!(api.mail("assembled-verifier","research-verifier-episode",admission).await.0,409);
+    assert!(kernel::Kernel::new(api.fixture.broker.clone()).require_supervised_verification(&api.fixture.owner,api.fixture.task).await.is_err());
+    supervisor.release(&api.fixture.owner,execution.id).await.unwrap();
+    let released=supervisor.inspect(&api.fixture.owner,execution.id).await.unwrap();
+    println!("lifecycle_measured_research {}",json!({"execution":execution.id,"manifest":view.manifest,"measurement":measured,"artifact":evidence,"artifact_bytes":bytes,"accepted":accepted,"released":released}));
+    assert_eq!(released.state,supervisor::ExecutionState::Released);
+    api.finish().await;
+}

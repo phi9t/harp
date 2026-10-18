@@ -1,0 +1,2529 @@
+{
+  "README": "README separately frozen; runner hashes executable/test/migration/package inputs. Earlier passes and provisional Owner exception are historical, not final-source conformance.",
+  "final_run": "green-final-repair3-compatibility",
+  "runs": [
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "path": "crates/team-control-plane/src/domain.rs",
+          "run_sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92"
+        },
+        {
+          "final_sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "path": "crates/team-control-plane/src/lib.rs",
+          "run_sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "path": "crates/team-control-plane/src/storage.rs",
+          "run_sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "121c5550efdcbf3aab9d7da5b703ac36b178ae70fa240698a45e155a1c596830"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "red-admission"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "ca29621d2d7344a985243c5ed3e9051a8d20a9aeed39524f6cb6a1007b268ec4"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "e1dc7b974cf4f24b8da6321ce8d0b27bba551c000b457aa3ce27dc815fe08407"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "path": "crates/team-control-plane/src/domain.rs",
+          "run_sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "ec7a99feb9b8646b906880c91fadf269b3fa0d50ec4568adeb78cf8e3fc8a708"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "549341e0efe2d76d6372f85898fd81beaa5ece4c9103594963155d53f1600890"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-admission"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "ca29621d2d7344a985243c5ed3e9051a8d20a9aeed39524f6cb6a1007b268ec4"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "e1dc7b974cf4f24b8da6321ce8d0b27bba551c000b457aa3ce27dc815fe08407"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "ec7a99feb9b8646b906880c91fadf269b3fa0d50ec4568adeb78cf8e3fc8a708"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "549341e0efe2d76d6372f85898fd81beaa5ece4c9103594963155d53f1600890"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-admission-2"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "ca29621d2d7344a985243c5ed3e9051a8d20a9aeed39524f6cb6a1007b268ec4"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "e1dc7b974cf4f24b8da6321ce8d0b27bba551c000b457aa3ce27dc815fe08407"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "ec7a99feb9b8646b906880c91fadf269b3fa0d50ec4568adeb78cf8e3fc8a708"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "113325c8f7abcfca89491fc02b17ac1e8ae0e1e3c7c03851f14e433d359c3dc0"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "red-authority-plan"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "8bce46ded981d618619d7d33fda0cac3a45f348f3dd80544e9c27dab3be2014d"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "2c103aee418efd64ae13b8bb4cdc93e18100edb8dd5e774543d2bfbcd9b56984"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "1e6a7b9d060c5209af0fe2f803fdf280bc1e3e286220ce1fcc59967ea02e616d"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "ec7a99feb9b8646b906880c91fadf269b3fa0d50ec4568adeb78cf8e3fc8a708"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "344a9d2c8b699fee17d331cac66ab827fa957efdbb200f61ccc77f378665c113"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-authority-plan"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "8bce46ded981d618619d7d33fda0cac3a45f348f3dd80544e9c27dab3be2014d"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "2c103aee418efd64ae13b8bb4cdc93e18100edb8dd5e774543d2bfbcd9b56984"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "1e6a7b9d060c5209af0fe2f803fdf280bc1e3e286220ce1fcc59967ea02e616d"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "ec7a99feb9b8646b906880c91fadf269b3fa0d50ec4568adeb78cf8e3fc8a708"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "3472c952b25f1242f82e55eac19ba680598ac2786fa736de0871cd9a602c4f38"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-authority-plan-2"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "8bce46ded981d618619d7d33fda0cac3a45f348f3dd80544e9c27dab3be2014d"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "2c103aee418efd64ae13b8bb4cdc93e18100edb8dd5e774543d2bfbcd9b56984"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "1e6a7b9d060c5209af0fe2f803fdf280bc1e3e286220ce1fcc59967ea02e616d"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "path": "crates/team-control-plane/src/http.rs",
+          "run_sha256": "ec7a99feb9b8646b906880c91fadf269b3fa0d50ec4568adeb78cf8e3fc8a708"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "79830567dda193fcfd1bd55af96e9dd3739a90fe064cd30173fe3975a78e01ff"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "red-dependency-outcomes"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "8b1aa9af87ad464af2555d2a54fcdb19a9707341c800f34c8d3cd4f8b260bb56"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "fa492b25ba5c70414192c5ce2730b4ef5b5a782dff8c8be1fe511712b1633238"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "ba477abf44ea97d59eb04c60d8ddcd91bd8332bd3e12c1bc3f2ea1a818ead995"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "75d3a134c60e8c62da65af9c9e1c93a34a399e40914e05f1c1c071b2d2782365"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "8d447d73f7776a5daaa1aac2d3588843744c793e3e8c2979ec861573dec798bf"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "79830567dda193fcfd1bd55af96e9dd3739a90fe064cd30173fe3975a78e01ff"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-outcomes-red-dependencies"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "path": "crates/team-control-plane/migrations/0008.sql",
+          "run_sha256": "8b1aa9af87ad464af2555d2a54fcdb19a9707341c800f34c8d3cd4f8b260bb56"
+        },
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "path": "crates/team-control-plane/src/admission.rs",
+          "run_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "fa492b25ba5c70414192c5ce2730b4ef5b5a782dff8c8be1fe511712b1633238"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "d9c0bdbef5eddfdb692b7a468bed087613c2e9d0ad0b3b40c5d05964d5be8c7a"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "75d3a134c60e8c62da65af9c9e1c93a34a399e40914e05f1c1c071b2d2782365"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "7bb293dc42ba7513c76e04e3e82c9d07d818e01bb6815ed33f246ed339bc9098"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "path": "crates/team-control-plane/src/gateway.rs",
+          "run_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "79830567dda193fcfd1bd55af96e9dd3739a90fe064cd30173fe3975a78e01ff"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-outcomes-red-dependencies-2"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "fa492b25ba5c70414192c5ce2730b4ef5b5a782dff8c8be1fe511712b1633238"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "684dc81633f1cee05d9eed3f98ba7a7095bbe7d32fccc300ee9be117ee0548ae"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "75d3a134c60e8c62da65af9c9e1c93a34a399e40914e05f1c1c071b2d2782365"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "7bb293dc42ba7513c76e04e3e82c9d07d818e01bb6815ed33f246ed339bc9098"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "79830567dda193fcfd1bd55af96e9dd3739a90fe064cd30173fe3975a78e01ff"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-dependencies"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "fa492b25ba5c70414192c5ce2730b4ef5b5a782dff8c8be1fe511712b1633238"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "684dc81633f1cee05d9eed3f98ba7a7095bbe7d32fccc300ee9be117ee0548ae"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "75d3a134c60e8c62da65af9c9e1c93a34a399e40914e05f1c1c071b2d2782365"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "7bb293dc42ba7513c76e04e3e82c9d07d818e01bb6815ed33f246ed339bc9098"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "a70e045a4e2d05453c7e2419d1fb76f3dbbf9ff2f498089ea595c29bf828001c"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "path": "crates/team-control-plane/src/mailbox.rs",
+          "run_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "1d18c6e38c6aa92a38c3275576b61bf8761756e7cba1b53710dc23c042bb8424"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "red-retention-grants-ceilings"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "75d3a134c60e8c62da65af9c9e1c93a34a399e40914e05f1c1c071b2d2782365"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "3421aad787876b12935827510573960c4ee974e1b88a7fde557907288c012c6c"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-retention-grants-ceilings"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "75d3a134c60e8c62da65af9c9e1c93a34a399e40914e05f1c1c071b2d2782365"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "c40ad16f8c60261f5be24664a4f613f62b58c0eb93026fb86328d7279e4f558f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "red-replay-ceiling-compatibility"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "c40ad16f8c60261f5be24664a4f613f62b58c0eb93026fb86328d7279e4f558f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-final-public"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "c40ad16f8c60261f5be24664a4f613f62b58c0eb93026fb86328d7279e4f558f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-api-compatibility"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "4ddf22aa5a4aba167311729cef2af4090da9be6753498b65ddfac9544572719c"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "5f381965efa379fc2ca6a70c853fcee87e3a54a2106a574104f72c82f2dfb83d"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "red-dependency-disposition-revision"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "7b3226287f174dffc85054cc6e6b21841d1c4ee3fb24af7ed18dbf19583c1b4b"
+        }
+      ],
+      "final_source_match": false,
+      "round": "round0",
+      "run": "green-final-contract-revisions"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "d91ff3671a5e360c75d3177e46ed1ceb9048621b70c10fa5930cbfc1ea29f17d"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "red-episode-start-after-suspension"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "ac40bf3736db8a18e37056628f4cd6487fb42ed36807cd7c4d4d975112c4df9c"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "red-episode-start-after-suspension-2"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "path": "crates/team-control-plane/src/episode_runtime.rs",
+          "run_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "a9ff1ed2c544961723b29866e293d1561f24725d14ed3322715ff470e172cd04"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "red-episode-start-after-suspension-3"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "a9ff1ed2c544961723b29866e293d1561f24725d14ed3322715ff470e172cd04"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "green-episode-start-after-suspension"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "f10f876a792c4b752244caf472d8427171a7a83a11a892db66313989fbac6119"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "red-mapped-legacy-accept"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "f10f876a792c4b752244caf472d8427171a7a83a11a892db66313989fbac6119"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "green-mapped-and-historical-acceptance"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330"
+        },
+        {
+          "final_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "path": "crates/team-control-plane/src/contracts/authority.rs",
+          "run_sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        {
+          "final_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+          "run_sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "8699fcf081b4089c883adad23904de409c5299a72c698e0d7212b1f16471315f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "red-delegated-prerequisite-removal"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "8699fcf081b4089c883adad23904de409c5299a72c698e0d7212b1f16471315f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "green-delegated-prerequisite-removal"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "403448564da80dde90437748f03edf2a4d5f6ebad545311541dc43d8cf78db3a"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "red-cancelled-contract-results"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "fcec3f66c303af44a5e336f5e062bf4ba6a4d8f95e494425a437401b54c2d0ed"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "8eb1271946fd78c432d8ea5e6f82d73613ecaf45c75acfbc0e0be86663d442ef"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "c4f2370982996de90198eec5d247a83d1f1760fcb92282d18708222eb84f697f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "green-cancelled-contract-results"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "fcec3f66c303af44a5e336f5e062bf4ba6a4d8f95e494425a437401b54c2d0ed"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "8eb1271946fd78c432d8ea5e6f82d73613ecaf45c75acfbc0e0be86663d442ef"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "c4f2370982996de90198eec5d247a83d1f1760fcb92282d18708222eb84f697f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair1",
+      "run": "green-final-repair1-compatibility"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+          "path": "crates/team-control-plane/src/artifacts.rs",
+          "run_sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "fcec3f66c303af44a5e336f5e062bf4ba6a4d8f95e494425a437401b54c2d0ed"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "8eb1271946fd78c432d8ea5e6f82d73613ecaf45c75acfbc0e0be86663d442ef"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "93edf11f6ca3fbf2cd9aad206799e345593eaee650e50364af2fefacb1400bb1"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair2",
+      "run": "red-current-gate"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "f6343ea5cc69ca7445546e616e154fb8766d22c7e47885dfbb434d1b1f1b33ba"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "93edf11f6ca3fbf2cd9aad206799e345593eaee650e50364af2fefacb1400bb1"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair2",
+      "run": "green-current-gate"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+          "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+          "run_sha256": "f6343ea5cc69ca7445546e616e154fb8766d22c7e47885dfbb434d1b1f1b33ba"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "dd200a6f36dca42c3311bbc40f73ff3d0df5d2925fa1f35b0fe01e3c90bbf10e"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair2",
+      "run": "green-postfailure-controls"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair2",
+      "run": "green-postfailure-controls-expiry"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair2",
+      "run": "green-final-repair2-compatibility"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "1b41ea6d76241a295e4754760fce4c58732ee51b452e09f0d9e76ec9a7bac39d"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-plan-source-ceilings"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "1b41ea6d76241a295e4754760fce4c58732ee51b452e09f0d9e76ec9a7bac39d"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-production-amendment"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "eb4dd568e5ad9f1a7f4c6d7126106450928f23c15d0a9df8c3b4138a382abe6a"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-production-amendment-2"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "74c0e9ebb20a761c0fc4e7b8e582bc140ed35f37b3f354584dcaa61dbefc1c2e"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "green-plan-source-ceilings"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "13dd1d4cdc584b07f86861041425a43ba0adaa96e004d6bdf69678beca3babc2"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": "6e0a16dce0495a3e5a312fef87502fd6407f6f0d5bbc404364ac7fd64614ceec"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "50b81870a518b923d19c7c0d7e9906862524416f73abbddd563c4ebb65110f54"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-amendment-retirement"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "13dd1d4cdc584b07f86861041425a43ba0adaa96e004d6bdf69678beca3babc2"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": "ee24c988f4f029514cf173a42d38aa4d628358df67dee20d951ffd989e29914c"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "50b81870a518b923d19c7c0d7e9906862524416f73abbddd563c4ebb65110f54"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-amendment-retirement-2"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+          "path": "crates/team-control-plane/migrations/0009.sql",
+          "run_sha256": null
+        },
+        {
+          "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+          "path": "crates/team-control-plane/src/contracts.rs",
+          "run_sha256": "13dd1d4cdc584b07f86861041425a43ba0adaa96e004d6bdf69678beca3babc2"
+        },
+        {
+          "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+          "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+          "run_sha256": "ee24c988f4f029514cf173a42d38aa4d628358df67dee20d951ffd989e29914c"
+        },
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "41c9fbff881ecd9e8ae921cc6f51843ea62ea8da1200ef6c3c0b780748a7f600"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-amendment-retirement-3"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "c7dd130e17c83ec5a34ef40a7785fbe74a905ad0f08999dda5f25ea915609ac9"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-amendment-retirement-4"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "2dc8907490220d49c64db27c4f91fb230d96d5807d0519b356f56d43ae25c917"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-amendment-retirement-5"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+          "path": "crates/team-control-plane/src/supervisor.rs",
+          "run_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "284a1949bbdf0daa86bb8cd7700331390248e47bb8ac9cc8f5d7654d0f54d745"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-amendment-retirement-6"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "284a1949bbdf0daa86bb8cd7700331390248e47bb8ac9cc8f5d7654d0f54d745"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "green-production-amendment"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "76e501e43f07ab3b65a4f8ead825524daefb1e79b8c5589916e7cbb16debca24"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "green-amendment-controls"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "a9fb0125bb3eb829840a4d6a3e94b4265e2c5e332f9b58a10ba96e4c2cca50e1"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "green-expanded-contract-controls"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        },
+        {
+          "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+          "path": "crates/team-control-plane/tests/intent_contracts.rs",
+          "run_sha256": "71f87d69a2e2a1e1e85db16eb48b88be087eba807a67e06356a7af2043beaa82"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "green-unresolved-retirement-control"
+    },
+    {
+      "changes_from_final": [
+        {
+          "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+          "path": "crates/team-control-plane/src/contracts/strategy.rs",
+          "run_sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+        }
+      ],
+      "final_source_match": false,
+      "round": "repair3",
+      "run": "red-owner-plan-ceilings"
+    },
+    {
+      "changes_from_final": [],
+      "final_source_match": true,
+      "round": "repair3",
+      "run": "green-all-caller-plan-ceilings"
+    },
+    {
+      "changes_from_final": [],
+      "final_source_match": true,
+      "round": "repair3",
+      "run": "green-final-repair3-compatibility"
+    }
+  ]
+}

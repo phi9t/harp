@@ -1,0 +1,40 @@
+{
+  "source_base": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "commands": [
+    {
+      "command": "cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture --test-threads=2",
+      "exit": 0,
+      "log": "gate-tests-final.log",
+      "passed": 50,
+      "native_seconds": 346.4
+    },
+    {
+      "command": "cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml --check",
+      "exit": 0,
+      "log": "gate-fmt-final.log"
+    },
+    {
+      "command": "cargo clippy --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --all-targets --features fault-injection -- -D warnings",
+      "exit": 0,
+      "log": "gate-clippy-final.log"
+    },
+    {
+      "command": "cargo build --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml",
+      "exit": 0,
+      "log": "gate-normal-build-final.log"
+    }
+  ],
+  "tested_implementation_source_unchanged": true,
+  "documentation_after_full_test": "none for final gate",
+  "classification": "MODEL_FREE_ACTUAL_PROTOCOL; no inference/model/live qualification",
+  "source_inventory": "gate-source-final.json",
+  "tested_source_unchanged": true,
+  "previous_gate_retained": "gate-tests.log:50 PASS before whitespace-only launcher-pin correction",
+  "tested_source_commit": "f77df6493f1090841bafa388b8b38b624a24571f",
+  "checks": {
+    "diff_check_exit": 0,
+    "python_compile_exit": 0,
+    "source_inventory_hashes_match": true,
+    "diff_check_scope": "source and documentation excluding verbatim raw logs"
+  }
+}

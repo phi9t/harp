@@ -1,0 +1,93 @@
+{
+  "affected-gates.log": [
+    "FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.26s"
+  ],
+  "assembled-pre-native.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 54.78s",
+    "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.43s",
+    "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s",
+    "ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s",
+    "ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.27s"
+  ],
+  "bounded-output-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.65s"
+  ],
+  "bounded-output.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.19s"
+  ],
+  "capability-red.log": [
+    "FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 2.43s"
+  ],
+  "cleanup-cancel-red.log": [
+    "FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 27.55s"
+  ],
+  "cleanup-lost-ack-red.log": [
+    "FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 4.39s"
+  ],
+  "clippy.log": [],
+  "combined-fourth.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.39s"
+  ],
+  "focused-controls.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.23s"
+  ],
+  "focused-git-green.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 42.54s"
+  ],
+  "frozen-affected.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 61.89s",
+    "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.46s",
+    "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s",
+    "ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s",
+    "ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.30s"
+  ],
+  "frozen-build-last.log": [],
+  "frozen-build.log": [],
+  "frozen-clippy.log": [],
+  "frozen-default.log": [
+    "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 171.65s",
+    "ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s",
+    "ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+  ],
+  "frozen-fmt.log": [],
+  "frozen-native.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 35.13s"
+  ],
+  "frozen-pending-controls.log": [
+    "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 122.95s"
+  ],
+  "git-check.log": [],
+  "git-protocol-first.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.67s"
+  ],
+  "git-protocol-second.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.01s"
+  ],
+  "git-protocol-third.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.69s"
+  ],
+  "git-seam-red.log": [
+    "FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+  ],
+  "hostile-parent.log": [],
+  "native-git.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 35.24s"
+  ],
+  "native-restart-green.log": [
+    "FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 25 filtered out; finished in 30.45s"
+  ],
+  "native-restart-green2.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 30.93s"
+  ],
+  "native-restart-red.log": [
+    "FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 25 filtered out; finished in 45.01s"
+  ]
+}

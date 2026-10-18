@@ -1,0 +1,4592 @@
+{
+  "checked_at": "2026-10-05T02:34:39.790101+00:00",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "gate_sha256": "32f89316dd656b1b7532edd7833abd838f468d07a3a0f0b1cd1b5d4149d98185",
+  "gate_verdict": "PASS",
+  "checks": [
+    {
+      "name": "complete-fi",
+      "returncode": 0,
+      "seconds": 1612.6038324279943,
+      "sha256": "d45280b139037c737b7e9e507386419ada7209b12ac74a5ab950516c6f59d5cf"
+    },
+    {
+      "name": "default-control-client-git-kata",
+      "returncode": 0,
+      "seconds": 11.499736906029284,
+      "sha256": "2944d6d05ddf5e8409f2f547c59eed285a2ac4aede0b8a595e0dce2b23fa537e"
+    },
+    {
+      "name": "fmt",
+      "returncode": 0,
+      "seconds": 0.3852356319548562,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "clippy",
+      "returncode": 0,
+      "seconds": 4.589392547030002,
+      "sha256": "d4c002e3cf3049122247a5d226de3a1f575131e202777f57fcea4c5f621aa028"
+    },
+    {
+      "name": "build",
+      "returncode": 0,
+      "seconds": 5.57880881393794,
+      "sha256": "828a3adab2bbd178df0235b593815023812245479bf2a3185193f993afffdacd"
+    }
+  ],
+  "passed_tests": {
+    "complete-fi": 129,
+    "default-control-client-git-kata": 14,
+    "fmt": 0,
+    "clippy": 0,
+    "build": 0
+  },
+  "source_inputs": 50,
+  "source_archive_sha256": "d7bd0141a177af575fe3222af0eadfa9ad6c46a2c1502706482b16214c476f0a",
+  "source_unchanged_and_git_exact": true,
+  "native_archives": 71,
+  "receipt_and_native_fixture_archives": 103,
+  "fixture_archives": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/05-repair3/fixtures/ws05-qb9nhifv.tar.gz",
+      "sha256": "f2de680002eb8633e03b19d561d17e4765e08ff1c6939068159d1d02e15d2c2e",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 13,
+      "regular_files_read": 11
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/05/git-fixtures/observer-authority-g4-69lrwjlm.tar.gz",
+      "sha256": "e4df8a3ef177e1b227e0ff6a6fec23e182865c27f7b27e46a02d130114f11c8d",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 115,
+      "regular_files_read": 61
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/bounded-inventory-g4-y2cbv17b.tar.gz",
+      "sha256": "904c19cf1503b89c6a530d500dacff591eed7a764fa19ee8d3efc1d13208bb75",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 1173,
+      "regular_files_read": 1064
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/slow-inventory-g4-5znn5wh8.tar.gz",
+      "sha256": "e78b30b23cb5952a4d9623ddb69b9dada8d5fdc2e42faff569fb93bbfd9265e4",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 120,
+      "regular_files_read": 62
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/repair3-applying-g4-0g00bjb6.tar.gz",
+      "sha256": "7ccb19ac272191119d5223ae1f0c3d4ac1a8f454aa9c0ca4d8b748fb23cc3d75",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 235,
+      "regular_files_read": 133
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/repair3-unknown-g4-kt2lwp1s.tar.gz",
+      "sha256": "b74fea7a05414fa285c576b2acd2c1b006613b5743729683c7a5c9adde50224e",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 235,
+      "regular_files_read": 133
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/normal-g4-g4wh84n7.tar.gz",
+      "sha256": "aed66c8b938cbf1bf2c15f21d04b8658d584d156ad277f94b3a7580cc3bb85f0",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 281,
+      "regular_files_read": 155
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/before_ref_update-g4-y9b3ccj3.tar.gz",
+      "sha256": "0bd8e1f173ce7e8cc7423c7f6320a6cedc5d5218b821765acc97e261387eef12",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 158,
+      "regular_files_read": 87
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/after_ref_update-g4-kx2onj3w.tar.gz",
+      "sha256": "25578aca3e30bcb10760c75d14a7f52d3d3be343bdfe75e131e3c0a8b19ae956",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 158,
+      "regular_files_read": 87
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/before_ref_update-divergence-g4-q8ac1jqt.tar.gz",
+      "sha256": "1f7ff6c965a21b1e91e491552b23d67a7e6140267cdb0134e68f3c6160e8deff",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 169,
+      "regular_files_read": 91
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/hostile-scratch-g4-s9ru8sb2.tar.gz",
+      "sha256": "ada1ae0eea43dc34cd79556f3cab326317275f1946ebf87d1e59bffe04c5502c",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 121,
+      "regular_files_read": 63
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/bounded-output-g4-ty9vjtrd.tar.gz",
+      "sha256": "655ea2ed96bb58b94fd28975c584e4ae2296fc53467d35e8d32f89c8e20b5e6d",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 150,
+      "regular_files_read": 79
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/capture-cancel-race-g4-whtj_mg0.tar.gz",
+      "sha256": "59e701ef5bfdcd22b5805138e01474d87aa21ca23a79a2219bed41c789a6145a",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 129,
+      "regular_files_read": 69
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/before_workspace_cleanup-g4-4nyafj5p.tar.gz",
+      "sha256": "b84bcdea307d8e96db876bb9d68916236a3c131d465d489e34c4a19d4c157f34",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 94,
+      "regular_files_read": 51
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/after_workspace_cleanup-g4-qqrjt9v0.tar.gz",
+      "sha256": "eee005524c212a9f4161f4d68ae7f672c8ea8c84e4abfbaa043b4122ab937b21",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 94,
+      "regular_files_read": 51
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/shadow-imports-g4-budmh_b5.tar.gz",
+      "sha256": "d6a74000d7f49ad9179eb0f811653b22395022555535762f1ba8e9423c206c77",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 130,
+      "regular_files_read": 70
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/before_land_admission-g4-4xxi9r7r.tar.gz",
+      "sha256": "15543900a35d20eef7ce7bb07e25bbbe842e38d50713aeef688f885c5de1935f",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 153,
+      "regular_files_read": 82
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/after_land_admission-g4-3nmrb3ba.tar.gz",
+      "sha256": "699ca9e6f7ba73ea77f3140b5a10d8f7847d0c839897aeba7b343ac314fbdf59",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 156,
+      "regular_files_read": 85
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/publication-before_ref_update-g4-dchs_5pn.tar.gz",
+      "sha256": "831d40ce2fe17b19d5e06e6a92670eca174cba4ad9aeb81aade356daf260a34c",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 159,
+      "regular_files_read": 88
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/publication-after_ref_update-g4-6hk3n6oc.tar.gz",
+      "sha256": "26e9f62830846502c3a21aab475f58e49986f83797bb847a0142fd9c96fcca3b",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 159,
+      "regular_files_read": 88
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/terminal-capture-g4-eha1plzn.tar.gz",
+      "sha256": "6853d7ce60b3c4d6e11eb0fbc64abede9e7e2e6354c46e040207bd8167587177",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 159,
+      "regular_files_read": 85
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/terminal-accept-g4-8i1br62c.tar.gz",
+      "sha256": "042df1b48f9aa5aeaffc2c51590e2e70f81047629832c18f02dc5a64e0ce88c3",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 155,
+      "regular_files_read": 82
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/terminal-land-g4-twjtgnge.tar.gz",
+      "sha256": "f85a077117097fb9d6a4751273c699e2bb0e0e2e543ffcc43cfd15635f37864d",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 155,
+      "regular_files_read": 82
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/accepted-capture-g4-eaoert3t.tar.gz",
+      "sha256": "8607bbef8e13eb818193be36abfea4ae3fd1f175353290a0dcfe47f145d0bc2d",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 156,
+      "regular_files_read": 82
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/slow-inventory-g4-03j_2ytc.tar.gz",
+      "sha256": "81770f1ae0f991592c1745cdd342eb0c6e71c7d80994300f01a047db6168eddb",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 120,
+      "regular_files_read": 62
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/final-output-g4-ag73u9g5.tar.gz",
+      "sha256": "40cf2374dfa5a42cfe15bc897ab83bd0de87ec0059bc0a8300ef72cf77ef0433",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 152,
+      "regular_files_read": 81
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/bounded-archive-g4-tbg6lbzh.tar.gz",
+      "sha256": "c6bda68ece90edb036745382dca546f1339360dfa7277912bf7a3a4dbc6224cc",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 90,
+      "regular_files_read": 47
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-qx60pgo9.tar.gz",
+      "sha256": "4199799c8f0378f9a6ba6dc2710e2446c1f4ea388297cbe128b50413e99e3e78",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 94,
+      "regular_files_read": 51
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/accepted-verification-g4-2fek3kj2.tar.gz",
+      "sha256": "10aff1aa26be5e59e59be3221ee452f25a6c73c52ce31b32f15c779575c22f78",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 151,
+      "regular_files_read": 82
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/git-publication-after_ref_update-g4-046b8hsb.tar.gz",
+      "sha256": "d99f4f05721badb90e214bfae5486888e9d4ec60e5e3a41b1841795446ddafa2",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 164,
+      "regular_files_read": 93
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/04/fixtures/git-publication-before_ref_update-g4-l1v_aq6o.tar.gz",
+      "sha256": "a4805be83ba4a74d8f489af02bc3c4339d72631afb5eb8c684ef6fab14405be0",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 164,
+      "regular_files_read": 93
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/05-repair3/fixtures/ws05-bbya67kf.tar.gz",
+      "sha256": "96bdc9ee91406d3317a451898aa0a22a2b42ff8cf873b80009891cd19fecaa09",
+      "origin": "exact full gate public fixture receipt",
+      "members_read": 13,
+      "regular_files_read": 11
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-sh0cw71v.tar.gz",
+      "sha256": "dcfe85da180aba95150790f7cd9c69af39ef973ef504bafa1d94f8c76f33e80f",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 616,
+      "regular_files_read": 395
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-8c6s1jpp.tar.gz",
+      "sha256": "49f3e34de130fcf9e82e9596bf126ed8752acc7caf241b84f4ce7beea9059078",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 366,
+      "regular_files_read": 212
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-a2c9tut4.tar.gz",
+      "sha256": "6efd0d827f047624cc22e4f597bafb2b6dbd393dadffbbc709df3f375e732fd6",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 610,
+      "regular_files_read": 389
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-95lhm5s2.tar.gz",
+      "sha256": "5e73ba7b30deffa2853727a3b814bc42a16a690b08e73d2a2b9cd8f4ca7afa91",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 321,
+      "regular_files_read": 204
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-bqjhej_s.tar.gz",
+      "sha256": "e0b042b67d32e0397d10b6c0563ec02f43d2ca21c33cc64c1ce2a90f95871309",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 609,
+      "regular_files_read": 388
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-0i1kca4q.tar.gz",
+      "sha256": "ce0430b83d791c0e496160806cccd9164704eed9f97a0613bad4874e735583b8",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 217,
+      "regular_files_read": 141
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-5z384odp.tar.gz",
+      "sha256": "1b72033743d5d0a889bdade6c59b9f8882f17ed7f269d76d6bc26940b17d9488",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 329,
+      "regular_files_read": 212
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-eianqwqz.tar.gz",
+      "sha256": "2987d2f5fe1971c114eb6e96d9a6e781dbc34848c7c50f864f7d2d40708c2bf5",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 197,
+      "regular_files_read": 121
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-q959nbyh.tar.gz",
+      "sha256": "3e70e1ef96fa7cd84ee1018c4beb2f12515e7fae80890c38364569db9d13d86c",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 268,
+      "regular_files_read": 165
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-kxggtnam.tar.gz",
+      "sha256": "3dc69054cb931181eb842105561d6ff5e64b91d84a40b758919f00d9cb1f4cdc",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 616,
+      "regular_files_read": 395
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-0jzorkec.tar.gz",
+      "sha256": "99ef5c26501e8fcb5a71825198914b38e8fdc99d9f17d872d4b06c6b70a45890",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 310,
+      "regular_files_read": 197
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-lgrngiqi.tar.gz",
+      "sha256": "f75eb3bf5b6d9b2e69b411517f606cf25fd113402da8f1fe4636b458f41ccb1c",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 273,
+      "regular_files_read": 170
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-kqy3s3e6.tar.gz",
+      "sha256": "5181aa4f523f813546ee861b112ab79350d64ec17d6ccac41437da7913aba882",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 327,
+      "regular_files_read": 210
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-_8qcxwgx.tar.gz",
+      "sha256": "11bb42161d58bc1fe83b160951e70c78bb1a0777e132a3f045cb7d0fd47d42f6",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 281,
+      "regular_files_read": 178
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-4satpoqe.tar.gz",
+      "sha256": "94d250a7319366ec598b385617fb82d9fa5b9b220f8bda3c4d466cdd5e90722e",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 609,
+      "regular_files_read": 388
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-i7m9vb5r.tar.gz",
+      "sha256": "10bd58c925e8f6401fba5f52cef526f0c7370351877eb3c1c01dc6261db0a4c9",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 223,
+      "regular_files_read": 146
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-cv3x3u7f.tar.gz",
+      "sha256": "70a87a9f1001ed36746e13e07c53e90eec0dbb9bbda47605508b15ec5be35ac2",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 336,
+      "regular_files_read": 219
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-wdc7v5u4.tar.gz",
+      "sha256": "a95770cc6d02176b285b6299b8cec0cd231011db8b17a1011ad1e79436083e64",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 202,
+      "regular_files_read": 126
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-o8kbv08y.tar.gz",
+      "sha256": "e84995c69310724e2d2cb00e0937df2813a20fef51a2a08b495f8187178ac4e5",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 197,
+      "regular_files_read": 121
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-ei8o7c9h.tar.gz",
+      "sha256": "f175b40036eedac8d9f60f64eb7d43f93b76136d7bc6f99fc1e0be777288bb1e",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 299,
+      "regular_files_read": 196
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-fo1pa2ps.tar.gz",
+      "sha256": "f284c2807e233cd5b25ec5a6b807a72dcbd45fa3b0d9f906b6b738576d7e278e",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 210,
+      "regular_files_read": 134
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-nq3ky8zz.tar.gz",
+      "sha256": "d680562eeae35b4d0803b932bc6c7dec560d5ceb2f3b7dd803474fd3513626e6",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 618,
+      "regular_files_read": 397
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-8y3pm_ir.tar.gz",
+      "sha256": "be2bf1abae59da8f6e7ee08807baea0a29bc29be090464c9091364a510e8bbe7",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 368,
+      "regular_files_read": 213
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-dt1frrgv.tar.gz",
+      "sha256": "ec2af675de5dc95e9d4f04b2edcbae9ff14e2125da17018d6ffb313042dccadf",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 618,
+      "regular_files_read": 397
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-80thq1tg.tar.gz",
+      "sha256": "a3f1aa4fade99b2ef6e3cf1e1d870f52040a4a92c34bc2e2b746ddbec746097c",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 340,
+      "regular_files_read": 222
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-_qwgte16.tar.gz",
+      "sha256": "b59edcc8b50eea54bb0588cbaebf69f94ffe57d6f7b80f1d012bc210065e744e",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 202,
+      "regular_files_read": 126
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-vq61jxlm.tar.gz",
+      "sha256": "923b0f1b2db44cd6c58affa871813f8394f5378905e45efb437ade79170cfcf8",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 316,
+      "regular_files_read": 199
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-l1fxnu5m.tar.gz",
+      "sha256": "e903658a8d2dd5006d43eebf2770661d2c9cdfc624d54de51dbad7ec8af19efd",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 485,
+      "regular_files_read": 290
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-ujforvtt.tar.gz",
+      "sha256": "3c394849440599f6b240a17ccb8ceff9c99441e6d566f0cef0885726833631b7",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 486,
+      "regular_files_read": 291
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-besw8vii.tar.gz",
+      "sha256": "45048486dbe10f43f1aa111ca2cd9620d1176c3a80b718089e931dbe1e9a95e6",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 208,
+      "regular_files_read": 132
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-bvfildd8.tar.gz",
+      "sha256": "674bd660f578d8b40209c24f9f6959a0073bda154c7918b9a61fe9089e590082",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 624,
+      "regular_files_read": 403
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-0h45jxsc.tar.gz",
+      "sha256": "18a0ae10f3e4a6326a64bd79c2b8ca241990fc1a6070bbec8d63b3a563aa8d66",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 621,
+      "regular_files_read": 400
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-997emicr.tar.gz",
+      "sha256": "27e145c450bc200e519660661c64f4290a59e3d3f99d3c98a3dce1b4ae294f74",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 222,
+      "regular_files_read": 145
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-54xgnmwq.tar.gz",
+      "sha256": "c8a7056c1874654b04aabd34688b4f751a579d0cc0a43da69c2b0095516d8b50",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 329,
+      "regular_files_read": 212
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-s82uj3nx.tar.gz",
+      "sha256": "516cf0264f95c7bd6562d1c467f4f5708614e25ad68818b477a4d50f1c77bb57",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 204,
+      "regular_files_read": 128
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-1i8aymt_.tar.gz",
+      "sha256": "4e981c34f6dae012ac958503985b75b43de9b2f9f8a95e94ee52b2b3a2c4bd65",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 615,
+      "regular_files_read": 394
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-6xuwzvv4.tar.gz",
+      "sha256": "3756dfa7ecf756d24fa694018af490dd6fee56b5d8ac26d9963ed1ba3c068681",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 616,
+      "regular_files_read": 395
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-2od4wbks.tar.gz",
+      "sha256": "174374908370b637dbbe5cbf85dbf1a7a656491f361f2d98aefb519569a31c69",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 274,
+      "regular_files_read": 171
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-pq1golf7.tar.gz",
+      "sha256": "e8c7ab2b931a170327abcd6067f0238091f3b216b4a684fb13ca6beb453a3f92",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 212,
+      "regular_files_read": 136
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-y_hupfg8.tar.gz",
+      "sha256": "236bd4478f111325d5aeb6d1d369e63bfd04b2af0c0e003bacbbc12e56917721",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 282,
+      "regular_files_read": 179
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-t7rc90h7.tar.gz",
+      "sha256": "2a537a800465bdfefaf8c38c9d9f13be97803ac241f214225dee0a9926013292",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 326,
+      "regular_files_read": 209
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-805iajp4.tar.gz",
+      "sha256": "35c63185e62e8a114c4fba94e8b45280c0c798999572c4cab2bf567d37276800",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 615,
+      "regular_files_read": 394
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-kdq6ir_z.tar.gz",
+      "sha256": "c1cc4b4703b7ed0d268b15efc082691506fb3c1a04aa28fbcebbd7b59d1195e3",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 325,
+      "regular_files_read": 207
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-tn320fo2.tar.gz",
+      "sha256": "efacace7a62c7cd825d459c999ecd92ab8e6be97306c4cbb8dc13cb6e0a49221",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 323,
+      "regular_files_read": 206
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-vzarfnpq.tar.gz",
+      "sha256": "706169c08011d08595f995f39be7a9dbe63b1c2ffa8706ff421494f331ffa42e",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 211,
+      "regular_files_read": 134
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-9iqbaa8w.tar.gz",
+      "sha256": "1eaf38e71eef828c9dcd3e0955cec08bfa436022cc5aec911bb26673a074b696",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 203,
+      "regular_files_read": 127
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-cuv1oez0.tar.gz",
+      "sha256": "ace752c38b5f43dd6af65d8de63094d9d0030928daadc3f352911db029140bf5",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 321,
+      "regular_files_read": 204
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-cwynwvk7.tar.gz",
+      "sha256": "6f2a32d34ef6d95c4655edca0c6bf1cad6075ebc7c0b89fa948e4a769fdc8a72",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 289,
+      "regular_files_read": 184
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-8ai7tub3.tar.gz",
+      "sha256": "8cf0a81d982d9475f6ae937c1f73d92572def726239d648f447a7e8ce4057e23",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 201,
+      "regular_files_read": 124
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-hyo5x1j8.tar.gz",
+      "sha256": "90667cfe6cd073d8b28976bde91eee36b518f5abd8378a216304dd5cc6899479",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 274,
+      "regular_files_read": 171
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-dxjx1i2w.tar.gz",
+      "sha256": "95c50bfd3e92d3f6cc0d31c637f37f878e8c590519488075e22f4bcfcce3e5be",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 324,
+      "regular_files_read": 207
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-zanocneu.tar.gz",
+      "sha256": "254ce68efc56f0071567d59326f80e3216079f559554804087917c37911d4f31",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 612,
+      "regular_files_read": 391
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-woe2su89.tar.gz",
+      "sha256": "5133ea546fecfacf9d86ca00e348eccb5b45797cb8921becf40663e1dd102267",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 331,
+      "regular_files_read": 214
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-m_isnhfu.tar.gz",
+      "sha256": "e622696f2439c0bb1c2384e7de3e91a34cca83268f73228bb3a4b7296425d7a1",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 274,
+      "regular_files_read": 171
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-aro1qahr.tar.gz",
+      "sha256": "b11e79ef6b33ca3d41029095dce5e5f61aed589eb5e6cbbec2ff5b9dffda18e3",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 324,
+      "regular_files_read": 206
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-hieuvszz.tar.gz",
+      "sha256": "ed52e3faa94247ff094abcd4b4b3f1711327f37cdcedefd8d6b3e95f2d5f0ce8",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 275,
+      "regular_files_read": 172
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-tr5951yz.tar.gz",
+      "sha256": "87db15949bc841fb5c8572727d14fa44108d7df99c5d00af417db8cf09300af3",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 202,
+      "regular_files_read": 126
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-6ltnve2e.tar.gz",
+      "sha256": "5aaca4d63f99d02b44fd83b6698a909d40b6959734fce55efdfb3030dfb3024a",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 273,
+      "regular_files_read": 170
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-5dpacelr.tar.gz",
+      "sha256": "f617b74568779d5b748003562fb4dd90a00c364de6031bd90b138ab78cb1e163",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 270,
+      "regular_files_read": 167
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-yeni4ph7.tar.gz",
+      "sha256": "da76bbf71fd8755532324228d3f7bd9afe9667c3c17fa22fbab5f016670e9b7c",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 631,
+      "regular_files_read": 408
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-i5ubphil.tar.gz",
+      "sha256": "981a6576c90af8dbafadab42a4d43c318949db42a532c7bd8afd4bbeea9a2f15",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 207,
+      "regular_files_read": 131
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-7xssoc0g.tar.gz",
+      "sha256": "0f47981024be469844de428d92e491511de0c613184c23a74a8121cb31debbfc",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 202,
+      "regular_files_read": 125
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-nghvgj1w.tar.gz",
+      "sha256": "c5bcc0498c77c8cd61bded51abdab3cb0e5f05e81ba65f36f93b7ee29dea9488",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 274,
+      "regular_files_read": 171
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-5wpsp0df.tar.gz",
+      "sha256": "0606bf3eb886640fbf55e6224fe98b3828b32c3832b68419f59f4f8967dccc92",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 276,
+      "regular_files_read": 173
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-lk0kgmec.tar.gz",
+      "sha256": "ee0f972c405e26bcc9b2a933a3db995ce573232692284b35ec44acfe2afc67f7",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 267,
+      "regular_files_read": 164
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-ncbp0jtm.tar.gz",
+      "sha256": "f875dec6645dad24db453f1f9dfcffb60fc0a31b6899ddc36a7029f57e14bc4b",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 270,
+      "regular_files_read": 167
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-3t4d3wdy.tar.gz",
+      "sha256": "2d856f39801e8d2b577353799a1f0b3077249fe067e678c1993648cff307550a",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 641,
+      "regular_files_read": 420
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-_6e69lsr.tar.gz",
+      "sha256": "1a74541cc95bd4365b67c2ba071101fede863e87a40d7750a09382ba02f392cc",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 612,
+      "regular_files_read": 391
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-1mguwh3o.tar.gz",
+      "sha256": "45e437608001c71bca2effaabdde85133cbb5ecff90c358701884090bd5f58c2",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 341,
+      "regular_files_read": 223
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/shared-cnr-99tqk87a.tar.gz",
+      "sha256": "e0b583b2c549f1e3ca1ca9790579c8c04c34e2cca55ec4e5b2301c64385bf434",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 267,
+      "regular_files_read": 164
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check/.scratch/sqlite-controller/native/separate-cnr-l5nritja.tar.gz",
+      "sha256": "57979805a8529f3b298ce1a839aeadd3dd2fea52f73d848af32ad5f72bd63cc4",
+      "origin": "owned native finally-hook archive during exact gate interval; archive path root correlates explicit owned argv receipts",
+      "members_read": 617,
+      "regular_files_read": 396
+    }
+  ],
+  "original_process_identities": [
+    {
+      "pid": 3038374,
+      "start_ticks": "58133571",
+      "current": "absent"
+    },
+    {
+      "pid": 3038377,
+      "start_ticks": "58133573",
+      "current": "absent"
+    },
+    {
+      "pid": 3039784,
+      "start_ticks": "58134111",
+      "current": "absent"
+    },
+    {
+      "pid": 3039785,
+      "start_ticks": "58134111",
+      "current": "absent"
+    },
+    {
+      "pid": 3040195,
+      "start_ticks": "58134924",
+      "current": "absent"
+    },
+    {
+      "pid": 3040196,
+      "start_ticks": "58134924",
+      "current": "absent"
+    },
+    {
+      "pid": 3041496,
+      "start_ticks": "58135733",
+      "current": "absent"
+    },
+    {
+      "pid": 3041536,
+      "start_ticks": "58135760",
+      "current": "absent"
+    },
+    {
+      "pid": 3041538,
+      "start_ticks": "58135761",
+      "current": "absent"
+    },
+    {
+      "pid": 3041539,
+      "start_ticks": "58135761",
+      "current": "absent"
+    },
+    {
+      "pid": 3041565,
+      "start_ticks": "58135788",
+      "current": "absent"
+    },
+    {
+      "pid": 3041567,
+      "start_ticks": "58135789",
+      "current": "absent"
+    },
+    {
+      "pid": 3042023,
+      "start_ticks": "58135813",
+      "current": "absent"
+    },
+    {
+      "pid": 3042493,
+      "start_ticks": "58135842",
+      "current": "absent"
+    },
+    {
+      "pid": 3044946,
+      "start_ticks": "58136966",
+      "current": "absent"
+    },
+    {
+      "pid": 3045263,
+      "start_ticks": "58136994",
+      "current": "absent"
+    },
+    {
+      "pid": 3046806,
+      "start_ticks": "58137099",
+      "current": "absent"
+    },
+    {
+      "pid": 3046829,
+      "start_ticks": "58137127",
+      "current": "absent"
+    },
+    {
+      "pid": 3048336,
+      "start_ticks": "58137971",
+      "current": "absent"
+    },
+    {
+      "pid": 3050011,
+      "start_ticks": "58138530",
+      "current": "absent"
+    },
+    {
+      "pid": 3050439,
+      "start_ticks": "58138745",
+      "current": "absent"
+    },
+    {
+      "pid": 3050921,
+      "start_ticks": "58139311",
+      "current": "absent"
+    },
+    {
+      "pid": 3051149,
+      "start_ticks": "58139553",
+      "current": "absent"
+    },
+    {
+      "pid": 3051587,
+      "start_ticks": "58140127",
+      "current": "absent"
+    },
+    {
+      "pid": 3051678,
+      "start_ticks": "58140361",
+      "current": "absent"
+    },
+    {
+      "pid": 3051700,
+      "start_ticks": "58140388",
+      "current": "absent"
+    },
+    {
+      "pid": 3051705,
+      "start_ticks": "58140389",
+      "current": "absent"
+    },
+    {
+      "pid": 3052190,
+      "start_ticks": "58140442",
+      "current": "absent"
+    },
+    {
+      "pid": 3052192,
+      "start_ticks": "58140443",
+      "current": "absent"
+    },
+    {
+      "pid": 3053199,
+      "start_ticks": "58140938",
+      "current": "absent"
+    },
+    {
+      "pid": 3053219,
+      "start_ticks": "58140965",
+      "current": "absent"
+    },
+    {
+      "pid": 3053222,
+      "start_ticks": "58140967",
+      "current": "absent"
+    },
+    {
+      "pid": 3053693,
+      "start_ticks": "58141019",
+      "current": "absent"
+    },
+    {
+      "pid": 3053695,
+      "start_ticks": "58141020",
+      "current": "absent"
+    },
+    {
+      "pid": 3055002,
+      "start_ticks": "58141628",
+      "current": "absent"
+    },
+    {
+      "pid": 3055444,
+      "start_ticks": "58141794",
+      "current": "absent"
+    },
+    {
+      "pid": 3055777,
+      "start_ticks": "58141831",
+      "current": "absent"
+    },
+    {
+      "pid": 3057159,
+      "start_ticks": "58142206",
+      "current": "absent"
+    },
+    {
+      "pid": 3057763,
+      "start_ticks": "58142338",
+      "current": "absent"
+    },
+    {
+      "pid": 3058014,
+      "start_ticks": "58142375",
+      "current": "absent"
+    },
+    {
+      "pid": 3058774,
+      "start_ticks": "58142699",
+      "current": "absent"
+    },
+    {
+      "pid": 3059120,
+      "start_ticks": "58142733",
+      "current": "absent"
+    },
+    {
+      "pid": 3059706,
+      "start_ticks": "58143001",
+      "current": "absent"
+    },
+    {
+      "pid": 3063015,
+      "start_ticks": "58143789",
+      "current": "absent"
+    },
+    {
+      "pid": 3063276,
+      "start_ticks": "58143821",
+      "current": "absent"
+    },
+    {
+      "pid": 3063283,
+      "start_ticks": "58143827",
+      "current": "absent"
+    },
+    {
+      "pid": 3065558,
+      "start_ticks": "58144096",
+      "current": "absent"
+    },
+    {
+      "pid": 3067771,
+      "start_ticks": "58144623",
+      "current": "absent"
+    },
+    {
+      "pid": 3067825,
+      "start_ticks": "58144649",
+      "current": "absent"
+    },
+    {
+      "pid": 3067827,
+      "start_ticks": "58144651",
+      "current": "absent"
+    },
+    {
+      "pid": 3068423,
+      "start_ticks": "58144703",
+      "current": "absent"
+    },
+    {
+      "pid": 3069390,
+      "start_ticks": "58144893",
+      "current": "absent"
+    },
+    {
+      "pid": 3071629,
+      "start_ticks": "58145713",
+      "current": "absent"
+    },
+    {
+      "pid": 3071708,
+      "start_ticks": "58145740",
+      "current": "absent"
+    },
+    {
+      "pid": 3071710,
+      "start_ticks": "58145742",
+      "current": "absent"
+    },
+    {
+      "pid": 3072254,
+      "start_ticks": "58145794",
+      "current": "absent"
+    },
+    {
+      "pid": 3072721,
+      "start_ticks": "58145856",
+      "current": "absent"
+    },
+    {
+      "pid": 3073710,
+      "start_ticks": "58145987",
+      "current": "absent"
+    },
+    {
+      "pid": 3075706,
+      "start_ticks": "58146794",
+      "current": "absent"
+    },
+    {
+      "pid": 3076412,
+      "start_ticks": "58146947",
+      "current": "absent"
+    },
+    {
+      "pid": 3077312,
+      "start_ticks": "58147078",
+      "current": "absent"
+    },
+    {
+      "pid": 3079811,
+      "start_ticks": "58147568",
+      "current": "absent"
+    },
+    {
+      "pid": 3082545,
+      "start_ticks": "58148052",
+      "current": "absent"
+    },
+    {
+      "pid": 3083993,
+      "start_ticks": "58148401",
+      "current": "absent"
+    },
+    {
+      "pid": 3085415,
+      "start_ticks": "58148828",
+      "current": "absent"
+    },
+    {
+      "pid": 3086866,
+      "start_ticks": "58149217",
+      "current": "absent"
+    },
+    {
+      "pid": 3086896,
+      "start_ticks": "58149244",
+      "current": "absent"
+    },
+    {
+      "pid": 3086900,
+      "start_ticks": "58149246",
+      "current": "absent"
+    },
+    {
+      "pid": 3087374,
+      "start_ticks": "58149298",
+      "current": "absent"
+    },
+    {
+      "pid": 3087378,
+      "start_ticks": "58149299",
+      "current": "absent"
+    },
+    {
+      "pid": 3089509,
+      "start_ticks": "58149652",
+      "current": "absent"
+    },
+    {
+      "pid": 3091724,
+      "start_ticks": "58150472",
+      "current": "absent"
+    },
+    {
+      "pid": 3091831,
+      "start_ticks": "58150484",
+      "current": "absent"
+    },
+    {
+      "pid": 3091907,
+      "start_ticks": "58150499",
+      "current": "absent"
+    },
+    {
+      "pid": 3091967,
+      "start_ticks": "58150500",
+      "current": "absent"
+    },
+    {
+      "pid": 3093092,
+      "start_ticks": "58150553",
+      "current": "absent"
+    },
+    {
+      "pid": 3093153,
+      "start_ticks": "58150554",
+      "current": "absent"
+    },
+    {
+      "pid": 3094280,
+      "start_ticks": "58150651",
+      "current": "absent"
+    },
+    {
+      "pid": 3094992,
+      "start_ticks": "58150688",
+      "current": "absent"
+    },
+    {
+      "pid": 3096880,
+      "start_ticks": "58151529",
+      "current": "absent"
+    },
+    {
+      "pid": 3097134,
+      "start_ticks": "58151566",
+      "current": "absent"
+    },
+    {
+      "pid": 3097604,
+      "start_ticks": "58151708",
+      "current": "absent"
+    },
+    {
+      "pid": 3098096,
+      "start_ticks": "58151829",
+      "current": "absent"
+    },
+    {
+      "pid": 3098105,
+      "start_ticks": "58151839",
+      "current": "absent"
+    },
+    {
+      "pid": 3098348,
+      "start_ticks": "58151876",
+      "current": "absent"
+    },
+    {
+      "pid": 3099464,
+      "start_ticks": "58152634",
+      "current": "absent"
+    },
+    {
+      "pid": 3100059,
+      "start_ticks": "58152879",
+      "current": "absent"
+    },
+    {
+      "pid": 3101859,
+      "start_ticks": "58153182",
+      "current": "absent"
+    },
+    {
+      "pid": 3103122,
+      "start_ticks": "58153443",
+      "current": "absent"
+    },
+    {
+      "pid": 3103160,
+      "start_ticks": "58153470",
+      "current": "absent"
+    },
+    {
+      "pid": 3103162,
+      "start_ticks": "58153471",
+      "current": "absent"
+    },
+    {
+      "pid": 3103641,
+      "start_ticks": "58153524",
+      "current": "absent"
+    },
+    {
+      "pid": 3104184,
+      "start_ticks": "58154003",
+      "current": "absent"
+    },
+    {
+      "pid": 3105442,
+      "start_ticks": "58154676",
+      "current": "absent"
+    },
+    {
+      "pid": 3108174,
+      "start_ticks": "58154816",
+      "current": "absent"
+    },
+    {
+      "pid": 3108309,
+      "start_ticks": "58154843",
+      "current": "absent"
+    },
+    {
+      "pid": 3108314,
+      "start_ticks": "58154844",
+      "current": "absent"
+    },
+    {
+      "pid": 3108788,
+      "start_ticks": "58154887",
+      "current": "absent"
+    },
+    {
+      "pid": 3108794,
+      "start_ticks": "58154897",
+      "current": "absent"
+    },
+    {
+      "pid": 3110442,
+      "start_ticks": "58155525",
+      "current": "absent"
+    },
+    {
+      "pid": 3111634,
+      "start_ticks": "58156048",
+      "current": "absent"
+    },
+    {
+      "pid": 3112396,
+      "start_ticks": "58156179",
+      "current": "absent"
+    },
+    {
+      "pid": 3113178,
+      "start_ticks": "58156298",
+      "current": "absent"
+    },
+    {
+      "pid": 3115974,
+      "start_ticks": "58157102",
+      "current": "absent"
+    },
+    {
+      "pid": 3117285,
+      "start_ticks": "58157366",
+      "current": "absent"
+    },
+    {
+      "pid": 3118420,
+      "start_ticks": "58157919",
+      "current": "absent"
+    },
+    {
+      "pid": 3118521,
+      "start_ticks": "58157946",
+      "current": "absent"
+    },
+    {
+      "pid": 3118524,
+      "start_ticks": "58157947",
+      "current": "absent"
+    },
+    {
+      "pid": 3119010,
+      "start_ticks": "58157999",
+      "current": "absent"
+    },
+    {
+      "pid": 3119013,
+      "start_ticks": "58158001",
+      "current": "absent"
+    },
+    {
+      "pid": 3119625,
+      "start_ticks": "58158142",
+      "current": "absent"
+    },
+    {
+      "pid": 3120191,
+      "start_ticks": "58158945",
+      "current": "absent"
+    },
+    {
+      "pid": 3120426,
+      "start_ticks": "58159186",
+      "current": "absent"
+    },
+    {
+      "pid": 3120936,
+      "start_ticks": "58159428",
+      "current": "absent"
+    },
+    {
+      "pid": 3121171,
+      "start_ticks": "58159465",
+      "current": "absent"
+    },
+    {
+      "pid": 3121995,
+      "start_ticks": "58159757",
+      "current": "absent"
+    },
+    {
+      "pid": 3122024,
+      "start_ticks": "58159784",
+      "current": "absent"
+    },
+    {
+      "pid": 3122028,
+      "start_ticks": "58159786",
+      "current": "absent"
+    },
+    {
+      "pid": 3122513,
+      "start_ticks": "58159838",
+      "current": "absent"
+    },
+    {
+      "pid": 3122515,
+      "start_ticks": "58159839",
+      "current": "absent"
+    },
+    {
+      "pid": 3123942,
+      "start_ticks": "58160136",
+      "current": "absent"
+    },
+    {
+      "pid": 3124521,
+      "start_ticks": "58160173",
+      "current": "absent"
+    },
+    {
+      "pid": 3125354,
+      "start_ticks": "58160433",
+      "current": "absent"
+    },
+    {
+      "pid": 3125813,
+      "start_ticks": "58161025",
+      "current": "absent"
+    },
+    {
+      "pid": 3126289,
+      "start_ticks": "58161191",
+      "current": "absent"
+    },
+    {
+      "pid": 3126548,
+      "start_ticks": "58161227",
+      "current": "absent"
+    },
+    {
+      "pid": 3127003,
+      "start_ticks": "58161246",
+      "current": "absent"
+    },
+    {
+      "pid": 3128912,
+      "start_ticks": "58162043",
+      "current": "absent"
+    },
+    {
+      "pid": 3129076,
+      "start_ticks": "58162069",
+      "current": "absent"
+    },
+    {
+      "pid": 3129087,
+      "start_ticks": "58162071",
+      "current": "absent"
+    },
+    {
+      "pid": 3129788,
+      "start_ticks": "58162123",
+      "current": "absent"
+    },
+    {
+      "pid": 3132474,
+      "start_ticks": "58162446",
+      "current": "absent"
+    },
+    {
+      "pid": 3132933,
+      "start_ticks": "58162483",
+      "current": "absent"
+    },
+    {
+      "pid": 3134599,
+      "start_ticks": "58162747",
+      "current": "absent"
+    },
+    {
+      "pid": 3136126,
+      "start_ticks": "58163275",
+      "current": "absent"
+    },
+    {
+      "pid": 3136648,
+      "start_ticks": "58163407",
+      "current": "absent"
+    },
+    {
+      "pid": 3137336,
+      "start_ticks": "58163553",
+      "current": "absent"
+    },
+    {
+      "pid": 3137969,
+      "start_ticks": "58164215",
+      "current": "absent"
+    },
+    {
+      "pid": 3138441,
+      "start_ticks": "58164378",
+      "current": "absent"
+    },
+    {
+      "pid": 3138470,
+      "start_ticks": "58164405",
+      "current": "absent"
+    },
+    {
+      "pid": 3138472,
+      "start_ticks": "58164406",
+      "current": "absent"
+    },
+    {
+      "pid": 3138950,
+      "start_ticks": "58164458",
+      "current": "absent"
+    },
+    {
+      "pid": 3139964,
+      "start_ticks": "58164990",
+      "current": "absent"
+    },
+    {
+      "pid": 3140517,
+      "start_ticks": "58165609",
+      "current": "absent"
+    },
+    {
+      "pid": 3140623,
+      "start_ticks": "58165722",
+      "current": "absent"
+    },
+    {
+      "pid": 3140790,
+      "start_ticks": "58165834",
+      "current": "absent"
+    },
+    {
+      "pid": 3142613,
+      "start_ticks": "58166550",
+      "current": "absent"
+    },
+    {
+      "pid": 3142801,
+      "start_ticks": "58166646",
+      "current": "absent"
+    },
+    {
+      "pid": 3142821,
+      "start_ticks": "58166673",
+      "current": "absent"
+    },
+    {
+      "pid": 3142825,
+      "start_ticks": "58166675",
+      "current": "absent"
+    },
+    {
+      "pid": 3143301,
+      "start_ticks": "58166727",
+      "current": "absent"
+    },
+    {
+      "pid": 3143303,
+      "start_ticks": "58166728",
+      "current": "absent"
+    },
+    {
+      "pid": 3145436,
+      "start_ticks": "58167353",
+      "current": "absent"
+    },
+    {
+      "pid": 3145468,
+      "start_ticks": "58167380",
+      "current": "absent"
+    },
+    {
+      "pid": 3145471,
+      "start_ticks": "58167382",
+      "current": "absent"
+    },
+    {
+      "pid": 3145985,
+      "start_ticks": "58167434",
+      "current": "absent"
+    },
+    {
+      "pid": 3145992,
+      "start_ticks": "58167435",
+      "current": "absent"
+    },
+    {
+      "pid": 3147337,
+      "start_ticks": "58167913",
+      "current": "absent"
+    },
+    {
+      "pid": 3148183,
+      "start_ticks": "58168080",
+      "current": "absent"
+    },
+    {
+      "pid": 3148678,
+      "start_ticks": "58168116",
+      "current": "absent"
+    },
+    {
+      "pid": 3150374,
+      "start_ticks": "58168655",
+      "current": "absent"
+    },
+    {
+      "pid": 3150533,
+      "start_ticks": "58168786",
+      "current": "absent"
+    },
+    {
+      "pid": 3150687,
+      "start_ticks": "58168954",
+      "current": "absent"
+    },
+    {
+      "pid": 3151400,
+      "start_ticks": "58169253",
+      "current": "absent"
+    },
+    {
+      "pid": 3151628,
+      "start_ticks": "58169587",
+      "current": "absent"
+    },
+    {
+      "pid": 3151846,
+      "start_ticks": "58170054",
+      "current": "absent"
+    },
+    {
+      "pid": 3152045,
+      "start_ticks": "58170396",
+      "current": "absent"
+    },
+    {
+      "pid": 3152062,
+      "start_ticks": "58170423",
+      "current": "absent"
+    },
+    {
+      "pid": 3152066,
+      "start_ticks": "58170424",
+      "current": "absent"
+    },
+    {
+      "pid": 3152525,
+      "start_ticks": "58170476",
+      "current": "absent"
+    },
+    {
+      "pid": 3153133,
+      "start_ticks": "58170874",
+      "current": "absent"
+    },
+    {
+      "pid": 3153153,
+      "start_ticks": "58170901",
+      "current": "absent"
+    },
+    {
+      "pid": 3153155,
+      "start_ticks": "58170903",
+      "current": "absent"
+    },
+    {
+      "pid": 3153629,
+      "start_ticks": "58170955",
+      "current": "absent"
+    },
+    {
+      "pid": 3154669,
+      "start_ticks": "58171629",
+      "current": "absent"
+    },
+    {
+      "pid": 3155151,
+      "start_ticks": "58171760",
+      "current": "absent"
+    },
+    {
+      "pid": 3156368,
+      "start_ticks": "58172396",
+      "current": "absent"
+    },
+    {
+      "pid": 3157229,
+      "start_ticks": "58173040",
+      "current": "absent"
+    },
+    {
+      "pid": 3157342,
+      "start_ticks": "58173169",
+      "current": "absent"
+    },
+    {
+      "pid": 3157876,
+      "start_ticks": "58173856",
+      "current": "absent"
+    },
+    {
+      "pid": 3157957,
+      "start_ticks": "58173973",
+      "current": "absent"
+    },
+    {
+      "pid": 3159819,
+      "start_ticks": "58174656",
+      "current": "absent"
+    },
+    {
+      "pid": 3159861,
+      "start_ticks": "58174683",
+      "current": "absent"
+    },
+    {
+      "pid": 3159864,
+      "start_ticks": "58174685",
+      "current": "absent"
+    },
+    {
+      "pid": 3160361,
+      "start_ticks": "58174737",
+      "current": "absent"
+    },
+    {
+      "pid": 3160363,
+      "start_ticks": "58174738",
+      "current": "absent"
+    },
+    {
+      "pid": 3161047,
+      "start_ticks": "58174797",
+      "current": "absent"
+    },
+    {
+      "pid": 3161089,
+      "start_ticks": "58174824",
+      "current": "absent"
+    },
+    {
+      "pid": 3161092,
+      "start_ticks": "58174825",
+      "current": "absent"
+    },
+    {
+      "pid": 3161587,
+      "start_ticks": "58174877",
+      "current": "absent"
+    },
+    {
+      "pid": 3161589,
+      "start_ticks": "58174879",
+      "current": "absent"
+    },
+    {
+      "pid": 3164927,
+      "start_ticks": "58176064",
+      "current": "absent"
+    },
+    {
+      "pid": 3165644,
+      "start_ticks": "58176230",
+      "current": "absent"
+    },
+    {
+      "pid": 3165883,
+      "start_ticks": "58176267",
+      "current": "absent"
+    },
+    {
+      "pid": 3167200,
+      "start_ticks": "58176873",
+      "current": "absent"
+    },
+    {
+      "pid": 3167268,
+      "start_ticks": "58176936",
+      "current": "absent"
+    },
+    {
+      "pid": 3168005,
+      "start_ticks": "58177231",
+      "current": "absent"
+    },
+    {
+      "pid": 3168292,
+      "start_ticks": "58177678",
+      "current": "absent"
+    },
+    {
+      "pid": 3168432,
+      "start_ticks": "58178048",
+      "current": "absent"
+    },
+    {
+      "pid": 3168775,
+      "start_ticks": "58178508",
+      "current": "absent"
+    },
+    {
+      "pid": 3168792,
+      "start_ticks": "58178535",
+      "current": "absent"
+    },
+    {
+      "pid": 3168794,
+      "start_ticks": "58178536",
+      "current": "absent"
+    },
+    {
+      "pid": 3169257,
+      "start_ticks": "58178588",
+      "current": "absent"
+    },
+    {
+      "pid": 3169716,
+      "start_ticks": "58178853",
+      "current": "absent"
+    },
+    {
+      "pid": 3169741,
+      "start_ticks": "58178879",
+      "current": "absent"
+    },
+    {
+      "pid": 3169746,
+      "start_ticks": "58178881",
+      "current": "absent"
+    },
+    {
+      "pid": 3170311,
+      "start_ticks": "58178933",
+      "current": "absent"
+    },
+    {
+      "pid": 3173156,
+      "start_ticks": "58179516",
+      "current": "absent"
+    },
+    {
+      "pid": 3173721,
+      "start_ticks": "58179774",
+      "current": "absent"
+    },
+    {
+      "pid": 3173802,
+      "start_ticks": "58179887",
+      "current": "absent"
+    },
+    {
+      "pid": 3174724,
+      "start_ticks": "58180084",
+      "current": "absent"
+    },
+    {
+      "pid": 3175303,
+      "start_ticks": "58180215",
+      "current": "absent"
+    },
+    {
+      "pid": 3177524,
+      "start_ticks": "58180761",
+      "current": "absent"
+    },
+    {
+      "pid": 3178075,
+      "start_ticks": "58180853",
+      "current": "absent"
+    },
+    {
+      "pid": 3180065,
+      "start_ticks": "58181585",
+      "current": "absent"
+    },
+    {
+      "pid": 3180103,
+      "start_ticks": "58181612",
+      "current": "absent"
+    },
+    {
+      "pid": 3180106,
+      "start_ticks": "58181614",
+      "current": "absent"
+    },
+    {
+      "pid": 3180111,
+      "start_ticks": "58181626",
+      "current": "absent"
+    },
+    {
+      "pid": 3180567,
+      "start_ticks": "58181666",
+      "current": "absent"
+    },
+    {
+      "pid": 3180571,
+      "start_ticks": "58181667",
+      "current": "absent"
+    },
+    {
+      "pid": 3181833,
+      "start_ticks": "58182442",
+      "current": "absent"
+    },
+    {
+      "pid": 3182266,
+      "start_ticks": "58182852",
+      "current": "absent"
+    },
+    {
+      "pid": 3182834,
+      "start_ticks": "58183045",
+      "current": "absent"
+    },
+    {
+      "pid": 3183165,
+      "start_ticks": "58183266",
+      "current": "absent"
+    },
+    {
+      "pid": 3183416,
+      "start_ticks": "58183293",
+      "current": "absent"
+    },
+    {
+      "pid": 3183419,
+      "start_ticks": "58183294",
+      "current": "absent"
+    },
+    {
+      "pid": 3184325,
+      "start_ticks": "58183346",
+      "current": "absent"
+    },
+    {
+      "pid": 3184345,
+      "start_ticks": "58183348",
+      "current": "absent"
+    },
+    {
+      "pid": 3185645,
+      "start_ticks": "58183858",
+      "current": "absent"
+    },
+    {
+      "pid": 3185693,
+      "start_ticks": "58183932",
+      "current": "absent"
+    },
+    {
+      "pid": 3186554,
+      "start_ticks": "58184495",
+      "current": "absent"
+    },
+    {
+      "pid": 3187292,
+      "start_ticks": "58184662",
+      "current": "absent"
+    },
+    {
+      "pid": 3187347,
+      "start_ticks": "58184680",
+      "current": "absent"
+    },
+    {
+      "pid": 3187611,
+      "start_ticks": "58184698",
+      "current": "absent"
+    },
+    {
+      "pid": 3187634,
+      "start_ticks": "58184706",
+      "current": "absent"
+    },
+    {
+      "pid": 3187640,
+      "start_ticks": "58184708",
+      "current": "absent"
+    },
+    {
+      "pid": 3188463,
+      "start_ticks": "58184760",
+      "current": "absent"
+    },
+    {
+      "pid": 3190676,
+      "start_ticks": "58185369",
+      "current": "absent"
+    },
+    {
+      "pid": 3191018,
+      "start_ticks": "58185406",
+      "current": "absent"
+    },
+    {
+      "pid": 3192261,
+      "start_ticks": "58185914",
+      "current": "absent"
+    },
+    {
+      "pid": 3192750,
+      "start_ticks": "58186046",
+      "current": "absent"
+    },
+    {
+      "pid": 3194513,
+      "start_ticks": "58186587",
+      "current": "absent"
+    },
+    {
+      "pid": 3194580,
+      "start_ticks": "58186682",
+      "current": "absent"
+    },
+    {
+      "pid": 3195635,
+      "start_ticks": "58187396",
+      "current": "absent"
+    },
+    {
+      "pid": 3195655,
+      "start_ticks": "58187454",
+      "current": "absent"
+    },
+    {
+      "pid": 3196334,
+      "start_ticks": "58188229",
+      "current": "absent"
+    },
+    {
+      "pid": 3196375,
+      "start_ticks": "58188255",
+      "current": "absent"
+    },
+    {
+      "pid": 3196377,
+      "start_ticks": "58188257",
+      "current": "absent"
+    },
+    {
+      "pid": 3196380,
+      "start_ticks": "58188258",
+      "current": "absent"
+    },
+    {
+      "pid": 3196976,
+      "start_ticks": "58188309",
+      "current": "absent"
+    },
+    {
+      "pid": 3198741,
+      "start_ticks": "58189067",
+      "current": "absent"
+    },
+    {
+      "pid": 3198788,
+      "start_ticks": "58189093",
+      "current": "absent"
+    },
+    {
+      "pid": 3198792,
+      "start_ticks": "58189095",
+      "current": "absent"
+    },
+    {
+      "pid": 3199324,
+      "start_ticks": "58189147",
+      "current": "absent"
+    },
+    {
+      "pid": 3199327,
+      "start_ticks": "58189148",
+      "current": "absent"
+    },
+    {
+      "pid": 3200328,
+      "start_ticks": "58189462",
+      "current": "absent"
+    },
+    {
+      "pid": 3200950,
+      "start_ticks": "58189667",
+      "current": "absent"
+    },
+    {
+      "pid": 3202953,
+      "start_ticks": "58190334",
+      "current": "absent"
+    },
+    {
+      "pid": 3203460,
+      "start_ticks": "58190501",
+      "current": "absent"
+    },
+    {
+      "pid": 3203711,
+      "start_ticks": "58190537",
+      "current": "absent"
+    },
+    {
+      "pid": 3204003,
+      "start_ticks": "58190598",
+      "current": "absent"
+    },
+    {
+      "pid": 3206125,
+      "start_ticks": "58191207",
+      "current": "absent"
+    },
+    {
+      "pid": 3206410,
+      "start_ticks": "58191245",
+      "current": "absent"
+    },
+    {
+      "pid": 3206845,
+      "start_ticks": "58191381",
+      "current": "absent"
+    },
+    {
+      "pid": 3206912,
+      "start_ticks": "58191502",
+      "current": "absent"
+    },
+    {
+      "pid": 3208006,
+      "start_ticks": "58192186",
+      "current": "absent"
+    },
+    {
+      "pid": 3208288,
+      "start_ticks": "58192320",
+      "current": "absent"
+    },
+    {
+      "pid": 3209570,
+      "start_ticks": "58192991",
+      "current": "absent"
+    },
+    {
+      "pid": 3209595,
+      "start_ticks": "58193018",
+      "current": "absent"
+    },
+    {
+      "pid": 3209597,
+      "start_ticks": "58193020",
+      "current": "absent"
+    },
+    {
+      "pid": 3210061,
+      "start_ticks": "58193072",
+      "current": "absent"
+    },
+    {
+      "pid": 3210063,
+      "start_ticks": "58193073",
+      "current": "absent"
+    },
+    {
+      "pid": 3210561,
+      "start_ticks": "58193125",
+      "current": "absent"
+    },
+    {
+      "pid": 3210674,
+      "start_ticks": "58193151",
+      "current": "absent"
+    },
+    {
+      "pid": 3210677,
+      "start_ticks": "58193153",
+      "current": "absent"
+    },
+    {
+      "pid": 3211279,
+      "start_ticks": "58193205",
+      "current": "absent"
+    },
+    {
+      "pid": 3212594,
+      "start_ticks": "58194224",
+      "current": "absent"
+    },
+    {
+      "pid": 3213601,
+      "start_ticks": "58194357",
+      "current": "absent"
+    },
+    {
+      "pid": 3214335,
+      "start_ticks": "58194391",
+      "current": "absent"
+    },
+    {
+      "pid": 3214758,
+      "start_ticks": "58194428",
+      "current": "absent"
+    },
+    {
+      "pid": 3215258,
+      "start_ticks": "58194563",
+      "current": "absent"
+    },
+    {
+      "pid": 3216462,
+      "start_ticks": "58195361",
+      "current": "absent"
+    },
+    {
+      "pid": 3216713,
+      "start_ticks": "58195398",
+      "current": "absent"
+    },
+    {
+      "pid": 3217128,
+      "start_ticks": "58195486",
+      "current": "absent"
+    },
+    {
+      "pid": 3217901,
+      "start_ticks": "58195662",
+      "current": "absent"
+    },
+    {
+      "pid": 3219070,
+      "start_ticks": "58196268",
+      "current": "absent"
+    },
+    {
+      "pid": 3219220,
+      "start_ticks": "58196479",
+      "current": "absent"
+    },
+    {
+      "pid": 3220395,
+      "start_ticks": "58197089",
+      "current": "absent"
+    },
+    {
+      "pid": 3220466,
+      "start_ticks": "58197291",
+      "current": "absent"
+    },
+    {
+      "pid": 3220481,
+      "start_ticks": "58197318",
+      "current": "absent"
+    },
+    {
+      "pid": 3220483,
+      "start_ticks": "58197320",
+      "current": "absent"
+    },
+    {
+      "pid": 3220943,
+      "start_ticks": "58197372",
+      "current": "absent"
+    },
+    {
+      "pid": 3221768,
+      "start_ticks": "58197910",
+      "current": "absent"
+    },
+    {
+      "pid": 3221855,
+      "start_ticks": "58197937",
+      "current": "absent"
+    },
+    {
+      "pid": 3221857,
+      "start_ticks": "58197939",
+      "current": "absent"
+    },
+    {
+      "pid": 3222560,
+      "start_ticks": "58197983",
+      "current": "absent"
+    },
+    {
+      "pid": 3222584,
+      "start_ticks": "58197991",
+      "current": "absent"
+    },
+    {
+      "pid": 3222586,
+      "start_ticks": "58197992",
+      "current": "absent"
+    },
+    {
+      "pid": 3225809,
+      "start_ticks": "58198698",
+      "current": "absent"
+    },
+    {
+      "pid": 3226496,
+      "start_ticks": "58199143",
+      "current": "absent"
+    },
+    {
+      "pid": 3227161,
+      "start_ticks": "58199310",
+      "current": "absent"
+    },
+    {
+      "pid": 3227404,
+      "start_ticks": "58199347",
+      "current": "absent"
+    },
+    {
+      "pid": 3228740,
+      "start_ticks": "58199547",
+      "current": "absent"
+    },
+    {
+      "pid": 3229706,
+      "start_ticks": "58200313",
+      "current": "absent"
+    },
+    {
+      "pid": 3230027,
+      "start_ticks": "58200350",
+      "current": "absent"
+    },
+    {
+      "pid": 3230263,
+      "start_ticks": "58200384",
+      "current": "absent"
+    },
+    {
+      "pid": 3230300,
+      "start_ticks": "58200411",
+      "current": "absent"
+    },
+    {
+      "pid": 3230304,
+      "start_ticks": "58200413",
+      "current": "absent"
+    },
+    {
+      "pid": 3230840,
+      "start_ticks": "58200466",
+      "current": "absent"
+    },
+    {
+      "pid": 3230842,
+      "start_ticks": "58200467",
+      "current": "absent"
+    },
+    {
+      "pid": 3231456,
+      "start_ticks": "58200614",
+      "current": "absent"
+    },
+    {
+      "pid": 3232575,
+      "start_ticks": "58201077",
+      "current": "absent"
+    },
+    {
+      "pid": 3233513,
+      "start_ticks": "58201424",
+      "current": "absent"
+    },
+    {
+      "pid": 3235438,
+      "start_ticks": "58201834",
+      "current": "absent"
+    },
+    {
+      "pid": 3236305,
+      "start_ticks": "58202250",
+      "current": "absent"
+    },
+    {
+      "pid": 3236323,
+      "start_ticks": "58202277",
+      "current": "absent"
+    },
+    {
+      "pid": 3236384,
+      "start_ticks": "58202278",
+      "current": "absent"
+    },
+    {
+      "pid": 3236891,
+      "start_ticks": "58202331",
+      "current": "absent"
+    },
+    {
+      "pid": 3237745,
+      "start_ticks": "58202660",
+      "current": "absent"
+    },
+    {
+      "pid": 3239188,
+      "start_ticks": "58203404",
+      "current": "absent"
+    },
+    {
+      "pid": 3239796,
+      "start_ticks": "58203501",
+      "current": "absent"
+    },
+    {
+      "pid": 3239817,
+      "start_ticks": "58203527",
+      "current": "absent"
+    },
+    {
+      "pid": 3239819,
+      "start_ticks": "58203529",
+      "current": "absent"
+    },
+    {
+      "pid": 3240392,
+      "start_ticks": "58203581",
+      "current": "absent"
+    },
+    {
+      "pid": 3241389,
+      "start_ticks": "58204084",
+      "current": "absent"
+    },
+    {
+      "pid": 3241690,
+      "start_ticks": "58204193",
+      "current": "absent"
+    },
+    {
+      "pid": 3243065,
+      "start_ticks": "58204885",
+      "current": "absent"
+    },
+    {
+      "pid": 3243066,
+      "start_ticks": "58204907",
+      "current": "absent"
+    },
+    {
+      "pid": 3243465,
+      "start_ticks": "58205703",
+      "current": "absent"
+    },
+    {
+      "pid": 3243466,
+      "start_ticks": "58205705",
+      "current": "absent"
+    },
+    {
+      "pid": 3243484,
+      "start_ticks": "58205732",
+      "current": "absent"
+    },
+    {
+      "pid": 3243486,
+      "start_ticks": "58205734",
+      "current": "absent"
+    },
+    {
+      "pid": 3243944,
+      "start_ticks": "58205786",
+      "current": "absent"
+    },
+    {
+      "pid": 3243946,
+      "start_ticks": "58205787",
+      "current": "absent"
+    },
+    {
+      "pid": 3245323,
+      "start_ticks": "58206520",
+      "current": "absent"
+    },
+    {
+      "pid": 3245363,
+      "start_ticks": "58206547",
+      "current": "absent"
+    },
+    {
+      "pid": 3245365,
+      "start_ticks": "58206548",
+      "current": "absent"
+    },
+    {
+      "pid": 3245834,
+      "start_ticks": "58206601",
+      "current": "absent"
+    },
+    {
+      "pid": 3245836,
+      "start_ticks": "58206602",
+      "current": "absent"
+    },
+    {
+      "pid": 3246587,
+      "start_ticks": "58206863",
+      "current": "absent"
+    },
+    {
+      "pid": 3247128,
+      "start_ticks": "58207212",
+      "current": "absent"
+    },
+    {
+      "pid": 3247484,
+      "start_ticks": "58207585",
+      "current": "absent"
+    },
+    {
+      "pid": 3247840,
+      "start_ticks": "58207969",
+      "current": "absent"
+    },
+    {
+      "pid": 3248155,
+      "start_ticks": "58208398",
+      "current": "absent"
+    },
+    {
+      "pid": 3248467,
+      "start_ticks": "58208770",
+      "current": "absent"
+    },
+    {
+      "pid": 3248995,
+      "start_ticks": "58209198",
+      "current": "absent"
+    },
+    {
+      "pid": 3249017,
+      "start_ticks": "58209225",
+      "current": "absent"
+    },
+    {
+      "pid": 3249019,
+      "start_ticks": "58209227",
+      "current": "absent"
+    },
+    {
+      "pid": 3249494,
+      "start_ticks": "58209279",
+      "current": "absent"
+    },
+    {
+      "pid": 3250055,
+      "start_ticks": "58209583",
+      "current": "absent"
+    },
+    {
+      "pid": 3250098,
+      "start_ticks": "58209609",
+      "current": "absent"
+    },
+    {
+      "pid": 3250101,
+      "start_ticks": "58209611",
+      "current": "absent"
+    },
+    {
+      "pid": 3250617,
+      "start_ticks": "58209663",
+      "current": "absent"
+    },
+    {
+      "pid": 3252015,
+      "start_ticks": "58210431",
+      "current": "absent"
+    },
+    {
+      "pid": 3252496,
+      "start_ticks": "58210563",
+      "current": "absent"
+    },
+    {
+      "pid": 3254074,
+      "start_ticks": "58211106",
+      "current": "absent"
+    },
+    {
+      "pid": 3254618,
+      "start_ticks": "58211518",
+      "current": "absent"
+    },
+    {
+      "pid": 3255451,
+      "start_ticks": "58211983",
+      "current": "absent"
+    },
+    {
+      "pid": 3255746,
+      "start_ticks": "58212301",
+      "current": "absent"
+    },
+    {
+      "pid": 3256128,
+      "start_ticks": "58212781",
+      "current": "absent"
+    },
+    {
+      "pid": 3256144,
+      "start_ticks": "58212808",
+      "current": "absent"
+    },
+    {
+      "pid": 3256146,
+      "start_ticks": "58212809",
+      "current": "absent"
+    },
+    {
+      "pid": 3256613,
+      "start_ticks": "58212861",
+      "current": "absent"
+    },
+    {
+      "pid": 3257118,
+      "start_ticks": "58213142",
+      "current": "absent"
+    },
+    {
+      "pid": 3257399,
+      "start_ticks": "58213443",
+      "current": "absent"
+    },
+    {
+      "pid": 3257924,
+      "start_ticks": "58213942",
+      "current": "absent"
+    },
+    {
+      "pid": 3257944,
+      "start_ticks": "58213969",
+      "current": "absent"
+    },
+    {
+      "pid": 3257947,
+      "start_ticks": "58213971",
+      "current": "absent"
+    },
+    {
+      "pid": 3258421,
+      "start_ticks": "58214023",
+      "current": "absent"
+    },
+    {
+      "pid": 3258423,
+      "start_ticks": "58214024",
+      "current": "absent"
+    },
+    {
+      "pid": 3259121,
+      "start_ticks": "58214161",
+      "current": "absent"
+    },
+    {
+      "pid": 3259829,
+      "start_ticks": "58214981",
+      "current": "absent"
+    },
+    {
+      "pid": 3259991,
+      "start_ticks": "58215174",
+      "current": "absent"
+    },
+    {
+      "pid": 3260475,
+      "start_ticks": "58215306",
+      "current": "absent"
+    },
+    {
+      "pid": 3260717,
+      "start_ticks": "58215343",
+      "current": "absent"
+    },
+    {
+      "pid": 3261487,
+      "start_ticks": "58215802",
+      "current": "absent"
+    },
+    {
+      "pid": 3261509,
+      "start_ticks": "58215829",
+      "current": "absent"
+    },
+    {
+      "pid": 3261511,
+      "start_ticks": "58215830",
+      "current": "absent"
+    },
+    {
+      "pid": 3262048,
+      "start_ticks": "58215882",
+      "current": "absent"
+    },
+    {
+      "pid": 3262846,
+      "start_ticks": "58216318",
+      "current": "absent"
+    },
+    {
+      "pid": 3263105,
+      "start_ticks": "58216355",
+      "current": "absent"
+    },
+    {
+      "pid": 3263509,
+      "start_ticks": "58216467",
+      "current": "absent"
+    },
+    {
+      "pid": 3263620,
+      "start_ticks": "58216516",
+      "current": "absent"
+    },
+    {
+      "pid": 3263946,
+      "start_ticks": "58216619",
+      "current": "absent"
+    },
+    {
+      "pid": 3265201,
+      "start_ticks": "58217249",
+      "current": "absent"
+    },
+    {
+      "pid": 3265271,
+      "start_ticks": "58217428",
+      "current": "absent"
+    },
+    {
+      "pid": 3265492,
+      "start_ticks": "58218070",
+      "current": "absent"
+    },
+    {
+      "pid": 3265592,
+      "start_ticks": "58218233",
+      "current": "absent"
+    },
+    {
+      "pid": 3265607,
+      "start_ticks": "58218259",
+      "current": "absent"
+    },
+    {
+      "pid": 3265609,
+      "start_ticks": "58218261",
+      "current": "absent"
+    },
+    {
+      "pid": 3266100,
+      "start_ticks": "58218313",
+      "current": "absent"
+    },
+    {
+      "pid": 3267071,
+      "start_ticks": "58218871",
+      "current": "absent"
+    },
+    {
+      "pid": 3267092,
+      "start_ticks": "58218897",
+      "current": "absent"
+    },
+    {
+      "pid": 3267094,
+      "start_ticks": "58218899",
+      "current": "absent"
+    },
+    {
+      "pid": 3267580,
+      "start_ticks": "58218951",
+      "current": "absent"
+    },
+    {
+      "pid": 3270188,
+      "start_ticks": "58219708",
+      "current": "absent"
+    },
+    {
+      "pid": 3271672,
+      "start_ticks": "58220104",
+      "current": "absent"
+    },
+    {
+      "pid": 3272711,
+      "start_ticks": "58220236",
+      "current": "absent"
+    },
+    {
+      "pid": 3273496,
+      "start_ticks": "58220508",
+      "current": "absent"
+    },
+    {
+      "pid": 3274435,
+      "start_ticks": "58221000",
+      "current": "absent"
+    },
+    {
+      "pid": 3276192,
+      "start_ticks": "58221321",
+      "current": "absent"
+    },
+    {
+      "pid": 3276257,
+      "start_ticks": "58221348",
+      "current": "absent"
+    },
+    {
+      "pid": 3276260,
+      "start_ticks": "58221350",
+      "current": "absent"
+    },
+    {
+      "pid": 3276856,
+      "start_ticks": "58221402",
+      "current": "absent"
+    },
+    {
+      "pid": 3276860,
+      "start_ticks": "58221403",
+      "current": "absent"
+    },
+    {
+      "pid": 3278434,
+      "start_ticks": "58221783",
+      "current": "absent"
+    },
+    {
+      "pid": 3279417,
+      "start_ticks": "58222588",
+      "current": "absent"
+    },
+    {
+      "pid": 3279658,
+      "start_ticks": "58222808",
+      "current": "absent"
+    },
+    {
+      "pid": 3281500,
+      "start_ticks": "58223393",
+      "current": "absent"
+    },
+    {
+      "pid": 3281576,
+      "start_ticks": "58223419",
+      "current": "absent"
+    },
+    {
+      "pid": 3281579,
+      "start_ticks": "58223421",
+      "current": "absent"
+    },
+    {
+      "pid": 3282304,
+      "start_ticks": "58223473",
+      "current": "absent"
+    },
+    {
+      "pid": 3282307,
+      "start_ticks": "58223474",
+      "current": "absent"
+    },
+    {
+      "pid": 3283274,
+      "start_ticks": "58223621",
+      "current": "absent"
+    },
+    {
+      "pid": 3285162,
+      "start_ticks": "58224430",
+      "current": "absent"
+    },
+    {
+      "pid": 3285192,
+      "start_ticks": "58224457",
+      "current": "absent"
+    },
+    {
+      "pid": 3285196,
+      "start_ticks": "58224458",
+      "current": "absent"
+    },
+    {
+      "pid": 3285754,
+      "start_ticks": "58224511",
+      "current": "absent"
+    },
+    {
+      "pid": 3286674,
+      "start_ticks": "58224626",
+      "current": "absent"
+    },
+    {
+      "pid": 3287340,
+      "start_ticks": "58224758",
+      "current": "absent"
+    },
+    {
+      "pid": 3287594,
+      "start_ticks": "58224794",
+      "current": "absent"
+    },
+    {
+      "pid": 3290573,
+      "start_ticks": "58225606",
+      "current": "absent"
+    },
+    {
+      "pid": 3290887,
+      "start_ticks": "58225644",
+      "current": "absent"
+    },
+    {
+      "pid": 3291735,
+      "start_ticks": "58225719",
+      "current": "absent"
+    },
+    {
+      "pid": 3291946,
+      "start_ticks": "58225906",
+      "current": "absent"
+    },
+    {
+      "pid": 3291947,
+      "start_ticks": "58225906",
+      "current": "absent"
+    },
+    {
+      "pid": 3292943,
+      "start_ticks": "58226719",
+      "current": "absent"
+    },
+    {
+      "pid": 3292947,
+      "start_ticks": "58226747",
+      "current": "absent"
+    },
+    {
+      "pid": 3294426,
+      "start_ticks": "58227540",
+      "current": "absent"
+    },
+    {
+      "pid": 3294435,
+      "start_ticks": "58227552",
+      "current": "absent"
+    },
+    {
+      "pid": 3294453,
+      "start_ticks": "58227566",
+      "current": "absent"
+    },
+    {
+      "pid": 3294455,
+      "start_ticks": "58227568",
+      "current": "absent"
+    },
+    {
+      "pid": 3294461,
+      "start_ticks": "58227578",
+      "current": "absent"
+    },
+    {
+      "pid": 3294464,
+      "start_ticks": "58227580",
+      "current": "absent"
+    },
+    {
+      "pid": 3295389,
+      "start_ticks": "58227620",
+      "current": "absent"
+    },
+    {
+      "pid": 3295402,
+      "start_ticks": "58227632",
+      "current": "absent"
+    },
+    {
+      "pid": 3295404,
+      "start_ticks": "58227634",
+      "current": "absent"
+    },
+    {
+      "pid": 3298312,
+      "start_ticks": "58228842",
+      "current": "absent"
+    },
+    {
+      "pid": 3299592,
+      "start_ticks": "58229015",
+      "current": "absent"
+    },
+    {
+      "pid": 3299597,
+      "start_ticks": "58229036",
+      "current": "absent"
+    },
+    {
+      "pid": 3300630,
+      "start_ticks": "58229824",
+      "current": "absent"
+    },
+    {
+      "pid": 3300635,
+      "start_ticks": "58229872",
+      "current": "absent"
+    },
+    {
+      "pid": 3301187,
+      "start_ticks": "58230621",
+      "current": "absent"
+    },
+    {
+      "pid": 3301220,
+      "start_ticks": "58230647",
+      "current": "absent"
+    },
+    {
+      "pid": 3301222,
+      "start_ticks": "58230649",
+      "current": "absent"
+    },
+    {
+      "pid": 3301670,
+      "start_ticks": "58230681",
+      "current": "absent"
+    },
+    {
+      "pid": 3301693,
+      "start_ticks": "58230701",
+      "current": "absent"
+    },
+    {
+      "pid": 3301702,
+      "start_ticks": "58230702",
+      "current": "absent"
+    },
+    {
+      "pid": 3301760,
+      "start_ticks": "58230708",
+      "current": "absent"
+    },
+    {
+      "pid": 3301762,
+      "start_ticks": "58230709",
+      "current": "absent"
+    },
+    {
+      "pid": 3302805,
+      "start_ticks": "58230762",
+      "current": "absent"
+    },
+    {
+      "pid": 3303833,
+      "start_ticks": "58231362",
+      "current": "absent"
+    },
+    {
+      "pid": 3305002,
+      "start_ticks": "58232061",
+      "current": "absent"
+    },
+    {
+      "pid": 3305043,
+      "start_ticks": "58232106",
+      "current": "absent"
+    },
+    {
+      "pid": 3305409,
+      "start_ticks": "58232874",
+      "current": "absent"
+    },
+    {
+      "pid": 3305441,
+      "start_ticks": "58232902",
+      "current": "absent"
+    },
+    {
+      "pid": 3305851,
+      "start_ticks": "58233675",
+      "current": "absent"
+    },
+    {
+      "pid": 3305907,
+      "start_ticks": "58233702",
+      "current": "absent"
+    },
+    {
+      "pid": 3305909,
+      "start_ticks": "58233703",
+      "current": "absent"
+    },
+    {
+      "pid": 3306552,
+      "start_ticks": "58233755",
+      "current": "absent"
+    },
+    {
+      "pid": 3306554,
+      "start_ticks": "58233757",
+      "current": "absent"
+    },
+    {
+      "pid": 3306578,
+      "start_ticks": "58233775",
+      "current": "absent"
+    },
+    {
+      "pid": 3307076,
+      "start_ticks": "58233802",
+      "current": "absent"
+    },
+    {
+      "pid": 3307090,
+      "start_ticks": "58233803",
+      "current": "absent"
+    },
+    {
+      "pid": 3307675,
+      "start_ticks": "58233856",
+      "current": "absent"
+    },
+    {
+      "pid": 3308754,
+      "start_ticks": "58234357",
+      "current": "absent"
+    },
+    {
+      "pid": 3308829,
+      "start_ticks": "58234438",
+      "current": "absent"
+    },
+    {
+      "pid": 3311490,
+      "start_ticks": "58235002",
+      "current": "absent"
+    },
+    {
+      "pid": 3311553,
+      "start_ticks": "58235011",
+      "current": "absent"
+    },
+    {
+      "pid": 3312430,
+      "start_ticks": "58235133",
+      "current": "absent"
+    },
+    {
+      "pid": 3313610,
+      "start_ticks": "58235769",
+      "current": "absent"
+    },
+    {
+      "pid": 3313951,
+      "start_ticks": "58235835",
+      "current": "absent"
+    },
+    {
+      "pid": 3315468,
+      "start_ticks": "58236549",
+      "current": "absent"
+    },
+    {
+      "pid": 3315495,
+      "start_ticks": "58236660",
+      "current": "absent"
+    },
+    {
+      "pid": 3315523,
+      "start_ticks": "58236687",
+      "current": "absent"
+    },
+    {
+      "pid": 3315525,
+      "start_ticks": "58236688",
+      "current": "absent"
+    },
+    {
+      "pid": 3315985,
+      "start_ticks": "58236741",
+      "current": "absent"
+    },
+    {
+      "pid": 3316667,
+      "start_ticks": "58237350",
+      "current": "absent"
+    },
+    {
+      "pid": 3317144,
+      "start_ticks": "58237893",
+      "current": "absent"
+    },
+    {
+      "pid": 3317720,
+      "start_ticks": "58238136",
+      "current": "absent"
+    },
+    {
+      "pid": 3317726,
+      "start_ticks": "58238142",
+      "current": "absent"
+    },
+    {
+      "pid": 3317820,
+      "start_ticks": "58238169",
+      "current": "absent"
+    },
+    {
+      "pid": 3317822,
+      "start_ticks": "58238171",
+      "current": "absent"
+    },
+    {
+      "pid": 3318321,
+      "start_ticks": "58238223",
+      "current": "absent"
+    },
+    {
+      "pid": 3318323,
+      "start_ticks": "58238224",
+      "current": "absent"
+    },
+    {
+      "pid": 3319004,
+      "start_ticks": "58238325",
+      "current": "absent"
+    },
+    {
+      "pid": 3319333,
+      "start_ticks": "58238810",
+      "current": "absent"
+    },
+    {
+      "pid": 3319552,
+      "start_ticks": "58239122",
+      "current": "absent"
+    },
+    {
+      "pid": 3319837,
+      "start_ticks": "58239409",
+      "current": "absent"
+    },
+    {
+      "pid": 3320299,
+      "start_ticks": "58239541",
+      "current": "absent"
+    },
+    {
+      "pid": 3320537,
+      "start_ticks": "58239577",
+      "current": "absent"
+    },
+    {
+      "pid": 3321266,
+      "start_ticks": "58239935",
+      "current": "absent"
+    },
+    {
+      "pid": 3321306,
+      "start_ticks": "58239961",
+      "current": "absent"
+    },
+    {
+      "pid": 3321309,
+      "start_ticks": "58239963",
+      "current": "absent"
+    },
+    {
+      "pid": 3321857,
+      "start_ticks": "58240015",
+      "current": "absent"
+    },
+    {
+      "pid": 3321859,
+      "start_ticks": "58240017",
+      "current": "absent"
+    },
+    {
+      "pid": 3322862,
+      "start_ticks": "58240247",
+      "current": "absent"
+    },
+    {
+      "pid": 3323106,
+      "start_ticks": "58240284",
+      "current": "absent"
+    },
+    {
+      "pid": 3323939,
+      "start_ticks": "58240543",
+      "current": "absent"
+    },
+    {
+      "pid": 3325621,
+      "start_ticks": "58241169",
+      "current": "absent"
+    },
+    {
+      "pid": 3326508,
+      "start_ticks": "58241352",
+      "current": "absent"
+    },
+    {
+      "pid": 3326691,
+      "start_ticks": "58241407",
+      "current": "absent"
+    },
+    {
+      "pid": 3327187,
+      "start_ticks": "58241609",
+      "current": "absent"
+    },
+    {
+      "pid": 3328563,
+      "start_ticks": "58242165",
+      "current": "absent"
+    },
+    {
+      "pid": 3328644,
+      "start_ticks": "58242191",
+      "current": "absent"
+    },
+    {
+      "pid": 3328646,
+      "start_ticks": "58242193",
+      "current": "absent"
+    },
+    {
+      "pid": 3329128,
+      "start_ticks": "58242245",
+      "current": "absent"
+    },
+    {
+      "pid": 3329637,
+      "start_ticks": "58242445",
+      "current": "absent"
+    },
+    {
+      "pid": 3330201,
+      "start_ticks": "58243291",
+      "current": "absent"
+    },
+    {
+      "pid": 3330222,
+      "start_ticks": "58243317",
+      "current": "absent"
+    },
+    {
+      "pid": 3330224,
+      "start_ticks": "58243319",
+      "current": "absent"
+    },
+    {
+      "pid": 3330760,
+      "start_ticks": "58243371",
+      "current": "absent"
+    },
+    {
+      "pid": 3331176,
+      "start_ticks": "58243556",
+      "current": "absent"
+    },
+    {
+      "pid": 3332539,
+      "start_ticks": "58244381",
+      "current": "absent"
+    },
+    {
+      "pid": 3332923,
+      "start_ticks": "58244523",
+      "current": "absent"
+    },
+    {
+      "pid": 3334250,
+      "start_ticks": "58244690",
+      "current": "absent"
+    },
+    {
+      "pid": 3334483,
+      "start_ticks": "58244920",
+      "current": "absent"
+    },
+    {
+      "pid": 3334787,
+      "start_ticks": "58245198",
+      "current": "absent"
+    },
+    {
+      "pid": 3334825,
+      "start_ticks": "58245225",
+      "current": "absent"
+    },
+    {
+      "pid": 3334827,
+      "start_ticks": "58245226",
+      "current": "absent"
+    },
+    {
+      "pid": 3335799,
+      "start_ticks": "58245279",
+      "current": "absent"
+    },
+    {
+      "pid": 3335801,
+      "start_ticks": "58245280",
+      "current": "absent"
+    },
+    {
+      "pid": 3337431,
+      "start_ticks": "58245729",
+      "current": "absent"
+    },
+    {
+      "pid": 3340143,
+      "start_ticks": "58246538",
+      "current": "absent"
+    },
+    {
+      "pid": 3340330,
+      "start_ticks": "58246564",
+      "current": "absent"
+    },
+    {
+      "pid": 3340333,
+      "start_ticks": "58246566",
+      "current": "absent"
+    },
+    {
+      "pid": 3340863,
+      "start_ticks": "58246600",
+      "current": "absent"
+    },
+    {
+      "pid": 3340876,
+      "start_ticks": "58246618",
+      "current": "absent"
+    },
+    {
+      "pid": 3340878,
+      "start_ticks": "58246619",
+      "current": "absent"
+    },
+    {
+      "pid": 3343126,
+      "start_ticks": "58247425",
+      "current": "absent"
+    },
+    {
+      "pid": 3343761,
+      "start_ticks": "58247771",
+      "current": "absent"
+    },
+    {
+      "pid": 3344406,
+      "start_ticks": "58247968",
+      "current": "absent"
+    },
+    {
+      "pid": 3347505,
+      "start_ticks": "58248210",
+      "current": "absent"
+    },
+    {
+      "pid": 3347554,
+      "start_ticks": "58248258",
+      "current": "absent"
+    },
+    {
+      "pid": 3347697,
+      "start_ticks": "58248285",
+      "current": "absent"
+    },
+    {
+      "pid": 3347704,
+      "start_ticks": "58248287",
+      "current": "absent"
+    },
+    {
+      "pid": 3348378,
+      "start_ticks": "58248339",
+      "current": "absent"
+    },
+    {
+      "pid": 3351967,
+      "start_ticks": "58249019",
+      "current": "absent"
+    },
+    {
+      "pid": 3354069,
+      "start_ticks": "58249491",
+      "current": "absent"
+    },
+    {
+      "pid": 3354569,
+      "start_ticks": "58249623",
+      "current": "absent"
+    },
+    {
+      "pid": 3355013,
+      "start_ticks": "58249824",
+      "current": "absent"
+    },
+    {
+      "pid": 3355122,
+      "start_ticks": "58249850",
+      "current": "absent"
+    },
+    {
+      "pid": 3355125,
+      "start_ticks": "58249852",
+      "current": "absent"
+    },
+    {
+      "pid": 3355889,
+      "start_ticks": "58249904",
+      "current": "absent"
+    },
+    {
+      "pid": 3359437,
+      "start_ticks": "58250582",
+      "current": "absent"
+    },
+    {
+      "pid": 3362144,
+      "start_ticks": "58251069",
+      "current": "absent"
+    },
+    {
+      "pid": 3362942,
+      "start_ticks": "58251364",
+      "current": "absent"
+    },
+    {
+      "pid": 3363883,
+      "start_ticks": "58251910",
+      "current": "absent"
+    },
+    {
+      "pid": 3364563,
+      "start_ticks": "58252184",
+      "current": "absent"
+    },
+    {
+      "pid": 3365289,
+      "start_ticks": "58252736",
+      "current": "absent"
+    },
+    {
+      "pid": 3365988,
+      "start_ticks": "58252985",
+      "current": "absent"
+    },
+    {
+      "pid": 3366041,
+      "start_ticks": "58253012",
+      "current": "absent"
+    },
+    {
+      "pid": 3366044,
+      "start_ticks": "58253014",
+      "current": "absent"
+    },
+    {
+      "pid": 3366638,
+      "start_ticks": "58253066",
+      "current": "absent"
+    },
+    {
+      "pid": 3366654,
+      "start_ticks": "58253067",
+      "current": "absent"
+    },
+    {
+      "pid": 3369394,
+      "start_ticks": "58253536",
+      "current": "absent"
+    },
+    {
+      "pid": 3371752,
+      "start_ticks": "58254218",
+      "current": "absent"
+    },
+    {
+      "pid": 3372339,
+      "start_ticks": "58254384",
+      "current": "absent"
+    },
+    {
+      "pid": 3372586,
+      "start_ticks": "58254421",
+      "current": "absent"
+    },
+    {
+      "pid": 3372718,
+      "start_ticks": "58254450",
+      "current": "absent"
+    },
+    {
+      "pid": 3375231,
+      "start_ticks": "58255263",
+      "current": "absent"
+    },
+    {
+      "pid": 3375608,
+      "start_ticks": "58255323",
+      "current": "absent"
+    },
+    {
+      "pid": 3378064,
+      "start_ticks": "58255637",
+      "current": "absent"
+    },
+    {
+      "pid": 3380669,
+      "start_ticks": "58256081",
+      "current": "absent"
+    },
+    {
+      "pid": 3380710,
+      "start_ticks": "58256107",
+      "current": "absent"
+    },
+    {
+      "pid": 3380712,
+      "start_ticks": "58256109",
+      "current": "absent"
+    },
+    {
+      "pid": 3381265,
+      "start_ticks": "58256161",
+      "current": "absent"
+    },
+    {
+      "pid": 3381272,
+      "start_ticks": "58256162",
+      "current": "absent"
+    },
+    {
+      "pid": 3382055,
+      "start_ticks": "58256438",
+      "current": "absent"
+    },
+    {
+      "pid": 3382804,
+      "start_ticks": "58257291",
+      "current": "absent"
+    },
+    {
+      "pid": 3382862,
+      "start_ticks": "58257318",
+      "current": "absent"
+    },
+    {
+      "pid": 3382864,
+      "start_ticks": "58257319",
+      "current": "absent"
+    },
+    {
+      "pid": 3382875,
+      "start_ticks": "58257329",
+      "current": "absent"
+    },
+    {
+      "pid": 3384197,
+      "start_ticks": "58257371",
+      "current": "absent"
+    },
+    {
+      "pid": 3386747,
+      "start_ticks": "58258142",
+      "current": "absent"
+    },
+    {
+      "pid": 3387422,
+      "start_ticks": "58258524",
+      "current": "absent"
+    },
+    {
+      "pid": 3387947,
+      "start_ticks": "58258957",
+      "current": "absent"
+    },
+    {
+      "pid": 3388945,
+      "start_ticks": "58259333",
+      "current": "absent"
+    },
+    {
+      "pid": 3389385,
+      "start_ticks": "58259836",
+      "current": "absent"
+    },
+    {
+      "pid": 3389905,
+      "start_ticks": "58260153",
+      "current": "absent"
+    },
+    {
+      "pid": 3390036,
+      "start_ticks": "58260277",
+      "current": "absent"
+    },
+    {
+      "pid": 3390379,
+      "start_ticks": "58260770",
+      "current": "absent"
+    },
+    {
+      "pid": 3390585,
+      "start_ticks": "58261086",
+      "current": "absent"
+    },
+    {
+      "pid": 3390810,
+      "start_ticks": "58261635",
+      "current": "absent"
+    },
+    {
+      "pid": 3391025,
+      "start_ticks": "58261963",
+      "current": "absent"
+    },
+    {
+      "pid": 3391042,
+      "start_ticks": "58261990",
+      "current": "absent"
+    },
+    {
+      "pid": 3391044,
+      "start_ticks": "58261991",
+      "current": "absent"
+    },
+    {
+      "pid": 3391504,
+      "start_ticks": "58262043",
+      "current": "absent"
+    },
+    {
+      "pid": 3391506,
+      "start_ticks": "58262045",
+      "current": "absent"
+    },
+    {
+      "pid": 3394371,
+      "start_ticks": "58262440",
+      "current": "absent"
+    },
+    {
+      "pid": 3395799,
+      "start_ticks": "58262568",
+      "current": "absent"
+    },
+    {
+      "pid": 3396147,
+      "start_ticks": "58262655",
+      "current": "absent"
+    },
+    {
+      "pid": 3396153,
+      "start_ticks": "58262657",
+      "current": "absent"
+    },
+    {
+      "pid": 3396755,
+      "start_ticks": "58262710",
+      "current": "absent"
+    },
+    {
+      "pid": 3397447,
+      "start_ticks": "58263163",
+      "current": "absent"
+    },
+    {
+      "pid": 3398833,
+      "start_ticks": "58264015",
+      "current": "absent"
+    },
+    {
+      "pid": 3399629,
+      "start_ticks": "58264305",
+      "current": "absent"
+    },
+    {
+      "pid": 3399909,
+      "start_ticks": "58264824",
+      "current": "absent"
+    },
+    {
+      "pid": 3399977,
+      "start_ticks": "58264935",
+      "current": "absent"
+    },
+    {
+      "pid": 3400135,
+      "start_ticks": "58265181",
+      "current": "absent"
+    },
+    {
+      "pid": 3401853,
+      "start_ticks": "58265803",
+      "current": "absent"
+    },
+    {
+      "pid": 3402077,
+      "start_ticks": "58265991",
+      "current": "absent"
+    },
+    {
+      "pid": 3402942,
+      "start_ticks": "58266119",
+      "current": "absent"
+    },
+    {
+      "pid": 3404171,
+      "start_ticks": "58266207",
+      "current": "absent"
+    },
+    {
+      "pid": 3404173,
+      "start_ticks": "58266209",
+      "current": "absent"
+    },
+    {
+      "pid": 3404684,
+      "start_ticks": "58266267",
+      "current": "absent"
+    },
+    {
+      "pid": 3405313,
+      "start_ticks": "58266677",
+      "current": "absent"
+    },
+    {
+      "pid": 3405545,
+      "start_ticks": "58266806",
+      "current": "absent"
+    },
+    {
+      "pid": 3406023,
+      "start_ticks": "58266894",
+      "current": "absent"
+    },
+    {
+      "pid": 3406027,
+      "start_ticks": "58266895",
+      "current": "absent"
+    },
+    {
+      "pid": 3409086,
+      "start_ticks": "58267910",
+      "current": "absent"
+    },
+    {
+      "pid": 3409992,
+      "start_ticks": "58268450",
+      "current": "absent"
+    },
+    {
+      "pid": 3410133,
+      "start_ticks": "58268770",
+      "current": "absent"
+    },
+    {
+      "pid": 3410342,
+      "start_ticks": "58269246",
+      "current": "absent"
+    },
+    {
+      "pid": 3410508,
+      "start_ticks": "58269579",
+      "current": "absent"
+    },
+    {
+      "pid": 3410751,
+      "start_ticks": "58269708",
+      "current": "absent"
+    },
+    {
+      "pid": 3411218,
+      "start_ticks": "58269795",
+      "current": "absent"
+    },
+    {
+      "pid": 3411221,
+      "start_ticks": "58269796",
+      "current": "absent"
+    },
+    {
+      "pid": 3412345,
+      "start_ticks": "58270067",
+      "current": "absent"
+    },
+    {
+      "pid": 3412369,
+      "start_ticks": "58270094",
+      "current": "absent"
+    },
+    {
+      "pid": 3412371,
+      "start_ticks": "58270095",
+      "current": "absent"
+    },
+    {
+      "pid": 3412972,
+      "start_ticks": "58270148",
+      "current": "absent"
+    },
+    {
+      "pid": 3415227,
+      "start_ticks": "58271296",
+      "current": "absent"
+    },
+    {
+      "pid": 3416756,
+      "start_ticks": "58271504",
+      "current": "absent"
+    },
+    {
+      "pid": 3420547,
+      "start_ticks": "58272141",
+      "current": "absent"
+    },
+    {
+      "pid": 3421958,
+      "start_ticks": "58272917",
+      "current": "absent"
+    },
+    {
+      "pid": 3422405,
+      "start_ticks": "58273744",
+      "current": "absent"
+    },
+    {
+      "pid": 3422981,
+      "start_ticks": "58274552",
+      "current": "absent"
+    },
+    {
+      "pid": 3423057,
+      "start_ticks": "58274578",
+      "current": "absent"
+    },
+    {
+      "pid": 3423060,
+      "start_ticks": "58274580",
+      "current": "absent"
+    },
+    {
+      "pid": 3423519,
+      "start_ticks": "58274632",
+      "current": "absent"
+    },
+    {
+      "pid": 3423521,
+      "start_ticks": "58274633",
+      "current": "absent"
+    },
+    {
+      "pid": 3425382,
+      "start_ticks": "58275854",
+      "current": "absent"
+    },
+    {
+      "pid": 3426402,
+      "start_ticks": "58276062",
+      "current": "absent"
+    },
+    {
+      "pid": 3426646,
+      "start_ticks": "58276099",
+      "current": "absent"
+    },
+    {
+      "pid": 3428149,
+      "start_ticks": "58276771",
+      "current": "absent"
+    },
+    {
+      "pid": 3428388,
+      "start_ticks": "58276809",
+      "current": "absent"
+    },
+    {
+      "pid": 3428894,
+      "start_ticks": "58277049",
+      "current": "absent"
+    },
+    {
+      "pid": 3428895,
+      "start_ticks": "58277049",
+      "current": "absent"
+    },
+    {
+      "pid": 3428925,
+      "start_ticks": "58277109",
+      "current": "absent"
+    },
+    {
+      "pid": 3428926,
+      "start_ticks": "58277109",
+      "current": "absent"
+    },
+    {
+      "pid": 3429164,
+      "start_ticks": "58277238",
+      "current": "absent"
+    },
+    {
+      "pid": 3429170,
+      "start_ticks": "58277239",
+      "current": "absent"
+    },
+    {
+      "pid": 3429286,
+      "start_ticks": "58277325",
+      "current": "absent"
+    },
+    {
+      "pid": 3433235,
+      "start_ticks": "58277749",
+      "current": "absent"
+    },
+    {
+      "pid": 3433480,
+      "start_ticks": "58277811",
+      "current": "absent"
+    },
+    {
+      "pid": 3433586,
+      "start_ticks": "58277858",
+      "current": "absent"
+    },
+    {
+      "pid": 3434027,
+      "start_ticks": "58278091",
+      "current": "absent"
+    },
+    {
+      "pid": 3434279,
+      "start_ticks": "58278151",
+      "current": "absent"
+    },
+    {
+      "pid": 3435054,
+      "start_ticks": "58278280",
+      "current": "absent"
+    },
+    {
+      "pid": 3435208,
+      "start_ticks": "58278318",
+      "current": "absent"
+    },
+    {
+      "pid": 3435991,
+      "start_ticks": "58278904",
+      "current": "absent"
+    },
+    {
+      "pid": 3436016,
+      "start_ticks": "58278925",
+      "current": "absent"
+    },
+    {
+      "pid": 3436097,
+      "start_ticks": "58278965",
+      "current": "absent"
+    },
+    {
+      "pid": 3436117,
+      "start_ticks": "58278985",
+      "current": "absent"
+    },
+    {
+      "pid": 3436232,
+      "start_ticks": "58279093",
+      "current": "absent"
+    },
+    {
+      "pid": 3436287,
+      "start_ticks": "58279114",
+      "current": "absent"
+    },
+    {
+      "pid": 3436776,
+      "start_ticks": "58279375",
+      "current": "absent"
+    },
+    {
+      "pid": 3436804,
+      "start_ticks": "58279420",
+      "current": "absent"
+    },
+    {
+      "pid": 3436857,
+      "start_ticks": "58279493",
+      "current": "absent"
+    },
+    {
+      "pid": 3437117,
+      "start_ticks": "58279658",
+      "current": "absent"
+    },
+    {
+      "pid": 3437131,
+      "start_ticks": "58279675",
+      "current": "absent"
+    },
+    {
+      "pid": 3437202,
+      "start_ticks": "58279716",
+      "current": "absent"
+    },
+    {
+      "pid": 3437343,
+      "start_ticks": "58279844",
+      "current": "absent"
+    },
+    {
+      "pid": 3437699,
+      "start_ticks": "58280003",
+      "current": "absent"
+    },
+    {
+      "pid": 3437777,
+      "start_ticks": "58280064",
+      "current": "absent"
+    },
+    {
+      "pid": 3437836,
+      "start_ticks": "58280118",
+      "current": "absent"
+    },
+    {
+      "pid": 3437958,
+      "start_ticks": "58280201",
+      "current": "absent"
+    },
+    {
+      "pid": 3438166,
+      "start_ticks": "58280273",
+      "current": "absent"
+    },
+    {
+      "pid": 3438314,
+      "start_ticks": "58280395",
+      "current": "absent"
+    },
+    {
+      "pid": 3438358,
+      "start_ticks": "58280453",
+      "current": "absent"
+    },
+    {
+      "pid": 3438416,
+      "start_ticks": "58280506",
+      "current": "absent"
+    },
+    {
+      "pid": 3438536,
+      "start_ticks": "58280581",
+      "current": "absent"
+    },
+    {
+      "pid": 3439020,
+      "start_ticks": "58280854",
+      "current": "absent"
+    },
+    {
+      "pid": 3439174,
+      "start_ticks": "58280974",
+      "current": "absent"
+    },
+    {
+      "pid": 3439321,
+      "start_ticks": "58281120",
+      "current": "absent"
+    },
+    {
+      "pid": 3439531,
+      "start_ticks": "58281181",
+      "current": "absent"
+    },
+    {
+      "pid": 3439926,
+      "start_ticks": "58281309",
+      "current": "absent"
+    },
+    {
+      "pid": 3440118,
+      "start_ticks": "58281369",
+      "current": "absent"
+    },
+    {
+      "pid": 3440268,
+      "start_ticks": "58281428",
+      "current": "absent"
+    },
+    {
+      "pid": 3440664,
+      "start_ticks": "58281555",
+      "current": "absent"
+    },
+    {
+      "pid": 3441747,
+      "start_ticks": "58281813",
+      "current": "absent"
+    },
+    {
+      "pid": 3442812,
+      "start_ticks": "58282088",
+      "current": "absent"
+    },
+    {
+      "pid": 3442983,
+      "start_ticks": "58282147",
+      "current": "absent"
+    },
+    {
+      "pid": 3443171,
+      "start_ticks": "58282275",
+      "current": "absent"
+    },
+    {
+      "pid": 3443294,
+      "start_ticks": "58282286",
+      "current": "absent"
+    },
+    {
+      "pid": 3443477,
+      "start_ticks": "58282444",
+      "current": "absent"
+    },
+    {
+      "pid": 3443670,
+      "start_ticks": "58282504",
+      "current": "absent"
+    },
+    {
+      "pid": 3443897,
+      "start_ticks": "58282633",
+      "current": "absent"
+    },
+    {
+      "pid": 3444019,
+      "start_ticks": "58282738",
+      "current": "absent"
+    },
+    {
+      "pid": 3444174,
+      "start_ticks": "58282825",
+      "current": "absent"
+    },
+    {
+      "pid": 3444425,
+      "start_ticks": "58282919",
+      "current": "absent"
+    },
+    {
+      "pid": 3444452,
+      "start_ticks": "58282980",
+      "current": "absent"
+    },
+    {
+      "pid": 3445193,
+      "start_ticks": "58283108",
+      "current": "absent"
+    },
+    {
+      "pid": 3445412,
+      "start_ticks": "58283211",
+      "current": "absent"
+    },
+    {
+      "pid": 3445899,
+      "start_ticks": "58283299",
+      "current": "absent"
+    },
+    {
+      "pid": 3447051,
+      "start_ticks": "58283409",
+      "current": "absent"
+    },
+    {
+      "pid": 3447660,
+      "start_ticks": "58283468",
+      "current": "absent"
+    },
+    {
+      "pid": 3448532,
+      "start_ticks": "58283596",
+      "current": "absent"
+    },
+    {
+      "pid": 3448746,
+      "start_ticks": "58283733",
+      "current": "absent"
+    },
+    {
+      "pid": 3448776,
+      "start_ticks": "58283793",
+      "current": "absent"
+    },
+    {
+      "pid": 3448898,
+      "start_ticks": "58283923",
+      "current": "absent"
+    },
+    {
+      "pid": 3449154,
+      "start_ticks": "58284199",
+      "current": "absent"
+    },
+    {
+      "pid": 3449231,
+      "start_ticks": "58284330",
+      "current": "absent"
+    },
+    {
+      "pid": 3449280,
+      "start_ticks": "58284390",
+      "current": "absent"
+    },
+    {
+      "pid": 3449469,
+      "start_ticks": "58284523",
+      "current": "absent"
+    },
+    {
+      "pid": 3450178,
+      "start_ticks": "58284805",
+      "current": "absent"
+    },
+    {
+      "pid": 3450381,
+      "start_ticks": "58284985",
+      "current": "absent"
+    },
+    {
+      "pid": 3450440,
+      "start_ticks": "58285043",
+      "current": "absent"
+    },
+    {
+      "pid": 3451083,
+      "start_ticks": "58285175",
+      "current": "absent"
+    },
+    {
+      "pid": 3451432,
+      "start_ticks": "58285482",
+      "current": "absent"
+    },
+    {
+      "pid": 3451493,
+      "start_ticks": "58285607",
+      "current": "absent"
+    },
+    {
+      "pid": 3451874,
+      "start_ticks": "58285756",
+      "current": "absent"
+    },
+    {
+      "pid": 3452128,
+      "start_ticks": "58285817",
+      "current": "absent"
+    },
+    {
+      "pid": 3453067,
+      "start_ticks": "58285945",
+      "current": "absent"
+    },
+    {
+      "pid": 3453687,
+      "start_ticks": "58286252",
+      "current": "absent"
+    },
+    {
+      "pid": 3454092,
+      "start_ticks": "58286402",
+      "current": "absent"
+    },
+    {
+      "pid": 3454212,
+      "start_ticks": "58286512",
+      "current": "absent"
+    },
+    {
+      "pid": 3454255,
+      "start_ticks": "58286570",
+      "current": "absent"
+    },
+    {
+      "pid": 3454359,
+      "start_ticks": "58286698",
+      "current": "absent"
+    },
+    {
+      "pid": 3455037,
+      "start_ticks": "58287236",
+      "current": "absent"
+    },
+    {
+      "pid": 3455537,
+      "start_ticks": "58287296",
+      "current": "absent"
+    },
+    {
+      "pid": 3455732,
+      "start_ticks": "58287426",
+      "current": "absent"
+    },
+    {
+      "pid": 3457758,
+      "start_ticks": "58287863",
+      "current": "absent"
+    },
+    {
+      "pid": 3457777,
+      "start_ticks": "58287923",
+      "current": "absent"
+    },
+    {
+      "pid": 3458015,
+      "start_ticks": "58288051",
+      "current": "absent"
+    },
+    {
+      "pid": 3458871,
+      "start_ticks": "58288488",
+      "current": "absent"
+    },
+    {
+      "pid": 3458896,
+      "start_ticks": "58288548",
+      "current": "absent"
+    },
+    {
+      "pid": 3458973,
+      "start_ticks": "58288676",
+      "current": "absent"
+    },
+    {
+      "pid": 3459387,
+      "start_ticks": "58289088",
+      "current": "absent"
+    },
+    {
+      "pid": 3459459,
+      "start_ticks": "58289147",
+      "current": "absent"
+    },
+    {
+      "pid": 3459637,
+      "start_ticks": "58289274",
+      "current": "absent"
+    },
+    {
+      "pid": 3460665,
+      "start_ticks": "58289913",
+      "current": "absent"
+    },
+    {
+      "pid": 3460685,
+      "start_ticks": "58289971",
+      "current": "absent"
+    },
+    {
+      "pid": 3460844,
+      "start_ticks": "58290099",
+      "current": "absent"
+    },
+    {
+      "pid": 3460941,
+      "start_ticks": "58290197",
+      "current": "absent"
+    },
+    {
+      "pid": 3461416,
+      "start_ticks": "58290677",
+      "current": "absent"
+    },
+    {
+      "pid": 3461567,
+      "start_ticks": "58290737",
+      "current": "absent"
+    },
+    {
+      "pid": 3461634,
+      "start_ticks": "58290865",
+      "current": "absent"
+    },
+    {
+      "pid": 3461890,
+      "start_ticks": "58291093",
+      "current": "absent"
+    },
+    {
+      "pid": 3461922,
+      "start_ticks": "58291153",
+      "current": "absent"
+    },
+    {
+      "pid": 3462089,
+      "start_ticks": "58291283",
+      "current": "absent"
+    },
+    {
+      "pid": 3462158,
+      "start_ticks": "58291387",
+      "current": "absent"
+    },
+    {
+      "pid": 3462228,
+      "start_ticks": "58291473",
+      "current": "absent"
+    },
+    {
+      "pid": 3462517,
+      "start_ticks": "58291675",
+      "current": "absent"
+    },
+    {
+      "pid": 3462533,
+      "start_ticks": "58291735",
+      "current": "absent"
+    },
+    {
+      "pid": 3462611,
+      "start_ticks": "58291864",
+      "current": "absent"
+    },
+    {
+      "pid": 3464054,
+      "start_ticks": "58292587",
+      "current": "absent"
+    },
+    {
+      "pid": 3464356,
+      "start_ticks": "58292647",
+      "current": "absent"
+    },
+    {
+      "pid": 3464536,
+      "start_ticks": "58292691",
+      "current": "absent"
+    },
+    {
+      "pid": 3464901,
+      "start_ticks": "58292819",
+      "current": "absent"
+    },
+    {
+      "pid": 3464963,
+      "start_ticks": "58292831",
+      "current": "absent"
+    },
+    {
+      "pid": 3465077,
+      "start_ticks": "58292891",
+      "current": "absent"
+    },
+    {
+      "pid": 3465230,
+      "start_ticks": "58292936",
+      "current": "absent"
+    },
+    {
+      "pid": 3465455,
+      "start_ticks": "58293063",
+      "current": "absent"
+    },
+    {
+      "pid": 3465708,
+      "start_ticks": "58293135",
+      "current": "absent"
+    },
+    {
+      "pid": 3466139,
+      "start_ticks": "58293284",
+      "current": "absent"
+    },
+    {
+      "pid": 3466308,
+      "start_ticks": "58293373",
+      "current": "absent"
+    },
+    {
+      "pid": 3466345,
+      "start_ticks": "58293390",
+      "current": "absent"
+    },
+    {
+      "pid": 3466421,
+      "start_ticks": "58293496",
+      "current": "absent"
+    },
+    {
+      "pid": 3466952,
+      "start_ticks": "58293643",
+      "current": "absent"
+    },
+    {
+      "pid": 3469686,
+      "start_ticks": "58294975",
+      "current": "absent"
+    },
+    {
+      "pid": 3469690,
+      "start_ticks": "58294977",
+      "current": "absent"
+    }
+  ],
+  "terminal_receipts_including_duplicates": 763,
+  "scope": "Fresh129 FI tests including40 native and14 default tests plus fmt/strictClippy/build PASS. Fixture/kernel and retained-artifact integrity only; unknown journal effects are not reconciled from process absence. Final independent review FAIL2 remains blocking; no live model, ticket05 acceptance, fourth repair or final baseline/mainline claim."
+}

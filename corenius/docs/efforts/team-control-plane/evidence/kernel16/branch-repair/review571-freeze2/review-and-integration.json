@@ -1,0 +1,19 @@
+{
+  "manifest_sha256": "e10464d381919c11d0e786e31e31e6768f69679d956ab46e6a451ebc4f9a3d6f",
+  "Standards": "PASS",
+  "Spec": "PASS",
+  "nonblocking_Standards": [
+    "Repeated checkpoint eligibility predicates; judgment call"
+  ],
+  "root_preimages_verified": 48,
+  "root_postimages_verified": 48,
+  "integrated": [
+    "crates/team-control-plane/src/artifacts.rs",
+    "crates/team-control-plane/src/gateway.rs",
+    "crates/team-control-plane/src/mailbox.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/tests/assembled_cancellation.rs",
+    "crates/team-control-plane/tests/assembled_vertical.rs"
+  ],
+  "acceptance": "pending full matrix/strict, root gate, committed branch review and requirement audit"
+}

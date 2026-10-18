@@ -1,0 +1,19 @@
+{
+  "candidate": "77c41689e988a49d564ce28e6063f748b61261b4",
+  "status": "CORE_QUALIFIED_TICKET02_STILL_CLAIMED",
+  "source_gate": "39 tests/fmt/strict all-target clippy/normal locked offline build PASS in separate root-owned checkout, source bytes unchanged",
+  "review_composition": "Full636 findings resolved by retained scoped637/638 repairs; scoped independent Standards/Spec PASS. No whole revised-range PASS claimed. Final assembled wholebranch review remains mandatory.",
+  "owner_amendment": "4dfe7fb53e95aa210ae688c36444fb29c72052b2",
+  "pending": [
+    "runtime registry and validated endpoint/incarnation/threadstore/thread/turn/workspace/authority bindings",
+    "actual shared/separate Codex topology routing qualification without widened isolation",
+    "joint05/06 inbound lead delivery/ack/resolution",
+    "03 Kata/filesystem source mapping,04 Git inventory/landing,05 UI,06 assembled and actual live trial"
+  ],
+  "limits": [
+    "Linux process pidfd support +adjacent trusted gate binary required",
+    "supervisor-loss and unqualified setup remain unknown with occupied slots; no PID-based blind adoption",
+    "not power-loss storage or live Codex qualification"
+  ],
+  "resources": "Author final-run inventory36 monitor/init identities has zero same-identity owned live matches; retained original fixtures and proof, user/parked resources untouched"
+}

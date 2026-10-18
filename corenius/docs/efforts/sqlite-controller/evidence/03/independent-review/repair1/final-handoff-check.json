@@ -1,0 +1,492 @@
+{
+  "source_commit": "4d5fbff0323f27c6dcb30aec5cf3df7a839511e0",
+  "evidence_tip": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "evidence_files_checked": 144,
+  "repair_handoff_sha256": "570f566ae1efc74fe0a944aacf7b13cb0402a8bba11f98a069f5f47472d7f3ad",
+  "main_handoff_sha256": "059604f2207b8819a0b20fea52eac9a28838089b9d00bcdd12a258aea899ff14",
+  "initial_handoff_retained_as_exact_prefix_and_commit": true,
+  "Kata_fixtures": 22,
+  "Kata_archive_members_checked": 876,
+  "protected_local600_files_checked": 67,
+  "Kata_token_bytes_excluded": true,
+  "native_archives_checked": 6,
+  "owned_identity_observations": [
+    {
+      "pid": 3094915,
+      "start_ticks": "54090653",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3094917,
+      "start_ticks": "54090654",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3095369,
+      "start_ticks": "54090707",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3097125,
+      "start_ticks": "54093596",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3097127,
+      "start_ticks": "54093597",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3097602,
+      "start_ticks": "54093650",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3097604,
+      "start_ticks": "54093651",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3107808,
+      "start_ticks": "54106537",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3107878,
+      "start_ticks": "54106545",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3107928,
+      "start_ticks": "54106645",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3108002,
+      "start_ticks": "54106653",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3108035,
+      "start_ticks": "54106680",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3108150,
+      "start_ticks": "54106772",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3108353,
+      "start_ticks": "54106780",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3109089,
+      "start_ticks": "54106887",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3109159,
+      "start_ticks": "54106896",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3109309,
+      "start_ticks": "54107015",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3109381,
+      "start_ticks": "54107024",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3109401,
+      "start_ticks": "54107036",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3111573,
+      "start_ticks": "54110753",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3111644,
+      "start_ticks": "54110761",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3111664,
+      "start_ticks": "54110774",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3114341,
+      "start_ticks": "54112964",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3114413,
+      "start_ticks": "54112972",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3118686,
+      "start_ticks": "54119343",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3118759,
+      "start_ticks": "54119351",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3118921,
+      "start_ticks": "54119452",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3118991,
+      "start_ticks": "54119460",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3119034,
+      "start_ticks": "54119487",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3119161,
+      "start_ticks": "54119579",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3119230,
+      "start_ticks": "54119588",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3119310,
+      "start_ticks": "54119695",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3119383,
+      "start_ticks": "54119704",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3129685,
+      "start_ticks": "54135117",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3129758,
+      "start_ticks": "54135126",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3129843,
+      "start_ticks": "54135231",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3129914,
+      "start_ticks": "54135239",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3129937,
+      "start_ticks": "54135266",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3130099,
+      "start_ticks": "54135291",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3130228,
+      "start_ticks": "54135383",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3130298,
+      "start_ticks": "54135392",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3130387,
+      "start_ticks": "54135501",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3130457,
+      "start_ticks": "54135510",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3130763,
+      "start_ticks": "54135640",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3130840,
+      "start_ticks": "54135648",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3130861,
+      "start_ticks": "54135660",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3141725,
+      "start_ticks": "54150238",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3141726,
+      "start_ticks": "54150238",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3141866,
+      "start_ticks": "54150247",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3141867,
+      "start_ticks": "54150247",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3141902,
+      "start_ticks": "54150260",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3142035,
+      "start_ticks": "54150328",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3142110,
+      "start_ticks": "54150337",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3142150,
+      "start_ticks": "54150360",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3142243,
+      "start_ticks": "54150368",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3142590,
+      "start_ticks": "54150456",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3142664,
+      "start_ticks": "54150464",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3142678,
+      "start_ticks": "54150474",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3142691,
+      "start_ticks": "54150477",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3142860,
+      "start_ticks": "54150501",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3143008,
+      "start_ticks": "54150527",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3143094,
+      "start_ticks": "54150538",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3143161,
+      "start_ticks": "54150547",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3143224,
+      "start_ticks": "54150555",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3143233,
+      "start_ticks": "54150603",
+      "kind": "kata",
+      "state": "absent"
+    },
+    {
+      "pid": 3143303,
+      "start_ticks": "54150611",
+      "kind": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3192010,
+      "start_ticks": "54210433",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3192012,
+      "start_ticks": "54210434",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3192464,
+      "start_ticks": "54210486",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3195619,
+      "start_ticks": "54215147",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3195621,
+      "start_ticks": "54215148",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3196129,
+      "start_ticks": "54215201",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3210210,
+      "start_ticks": "54233637",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3210212,
+      "start_ticks": "54233638",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3210662,
+      "start_ticks": "54233691",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3213300,
+      "start_ticks": "54236643",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3213302,
+      "start_ticks": "54236645",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3213750,
+      "start_ticks": "54236697",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    },
+    {
+      "pid": 3214364,
+      "start_ticks": "54237335",
+      "kind": "native_owned_namespace",
+      "state": "absent"
+    }
+  ],
+  "matching_live": 0,
+  "Kata_terminal_records": 74,
+  "limitations": "Read-only positive retained starts only; no foreign enumeration/signalling. Historical unknown/running records remain unchanged; no native method recovery or live inference inferred."
+}

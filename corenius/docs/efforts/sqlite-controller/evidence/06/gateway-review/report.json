@@ -1,0 +1,346 @@
+{
+  "schema": 1,
+  "at": 1791175186.6239097,
+  "reviewer": "/root/sqlite06_live_assembled_review",
+  "scope": "narrow ordinary lead-scoped codex_turn exposure only; independent source/causal fixture assessment",
+  "base_source": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+  "disposition": "No blocking finding in minimal guarded tool exposure; runtime application pending root-owned restoration",
+  "dirty_product_diff": "gateway.rs: three-line lead-role refusal + one allowlist arm; tests/control_center.rs:83-line real Controller/SQLite regression",
+  "pins": {
+    "at": 1791175047.3760948,
+    "base": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+    "files": [
+      {
+        "path": "crates/sqlite-controller/Cargo.lock",
+        "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/Cargo.toml",
+        "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/README.md",
+        "sha256": "ab90aeb56ffedb464df716f1db2970918b1803bf3f864e93a2d182fdd040542b",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+        "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+        "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/client.rs",
+        "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/codex.rs",
+        "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/codex_schema.sql",
+        "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/control.rs",
+        "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/control_schema.sql",
+        "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/gateway.rs",
+        "sha256": "ad37c0cfa87d28d484c7928e8311ccbe0bd95caf786a8b0d5df0d7a24a82e869",
+        "changed_from_original": true
+      },
+      {
+        "path": "crates/sqlite-controller/src/git.rs",
+        "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/git_workspace.rs",
+        "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/kata.rs",
+        "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/kata_schema.sql",
+        "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/lib.rs",
+        "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/main.rs",
+        "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/monitor.rs",
+        "sha256": "527b6268a57fbfd8e65cf780e3d137341843e156ab9c54d36683229990c39739",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/native_profile.rs",
+        "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/native_ui.rs",
+        "sha256": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/native_ws.rs",
+        "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/query.rs",
+        "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/runtime.rs",
+        "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/schema.sql",
+        "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/service.rs",
+        "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/supervisor.rs",
+        "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/ui_gateway.rs",
+        "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/src/view.rs",
+        "sha256": "3bff6c43708b102665a5b5c9969bd318353ddf2541de5e2bf2bf289d95f66a0c",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/support/codex_insula.py",
+        "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/client.rs",
+        "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/codex.rs",
+        "sha256": "e3c7ffbdbce4b7919ed7b70682dbd4444060c5e7e49c6bf2a9f0e2336dc5fd22",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/control_center.rs",
+        "sha256": "6e22c811c40718578e2901f86cb6357fa807cace082edd36b6403b63eed11570",
+        "changed_from_original": true
+      },
+      {
+        "path": "crates/sqlite-controller/tests/git.rs",
+        "sha256": "c20f9c390f2589288ba845bbb421ec7cd5002a68f0457cde4f2711b309a8b4a5",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/kata.rs",
+        "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/process.rs",
+        "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/public.rs",
+        "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/runtime.rs",
+        "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/client_projection.py",
+        "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/control_center_native.py",
+        "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/correction_authority.py",
+        "sha256": "dd5a8587cd03ff7b7d4bbf00dcc09359ee8a45794d571ba34d0aaebefe6c3925",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/git_protocol.py",
+        "sha256": "d42cf4a91f94391950e843d165ca68b8b435b2ed6154397df299413721484b8b",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/kata_protocol.py",
+        "sha256": "8d603d8bdc0a3cc950dbef796875c113a32c714a57b25867374a9963a8e0be94",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/monitor_projection.py",
+        "sha256": "c01fdb68c04bf0594b24877b6a29ee734f0d167378c6a8211efed0f4abcbdc1b",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/native_init.py",
+        "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/native_profile.py",
+        "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/native_registry.py",
+        "sha256": "0a071eaf726fb87da2d6c75beaec3f5e8536c192eae845aa5edb7e8ff33a1695",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/repair2_native_ui.py",
+        "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/repair3_native_ui.py",
+        "sha256": "a605b2c20f1ff92b0c3add0a659e25cab8657cd542462e4d37f7ca75e55c81ed",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/websocket_controls.py",
+        "sha256": "d09cfbcea906527ae2caf2aa6113f96249cfe631b80b8df95553e47492d4b905",
+        "changed_from_original": false
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/wsutil.py",
+        "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+        "changed_from_original": false
+      }
+    ]
+  },
+  "handoff_sha256": "de357a4bcc5a0b4fbcdbcd8f575314b653792afcd8d3ff417ea0c5d97e1ffe26",
+  "diff_sha256": "d30e6b957d0cfb19053724d91229ecbcceb898d1f9746da801fd5f60a727528a",
+  "checks": {
+    "independent_affected": {
+      "command": "cargo test --locked --offline --test control_center -- --nocapture",
+      "exit": 0,
+      "output": "   Compiling tempfile v3.27.0\n   Compiling serde_derive v1.0.229\n   Compiling rusqlite v0.38.0\n   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-range1/source/crates/sqlite-controller)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.49s\n     Running tests/control_center.rs (/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-range1/target/debug/deps/control_center-3d04690e31c11848)\n\nrunning 9 tests\nactual_runtime_context_missing_refused_without_journal_receipt_event_effect=true\ntest monitoring_observer_cannot_execute_injected_authority_or_read_conversations ... ok\ntest question_transport_is_separate_from_explicit_ack_and_answer ... ok\ntest gateway_lead_turn_admits_same_attempt_and_preserves_authority_and_start_fences ... ok\ntest malformed_private_and_changed_prefix_inputs_never_advance_coverage ... ok\ntest bound_tool_gateway_injects_identity_and_fences_raw_worker_escalation ... ok\ntest shared_control_projection_preserves_receipts_intent_and_replacement_context ... ok\nactual_runtime_context_duplicate-start_refused_without_journal_receipt_event_effect=true\ntest incremental_monitor_seals_retained_input_and_keeps_live_and_history_distinct ... ok\nactual_runtime_context_duplicate-cancel_refused_without_journal_receipt_event_effect=true\ntest overlapping_reviews_retain_advisory_reports_without_duplicate_findings_or_authority ... ok\nactual_runtime_context_foreign_refused_without_journal_receipt_event_effect=true\ntest repair2_runtime_context_refuses_missing_ambiguous_and_foreign_journals ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s\n\n",
+      "source": "owned immutable source copy; target in continuation-range1",
+      "scope": "affected9 tests only; native runtime application unproved"
+    },
+    "independent_causal_red": {
+      "started": 1791175126.5759406,
+      "finished": 1791175128.0997205,
+      "pid": 1029386,
+      "start_ticks": "59070687",
+      "waited": true,
+      "exit": 101,
+      "gateway_sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-range1/source/crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-range1/target",
+        "--test",
+        "control_center",
+        "gateway_lead_turn_admits_same_attempt_and_preserves_authority_and_start_fences",
+        "--",
+        "--exact",
+        "--nocapture"
+      ]
+    },
+    "independent_causal_green": {
+      "started": 1791175128.1000876,
+      "finished": 1791175129.462866,
+      "pid": 1032195,
+      "start_ticks": "59070839",
+      "waited": true,
+      "exit": 0,
+      "gateway_sha256": "ad37c0cfa87d28d484c7928e8311ccbe0bd95caf786a8b0d5df0d7a24a82e869",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-range1/source/crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite06-assembled-live-p094pe0u/continuation-range1/target",
+        "--test",
+        "control_center",
+        "gateway_lead_turn_admits_same_attempt_and_preserves_authority_and_start_fences",
+        "--",
+        "--exact",
+        "--nocapture"
+      ]
+    },
+    "source_count": 50,
+    "all_author_and_own_source_match": true,
+    "sealed_original_reports_unchanged": true
+  },
+  "review_findings": [],
+  "proof_coverage": [
+    "authenticated lead scoped tool admission reaches core on same worker binding",
+    "worker and scoped operator refusal without revisions/effects",
+    "foreign server-incarnation binding refusal",
+    "unknown native start refusal without extra effects",
+    "exact same operation id replay does not duplicate admission or revision",
+    "existing observer injection and gateway identity safeguards pass affected integration suite"
+  ],
+  "limitations": [
+    "The regression uses real Controller/on-disk SQLite and inserted binding/operation fixtures; it proves scoped command admission, not live native runtime execution.",
+    "No broad matrices or full baseline/mainline/05 acceptance qualification.",
+    "Original runtime controller hash645554ba remains historical; author current build74d920d6 is not credited as that original runtime.",
+    "Original outer failure, provider terminal failure and unapplied first correction stay immutable.",
+    "Pending restored deployment must prove a new actual turn/effect and its eventual outcome through selected public evidence."
+  ],
+  "authority": "root retains restoration/admission/acceptance authority; reviewer issued no runtime/controller commands and modified only owned snapshot/scratch"
+}

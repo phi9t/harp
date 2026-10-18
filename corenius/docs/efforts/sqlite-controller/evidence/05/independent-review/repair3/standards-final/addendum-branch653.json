@@ -1,0 +1,137 @@
+{
+  "identity": {
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+    "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+    "tree": "8db411c5342d0adf63abb597773a8b00926f2a45"
+  },
+  "axis": "Standards",
+  "result": "FAIL",
+  "open_findings": 2,
+  "findings": [
+    {
+      "id": "STD05-015",
+      "priority": "P2",
+      "file": "crates/sqlite-controller/src/monitor.rs",
+      "line": 1187,
+      "related": [
+        "crates/sqlite-controller/src/monitor.rs:1173",
+        "crates/sqlite-controller/src/monitor.rs:912"
+      ],
+      "title": "Superseded correction author permanently blocks later authorized correction delivery",
+      "fact": "Public real native stream/batch/assessment/findings and old-lead author correction followed by real lead replacement. Operator reauthorization returns the old correction ID/existing=true without changing the decision author. A later separate operator correction remains requested/null operation behind it.",
+      "independent_actual_proof": "branch653-native-correction exit0,39.723s. After releasing the existing declared FI scheduling hold, an actual peer native operation confirms. Target native turn is actually terminal/input-ready, target pending/applying/unknown native operation count0. Twelve public samples preserve both requested/null rows and read-onlySQL old/new decision author rows;0 correction native operations.",
+      "mechanism": "prepare_correction selects only the oldest requested row, then returns on superseded author. It never reaches the later authorized row; authorize_correction cannot append renewed authority to the existing identity.",
+      "documented_contract": [
+        "SPEC.md runtime/authority and requested-versus-observed durable disposition",
+        "owner832 SPEC.md Intervention policy: current authenticated authority and no repeated/stuck delivery",
+        "CONSTITUTION.md \u00a75 Verify reality; canonical engineering policy \u00a74 gates6\u20137 behavioral proof and ticket conformance"
+      ],
+      "correction_direction": "Retain and expose the stale authorization disposition while selecting deliverable current authority; renew authority explicitly without replaying uncertain effects or deleting history.",
+      "limits": "Actual shared pinned local native runtime, deterministic provider; no paid/live model and no journal edits. Current-generation/binding/pending-state checks and actual peer operation discriminate general drain failure. Independent test asserts the observed defect, so exit0 confirms FAIL."
+    },
+    {
+      "id": "STD05-016",
+      "priority": "P2",
+      "file": "crates/sqlite-controller/src/view.rs",
+      "line": 567,
+      "title": "Current worker progress displays the previous attempt report",
+      "fact": "Two actual owned supervised Git attempts for one task: old worker report/candidate capture/observed exit, public repair and fresh admission. Before the new worker reports, workers[].attempt.id is fresh but reported_progress principal/text belongs to the old exited worker.",
+      "independent_actual_proof": "branch653-real-progress-corrected exit0,4.907s. Old exited grant refuses further report. A fresh worker report immediately produces correct new principal/text; both immutable public report events remain retained and protected ref stays unchanged.",
+      "mechanism": "The projection selects latest report_progress by project/task only, omitting attempt/actor provenance. Task history is silently presented under the active attempt.",
+      "documented_contract": [
+        "SPEC.md:80 projection pins task/attempt/brief/runtime and observed-versus-reported progress",
+        "ticket05 runtime/workspace identity and reported-versus-observed health",
+        "owner832 SPEC.md User control center: assigned intent/revision, latest reviewed action and retained provenance",
+        "CONSTITUTION.md \u00a75 Verify reality"
+      ],
+      "correction_direction": "Bind current reported progress to the exact active attempt/authorized actor; retain task-history reports separately with explicit historical provenance.",
+      "limits": "Real private Git/supervisor/OS-isolated attempt effects, no native model call or physical shared-ref landing; first reviewer object-versus-ID selector StopIteration setup is retained with exact corrected rationale."
+    }
+  ],
+  "independent_runs": [
+    {
+      "name": "branch653-real-progress",
+      "command": [
+        "/usr/bin/python3",
+        "tests/support/standards_progress_generation.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller",
+      "exit": 1,
+      "duration_seconds": 4.784356117248535,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "REVIEWER SETUP FAIL StopIteration from wrong structured attempt selector; no target-red; failed archive preserved.",
+      "receipt": "branch653-real-progress-receipt.json",
+      "receipt_sha256": "04ab6e54f8b6900f9db8fa214acbdde17a729cb56b0d9c1aa9d2a98f9570a1ae",
+      "log": "branch653-real-progress.log",
+      "log_sha256": "e28e772909ed449e00fd2c97cecbd138e4f417e1ab5d737571a6ff8d60737b91",
+      "start": "branch653-real-progress-start.json",
+      "start_sha256": "c1e0a602f26d830824d957f2e7c69a22c3c4d64f62fd5c00f40be342d540f56f",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "4b8a66142e31c2b824768154f0b74aaa92d9e4cc574e13ddc33221f978344e6d"
+    },
+    {
+      "name": "branch653-real-progress-corrected",
+      "command": [
+        "/usr/bin/python3",
+        "tests/support/standards_progress_generation.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 4.907042980194092,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS REPRODUCER confirms STD05-016 on two actual physical supervised Git attempts; candidate Standards remains FAIL.",
+      "receipt": "branch653-real-progress-corrected-receipt.json",
+      "receipt_sha256": "e74adeb614270b31754763a2f380fb11f15ece0bcd7ab564c3229e247065b3d5",
+      "log": "branch653-real-progress-corrected.log",
+      "log_sha256": "0478048ce9266fd8060f8448568d493ba4058aba930e45a23fa5209975f44f71",
+      "start": "branch653-real-progress-corrected-start.json",
+      "start_sha256": "16b9d415f8b00ecdb94ecb9feb1827c4fdf14dafa72ea666e30326afadc1ac72",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "6b8125c51ad320c1affdcadf0dc0f1950194990afbf67b257c92b5e9326ceb09"
+    },
+    {
+      "name": "branch653-native-correction",
+      "command": [
+        "env",
+        "CORENIUS_TEST_TOPOLOGY=shared",
+        "CORENIUS_TEST_STANDARDS_CORRECTION=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "/usr/bin/python3",
+        "tests/support/native_registry.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 39.72285056114197,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS REPRODUCER confirms STD05-015 on actual pinned native shared topology; candidate Standards remains FAIL.",
+      "receipt": "branch653-native-correction-receipt.json",
+      "receipt_sha256": "029bd8edf7e2f8025c9d3a2f162d4c2974696f8b1705e3e988a5d9c6593ff198",
+      "log": "branch653-native-correction.log",
+      "log_sha256": "1a346a40abdeb7416638e6e955a7f5e46511d04408370329ced81df548047fe8",
+      "start": "branch653-native-correction-start.json",
+      "start_sha256": "2754b2eb35862c0642d72027ecf1a7aa0e0c82f6ce77a47a6d34723053081c7d",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "4b8a66142e31c2b824768154f0b74aaa92d9e4cc574e13ddc33221f978344e6d"
+    }
+  ],
+  "root_public_branch_reference": "branch653-public.json (output/public job fields only; trace/private analysis excluded)",
+  "prior_five_controls_remain": "five-control-report.json PASS focused scope; no original report edits",
+  "source_unchanged": true,
+  "tool_pins_sha256": "e8e26a362c283b3c1ac3125351e60220f1093d33b22509e47d4feb796727dff7",
+  "source_final_pins_sha256": "399df50e86a473d7c71df925275369e2f8391ac352ce668190c9dfbde6495bcb",
+  "owned_identity_dispositions_sha256": "67a74f85fd403ef3dd7b476337163972c480e830f90c07c4de4530b29de6b675",
+  "complete_evidence_index": "evidence-index.json",
+  "no_fourth_repair": true
+}

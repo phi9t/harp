@@ -1,0 +1,251 @@
+{
+  "id": "04-r1-live01",
+  "created_at": "2026-10-04T18:11:22.206491+00:00",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "source_stream": "/data02/home/philip.yang/.codex/sessions/2026/10/04/rollout-2026-10-04T15-32-48-01a1078b-d944-7c82-a392-50333a175a77.jsonl",
+  "start_ordinal": 1471,
+  "end_ordinal": 1539,
+  "predecessor": 1470,
+  "seal_reason": "freeze/handoff boundary",
+  "source_prefix_sha256": "983fdb9129588cb7323ee09fc34152c272beb71261015d15792489abb23ad783",
+  "reviewed_visible_steps": 11,
+  "step_reviews": [
+    {
+      "sequence_root_parser": 225,
+      "ordinal": 1477,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-04f1c29a-3090-448b-8c3f-42a2c945cea4",
+      "kind": "CommandExecution",
+      "input_sha256": "9d9f5775839688d2e8ce99b4fbd6d4f60ecaf4c2f165c665e36e1c3b10befe8e",
+      "findings": [
+        3
+      ],
+      "assessment": "necessary evidence inspection",
+      "observation": "Inspect actual Kata/ref/revision fixture outcomes; the old oracle counted later sync receipts.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 226,
+      "ordinal": 1486,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-dd39537d-d92c-4390-a30e-c1e4e140bbd8",
+      "kind": "CommandExecution",
+      "input_sha256": "dd32c366efdb2cea1d8a463e1c46b6fb9d3690551390512d557d9e4b0f0f074d",
+      "findings": [
+        3
+      ],
+      "assessment": "valid fixture correction",
+      "observation": "Pause automatic reconciliation for the landing-domain revision oracle, then explicitly exercise supported Kata reconcile; autonomous behavior remains separately qualified.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 227,
+      "ordinal": 1491,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "msg_03f2df0ed35d305e016ac291b3af2087d2a19b6dc8e72372e2",
+      "kind": "AgentMessage",
+      "input_sha256": "43b19ddddb244f33904a18669a339c6700ca90bf95d1ac2d815a1ff3409aaab4",
+      "findings": [
+        3
+      ],
+      "assessment": "public declared hypothesis",
+      "observation": "Actor acknowledges the failed oracle and gives the narrow correction; no acceptance claim.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 228,
+      "ordinal": 1494,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-15422dce-3711-466d-972e-bd7e7ab18487",
+      "kind": "CommandExecution",
+      "input_sha256": "ca1d1962b6ca9a3013c5d8ba10c0e54bde8c6c9c2f27c1b96f216d14b9df9472",
+      "findings": [
+        3,
+        8
+      ],
+      "assessment": "focused result observed",
+      "observation": "Actual output reports2/2PASS9.47; later frozen affected gate must confirm source binding. Archive inspection supplies code evidence, not test credit.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 229,
+      "ordinal": 1504,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "call_hgJ0N1jKAxoW9WofuO1Dhmrp",
+      "kind": "SubAgentActivity",
+      "input_sha256": "2df6015564546f150c3dc8d88ba007512b233a52325239287d2c88d33350d1b9",
+      "findings": [
+        3,
+        9
+      ],
+      "assessment": "peer activity",
+      "observation": "Canonical peer identity/provenance observed; payload lacks message body, so no extra result credited.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 230,
+      "ordinal": 1517,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-78755def-9529-476d-ba76-3c0934323168",
+      "kind": "CommandExecution",
+      "input_sha256": "53a142659da582b0efe496fc59767bae47d6978de97bd23f2553e9033d9e8d70",
+      "findings": [
+        1,
+        7,
+        8,
+        9
+      ],
+      "assessment": "necessary freeze inspection",
+      "observation": "Source sealer/diff/bounded-producer inspection stays within fixed findings.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 231,
+      "ordinal": 1521,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-66a6ff15-ed7a-48aa-8677-804a493d24a6",
+      "kind": "CommandExecution",
+      "input_sha256": "cdda92d34d17c358b0f60161996e93e18a3d3ca1129f4c8f7be66accd4c46a8d",
+      "findings": [
+        1,
+        7,
+        8,
+        9
+      ],
+      "assessment": "mapped final controls",
+      "observation": "Final provenance/diagnostic/control changes, still before freeze; exact source pairs retained for review.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 232,
+      "ordinal": 1526,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-5bd7ff8b-5ce6-4b00-809e-de04b1f4494b",
+      "kind": "CommandExecution",
+      "input_sha256": "9f0833ff5404db460aea8ae74f88059ddf2126bd2ca1c12974bc448e8060e258",
+      "findings": [
+        1,
+        7,
+        8,
+        9
+      ],
+      "assessment": "focused result observed",
+      "observation": "Actual2/2PASS20.74 and diff check, independently source-match before acceptance.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 233,
+      "ordinal": 1531,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "msg_03f2df0ed35d305e016ac29247a92c87d2ada0c7ce9cc67b49",
+      "kind": "AgentMessage",
+      "input_sha256": "c2306754f031de1f8891822eac48333b97ef16830033ad95ab16c090cfab9667",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "worker-reported checkpoint",
+      "observation": "All-nine focused success is a claim; independent conformance and full gates remain pending.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 234,
+      "ordinal": 1535,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-8f255632-2388-4953-9c67-e9eca2668c00",
+      "kind": "CommandExecution",
+      "input_sha256": "e537e9c3d7999802cf7559e225141eb4b2d1d363fd5d4d4069812d6bb5d31d2c",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "frozen source boundary",
+      "observation": "Sourcee6ab0ab independently matches34 author/verification/commit/archive files; source identity is verified, behavior acceptance pending.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 235,
+      "ordinal": 1539,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "call_YXQKmNrMY30OE8r21KX87uXG",
+      "kind": "SubAgentActivity",
+      "input_sha256": "cc7ab1a851f9a023b16162f037b5ef4b70c54ad978041bfd76677f66162bb588",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "peer handoff",
+      "observation": "Peer activity follows clean product commit; source remains frozen, evidence-only work continues.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    }
+  ],
+  "coverage": {
+    "root_historical_contiguous_reviewed": 0,
+    "root_live_origin": 1471,
+    "external_owner_receipts": [
+      [
+        13,
+        121
+      ],
+      [
+        1263,
+        1470
+      ]
+    ],
+    "history122_1262": "unreviewed",
+    "owner_vs_root_step_numbering": "different local normalizers; raw ordinals authoritative, not relabeled"
+  },
+  "advisory": {
+    "goal_drift_established": false,
+    "replacement_trigger_established": false,
+    "private_reasoning_analyzed": false,
+    "acceptance_granted": false,
+    "unresolved": "complete gate/final retention pending; branch646 later FAIL2 requires coordinator adjudication; F4 freshverify-afteraccept composition confirmed, not a cap reset"
+  },
+  "attachments": [
+    {
+      "path": ".scratch/sqlite-controller/reviews/04/repair1/frozen-source-check.json",
+      "sha256": "078b1461568812e496e6a76855d4e4711b19a93b1e074a1e2c113c1d08ac8bc4"
+    },
+    {
+      "path": ".scratch/sqlite-controller/reviews/04/repair1/standards.json",
+      "sha256": "db958f16e061dd0480cfb6ac3f319870ed4f63717c5486247aba48ffc0b657cd"
+    },
+    {
+      "path": ".scratch/sqlite-controller/reviews/04/repair1/branch-646.json",
+      "sha256": "11d1166dd1926441131abf1b4d2e7944a1a5ea265a85445f1af33d8dc81dd194"
+    }
+  ]
+}

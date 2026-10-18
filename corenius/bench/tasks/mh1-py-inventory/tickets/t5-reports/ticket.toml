@@ -1,0 +1,2 @@
+allow = ["inventory/reports.py", "inventory/cli.py", "inventory/__init__.py"]
+depends = ["t1-ledger", "t2-reservations", "t3-pricing", "t4-allocator"]

@@ -1,0 +1,15 @@
+[package]
+name = "r04-workspace-feature"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[workspace]
+members = ["crates/codec", "crates/report"]
+resolver = "2"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+report = { path = "crates/report" }

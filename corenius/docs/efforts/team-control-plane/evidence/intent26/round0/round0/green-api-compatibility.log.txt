@@ -1,0 +1,139 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.85s
+     Running unittests src/lib.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 9 tests
+test supervisor::observation_tests::foreign_or_unproven_observer_frames_cannot_classify_original_pids ... ok
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::membership_errors_retain_structured_provenance_and_disappearance_semantics ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+test supervisor::observation_tests::only_certified_original_whole_group_finalization_proves_exit ... ok
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+test supervisor::observation_tests::whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority ... ok
+test temporal::wait_wire_tests::typed_same_uuid_preserves_both_protocols_through_rollover_payload ... ok
+test temporal::wait_wire_tests::v1_admission_wait_roundtrips_without_changing_wire_shape ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/artifacts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/artifacts-6b4cc15f8fc222e4)
+
+running 11 tests
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+test exact_independent_verification_and_explicit_acceptance ... ok
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test repeated_failed_report_hash_requires_each_exact_charged_verification_cycle ... ok
+test verifier_credential_has_no_lead_execution_authority ... ok
+test verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.93s
+
+     Running tests/gateway.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/gateway-344beed7e3e5d6d2)
+
+running 4 tests
+test durable_gateway_contract ... ok
+test fault_runtime_creates_an_effect_for_every_repeated_mutation_rpc ... ok
+test fault_runtime_surfaces_unexpected_subprocess_failure ... ok
+test gateway_crash_child ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.41s
+
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 9 tests
+test additive_upgrade_preserves_exact_legacy_specs_and_nullable_original_provenance ... ok
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... ok
+test current_lead_requires_explicit_bounded_delegation_even_on_replay ... ok
+test exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload ... ok
+test negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert ... ok
+test plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling ... ok
+test plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning ... ok
+test production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement ... ok
+test source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.96s
+
+     Running tests/kernel.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/kernel-a8df179696d69707)
+
+running 16 tests
+test a_cached_command_never_restores_wider_authority ... ok
+test admission_is_durable_atomic_and_idempotent ... ok
+test authority_expiry_scopes_generations_and_epoch_rotation ... ok
+test command_snapshots_respect_task_scopes ... ok
+test dependencies_change_spec_digest_and_retain_immutable_history ... ok
+test dependencies_validation_and_immutable_approval ... ok
+test distinct_assignments_capacity_and_cumulative_budget ... ok
+test episode_budget_and_competing_capacity_are_independent_limits ... ok
+test event_sequences_have_typed_aggregate_namespaces ... ok
+test http_auth_forged_fields_and_reconnect ... ok
+test missing_resource_rejection_stays_rejected_after_resource_appears ... ok
+test rejected_command_is_durable_and_cannot_be_reused ... ok
+test rejected_snapshot_retains_its_original_task_scope ... ok
+test rollback_at_every_admission_write_stage ... ok
+test schema_and_transport_fail_closed ... ok
+test token_expires_while_waiting_for_the_transaction_lock ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.67s
+
+     Running tests/mailbox.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/mailbox-62f37e5d50b24a27)
+
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+
+     Running tests/mailbox_artifacts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/mailbox_artifacts-c4f343aa47b0f20c)
+
+running 2 tests
+test actual_git_submission_and_independent_verification_share_http_mcp_authority ... ok
+test executable_serve_registers_configured_artifact_http_and_mcp_seam ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+
+     Running tests/mailbox_delivery.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/mailbox_delivery-9500caf5c58e9f1b)
+
+running 3 tests
+test bounded_input_batches_advance_without_empty_polling ... ok
+test delivery_uses_durable_exact_episode_and_physical_conditional_turn ... ok
+test physical_fault_runtime_repeats_are_not_deduplicated_by_operation_id ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.44s
+
+     Running tests/supervisor.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/supervisor-c9beed5c4d9a7f01)
+
+running 20 tests
+test actual_bwrap_launcher_sigkill_stops_all_namespace_members ... ok
+test actual_create_sigkill_boundaries_leave_durable_reconcilable_registration ... 
+running 1 test
+test crash_create_helper ... 
+running 1 test
+test crash_create_helper ... ok
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... ok
+test certified_pid1_whole_group_exit_recovers_without_namespace_inode_signals ... ok
+test concurrent_short_commands_treat_disappeared_proc_tasks_as_exited ... ok
+test crash_create_helper ... ok
+test deadline_and_controller_sigkill_use_complete_namespace_stop ... ok
+test initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle ... 
+running 1 test
+test crash_create_helper ... ok
+test registered_before_create_and_unknown_gap_is_quarantined ... ok
+test registered_create_crash_and_gc_launch_race_never_reuse_workspace ... ok
+test repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds ... 
+running 1 test
+test crash_create_helper ... ok
+test repair_current_owner_recovers_execution_after_recovery_epoch_rotation ... ok
+test repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop ... ok
+test repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope ... ok
+test repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim ... ok
+test repair_schema_guard_precedes_open_and_monitor_effects ... ok
+test repair_symlink_ancestor_rejected_before_any_external_write ... ok
+test repair_worker_principal_must_own_attempt_for_create_and_control ... ok
+test stale_generation_fences_dispatch_and_cancels_existing_namespace ... ok
+test uncertain_namespace_quarantines_capacity_and_current_credentials_are_required ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.23s
+

@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowReviseParams",
+  "type": "object",
+  "required": [
+    "expectedVersion",
+    "idempotencyKey",
+    "runId",
+    "source",
+    "threadId"
+  ],
+  "properties": {
+    "args": true,
+    "expectedVersion": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    },
+    "idempotencyKey": {
+      "type": "string"
+    },
+    "runId": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "threadId": {
+      "type": "string"
+    }
+  }
+}

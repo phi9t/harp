@@ -1,0 +1,10 @@
+bench/results/
+bench/tmuxh/.venv/
+.corenius/
+*.log
+__pycache__/
+.pytest_cache/
+.scratch/
+.superpowers/
+target/
+!bench/tasks/**/*.log

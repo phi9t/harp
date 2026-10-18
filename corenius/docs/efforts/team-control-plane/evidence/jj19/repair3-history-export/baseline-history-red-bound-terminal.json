@@ -1,0 +1,25 @@
+{
+  "label": "baseline-history-red-bound",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/baseline-history-red-bound.json",
+    "--retain-artifacts",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/baseline-red-bound-artifacts"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:16:06.597937+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+  "command_source_sha256": "cc895e6f72e246ceeb305acbf9bfe9594f2c90abc646b9c63e986c3c5c741230",
+  "expected_exit": 1,
+  "exit": 1,
+  "stdout": "{\n  \"outcome\": \"failed\",\n  \"fixture_sha256\": \"2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552\",\n  \"fixture_removed\": true,\n  \"failure\": \"private ancestor bytes remain recoverable from the exported clean-tip bundle\"\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:16:07.136421+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/baseline-history-red-bound.json",
+  "output_sha256": "b90779618e7bbad0995318a61f1f7a4762a67c21e8553c44085378811459113a"
+}

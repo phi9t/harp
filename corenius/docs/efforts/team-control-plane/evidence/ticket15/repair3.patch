@@ -1,0 +1,649 @@
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -68,6 +68,8 @@
+     pub start_ticks: u64,
+     pub boot_id: String,
+     pub namespace: String,
++    #[serde(default)]
++    pub namespace_pid: Option<u32>,
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+ pub struct WorkspaceManifest {
+@@ -725,7 +727,142 @@
+             .trim()
+             .into(),
+         namespace: fs::read_link(p.join("ns/pid"))?.to_string_lossy().into(),
++        namespace_pid: Some(namespace_pid(&fs::read_to_string(p.join("status"))?)?),
+     })
++}
++fn namespace_pid(status: &str) -> std::io::Result<u32> {
++    status
++        .lines()
++        .find_map(|l| l.strip_prefix("NSpid:"))
++        .and_then(|l| l.split_whitespace().last())
++        .and_then(|p| p.parse().ok())
++        .ok_or_else(|| std::io::Error::other("malformed namespace PID"))
++}
++fn host_start_ticks(stat: &str) -> std::io::Result<u64> {
++    let (head, tail) = stat
++        .rsplit_once(')')
++        .ok_or_else(|| std::io::Error::other("malformed host stat"))?;
++    let pid = head
++        .split_once('(')
++        .and_then(|(pid, _)| pid.trim().parse::<u32>().ok());
++    let fields: Vec<_> = tail.split_whitespace().collect();
++    if pid.is_none()
++        || !fields.first().is_some_and(|state| {
++            matches!(
++                *state,
++                "R" | "S" | "D" | "Z" | "T" | "t" | "X" | "x" | "K" | "W" | "P" | "I"
++            )
++        })
++    {
++        return Err(std::io::Error::other("malformed host stat state"));
++    }
++    fields
++        .get(19)
++        .and_then(|ticks| ticks.parse().ok())
++        .ok_or_else(|| std::io::Error::other("malformed host stat ticks"))
++}
++fn validate_observer_frame(
++    controller: Option<&ProcessIdentity>,
++    stat: &str,
++    namespace: &str,
++    boot: &str,
++    procfs: bool,
++) -> std::io::Result<()> {
++    let controller =
++        controller.ok_or_else(|| std::io::Error::other("missing observer frame certificate"))?;
++    let pid = stat
++        .split_once('(')
++        .and_then(|(pid, _)| pid.trim().parse::<u32>().ok());
++    if !procfs
++        || pid != Some(std::process::id())
++        || namespace != controller.namespace
++        || boot.trim() != controller.boot_id
++    {
++        return Err(std::io::Error::other(
++            "original observer PID frame cannot be established",
++        ));
++    }
++    host_start_ticks(stat)?;
++    Ok(())
++}
++fn observer_frame(controller: Option<&ProcessIdentity>) -> std::io::Result<()> {
++    let mut statfs = std::mem::MaybeUninit::<libc::statfs>::uninit();
++    if unsafe { libc::statfs(c"/proc".as_ptr(), statfs.as_mut_ptr()) } != 0 {
++        return Err(std::io::Error::last_os_error());
++    }
++    let procfs = unsafe { statfs.assume_init() }.f_type == libc::PROC_SUPER_MAGIC;
++    validate_observer_frame(
++        controller,
++        &fs::read_to_string("/proc/self/stat")?,
++        &fs::read_link("/proc/self/ns/pid")?.to_string_lossy(),
++        &fs::read_to_string("/proc/sys/kernel/random/boot_id")?,
++        procfs,
++    )
++}
++// Only the certified original PID1 can establish namespace-wide finalization.
++// A missing namespace link or leader zombie state is deliberately insufficient.
++fn observe_finalized(
++    init: &ProcessIdentity,
++    boot: std::io::Result<String>,
++    read_stat: impl Fn(u32) -> std::io::Result<String>,
++    group_ready: impl FnOnce(u32) -> std::io::Result<bool>,
++) -> std::io::Result<bool> {
++    if init.namespace_pid != Some(1) {
++        return Ok(false);
++    }
++    if boot?.trim() != init.boot_id {
++        return Err(std::io::Error::other("original PID1 boot fence differs"));
++    }
++    let same = |stat: std::io::Result<String>| -> std::io::Result<bool> {
++        match stat {
++            Ok(stat) => Ok(host_start_ticks(&stat)? == init.start_ticks),
++            Err(e) if process_disappeared(&e) => Ok(false),
++            Err(e) => Err(e),
++        }
++    };
++    if !same(read_stat(init.pid))? {
++        return Ok(true);
++    }
++    let ready = match group_ready(init.pid) {
++        Ok(ready) => ready,
++        Err(e) if process_disappeared(&e) => {
++            return Ok(!same(read_stat(init.pid))?);
++        }
++        Err(e) => return Err(e),
++    };
++    // Fence pidfd_open against numeric PID replacement before trusting readiness.
++    if !same(read_stat(init.pid))? {
++        return Ok(true);
++    }
++    Ok(ready)
++}
++fn finalized(init: &ProcessIdentity) -> std::io::Result<bool> {
++    use std::os::fd::FromRawFd;
++    observe_finalized(
++        init,
++        fs::read_to_string("/proc/sys/kernel/random/boot_id"),
++        |pid| fs::read_to_string(format!("/proc/{pid}/stat")),
++        |pid| {
++            // No PIDFD_THREAD: readiness covers the entire thread group.
++            let raw = unsafe { libc::syscall(libc::SYS_pidfd_open, pid, 0) } as i32;
++            if raw < 0 {
++                return Err(std::io::Error::last_os_error());
++            }
++            let _fd = unsafe { std::os::fd::OwnedFd::from_raw_fd(raw) };
++            let mut poll = libc::pollfd {
++                fd: raw,
++                events: libc::POLLIN,
++                revents: 0,
++            };
++            if unsafe { libc::poll(&mut poll, 1, 0) } < 0 {
++                return Err(std::io::Error::last_os_error());
++            }
++            if poll.revents & (libc::POLLERR | libc::POLLNVAL) != 0 {
++                return Err(std::io::Error::other("pidfd readiness observation failed"));
++            }
++            Ok(poll.revents & libc::POLLIN != 0)
++        },
++    )
+ }
+ fn alive(p: &ProcessIdentity) -> std::io::Result<bool> {
+     observe_alive(p, identity, |pid| {
+@@ -774,6 +911,7 @@
+         || pinned.ino() != current.ino()
+         || init.namespace != format!("pid:[{}]", pinned.ino())
+         || identity(init.pid)? != *init
++        || !alive(init)?
+     {
+         return Err(std::io::Error::other("namespace pin identity mismatch"));
+     }
+@@ -880,7 +1018,108 @@
+     }
+     Ok(())
+ }
++trait NamespaceObserver {
++    type Pin;
++    fn frame(&self, controller: Option<&ProcessIdentity>) -> std::io::Result<()>;
++    fn alive(&self, process: &ProcessIdentity) -> std::io::Result<bool>;
++    fn pin(&self, process: &ProcessIdentity) -> std::io::Result<Self::Pin>;
++    fn finalized(&self, process: &ProcessIdentity) -> std::io::Result<bool>;
++    fn inventory(&self, namespace: &str) -> std::io::Result<Vec<ProcessIdentity>>;
++    fn signal(&self, process: &ProcessIdentity) -> std::io::Result<()>;
++}
++struct ProcObserver;
++impl NamespaceObserver for ProcObserver {
++    type Pin = fs::File;
++    fn frame(&self, controller: Option<&ProcessIdentity>) -> std::io::Result<()> {
++        observer_frame(controller)
++    }
++    fn alive(&self, process: &ProcessIdentity) -> std::io::Result<bool> {
++        alive(process)
++    }
++    fn pin(&self, process: &ProcessIdentity) -> std::io::Result<Self::Pin> {
++        pin_namespace(process)
++    }
++    fn finalized(&self, process: &ProcessIdentity) -> std::io::Result<bool> {
++        finalized(process)
++    }
++    fn inventory(&self, namespace: &str) -> std::io::Result<Vec<ProcessIdentity>> {
++        inventory(namespace)
++    }
++    fn signal(&self, process: &ProcessIdentity) -> std::io::Result<()> {
++        signal(process)
++            .map_err(|_| std::io::Error::other("pidfd signal of recorded membership failed"))
++    }
++}
++fn decide_namespace<O: NamespaceObserver>(
++    init: &ProcessIdentity,
++    prior: &[ProcessIdentity],
++    controller: Option<&ProcessIdentity>,
++    cancel: bool,
++    held_pin: Option<&O::Pin>,
++    observer: &O,
++) -> std::io::Result<(&'static str, Vec<ProcessIdentity>)> {
++    observer.frame(controller)?;
++    if observer.finalized(init)? {
++        return Ok(("stopped", vec![]));
++    }
++    let mut owned_pin = None;
++    if held_pin.is_none() {
++        for process in std::iter::once(init)
++            .chain(prior.iter())
++            .filter(|p| p.namespace == init.namespace)
++        {
++            if observer.alive(process)? {
++                match observer.pin(process) {
++                    Ok(pin) => {
++                        owned_pin = Some(pin);
++                        break;
++                    }
++                    Err(e) if process_disappeared(&e) => {}
++                    Err(e) => return Err(e),
++                }
++            }
++        }
++    }
++    let controller_lost = match controller {
++        Some(controller) => !observer.alive(controller)?,
++        None => true,
++    };
++    if held_pin.is_none() && owned_pin.is_none() {
++        if observer.finalized(init)? {
++            return Ok(("stopped", vec![]));
++        }
++        if !controller_lost {
++            // Defer without inventory, stop classification or signals. The monitor
++            // may finish using its explicitly passed gated-launch descriptor.
++            return Ok(("running", prior.to_vec()));
++        }
++        return Err(std::io::Error::other(
++            "namespace incarnation lacks certified finalization or verified pin",
++        ));
++    }
++    // Both the owned external descriptor and borrowed monitor descriptor outlive
++    // inventory and every signal; a cached identity boolean is never authority.
++    let members = observer.inventory(&init.namespace)?;
++    if members.is_empty() {
++        return Ok(("stopped", members));
++    }
++    if cancel || controller_lost {
++        for member in &members {
++            observer.signal(member)?;
++        }
++        Ok(("cancelling", members))
++    } else {
++        Ok(("running", members))
++    }
++}
+ async fn reconcile_locked(tx: &Transaction<'_>, id: Uuid) -> Result<()> {
++    reconcile_with_pin(tx, id, None).await
++}
++async fn reconcile_with_pin(
++    tx: &Transaction<'_>,
++    id: Uuid,
++    held_pin: Option<&fs::File>,
++) -> Result<()> {
+     let r=tx.query_one("SELECT state,desired_cancel OR deadline<=clock_timestamp(),init_process,members,controller FROM supervised_workspaces WHERE id=$1 FOR UPDATE",&[&id]).await?;
+     let state: String = r.get(0);
+     let cancel=r.get::<_,Option<bool>>(1).unwrap_or(false)||tx.query_one("SELECT a.generation<>t.generation OR a.recovery_epoch<>d.active_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id CROSS JOIN deployment d WHERE w.id=$1",&[&id]).await?.get::<_,bool>(0);
+@@ -901,35 +1140,23 @@
+         .transpose()?;
+     let mut reason = None;
+     let (next, members) = if let Some(init) = init {
+-        let observations = (|| -> std::io::Result<_> {
+-            let mut proof = alive(&init)?;
+-            for member in prior.iter().filter(|p| p.namespace == init.namespace) {
+-                proof |= alive(member)?;
+-            }
+-            let controller_lost = match controller.as_ref() {
+-                Some(controller) => !alive(controller)?,
+-                None => true,
+-            };
+-            Ok((proof, controller_lost, inventory(&init.namespace)?))
+-        })();
+-        match observations {
+-            Ok((_, _, members)) if members.is_empty() => ("stopped", members),
+-            Ok((true, controller_lost, members)) => {
+-                if cancel || controller_lost {
+-                    if members.iter().any(|p| signal(p).is_err()) {
+-                        reason = Some("pidfd signal of recorded membership failed".to_string());
+-                        ("quarantined", members)
+-                    } else {
+-                        ("cancelling", members)
+-                    }
+-                } else {
+-                    ("running", members)
+-                }
+-            }
+-            Ok(_) => {
+-                reason = Some("namespace membership lacks live recorded identity".into());
+-                ("quarantined", prior)
+-            }
++        if let Some(pin) = held_pin {
++            use std::os::unix::fs::MetadataExt;
++            if format!("pid:[{}]", pin.metadata().map_err(|_| unavailable())?.ino())
++                != init.namespace
++            {
++                return Err(unavailable());
++            }
++        }
++        match decide_namespace(
++            &init,
++            &prior,
++            controller.as_ref(),
++            cancel,
++            held_pin,
++            &ProcObserver,
++        ) {
++            Ok(decision) => decision,
+             Err(error) => {
+                 reason = Some(error.to_string());
+                 ("quarantined", prior)
+@@ -984,6 +1211,7 @@
+     let manifest: WorkspaceManifest = decode(r.get(1))?;
+     let argv: Vec<String> = decode(r.get(2))?;
+     let controller = identity(std::process::id()).map_err(|_| unavailable())?;
++    observer_frame(Some(&controller)).map_err(|_| unavailable())?;
+     tx.execute(
+         "UPDATE supervised_workspaces SET controller=$2 WHERE id=$1",
+         &[&id, &json(&controller)?],
+@@ -1101,7 +1329,7 @@
+         let _ = child.wait();
+         return Err(unavailable());
+     };
+-    if init.namespace == controller.namespace {
++    if init.namespace == controller.namespace || init.namespace_pid != Some(1) {
+         let _ = child.kill();
+         let _ = child.wait();
+         return Err(unavailable());
+@@ -1146,7 +1374,7 @@
+             )
+             .await?;
+         }
+-        reconcile_locked(&tx, id).await?;
++        reconcile_with_pin(&tx, id, Some(&namespace_pin)).await?;
+         let state: String = tx
+             .query_one(
+                 "SELECT state FROM supervised_workspaces WHERE id=$1",
+@@ -1184,6 +1412,188 @@
+ #[cfg(test)]
+ mod observation_tests {
+     use super::*;
++    #[test]
++    fn incarnation_replacement_between_proof_and_inventory_never_signals_new_members() {
++        use std::cell::Cell;
++        struct Replacement {
++            newer: ProcessIdentity,
++            replaced: Cell<bool>,
++            signals: Cell<usize>,
++        }
++        impl NamespaceObserver for Replacement {
++            type Pin = ();
++            fn frame(&self, _: Option<&ProcessIdentity>) -> std::io::Result<()> {
++                Ok(())
++            }
++            fn alive(&self, _: &ProcessIdentity) -> std::io::Result<bool> {
++                Ok(true)
++            }
++            fn pin(&self, _: &ProcessIdentity) -> std::io::Result<()> {
++                // Original init and sole monitor pin disappear before acquisition.
++                self.replaced.set(true);
++                Err(std::io::Error::other(
++                    "original namespace incarnation replaced",
++                ))
++            }
++            fn finalized(&self, _: &ProcessIdentity) -> std::io::Result<bool> {
++                Ok(false)
++            }
++            fn inventory(&self, _: &str) -> std::io::Result<Vec<ProcessIdentity>> {
++                self.replaced.set(true);
++                Ok(vec![self.newer.clone()])
++            }
++            fn signal(&self, _: &ProcessIdentity) -> std::io::Result<()> {
++                assert!(self.replaced.get());
++                self.signals.set(self.signals.get() + 1);
++                Ok(())
++            }
++        }
++        let old = identity(std::process::id()).unwrap();
++        let mut newer = old.clone();
++        newer.pid += 1;
++        newer.start_ticks += 1;
++        let observer = Replacement {
++            newer,
++            replaced: Cell::new(false),
++            signals: Cell::new(0),
++        };
++        let decision = decide_namespace(
++            &old,
++            std::slice::from_ref(&old),
++            None,
++            true,
++            None,
++            &observer,
++        );
++        assert_eq!(
++            observer.signals.get(),
++            0,
++            "replacement must receive no signal"
++        );
++        assert!(
++            decision.is_err(),
++            "unproven original incarnation must fail closed"
++        );
++    }
++    #[test]
++    fn foreign_or_unproven_observer_frames_cannot_classify_original_pids() {
++        let controller = identity(std::process::id()).unwrap();
++        let stat = fs::read_to_string("/proc/self/stat").unwrap();
++        let check = |stat: &str, ns: &str, boot: &str, procfs| {
++            validate_observer_frame(Some(&controller), stat, ns, boot, procfs)
++        };
++        assert!(check(&stat, &controller.namespace, &controller.boot_id, true).is_ok());
++        assert!(check(&stat, "pid:[different]", &controller.boot_id, true).is_err());
++        assert!(
++            check(
++                "1 (foreign) S",
++                &controller.namespace,
++                &controller.boot_id,
++                true
++            )
++            .is_err()
++        );
++        assert!(check(&stat, &controller.namespace, "different-boot", true).is_err());
++        assert!(check(&stat, &controller.namespace, &controller.boot_id, false).is_err());
++        assert!(
++            validate_observer_frame(
++                None,
++                &stat,
++                &controller.namespace,
++                &controller.boot_id,
++                true
++            )
++            .is_err()
++        );
++    }
++    #[test]
++    fn only_certified_original_whole_group_finalization_proves_exit() {
++        let mut init = identity(std::process::id()).unwrap();
++        init.namespace_pid = Some(1);
++        let stat = fs::read_to_string(format!("/proc/{}/stat", init.pid)).unwrap();
++        let boot = || Ok(init.boot_id.clone());
++        for state in ["S", "D", "Z"] {
++            let (head, tail) = stat.rsplit_once(')').unwrap();
++            let mut fields: Vec<_> = tail.split_whitespace().map(str::to_owned).collect();
++            fields[0] = state.into();
++            let observed = format!("{head}) {}", fields.join(" "));
++            assert!(
++                !observe_finalized(&init, boot(), |_| Ok(observed.clone()), |_| Ok(false)).unwrap()
++            );
++        }
++        for errno in [libc::EACCES, libc::EIO] {
++            assert!(
++                observe_finalized(
++                    &init,
++                    boot(),
++                    |_| Err(std::io::Error::from_raw_os_error(errno)),
++                    |_| unreachable!()
++                )
++                .is_err()
++            );
++            assert!(
++                observe_finalized(
++                    &init,
++                    boot(),
++                    |_| Ok(stat.clone()),
++                    |_| Err(std::io::Error::from_raw_os_error(errno))
++                )
++                .is_err()
++            );
++        }
++        assert!(
++            observe_finalized(
++                &init,
++                boot(),
++                |_| Ok("malformed".into()),
++                |_| unreachable!()
++            )
++            .is_err()
++        );
++        assert!(
++            observe_finalized(
++                &init,
++                Ok("other-boot".into()),
++                |_| unreachable!(),
++                |_| unreachable!()
++            )
++            .is_err()
++        );
++        assert!(
++            observe_finalized(
++                &init,
++                boot(),
++                |_| Err(std::io::Error::from_raw_os_error(libc::ENOENT)),
++                |_| unreachable!()
++            )
++            .unwrap()
++        );
++        assert!(observe_finalized(&init, boot(), |_| Ok(stat.clone()), |_| Ok(true)).unwrap());
++        let (head, tail) = stat.rsplit_once(')').unwrap();
++        let mut fields: Vec<_> = tail.split_whitespace().map(str::to_owned).collect();
++        fields[19] = (init.start_ticks + 1).to_string();
++        let replacement = format!("{head}) {}", fields.join(" "));
++        assert!(
++            observe_finalized(
++                &init,
++                boot(),
++                |_| Ok(replacement.clone()),
++                |_| unreachable!()
++            )
++            .unwrap()
++        );
++        let mut missing_certificate = init.clone();
++        missing_certificate.namespace_pid = None;
++        assert!(
++            !observe_finalized(
++                &missing_certificate,
++                boot(),
++                |_| unreachable!(),
++                |_| unreachable!()
++            )
++            .unwrap()
++        );
++    }
+     #[test]
+     fn observation_uncertainty_is_never_proof_of_absence() {
+         let p = identity(std::process::id()).unwrap();
+diff --git a/crates/team-control-plane/migrations/0005.sql b/crates/team-control-plane/migrations/0005.sql
+--- a/crates/team-control-plane/migrations/0005.sql
++++ b/crates/team-control-plane/migrations/0005.sql
+@@ -16,7 +16,7 @@
+  created_at timestamptz NOT NULL DEFAULT clock_timestamp()
+ );
+ CREATE FUNCTION immutable_workspace_manifest() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+- IF NEW.id<>OLD.id OR NEW.attempt_id<>OLD.attempt_id OR NEW.manifest<>OLD.manifest THEN RAISE EXCEPTION 'immutable workspace manifest'; END IF;
++ IF NEW.id<>OLD.id OR NEW.attempt_id<>OLD.attempt_id OR NEW.manifest<>OLD.manifest OR (OLD.init_process IS NOT NULL AND NEW.init_process IS DISTINCT FROM OLD.init_process) THEN RAISE EXCEPTION 'immutable workspace manifest'; END IF;
+  RETURN NEW;
+ END $$;
+ CREATE TRIGGER immutable_workspace_manifest BEFORE UPDATE ON supervised_workspaces FOR EACH ROW EXECUTE FUNCTION immutable_workspace_manifest();
+diff --git a/crates/team-control-plane/tests/supervisor.rs b/crates/team-control-plane/tests/supervisor.rs
+--- a/crates/team-control-plane/tests/supervisor.rs
++++ b/crates/team-control-plane/tests/supervisor.rs
+@@ -1175,3 +1175,93 @@
+         }
+     }
+ }
++
++#[tokio::test]
++async fn certified_pid1_whole_group_exit_recovers_without_namespace_inode_signals() {
++    use std::os::fd::FromRawFd;
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    f.service.start(&f.owner, h.id, vec!["/bin/sh".into(), "-c".into(),
++        "setsid sh -c 'while :; do echo x >> /workspace/src/heartbeat; sleep 0.02; done' & sleep 120 & wait".into()], 30).await.unwrap();
++    let running = wait_members(&f, h.id).await;
++    let init = running
++        .members
++        .iter()
++        .find(|p| p.namespace_pid == Some(1))
++        .unwrap();
++    let status = std::fs::read_to_string(format!("/proc/{}/status", init.pid)).unwrap();
++    assert_eq!(
++        status
++            .lines()
++            .find_map(|l| l.strip_prefix("NSpid:"))
++            .unwrap()
++            .split_whitespace()
++            .last(),
++        Some("1")
++    );
++    let stat = std::fs::read_to_string(format!("/proc/{}/stat", init.pid)).unwrap();
++    assert_eq!(
++        stat.rsplit_once(')')
++            .unwrap()
++            .1
++            .split_whitespace()
++            .nth(19)
++            .unwrap()
++            .parse::<u64>()
++            .unwrap(),
++        init.start_ticks
++    );
++    let raw = unsafe { libc::syscall(libc::SYS_pidfd_open, init.pid, 0) } as i32;
++    assert!(raw >= 0);
++    let _pidfd = unsafe { std::os::fd::OwnedFd::from_raw_fd(raw) };
++    let controller = running.controller.unwrap();
++    assert!(
++        OsCommand::new("kill")
++            .args(["-KILL", &controller.pid.to_string()])
++            .status()
++            .unwrap()
++            .success()
++    );
++    let mut poll = libc::pollfd {
++        fd: raw,
++        events: libc::POLLIN,
++        revents: 0,
++    };
++    for _ in 0..100 {
++        assert!(unsafe { libc::poll(&mut poll, 1, 0) } >= 0);
++        if poll.revents & libc::POLLIN != 0 {
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
++    }
++    assert_ne!(
++        poll.revents & libc::POLLIN,
++        0,
++        "whole-process PID1 did not finalize"
++    );
++    let stopped = wait_stopped(&f, h.id).await;
++    assert!(stopped.members.is_empty());
++    let heartbeat = std::fs::read(h.path.join("src/heartbeat")).unwrap();
++    assert!(!heartbeat.is_empty());
++    tokio::time::sleep(std::time::Duration::from_millis(60)).await;
++    assert_eq!(
++        std::fs::read(h.path.join("src/heartbeat")).unwrap(),
++        heartbeat
++    );
++    for _ in 0..100 {
++        if !std::path::Path::new(&format!("/proc/{}/stat", init.pid)).exists() {
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
++    }
++    assert!(
++        !std::path::Path::new(&format!("/proc/{}/stat", init.pid)).exists(),
++        "original PID1 was not reaped"
++    );
++    f.service.release(&f.owner, h.id).await.unwrap();
++    std::fs::remove_dir_all(f.root).unwrap();
++}

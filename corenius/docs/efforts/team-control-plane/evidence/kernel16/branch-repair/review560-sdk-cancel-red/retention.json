@@ -1,0 +1,34 @@
+{
+  "observed_at": "2026-10-02T19:31:10.218316+00:00",
+  "status": "actual SDK public cancellation red; no acceptance",
+  "author_session": 72666,
+  "exit": 101,
+  "scope": "current workflow fails to complete fenced native Activity after cancellation; no effect; ownedSDK killed/waited before finalassert",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "fdb9724e8a5879f4b9c4f0f722b8f889c050404620e094d8041236793102f81f",
+      "bytes": 1051
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "cancel-timeout-history.json",
+      "sha256": "40a99d04a570d02d5befa30b0eb7dfa83b9ce1c94531a687a00ccb901c692bf2",
+      "bytes": 9235
+    },
+    {
+      "path": "cancel-sdk-terminal.json",
+      "sha256": "47d1ea984dd438a3b9e1f3d6d043816be20e692e4816361460d027c8eac32e97",
+      "bytes": 113
+    }
+  ]
+}

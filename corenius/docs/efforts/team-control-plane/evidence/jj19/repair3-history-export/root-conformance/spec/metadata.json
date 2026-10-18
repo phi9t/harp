@@ -1,0 +1,100 @@
+{
+  "review_axis": "Spec",
+  "reviewer": "independent /root/jj19_repair3_spec",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "missing_or_partial_requirements": [],
+  "scope_creep": [],
+  "incorrect_implementation_findings": [],
+  "source_base": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "branch": "codex/jj19-history-export-repair",
+  "head": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "source_status": " M docs/efforts/team-control-plane/research/jj-workspace-evaluation.md\n M docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py\n M docs/efforts/team-control-plane/tickets/19-jj-evaluation.md\n?? docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/\n?? docs/efforts/team-control-plane/research/probes/test_jj_history_export.py\n",
+  "diff_command": "git diff d819a946c742e9a2178564c4fd0c481ff02f7ae8; read untracked test_jj_history_export.py; authoritative source.patch includes four paths",
+  "source_inputs": [
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-handoff.json",
+      "sha256": "8e1534acfb4fcc0d90cb87cd1d58c0c2394b1a63e2cf82dc2673520c4d25bab9",
+      "size": 3651
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-freeze.json",
+      "sha256": "2d646f8da63e6185d04706375dfa2b268f5691af5636b99bb932ad2a2ea73c3e",
+      "size": 7150
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/public-proof-index.json",
+      "sha256": "e5416ca4e428bebbbbb8ffa8c5b50b248b10b6527a433c3b9da40f8596f81f98",
+      "size": 91517
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source.patch",
+      "sha256": "7f7253272ab510c9a69270c6977d9cfe487c2a91ec58e7fefea9046bceef3b55",
+      "size": 42924
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "size": 40541
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+      "sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+      "size": 8468
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "sha256": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+      "size": 24591
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "sha256": "0b0712e9d4d98453ddc41eafcb5bf5528b2892c84151d908d75f578e675dce36",
+      "size": 4407
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "size": 33123
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/accepted-evaluation-spec-v1.md",
+      "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040",
+      "size": 31371
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/accepted-evaluation-ticket19-input.md",
+      "sha256": "7098d6b81f8639590e1aca6c88bd57f840fd9022f6953843689773712df2678f",
+      "size": 5129
+    }
+  ],
+  "root_inputs": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-jj19-history-export-repair630.md",
+      "sha256": "d78403b57692aa82e352e2fb424f6e7507d13e3d34eedc0155e0923a63d11c79",
+      "size": 1384
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "size": 33123
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "sha256": "b393e010ca5dc830b5e24b5517f911d4c80a00dcaa6139656391c55cf0961468",
+      "size": 4026
+    }
+  ],
+  "verified_counts": {
+    "public_records": 274,
+    "source_and_preimages": 31,
+    "prior_files_unchanged": 213,
+    "normally_git_selectable_records_and_metadata": 276,
+    "retained_receipt_digests": 4
+  },
+  "review_constraints": "Read-only author/root checkout. No runtime launches, tests, Cargo, PG, Temporal, provider, model or Git mutation. Only this new review directory written.",
+  "integration_note": "Root maps frozen author ticket to its indexed source snapshot and appends progress to current ticket, preserving root630 rejection note and claim.",
+  "report_sha256": "1d55f0ad9f0f7491988a9d6f2d096a3ab4be5e7aec2cf059842f4afd4e9a0d62",
+  "report_words": 313,
+  "observed_at": "2026-10-03T18:38:11.698239+00:00"
+}

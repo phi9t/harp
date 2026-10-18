@@ -1,0 +1,55 @@
+{
+  "records": [
+    {
+      "path": "CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/PLAN.md",
+      "sha256": "93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/25-jj-backend.md",
+      "sha256": "b8a0761eaee998c6bf80de71b2e9886512387a64b25cb88ac72d177cd46e3df6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/27-durable-scopes.md",
+      "sha256": "49ddb1e679a7d9f72ca542ca10aa7c3efb5eb2931da426ef043951ead35a5cd2"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/28-kata-work-ledger.md",
+      "sha256": "64cab600c839090d7776b6e143444df9fdc46b435f92b25e72492ebbd6b7c968"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/29-scope-plan-interpreter.md",
+      "sha256": "79b18255808c8a70251e064c7388bcf16d10cb0f1741d5cbb2e8b7a7b344a6aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/30-protected-integration.md",
+      "sha256": "3d8f925056d542abe51b93853f053d7385c024cd0ff0111900ce7b9bb8d2443f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/31-independent-execution.md",
+      "sha256": "52dc90583dcbd5fe1fe42f8c3794168a7946e8a7160eed51db866c6aff81f928"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/32-v02-assembled-proof.md",
+      "sha256": "366a4f262c98116ca87f01624df02d503c1ec6144a63c29e595b24009a6bcf44"
+    }
+  ],
+  "link_check": "PASS",
+  "independent_gates": "Architecture PASS; Spec PASS",
+  "postreview_changes": "Status/report links, claim26, editorial26 cleanup, and Spec-review-suggested bounded model-checking requirement32. No semantic architectural relaxation."
+}

@@ -1,0 +1,194 @@
+{
+  "admitted_base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+  "files": {
+    "crates/sqlite-controller/Cargo.lock": {
+      "git_blob": "c22c260ac3000b2600eabdaebf86d7914c81bb94",
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    "crates/sqlite-controller/Cargo.toml": {
+      "git_blob": "c18346c8f5b6f0dcd90ca7d52ac9f1848ef694cf",
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    "crates/sqlite-controller/README.md": {
+      "git_blob": "c4fb3bacbc4624965ab146be08809f440fec29c2",
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    "crates/sqlite-controller/src/bin/corenius-attempt-gate.rs": {
+      "git_blob": "e6c707a4651654caa139f92c1212275e34eb1a39",
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs": {
+      "git_blob": "b792e9222a5244055cfe5c414f74b5dbf2ded039",
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    "crates/sqlite-controller/src/client.rs": {
+      "git_blob": "d0bba4e1fb2ba1e8971e505419ce5ab11184b996",
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    "crates/sqlite-controller/src/codex.rs": {
+      "git_blob": "3d5a5c5e7789be842630bfbdda36cfc5bd954c11",
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    "crates/sqlite-controller/src/codex_schema.sql": {
+      "git_blob": "92e75670ddab82213e9f0fbe821cfaa6ef114490",
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    "crates/sqlite-controller/src/control.rs": {
+      "git_blob": "68ed4591666dba1d3d9b950dae23175e7a1509a7",
+      "sha256": "14b6c1f9630f11b9dc2355e088094b48d8e8c02056297019c63ff824c566a066"
+    },
+    "crates/sqlite-controller/src/control_schema.sql": {
+      "git_blob": "97c9d1e7448b575fe25176f36446ca14f0003665",
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    "crates/sqlite-controller/src/gateway.rs": {
+      "git_blob": "bd52131358871d1ea5a4e96936a84ca1edbc7ab3",
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    "crates/sqlite-controller/src/git.rs": {
+      "git_blob": "c259715edad742f3a7f82299856f51408133a5de",
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    "crates/sqlite-controller/src/git_workspace.rs": {
+      "git_blob": "d37d7a42dbacd4301b0b4354d56d283256c3c2c3",
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    "crates/sqlite-controller/src/kata.rs": {
+      "git_blob": "2bbdd0c4d0f3f0e77ec57c3871141ae2c4c94acf",
+      "sha256": "76aeffec6d0eb62dde180e51059b6e199f366a7a232d570e5074060b537cb536"
+    },
+    "crates/sqlite-controller/src/kata_schema.sql": {
+      "git_blob": "2fd1fb2f9589076879e0fbcb973e19ff36822786",
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    "crates/sqlite-controller/src/lib.rs": {
+      "git_blob": "bcde17831d39b4be126c543e9520fea7a25a0e81",
+      "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4"
+    },
+    "crates/sqlite-controller/src/main.rs": {
+      "git_blob": "6f8d55ebf4f38739482519fb6d5dd4ae19fb6008",
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    "crates/sqlite-controller/src/monitor.rs": {
+      "git_blob": "5f7020b7bf3dc1d866ffdf22effb191c0f326a88",
+      "sha256": "b72a303f1814f0a99909609881ab98a692c2b76b4a7f865a85ff96d56d33453f"
+    },
+    "crates/sqlite-controller/src/native_profile.rs": {
+      "git_blob": "c0b31b83137837cd94cd79608f6623e8af0fd1b2",
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    "crates/sqlite-controller/src/native_ui.rs": {
+      "git_blob": "43c23e80baffb2c2eb19cd9cecb354b7500a5f0d",
+      "sha256": "33c90fb7c1762d4a90564dc0061ba3f5fd51cb506883231f3c6fb0375baebe1f"
+    },
+    "crates/sqlite-controller/src/native_ws.rs": {
+      "git_blob": "2057d15bf45b849393d1079a54317915d628346a",
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    "crates/sqlite-controller/src/query.rs": {
+      "git_blob": "83258366f9565a96b38cf1c90df638432afc863a",
+      "sha256": "6edf25747b6407a3ac2c8caf6e85434ad9995741ecd7148a3fed83011692f6aa"
+    },
+    "crates/sqlite-controller/src/runtime.rs": {
+      "git_blob": "48d810ab436530f5d5ba77ef67f0fd3261cd8549",
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    "crates/sqlite-controller/src/schema.sql": {
+      "git_blob": "2a2233b86915ce5f866fed0a46ed08f48174c4e4",
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    "crates/sqlite-controller/src/service.rs": {
+      "git_blob": "02a51123f368e1ef4b3a22c556ef3c607a169c3d",
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    "crates/sqlite-controller/src/supervisor.rs": {
+      "git_blob": "edf3b6153a6bfdf1f5bb059a027679945597dbf9",
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    "crates/sqlite-controller/src/ui_gateway.rs": {
+      "git_blob": "a4df0a768cbe4a4a60214b1f45b63bce9afc01be",
+      "sha256": "acd4df77a9f17b200907ec4e520c6f88c40765283f86c45a44e4c6e4be4c10c9"
+    },
+    "crates/sqlite-controller/src/view.rs": {
+      "git_blob": "3966882791651f4a2ab258eeee391c8ee287b812",
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    "crates/sqlite-controller/support/codex_insula.py": {
+      "git_blob": "4f0154c4d248d6484a3dd919e7f4e84e632c15ec",
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    "crates/sqlite-controller/tests/client.rs": {
+      "git_blob": "02e4d2bd146fb37c8710b34ca5f01ba2f79afd7a",
+      "sha256": "2d629f294054bd3e83d356a82ef8ec0945c4687d36d1eb82570b33cd68bbb5ee"
+    },
+    "crates/sqlite-controller/tests/codex.rs": {
+      "git_blob": "49ec74ea6a78df2facff19a983766f7e6e61cd4e",
+      "sha256": "35127d252294c7a411cbf90d47d5d004ea0dfe039d0f40f413edbe5ce181e205"
+    },
+    "crates/sqlite-controller/tests/control_center.rs": {
+      "git_blob": "2c48330a2bbb90e815fb06a2303c3f7f6308c545",
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    "crates/sqlite-controller/tests/git.rs": {
+      "git_blob": "1e1ac926bec056110c709baa5e29523ce79b7bc9",
+      "sha256": "c93ba53d2dceaa8b6b135b60c4ab29fc03ad67c92072d2ae298cb1ae22c0d8fa"
+    },
+    "crates/sqlite-controller/tests/kata.rs": {
+      "git_blob": "83f55153a7e5a8559ca20bbbf77b73f8ba146e1a",
+      "sha256": "05fe7a43b0b42797d63bc5154bd5bf745d364825d1bbd1ea51c65a1c01c62500"
+    },
+    "crates/sqlite-controller/tests/process.rs": {
+      "git_blob": "3b880385a736262e5d8d173fb3533bcadde7ee34",
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    "crates/sqlite-controller/tests/public.rs": {
+      "git_blob": "faa1b92509c891ae8d2fd7c88a8125aace9b68d9",
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    "crates/sqlite-controller/tests/runtime.rs": {
+      "git_blob": "38e880269c45140d44595ffedd7cae348f4e999e",
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    "crates/sqlite-controller/tests/support/client_projection.py": {
+      "git_blob": "481fcd4a148d3ea911c94259d7438a4d3e2f54d0",
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    "crates/sqlite-controller/tests/support/control_center_native.py": {
+      "git_blob": "4cce5b929a8281eee2f767537262afe757c317cb",
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    "crates/sqlite-controller/tests/support/git_protocol.py": {
+      "git_blob": "08f81477919a190de64f3db111376e4f5ec83b0f",
+      "sha256": "22e0b18d47360abceed162be299eff3d8f59bddd08ef99c2e5ec0fb23ad2655a"
+    },
+    "crates/sqlite-controller/tests/support/kata_protocol.py": {
+      "git_blob": "d6b338a1d5c9af9b50f547c1122e02b438d942a9",
+      "sha256": "06e10df931bd62840c12619085b7db2e62a86478837c56144a069967ed8ea7d1"
+    },
+    "crates/sqlite-controller/tests/support/native_init.py": {
+      "git_blob": "c30d2b86c61abbb4676f6db0f61bb196c6e63d95",
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    "crates/sqlite-controller/tests/support/native_profile.py": {
+      "git_blob": "935a4d6f6979995ea2bb8851b58fc49b9a820460",
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    "crates/sqlite-controller/tests/support/native_registry.py": {
+      "git_blob": "c2e0e0348610778d10c51f6627a3d4560442d874",
+      "sha256": "0e95e205948c2a55c0f0d5de2e4c875e3a7711b5a7e27ae44fb73a2af9f6ab2a"
+    },
+    "crates/sqlite-controller/tests/support/repair2_native_ui.py": {
+      "git_blob": "ec4e7132b3f926710fa46741457965336bf2db3f",
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    "crates/sqlite-controller/tests/support/wsutil.py": {
+      "git_blob": "eb9a6770f1689fd04e0c43b64904dcccb4fe5c0b",
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    }
+  },
+  "input_count": 46,
+  "previous_evidence": "655c86ee9a212878b1c921c34dee55dee5066c3c",
+  "previous_source": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+  "source_commit": "6f2c41556a50b3ab0b74da9a7b499e458d445156",
+  "source_tree": "78433f5d79be2ed014b81f9c5d7b4b272658567c"
+}

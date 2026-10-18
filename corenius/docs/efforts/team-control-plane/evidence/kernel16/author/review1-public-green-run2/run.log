@@ -1,0 +1,10 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.26s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 2 tests
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+

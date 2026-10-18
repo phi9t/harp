@@ -1,0 +1,21 @@
+{
+  "status": "new evidence found; independent current namespace survivor audit pending",
+  "execution": "ab7bea80-fede-4395-a212-b3797da3c5da",
+  "episode": "46ebcbb6-9b34-465e-8e48-edceae7e42c6",
+  "correction": "Earlier audit said exact PID identities missing. Bubblewrap info retains child PID and namespace inode identities; start ticks and database stop observations remain missing. Historical audit bytes preserved unchanged.",
+  "records": [
+    {
+      "path": "bwrap-execution.info",
+      "bytes": 194,
+      "sha256": "447da9fcb6b8693340589493cdcb711fa7dbbf55bce1bac3f971e2562b83d2ba",
+      "source": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255/workspaces/.execution-logs/ab7bea80-fede-4395-a212-b3797da3c5da.info"
+    },
+    {
+      "path": "native.effect",
+      "bytes": 839,
+      "sha256": "42a339131f1ed51bfa3c1b17cbf14d7b44fb34ca4988d57d09f7f21dae1de991",
+      "source": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255/unmeasured-native/904c125b-6313-4ce9-894a-ed3f9a0193fe.effect"
+    }
+  ],
+  "mutations_to_fixture": false
+}

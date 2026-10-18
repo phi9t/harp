@@ -1,0 +1,11 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.47s
+     Running tests/client.rs (/tmp/sqlite05-repair3-target/debug/deps/client-1ec261db07eb1716)
+
+running 1 test
+test repair3_authenticated_websocket_control_frames ... actual_authenticated_websocket_controls {"ping_echo": true, "pong_then_rpc": {"error": {"code": -32601, "message": "native UI runtime not configured"}, "id": 7}, "close_echo": true, "malformed_refused": 6, "native_configured": false}
+retained_websocket_fixture {"root": "/data02/home/philip.yang/devx/tmp/ws05-w0lhk7p6", "archive": "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/.scratch/sqlite-controller/05-repair3/fixtures/ws05-w0lhk7p6.tar.gz", "sha256": "d04c54592fca6c6f042562622033664ab74aa81b2213849e061d218863c966e7", "resources": [{"pid": 1884130, "start_stat": "1884130 (corenius-sqlite) R 1884078 1882699 1882699 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 57961474 8122368 1 18446744073709551615 94728772512960 94728778436224 140733991181616 0 0 0 0 0 0 0 0 0 17 102 0 0 0 0 0 94728778687248 94728778711816 94728793526272 140733991190127 140733991190265 140733991190265 140733991190458 0\n", "argv": ["--native-ui", "/data02/home/philip.yang/devx/tmp/ws05-w0lhk7p6/s", "p", "127.0.0.1:0"], "exit": -15, "waited": true}, {"pid": 1884118, "start_stat": "1884118 (corenius-sqlite) R 1884078 1882699 1882699 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 57961470 8122368 1 18446744073709551615 94272053472448 94272059395712 140736687561792 0 0 0 0 0 0 0 0 0 17 92 0 0 0 0 0 94272059646736 94272059671304 94272063524864 140736687566422 140736687566585 140736687566585 140736687566778 0\n", "argv": ["/data02/home/philip.yang/devx/tmp/ws05-w0lhk7p6/db", "/data02/home/philip.yang/devx/tmp/ws05-w0lhk7p6/s"], "exit": -15, "waited": true}]}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.16s
+

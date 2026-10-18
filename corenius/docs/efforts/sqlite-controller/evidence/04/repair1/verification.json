@@ -1,0 +1,553 @@
+{
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "tree": "d2df74745f883262d81e53b83cab177328e87408",
+  "status": "author-focused-and-frozen-gates-pass; independent-branch-blocker-retained; acceptance-withheld",
+  "gates": [
+    {
+      "name": "gate-affected",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "git",
+        "--test",
+        "kata",
+        "--test",
+        "process",
+        "--test",
+        "public",
+        "--test",
+        "runtime",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T17:53:27.275577+00:00",
+      "ended": "2026-10-04T17:56:10.287984+00:00",
+      "elapsed_seconds": 163.01239493803587,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-affected.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-build-last",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--locked",
+        "--offline"
+      ],
+      "started": "2026-10-04T18:11:28.131994+00:00",
+      "ended": "2026-10-04T18:11:31.431955+00:00",
+      "elapsed_seconds": 3.299952339963056,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-build-last.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-clippy",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started": "2026-10-04T18:10:26.106897+00:00",
+      "ended": "2026-10-04T18:10:28.955403+00:00",
+      "elapsed_seconds": 2.8484973220620304,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-clippy.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-default",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T18:05:47.772028+00:00",
+      "ended": "2026-10-04T18:08:44.369963+00:00",
+      "elapsed_seconds": 176.59793246909976,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-default.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-fmt",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--check"
+      ],
+      "started": "2026-10-04T18:10:14.258921+00:00",
+      "ended": "2026-10-04T18:10:14.697312+00:00",
+      "elapsed_seconds": 0.43837933405302465,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-fmt.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-native",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "ticket04_",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "started": "2026-10-04T17:57:38.379996+00:00",
+      "ended": "2026-10-04T17:58:50.433315+00:00",
+      "elapsed_seconds": 72.0533109799726,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-native.log",
+      "environment": {}
+    },
+    {
+      "name": "gate-pending-controls",
+      "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "repair3_",
+        "--",
+        "--nocapture",
+        "--test-threads=2",
+        "--skip",
+        "repair3_adopted_thread_delivers_received_first_turn_notifications"
+      ],
+      "started": "2026-10-04T18:01:37.381321+00:00",
+      "ended": "2026-10-04T18:03:40.609393+00:00",
+      "elapsed_seconds": 123.22806078207213,
+      "exit": 0,
+      "raw_log": ".scratch/sqlite-controller/04/repair1/gate-pending-controls.log",
+      "environment": {}
+    }
+  ],
+  "source_pairs": {
+    "count": 36,
+    "all_identical_files": true,
+    "source_files_per_pair": 34
+  },
+  "archive_red_actual_expanded_peak_bytes": 67194880,
+  "fixed_archive_limit_bytes": 33554432,
+  "fixed_archive_producer_observations": [
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/bounded-archive-g4-6hypebaj.tar.gz",
+      "archive_member": "g4-6hypebaj/authority/artifacts/09147ab355357d1ae12b9aea8927836d2e24f69a1b21a2904ebaadf661beaf31",
+      "artifact_sha256": "09147ab355357d1ae12b9aea8927836d2e24f69a1b21a2904ebaadf661beaf31",
+      "log": "archive-green.log",
+      "mode": "bounded-archive",
+      "process": {
+        "exit": null,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4078862,
+        "start_ticks": "55115400"
+      },
+      "argv": [
+        "--format=posix",
+        "-cf",
+        "-",
+        "-C",
+        "/tmp/g4-6hypebaj/workers",
+        "8ed14415-b41f-4738-a867-46e796b7c3c0"
+      ],
+      "tool": {
+        "path": "/usr/bin/tar",
+        "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+      },
+      "archive_limit": 33554432,
+      "retained_archive_bytes": 33554432,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/bounded-archive-g4-nrjeefx7.tar.gz",
+      "archive_member": "g4-nrjeefx7/authority/artifacts/b52efea38d7398d5c1a18ee9b00935d7bc7793f128f76eb101f5c8327b654282",
+      "artifact_sha256": "b52efea38d7398d5c1a18ee9b00935d7bc7793f128f76eb101f5c8327b654282",
+      "log": "freeze-controls.log",
+      "mode": "bounded-archive",
+      "process": {
+        "exit": null,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4188534,
+        "signal": 13,
+        "start_ticks": "55185573",
+        "stderr_limit": 1048576,
+        "stdout_limit": 33554432,
+        "waited": true
+      },
+      "argv": [
+        "--format=posix",
+        "-cf",
+        "-",
+        "-C",
+        "/tmp/g4-nrjeefx7/workers",
+        "cb24325b-6bdc-45a6-861e-d6fcbd39bdb9"
+      ],
+      "tool": {
+        "path": "/usr/bin/tar",
+        "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+      },
+      "archive_limit": 33554432,
+      "retained_archive_bytes": 33554432,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/bounded-archive-g4-dospv5gz.tar.gz",
+      "archive_member": "g4-dospv5gz/authority/artifacts/2a4f7b31d5a3cb02feb1f59e6e9e1f2decf8a431522be0b4f5e1c7cfe4ede95b",
+      "artifact_sha256": "2a4f7b31d5a3cb02feb1f59e6e9e1f2decf8a431522be0b4f5e1c7cfe4ede95b",
+      "log": "gate-affected.log",
+      "mode": "bounded-archive",
+      "process": {
+        "exit": null,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 138202,
+        "signal": 13,
+        "start_ticks": "55212622",
+        "stderr_limit": 1048576,
+        "stdout_limit": 33554432,
+        "waited": true
+      },
+      "argv": [
+        "--format=posix",
+        "-cf",
+        "-",
+        "-C",
+        "/tmp/g4-dospv5gz/workers",
+        "d2f9356b-50c2-4b56-86bd-e8485d2c7e82"
+      ],
+      "tool": {
+        "path": "/usr/bin/tar",
+        "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+      },
+      "archive_limit": 33554432,
+      "retained_archive_bytes": 33554432,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "exit_zero_verifier_limit_observations": [
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/final-output-g4-_uchsf3k.tar.gz",
+      "archive_member": "g4-_uchsf3k/authority/artifacts/e168d808a62b5380b79194344ec3629c01ad63bf9e3b98fd3021155eb7c6c48e",
+      "artifact_sha256": "e168d808a62b5380b79194344ec3629c01ad63bf9e3b98fd3021155eb7c6c48e",
+      "log": "archive-green.log",
+      "mode": "final-output",
+      "process": {
+        "exit": 0,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4079593,
+        "start_ticks": "55115905"
+      },
+      "argv": [
+        "/usr/bin/python3",
+        "/run/verification.py"
+      ],
+      "args": [
+        "a",
+        "/tmp/g4-_uchsf3k"
+      ],
+      "exit": 0,
+      "os_isolated": true,
+      "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+      "suite": {
+        "args": [
+          "a",
+          "/tmp/g4-_uchsf3k"
+        ],
+        "base": "fcb4c58390acaa425d2a11d479118cfe26e52f12",
+        "id": "a-initial",
+        "script": {
+          "path": "/tmp/g4-_uchsf3k/verification.py",
+          "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+        },
+        "task": "a"
+      },
+      "stdout_bytes": 25165824,
+      "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/final-output-g4-g98z6f1w.tar.gz",
+      "archive_member": "g4-g98z6f1w/authority/artifacts/33e4033336adab031a66c6c435040bfbe0cda0d2bf42ac61392db5ea363e6601",
+      "artifact_sha256": "33e4033336adab031a66c6c435040bfbe0cda0d2bf42ac61392db5ea363e6601",
+      "log": "final-output-green.log",
+      "mode": "final-output",
+      "process": {
+        "exit": 0,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4057428,
+        "start_ticks": "55098427"
+      },
+      "argv": [
+        "/usr/bin/python3",
+        "/run/verification.py"
+      ],
+      "args": [
+        "a",
+        "/tmp/g4-g98z6f1w"
+      ],
+      "exit": 0,
+      "os_isolated": true,
+      "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+      "suite": {
+        "args": [
+          "a",
+          "/tmp/g4-g98z6f1w"
+        ],
+        "base": "4e1dbc9326456d9ba66999050597b82f7209c48b",
+        "id": "a-initial",
+        "script": {
+          "path": "/tmp/g4-g98z6f1w/verification.py",
+          "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+        },
+        "task": "a"
+      },
+      "stdout_bytes": 25165824,
+      "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/final-output-g4-pvadphsh.tar.gz",
+      "archive_member": "g4-pvadphsh/authority/artifacts/1edfd509e75f71d57db0c12d9047691e9959170a1a1924f97c06ad02e8c13549",
+      "artifact_sha256": "1edfd509e75f71d57db0c12d9047691e9959170a1a1924f97c06ad02e8c13549",
+      "log": "final-output-green2.log",
+      "mode": "final-output",
+      "process": {
+        "exit": 0,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4065240,
+        "start_ticks": "55102391"
+      },
+      "argv": [
+        "/usr/bin/python3",
+        "/run/verification.py"
+      ],
+      "args": [
+        "a",
+        "/tmp/g4-pvadphsh"
+      ],
+      "exit": 0,
+      "os_isolated": true,
+      "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+      "suite": {
+        "args": [
+          "a",
+          "/tmp/g4-pvadphsh"
+        ],
+        "base": "f2559ea0204b0adba38cc4f5d60220e4524da8c7",
+        "id": "a-initial",
+        "script": {
+          "path": "/tmp/g4-pvadphsh/verification.py",
+          "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+        },
+        "task": "a"
+      },
+      "stdout_bytes": 25165824,
+      "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/final-output-g4-y9tq_30n.tar.gz",
+      "archive_member": "g4-y9tq_30n/authority/artifacts/a23c70f5865fbdaaf53018d230176dcb2b448328dc8c13c6b5614c01db3207d8",
+      "artifact_sha256": "a23c70f5865fbdaaf53018d230176dcb2b448328dc8c13c6b5614c01db3207d8",
+      "log": "freeze-controls.log",
+      "mode": "final-output",
+      "process": {
+        "exit": 0,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4190095,
+        "signal": null,
+        "start_ticks": "55186080",
+        "stderr_limit": 1048576,
+        "stdout_limit": 25165824,
+        "waited": true
+      },
+      "argv": [
+        "/usr/bin/python3",
+        "/run/verification.py"
+      ],
+      "args": [
+        "a",
+        "/tmp/g4-y9tq_30n"
+      ],
+      "exit": 0,
+      "os_isolated": true,
+      "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+      "suite": {
+        "args": [
+          "a",
+          "/tmp/g4-y9tq_30n"
+        ],
+        "base": "d8eb4ea0cb6ee734f00ab1c05b7292677c05d207",
+        "id": "a-initial",
+        "script": {
+          "path": "/tmp/g4-y9tq_30n/verification.py",
+          "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+        },
+        "task": "a"
+      },
+      "stdout_bytes": 25165824,
+      "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/final-output-g4-vqhslksx.tar.gz",
+      "archive_member": "g4-vqhslksx/authority/artifacts/a166907f69127bab4ab379522f61e56d7ffac731effbd8d0d74aec1fe7c9583c",
+      "artifact_sha256": "a166907f69127bab4ab379522f61e56d7ffac731effbd8d0d74aec1fe7c9583c",
+      "log": "gate-affected.log",
+      "mode": "final-output",
+      "process": {
+        "exit": 0,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 133779,
+        "signal": null,
+        "start_ticks": "55211971",
+        "stderr_limit": 1048576,
+        "stdout_limit": 25165824,
+        "waited": true
+      },
+      "argv": [
+        "/usr/bin/python3",
+        "/run/verification.py"
+      ],
+      "args": [
+        "a",
+        "/tmp/g4-vqhslksx"
+      ],
+      "exit": 0,
+      "os_isolated": true,
+      "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+      "suite": {
+        "args": [
+          "a",
+          "/tmp/g4-vqhslksx"
+        ],
+        "base": "b7cd78764b28e866dc3e6c96a66a6ae8a48b5c29",
+        "id": "a-initial",
+        "script": {
+          "path": "/tmp/g4-vqhslksx/verification.py",
+          "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+        },
+        "task": "a"
+      },
+      "stdout_bytes": 25165824,
+      "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/fixtures/final-output-g4-9odk8kgk.tar.gz",
+      "archive_member": "g4-9odk8kgk/authority/artifacts/9bcc4a43119a786ddb20cfcd061904ba9408a6c217dec5da8123b014e873d155",
+      "artifact_sha256": "9bcc4a43119a786ddb20cfcd061904ba9408a6c217dec5da8123b014e873d155",
+      "log": "partial-controls-green.log",
+      "mode": "final-output",
+      "process": {
+        "exit": 0,
+        "limit": "output bound",
+        "monitor_pid_namespace": "pid:[4026531836]",
+        "pid": 4117085,
+        "start_ticks": "55148649"
+      },
+      "argv": [
+        "/usr/bin/python3",
+        "/run/verification.py"
+      ],
+      "args": [
+        "a",
+        "/tmp/g4-9odk8kgk"
+      ],
+      "exit": 0,
+      "os_isolated": true,
+      "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+      "suite": {
+        "args": [
+          "a",
+          "/tmp/g4-9odk8kgk"
+        ],
+        "base": "7c7d18965a1e47c2a07e4fe4575ad83cdee97ef7",
+        "id": "a-initial",
+        "script": {
+          "path": "/tmp/g4-9odk8kgk/verification.py",
+          "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+        },
+        "task": "a"
+      },
+      "stdout_bytes": 25165824,
+      "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "independent_review_checkpoint": {
+    "Standards": "scoped repair PASS, root reported",
+    "Spec": "scoped repair PASS, root reported",
+    "branch646": "FAIL2; lifecycle composition confirmed, legacy compatibility adjudication pending",
+    "complete_root_gate": "running at last authenticated coordinator checkpoint"
+  },
+  "normal_build_last": true,
+  "paid_model_calls": false,
+  "integration_performed": false,
+  "unchanged_native25_author_repeat": false
+}

@@ -1,0 +1,16 @@
+Reviewing branch "codex/reference-design": 8 commits since main
+Enqueued job 591 for 1f16415..9055b99 (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/kernel.rs:248` and `:267`
+- **Problem**: Status queries filter episode records by principal and scope but omit the credential’s role. Grants can share a principal across roles, so a Verifier credential can expose that principal’s Worker executions and native turn/effect IDs even though exact inspection rejects the same credential.
+- **Fix**: Require the authenticated role to match `episode_executions.role` for non-Owner episode summaries. Add a behavioral test using Worker and Verifier grants with the same principal.
+
+## Summary
+
+The change assembles durable episode execution, supervised verification, cancellation, capacity accounting, and operator recovery.

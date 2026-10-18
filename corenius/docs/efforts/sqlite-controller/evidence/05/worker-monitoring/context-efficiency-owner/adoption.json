@@ -1,0 +1,32 @@
+{
+  "adopted_at": "2026-10-05T02:20:07.064518+00:00",
+  "owner_receipt": "01a10830-8cca-7df0-bb12-27658db5b3ba",
+  "owner_read_commit": "2c00d01c9d386104135cade2b6d09e6e42ddf80e",
+  "files": [
+    {
+      "source_path": "docs/efforts/worker-monitoring/SPEC.md",
+      "source_commit": "2c00d01c9d386104135cade2b6d09e6e42ddf80e",
+      "source_blob": "7001607158d8c632c8b86902d6f6de0ed9841285",
+      "sha256": "56e88c6610cc9bca331e2a554e5cc3d55dd0ecb4ebd4a8299f314d964c6a27e4",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/context-efficiency-owner/SPEC.md"
+    },
+    {
+      "source_path": "docs/efforts/worker-monitoring/evidence/context-efficiency-0001.md",
+      "source_commit": "2c00d01c9d386104135cade2b6d09e6e42ddf80e",
+      "source_blob": "00cb088599686f12cf91d90577e45704d6faf3f6",
+      "sha256": "185035e4a5c47679be528011118b79257fc07dca26fe67b46bea37737d2be6c1",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/context-efficiency-owner/context-efficiency-0001.md"
+    }
+  ],
+  "scope": "Owner context-efficiency operating refinement for current baseline, no acceptance/cap reset or gate interruption; exactfiles only, no owner-branch cherry-pick.",
+  "historical_evidence": "Owner actual compaction18:37:17 UTC followed measured186367\u219228654\u219244786 input; causality of queuedinstruction not established; not local unattended runner proof.",
+  "thresholds": {
+    "warn_input": 100000,
+    "checkpoint_safe_boundary_input": 120000,
+    "checkpoint_window_fraction": 0.5,
+    "before_next_phase_input": 150000,
+    "before_next_phase_window_fraction": 0.6,
+    "tunable": true
+  },
+  "capabilities": "No explicit child/root compact operation exposed in current collaboration tools; ordinary /compact text/summary not evidence. Fresh non-inheriting writer only after quiescence/effect reconciliation; root same-phase verification continues, next-phase context prerequisite explicit."
+}

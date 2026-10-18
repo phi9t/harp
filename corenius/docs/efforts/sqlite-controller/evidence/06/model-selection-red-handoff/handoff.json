@@ -1,0 +1,93 @@
+{
+  "at": 1791177867.531813,
+  "actor": "/root/sqlite06_replacement_launch",
+  "thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282",
+  "ownership": "Sole writer/launcher quiescing after RED/context checkpoint; root must admit fresh non-inheriting writer before GREEN.",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "branch": "sqlite06/happy-path",
+  "base": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "source_tree": "e33f6ad0017029a0ac826356d920dd6f55ea6865",
+  "dirty_files": {
+    "crates/sqlite-controller/src/codex.rs": "4febc2556d6a64b18d519feb2669d36a8fa24c863982e5b4d029c44fa1822956",
+    "crates/sqlite-controller/src/native_ui.rs": "24252d1f800446c23986336727bbfe5649ce28e58eecef894daf32997d171c71"
+  },
+  "dirty_scope": "Tests ONLY, no production changes or commit; test helpers in codex::selected_model_tests plus native_ui child test.",
+  "diff": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/test-only-red.diff",
+  "diff_sha256": "f761d552601a340f7033a1db17363641664324fb2f1779ac3b60aa42acaf918f",
+  "red_command": "cargo test --manifest-path crates/sqlite-controller/Cargo.toml --target-dir .scratch/sqlite06-happy-path/model-link/target --locked --offline --lib selected_model -- --nocapture",
+  "red_log": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link-red.log",
+  "red_log_sha256": "40a2ccde67175defb17813ebd898399629cc8da90d4381bd8b951a02c361b5f4",
+  "red_actual_exit": 101,
+  "red_counts": {
+    "passed": 0,
+    "failed": 3,
+    "filtered": 21
+  },
+  "red_causes": [
+    "Core TurnCommand rejects unknown model.",
+    "Native UI records durable intent model Null.",
+    "Runtime Config rejects unknown model for new worker turns."
+  ],
+  "green": null,
+  "authorized_design": {
+    "selected_model": "gpt-6.1-sol",
+    "TurnCommand": "Validated optional explicit model for codex_turn only; preserve deny-unknown, role/binding checks, unknown-start fences. Resolve omitted model from retained bound thread model or legacy default gpt-6-sol, then record chosen value in durable operation intent.",
+    "native_ui": "Copy explicit model into existing lead core command path; selected model cannot mutate an active steer/interrupt. Same clientUserMessageId + changed model must reject; new model input needs new operation identity.",
+    "adapter": "For new codex_turn pass intent.model unchanged to actual native turn/start; confirmation may retain selected model on binding for later model-less turns. Legacy old operations without model must preserve existing behavior.",
+    "runtime_config": "Optional model with skip_serializing_if None preserves legacy serialized configuration identity. Validate installed pinned supported model slugs. Use explicit configured model for recorded thread/start and first worker turn/start; add None to existing Config test literal. Thread model stored in binding if needed. No bypass of durable config mismatch.",
+    "harness": "Small --model option + manifest-selected model + native.json model. Continued command uses gpt-6.1-sol explicit. Preserve old default. No arbitrary provider/network/auth.",
+    "tests": "Existing three focused tests exercise actual Controller admission and NativeWs Unix frame adapter, model identity/replay/refusal and worker initialization. Fix actual defects causally, no broad matrix."
+  },
+  "safe_continuation_after_exact_source_review": [
+    "python3",
+    "tools/agents/sqlite_baseline.py",
+    "start",
+    "--session",
+    "corenius-team",
+    "--reuse-kata",
+    "/tmp/cb-20261005T050033Z-84eb5a/kata.json",
+    "--target-dir",
+    "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/continuation-target",
+    "--model",
+    "gpt-6.1-sol"
+  ],
+  "continuation_authority": "Root explicitly authorizes fresh disposable new project within existing corenius-team after exact-source scoped review; do not deploy or send live input before disposition. Existing idle config identity cannot switch model in place.",
+  "live_observation": {
+    "observed_at": 1791177867.5317802,
+    "revision": 4,
+    "tasks": [
+      {
+        "id": "solo",
+        "state": "created"
+      }
+    ],
+    "attempts": [],
+    "current_turns": [
+      {
+        "role": "lead",
+        "thread": "01a10a6f-b309-7a92-854d-25092fc7a92b",
+        "turn": {
+          "id": "01a10a70-24c4-7703-9729-86c40cb540b4",
+          "native_status": "failed",
+          "source": "typed_native_history",
+          "state": "terminal"
+        }
+      }
+    ],
+    "unknown_or_applying": []
+  },
+  "effects": "run84eb5a outer actual exit1; first admission failed serverOverloaded independently retained. Original run/quarantine and run84eb5a services/native actor jobs/panes/data preserved. Public observer script+lead actual native client remain live. No worker Attempts admitted; no acceptance/caps changed. All current Rust checks finished, no current probe/native test process.",
+  "prior_evidence": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/model-selection-diagnosis.json",
+  "public": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/observation/public",
+  "caps": "05prior3+ONEextra1 spent;02/04three;EMPTYtwo never reset. C1-TEST-PEER-WAIT and relayS2 OPEN. Demo != baselinequalified.",
+  "context_checkpoint": {
+    "root_measured_at": "2026-10-05T05:22:15.368Z",
+    "input": 122185,
+    "cached": 120960,
+    "output": 330,
+    "window": 258400,
+    "actual_compaction": false,
+    "action": "No supported child compact tool; seal small handoff and quiesce before GREEN phase."
+  },
+  "next": "Root fresh sole writer admission, read handoff and exact dirty pins, implement minimal model-selection link, GREEN tests+legacy role/unknown-start/binding tests, freeze candidate/source hashes/continuation command for scoped review; no deployment yet."
+}

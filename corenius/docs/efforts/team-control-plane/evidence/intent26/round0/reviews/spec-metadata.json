@@ -1,0 +1,360 @@
+{
+  "axis": "Spec",
+  "base": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "branch": "codex-intent26/contracts",
+  "canonical_inputs": [
+    {
+      "archive": {
+        "bytes": 3080,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9.txt",
+        "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "AGENTS.md"
+    },
+    {
+      "archive": {
+        "bytes": 3484,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097.txt",
+        "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "CONSTITUTION.md"
+    },
+    {
+      "archive": {
+        "bytes": 2816,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173.txt",
+        "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "CONTEXT.md"
+    },
+    {
+      "archive": {
+        "bytes": 9722,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926.txt",
+        "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/agentic-engineering.md"
+    },
+    {
+      "archive": {
+        "bytes": 2045,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99.txt",
+        "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/domain.md"
+    },
+    {
+      "archive": {
+        "bytes": 9818,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0.txt",
+        "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/skill-orchestration.md"
+    },
+    {
+      "archive": {
+        "bytes": 33123,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c.txt",
+        "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/SPEC.md"
+    },
+    {
+      "archive": {
+        "bytes": 17345,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924.txt",
+        "sha256": "93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/PLAN.md"
+    },
+    {
+      "archive": {
+        "bytes": 21340,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c.txt",
+        "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/v02-reconciliation.md"
+    },
+    {
+      "archive": {
+        "bytes": 3534,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513.txt",
+        "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md"
+    },
+    {
+      "archive": {
+        "bytes": 6970,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4.txt",
+        "sha256": "b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4"
+      },
+      "authority": "session_micro_plan",
+      "origin": ".scratch/team-control-plane/ticket26/micro-plan.md"
+    },
+    {
+      "archive": {
+        "bytes": 1912,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989.txt",
+        "sha256": "70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/conformance.json"
+    },
+    {
+      "archive": {
+        "bytes": 2302,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655.txt",
+        "sha256": "37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/final-contract-inputs.json"
+    },
+    {
+      "archive": {
+        "bytes": 2660,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d.txt",
+        "sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/revised-report.md"
+    },
+    {
+      "archive": {
+        "bytes": 2253,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349.txt",
+        "sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/spec/report.md"
+    }
+  ],
+  "canonical_tree": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "commits_created": false,
+  "created_utc": "2026-10-03T19:20:53.593093+00:00",
+  "findings": [
+    {
+      "boundary": "fresh native episode operation after prerequisite supersession",
+      "category": "missing_or_partial",
+      "evidence_kind": "static inference; no reproduction executed",
+      "id": "S1",
+      "priority": "P1",
+      "requirement": "tickets/26-intent-plan-contracts.md:20-22,51",
+      "severity": "Important",
+      "source": "crates/team-control-plane/src/episode_runtime.rs:327-403; crates/team-control-plane/src/supervisor.rs:275-299"
+    },
+    {
+      "boundary": "shared legacy task acceptance on v2-mapped work",
+      "category": "incorrect",
+      "evidence_kind": "static inference; no reproduction executed",
+      "id": "S2",
+      "priority": "P1",
+      "qualification": "Does not manufacture contract_outcomes; shared v1 task projection terminalizes without satisfying the admitted v2 contract.",
+      "requirement": "tickets/26-intent-plan-contracts.md:13-17,53; v02-reconciliation.md:43-47; SPEC.md:43-44",
+      "severity": "Important",
+      "source": "crates/team-control-plane/src/artifacts.rs:784-825,1032-1041"
+    },
+    {
+      "boundary": "bounded lead intent amendment removes prerequisite restriction",
+      "category": "incorrect",
+      "evidence_kind": "static inference; no reproduction executed",
+      "id": "S3",
+      "priority": "P1",
+      "qualification": "Owner explicit new intent amendment remains authorized.",
+      "requirement": "v02-reconciliation.md:112; tickets/26-intent-plan-contracts.md:51",
+      "severity": "Important",
+      "source": "crates/team-control-plane/src/contracts/authority.rs:74-91; crates/team-control-plane/src/contracts.rs:335,389; crates/team-control-plane/src/contracts/dependencies.rs:4-37,109-120"
+    }
+  ],
+  "head": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "inputs": [
+    {
+      "bytes": 17243,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/author-freeze.json",
+      "sha256": "95f280c11adbda87950e563898167ad6ed317b298c779ab5bbfeb58511be1464"
+    },
+    {
+      "bytes": 13463,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/source-manifest.json",
+      "sha256": "72dfe3d9e5bdf7b8885c6934713f0ff3f95a5db10518882d0060438e863e6aba"
+    },
+    {
+      "bytes": 127702,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/source.patch",
+      "sha256": "c91fd436ef8046e4d41b9b1633209a4a1eefed2e1b59605193e2f26d00d24120"
+    },
+    {
+      "bytes": 26100,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/public-proof-index.json",
+      "sha256": "06cbf5ef3d2ad5e6f3c268386d410b64f4e3807cf562f6d3b5562472657f9716"
+    },
+    {
+      "bytes": 6047,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/report.md",
+      "sha256": "9ede4e6d55a21f6ad11d5c6a4e52abdde4bc3e568e4cac6b3f9454c3e3a628cb"
+    },
+    {
+      "bytes": 117082,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/runs.jsonl",
+      "sha256": "be4a763bbe8315e8bb7ea6245ca1987510ec0593ee4ef34e8870f9d280cfb75d"
+    },
+    {
+      "bytes": 47877,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/public-records.jsonl",
+      "sha256": "1637dc3d4e89d20e88272efaf333479828d3592ef6d4cbf2095fa8801dfbda24"
+    },
+    {
+      "bytes": 1282,
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/docs/efforts/team-control-plane/evidence/intent26/contract-inputs.json",
+      "sha256": "b0a0d7a4c05666f12440f16baaa23fd4209cfaa54cf10fe6e5689291b443cd03"
+    }
+  ],
+  "inspected_consumers": {
+    "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+    "crates/team-control-plane/src/artifacts.rs": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22",
+    "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+    "crates/team-control-plane/src/contracts.rs": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5",
+    "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+    "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+    "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+    "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+    "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+    "crates/team-control-plane/src/episode_runtime.rs": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a",
+    "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+    "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+    "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+    "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+    "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+    "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+    "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6"
+  },
+  "limitations": [
+    "Read-only inspection; no test, namespace, provider, Cargo, PostgreSQL, Temporal or gate launch.",
+    "No reviewed source, root checkout, index, branch or refs edited.",
+    "Retained archive measurements are not independently rerun and cleaned fixture bundle/database bytes are unavailable.",
+    "Durable scopes, Kata adapter, workflow interpreter, physical protected integration and assembled v0.2 recovery are excluded later tickets."
+  ],
+  "report": {
+    "bytes": 2897,
+    "path": "/tmp/corenius-intent26-spec-review-20261003/report.md",
+    "sha256": "a5d59f1fcbc31b8089034d73fad7236aeec1445132c952954c722aaef926e312"
+  },
+  "report_words": 351,
+  "reviewer": "/root/intent26_spec",
+  "schema_version": 1,
+  "source_tree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+  "status": [
+    " M crates/team-control-plane/README.md",
+    " M crates/team-control-plane/src/admission.rs",
+    " M crates/team-control-plane/src/artifacts.rs",
+    " M crates/team-control-plane/src/domain.rs",
+    " M crates/team-control-plane/src/gateway.rs",
+    " M crates/team-control-plane/src/http.rs",
+    " M crates/team-control-plane/src/lib.rs",
+    " M crates/team-control-plane/src/mailbox.rs",
+    " M crates/team-control-plane/src/storage.rs",
+    " M crates/team-control-plane/src/supervisor.rs",
+    "?? crates/team-control-plane/migrations/0008.sql",
+    "?? crates/team-control-plane/src/contracts.rs",
+    "?? crates/team-control-plane/src/contracts/authority.rs",
+    "?? crates/team-control-plane/src/contracts/dependencies.rs",
+    "?? crates/team-control-plane/src/contracts/outcomes.rs",
+    "?? crates/team-control-plane/src/contracts/strategy.rs",
+    "?? crates/team-control-plane/tests/intent_contracts.rs",
+    "?? docs/efforts/team-control-plane/evidence/intent26/archive-renames.json",
+    "?? docs/efforts/team-control-plane/evidence/intent26/author-freeze.json",
+    "?? docs/efforts/team-control-plane/evidence/intent26/checks.json",
+    "?? docs/efforts/team-control-plane/evidence/intent26/contract-inputs.json",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-admission-2.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-admission.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-api-compatibility.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-authority-plan-2.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-authority-plan.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-dependencies.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-final-contract-revisions.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-final-public.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-outcomes-red-dependencies-2.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-outcomes-red-dependencies.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/green-retention-grants-ceilings.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/public-proof-index.json",
+    "?? docs/efforts/team-control-plane/evidence/intent26/public-records.jsonl",
+    "?? docs/efforts/team-control-plane/evidence/intent26/red-admission.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/red-authority-plan.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/red-dependency-disposition-revision.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/red-dependency-outcomes.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/red-replay-ceiling-compatibility.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/red-retention-grants-ceilings.log.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/report.md",
+    "?? docs/efforts/team-control-plane/evidence/intent26/runs.jsonl",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/snapshots/f8539ab393d87e1e7675a7dc3d0964f53889a43d4da86cf24411c14150a0116e.txt",
+    "?? docs/efforts/team-control-plane/evidence/intent26/source-manifest.json",
+    "?? docs/efforts/team-control-plane/evidence/intent26/source.patch"
+  ],
+  "verdict": "FAIL",
+  "verification": {
+    "canonical_archives_match_root": 14,
+    "compatibility_suite": {
+      "exit_code": 0,
+      "failed": 0,
+      "later_source_delta": [
+        "crates/team-control-plane/src/contracts/dependencies.rs",
+        "crates/team-control-plane/tests/intent_contracts.rs"
+      ],
+      "passed": 75,
+      "run": "green-api-compatibility"
+    },
+    "final_retained_suite": {
+      "all_recorded_source_hashes_match_current": true,
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 39,
+      "run": "green-final-contract-revisions"
+    },
+    "freeze_self_hash_verified": true,
+    "modified_base_preimages": 10,
+    "new_null_preimages": 7,
+    "public_record_raw_line_and_payload_hashes_verified": true,
+    "public_records": 70,
+    "reviewer_tests_executed": false,
+    "run_log_and_index_records": 17,
+    "selected_record_hashes": 69,
+    "session_micro_plan_archive_hash_matches": true,
+    "source_patch_reconstructed_postimages": 17,
+    "source_postimages": 17
+  }
+}

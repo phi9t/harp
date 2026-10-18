@@ -1,0 +1,23 @@
+{
+  "classification": "PRIMARY_SOURCE_RESEARCH_NOT_LIVE_OR_PRODUCT_AUTH",
+  "origin": "/data02/home/philip.yang/devx/tmp/corenius-codex-native-auth-source-ah3o7m7q",
+  "origin_hashes_verified": 67,
+  "source_commit": "01fc69f4026735edfdf6789820549727a4867b11",
+  "codex_version": "0.159.3",
+  "root_installed_binary_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+  "retained_original_sources": true,
+  "no_auth_contents_or_account_or_model_endpoints": true,
+  "no_owned_live_services": true,
+  "copied_files_sha256": {
+    "resources.json": "094af2a4dfccd0fc7fa79429c7b60fa5414522a34179544d66e1c488776fb5e4",
+    "official-docs-retention.json": "e9c47ae7e83d5074e730cddf28b8d5e7fe110590572f497a3edde84ebe547c7d",
+    "primary-excerpts.md": "6a07d5588a4703e72f9acbfe042e74cbc419a41e209aed1307fe7102e06161ef",
+    "pins.json": "5a06d59583ba1ca5030dd386256482d22f6e91314273286cc7ce593be2adbf27",
+    "source-commit.txt": "9c1e3d0c2d3eab9042f39282fbaed3d93892d13ddbf0a4c8b0e0666a3ba0ae6f",
+    "readiness.md": "f7cf4cd5ff30ad4086fd7d63a01f79b56d9fa27f8de05d93b992fdf9a5b5af2f",
+    "origin-SHA256SUMS": "02bced5c8fd64afed0ac154879eee5ce93d664400a51c96cb71cca83d8095548",
+    "primary-source-records.json": "9bb86e64fda70ff455b7f9eaa9e277dee4353575a114f260acf7b38858b67c0a",
+    "README.md": "7bd03067bc8898b53f777e18df7b40b3872bae2a7641aaab682192588cb85534"
+  },
+  "sigstore_limit": "Embedded digest/commit metadata match only; no independent signature trust-chain or reproducible-build verification."
+}

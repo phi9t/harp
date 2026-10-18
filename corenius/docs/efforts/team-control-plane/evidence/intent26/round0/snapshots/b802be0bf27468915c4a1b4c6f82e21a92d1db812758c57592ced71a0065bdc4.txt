@@ -1,0 +1,37 @@
+# Ticket26 exact admitted work and acceptance/Plan contracts
+
+Session-local implementation argument for canonical tickets/26-intent-plan-contracts.md, SPEC.md and v02-reconciliation.md. Base720ab7783e1b36e9e8a675f497f9c66ef2b1d87b. No new design/permission ceremony; Architecture/Spec PASS admits this scope. Root owns independent review, commits and integration.
+
+Use the already isolated codex-intent26/contracts tree. One writer owns it at a time. Cargo/PostgreSQL slot released by root after gate82804 exit0. Pin an explicit private CARGO_TARGET_DIR in this tree, strict --offline --locked, existing tests/run-postgres.sh, bounded test threads; no tools/agents/check.sh or Temporal fixture. Coordinate slot relinquishment with root.
+
+## Intended file seam
+
+- New focused public contracts module under crates/team-control-plane/src/ (types/validation/storage may split by responsibility). Avoid growing broad files; glue only in lib.rs, http.rs, storage::migrate/connect, and existing fresh-grant or acceptance boundaries where necessary.
+- Migration0008 reserved for26, additive independent version marker. Immutable WorkRef+source snapshot+IntentRevision+AcceptanceContract+PlanRevision/delegation/report/acceptance records; mutable current projections and explicit suspended dependency disposition. Preserve every v1 task_specs/artifact candidate/report identity and nullable original role/Episode/Attempt provenance. Admission closed while migration backfills only exact unambiguous legacy mappings; quarantine ambiguous input rather than synthesizing evidence/provenance.
+- New tests/intent_contracts.rs plus focused shared fixture helper as needed. Public HTTP POST /v2/contracts/commands and authenticated durable task/snapshot reads, using typed schema2 JSON. Existing ArtifactService public/read seam remains real.
+
+## Public behavior slices (RED first, then minimal GREEN)
+
+1. Immutable intent/source/acceptance: raw JSON HTTP admission must return applied (baseline has no v2 route -> meaningful status assertion RED). Exact principal/family/key replay returns durable same result, changed typed args conflict, stale revision journals refusal and writes no new record. WorkRef includes ledger kind/deployment/tenant/project/item; cross-deployment same item cannot alias. Canonical source snapshot bytes/digest/source revision retained, missing/deleted/unavailable evidence refuses new admission; later source proposals/events cannot rewrite admitted snapshot.
+2. Authority/dependencies: Owner-only defaults; current lead can mutate only under an explicitly Owner-admitted delegation pinning exact mission/work scopes, role epoch, families/effects, intent/plan/resource ceilings and expiry, rechecked transactionally including replay. Worker tokens can submit/propose only. Exact dependency WorkRef+IntentRevision+accepted subject+policy; newly broker-admitted prerequisite supersession suspends fresh dependent grants, not old granted receipt/reconciliation. Explicit revalidation pins new exact subject/revision; unadmitted source edit is inert proposal/attention.
+3. Strategy: immutable PlanRevision digest references exact current intent/acceptance, schema/interpreter versions, stable unique step IDs, explicit dependencies/joins, allowed effects, bounded loops/repair/resource ceilings. Refuse duplicate/missing/cyclic/unbounded/malformed steps and authority/budget expansion. Plan amendment preserves outcome/acceptance, independent epochs, completed step meaning/identity, cumulative spend. No workflow/source eval or interpreter implementation.
+4. Exact outcome seam (root-confirmed): production acceptance requires independently measured exact ArtifactService subject PLUS explicit matching v2 IntentRevision/AcceptanceContract and verifier policy/environment bindings. An old v1 PASS/accepted candidate cannot automatically become v2 accepted by wrapping it; compatibility mapping is exact and explicit, with fresh/revalidated proof if the required contract changes. Negative research is distinct investigation_complete only if expressly permitted, immutable evidence retained, independent verifier origin and Owner/current bounded delegated acceptance checks. Workers propose/submit, cannot manufacture verification; evaluator-change proposals stay isolated unpromoted candidates. Tests exercise real HTTP/Broker + ArtifactService read models, never raw string PASS flags or invented monitor facts.
+5. Compatibility/migration: repeated migrations, immutable SQL triggers, exact original v1 hashes and snapshots; legitimate NULL creating Attempt retained; ambiguous inputs admission closed/quarantined. Public negative cases and positive current-scope control; no kernel/provider/runtime/schema authority expansion outside26.
+
+## Verification and freeze
+
+Run each focused real-PostgreSQL RED and GREEN at the approved seam, record actual argv/environment/source hashes/terminal/refusals and cleanup, then bounded relevant API/migration/compatibility suites. Full root gate remains excluded. Source-level plan/progress and raw logs are scratch; retain source-bound relied-on proof and red/green ledger under docs/efforts/team-control-plane/evidence/intent26/. Snapshot all changed-file preimages before edits, exact base/spec/ticket inputs, final patch/source manifest/public proof index and limitations. Exclude ignored/cache/build bytes from public proof index; audit normal Git selection. Ticket stays claimed pending root-owned Standards/Spec, independent branch verification and integration. No commits/push/ref operations.
+
+## SDD contract scan
+
+| Slice pair/interface | Producer/consumer | Ruling |
+| --- | --- | --- |
+| Intent -> Dependency/Plan/Outcome | Exact immutable intent/acceptance digests | One canonical typed record, no latest-source substitution |
+| Delegation -> all admission/replay | Current role epoch + scoped limits | Owner-only absent exact admitted delegation; auth alone never suffices |
+| Migration -> source/legacy compatibility | Exact retained v1 source/proof and NULL provenance | Additive; no accepted-v1 identity rewriting |
+| Dependency -> existing grant seam | Current dependency disposition vs immutable old receipt | Suspend only new grants; permit attribution/reconciliation of previously granted receipts |
+| Plan -> later interpreter29 | Validated declarative records, stable IDs | No executable workflow code or runtime launch |
+| Outcome -> ArtifactService | Measured exact candidate/report + v2 binding | No automatic v1-to-v2 PASS upgrade; root-approved seam above |
+| Every slice -> its HTTP test | Real PostgreSQL public mutation/read and rejection | Derive literal behavioral assertions independently, no source-text tests |
+
+Skill routing owner ask-matt is unavailable; use the repository crosswalk directly. This ticket is one coupled implementation unit assigned as a clean-context task; root supplies the independent Standards/Spec and branch gates. No implementing-worker duplicate reviewer.

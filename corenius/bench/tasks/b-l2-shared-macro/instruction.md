@@ -1,0 +1,1 @@
+`BUILD.share` defines the project macro used by the existing `alpha` and `beta` packages. The new `gamma` package has source files but its Blade declaration does not satisfy the shared macro contract. Repair `gamma/BUILD` so `blade-offline build //...` succeeds and `//gamma:gamma_tool` prints `BLADE_L2_MACRO gamma=13`.

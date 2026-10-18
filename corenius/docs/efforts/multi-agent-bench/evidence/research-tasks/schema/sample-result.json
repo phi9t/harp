@@ -1,0 +1,39 @@
+{
+  "schema_version": "corenius.bench.result.v0",
+  "run_id": "20260929T223000Z-solo-t01-0001",
+  "task_id": "t01-log-window",
+  "condition": "solo",
+  "capsule": {
+    "digest": "sha256:example-layer-stack",
+    "net": "none",
+    "toolchain": "base+shell"
+  },
+  "outcome": {
+    "passed": true,
+    "reward": 1.0,
+    "exception_type": null
+  },
+  "timing": {
+    "wall_time_sec": 1.25,
+    "agent_time_sec": 0.73,
+    "verify_time_sec": 0.12
+  },
+  "coordination": {
+    "conflicts": 0,
+    "redo_work_items": 0,
+    "contamination_events": 0,
+    "tickets_landed": 1
+  },
+  "cost": {
+    "usd": null,
+    "input_tokens": null,
+    "output_tokens": null
+  },
+  "checks": [
+    {
+      "name": "verifier",
+      "passed": true,
+      "command": "tests/test.sh"
+    }
+  ]
+}

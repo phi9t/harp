@@ -1,0 +1,839 @@
+{
+  "acceptance": "root full regression/two independent axes/branch reviews pending; no self-acceptance",
+  "raw_root": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/.scratch/sqlite-controller/05",
+  "records": [
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 82560,
+          "path": ".scratch/sqlite-controller/05/repair2-100-final-same-incarnation-empty.log",
+          "sha256": "a2e1df9e72aaac25ab8e7d5366efaf858e85950bafe509553d6718cf359e5d03"
+        },
+        {
+          "bytes": 239250,
+          "path": ".scratch/sqlite-controller/05/repair2-100-final-same-incarnation-empty-source.tar.gz",
+          "sha256": "13a3a9587b384381d950f5a573723933f96dcab60714c291833d67020e9b54f8"
+        },
+        {
+          "bytes": 6011,
+          "path": ".scratch/sqlite-controller/05/repair2-100-final-same-incarnation-empty-start.json",
+          "sha256": "777bcd92b42b5753be19221102b57f99077000e22a70b4574ff43ac70f27984d"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-100-final-same-incarnation-empty",
+      "qualification": "Actual final-source same-incarnation empty-thread controller-crash fixture, BOTH; original admission/recovery/assertions/deadlines retained. Distinct from consumed changed-incarnation diagnostic2/2.",
+      "record": "runs/repair2-100-final-same-incarnation-empty.json",
+      "record_sha256": "04941e533e95df15cd6a29aa8dbac477eef829e9eae80a36a8dc4e5f22374739",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 83565,
+          "path": ".scratch/sqlite-controller/05/repair2-101-final-later-turn-confirmation.log",
+          "sha256": "61dba30f7aed4e52ab3c21cbdbcb5c4ca7f6570e01299a94a884ad8d31f9285f"
+        },
+        {
+          "bytes": 239251,
+          "path": ".scratch/sqlite-controller/05/repair2-101-final-later-turn-confirmation-source.tar.gz",
+          "sha256": "b697415730db10bce0e1cdd7a40fec379a45618484ca2e0c7fd9065835177e6a"
+        },
+        {
+          "bytes": 6013,
+          "path": ".scratch/sqlite-controller/05/repair2-101-final-later-turn-confirmation-start.json",
+          "sha256": "846bd16a2109da1d9a7b9cb53cfa2dc8b0ca7928234dfb652388dbc4d3c050a7"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-101-final-later-turn-confirmation",
+      "qualification": "Actual final-source later-turn confirmed receipt before binding-crash/adoption fixture BOTH; original assertions/deadlines/native fixtures retained.",
+      "record": "runs/repair2-101-final-later-turn-confirmation.json",
+      "record_sha256": "4f35698c13640585a67870f70a20e0f1fd3a93e3a0a3edf22a9ca8bbf34f4134",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 82496,
+          "path": ".scratch/sqlite-controller/05/repair2-102-final-history-confirmation.log",
+          "sha256": "c52fc87c043ee8af2ac88324f7169ae6f7f23527d393e6de55558a2bda191ac1"
+        },
+        {
+          "bytes": 239248,
+          "path": ".scratch/sqlite-controller/05/repair2-102-final-history-confirmation-source.tar.gz",
+          "sha256": "11b0316f2c13a4af87b8e697382146d4edecc414a4669ab67e1049ae70b580a3"
+        },
+        {
+          "bytes": 6010,
+          "path": ".scratch/sqlite-controller/05/repair2-102-final-history-confirmation-start.json",
+          "sha256": "1284aec92c2d33dbe580de375c6d908dbf6fb3d0685ef8a2a37ddcb8c42d3dee"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-102-final-history-confirmation",
+      "qualification": "Actual final-source native-history confirmation/lostACK before binding-crash/adoption fixture BOTH; original assertions/deadlines retained.",
+      "record": "runs/repair2-102-final-history-confirmation.json",
+      "record_sha256": "66ca956c1fec1fbe17e65f1ed2f345073fd573222cc4cf68bc9cc13b21341419",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 0,
+          "path": ".scratch/sqlite-controller/05/repair2-103-final-fmt.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 239231,
+          "path": ".scratch/sqlite-controller/05/repair2-103-final-fmt-source.tar.gz",
+          "sha256": "23b4e13c264282d4acf2a39858a1be7967828f49832b63b76b2d260e68b0e9f4"
+        },
+        {
+          "bytes": 5835,
+          "path": ".scratch/sqlite-controller/05/repair2-103-final-fmt-start.json",
+          "sha256": "edc3fe89cae3bd238a3f604c4427c6d1d486c10c127fa2cd774faeed2b87ea1d"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-103-final-fmt",
+      "qualification": "Final source cargo fmt --all --check; actual recorded exit authoritative.",
+      "record": "runs/repair2-103-final-fmt.json",
+      "record_sha256": "c5650b8d8ff8acf63ad792b3398d0f793c16fec23fa3298de1fcfe586a84837c",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 73425,
+          "path": ".scratch/sqlite-controller/05/repair2-72-empty-original-diagnostic.log",
+          "sha256": "e26d5975bc8b6cc26cd81594b995c500ff8a9fbf933480d1108e6a8ea8a25f95"
+        },
+        {
+          "bytes": 222566,
+          "path": ".scratch/sqlite-controller/05/repair2-72-empty-original-diagnostic-source.tar.gz",
+          "sha256": "d820688d500e117667a906c5653d8077c0a9a4fbbed25585e8755ec0cb0d9fea"
+        },
+        {
+          "bytes": 5719,
+          "path": ".scratch/sqlite-controller/05/repair2-72-empty-original-diagnostic-start.json",
+          "sha256": "89523ef5daecc4e5effdeea69dce8018262677985d70ceeecc03401f92a7fdb7"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair2-72-empty-original-diagnostic",
+      "qualification": "Actual101/BOTH54.44s metadata-only diagnostic productionae4 unchanged: shared last8th tuple reconciling/null/UIfalse at0.504279s; separate29 original2s samples PASS. Original80070 tuple/raw gap unknown. Diagnostic1/2.",
+      "record": "runs/repair2-72-empty-original-diagnostic.json",
+      "record_sha256": "6563810c8458cea9dd2c0dfed36324a0a469279b059d3f14f7596b90db70ef8d",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 92413,
+          "path": ".scratch/sqlite-controller/05/repair2-73-native-ui-red.log",
+          "sha256": "821f7731d1ab10c040f30b0ec03749c2dd298ddaf69e05e1948387dc2be16e14"
+        },
+        {
+          "bytes": 223837,
+          "path": ".scratch/sqlite-controller/05/repair2-73-native-ui-red-source.tar.gz",
+          "sha256": "1584e9cb6c5a9f47cdb2f0d47cf6407e0adc5627874c020e52384e16df8b9aab"
+        },
+        {
+          "bytes": 5758,
+          "path": ".scratch/sqlite-controller/05/repair2-73-native-ui-red-start.json",
+          "sha256": "2b4aab2b0a70009a42f599e431c7331c91a2c56390f0b8eef1b0f624ec2c9eff"
+        }
+      ],
+      "input_count": 44,
+      "name": "repair2-73-native-ui-red",
+      "qualification": "Actual101/BOTH80.11s genuine lost-start-ACK response shape and retained exact A-steer after current B RED; no extra effects. Original current/new-stale controls retained.",
+      "record": "runs/repair2-73-native-ui-red.json",
+      "record_sha256": "f29a64ca0c33ab167f154b32e61dc6e92db26717243bb6ec0bbe1a8ca87efde3",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 90808,
+          "path": ".scratch/sqlite-controller/05/repair2-74-native-ui-green.log",
+          "sha256": "2afb737b1643154ac4281b7ba9d87168bf3730b98e3317cbe1d116779dab721b"
+        },
+        {
+          "bytes": 223989,
+          "path": ".scratch/sqlite-controller/05/repair2-74-native-ui-green-source.tar.gz",
+          "sha256": "4082cb024f7a24a89682e3b0c4aa2cf0f23034651994f9fb1286d00ee5376abd"
+        },
+        {
+          "bytes": 5758,
+          "path": ".scratch/sqlite-controller/05/repair2-74-native-ui-green-start.json",
+          "sha256": "9e1c7d5929b5d12f01f243e9477314988521e9808709831eea7455e4988f6338"
+        }
+      ],
+      "input_count": 44,
+      "name": "repair2-74-native-ui-green",
+      "qualification": "Matched73 actual0/BOTH90.30s native UI lostACK pinned response and exact retained steer after B GREEN, changed arguments/foreign/new stale/currentB/cached reply controls.",
+      "record": "runs/repair2-74-native-ui-green.json",
+      "record_sha256": "c5a9d404fc64b0431f074fae4a9a90d6800b0a9d6c7ce92828b20c88bb34a822",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 80074,
+          "path": ".scratch/sqlite-controller/05/repair2-75-empty-original-green.log",
+          "sha256": "e87a167970aeb0924e54953b6a234ea5cf8f24b79c076f6aa0517c78218f7fa4"
+        },
+        {
+          "bytes": 224138,
+          "path": ".scratch/sqlite-controller/05/repair2-75-empty-original-green-source.tar.gz",
+          "sha256": "ed49823219448232cfa85bdf18b23b29f4dfc0e585cb4047891e96cfe5ddf2ca"
+        },
+        {
+          "bytes": 5817,
+          "path": ".scratch/sqlite-controller/05/repair2-75-empty-original-green-start.json",
+          "sha256": "c0ef1975eaf20e772f04e39c4e722ccd274b92b95c1a6fafc31c197287c32229"
+        }
+      ],
+      "input_count": 44,
+      "name": "repair2-75-empty-original-green",
+      "qualification": "Matched72 original2s assertions/deadlines actual0/BOTH59.51s approved existing empty-creation/incarnation precheck GREEN. Diagnostic2/2 consumed; no historical80070 cause attribution.",
+      "record": "runs/repair2-75-empty-original-green.json",
+      "record_sha256": "d4a30c73610565022ef53252cc99ab638967a238e255b3bebc587f05dc547eb2",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 2365,
+          "path": ".scratch/sqlite-controller/05/repair2-76-projection-red.log",
+          "sha256": "275c86e952a8dff843c9714e3ed0e4e9d252b8c2afb6926e9fbcc33dd69c90f5"
+        },
+        {
+          "bytes": 226710,
+          "path": ".scratch/sqlite-controller/05/repair2-76-projection-red-source.tar.gz",
+          "sha256": "4950a9a359b7ef0103ea49f4063de3ad1bac411294c7e606138edbf4f5e5b573"
+        },
+        {
+          "bytes": 5914,
+          "path": ".scratch/sqlite-controller/05/repair2-76-projection-red-start.json",
+          "sha256": "4cffd5e52b99750358fb3e07dc73f2c5786fb2aaf11c2423cbbc637090e6ffe7"
+        }
+      ],
+      "input_count": 45,
+      "name": "repair2-76-projection-red",
+      "qualification": "Actual101 accumulated70 valid65536B UTF8 questions: control_center4606190B/events4601159B/dashboard1/MCP-32000 genuine projection RED.",
+      "record": "runs/repair2-76-projection-red.json",
+      "record_sha256": "6c5b2af261b1951e628f6e6fb5386d78501fd08826554b53aa9faffd433ef438",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 713,
+          "path": ".scratch/sqlite-controller/05/repair2-77-projection-green.log",
+          "sha256": "a5b32f6ff45f4f0727359fc3d6abc5d142668527a8ead5b8965595bcb6051f0f"
+        },
+        {
+          "bytes": 228369,
+          "path": ".scratch/sqlite-controller/05/repair2-77-projection-green-source.tar.gz",
+          "sha256": "0c82a19cd6a2168c5f0cbe68e5ce718c27018b617c7f4abcced612638e21a202"
+        },
+        {
+          "bytes": 6026,
+          "path": ".scratch/sqlite-controller/05/repair2-77-projection-green-start.json",
+          "sha256": "2b107abefee3640ef662ac7e461ac97b37f43268a9e3a8c78ddd7f11eead2066"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-77-projection-green",
+      "qualification": "Compiler undefined number setup failure, no GREEN or behavioral credit.",
+      "record": "runs/repair2-77-projection-green.json",
+      "record_sha256": "48bfaa763b7e43a914c6b51e21c56c71379f938fbd6de9957c09e0beda7490bc",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1705,
+          "path": ".scratch/sqlite-controller/05/repair2-78-projection-green.log",
+          "sha256": "b19beaf556af603392db494d0de20442f958067d34c303ed139338104f4df49a"
+        },
+        {
+          "bytes": 228434,
+          "path": ".scratch/sqlite-controller/05/repair2-78-projection-green-source.tar.gz",
+          "sha256": "7b7296399d5577fb86ded04b97737c47684c3d8da6eb867f83e0f496c74ea5b0"
+        },
+        {
+          "bytes": 6026,
+          "path": ".scratch/sqlite-controller/05/repair2-78-projection-green-start.json",
+          "sha256": "b8bcd5bc3f9a87951417c725f9c4be96b4245a0de9fabcc233472e364e3dbd5f"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-78-projection-green",
+      "qualification": "Actual0 bounded questions70/4pages/events73/4pages/own35/2pages exact Unicode fulltext and scoped continuations, CLI/dashboard/MCP GREEN. Conditional peer control_input negative not executed; corrected83.",
+      "record": "runs/repair2-78-projection-green.json",
+      "record_sha256": "eef82a45b6115e70a70afd049e245fe9a485c9931aa705088d1bc68dc9ef6499",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 933,
+          "path": ".scratch/sqlite-controller/05/repair2-79-late-runtime-red.log",
+          "sha256": "466bf2067c4bb40ab6e385330f76df937da7b2e7e0bb8050abcf7d652e9e7198"
+        },
+        {
+          "bytes": 228884,
+          "path": ".scratch/sqlite-controller/05/repair2-79-late-runtime-red-source.tar.gz",
+          "sha256": "877896f7a3228ca5baed0debb988870a18522ffc16ff6e7567e31a30a3da13ed"
+        },
+        {
+          "bytes": 6027,
+          "path": ".scratch/sqlite-controller/05/repair2-79-late-runtime-red-start.json",
+          "sha256": "e4fd0ff2dc63ad3d209bd79a0608411b7ea2546aeaf84bb17582890f50a80cd3"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-79-late-runtime-red",
+      "qualification": "Public observe_runtime correctly denied lacking trusted runtime evidence; history fixture setup failure, no semantic RED.",
+      "record": "runs/repair2-79-late-runtime-red.json",
+      "record_sha256": "4d331e853eade126e58631747b461f58dc0f380cfa16a0ae8efe90805a9b180b",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 956,
+          "path": ".scratch/sqlite-controller/05/repair2-80-late-runtime-red.log",
+          "sha256": "1c53fafbb660fa9a3d42e66606f471309dd8d9149f1c980df986dc87f4c1feec"
+        },
+        {
+          "bytes": 229158,
+          "path": ".scratch/sqlite-controller/05/repair2-80-late-runtime-red-source.tar.gz",
+          "sha256": "c175802269d1172830db0cfe6cd2adcc8ea4775725c4ceeae84b115364512031"
+        },
+        {
+          "bytes": 6027,
+          "path": ".scratch/sqlite-controller/05/repair2-80-late-runtime-red-start.json",
+          "sha256": "da3560acea3791ec0efdd642e8bac7f51acf1d360ae96c16068adbfd8a86115b"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-80-late-runtime-red",
+      "qualification": "Stopped owned DB seeded26 exited historical rows; fresh two real admissions observed[]/2slots, but fixture asserted wrong response shape. Qualified measurement only, no clean semantic oracle credit.",
+      "record": "runs/repair2-80-late-runtime-red.json",
+      "record_sha256": "8c7a4873d3148b0314583640e50e1217dca467e7baae51b8ba05c3748616e019",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1032,
+          "path": ".scratch/sqlite-controller/05/repair2-81-late-runtime-red.log",
+          "sha256": "e6ccd6aa60ddbc4afda737254e84f63bb461506675eabc2ce0fd24e55277152c"
+        },
+        {
+          "bytes": 229160,
+          "path": ".scratch/sqlite-controller/05/repair2-81-late-runtime-red-source.tar.gz",
+          "sha256": "9f38ef8f9b1ca220a742bfb82404aaf61a0dcf4e7da3dc069f4a06f4dc2526eb"
+        },
+        {
+          "bytes": 6027,
+          "path": ".scratch/sqlite-controller/05/repair2-81-late-runtime-red-start.json",
+          "sha256": "6a22079a15230634ec6b789aeb3752257abf2927a020630a17988c60d2ebbcf3"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-81-late-runtime-red",
+      "qualification": "Corrected exact original observed response shape actual101 meaningful late-active-slot RED0/2 behind26 stopped-DB seeded histories. Seeded rows are not actual prior executions.",
+      "record": "runs/repair2-81-late-runtime-red.json",
+      "record_sha256": "9d52aa3cec99d851fe95083e98a158d707d16c070afb7c75248267e76b23584c",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 1998,
+          "path": ".scratch/sqlite-controller/05/repair2-82-late-runtime-green.log",
+          "sha256": "e4c32a944167fb77e072639e8e37dd3e5031573f6f93753cd5fdd3e90ee6848d"
+        },
+        {
+          "bytes": 229542,
+          "path": ".scratch/sqlite-controller/05/repair2-82-late-runtime-green-source.tar.gz",
+          "sha256": "d06feaab6425631a48579d2d7a8920e752d0ae6f30c4c29456cd7f1581a8984f"
+        },
+        {
+          "bytes": 6027,
+          "path": ".scratch/sqlite-controller/05/repair2-82-late-runtime-green-start.json",
+          "sha256": "6f41ceb4b879f9812601a772aa37645a5e87f75a7055d5a18705e158460b357d"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-82-late-runtime-green",
+      "qualification": "Matched81 actual0 fresh two supervised workers/heartbeats/cancel0slots using approved operator two-slot exact-journal context. Seed history and fresh physical effects distinguished.",
+      "record": "runs/repair2-82-late-runtime-green.json",
+      "record_sha256": "c8d6562046d9bd41581c7c3329b51595436702e1b50c24b9a49a717cf86bfe61",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 2688,
+          "path": ".scratch/sqlite-controller/05/repair2-83-public-view-green.log",
+          "sha256": "6013085c9ad5388d7b3659dea98edc445d45462804dc0843b9a1ff455cbd9cd1"
+        },
+        {
+          "bytes": 232577,
+          "path": ".scratch/sqlite-controller/05/repair2-83-public-view-green-source.tar.gz",
+          "sha256": "f2dca4c662d919cac8590bdfe176605e6b03dd69cf7b09551d1a79f3cb0b47a7"
+        },
+        {
+          "bytes": 5989,
+          "path": ".scratch/sqlite-controller/05/repair2-83-public-view-green-start.json",
+          "sha256": "8a47f952a41d59990fdd3d761e16e7d63e8589b8c0e4d075bbc1504fa6bd157a"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-83-public-view-green",
+      "qualification": "Actual0 all3client+7public controls; unconditional peer scoped-input refusal, changed digest/bytes and invalid UTF8 offset no-effect negatives; full70questions/73events/35own, duplicate exact receipts.",
+      "record": "runs/repair2-83-public-view-green.json",
+      "record_sha256": "a40560b589781d29029ec0ca16860b167578b902ee97913ad6a3ae46e1f93605",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 18960,
+          "path": ".scratch/sqlite-controller/05/repair2-84-projection-consumer-git.log",
+          "sha256": "c2f0cf70d09a267be59c625ba2f79223385c1d84b8c5d094dd1d22faa44ffdfa"
+        },
+        {
+          "bytes": 234660,
+          "path": ".scratch/sqlite-controller/05/repair2-84-projection-consumer-git-source.tar.gz",
+          "sha256": "ddee97bbb80c75bf7bdfe752f03e154168c32bc359fa445456c49429163ab575"
+        },
+        {
+          "bytes": 6030,
+          "path": ".scratch/sqlite-controller/05/repair2-84-projection-consumer-git-start.json",
+          "sha256": "9ba66f91fa03f0484b7c51760592fff2839f4cb144932b5de53cd4647cada2ec"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-84-projection-consumer-git",
+      "qualification": "Actual0 bounded configured Git inventory/history with25 seeded old rows plus fresh actual late active workspace, two pages26records/25history and exact two large immutable input refs; role negatives/currentcancel. Original slow-I/O control48.65ms. Runtime missing/duplicate-start/duplicate-cancel/foreign journal refusal no journal/event/receipt effect and late-slot positives.",
+      "record": "runs/repair2-84-projection-consumer-git.json",
+      "record_sha256": "d61cd4973ae48b6623ca8258492c4f57109884460aab4fee36eeb1bdf1bae779",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 92615,
+          "path": ".scratch/sqlite-controller/05/repair2-85-native-ui-public-history.log",
+          "sha256": "645c4e32f6a7c606ae1d6415dbf749476131fb17e5e226de6d8ba7bc08639d6f"
+        },
+        {
+          "bytes": 234661,
+          "path": ".scratch/sqlite-controller/05/repair2-85-native-ui-public-history-source.tar.gz",
+          "sha256": "23f3b6ea472500c7b3f23fce38d3c6dd5c121f776e0a44488f244b3da275e7ba"
+        },
+        {
+          "bytes": 6005,
+          "path": ".scratch/sqlite-controller/05/repair2-85-native-ui-public-history-start.json",
+          "sha256": "7c79cce3e30d75ffd78806dd20d7e1f2389cab0fbd425ac5413151472faab134"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-85-native-ui-public-history",
+      "qualification": "Actual0/BOTH91.19s pinned native UI lostACK/saved steer A-to-B, changed/foreign/newstale/currentB/cached recovered start after B; worker typed public/tool history full inputs/peer refusal.",
+      "record": "runs/repair2-85-native-ui-public-history.json",
+      "record_sha256": "9b0db52195f997391f0cf3478b247079ce7f404add17c93bc080d52fb5907e49",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 171680,
+          "path": ".scratch/sqlite-controller/05/repair2-86-kata-runtime-regression.log",
+          "sha256": "265c7f152769568309cdc4b75449dc78e21aa7b1a822772ca3e843ac3adcb9bc"
+        },
+        {
+          "bytes": 234766,
+          "path": ".scratch/sqlite-controller/05/repair2-86-kata-runtime-regression-source.tar.gz",
+          "sha256": "2f9d29f875645c3039211a86156eaf83df02b3a44d56fa6fcacd4d77b178f701"
+        },
+        {
+          "bytes": 5980,
+          "path": ".scratch/sqlite-controller/05/repair2-86-kata-runtime-regression-start.json",
+          "sha256": "c64acbd60ed178d73a08f156515ac1911f235c72661f025706999ccde063c022"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-86-kata-runtime-regression",
+      "qualification": "Actual101 Kata7PASS1FAIL: original maxprogress inline-only events consumer fails on bounded exact reference. Runtime bin not run. Retained driver failure, no lost fulltext claim.",
+      "record": "runs/repair2-86-kata-runtime-regression.json",
+      "record_sha256": "77e146306fdda1c58784b9cab08052a544aa137f4ae60229f59ed76a5ee5854c",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 467,
+          "path": ".scratch/sqlite-controller/05/repair2-87-kata-progress-consumer.log",
+          "sha256": "b14de9e2af103590247bb84c3dc1994fba7e44980e00eba237e9aec1ac45e4f0"
+        },
+        {
+          "bytes": 235098,
+          "path": ".scratch/sqlite-controller/05/repair2-87-kata-progress-consumer-source.tar.gz",
+          "sha256": "a0646780eb03418ef09d582204f7e7999fd7163f27bf5e78b8952e493080eb44"
+        },
+        {
+          "bytes": 6017,
+          "path": ".scratch/sqlite-controller/05/repair2-87-kata-progress-consumer-start.json",
+          "sha256": "e7deab2f4a6dd131b6c56e8694a1d2fafec837239c3b68c7916dac093b883578"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-87-kata-progress-consumer",
+      "qualification": "TEST-only reference/page consumer adaptation: original65536B exact progress equality and deadlines unchanged; actual0 required Kata maxprogress plus reported-progress full reference. Product publication/fences unchanged.",
+      "record": "runs/repair2-87-kata-progress-consumer.json",
+      "record_sha256": "a8540f74b5465ab0f962797fda185d11dfdcbd7a7fd4de19ab4d9d2b8a57acf2",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 18768,
+          "path": ".scratch/sqlite-controller/05/repair2-88-runtime-units-regression.log",
+          "sha256": "2c56ecaf4a329b25a213708a4101ee6bf287c61b3bfd1dc8f3bc727b29ca705e"
+        },
+        {
+          "bytes": 235343,
+          "path": ".scratch/sqlite-controller/05/repair2-88-runtime-units-regression-source.tar.gz",
+          "sha256": "6d7228bc7a1a06f95d7bfeaec5fe3123fe8675c6019edf8cf63afd0b30047eb6"
+        },
+        {
+          "bytes": 5967,
+          "path": ".scratch/sqlite-controller/05/repair2-88-runtime-units-regression-start.json",
+          "sha256": "2dcb19da81e88b342513fdcc31200e2cdfc40db6b36cb51347510d4ce364d707"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-88-runtime-units-regression",
+      "qualification": "Actual0 units20+runtime16 original pause/currentauth/cancel/tombstone/unknown/no-PID-reconstruction and late-slot semantics PASS.",
+      "record": "runs/repair2-88-runtime-units-regression.json",
+      "record_sha256": "cb4d821e148b06c6f69ba96e14c0e247d95a70e970c79415e19e92a80542a132",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 92684,
+          "path": ".scratch/sqlite-controller/05/repair2-89-replaced-lead-history-red.log",
+          "sha256": "8ad0c394b4644fe0aa052cbb3e9fccb6e3b0940eeec7d34c7ecbebf94c86d445"
+        },
+        {
+          "bytes": 235737,
+          "path": ".scratch/sqlite-controller/05/repair2-89-replaced-lead-history-red-source.tar.gz",
+          "sha256": "c849b11a797b218a2df87d880f16dbd8f7ab97cb2d81affa9d1ba83008b7bc7f"
+        },
+        {
+          "bytes": 6005,
+          "path": ".scratch/sqlite-controller/05/repair2-89-replaced-lead-history-red-start.json",
+          "sha256": "0a64e5c0f031da501c6e6a29ee8b8edb9372f4910eacc8e45b8eb93306a13dd5"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-89-replaced-lead-history-red",
+      "qualification": "Actual101/BOTH82.99s replaced lead public/tool history missing semantic RED despite four retained native turns. Old principal exact native start/steer retries already refused without old UI/journal effects.",
+      "record": "runs/repair2-89-replaced-lead-history-red.json",
+      "record_sha256": "0a4c9d5273befb17500aa326091bbd7de7e855ec029c8f18e69f97f31617aea7",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 6838,
+          "path": ".scratch/sqlite-controller/05/repair2-90-lead-ledger-public-check.log",
+          "sha256": "31719b1f00ca65d09bce6e06bd4d0535b6e9bad124306bfe0102cc4b4b65acf4"
+        },
+        {
+          "bytes": 237549,
+          "path": ".scratch/sqlite-controller/05/repair2-90-lead-ledger-public-check-source.tar.gz",
+          "sha256": "ec40bd188a809e5a8048ae09fb27e4fec66a1163ad05c415f9f12fed155bd55b"
+        },
+        {
+          "bytes": 6002,
+          "path": ".scratch/sqlite-controller/05/repair2-90-lead-ledger-public-check-start.json",
+          "sha256": "aa5a7f6b2562530d14e3ad4150fec738431c9bf70f8e14d6c5fbf172a363e681"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-90-lead-ledger-public-check",
+      "qualification": "Actual0 units20+client3+public8 after separate typed-visible lead history ledger and documented history-derived recovered response presentation.",
+      "record": "runs/repair2-90-lead-ledger-public-check.json",
+      "record_sha256": "545d523989ef76aaf02f5bc9d6574af8a363c5e9b4f33737185e10273c2e389d",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 91142,
+          "path": ".scratch/sqlite-controller/05/repair2-91-lead-history-native-green.log",
+          "sha256": "33ef1e51a030ad2a5ab6a4a8bd820c8a9370514e0982123b6da1badd2ef0dedd"
+        },
+        {
+          "bytes": 237700,
+          "path": ".scratch/sqlite-controller/05/repair2-91-lead-history-native-green-source.tar.gz",
+          "sha256": "34336a860455e55683f9c70adca1b800f841c25793ddf64c05cc51c30ec86823"
+        },
+        {
+          "bytes": 6005,
+          "path": ".scratch/sqlite-controller/05/repair2-91-lead-history-native-green-start.json",
+          "sha256": "76bbf150c31cc8471f83fefd28796b88bd149f377da5edf6939264fd98a54ca9"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-91-lead-history-native-green",
+      "qualification": "Matched89 actual0/BOTH90.48s old lead12retained typed public/tool items each; replacement/operator exact inputs; worker/observer/revoked grants denied. Empty response items are documented history-derived presentation, never observed lost initial ACK items.",
+      "record": "runs/repair2-91-lead-history-native-green.json",
+      "record_sha256": "5ec82c76bc480415936f6e6d20132ba2d5b66858a4f29dc559f2ee7f14d4430d",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1849,
+          "path": ".scratch/sqlite-controller/05/repair2-92-clippy.log",
+          "sha256": "db2adb0df4c582e0be41c9cc681b535fc6b3e729106513d6ba44b22c07333771"
+        },
+        {
+          "bytes": 237681,
+          "path": ".scratch/sqlite-controller/05/repair2-92-clippy-source.tar.gz",
+          "sha256": "79420dfbf17fa6f32bdb483ce5638ffe0107d163bb560b65815ed2d87fe2ac15"
+        },
+        {
+          "bytes": 5931,
+          "path": ".scratch/sqlite-controller/05/repair2-92-clippy-start.json",
+          "sha256": "7efee19b85cae2ebfe5911eb137b5fb5f3072ac14c8d189dc3e9e2f6abf185a4"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-92-clippy",
+      "qualification": "Strict FI Clippy101 two lint findings raw8args and collapsible-if; no semantic failure credit.",
+      "record": "runs/repair2-92-clippy.json",
+      "record_sha256": "0ead7cce26938ed2fdbb01118c0ee88ab49aea559f872e7bf5799ab827288a6d",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1389,
+          "path": ".scratch/sqlite-controller/05/repair2-93-final-public-units.log",
+          "sha256": "be59b7e39c0137608879c8f244e40f0effbccdb4f40e452dd2043180b4188612"
+        },
+        {
+          "bytes": 238900,
+          "path": ".scratch/sqlite-controller/05/repair2-93-final-public-units-source.tar.gz",
+          "sha256": "da61d9544b8bfc0024e40e207a49d16ad34285c1a12f274480cc489f52089e94"
+        },
+        {
+          "bytes": 6002,
+          "path": ".scratch/sqlite-controller/05/repair2-93-final-public-units-start.json",
+          "sha256": "8d0a5378971ef80fcf5f03be400c774056ea8ef53de142e3532b5f9d7bc0f4c6"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-93-final-public-units",
+      "qualification": "Mechanical private RecordRange call adaptation missed one compiler call; no GREEN.",
+      "record": "runs/repair2-93-final-public-units.json",
+      "record_sha256": "a96461beeea6d49069da8ce267bec0686f43e655d9cbe799ac3b8d9d2f3d0e22",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 7077,
+          "path": ".scratch/sqlite-controller/05/repair2-94-final-public-units.log",
+          "sha256": "8354ec839652f810dc830851a67cca11b017dddcab9c301a05f7987505ff1283"
+        },
+        {
+          "bytes": 238939,
+          "path": ".scratch/sqlite-controller/05/repair2-94-final-public-units-source.tar.gz",
+          "sha256": "04cde62619fdc25196f503b1f9db6da1adb1c285a4c4a4444b5b11006f9a34d7"
+        },
+        {
+          "bytes": 6002,
+          "path": ".scratch/sqlite-controller/05/repair2-94-final-public-units-start.json",
+          "sha256": "5b9680a158bf8f99b2d8665caa0bb3f1b97c0939cd26075a0210bd84b8ed85fd"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-94-final-public-units",
+      "qualification": "Actual0 final product units21/client3/public8; synthetic typed source fixture proves private/unfinished/credential redaction, exact provenance/digest, immutable lead ledger/dedup and unchanged worker monitor/assessment credit. Actual native positives independently91.",
+      "record": "runs/repair2-94-final-public-units.json",
+      "record_sha256": "0824a9bb67f4267fa55d8ec602580166cb90fbcc523c36967ca2fd5e15a9603f",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 214,
+          "path": ".scratch/sqlite-controller/05/repair2-95-final-clippy.log",
+          "sha256": "d9bc5f3efce878b6b8cb50b4ca9f4dd43e77dd15088ad57777ff276b3f3125e0"
+        },
+        {
+          "bytes": 238933,
+          "path": ".scratch/sqlite-controller/05/repair2-95-final-clippy-source.tar.gz",
+          "sha256": "feb94975823cad2a017908ba08c333e268a2c53e3c00e5e72ae0d7bdb8b2c401"
+        },
+        {
+          "bytes": 5931,
+          "path": ".scratch/sqlite-controller/05/repair2-95-final-clippy-start.json",
+          "sha256": "62da8e0cf801341c66ca006091972f9ee47d081032c7d29b1907a58d9ec1ddc6"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-95-final-clippy",
+      "qualification": "Actual0 strict all-target FI Clippy -D warnings; product source bytes final, later test-consumer adaptation qualified separately.",
+      "record": "runs/repair2-95-final-clippy.json",
+      "record_sha256": "c89a96ee4e1d7611488351710f915933c85cab4413287bb9969ebfb52331a14a",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 55161,
+          "path": ".scratch/sqlite-controller/05/repair2-96-final-native-controls.log",
+          "sha256": "57b8f05a826d68527e4f50caae13283e5aad030c5d3a9288c8ebc5db5e44c3f2"
+        },
+        {
+          "bytes": 238942,
+          "path": ".scratch/sqlite-controller/05/repair2-96-final-native-controls-source.tar.gz",
+          "sha256": "1b1de863c4cf3da009c93e68ebbbcd599c684d22f5b810698352419a54fdb7a9"
+        },
+        {
+          "bytes": 6213,
+          "path": ".scratch/sqlite-controller/05/repair2-96-final-native-controls-start.json",
+          "sha256": "fe72c8585388304cad924aaa30c359725ad2206686e7aee23690663f8bb2b56d"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-96-final-native-controls",
+      "qualification": "Actual101/43.39s combined native TEST TypeError json.loads(decoded arguments dict), no target RED/success credit. Root audit35135d6 confirms46inputs unchanged.",
+      "record": "runs/repair2-96-final-native-controls.json",
+      "record_sha256": "3dc4de9095d0dba1020438a9b2548f1cd5dcce70ed8294232c332a02d94503a7",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 53905,
+          "path": ".scratch/sqlite-controller/05/repair2-97-final-native-consumer.log",
+          "sha256": "260c80a4e9a4dfbf718bdbfeab16c292876830810732b52f5f6dd13c2e0d26f3"
+        },
+        {
+          "bytes": 239205,
+          "path": ".scratch/sqlite-controller/05/repair2-97-final-native-consumer-source.tar.gz",
+          "sha256": "047474d0e89fbd013a84ecd1f3f1edf7e319e1b74cc75a63c8da174d45df288e"
+        },
+        {
+          "bytes": 6213,
+          "path": ".scratch/sqlite-controller/05/repair2-97-final-native-consumer-start.json",
+          "sha256": "38ed99e5b8e662f101e8eb369c47ccaae81baa0e13161a13d81c4be0013c27b2"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-97-final-native-consumer",
+      "qualification": "Actual101/41.85s combined native TEST TypeError query helper accepts only kind, no target RED/success credit. Subsequent TEST-only optional selectors and large question descriptor match preserve exact assertions/deadlines.",
+      "record": "runs/repair2-97-final-native-consumer.json",
+      "record_sha256": "a357b49dc63b4ef411fb67671228d58f65d9867fa5cc325759f5f5b7eb1b9814",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 151144,
+          "path": ".scratch/sqlite-controller/05/repair2-98-final-native-consumer.log",
+          "sha256": "d615222616aeb8064ede271fae6ad9b01cafa61b49e9ee9827bb546b7c24167b"
+        },
+        {
+          "bytes": 239242,
+          "path": ".scratch/sqlite-controller/05/repair2-98-final-native-consumer-source.tar.gz",
+          "sha256": "fae2768eb6dcb0bebedb407b75f73cda48d3b218939de950d80efc77bfda6d99"
+        },
+        {
+          "bytes": 6213,
+          "path": ".scratch/sqlite-controller/05/repair2-98-final-native-consumer-start.json",
+          "sha256": "3d2bf362e0def5764d45ce3d81d4fd667b657bdf2acfb1b6856feb536c43388e"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-98-final-native-consumer",
+      "qualification": "Actual0/BOTH137.34s combined pinned real native+companion+TUI after TEST consumer adaptation: exact active replay/interrupt, serialized drain, shared peer routing to validated owner, earlyACK/lostreply/finish race, typed monitor input/correction workerACK, ten exact large questions/later delivery, two slots/replacement/cancel controls.",
+      "record": "runs/repair2-98-final-native-consumer.json",
+      "record_sha256": "9c89d0467df11ae5cd49b8238460ca40b3ee86fa32b1dd7186912681e79a171b",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 127811,
+          "path": ".scratch/sqlite-controller/05/repair2-99-final-default-initial.log",
+          "sha256": "ebe1feb369a1ab3f6756a74e6aa8e718d77ad9ff291345aeac9a6f4ed8bee473"
+        },
+        {
+          "bytes": 239242,
+          "path": ".scratch/sqlite-controller/05/repair2-99-final-default-initial-source.tar.gz",
+          "sha256": "4513593f6016b3a7aaf665dcc7a261c3f4f64e4112f1e3c29fcfe3162ed20f26"
+        },
+        {
+          "bytes": 6025,
+          "path": ".scratch/sqlite-controller/05/repair2-99-final-default-initial-start.json",
+          "sha256": "758afb7ac25c4b3792452a7377ed8062e943d42a75d8bec066899d5d452e309c"
+        }
+      ],
+      "input_count": 46,
+      "name": "repair2-99-final-default-initial",
+      "qualification": "Actual0 required DEFAULT initial-confirm/BOTH60.64s, no optional diagnostic; exact original turn+clientId wait SAME10s and unchanged final assertion. No historical full-gate causality/05 attribution.",
+      "record": "runs/repair2-99-final-default-initial.json",
+      "record_sha256": "6f58c6485058f7895a558e197df5a95fa20ed424d2a982bf24d20059ce338c1e",
+      "source_unchanged": true
+    }
+  ],
+  "source_commit": "6f2c41556a50b3ab0b74da9a7b499e458d445156"
+}

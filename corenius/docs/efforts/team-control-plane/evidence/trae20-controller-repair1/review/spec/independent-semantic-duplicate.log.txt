@@ -1,0 +1,14 @@
+test_durable_boundary_and_duplicate_refusal (test_trae_case_control.DurableControllerBehavior.test_durable_boundary_and_duplicate_refusal) ... FAIL
+
+======================================================================
+FAIL: test_durable_boundary_and_duplicate_refusal (test_trae_case_control.DurableControllerBehavior.test_durable_boundary_and_duplicate_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/tools/probes/test_trae_case_control.py", line 52, in test_durable_boundary_and_duplicate_refusal
+    self.assertFalse(self.run_controller()['executed'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

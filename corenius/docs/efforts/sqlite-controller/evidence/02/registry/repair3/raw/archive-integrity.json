@@ -1,0 +1,80 @@
+[
+  {
+    "manifest": "gate-source.json",
+    "archive": "gate-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "green-adoption-source.json",
+    "archive": "green-adoption-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "green-cleanup-source.json",
+    "archive": "green-cleanup-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "green-combined-source.json",
+    "archive": "green-combined-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "prefreeze-clippy-first-source.json",
+    "archive": "prefreeze-clippy-first-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "prefreeze-clippy-source.json",
+    "archive": "prefreeze-clippy-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "prefreeze-diff-source.json",
+    "archive": "prefreeze-diff-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "prefreeze-fmt-source.json",
+    "archive": "prefreeze-fmt-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "red-adoption-completed-source.json",
+    "archive": "red-adoption-completed-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "red-adoption-source.json",
+    "archive": "red-adoption-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "red-adoption-status-source.json",
+    "archive": "red-adoption-status-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "red-cleanup-retained-error-source.json",
+    "archive": "red-cleanup-retained-error-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  },
+  {
+    "manifest": "red-cleanup-source.json",
+    "archive": "red-cleanup-source.tar.gz",
+    "files": 25,
+    "hashes_match": true
+  }
+]

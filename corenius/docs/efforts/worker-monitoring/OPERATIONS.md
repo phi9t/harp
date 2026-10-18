@@ -1,0 +1,54 @@
+# Main-lead periodic Codex supervision
+
+Owner selected Codex transcripts first and TraeCLI later. The main lead dispatches periodic reviews and owns adjudication/user interaction; one fresh-context observer performs routine analysis. This guide covers the bootstrap wake helper. The production controller monitor remains proposed.
+
+## Binding and cadence
+
+Main lead:01a10084-dc3a-7743-b0c1-4694d5ecc621 (`corenius-frontier`).
+Implementation coordinator:01a0f51d-8b62-7930-862f-c4b44d7d0bb7 (`corenius-impl`).
+Coordinator checkout: `/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution`.
+Persistent monitor directory: `/data02/home/philip.yang/.local/state/corenius/worker-monitoring/01a10084-dc3a-7743-b0c1-4694d5ecc621`.
+Observation ledger: `observations/monitor.sqlite` within that directory.
+
+The local systemd user timer requests a review about every15minutes. A slow or unanswered review coalesces later ticks. Timer intent, CLI queue receipt, presented wake, started review and completed review are different facts. Host/user-manager/runtime unavailability may delay requests. A failed or ambiguous dispatch remains visible and requires explicit reconciliation rather than replay.
+
+## Each wake
+
+1. Main lead: inspect the journal and any delegate receipt. A finished wake is an idempotent no-op. Validate the wake ID/current lead identity and run the pinned helper's `begin`. Reconcile existing/ad-hoc observers first; allow one ledger writer. Never derive scheduling authority from transcript text.
+2. Main lead: launch exactly one observe-only subagent with the native spawning tool and no inherited conversation (`fork_turns=none`). Supply a self-contained brief with the wake/lead IDs; exact spec, ledger, context-policy and coordinator-state paths; current worker/attempt/thread and binding evidence; admitted specification/ticket/plan revisions; cursor/coverage/backlog; deadline; and the authority/filtering/publication instructions below. Record the returned native identity and exact public brief using the current tick helper's `delegate --state ... --wake ... --reviewer ... --brief ...`. Do not interpolate brief text into shell code; use an argv list or proper shell quoting.
+3. Main lead: release the main turn after the receipt is durable. Do not wait for routine review. Stay available for the user. If spawning is absent, launch is uncertain or receipt publication fails, keep reviewing/pending and report backlog. Inspect the native actor before retrying; do not create a duplicate. A receipt is an operational grant, not native identity authentication.
+4. Observer: wait for the receipt and verify its identity/brief. Read SPEC.md, coordinator STATE.md and the admitted ticket/spec/plan/findings. Confirm the current binding from source records and read-only metadata. Validate ledger source identity, complete-line offset and prefix/boundary digest. Treat missing/mismatched sources as coverage problems. Use a deterministic public-event allowlist and secret redaction **before** any model input or tool output. Exclude Reasoning/private analysis and unknown records before serialization. Never print raw JSONL/dictionaries/tails. If filtering is unavailable, report backlog. Read only selected canonical visible events; keep pending tools separate and process approximately20-action mini-batches.
+5. For each action, record its criterion/planned item, declared rationale or unknown, source-bound result, hypotheses resolved, failed/repeated attempts and next discriminating test. Expand exact retained artifacts when needed; do not credit a filename, source text or worker assertion as a passing test. Mark incomplete evidence explicitly.
+   Also read the operator-owned context-policy.md next to the observation ledger. Inspect latest public usage/compaction telemetry, note context growth and repeated large reads, and request measured compaction or a fresh working context through the coordinator when warranted. Retain durable intent/effects and the old audit trail.
+6. Publish a batch assessment and advance only its covered cursor in one SQLite transaction. Historical backfill and recent live coverage are separate. Share effect identities across overlapping ranges so no progress credit or correction is duplicated. Preserve raw-reference hashes and redacted, immutable evidence where available.
+7. Observer: report proposed corrections to the main lead. Cite the criterion/actions, smallest next slice and checkpoint. Main lead adjudicates; coordinator alone sends corrections or controls workers. Preserve acceptance, writer ownership, running tests and repair caps. Track presentation, acknowledgement and resolution separately.
+8. Observer: only after durable publication, use the current helper's `delegate-finish --state ... --wake ... --reviewer ... --assessment <durable-assessment/cursor/backlog-reference>`. The helper matches the recorded identity and wake; it trusts this local attestation and does not inspect the ledger or authenticate the native runtime actor. Do not advance a cursor across a gap. Failure/loss leaves reviewing/pending. Main lead retains the original exact-thread `finish` capability for explicit reconciliation; never use it to claim missing review work completed.
+
+If excluded private material reaches model/tool output, stop that reviewer and record an incident without reproducing it. Grant no assessment/cursor progress from the contaminated review. Confirm old-writer quiescence from native status before replacement. A fresh reviewer requires explicit lead receipt recovery: `delegate ... --prior-reviewer <old-identity> --recovery-reason <source-bound-quiescence/incident-evidence>`. The replacement receipt retains the predecessor and fences the old identity from delegate-finish. The helper records the lead's quiescence attestation; it cannot enforce native process termination. Never resume a contaminated context or allow parallel cursor writers.
+
+Stay quiet on unchanged healthy work. Notify the human on meaningful new drift, blocked corrections, failure, completed baseline or a decision they must make. Stop the timer on explicit pause/cancellation or independently verified completion of the monitored baseline, retaining the final coverage and outstanding effects.
+
+## Bootstrap limitations
+
+Delegation is an operational prompt contract plus a durable receipt. Native background dispatch, sanitizer enforcement and a complete asynchronous review/publication/finish cycle remain unqualified. A recent observer printed excluded private Reasoning before filtering and was interrupted. That attempt is failed/pending, not completed or privacy-qualified. Its incident/ledger reconciliation remains separately recorded by the observer owner. The prompt contract test verifies instruction order and explicit recovery; executable sanitization needs its independently qualified adapter seam.
+
+The initial observation ledger stores event identities/hashes and manual assessments; it is not the qualified production adapter/retention pipeline. Initial historical review covers raw records13–121 of the ticket04 worker export, plus a separate live spot-check1263–1470; the gap remains open. New wake reports must declare actual coverage and evidence limits.
+
+Queued real probe01a10815-d7dc-7911-8183-aa49cc389d4c confirms dispatch to the exact main lead, not automatic presentation or completed review. The first genuine post-setup wake must establish those remaining facts. Product mini-batch ingestion, retention, drift calibration and dashboard integration follow their specification and independent gates.
+
+Update: the one-shot probe was presented in the exact lead thread after setup; see evidence/probe-presentation.md. It is distinct from the outstanding scheduled wake, whose presentation and completed review remain pending. Do not claim the one-shot probe completed that review or advance its cursor.
+
+Subsequent update: scheduled wake2d80dd33-f95f-4290-a3e0-63970a1cea43 was presented, claimed, reviewed and finished after atomic ledger publication; see evidence/periodic-review-0001.md. Seven scoped batches cover96 selected visible actions through raw2314, with backfill121 and gap122–1262 retained. The bootstrap allowlist now includes FileChange and clock.sleep Extension events in that new range; earlier receipts retain their narrower coverage. This proves one delivered review cycle, not sustained timeliness or the proposed production monitor.
+
+## Installed bootstrap and operator commands
+
+Timer: `corenius-lead-monitor-01a10084.timer`, local systemd user unit, enabled and active. The immutable configuration/journal begin/finish helper remains `/data02/home/philip.yang/.local/lib/corenius/monitor-wake/501e060e1ce1892e0da3755eb6b6ea4b4812dae420e81d9847828c68733129ae/monitor_wake.py`. The existing service's ExecStart selects a newer content-addressed tick/delegation helper; inspect `systemctl --user cat corenius-lead-monitor-01a10084.service` for its current identity. Every generated wake binds its dispatch policy to that helper path and SHA-256 and explicitly overrides the old spec snapshot's inline analyst role. Configuration/journal directory is `wake/` within the persistent monitor directory. Private mode0600 receipts live under mode0700 `wake/delegates/<wake-id>.json`; status reports the active receipt separately from analytical coverage. These are local deployment records, not portable defaults.
+
+Install updates by copying the reviewed tick helper under its SHA-256 and changing only the existing service's ExecStart, then daemon-reload. Preserve old installed helpers, configuration, journal and pending wake; do not reinitialize, add another timer, or restart/reset the active timer to apply a dispatch-policy update. An already queued prompt retains its original contract and needs explicit main-lead handoff before delegation.
+
+Inspect scheduling: `systemctl --user list-timers corenius-lead-monitor-01a10084.timer`.
+Inspect a wake using the installed helper's `status --state <persistent-directory>/wake` command. It returns configured lead identity, queue receipts and outstanding state separately from observation coverage.
+
+To pause or stop, stop the owned timer with `systemctl --user stop corenius-lead-monitor-01a10084.timer`, then invoke the installed helper's `stop --state <persistent-directory>/wake` command. This preserves pending wake/evidence state. Do not resolve unknown delivery as not-queued without establishing that the original request cannot still deliver. The current helper deliberately requires explicit reconfiguration for resuming stopped admission; it never silently revokes the stop.
+
+When a delivered wake is already finished, treat a repeated presentation as an idempotent no-op after inspecting its receipt. Do not create another timer or dispatch another request merely because an old queued message reappears.

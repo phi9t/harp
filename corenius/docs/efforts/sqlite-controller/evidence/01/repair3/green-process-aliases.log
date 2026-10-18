@@ -1,0 +1,16 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-b82c9322483fdbbb)
+
+running 1 test
+daemon_ready pid=2305364 socket=/data02/home/philip.yang/devx/tmp/.tmpMjBmR5/api.sock
+alias_competitor pid=2305365 path=/data02/home/philip.yang/devx/tmp/.tmpMjBmR5/target.db status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+alias_competitor pid=2305366 path=/data02/home/philip.yang/devx/tmp/.tmpMjBmR5/alias.db status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+owned_daemon_killed pid=2305364 status=signal: 9 (SIGKILL)
+daemon_ready pid=2305367 socket=/data02/home/philip.yang/devx/tmp/.tmpMjBmR5/api.sock
+test existing_database_aliases_share_process_ownership ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.05s
+
+
+# Recorded command exit status: 0

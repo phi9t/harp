@@ -1,0 +1,156 @@
+{
+  "source": "15ba811ea37f03ee344a0e0c473cf4df5a67e785",
+  "operator_verification": {
+    "observed_at": "2026-10-05T04:34:08.193122+00:00",
+    "panes": [
+      {
+        "window": "@104",
+        "name": "overview",
+        "pane": "%114",
+        "pid": 985345,
+        "dead": false,
+        "codex_executables": []
+      },
+      {
+        "window": "@105",
+        "name": "implementation-coordinator",
+        "pane": "%115",
+        "pid": 985350,
+        "dead": false,
+        "codex_executables": [
+          {
+            "pid": 985350,
+            "exe": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.160.0-x86_64-unknown-linux-musl/bin/codex"
+          }
+        ]
+      },
+      {
+        "window": "@106",
+        "name": "main-lead",
+        "pane": "%116",
+        "pid": 985577,
+        "dead": false,
+        "codex_executables": [
+          {
+            "pid": 985577,
+            "exe": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.160.0-x86_64-unknown-linux-musl/bin/codex"
+          }
+        ]
+      },
+      {
+        "window": "@107",
+        "name": "worker-1",
+        "pane": "%117",
+        "pid": 985810,
+        "dead": false,
+        "codex_executables": [
+          {
+            "pid": 985810,
+            "exe": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.160.0-x86_64-unknown-linux-musl/bin/codex"
+          }
+        ]
+      },
+      {
+        "window": "@108",
+        "name": "controller",
+        "pane": "%118",
+        "pid": 989116,
+        "dead": false,
+        "codex_executables": []
+      },
+      {
+        "window": "@109",
+        "name": "workspaces",
+        "pane": "%119",
+        "pid": 989122,
+        "dead": false,
+        "codex_executables": []
+      },
+      {
+        "window": "@110",
+        "name": "kata",
+        "pane": "%120",
+        "pid": 989127,
+        "dead": false,
+        "codex_executables": []
+      },
+      {
+        "window": "@111",
+        "name": "state-feed",
+        "pane": "%121",
+        "pid": 989141,
+        "dead": false,
+        "codex_executables": []
+      },
+      {
+        "window": "@112",
+        "name": "view-manager",
+        "pane": "%122",
+        "pid": 989204,
+        "dead": false,
+        "codex_executables": []
+      }
+    ],
+    "public_feed_health": {
+      "controller": "unavailable: ConnectionRefusedError",
+      "kata": "read ok",
+      "observed_at": "2026-10-05T04:34:08.010338+00:00"
+    },
+    "manifest_health": "degraded",
+    "source": "15ba811ea37f03ee344a0e0c473cf4df5a67e785",
+    "checks": {
+      "focused_tests": 43,
+      "result": "PASS",
+      "duration_seconds": 25.314,
+      "py_compile": "PASS",
+      "git_diff_check": "PASS"
+    }
+  },
+  "native_metadata": {
+    "observed_at": "2026-10-05T04:34:44.225100+00:00",
+    "include_turns": false,
+    "threads": [
+      {
+        "role": "main-lead",
+        "requested_thread": "01a10084-dc3a-7743-b0c1-4694d5ecc621",
+        "reported_thread": "01a10084-dc3a-7743-b0c1-4694d5ecc621",
+        "cwd": "/data02/home/philip.yang/workspace/corenius",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "error_code": null
+      },
+      {
+        "role": "implementation-coordinator",
+        "requested_thread": "01a0f51d-8b62-7930-862f-c4b44d7d0bb7",
+        "reported_thread": "01a0f51d-8b62-7930-862f-c4b44d7d0bb7",
+        "cwd": "/data02/home/philip.yang/workspace/corenius",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "error_code": null
+      },
+      {
+        "role": "implementation-worker",
+        "requested_thread": "01a10a48-15be-7d63-a501-8405ed1f5a23",
+        "reported_thread": "01a10a48-15be-7d63-a501-8405ed1f5a23",
+        "cwd": "/data02/home/philip.yang/workspace/corenius",
+        "status": {
+          "type": "active",
+          "activeFlags": []
+        },
+        "error_code": null
+      }
+    ]
+  },
+  "scope": "Operator tools and timestamped view installation; product baseline and service recovery unqualified",
+  "review_disposition": "Scoped Spec, Standards, independent branch findings resolved",
+  "coordinator_notices": [
+    "01a10a55-5178-76b2-941c-c06c83b52612",
+    "01a10a56-c370-7ed3-8994-368b4a97a6ec"
+  ],
+  "coordinator_ack": "unconfirmed",
+  "no_core_service_or_task_restart": true
+}

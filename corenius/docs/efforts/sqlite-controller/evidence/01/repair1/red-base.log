@@ -1,0 +1,24 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.03s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-71954cf30dfe09a5)
+
+running 1 test
+test project_base_must_be_a_full_commit_oid_and_failure_is_atomic ... FAILED
+
+failures:
+
+---- project_base_must_be_a_full_commit_oid_and_failure_is_atomic stdout ----
+
+thread 'project_base_must_be_a_full_commit_oid_and_failure_is_atomic' (1659555) panicked at tests/public.rs:594:9:
+accepted nonexact base: HEAD
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    project_base_must_be_a_full_commit_oid_and_failure_is_atomic
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--test public`
+
+# Recorded command exit status: 101

@@ -1,0 +1,378 @@
+[
+  {
+    "run": "authority-green",
+    "classification": "fixture setup/oracle/error-classification failure; not acceptance red",
+    "terminal": 1,
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "authority-green2",
+    "classification": "fixture setup/oracle/error-classification failure; not acceptance red",
+    "terminal": 1,
+    "failure": "expected actual stale workspace refusal",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "authority-green3",
+    "classification": "fixture setup/oracle/error-classification failure; not acceptance red",
+    "terminal": 1,
+    "failure": "expected actual stale workspace refusal",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "authority-green4",
+    "classification": "fixture setup/oracle/error-classification failure; not acceptance red",
+    "terminal": 1,
+    "failure": "command failed (128): ['git', '-c', 'core.hooksPath=/dev/null', '--git-dir=/data02/home/philip.yang/devx/tmp/corenius-jj19-ynfq1h9q/peer/.jj/repo/store/git', 'rev-parse', 'e5a108cd3e24c16ae0a9bdfc912bed95f6ad1470^{tree}']: fatal: not a git repository: '/data02/home/philip.yang/devx/tmp/corenius-jj19-ynfq1h9q/peer/.jj/repo/store/git'\n",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "authority-green5",
+    "classification": "fixture setup/oracle/error-classification failure; not acceptance red",
+    "terminal": 1,
+    "failure": "command failed (1): ['/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj', '--no-pager', '--color=never', '--config', 'user.name=\"Fixture\"', '--config', 'user.email=\"fixture@example.invalid\"', '--config', 'git.colocate=false', '--repository', '/data02/home/philip.yang/devx/tmp/corenius-jj19-u7szfzxf/authority', '--at-operation=b287e74794b5d24d658dea7c93c7e49ea7e9b99e239fbb197a1986d64edb09797d1f5dd88473089189d7432cd4a913cf044f8a5a96d0d89c0cd95ec5dc084396', 'log', '--no-graph', '-r', 'svuwoquyqpqwmnwovrzyzrqozqwrpykp', '-T', 'commit_id ++ \" \" ++ change_id ++ \" \" ++ conflict ++ \"\\\\n\"']: Error: Change ID `svuwoquyqpqwmnwovrzyzrqozqwrpykp` is divergent\nHint: Use change offset to select single revision: svuwoquyqpqwmnwovrzyzrqozqwrpykp/0, svuwoquyqpqwmnwovrzyzrqozqwrpykp/1\nHint: Use `change_id(svuwoquyqpqwmnwovrzyzrqozqwrpykp)` to select all revisions\nHint: To abandon unneeded revisions, run `jj abandon <commit_id>`\n",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "authority-green6",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "authority-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-authority-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-authority-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-crash-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-crash-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "SIGKILL did not roll back durable repository operation",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-exclusions-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-exclusions-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-identity-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-identity-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "mutable change identity accepted rewritten candidate",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-integration-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "candidate-integration-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "failed gate did not authorize landing",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "crash-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "crash-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "SIGKILL did not roll back durable repository operation",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "exclusions-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "exclusions-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-authority-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-authority-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-crash-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-crash-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "SIGKILL did not roll back durable repository operation",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-exclusions-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-exclusions-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-identity-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-identity-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "mutable change identity accepted rewritten candidate",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-integration-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "final-integration-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "failed gate did not authorize landing",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "git-baseline-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "identity-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "identity-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "evidence guard incorrectly accepted rewritten candidate",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "integration-green",
+    "classification": "earlier passing source; superseded by verified final source",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "integration-red",
+    "classification": "earlier behavioral falsification; superseded by verified final source",
+    "terminal": 1,
+    "failure": "failed gate did not authorize landing",
+    "fixture_removed": true,
+    "fixture_sha256": null
+  },
+  {
+    "run": "verified-authority-green",
+    "classification": "final-source passing fixture",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-authority-red",
+    "classification": "final-source behavioral falsification",
+    "terminal": 1,
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-crash-green",
+    "classification": "final-source passing fixture",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-crash-red",
+    "classification": "final-source behavioral falsification",
+    "terminal": 1,
+    "failure": "SIGKILL did not roll back durable repository operation",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-exclusions-green",
+    "classification": "final-source passing fixture",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-exclusions-red",
+    "classification": "final-source behavioral falsification",
+    "terminal": 1,
+    "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-git_baseline-green",
+    "classification": "final-source passing fixture",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-identity-green",
+    "classification": "final-source passing fixture",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-identity-red",
+    "classification": "final-source behavioral falsification",
+    "terminal": 1,
+    "failure": "mutable change identity accepted rewritten candidate",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-integration-green",
+    "classification": "final-source passing fixture",
+    "terminal": 0,
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-integration-red",
+    "classification": "final-source behavioral falsification",
+    "terminal": 1,
+    "failure": "failed gate did not authorize landing",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  }
+]

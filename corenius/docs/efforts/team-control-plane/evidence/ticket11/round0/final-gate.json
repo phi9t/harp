@@ -1,0 +1,24 @@
+{
+  "command": "bash tools/agents/check.sh",
+  "exit": 0,
+  "finished_utc": "2026-10-01T08:27:03.918591+00:00",
+  "full_log_sha256": "9ba35af80cc5d7d11606ce453f6d120df15498c9ff1f1ccc7a149e3f2bec7355",
+  "full_log_path": ".scratch/team-control-plane/ticket11/full-gate-final.log",
+  "tail": [
+    "",
+    "running 3 tests",
+    "test shell_tool_delegates_to_runner ... ok",
+    "test default_tool_definitions_have_stable_capabilities ... ok",
+    "test read_file_stays_under_workspace ... ok",
+    "",
+    "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "",
+    "   Doc-tests corenius",
+    "",
+    "running 0 tests",
+    "",
+    "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "",
+    "check: all green"
+  ]
+}

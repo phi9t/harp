@@ -1,0 +1,14 @@
+test_post_reservation_input_change_retains_hash_bound_refusal (test_trae_case_control.DurableControllerBehavior.test_post_reservation_input_change_retains_hash_bound_refusal) ... FAIL
+
+======================================================================
+FAIL: test_post_reservation_input_change_retains_hash_bound_refusal (test_trae_case_control.DurableControllerBehavior.test_post_reservation_input_change_retains_hash_bound_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/tools/probes/test_trae_case_control.py", line 131, in test_post_reservation_input_change_retains_hash_bound_refusal
+    self.assertTrue(terminal_bytes, 'healthy-storage refusal must retain terminal bytes')
+AssertionError: b'' is not true : healthy-storage refusal must retain terminal bytes
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-10-04T22:08:26.110445+00:00",
+  "owner": "sqlite-controller-05",
+  "task": "/root/sqlite05_control_center_author",
+  "repair_round": 1,
+  "repair_cap": 3,
+  "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+  "evidence": "0fccc193949476e9b7f04da1b0c9513f3d0a055c",
+  "brief_sha256": "440121f27468085b5508ed2eb60e33e2777cca859949f5772d986abfdb535b7f",
+  "root_gate_exit": 101,
+  "root_gate_native": "34PASS/1FAIL1207.73s; original INITIAL_CONFIRM only",
+  "root_gate_sha256": "994573233144648c6f5ffa45906d1daa08f5aa6aec8641cf46b9938739420dd6",
+  "root_gate_log_sha256": "8bd63c3d39ff9470bf51fbd452740926c1343bc3f8d49c1c7f1b235e9ebae6b7",
+  "old_02_04_caps": "3/3 exhausted unchanged",
+  "scope": "six05 controls plus original10s ordering diagnostic; root owns acceptance"
+}

@@ -1,0 +1,10 @@
+[project]
+name = "bench-tmuxh"
+version = "0.0.0"
+description = "tmux harness and dashboard for the corenius benchmark"
+requires-python = ">=3.11"
+dependencies = ["libtmux>=0.46"]
+
+[tool.uv]
+package = false
+index-url = "https://pypi.org/simple"

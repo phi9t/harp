@@ -1,0 +1,77 @@
+{
+  "adjudicated_at": "2026-10-05T02:38:36.482963+00:00",
+  "coordinator": "/root",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "source_tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+  "evidence": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "decision": "NOT_ACCEPTED_ATTENTION_NEEDED",
+  "root_gate": {
+    "verdict": "PASS",
+    "FI_tests": 129,
+    "native_tests_in_FI": 40,
+    "default_tests": 14,
+    "checks": [
+      "complete-fi",
+      "default-control-client-git-kata",
+      "fmt",
+      "strict-all-targets-FI-clippy",
+      "default-build"
+    ],
+    "source_inputs_including_gate": 50,
+    "source_unchanged": true
+  },
+  "reviews": {
+    "Spec": "FAIL2; prior five-control scoped PASS immutable",
+    "Standards": "FAIL2; prior five-control scoped PASS immutable",
+    "branch653": "FAIL2"
+  },
+  "findings": [
+    {
+      "id": "C1",
+      "aliases": [
+        "S05-R3-C1",
+        "STD05-015"
+      ],
+      "severity": "Medium/P2",
+      "source": "crates/sqlite-controller/src/monitor.rs:1187;authorize_correction:913",
+      "accepted_contract": "Current-authorized correction delivery with stale authority fenced and durable history",
+      "observed_failure": "Oldest requested correction from superseded lead is repeatedly selected and left requested; later current-lead/operator corrections starve. Reauthorization returns old decision unchanged. Independent native fixtures confirm current runtime/input-ready progress and no unknown operations; peer delivery succeeds.",
+      "required_next_discriminator": "Actual old-lead request then replacement: stale request gains explicit retained disposition, current-authorized request is delivered, authenticated reauthorization records a fresh grant without duplicating prepared/unknown native effects. Old lead still refuses; decision/history/current epoch remain exact."
+    },
+    {
+      "id": "C2",
+      "aliases": [
+        "S05-R3-C2",
+        "STD05-016"
+      ],
+      "severity": "Medium/P2",
+      "source": "crates/sqlite-controller/src/view.rs:567",
+      "accepted_contract": "Current task/attempt progress with provenance and historical evidence distinguishable",
+      "observed_failure": "After physical candidate/exit/repair/readmission, current worker reported_progress contains predecessor report until first current report. Independent public/Git fixtures reproduce; revoked old report refuses and new report works.",
+      "required_next_discriminator": "Two real attempts for same task: before new report current progress explicitly absent; new report belongs to current authenticated attempt; old reports remain labelled historical. Define explicit task-level operator reports separately, preserve protected ref/history."
+    }
+  ],
+  "repair_authority": {
+    "ticket05_existing_rounds": 3,
+    "ticket05_existing_rounds_exhausted": true,
+    "new_round_authorized": false,
+    "owner_decision_requested": "ONE additional narrow repair/re-review round for C1/C2; no cap reset, acceptance waiver or unrelated scheduler",
+    "02_04_caps": "3/3 unchanged",
+    "EMPTY_diagnostics": "2/2 unchanged"
+  },
+  "ownership": {
+    "author": "/root/intent26_candidate_import2_author completed/quiescent; final repair3 tree clean",
+    "root": "sole coordinator and owned verification/canonical metadata writer",
+    "reviewers": "complete and own snapshots quiescent",
+    "full_gate_session16411": "terminal exit0; no interruption",
+    "replacement": "not yet admitted; future fresh non-inheriting writer only after explicit bounded authority and quiescence/effect reconciliation"
+  },
+  "context_efficiency": {
+    "adopted": true,
+    "receipt": "context-efficiency-owner/adoption.json",
+    "measured_root_compaction": "02:27:30 UTC;216258 to36042 next positive request",
+    "no_unattended_or_child_compact_claim": true
+  },
+  "preservation": "All failed sources/gates/setups, original nine+five matrices, old review scopes/caps, unknown effects and historical04 gap122\u20131262 preserved. Process absence is not unknown-effect reconciliation. No mainline FF, actual model trial or completed baseline claim.",
+  "next": "Await bounded owner repair decision.06 remains blocked by unaccepted05; deterministic/live/restore/retained runner and final FF still required."
+}

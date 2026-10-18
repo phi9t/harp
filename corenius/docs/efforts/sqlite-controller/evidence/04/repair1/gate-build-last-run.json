@@ -1,0 +1,18 @@
+{
+  "name": "gate-build-last",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "command": [
+    "cargo",
+    "build",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--locked",
+    "--offline"
+  ],
+  "started": "2026-10-04T18:11:28.131994+00:00",
+  "ended": "2026-10-04T18:11:31.431955+00:00",
+  "elapsed_seconds": 3.299952339963056,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair1/gate-build-last.log",
+  "environment": {}
+}

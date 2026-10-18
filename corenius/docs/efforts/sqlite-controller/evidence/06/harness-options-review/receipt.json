@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "time": "2026-10-05T03:11:28.675978+00:00",
+  "coordinator": "/root",
+  "projection": "happy-path-1",
+  "sources": [
+    {
+      "commit": "2c00d01c9d386104135cade2b6d09e6e42ddf80e",
+      "path": "docs/efforts/sqlite-controller/HAPPY-PATH-FIRST.md",
+      "retained": "happy-path-original.md",
+      "sha256": "e5a73e637716cd6488509d85c34bb2a63cf6525cc56d6b49025b662f5feceb7b"
+    },
+    {
+      "commit": "c9d78bf71d132dab3fef8bbceecbebdcba3dd8eb",
+      "path": "docs/efforts/sqlite-controller/HAPPY-PATH-FIRST.md",
+      "retained": "happy-path-authorized.md",
+      "sha256": "449496d6f81b0f42df995f8343c6d5733d588fbfea4786e894b8410ad2971ea9"
+    },
+    {
+      "commit": "81d9d831fa31a7fb85a5a2cf80bfeb312d7a611d",
+      "path": "docs/efforts/sqlite-controller/OPERATING-IMPROVEMENTS.md",
+      "retained": "operating-improvements.md",
+      "sha256": "1860274fd76db2ac2da565aeb02a2ff4133bfead0bbac623d30249ca6d2edec4"
+    },
+    {
+      "commit": "81d9d831fa31a7fb85a5a2cf80bfeb312d7a611d",
+      "path": "docs/efforts/sqlite-controller/evidence/controlled-language.md",
+      "retained": "controlled-language.md",
+      "sha256": "cee7585827d3048d8c99b5856c3d78e154f71d9917b17a874640eeb549757f7d"
+    },
+    {
+      "commit": "20c2cc8926d3c6875afec6986697b11a83ec0b25",
+      "path": "docs/efforts/worker-monitoring/evidence/delegation-dispatch.md",
+      "retained": "delegation-dispatch.md",
+      "sha256": "d425d4efdd22b9c672d34821e0e5363a4e03724d13ed5b9129d17b28951c26dd"
+    }
+  ],
+  "amendments": [
+    {
+      "id": "happy-path-first",
+      "source": "2c00d01c / c9d78bf7",
+      "disposition": "adopted",
+      "reason": "Owner supersedes delivery order. Live disposable demo precedes exhaustive hardening; final acceptance retained."
+    },
+    {
+      "id": "C1-C2-extra-round",
+      "source": "owner message / queue 01a10a06-8f92-7ae0-900d-0cf4e43743a8 / c9d78bf7",
+      "disposition": "adopted",
+      "reason": "ONE extra narrow repair/re-review round; prior repair3/3 immutable. No further retry automatically authorized."
+    },
+    {
+      "id": "operating-improvements",
+      "source": "81d9d831fa31a7fb85a5a2cf80bfeb312d7a611d",
+      "disposition": "adopted-operating; product-qualification-pending",
+      "reason": "Current projection, immutable initial failures, actual exits and brief hygiene apply now. Product delivery/projection/privacy/lineage qualifications routed to05/06 hardening."
+    },
+    {
+      "id": "context-policy",
+      "source": "2c00d01c / source-linked 01a10854 raw236 escalation",
+      "disposition": "adopted",
+      "reason": "Old actor completed; no interruption/revival. Fresh writer has non-inheriting context and bounded checkpoints. Actual following-request metrics required."
+    },
+    {
+      "id": "root-insula",
+      "source": "dfe56610eab18d1f68e0b60796e9d9b5eacb8d4b",
+      "disposition": "adopted-proposal; implementation-deferred",
+      "reason": "Sealed scoped interface review only. Existing isolation retained for demo. No current relocation or readiness claim."
+    },
+    {
+      "id": "file-change-coverage",
+      "source": "owner periodic-review-0001.md / raw2314 reported",
+      "disposition": "adopted-requirement; parser-qualification-pending",
+      "reason": "Bootstrap four-kind coverage excludes FileChange and sleep extensions; no retroactive cursor credit. Public allowlist and credential/privacy canaries must qualify before model/output."
+    },
+    {
+      "id": "async-mainlead-review",
+      "source": "20c2cc8926d3c6875afec6986697b11a83ec0b25",
+      "disposition": "adopted-operational-reference; native-cycle-qualification-pending",
+      "reason": "Existing sole timer and external private ledger remain owner-controlled. No code import, second scheduler, native-auth/sanitizer/readiness claim."
+    }
+  ],
+  "preserved_history": "docs/efforts/sqlite-controller/history/STATE-20261005T031128Z.md",
+  "history_sha256": "b2cbad122f7fcbcb1a4cc2fc779c33420e7273dfc677f2a2a85afb73b5d97b02",
+  "authority": "sole coordinator; one extra C1/C2 round + live happy kickoff",
+  "transport_limit": "Queue receipt is not presentation/acknowledgement/application. Owner direct message supplies admission authority. Separate queue body not retrieved.",
+  "context": {
+    "root_compaction": "2026-10-05T03:07:55.665Z",
+    "before": {
+      "input": 204812,
+      "cached": 12288,
+      "output": 1510
+    },
+    "first_positive_after": {
+      "time": "2026-10-05T03:08:09.969Z",
+      "input": 37890,
+      "cached": 12288,
+      "output": 317
+    },
+    "window": 258400,
+    "source": "own public token_count envelopes; private reasoning excluded"
+  }
+}

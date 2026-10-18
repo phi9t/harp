@@ -1,0 +1,77 @@
+{
+  "files": [
+    {
+      "path": "cleanup/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "cleanup/postgres-final.json",
+      "sha256": "2cc91eea2ee07cd32b4fd4742e09397a8350fe7d6da5da776d4435cb86cac8cc"
+    },
+    {
+      "path": "cleanup/monitor-memory-134217728-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "cleanup/issuer-expiry/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734"
+    },
+    {
+      "path": "cleanup/issuer-expiry/cleanup.json",
+      "sha256": "be68da0399ebba5bbfcfd344b8e4b1720e2ae3cbe844a85b31c6dddbd2b7df8b"
+    },
+    {
+      "path": "cleanup/historical/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734"
+    },
+    {
+      "path": "cleanup/historical/cleanup.json",
+      "sha256": "8015b5fa380d97c61b9e0b1b110be13ea55d764e55d8991bf3c24e8d76de74a6"
+    },
+    {
+      "path": "cleanup/overflow/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734"
+    },
+    {
+      "path": "cleanup/overflow/cleanup.json",
+      "sha256": "2777e424c6ae8a05c5a4691b0ba9ef39786050b9ea03c107ac444121f327ea3d"
+    },
+    {
+      "path": "cleanup/monitor-memory-1048576-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "cleanup/monitor-memory-1048576-read-error-true/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "cleanup/merged-journals/cleanup.json",
+      "sha256": "3db0b148154ae235e3edd7715daaaf7b4579c2ac78bdaa4396a0b6dac29a0673"
+    },
+    {
+      "path": "cleanup/known/cleanup.json",
+      "sha256": "18a01f03507fb428d4fe4ca851c6bbd338f478b1cbcdea7159a7a0dc81fe0414"
+    },
+    {
+      "path": "cleanup/legacy-quarantined/cleanup.json",
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68"
+    },
+    {
+      "path": "cleanup/kernel16-binary-output-37d9016e-7846-43c9-9735-ea33a336fedb/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f"
+    },
+    {
+      "path": "cleanup/legacy-running/cleanup.json",
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d"
+    },
+    {
+      "path": "cleanup/unknown-usage/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda"
+    },
+    {
+      "path": "cleanup/unknown-effect/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda"
+    }
+  ],
+  "count": 18
+}

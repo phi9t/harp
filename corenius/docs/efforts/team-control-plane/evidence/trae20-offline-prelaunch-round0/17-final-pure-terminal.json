@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "-m",
+    "unittest",
+    "test_trae_inventory"
+  ],
+  "cwd": "/tmp/corenius-trae20-budget-repair-author/tools/probes",
+  "exit": 0,
+  "seconds": 0.07995528599712998,
+  "tests": 8,
+  "standin_process_starts": 0,
+  "namespace_starts": 0,
+  "trae_starts": 0,
+  "signals_sent": 0
+}

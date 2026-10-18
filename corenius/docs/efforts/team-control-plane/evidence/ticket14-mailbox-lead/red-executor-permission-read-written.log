@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.11s
+     Running tests/mailbox_artifacts.rs (target/debug/deps/mailbox_artifacts-55ee2a30a7aadd8c)
+
+running 1 test
+test actual_git_submission_and_independent_verification_share_http_mcp_authority ... FAILED
+
+failures:
+
+---- actual_git_submission_and_independent_verification_share_http_mcp_authority stdout ----
+
+thread 'actual_git_submission_and_independent_verification_share_http_mcp_authority' (1274354) panicked at tests/mailbox_artifacts.rs:970:5:
+assertion `left == right` failed: named executor reads its exact canonical permission within its own task scope
+  left: 401
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    actual_git_submission_and_independent_verification_share_http_mcp_authority
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.63s
+
+error: test failed, to rerun pass `--test mailbox_artifacts`

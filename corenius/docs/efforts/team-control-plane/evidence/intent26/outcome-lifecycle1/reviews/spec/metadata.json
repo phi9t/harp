@@ -1,0 +1,2171 @@
+{
+  "schema_version": 1,
+  "verdict": "REJECT",
+  "axis": "Spec",
+  "allocation": "one clean-context outcome-lifecycle1 pass; no automatic repair allocation",
+  "reviewed_utc": "2026-10-04T00:23:13.145922+00:00",
+  "canonical_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "canonical_head": "3e4e029a2adf41abbec68c51f75badebdd9168d2",
+  "author_root": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1",
+  "author_branch": "codex-intent26/outcome-lifecycle1",
+  "author_head_and_base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "uncommitted_source": true,
+  "comparison": "whole-base.patch plus exact 22 source snapshots/live postimages; rejected-repair3-delta.patch separately inspected. Three-dot HEAD diff would miss candidate.",
+  "canonical_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "bytes": 2045
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "ed12eca0d43145b0bc58c914b70589bb1441a0fa120f49c52e3206e93107fbd4",
+      "bytes": 8390
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "bytes": 33123
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+      "bytes": 21340
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+      "sha256": "5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5",
+      "bytes": 3465
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a",
+      "bytes": 2321
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f",
+      "bytes": 1876
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e",
+      "bytes": 6546
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+      "sha256": "1d233a5f8a20732dc936801487ddc3a121f6410c264361d5ea7588289049edf0",
+      "bytes": 5083
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "sha256": "ef466fbab46183da3033ff76bdf332dceb85445a2f0d4502b4ae5d69976a184c",
+      "bytes": 1103
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/metadata.json",
+      "sha256": "de53ba36a7911fe7e3c658247c1a69526eaa0f92b7437aa3131155f4aade5c58",
+      "bytes": 32635
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-design-critique/report.md",
+      "sha256": "8ab5e89878cb5a4031a736fbaff36c10830f39f07d5e1129e779e1755dc6bbd2",
+      "bytes": 6443
+    }
+  ],
+  "evidence_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/seal.json",
+      "sha256": "d2b0ed5e5fcc81ae0b61de0bbcbf754823c41d2035b805ba81f27d11f1c18d73",
+      "bytes": 84615
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-freeze.json",
+      "sha256": "e68e774465d754432cd444f5045e6e0a43134eb740d2a110b2d88b0dd671983e",
+      "bytes": 6753
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-manifest.json",
+      "sha256": "f867229a30cdce7e1efc9d881c7f1404a330ec925329bd8c1e5fa3da69a6572c",
+      "bytes": 28545
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-final.json",
+      "sha256": "120ee0cd96507345cb65137959b72f70b17687eed40604f8ced9f832774f9fcd",
+      "bytes": 9236
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-retention.json",
+      "sha256": "205b33c300039cacc8b5c25480fe0af339560fa44642e89afa5cb2c0fdbe098b",
+      "bytes": 7274
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base.patch",
+      "sha256": "9563f336ba5b6c9bf84bd50d04970aafad8bb5dbeaeec3e8ec25f35a01836aea",
+      "bytes": 154102
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-repair3-delta.patch",
+      "sha256": "a47703815bcbe0248548fa1314a37875f55efd1a0ecd2da8b29833cea9a6feaa",
+      "bytes": 98584
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+      "bytes": 450500
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.start.json",
+      "sha256": "f6ed0b2dbe4515b90d8e9a2f5c71d462fa72bac76824b700d333a2290d1c104c",
+      "bytes": 12604
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-chronology.json",
+      "sha256": "8ee567396458751ca041f92b3439f92957ce985c32239280dbb93a3da60a570a",
+      "bytes": 32681
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/consumer-audit.md",
+      "sha256": "46ba082e38c6b795ecd75615c2cee93c912c7534b72b212d28d01ce41e09e612",
+      "bytes": 8829
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/handoff.md",
+      "sha256": "98aec42529b49d307be2901ac57b4851973f435bd9e3d49f5ce818b229b7f3f5",
+      "bytes": 10228
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifact-bindings.json",
+      "sha256": "589c1f45e24577a8a6b248d92225cff87eb044bf434ce9a1ee8eac1b75482f63",
+      "bytes": 81955
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/production-artifact-bindings.json",
+      "sha256": "f805a5c001e15e73fe0d98add0c866b3c9ab26039c4693b4e6e160237ef719cd",
+      "bytes": 17976
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/owner-target-proof.json",
+      "sha256": "b34e9d240bebd370a5fd91bf563f03413f546ed739f0b2b4a7fe77423b01ad41",
+      "bytes": 465
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/README.md",
+      "sha256": "9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b",
+      "bytes": 22570
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0009.sql",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/admission.rs",
+      "sha256": "06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6",
+      "bytes": 19773
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "bytes": 56363
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts.rs",
+      "sha256": "e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c",
+      "bytes": 24333
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5",
+      "bytes": 8283
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927",
+      "bytes": 6853
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/lifecycle.rs",
+      "sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "bytes": 6973
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5",
+      "bytes": 22304
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/kernel.rs",
+      "sha256": "305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a",
+      "bytes": 21929
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "bytes": 106196
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "bytes": 128514
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4",
+      "bytes": 121943
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/support/outcome_lifecycle.rs",
+      "sha256": "7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad",
+      "bytes": 40817
+    }
+  ],
+  "integrity_checks": {
+    "sealed_records": 320,
+    "sealed_hash_or_size_mismatches": 0,
+    "live_frozen_pairs": 22,
+    "base_preimages_checked_against_git_show": true,
+    "whole_base_exact_in_memory_reconstructed_paths": 15,
+    "rejected_repair3_exact_in_memory_reconstructed_paths": 13,
+    "final_live_input_hash_matches": 59,
+    "migrations_0008_0009_equal_rejected_baseline": true,
+    "research_blob_raw_byte_log_matches": 16,
+    "final_research_measurements": 4,
+    "final_production_measurements": 9
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "priority": "P1",
+      "title": "Research verifier candidate import drops the exact research intent binding",
+      "classification": "implemented-looking incorrect behavior / partial current-authority binding",
+      "blocking": true,
+      "location": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/supervisor.rs",
+        "start_line": 559,
+        "end_line": 578
+      },
+      "canonical_requirements": [
+        {
+          "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+          "lines": [
+            69,
+            72
+          ],
+          "quote": "Every consequential grant checks deployment recovery epoch, ScopeEpoch, RoleEpoch when relevant, admitted IntentRevision/PlanRevision, operation identity and applicable WorkspaceGeneration/RuntimeIncarnation."
+        },
+        {
+          "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+          "lines": [
+            62,
+            64
+          ],
+          "quote": "An in-progress source-only revision remains an unaccepted revision: it does not justify recycling Attempt/writer authority. Exact current-intent proof checks, retained receipts, dependent suspension and prior immutable Plan ceilings remain."
+        }
+      ],
+      "preconditions": [
+        "Unaccepted investigation_complete intent R1, current independent selected Verifier/current Attempt, active epoch/current generation, no cancellation/pause/unknown effects, capacity and unexpired Episode.",
+        "A real current candidate exists in ArtifactService, submitted by the Worker with same legacy spec/current generation and valid policy. Artifact Submit does not restrict typed outcome; no fabricated candidate is required.",
+        "Verifier captures R1 input and admits its Episode through the new research admission branch.",
+        "Owner admits only a source revision R2; exact source digest changes admitted intent but Attempt/generation/legacy spec/candidate/policy remain unchanged."
+      ],
+      "trace": [
+        {
+          "source": "artifacts.rs:740\u2013777",
+          "effect": "Public Submit can leave a real current candidate on a research task; no outcome-type restriction."
+        },
+        {
+          "source": "mailbox.rs:1330\u20131359",
+          "effect": "Research Episode admits selected independent Verifier with captured R1 research pins, without requiring a production candidate."
+        },
+        {
+          "source": "contracts/lifecycle.rs:95\u2013101; contracts.rs:420\u2013425",
+          "effect": "Source-only unaccepted R2 updates contract_current but retains task generation and Attempt."
+        },
+        {
+          "source": "supervisor.rs:477\u2013498",
+          "effect": "Public Rust create_episode_from_candidate reads current candidate and supplies Some(candidate) to common preparation."
+        },
+        {
+          "source": "supervisor.rs:559\u2013578",
+          "effect": "source.is_none() is false, so research_input and current selected research authority checks skipped; research_verification becomes None."
+        },
+        {
+          "source": "supervisor.rs:580\u2013599,618\u2013620,646\u2013665",
+          "effect": "Candidate/spec/generation/policy/current-open checks pass; stale R1 Episode input retained in manifest, research pin absent."
+        },
+        {
+          "source": "supervisor.rs:298\u2013304,942\u2013974",
+          "effect": "Start checks optional pin only when Some; unchanged generation/open task/current reservation allow fresh stale-input dispatch."
+        }
+      ],
+      "second_ordering": "Prepare using candidate under R1, then source-only R2 before start; same None pin bypasses start revalidation.",
+      "consequence": "Fresh research verification execution can use obsolete admitted input under a different current IntentRevision. The branch tests only the candidate-free route.",
+      "test_gap": "tests/support/outcome_lifecycle.rs:841\u2013904 invokes create_episode at 873\u2013876; it never invokes create_episode_from_candidate. Existing recorded GREEN cannot establish this path.",
+      "confidence": "high static source trace; no runtime reproduction permitted or claimed",
+      "scope_note": "Finding concerns the newly admitted research Episode and its preparation/start binding, not a request to redesign provider/runtime/scope27 or fabricate production evidence."
+    }
+  ],
+  "consumer_audit": [
+    {
+      "class": 1,
+      "name": "amend",
+      "source_coordinates": "contracts/lifecycle.rs:45\u2013123; contracts.rs:341\u2013427; contracts/authority.rs:36\u2013106",
+      "assessment": "Exact current typed outcome closes either kind; initial legacy mapping inert; accepted amendment fences immediately under global transaction lock. In-progress source-only change does not recycle Attempt."
+    },
+    {
+      "class": 2,
+      "name": "accept",
+      "source_coordinates": "contracts/outcomes.rs:190\u2013264",
+      "assessment": "Typed immutable subject binds task/current intent/acceptance/proof/outcome/policy. Research leaves production projections untouched."
+    },
+    {
+      "class": 3,
+      "name": "fresh grants",
+      "source_coordinates": "contracts/dependencies.rs:3\u201345,81\u2013148",
+      "assessment": "Current closure/cancellation/admission and exact dependency disposition checked. Superseding prerequisite suspends dependents; explicit exact revalidation required."
+    },
+    {
+      "class": 4,
+      "name": "grant entry points",
+      "source_coordinates": "admission.rs:257\u2013305; mailbox.rs:1258\u20131368; supervisor.rs:508\u2013619,785\u2013799; gateway.rs:388\u2013426; episode_runtime.rs:340\u2013392",
+      "assessment": "Fresh grant guards remain. Research candidate-import exception is F1; no claim that shared grant helper fixes every captured-input consumer."
+    },
+    {
+      "class": 5,
+      "name": "outcome mutation",
+      "source_coordinates": "contracts.rs:225\u2013309; contracts/outcomes.rs:25\u201359,428\u2013531",
+      "assessment": "Authentication/generation/scope/current authority precede cache. Terminal policy excludes consequential cached commands; exact accepted receipt exception is scoped by original digest and subject."
+    },
+    {
+      "class": 6,
+      "name": "artifacts",
+      "source_coordinates": "artifacts.rs:355\u2013420,527\u2013662,700\u2013856",
+      "assessment": "Neutral completion replaces production status; immutable raw bytes remain uploadable. Historical accepted-evidence method requires actual accepted candidate/report; ordinary fresh evidence uses current rules."
+    },
+    {
+      "class": 7,
+      "name": "mailbox actual targets",
+      "source_coordinates": "mailbox.rs:450\u2013605",
+      "assessment": "Actor task and actual delivery/binding/approval targets checked before command cache. Mission messages remain mission operations. Valid Owner-target counterfactual and final positives/refusals inspected."
+    },
+    {
+      "class": 8,
+      "name": "dispatch",
+      "source_coordinates": "kernel.rs:366\u2013397; supervisor.rs:242\u2013324,942\u2013974; gateway.rs:396\u2013426,539\u2013556; episode_runtime.rs:340\u2013392,495\u2013520",
+      "assessment": "Neutral terminal guards preserve cancelled/accepted refusals. F1: optional research pin is absent on candidate-import route, permitting source-only stale-input preparation/start."
+    },
+    {
+      "class": 9,
+      "name": "cancel/reconcile",
+      "source_coordinates": "admission.rs:209\u2013253; supervisor.rs:198\u2013219,1334\u20131360",
+      "assessment": "Legacy CancelAttempt/ReconcileAttempt retain completed refusal; effect-level current Owner cleanup remains distinct."
+    },
+    {
+      "class": 10,
+      "name": "task wait attention",
+      "source_coordinates": "mailbox.rs:1086\u20131101,1806\u20131835; contracts/dependencies.rs:81\u2013148",
+      "assessment": "Typed completion wakes bare task waits; recorded satisfaction stays history. Exact dependency grant needs revalidation."
+    },
+    {
+      "class": 11,
+      "name": "projections",
+      "source_coordinates": "contracts.rs:444\u2013483; contracts/lifecycle.rs:45\u201381",
+      "assessment": "Exact current accepted outcome and separate legacy flag/history; fresh eligibility derives open/dependencies rather than raw migration flag."
+    },
+    {
+      "class": 12,
+      "name": "verification policy",
+      "source_coordinates": "kernel.rs:145\u2013171",
+      "assessment": "Activation is current task-scoped Owner operation and require_open precedes insert."
+    },
+    {
+      "class": 13,
+      "name": "accepted production replay",
+      "source_coordinates": "contracts/outcomes.rs:363\u2013531; artifacts.rs:527\u2013662,665\u2013694,verify_production_gate",
+      "assessment": "Only exact authenticated applied acceptance inspects historical intent subject. New key/current proof retains current generation/policy and latest-failed gate. Historical evidence does not grant new production acceptance."
+    },
+    {
+      "class": 14,
+      "name": "historical Episode retirement",
+      "source_coordinates": "supervisor.rs:1255\u20131360",
+      "assessment": "Exact broker amendment event task/generation/principal/recovery binding plus expiry, original manifest/result/logs, observed namespace stop, released capacity and unresolved runtime usage checks remain."
+    },
+    {
+      "class": 15,
+      "name": "credentials/storage",
+      "source_coordinates": "storage.rs:88\u201390,326\u2013339; contracts/lifecycle.rs:5\u201343; migrations/0008.sql; migrations/0009.sql; admission.rs:257\u2013305",
+      "assessment": "Immediate amendment fence and separate assignment increment; unique(task,generation); malformed migration fail-closed; nullable original provenance untouched."
+    },
+    {
+      "class": 16,
+      "name": "journal/effect observation",
+      "source_coordinates": "temporal.rs:991\u20131002; episode_runtime.rs:475\u2013493; supervisor.rs:198\u2013219,430\u2013444,1339\u20131360; gateway.rs:read/reconcile",
+      "assessment": "Existing authorized journal inspection and Stop/log/Release/accounting separate from fresh dispatch. Unknown usage remains reserved; no process-absence inference."
+    }
+  ],
+  "seven_case_matrix": [
+    {
+      "case": 1,
+      "name": "negative research full lifecycle",
+      "source": "tests/support/outcome_lifecycle.rs:329\u2013619",
+      "raw": {
+        "red-research-verifier.log": [
+          7,
+          8,
+          9
+        ],
+        "red-independent-research-verifier.log": [
+          7,
+          8,
+          9
+        ],
+        "green-compatibility-freeze.log": [
+          497,
+          498,
+          499,
+          506,
+          509,
+          510,
+          511,
+          512,
+          516,
+          517,
+          526,
+          527,
+          534,
+          537,
+          538,
+          539,
+          540,
+          551
+        ]
+      },
+      "assessment": "Two measured generations, independent verifier, source/proof/subject and retained attempts/reservations verified. Candidate-free route succeeds; F1 identifies alternative import route not covered."
+    },
+    {
+      "case": 2,
+      "name": "production parity",
+      "source": "tests/intent_contracts.rs:1255\u20131860,1919\u20132366",
+      "raw": {
+        "green-compatibility-freeze.log": [
+          270,
+          287,
+          304,
+          324,
+          326,
+          344,
+          351,
+          352,
+          358,
+          359,
+          373,
+          375,
+          378,
+          381,
+          382
+        ]
+      },
+      "assessment": "Measured production evidence, original exact receipt after amendment, rekeyed proof refusal, fresh current acceptance and latest-failed controls inspected."
+    },
+    {
+      "case": 3,
+      "name": "initial v1 mapping",
+      "source": "tests/intent_contracts.rs:401\u2013510,1261\u20131284,1292\u20131860; contracts/lifecycle.rs:86\u2013107",
+      "raw": {
+        "green-compatibility-freeze.log": [
+          71
+        ]
+      },
+      "assessment": "Mapping keeps legacy proof identities, initial mapping does not increment generation; later Owner-only mapping amendment requires fresh work. No accepted v1 evidence was rewritten."
+    },
+    {
+      "case": 4,
+      "name": "source-only and immutable Plan ceilings",
+      "source": "tests/intent_contracts.rs:2429\u20132662,2663\u20132778,2864 onward; tests/support/outcome_lifecycle.rs:841\u2013904; contracts/strategy.rs:123\u2013160",
+      "raw": {
+        "green-compatibility-freeze.log": [
+          465,
+          466,
+          467,
+          468,
+          469,
+          470
+        ]
+      },
+      "assessment": "Original Attempt/generation preserved and prior immutable all-caller Plan ceilings checked. Candidate-free stale research input/prepared execution refuse. F1 is missing equivalent validation on candidate import."
+    },
+    {
+      "case": 5,
+      "name": "retirement and uncertain effects",
+      "source": "supervisor.rs:1255\u20131360; tests/intent_contracts.rs:1288\u20131290,1862\u20131917",
+      "raw": {
+        "green-compatibility-freeze.log": [
+          71,
+          324,
+          326,
+          373,
+          375,
+          693,
+          694,
+          695,
+          696
+        ]
+      },
+      "assessment": "Before-expiry and unresolved-original-effect refusals, physically stopped/released succession and nullable lead provenance inspected. Not all possible corruptions freshly reproduced; static checks retained."
+    },
+    {
+      "case": 6,
+      "name": "transaction and replay ordering",
+      "source": "storage.rs:88\u201390; tests/support/outcome_lifecycle.rs:1\u201382; tests/intent_contracts.rs:478 onward",
+      "raw": {
+        "green-compatibility-freeze.log": [
+          406,
+          407,
+          408,
+          409,
+          410,
+          411,
+          412,
+          413,
+          414,
+          415
+        ]
+      },
+      "assessment": "Shared pg_advisory_xact_lock serializes contract/admission mutations. Joined HTTP requests observe one permitted serialization; no exhaustive interleaving claim. Payload conflict, idempotency, malformed migration assertions inspected."
+    },
+    {
+      "case": 7,
+      "name": "wait/projection",
+      "source": "tests/support/outcome_lifecycle.rs:84\u2013197,237\u2013297; mailbox.rs:1806\u20131835",
+      "raw": {
+        "green-compatibility-freeze.log": [
+          493,
+          551,
+          563
+        ]
+      },
+      "assessment": "Derived exact current projection and research wait wake; historical wait remains satisfied after amendment while exact dependency remains separate."
+    }
+  ],
+  "four_critique_guardrails": [
+    {
+      "name": "narrow accepted receipt exception",
+      "source": "contracts.rs:225\u2013272; contracts/outcomes.rs:428\u2013531; artifacts.rs:355\u2013420,527\u2013662",
+      "raw_final": [
+        351,
+        352,
+        358,
+        359,
+        381,
+        382,
+        441,
+        445,
+        460,
+        516,
+        517,
+        526,
+        527
+      ],
+      "assessment": "Authentication/scope/generation and full envelope digest precede receipt; consequential cached Worker/Verifier commands refused."
+    },
+    {
+      "name": "later amendment distinct from dispatch",
+      "source": "contracts.rs:247\u2013271,420\u2013425; contracts/lifecycle.rs:83\u2013123; kernel.rs:366\u2013397",
+      "raw_final": [
+        442,
+        443,
+        444,
+        446,
+        551
+      ],
+      "assessment": "Authorized amendment uses separate eligibility; accepted work cannot dispatch; source-only pin coverage incomplete in F1."
+    },
+    {
+      "name": "actual Owner targets and raw evidence",
+      "source": "mailbox.rs:466\u2013495; artifacts.rs:upload; tests/support/outcome_lifecycle.rs:689\u2013813",
+      "raw_final": [
+        422,
+        424,
+        430,
+        431,
+        432
+      ],
+      "assessment": "Actual valid Owner targets tested. RED6 counterfactual removes only target guard; original nonexistent-ID probes not proof. Raw blob storage confers no proof authority."
+    },
+    {
+      "name": "cleanup/unknown usage/original provenance",
+      "source": "admission.rs:209\u2013253; supervisor.rs:198\u2013219,1255\u20131360",
+      "raw_final": [
+        71,
+        470,
+        551,
+        693,
+        694,
+        695,
+        696
+      ],
+      "assessment": "Legacy cancellation refusal retained. Physical cleanup remains current-authorized; unknown/consumed accounting and original nullable Attempt attribution preserved."
+    }
+  ],
+  "raw_proof_coordinates": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-research-verifier.log",
+      "line": 7,
+      "sha256_including_line_ending": "96287ccbcbb36df2ac0a5de5b15c7f804986855282c019835d0bb0185d63c2bc",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "input_captured",
+        "id": "cf761d21-e7af-42ee-9315-0501d79d05f4"
+      },
+      "command": "capture_input"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-research-verifier.log",
+      "line": 8,
+      "sha256_including_line_ending": "90cc8271ea5378e856d6ed9f45ad436f38dfa83d8c9e2bd02d061ea1addf61cc",
+      "prefix": "public_mailbox_response",
+      "status": 401,
+      "result": {
+        "code": "unauthorized"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-research-verifier.log",
+      "line": 9,
+      "sha256_including_line_ending": "e56e70415fc9b74f2c7a253b29a53c7498807a1a46672e22c08559942115e487",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-independent-research-verifier.log",
+      "line": 7,
+      "sha256_including_line_ending": "0f1bb968c9d06b43ebb6a25859991ca5ab58f61ddbf31e88c45b9bef8cbd7620",
+      "prefix": "public_v1_response",
+      "status": 200,
+      "result": {
+        "attempt_id": null,
+        "disposition": "applied",
+        "generation": 0,
+        "operation_id": null,
+        "recovery_epoch": "4d66667b-71d2-4c75-aa09-b7e1ac65d05c",
+        "reservation_id": null,
+        "revision": 1,
+        "schema_version": 1
+      },
+      "command": "grant_credential"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-independent-research-verifier.log",
+      "line": 8,
+      "sha256_including_line_ending": "776c0e8ab97afe0446ffeb1f5f68de711637fcf31028569cf616b1c48fbe935e",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "input_captured",
+        "id": "6be86668-8842-4b8a-a453-0888ea8e9c0e"
+      },
+      "command": "capture_input"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-independent-research-verifier.log",
+      "line": 9,
+      "sha256_including_line_ending": "d8d3c9e822ca807b5a23f7d051329dee76a20eee997e6329408c62313bc4b98a",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "admitted",
+        "id": "65f06c7f-df05-4a77-84f1-2a5666ea45eb"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 71,
+      "sha256_including_line_ending": "9a19ad2138cb7dbb000aefae34c7e0b5c8d901f7f0bbb5a30182ef8f9b9912ba",
+      "prefix": "migration_original_provenance",
+      "execution": {
+        "attempt_id": null,
+        "capacity_released": false,
+        "credential_id": "0e904b36-b67d-4b2d-b534-be855acd8fb6",
+        "episode_id": "87bd2d39-a4a0-4de2-b135-2fbfce25a11c",
+        "execution_id": "19d14980-72e6-48b5-9517-ce7ca1792319",
+        "input_digest": "e5eb0cf527e987c14c26c5aa7ebfec22aaa8266c509025b70d5e8d5375e11494",
+        "mission_id": "e5b0f7d6-ebbd-4ba9-8a00-7afcea3c62d2",
+        "owns_capacity": true,
+        "principal_id": "1c0cb3fe-e1e3-43f2-b568-057789e53d3c",
+        "recovery_epoch": "8bbb94be-bd7d-479e-91a8-4172984b60bf",
+        "role": "lead",
+        "task_id": null
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 270,
+      "sha256_including_line_ending": "0667b6cc70bdf7df42e4c093137ce38dfb81ef6102d1b7c24b709c16cacc9d88",
+      "prefix": "measured_gate_bytes",
+      "execution": "000c655f-2c2c-4d2b-acb7-9858deecbf9a"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 287,
+      "sha256_including_line_ending": "199715a99f5a6fa06c9360d7f38a031a63976c26f401efd7001eb230385ba706",
+      "prefix": "measured_gate_bytes",
+      "execution": "09b16a65-b9d5-469c-9bc7-72a17d524ac7"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 304,
+      "sha256_including_line_ending": "97980859f4fed80f4198bcbd0e8cccdc79c6471c7dcfb7db112162c831170de0",
+      "prefix": "measured_gate_bytes",
+      "execution": "930dafc3-6679-4152-8045-4858be9e04bf"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 324,
+      "sha256_including_line_ending": "68570a9a2af724f03637503ca028195327e864e8e3019a6320fada3f1e786772",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 326,
+      "sha256_including_line_ending": "595ee19a53580187ab85d4d0f3bcbe5034e13a5fca619e9a463e171909626b2a",
+      "prefix": "public_retirement_observation"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 344,
+      "sha256_including_line_ending": "02bab237e7132343b8c4e83343b508c2d3367c810d4311dcbbff5212c180745e",
+      "prefix": "measured_gate_bytes",
+      "execution": "f00a4027-52e7-4ee6-b780-b32668a09f01"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 351,
+      "sha256_including_line_ending": "59d1c7ab74b3d80dfd59147addd0a2f88e5a9bd01567249db6cf867cb9199957",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "accept-production",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "production",
+        "proof": "4ff278da72fc4ec7300c79f62e9a0dc838803e31e935c6734a51fcfc1d254f85",
+        "revision": 4,
+        "schema_version": 2,
+        "subject": "79ac95a5d47e45c0d375f86699a6b471d248ea3792a53fc4e5075b87912aa027"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 352,
+      "sha256_including_line_ending": "59d1c7ab74b3d80dfd59147addd0a2f88e5a9bd01567249db6cf867cb9199957",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "accept-production",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "production",
+        "proof": "4ff278da72fc4ec7300c79f62e9a0dc838803e31e935c6734a51fcfc1d254f85",
+        "revision": 4,
+        "schema_version": 2,
+        "subject": "79ac95a5d47e45c0d375f86699a6b471d248ea3792a53fc4e5075b87912aa027"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 358,
+      "sha256_including_line_ending": "59d1c7ab74b3d80dfd59147addd0a2f88e5a9bd01567249db6cf867cb9199957",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "accept-production",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "production",
+        "proof": "4ff278da72fc4ec7300c79f62e9a0dc838803e31e935c6734a51fcfc1d254f85",
+        "revision": 4,
+        "schema_version": 2,
+        "subject": "79ac95a5d47e45c0d375f86699a6b471d248ea3792a53fc4e5075b87912aa027"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 359,
+      "sha256_including_line_ending": "52dc0cd493b03677d49fe22b4b33035439cdea8161bdbda2b7ac4caa378a2336",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "old-proof-new-amendment-key",
+      "status": 409,
+      "result": {
+        "code": "stale_revision"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 373,
+      "sha256_including_line_ending": "2aea49e49c9afb568036094963f71fca395b4f3cf850d0e8658f0cbb24553a53",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 375,
+      "sha256_including_line_ending": "2f9cd2964d99c0fff817cc28ff869a9716c0b2be70b974763f72a5fa72ede858",
+      "prefix": "public_retirement_observation"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 378,
+      "sha256_including_line_ending": "f24fbd387394291f5d02dbb0ad7ba4cd379473827e13d40c7b37aa4659c6a006",
+      "prefix": "measured_gate_bytes",
+      "execution": "aa77f00b-5a23-4cf0-9630-4006a6db4064"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 381,
+      "sha256_including_line_ending": "b6b94940fa6d598f4b2427864184585e3e4237112aa7bd346e2eed5ce7bafe67",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "accept-amended-production",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "production",
+        "proof": "eee0c9aaefe199750d30b2ea78378fd88fc164751cff33719a325bc7f8a8ad79",
+        "revision": 8,
+        "schema_version": 2,
+        "subject": "d47e456ee5d0a187fb68b45eb38f1f452f3c4433a9f1cf0b47adbd2db1d0c89d"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 382,
+      "sha256_including_line_ending": "b6b94940fa6d598f4b2427864184585e3e4237112aa7bd346e2eed5ce7bafe67",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "accept-amended-production",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "production",
+        "proof": "eee0c9aaefe199750d30b2ea78378fd88fc164751cff33719a325bc7f8a8ad79",
+        "revision": 8,
+        "schema_version": 2,
+        "subject": "d47e456ee5d0a187fb68b45eb38f1f452f3c4433a9f1cf0b47adbd2db1d0c89d"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 406,
+      "sha256_including_line_ending": "5132a7627eb6a051ab84a575369435dcfc057e2b0d1b0e8c899ac1ac26efe598",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "race-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "3314d0110ad1b69b55a8de0e9ead994ef87713bbcf1c59b37aad6f2f164ca4db",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "e32ec542c03677b3889bd6c77221a74877d47657d628f20de8efef82a4dbb151"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 407,
+      "sha256_including_line_ending": "76e1f55c1b561d1711d05876f2c2814b6f7ba4879f45a94e0d468d8b9a04e2a1",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "capture_input"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 408,
+      "sha256_including_line_ending": "76e1f55c1b561d1711d05876f2c2814b6f7ba4879f45a94e0d468d8b9a04e2a1",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "capture_input"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 409,
+      "sha256_including_line_ending": "5132a7627eb6a051ab84a575369435dcfc057e2b0d1b0e8c899ac1ac26efe598",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "race-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "3314d0110ad1b69b55a8de0e9ead994ef87713bbcf1c59b37aad6f2f164ca4db",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "e32ec542c03677b3889bd6c77221a74877d47657d628f20de8efef82a4dbb151"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 410,
+      "sha256_including_line_ending": "ec4436c9e9c2beda007946d760a1faf3a95d95c329bf244694293ccc6abd31b0",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "race-accept",
+      "status": 409,
+      "result": {
+        "code": "idempotency_conflict"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 411,
+      "sha256_including_line_ending": "9994ab40159de35d46d93ee54dc87144e78ecb88609a1adf60baf643b02aaffa",
+      "prefix": "public_contract_response",
+      "family": "intent.admit",
+      "key": "race-amend",
+      "status": 200,
+      "result": {
+        "acceptance": "9b9e11207618f693ed37b321841a59cf2eb8bf39ce4083ddb0c8dd4d74d6cea8",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "dc7c4ba307b3d878a55e1f648c1efd88d2a06c47c23637c3ce3219b548fdd6a2",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 412,
+      "sha256_including_line_ending": "4ad779089c04d821959359ecfd54ff853378c47a886c4c65b24f09d4bb34339f",
+      "prefix": "public_contract_response",
+      "family": "source.propose",
+      "key": "race-old-worker",
+      "status": 409,
+      "result": {
+        "code": "stale_generation"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 413,
+      "sha256_including_line_ending": "4ad779089c04d821959359ecfd54ff853378c47a886c4c65b24f09d4bb34339f",
+      "prefix": "public_contract_response",
+      "family": "source.propose",
+      "key": "race-old-worker",
+      "status": 409,
+      "result": {
+        "code": "stale_generation"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 414,
+      "sha256_including_line_ending": "9994ab40159de35d46d93ee54dc87144e78ecb88609a1adf60baf643b02aaffa",
+      "prefix": "public_contract_response",
+      "family": "intent.admit",
+      "key": "race-amend",
+      "status": 200,
+      "result": {
+        "acceptance": "9b9e11207618f693ed37b321841a59cf2eb8bf39ce4083ddb0c8dd4d74d6cea8",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "dc7c4ba307b3d878a55e1f648c1efd88d2a06c47c23637c3ce3219b548fdd6a2",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 415,
+      "sha256_including_line_ending": "226d7e1423da33721888c07cb63a80281c37b738e2ffb265976e04d83bc9cf8f",
+      "prefix": "lifecycle_transaction_ordering"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 422,
+      "sha256_including_line_ending": "cce1f2f2f9e02684247f050df2e17f0b9e10d48c0ddbc54c7ac48c462ed4f534",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "runtime_bound",
+        "id": "f9e45ed3-218f-46fd-a7f7-07d98eff7571"
+      },
+      "command": "bind_runtime_turn"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 424,
+      "sha256_including_line_ending": "1acc30fa34e24ebe2b12e943a51064a783e94f2e825d0e3457585878e41c85f2",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "delivery_prepared",
+        "id": "89cc7220-f439-4329-98bd-dc8a706d9458"
+      },
+      "command": "prepare_delivery"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 430,
+      "sha256_including_line_ending": "a5ffbfb692156031054eae4890b2c4e380a64b4fc6ec4adfde59ee0c93b977d8",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "bind_runtime_turn"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 431,
+      "sha256_including_line_ending": "b36b2d46ef2ee0bd92dedd14ea1fc28525c89afd0e5c3bba86b94e549c76e00f",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "prepare_delivery"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 432,
+      "sha256_including_line_ending": "a969a66d0c5e4ae8fc155e672eb0be3bc60939d354a3e2199d771602b23efd3d",
+      "prefix": "lifecycle_owner_targets",
+      "unknown_usage_retained": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 441,
+      "sha256_including_line_ending": "9bdcc9d678390f60581601673ab4ac975eb81131895e4912067ef1dbf94fc1fa",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "amend-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "2ab8c6aeb49b9bf25c08ed6aa8c32405eaff4ccb7d88aa3f6524bb6837fe9a19",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "35125dade48129e98e7762dce39b6179aa6b9e02b2fc470c91ec7fcde913c6e9"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 442,
+      "sha256_including_line_ending": "fd1e6c562028379deff07992f47b888bd1d2b9f2e9ba6a524796d76186853688",
+      "prefix": "public_contract_response",
+      "family": "intent.admit",
+      "key": "amend-next",
+      "status": 200,
+      "result": {
+        "acceptance": "20f35a7ec34555437096fd68120471679cf9e900c0171aa7139aca960affb9dc",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "1076ed646b5cffe6cc1250323a02de0fb4c4abe49f29c7bb1a05f7885187b711",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 443,
+      "sha256_including_line_ending": "674e87764627263e3740144cdfa507b4a2aab9484e2dd27f495b0936d7cd3559",
+      "prefix": "public_contract_response",
+      "family": "source.propose",
+      "key": "fenced-worker",
+      "status": 409,
+      "result": {
+        "code": "stale_generation"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 444,
+      "sha256_including_line_ending": "90303fbd0f165b5de09b0fa7c49ba3118fc0c3671af1efd1e6a6141f49774e34",
+      "prefix": "public_contract_response",
+      "family": "research.verify",
+      "key": "fenced-verifier",
+      "status": 409,
+      "result": {
+        "code": "stale_generation"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 445,
+      "sha256_including_line_ending": "9bdcc9d678390f60581601673ab4ac975eb81131895e4912067ef1dbf94fc1fa",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "amend-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "2ab8c6aeb49b9bf25c08ed6aa8c32405eaff4ccb7d88aa3f6524bb6837fe9a19",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "35125dade48129e98e7762dce39b6179aa6b9e02b2fc470c91ec7fcde913c6e9"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 446,
+      "sha256_including_line_ending": "bced109a212d3060fc63ef77dc0664062292e785b40d3e7e96e5b3f9708d896d",
+      "prefix": "lifecycle_amendment_observations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 460,
+      "sha256_including_line_ending": "f86152981817bbb4ffff0e30ed4083888db001f0a3079e35e64f6bcd1e4ac2c2",
+      "prefix": "lifecycle_cached_mutations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 465,
+      "sha256_including_line_ending": "e3e96cecf1c39b2a2df4a273859c805ac4423a9b3428ca75dedda5d3bb30a140",
+      "prefix": "public_contract_response",
+      "family": "intent.admit",
+      "key": "research-source-amend",
+      "status": 200,
+      "result": {
+        "acceptance": "119a97e418226120e2ba2108ba902751160265fbedeecb654e40066c2fe0955c",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "640740af2bed7df142aa83019d47437a919a4aedb9e3245c30dc173d04344d3c",
+        "revision": 2,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 466,
+      "sha256_including_line_ending": "04fa86811df2e964429aaa2ef589b6c637745940a8afbc703d61c572aabedc07",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "stale_revision"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 467,
+      "sha256_including_line_ending": "037abec2015269ddcd16cef75be2422081ff3973c70aee40da53637649a02d3b",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "input_captured",
+        "id": "02744dba-8d6f-4e01-bc6f-5853da5a7e3b"
+      },
+      "command": "capture_input"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 468,
+      "sha256_including_line_ending": "61661d573636420733c6dcd1dc6902372019b1e4865a9d0effd98bbe13145f83",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "admitted",
+        "id": "9b742a88-abb4-4da9-8937-4c377da0ed94"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 469,
+      "sha256_including_line_ending": "5baed52ab6744fd708b9e0f405c92d7133a0c4cb8d1865d7deb433877e67bfcd",
+      "prefix": "public_contract_response",
+      "family": "intent.admit",
+      "key": "research-source-amend-again",
+      "status": 200,
+      "result": {
+        "acceptance": "119a97e418226120e2ba2108ba902751160265fbedeecb654e40066c2fe0955c",
+        "admitted_version": 3,
+        "disposition": "applied",
+        "intent": "e540d669b12cf8070561473b76d6fd47835b7eb36974dafb48ad21fab8421bc2",
+        "revision": 3,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 470,
+      "sha256_including_line_ending": "b144b91f3d97063b36c3a032fea008f240fd15f21b4b574a8504890e6cc1f376",
+      "prefix": "lifecycle_source_only_cleanup",
+      "execution": "36d4ba92-4d2c-404a-a0eb-eb99ea7a48ad",
+      "no_dispatch": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 493,
+      "sha256_including_line_ending": "994dfe1e80d59bef6ab9f812a5a2a7a2638d2f0a4706abd25a5b8dd7e8636566",
+      "prefix": "lifecycle_terminal_observations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 497,
+      "sha256_including_line_ending": "72bf76c77a0a50da46c7ef15e02f35d5d6660f415720e6b7dbd81b8fd3f8f7a6",
+      "prefix": "public_v1_response",
+      "status": 200,
+      "result": {
+        "attempt_id": null,
+        "disposition": "applied",
+        "generation": 0,
+        "operation_id": null,
+        "recovery_epoch": "2843f8de-64b4-4601-8598-9e7d25b7158c",
+        "reservation_id": null,
+        "revision": 1,
+        "schema_version": 1
+      },
+      "command": "grant_credential"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 498,
+      "sha256_including_line_ending": "bd52cc3c36b49e7d8feb38e51b0f7e6a3ecd9dd4c760597a7a8ff67100ad3085",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "input_captured",
+        "id": "ff3125f8-7598-466d-b4f5-bc74a34d5fd6"
+      },
+      "command": "capture_input"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 499,
+      "sha256_including_line_ending": "aa4e558b7b9665b3a470ee50d2e7c99e9bd1705b8a2695ebbbe794c89ad09023",
+      "prefix": "public_mailbox_response",
+      "status": 401,
+      "result": {
+        "code": "unauthorized"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 506,
+      "sha256_including_line_ending": "3b8cc7dabf03196835655173a240813cee209cb38ba1a69af122ab82f8520071",
+      "prefix": "lifecycle_measured_research",
+      "execution": "abe0c7b5-a243-4efc-8c09-1819aac113be"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 509,
+      "sha256_including_line_ending": "7ed88f6a8de52105c1320a867b96b029745f40e9cac7f65f3ee79d5cee90b2cb",
+      "prefix": "public_mailbox_response",
+      "status": 401,
+      "result": {
+        "code": "unauthorized"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 510,
+      "sha256_including_line_ending": "a1b8045df4cd7a381e49f637f08ebbdfbca842ffcb7d5f605d8a77d5f552ff18",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "admitted",
+        "id": "c397d657-652e-4286-90ea-e4058eaeca9d"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 511,
+      "sha256_including_line_ending": "a1b8045df4cd7a381e49f637f08ebbdfbca842ffcb7d5f605d8a77d5f552ff18",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "admitted",
+        "id": "c397d657-652e-4286-90ea-e4058eaeca9d"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 512,
+      "sha256_including_line_ending": "0e524e57f46c6f96f176fcbc3765c87b19cde5bf9c1fc2debbaa585b842c620b",
+      "prefix": "lifecycle_measured_research",
+      "execution": "004a2007-a665-44cf-ae67-e9984078670d"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 516,
+      "sha256_including_line_ending": "503caa273bed1ac6ecb5eeb46e8d0d34bb85fbaab36075eca328e25cf5ebfb3a",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "first-research-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "448683a8f71d5a140b0eb70232d52fd860f54efd1f5bfc86496983e0a8d35724",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "86d634dfa4b873abf820c361a03a036fede5c53a5d6716b40b68b5d5777fc97d"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 517,
+      "sha256_including_line_ending": "503caa273bed1ac6ecb5eeb46e8d0d34bb85fbaab36075eca328e25cf5ebfb3a",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "first-research-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "448683a8f71d5a140b0eb70232d52fd860f54efd1f5bfc86496983e0a8d35724",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "86d634dfa4b873abf820c361a03a036fede5c53a5d6716b40b68b5d5777fc97d"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 526,
+      "sha256_including_line_ending": "503caa273bed1ac6ecb5eeb46e8d0d34bb85fbaab36075eca328e25cf5ebfb3a",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "first-research-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "448683a8f71d5a140b0eb70232d52fd860f54efd1f5bfc86496983e0a8d35724",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "86d634dfa4b873abf820c361a03a036fede5c53a5d6716b40b68b5d5777fc97d"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 527,
+      "sha256_including_line_ending": "e8749c9259e2feba05563bfd2a30af8c803a89c3822702e67464ce9d5ba7ea34",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "old-proof-new-key",
+      "status": 409,
+      "result": {
+        "code": "stale_revision"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 534,
+      "sha256_including_line_ending": "e6ce332b7221a8f7ea5e468339713d22ce606deff20e33e3c3687e84db550e93",
+      "prefix": "lifecycle_measured_research",
+      "execution": "f4c98262-7e88-4421-a6d9-ec98d5c6d33e"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 537,
+      "sha256_including_line_ending": "ca170d18724c0b79b1f8c7fb9693f145cb2a1eed02fadfb52a4464d723a84eea",
+      "prefix": "public_mailbox_response",
+      "status": 401,
+      "result": {
+        "code": "unauthorized"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 538,
+      "sha256_including_line_ending": "6281aac516b23496ae5480bd9c5f85cd91927f553c8c32180cd4bb8b3316b787",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "admitted",
+        "id": "8014aafb-edff-4cc3-bdb5-805eeb0d1fb2"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 539,
+      "sha256_including_line_ending": "6281aac516b23496ae5480bd9c5f85cd91927f553c8c32180cd4bb8b3316b787",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "admitted",
+        "id": "8014aafb-edff-4cc3-bdb5-805eeb0d1fb2"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 540,
+      "sha256_including_line_ending": "c10da8974fb579ff2a836a5082be17617cfe497a09a503bcf943f69ee6478aef",
+      "prefix": "lifecycle_measured_research",
+      "execution": "5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 551,
+      "sha256_including_line_ending": "546413b427effc7ecae91e4660a67fe9aad79f5aa9818bf7ed3836e87fb67760",
+      "prefix": "lifecycle_research_completed"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 563,
+      "sha256_including_line_ending": "2e2de19a1e4bbfba167c38e7d5c47c21e716681595346ed7f0320750d6b13561",
+      "prefix": "lifecycle_wait_attention"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 693,
+      "sha256_including_line_ending": "ab47c9cac1b33f97d6db57a1b3b2c079a54976d6b220f90af2826d76fb86e152",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 694,
+      "sha256_including_line_ending": "8e38966db6c3e3d6243b5ad542d48833400caf5d700196794e4b560bca726dbf",
+      "prefix": "public_mailbox_response",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      },
+      "command": "admit_episode"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 695,
+      "sha256_including_line_ending": "58327d291d8bcc8fd2754dbfbe738440376ce62e86a00828db50696fe0ad4706",
+      "prefix": "public_retirement_observation"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "line": 696,
+      "sha256_including_line_ending": "5588a93a3e5c029cc7ac5383997b7e25ea4c634f3c0ead328d8f6a9da7342940",
+      "prefix": "public_unresolved_retirement"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 289,
+      "sha256_including_line_ending": "991479c0a4118221704855e83b3a906a0fd5ec050d5ceb57ad0fe9a7650a3862",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "amend-accept",
+      "status": 200,
+      "result": {
+        "disposition": "applied",
+        "outcome": "investigation_complete",
+        "proof": "8e0e7904b093033011c59d68548d8df77d26a7682c1250f06e1ed975f6ce9cbc",
+        "revision": 3,
+        "schema_version": 2,
+        "subject": "79d6212cef34d6f0904dc2327ce83c5780e6223b0e4f8890658fb3f8f3d07108"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 290,
+      "sha256_including_line_ending": "bea8378148e268b6f3500cf35b59cd5f3f8eb41e8a9b6c7444dcacba7c993c22",
+      "prefix": "public_contract_response",
+      "family": "intent.admit",
+      "key": "amend-next",
+      "status": 200,
+      "result": {
+        "acceptance": "a4602bfbcb5144c34c28ba1d9556e328b35fee1ae0d4019824cd57cbca2ae26b",
+        "admitted_version": 2,
+        "disposition": "applied",
+        "intent": "067fa5204831b88ff07c7a34718be0aa319384feddce3435f1ea5a0ae832a81e",
+        "revision": 4,
+        "schema_version": 2,
+        "work": "69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 291,
+      "sha256_including_line_ending": "b1130ad110a8b603a2ebe857173b19c583c54860455aa19bf596f38434ab002c",
+      "prefix": "public_contract_response",
+      "family": "source.propose",
+      "key": "fenced-worker",
+      "status": 200,
+      "result": {
+        "disposition": "proposed",
+        "proposal": "6002a6e01f584b67e1e1ebbc048f6c41191f8146a545d10bf89555513cb20c7b",
+        "revision": 4,
+        "schema_version": 2
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 292,
+      "sha256_including_line_ending": "aaf85d2e651362d98aff39524d32f022447e2d449b48ac281a9a0e773e8ebd86",
+      "prefix": "public_contract_response",
+      "family": "research.verify",
+      "key": "fenced-verifier",
+      "status": 409,
+      "result": {
+        "code": "dependency_unmet"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 293,
+      "sha256_including_line_ending": "eea60c2eeb58e5a1cb0346851b4591a486a50811574e6053d606fe60c9f784b1",
+      "prefix": "public_contract_response",
+      "family": "outcome.accept",
+      "key": "amend-accept",
+      "status": 409,
+      "result": {
+        "code": "stale_revision"
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 294,
+      "sha256_including_line_ending": "65e10a73b169fbfa40426260a61300d96cb7902ae649e3096af9e2f94d8d737e",
+      "prefix": "lifecycle_amendment_observations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "line": 322,
+      "sha256_including_line_ending": "f76d328f43fcdeebda55079ca3b114305842f2314e6d261d20bd1d6d6b143b47",
+      "prefix": "lifecycle_terminal_observations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle-expanded.log",
+      "line": 62,
+      "sha256_including_line_ending": "a05af9f87b7b738607a7a3eec9ab210f2dce8418f173bdb016c21831a021c72e",
+      "prefix": "lifecycle_cached_mutations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle-expanded.log",
+      "line": 89,
+      "sha256_including_line_ending": "9ff6139db7a2a87fb56c847ed5cb0be82e11ddac00b612d1210dea477e04c1db",
+      "prefix": "lifecycle_terminal_observations"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle-expanded.log",
+      "line": 103,
+      "sha256_including_line_ending": "5fec78e90f7d67100d28458128451d46b92b7ef56944856d9876fa577a6733e0",
+      "prefix": "lifecycle_wait_attention"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-owner-operation-target.log",
+      "line": 10,
+      "sha256_including_line_ending": "01b8c6b2d686f307fb2a97c6bfa3735e2817276814aad6e5efeba7b156631e55",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "runtime_bound",
+        "id": "7e28454e-40c7-4b32-b9e9-ae286fd1fba1"
+      },
+      "command": "bind_runtime_turn"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-owner-operation-target.log",
+      "line": 12,
+      "sha256_including_line_ending": "c4984707ab163fe99b8f758ab19fd53989dc6d46568e33446e6a1a73d81bc568",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "delivery_prepared",
+        "id": "55958071-48d5-4d2b-acee-2843c6e3077f"
+      },
+      "command": "prepare_delivery"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-owner-operation-target.log",
+      "line": 18,
+      "sha256_including_line_ending": "01b8c6b2d686f307fb2a97c6bfa3735e2817276814aad6e5efeba7b156631e55",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "runtime_bound",
+        "id": "7e28454e-40c7-4b32-b9e9-ae286fd1fba1"
+      },
+      "command": "bind_runtime_turn"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-owner-operation-target.log",
+      "line": 19,
+      "sha256_including_line_ending": "c4984707ab163fe99b8f758ab19fd53989dc6d46568e33446e6a1a73d81bc568",
+      "prefix": "public_mailbox_response",
+      "status": 200,
+      "result": {
+        "disposition": "delivery_prepared",
+        "id": "55958071-48d5-4d2b-acee-2843c6e3077f"
+      },
+      "command": "prepare_delivery"
+    }
+  ],
+  "measurement_byte_audit": [
+    {
+      "kind": "research",
+      "run": "green-complete-lifecycle",
+      "raw_line": 366,
+      "execution": "a732e58d-7f8a-485b-8eb5-5bc36737565f",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ae1d0977ef9be80ae436e4d8788ccaf09c63e87bba287b2bdcb076a4da945f96",
+        "sha256": "ae1d0977ef9be80ae436e4d8788ccaf09c63e87bba287b2bdcb076a4da945f96",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-complete-lifecycle",
+      "raw_line": 372,
+      "execution": "99a187e6-b586-4d23-ab8d-99d33c101346",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/00ac9c4d22c8fa7f7cd500fdffaf353149b88520baea1749f70a34447c0ded7f",
+        "sha256": "00ac9c4d22c8fa7f7cd500fdffaf353149b88520baea1749f70a34447c0ded7f",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-complete-lifecycle",
+      "raw_line": 394,
+      "execution": "f828139a-9e0e-46b0-a1d3-28dc11d7ede2",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/015cc0818b09b1be3e0e78ffd9748bcbc048286a5645cc397c81107c2d7961d5",
+        "sha256": "015cc0818b09b1be3e0e78ffd9748bcbc048286a5645cc397c81107c2d7961d5",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-complete-lifecycle",
+      "raw_line": 400,
+      "execution": "3804b4ba-f180-47ed-b939-c926d856ebe8",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/adb22c721b36053ac9a76e8dec3762d6bd736f0cde15f0d21f7defd509aa2651",
+        "sha256": "adb22c721b36053ac9a76e8dec3762d6bd736f0cde15f0d21f7defd509aa2651",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility",
+      "raw_line": 492,
+      "execution": "77c1ea6b-5896-4c3e-9d2a-efa166fdc134",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/a800fe87af4c14004f124bea5564c2ca537c984bf33caa610a9876a81d802f4b",
+        "sha256": "a800fe87af4c14004f124bea5564c2ca537c984bf33caa610a9876a81d802f4b",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility",
+      "raw_line": 498,
+      "execution": "72f4b065-293f-49f3-8acc-4f55339dc305",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/883e4e28d3c258286a20630b663f7a8ad9eec601d3d098bea3c174a776b5afea",
+        "sha256": "883e4e28d3c258286a20630b663f7a8ad9eec601d3d098bea3c174a776b5afea",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility",
+      "raw_line": 520,
+      "execution": "b4e5360d-809b-4b24-b281-c96cd7bf2095",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/91e91080f2c8502dc765db0c9da6a9eaae9e0ead62f9e341b3aeebc5471f4593",
+        "sha256": "91e91080f2c8502dc765db0c9da6a9eaae9e0ead62f9e341b3aeebc5471f4593",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility",
+      "raw_line": 526,
+      "execution": "b37a81c3-4094-416a-9087-73146d5a9f4b",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/0e679cb0454abdb1b296470ca0431486476a18f495d2da3ab9bf497f9b2bed6d",
+        "sha256": "0e679cb0454abdb1b296470ca0431486476a18f495d2da3ab9bf497f9b2bed6d",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-final",
+      "raw_line": 506,
+      "execution": "c43108cd-e7f7-45d1-ae4b-6416bbe5bb91",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/4d712b21b28215c529c95738c42e75b32eb1c6fcc61342924c3b46188397dc21",
+        "sha256": "4d712b21b28215c529c95738c42e75b32eb1c6fcc61342924c3b46188397dc21",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-final",
+      "raw_line": 512,
+      "execution": "d11493b3-0d45-476e-9a42-b85ab0fb3cd8",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ed046606ad4ca14c86c87ca7433c93bd6bde4357a71115274ff48a9a12b718e6",
+        "sha256": "ed046606ad4ca14c86c87ca7433c93bd6bde4357a71115274ff48a9a12b718e6",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-final",
+      "raw_line": 534,
+      "execution": "7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/52792f8a8c117482331419cd0c98ea4e4427de007e4834f513e9d0756ed86625",
+        "sha256": "52792f8a8c117482331419cd0c98ea4e4427de007e4834f513e9d0756ed86625",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-final",
+      "raw_line": 540,
+      "execution": "2fccb848-5732-4236-acba-3fbb726045b6",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/9ecb67d153caa83273f668f20973bd07f4e57bff880517a45b7cbb8664f4a430",
+        "sha256": "9ecb67d153caa83273f668f20973bd07f4e57bff880517a45b7cbb8664f4a430",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-freeze",
+      "raw_line": 506,
+      "execution": "abe0c7b5-a243-4efc-8c09-1819aac113be",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/14d26942addb174324655e50efee38fdea2e19b52fdf009363187cb4bd613065",
+        "sha256": "14d26942addb174324655e50efee38fdea2e19b52fdf009363187cb4bd613065",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-freeze",
+      "raw_line": 512,
+      "execution": "004a2007-a665-44cf-ae67-e9984078670d",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/436e2bf5a686e93f9d3b6cfb886206744f070c4d45f19e811c879b7720330bb5",
+        "sha256": "436e2bf5a686e93f9d3b6cfb886206744f070c4d45f19e811c879b7720330bb5",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-freeze",
+      "raw_line": 534,
+      "execution": "f4c98262-7e88-4421-a6d9-ec98d5c6d33e",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/4154465cdc4d6a0fcd16af8e17bfbffe9b693ef7b95f9de6422a1d346409113d",
+        "sha256": "4154465cdc4d6a0fcd16af8e17bfbffe9b693ef7b95f9de6422a1d346409113d",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "research",
+      "run": "green-compatibility-freeze",
+      "raw_line": 540,
+      "execution": "5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/c83ae7e627f48d0847445322b41b6a5154334191f1ad7ef740a4a9b461540a24",
+        "sha256": "c83ae7e627f48d0847445322b41b6a5154334191f1ad7ef740a4a9b461540a24",
+        "bytes": 795
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+        "bytes": 46
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 270,
+      "execution": "000c655f-2c2c-4d2b-acb7-9858deecbf9a",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/568e6be7aac48cc291994c4ea1168a5531c5bd2a4438ca193d0c4971d665b7c5",
+        "sha256": "568e6be7aac48cc291994c4ea1168a5531c5bd2a4438ca193d0c4971d665b7c5",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 287,
+      "execution": "09b16a65-b9d5-469c-9bc7-72a17d524ac7",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/3de1e379337857b7e9bd1fa9b48951f975959fe6681996f80f473246b0e58e2d",
+        "sha256": "3de1e379337857b7e9bd1fa9b48951f975959fe6681996f80f473246b0e58e2d",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 304,
+      "execution": "930dafc3-6679-4152-8045-4858be9e04bf",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/16fef1a4a845f7b1b43d55476cb63f3ae07cfff1910cf517727000b4d58aa7cc",
+        "sha256": "16fef1a4a845f7b1b43d55476cb63f3ae07cfff1910cf517727000b4d58aa7cc",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 329,
+      "execution": "31c42537-57ee-457d-a3f7-ecdfc07041e4",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/61f7ff5e2875894929b70ffcedb41e8ba95542255905f71376c809e36f6ae146",
+        "sha256": "61f7ff5e2875894929b70ffcedb41e8ba95542255905f71376c809e36f6ae146",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 344,
+      "execution": "f00a4027-52e7-4ee6-b780-b32668a09f01",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/d551af4f1db6af09c5eadd5f4e3f240e4c787d71611fb183dcf6b773c8882a87",
+        "sha256": "d551af4f1db6af09c5eadd5f4e3f240e4c787d71611fb183dcf6b773c8882a87",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 378,
+      "execution": "aa77f00b-5a23-4cf0-9630-4006a6db4064",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/743a83c6eda79436e08ee6261ec6e514f272189f6c3dcdd5a8f7b32e28568cd3",
+        "sha256": "743a83c6eda79436e08ee6261ec6e514f272189f6c3dcdd5a8f7b32e28568cd3",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 623,
+      "execution": "e3bbaed6-c1ae-4b16-90c1-fc091bd0e900",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/3f2621a82cad9ee615620d3354cff077bad57a62e7d003f610e530c11907a0f9",
+        "sha256": "3f2621a82cad9ee615620d3354cff077bad57a62e7d003f610e530c11907a0f9",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 649,
+      "execution": "9df08634-cc65-4c50-abe3-ecf7bfed54c5",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/a9c3eb4631922d54275eeeb5a74c4475aff80a81acb9df23d60c67391110837f",
+        "sha256": "a9c3eb4631922d54275eeeb5a74c4475aff80a81acb9df23d60c67391110837f",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    },
+    {
+      "kind": "production",
+      "run": "green-compatibility-freeze",
+      "raw_line": 663,
+      "execution": "9a45e135-35fc-450b-9f92-301f3c532410",
+      "artifact": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/89a80e74a734f12b6c8c1a6e429098c5f762974afb8ee6bc2ec3a37cfe218fc6",
+        "sha256": "89a80e74a734f12b6c8c1a6e429098c5f762974afb8ee6bc2ec3a37cfe218fc6",
+        "bytes": 986
+      },
+      "measured_log": {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+        "bytes": 17
+      },
+      "byte_hash_and_log_binding_checked": true
+    }
+  ],
+  "recorded_final_run": {
+    "targets": 9,
+    "passed": 96,
+    "intent_contract_passed": 30,
+    "result_lines": [
+      "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+      "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.44s",
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.95s",
+      "test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 150.16s",
+      "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.48s",
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s",
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s",
+      "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.62s",
+      "test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.72s"
+    ],
+    "all_test_launches": 10,
+    "cumulative_seconds": 1045.9441862106323,
+    "no_new_run": true
+  },
+  "resource_assessment": {
+    "recorded_postgres_stopped": true,
+    "retained_schemas": 137,
+    "retained_roots": 17,
+    "unresolved_runtime_rows": 29,
+    "absence_not_physical_stop_or_usage_reconciliation": true,
+    "export_restore_not_tested": true
+  },
+  "limitations": [
+    "Read-only static source and retained raw-record audit; no runtime, Cargo/test, service, container/provider/Temporal launch or archived script execution.",
+    "Passing author tests are evidence of those paths, not blanket conformance. F1 is not an independently executed reproduction.",
+    "Owner-target RED is the documented counterfactual removing the exact guard from current candidate, not original rejected-baseline proof; initial nonexistent targets excluded.",
+    "All10 attempts, setup failures, partial pass and fixture expectation failures retained; no full repository gate or live-v2/restore qualification inferred.",
+    "Concurrency fixture observes one permitted serialization; no exhaustive interleaving proof.",
+    "Accepted v1 identities remain historical; no upgrading original proofs.",
+    "No new implementation/repair/integration/landing authority; preserve blocker for explicit disposition."
+  ],
+  "report": {
+    "path": "/tmp/corenius-intent26-outcome-lifecycle1-spec-20261004/report.md",
+    "sha256": "5ad740091ed9cec51111111f25b6385b28bd4aa7a76ab9a5b4a6ab3db6214811",
+    "bytes": 2516
+  },
+  "report_word_count": 301
+}

@@ -1,0 +1,189 @@
+{
+  "command": "CARGO_BUILD_JOBS=2 RUST_TEST_THREADS=1 bash tools/agents/check.sh",
+  "cwd": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "session_id": 40945,
+  "tool_terminal_exit": 0,
+  "final_output": "check: all green",
+  "rust_suite_results": [
+    {
+      "status": "ok",
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 34,
+      "failed": 0,
+      "ignored": 3
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 1
+    },
+    {
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 57,
+      "failed": 0,
+      "ignored": 3
+    },
+    {
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 20,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 1
+    },
+    {
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 20,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 26,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "raw_log": {
+    "path": "repository-gate.log.txt",
+    "bytes": 31488,
+    "sha256": "cb438de11122d4905bf8337363315b14ee630bee7c52f2899f5511ed015a1313"
+  },
+  "source_postimages": {
+    "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+    "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+    "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e"
+  },
+  "scope": "required integrated root repository gate; accepted v1 kernel remains v1; not backend25/v2/live/restore acceptance",
+  "fresh_branch_review": "pending"
+}

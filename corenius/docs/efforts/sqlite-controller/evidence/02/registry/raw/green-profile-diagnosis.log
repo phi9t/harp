@@ -1,0 +1,26 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-2ed9953211d69908)
+
+running 1 test
+native_setup_output bwrap: Can't find source path /proc/2341405/fd/3: Permission denied
+
+
+
+thread 'pinned_native_services_use_supervised_private_network_profiles' (2341399) panicked at tests/codex.rs:61:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_profile.py", line 33, in <module>
+    assert 'ok' in identity,identity
+           ^^^^^^^^^^^^^^^^
+AssertionError: {'error': 'pidfd ownership: No such process (os error 3)'}
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test pinned_native_services_use_supervised_private_network_profiles ... FAILED
+
+failures:
+
+failures:
+    pinned_native_services_use_supervised_private_network_profiles
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 8.61s
+
+error: test failed, to rerun pass `--test codex`

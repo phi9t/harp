@@ -1,0 +1,23 @@
+{
+  "operation": "4958725c-d3ae-42f0-9650-4b7aa49612e4",
+  "created_at": "2026-10-05T02:53:35.190626+00:00",
+  "kind": "one-off authorized current assignment notification",
+  "state": "queued",
+  "sender_thread": "01a0f51d-8b62-7930-862f-c4b44d7d0bb7",
+  "recipient_thread": "01a10084-dc3a-7743-b0c1-4694d5ecc621",
+  "binary": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+  "binary_sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479",
+  "message_sha256": "d88f1316aef715855a8bddf393c31107909e6b8fb4016ce17b1ad0fd512a4f08",
+  "authorization": "Owner explicitly requested notification of current authorized writer/thread/ticket changes; existing recurring wake/timer/ledger untouched.",
+  "retry": "Never blindly retry an ambiguous queue outcome.",
+  "finished_at": "2026-10-05T02:53:35.256504+00:00",
+  "exit": 0,
+  "owned_CLI_pid": 3710774,
+  "receipt_id": "01a109fb-2086-7dd1-ac38-3989e9ce8334",
+  "recipient_receipt_thread": "01a10084-dc3a-7743-b0c1-4694d5ecc621",
+  "stdout_sha256": "5d8c0c05990e38af100ad720a5becfb5041e0e5f92b0c9fde8f445d8fca77acf",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "error": null,
+  "presentation_ack_completion": "UNKNOWN; queue receipt is submission only",
+  "wake_timer_observation_ledger_modified": false
+}

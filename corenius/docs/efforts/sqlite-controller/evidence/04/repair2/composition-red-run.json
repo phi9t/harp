@@ -1,0 +1,27 @@
+{
+  "name": "composition-red",
+  "source": "7d8daaebb6b63bc5aedde5111fa594750f4f134b",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--features",
+    "fault-injection",
+    "--test",
+    "git",
+    "--",
+    "--nocapture",
+    "--test-threads=2"
+  ],
+  "started": "2026-10-04T18:21:47.070026+00:00",
+  "ended": "2026-10-04T18:21:54.029128+00:00",
+  "elapsed_seconds": 6.959087535040453,
+  "exit": 101,
+  "raw_log": ".scratch/sqlite-controller/04/repair2/composition-red.log",
+  "environment": {
+    "CORENIUS_TEST_GIT_MODES": "accepted-verification"
+  }
+}

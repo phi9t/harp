@@ -1,0 +1,9 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.62s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 1 test
+test repair_paused_dispatch_survives_first_lookup_transport_failure ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.22s
+

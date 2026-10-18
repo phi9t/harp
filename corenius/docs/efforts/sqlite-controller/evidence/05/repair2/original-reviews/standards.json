@@ -1,0 +1,855 @@
+{
+  "schema": "corenius-independent-standards-review-v1",
+  "reviewer": "/root/sqlite05_standards_review",
+  "review_mode": "read-only source; own isolated snapshots/targets/temporary test fixtures",
+  "created_at": "2026-10-04T23:16:58.849552+00:00",
+  "verdict": "FAIL",
+  "unresolved_finding_ids": [
+    "STD05-007",
+    "STD05-008",
+    "STD05-009"
+  ],
+  "source": {
+    "commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+    "tree": "9ec2a1d066dbe1a6a1872849458dcda6ac7006e3",
+    "parent": "0fccc193949476e9b7f04da1b0c9513f3d0a055c",
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+    "archive_sha256": "f57d0c3b73d7adc4d56252b488236c0b1c5d3cf2317c74bb49177aad03f48801",
+    "admission_sha256": "445d1ec1bde81b9963784ee6048ab0b0990cd8ee3d2ff93fbe540f7a2e219228",
+    "brief_sha256": "fa798481b1c4dfec9b39a7cf5e0fe66503ae20884e690031a548be47521d70fb",
+    "pins": [
+      {
+        "path": "crates/sqlite-controller/Cargo.lock",
+        "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a",
+        "git_blob": "c22c260ac3000b2600eabdaebf86d7914c81bb94"
+      },
+      {
+        "path": "crates/sqlite-controller/Cargo.toml",
+        "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114",
+        "git_blob": "c18346c8f5b6f0dcd90ca7d52ac9f1848ef694cf"
+      },
+      {
+        "path": "crates/sqlite-controller/README.md",
+        "sha256": "f00f8d86baa78803dbd06cfd8cea5d8ea8210ccd4818e121595b8d6cd1b5e6a7",
+        "git_blob": "c302bdb8f4c34e6c606958228a43304911ed9265"
+      },
+      {
+        "path": "crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+        "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626",
+        "git_blob": "e6c707a4651654caa139f92c1212275e34eb1a39"
+      },
+      {
+        "path": "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+        "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+        "git_blob": "b792e9222a5244055cfe5c414f74b5dbf2ded039"
+      },
+      {
+        "path": "crates/sqlite-controller/src/client.rs",
+        "sha256": "e795347e48d1197e413ecd9e6ca814a6a777d1c425efa6605085e4dfcd12aa1b",
+        "git_blob": "8fff3d4f77acf32aba49511cb74f6f6cc23abf29"
+      },
+      {
+        "path": "crates/sqlite-controller/src/codex.rs",
+        "sha256": "6040fadd62df4a0a0fa0bb47bfb684adfddb330f371b3b273191d265f2581a9c",
+        "git_blob": "0ca3a238caa6e24a9b67f7f4f8677362558a5058"
+      },
+      {
+        "path": "crates/sqlite-controller/src/codex_schema.sql",
+        "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e",
+        "git_blob": "92e75670ddab82213e9f0fbe821cfaa6ef114490"
+      },
+      {
+        "path": "crates/sqlite-controller/src/control.rs",
+        "sha256": "f80891e7bf2d3bf7f7bccb2d82b2c017a405a45a74fe245831a430bb04dfcac9",
+        "git_blob": "1e3b59034246f0345d50d6e2545bc4551948691d"
+      },
+      {
+        "path": "crates/sqlite-controller/src/control_schema.sql",
+        "sha256": "1d2ff2c13f80ead53642c3af8c5fff1514ac56c44fc534f342809de5f762a273",
+        "git_blob": "befcb084acc3a60b6cb382767489d0bd86fd01a1"
+      },
+      {
+        "path": "crates/sqlite-controller/src/gateway.rs",
+        "sha256": "0617b5e4410a405a046a023439afd9c39205296e714953a457adfa54b7a0aa74",
+        "git_blob": "67826b689b53baa0aca7641da54fe97549be8bc4"
+      },
+      {
+        "path": "crates/sqlite-controller/src/git.rs",
+        "sha256": "6b341a7a0be5fa97e38e34777d1e888789eab8679e487f61c691724e70c52895",
+        "git_blob": "aecc28118cc9d5b6c86cae2bdf0a913735c6ae95"
+      },
+      {
+        "path": "crates/sqlite-controller/src/git_workspace.rs",
+        "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7",
+        "git_blob": "d37d7a42dbacd4301b0b4354d56d283256c3c2c3"
+      },
+      {
+        "path": "crates/sqlite-controller/src/kata.rs",
+        "sha256": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+        "git_blob": "29c6090173842b168c42b02c8d850c9407e95bf4"
+      },
+      {
+        "path": "crates/sqlite-controller/src/kata_schema.sql",
+        "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe",
+        "git_blob": "2fd1fb2f9589076879e0fbcb973e19ff36822786"
+      },
+      {
+        "path": "crates/sqlite-controller/src/lib.rs",
+        "sha256": "0d19178f97af5baf3f9f72cfb13235fe75062880a057d6ec4205e8acb2218266",
+        "git_blob": "ec43448217f66f98bf895f90e24e02ec69b60809"
+      },
+      {
+        "path": "crates/sqlite-controller/src/main.rs",
+        "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7",
+        "git_blob": "6f8d55ebf4f38739482519fb6d5dd4ae19fb6008"
+      },
+      {
+        "path": "crates/sqlite-controller/src/monitor.rs",
+        "sha256": "8a0b424dd073f7135acc024a6bb01b89ccbda06844a0aa5e752b37f4203e768a",
+        "git_blob": "ba7040f869d58b8714a27360d1ab2c5f592ed581"
+      },
+      {
+        "path": "crates/sqlite-controller/src/native_profile.rs",
+        "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9",
+        "git_blob": "c0b31b83137837cd94cd79608f6623e8af0fd1b2"
+      },
+      {
+        "path": "crates/sqlite-controller/src/native_ui.rs",
+        "sha256": "d052a781b33d4de2acd9380de2dad8f965340e8c0f66068cd01e90e19724dc0c",
+        "git_blob": "e0fd543855753107df736e29e595ec631a468d05"
+      },
+      {
+        "path": "crates/sqlite-controller/src/native_ws.rs",
+        "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7",
+        "git_blob": "2057d15bf45b849393d1079a54317915d628346a"
+      },
+      {
+        "path": "crates/sqlite-controller/src/query.rs",
+        "sha256": "6f95c3f91403f888c42ed1279f7ae08b0f3331f574f12b19eae5d8469eb0310b",
+        "git_blob": "449a98a4b85e04ef670c5bd6162cb572e49a70c3"
+      },
+      {
+        "path": "crates/sqlite-controller/src/runtime.rs",
+        "sha256": "6ef2364b8c00edab0550298b23f63ab79ecef341aa3c71e6df36e65b8d0fccf7",
+        "git_blob": "9f312405ddde6f3503ddd6d6aa90c23f479233bd"
+      },
+      {
+        "path": "crates/sqlite-controller/src/schema.sql",
+        "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+        "git_blob": "2a2233b86915ce5f866fed0a46ed08f48174c4e4"
+      },
+      {
+        "path": "crates/sqlite-controller/src/service.rs",
+        "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061",
+        "git_blob": "02a51123f368e1ef4b3a22c556ef3c607a169c3d"
+      },
+      {
+        "path": "crates/sqlite-controller/src/supervisor.rs",
+        "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+        "git_blob": "edf3b6153a6bfdf1f5bb059a027679945597dbf9"
+      },
+      {
+        "path": "crates/sqlite-controller/src/ui_gateway.rs",
+        "sha256": "acd4df77a9f17b200907ec4e520c6f88c40765283f86c45a44e4c6e4be4c10c9",
+        "git_blob": "a4df0a768cbe4a4a60214b1f45b63bce9afc01be"
+      },
+      {
+        "path": "crates/sqlite-controller/support/codex_insula.py",
+        "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+        "git_blob": "4f0154c4d248d6484a3dd919e7f4e84e632c15ec"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/client.rs",
+        "sha256": "b5e384b985100ed1c498507dab284dab5fcfdf6b0b5b3c1965da6dc6a9465bcd",
+        "git_blob": "e9b61b0761ff2ffe1eccd99a2734d0ac2ca90d01"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/codex.rs",
+        "sha256": "e8961f3f088700beac4cb698ef3b129a4d89cb9a7326dcd35f9b1164fd171491",
+        "git_blob": "93fe5763e30f4eda8a5bd3e28787887f6c21b2e1"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/control_center.rs",
+        "sha256": "35074cc958f97a205bfd79a6683c05fecb2a1de5b8c50d27ccf7fb0541ff40d2",
+        "git_blob": "0a736a8d60ad13fc48b3b37de6a58b3c3f18e3d6"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/git.rs",
+        "sha256": "418324acb121f4a946a5467db96af6b10a565010b02892565710625abb60900a",
+        "git_blob": "5b79284855fb0e8da5c29430ef318a1c5eaa631a"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/kata.rs",
+        "sha256": "05fe7a43b0b42797d63bc5154bd5bf745d364825d1bbd1ea51c65a1c01c62500",
+        "git_blob": "83f55153a7e5a8559ca20bbbf77b73f8ba146e1a"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/process.rs",
+        "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02",
+        "git_blob": "3b880385a736262e5d8d173fb3533bcadde7ee34"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/public.rs",
+        "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae",
+        "git_blob": "faa1b92509c891ae8d2fd7c88a8125aace9b68d9"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/runtime.rs",
+        "sha256": "7bdcd64e6fd71c276b923167492819770fc32968bf74d7521f079be164d90fa5",
+        "git_blob": "be4dfb9889850cc2280aa340a8a0d5f5b8ea9096"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/control_center_native.py",
+        "sha256": "3598d6ee29c3cb889d7af7624e075777e13bbd21964ae1dfb914d5a9c287035d",
+        "git_blob": "4284736485edca44dd2f60fcbc26c32ff405b64d"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/git_protocol.py",
+        "sha256": "1949538f4376fa44f8e930cae3268fe717c2cd828840a772ca062c0978035261",
+        "git_blob": "127a0a00ac49e6f382915e03d7beb0403c7c961c"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/kata_protocol.py",
+        "sha256": "caad56e4847dc1b470e621974962b4d999d96ef2700238bf4d10724e568975aa",
+        "git_blob": "682cf6c7564044a539eaf8ba61348c56f2985587"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/native_init.py",
+        "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8",
+        "git_blob": "c30d2b86c61abbb4676f6db0f61bb196c6e63d95"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/native_profile.py",
+        "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c",
+        "git_blob": "935a4d6f6979995ea2bb8851b58fc49b9a820460"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/native_registry.py",
+        "sha256": "8b567d9598eb009c1936ab70103f89e8f2e7644e579f147fb342dea71883c65c",
+        "git_blob": "7a7df1bd786e6502f2a000359dbf455920f8152b"
+      },
+      {
+        "path": "crates/sqlite-controller/tests/support/wsutil.py",
+        "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+        "git_blob": "eb9a6770f1689fd04e0c43b64904dcccb4fe5c0b"
+      }
+    ],
+    "before_map_sha256": "a16e83eb12e822b20095ed824fd8ed75dffc17f4b7635381e1bc350125269fb2",
+    "after_map_sha256": "03526004bb00344da34d0a5be33a17ff27703aa6c04dc9692ac961b9428a75f9",
+    "all43_before_after_match": true,
+    "probe_maps": {
+      "probe-source-map-final.json": "92002296bbecf64d6f3b61a1ba8d6a5d2cdc44ac6d0586514c857120fce92f03",
+      "edge-probe-source-map-final.json": "ba3759e20e25b6513481de85adb532c49da00b32862d283f32fea99a7bc47d44"
+    }
+  },
+  "delta_scope": {
+    "files": 23,
+    "insertions": 5522,
+    "deletions": 49,
+    "numstat": "76\t3\tcrates/sqlite-controller/README.md\n201\t0\tcrates/sqlite-controller/src/client.rs\n313\t19\tcrates/sqlite-controller/src/codex.rs\n683\t0\tcrates/sqlite-controller/src/control.rs\n26\t0\tcrates/sqlite-controller/src/control_schema.sql\n446\t0\tcrates/sqlite-controller/src/gateway.rs\n3\t2\tcrates/sqlite-controller/src/git.rs\n67\t2\tcrates/sqlite-controller/src/lib.rs\n9\t0\tcrates/sqlite-controller/src/main.rs\n1560\t0\tcrates/sqlite-controller/src/monitor.rs\n413\t0\tcrates/sqlite-controller/src/native_ui.rs\n346\t0\tcrates/sqlite-controller/src/native_ws.rs\n42\t0\tcrates/sqlite-controller/src/query.rs\n35\t16\tcrates/sqlite-controller/src/service.rs\n257\t0\tcrates/sqlite-controller/src/ui_gateway.rs\n146\t0\tcrates/sqlite-controller/tests/client.rs\n152\t0\tcrates/sqlite-controller/tests/codex.rs\n331\t0\tcrates/sqlite-controller/tests/control_center.rs\n19\t0\tcrates/sqlite-controller/tests/git.rs\n313\t0\tcrates/sqlite-controller/tests/support/control_center_native.py\n34\t3\tcrates/sqlite-controller/tests/support/git_protocol.py\n2\t0\tcrates/sqlite-controller/tests/support/kata_protocol.py\n48\t4\tcrates/sqlite-controller/tests/support/native_registry.py\n"
+  },
+  "requirements": [
+    "AGENTS.md",
+    "CONSTITUTION.md:33-37",
+    "docs/agents/agentic-engineering.md",
+    "docs/agents/skill-orchestration.md",
+    "docs/efforts/sqlite-controller/SPEC.md",
+    "docs/efforts/sqlite-controller/CONTROLLED-TRIAL.md",
+    "docs/efforts/sqlite-controller/tickets/05-lead-control-center.md",
+    "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/SPEC.md",
+    "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/initial-review.md",
+    "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/manifest.json"
+  ],
+  "skills_applied": [
+    "code-review Standards axis",
+    "codebase-design",
+    "verification-before-completion"
+  ],
+  "findings": [
+    {
+      "id": "STD05-007",
+      "severity": "P2",
+      "title": "Return a native start response after history reconciliation",
+      "path": "crates/sqlite-controller/src/native_ui.rs",
+      "line": 402,
+      "related_locations": [
+        {
+          "path": "crates/sqlite-controller/src/native_ui.rs",
+          "line": 405
+        },
+        {
+          "path": "crates/sqlite-controller/src/codex.rs",
+          "line": 1353
+        }
+      ],
+      "requirement": "SPEC.md:58,78 and ticket05:12,21 require compatible native controls and durable visible dispositions after lost acknowledgement/reconciliation.",
+      "behavior": "A saved codex_turn whose lost start acknowledgement is reconciled from typed native history is confirmed with internal {turn_id,thread_id,...} observation. ui_input returns it unchanged as successful turn/start response. The native consumer expects {turn:{id,...}}; turn is absent despite the confirmed accepted turn.",
+      "evidence": "Actual ui_input caller on real SQLite prepares the retained operation; actual reconcile_turn_ack confirms the exact operation/client ID/text from typed history. Exact retry returns internal observation with turn_id=accepted-turn and no turn object; operation count remains one. A normal native-shaped acknowledgement is returned correctly, and changed arguments are refused.",
+      "fixture_limit": "Qualified owned binding and declared lost-ACK/history fixture; native drain held by existing fault-injection flag. No native subprocess or wire consumer was used for this edge discriminator.",
+      "action": "Normalize reconciled saved-start observations into the same version-pinned native turn/start response as an observed acknowledgement, preserving accepted turn identity and saved command semantics.",
+      "log": "independent-edge-probes.log",
+      "marker": "EDGE_HISTORY_UI_RESPONSE"
+    },
+    {
+      "id": "STD05-008",
+      "severity": "P2",
+      "title": "Replay an exact retained steer after the current turn advances",
+      "path": "crates/sqlite-controller/src/native_ui.rs",
+      "line": 305,
+      "related_locations": [
+        {
+          "path": "crates/sqlite-controller/src/native_ui.rs",
+          "line": 308
+        }
+      ],
+      "requirement": "SPEC.md:30,46,58,78 and ticket05:21 require stable retained retries and reconciliation while checking current authority; a new stale request must still be refused.",
+      "behavior": "The expectedTurnId/current-turn guard runs before saved control_ui_commands lookup. An already admitted, confirmed steer with unchanged stable ID/arguments and unchanged actor/binding/epoch cannot return its retained receipt after a later turn becomes current.",
+      "evidence": "Actual ui_input prepares one codex_steer. Exact retry with retained native response succeeds before advancement; after current_turn and turn_id advance it fails native UI expected turn mismatch. No second operation is created. A fresh stale request is independently refused as expected.",
+      "fixture_limit": "Real controller command/receipt/caller with qualified owned binding and declared confirmed observation/turn advancement. No native subprocess used for this edge discriminator.",
+      "action": "Validate saved identity/arguments/current authority and replay admitted work before applying current-turn admission checks to new requests. Keep fresh stale, foreign, superseded, and changed-argument refusals.",
+      "log": "independent-edge-probes.log",
+      "marker": "EDGE_RETAINED_STEER_REPLAY"
+    },
+    {
+      "id": "STD05-009",
+      "severity": "P2",
+      "title": "Bound the control-center question projection to its shared transport",
+      "path": "crates/sqlite-controller/src/control.rs",
+      "line": 354,
+      "related_locations": [
+        {
+          "path": "crates/sqlite-controller/src/control.rs",
+          "line": 356
+        },
+        {
+          "path": "crates/sqlite-controller/src/client.rs",
+          "line": 36
+        },
+        {
+          "path": "crates/sqlite-controller/src/service.rs",
+          "line": 154
+        }
+      ],
+      "requirement": "SPEC.md:32,58,80 and ticket05:12,20 require usable shared dashboard/lead projections, retained large text, questions and uncertainty.",
+      "behavior": "control_center selects every question including full text/answer without a result budget. Valid retained questions accumulate past the shared 4 MiB client response limit, making the whole dashboard and gateway projection unavailable.",
+      "evidence": "Public Controller.handle created one small plus 70 valid 65,536-byte questions in on-disk SQLite. Actual framed response is 4,606,124 bytes versus 4,194,304-byte limit. Actual service::serve_request and client::call over owned Unix sockets return controller response bound/framing for dashboard transport and gateway corenius_query. Small projection succeeds and single question_input retrieves all 65,536 bytes.",
+      "fixture_limit": "Actual product service/client/controller/gateway functions and owned Unix sockets; no browser or separate MCP subprocess was needed to establish the shared transport failure.",
+      "action": "Return bounded question descriptors/references or pagination with explicit continuation/availability; keep exact full text available via question_input. Account for all projection fields within the shared response budget.",
+      "log": "independent-edge-probes.log",
+      "marker": "EDGE_CONTROL_CENTER_RESPONSE_BOUND"
+    }
+  ],
+  "original_six_disposition": [
+    {
+      "id": "STD05-001",
+      "status": "RESOLVED",
+      "location": "src/git.rs:359",
+      "disposition": "Generic Git command route restricts observer principals before effect preparation. Unchanged repaired Git SHA from prior924 review retains its independently executed configured-Git denial evidence; fresh public observer-authority projection controls passed. No need to repeat unaffected Git suite."
+    },
+    {
+      "id": "STD05-002",
+      "status": "RESOLVED",
+      "location": "src/gateway.rs:237",
+      "disposition": "New native calls require active observed exact thread/turn and current or admitted in-flight correlation; completed retained response replay is allowed under current binding/epoch. Fresh unit and actual both-topology early-ACK/runtime tests passed."
+    },
+    {
+      "id": "STD05-003",
+      "status": "RESOLVED",
+      "location": "src/native_ws.rs:492",
+      "disposition": "Owner RPC handles only matching-thread tool calls and queues peer calls for their own routing. Real socket test and actual combined native interleaving in both topologies passed."
+    },
+    {
+      "id": "STD05-004",
+      "status": "RESOLVED",
+      "location": "src/gateway.rs:229",
+      "disposition": "Stored invocation arguments are compared even with pending NULL response, before recovery dispatch. Changed pending arguments refused; same pending and completed replay controls passed."
+    },
+    {
+      "id": "STD05-005",
+      "status": "RESOLVED",
+      "location": "src/codex.rs:1443",
+      "disposition": "Local stale-turn failure is checked before applying admission. Actual dispatcher SQLite second-write abort leaves prepared/prepared; reopen plus ordinary reconcile_turn_ack/dispatch_prepared/prepare_delivery yields old failed, fresh different codex_turn prepared, question prepared, total two. Helper atomicity, early ACK, and correction ACK remain intact. This resolves prior924 independent caller defect; new replay defect STD05-008 is separately identified."
+    },
+    {
+      "id": "STD05-006",
+      "status": "RESOLVED",
+      "location": "src/monitor.rs:88",
+      "disposition": "Bounded nonblocking nofollow regular-file retained reader denies FIFO/symlink/oversize/corrupt/missing inputs without credit; fresh tests passed. Private atomic publication and real kernel short-write discriminator also passed."
+    }
+  ],
+  "repair_controls": [
+    {
+      "id": "REPAIR1-01",
+      "result": "PASS",
+      "subject": "Dispatcher abort/reopen/ordinary recovery",
+      "evidence": [
+        "units.log",
+        "independent-probes-final.log"
+      ],
+      "detail": "Actual caller fault leaves pre-effect prepared/prepared; ordinary reopened recovery admits a different fresh question delivery without blindly retrying applying/unknown external effects. No native process-kill claim for SQLite-fault probe."
+    },
+    {
+      "id": "REPAIR1-02",
+      "result": "PASS",
+      "subject": "All sealed full-input dependencies",
+      "evidence": [
+        "units.log",
+        "independent-probes-final.log"
+      ],
+      "detail": "Missing/corrupt/FIFO/symlink/oversize/incomplete full inputs are uncredited. Independent all-bytes-present metadata-hole fault is refused with zero assessments/credits and unchanged revision; ordinary metadata deletion is first proven protected, then declared corruption is injected only in owned DB. Filesystem validation outside writer; immutable dependency rebind inside transaction."
+    },
+    {
+      "id": "REPAIR1-03",
+      "result": "PASS",
+      "subject": "Native threadId+turnId interrupts",
+      "evidence": [
+        "native-combined.log"
+      ],
+      "detail": "Actual pinned native interrupt in shared and separate topologies accepts native shape with turnId stable identity; exact cached replay works, stale/foreign requests refused."
+    },
+    {
+      "id": "REPAIR1-04",
+      "result": "PASS (bounded case); extension FAIL STD05-007/008",
+      "subject": "Saved-kind active start replay",
+      "evidence": [
+        "native-combined.log",
+        "independent-edge-probes.log"
+      ],
+      "detail": "Genuine immediately persisted active saved codex_turn with owned hold replays exact original native-shaped response, unchanged counts21/21 shared and17/17 separate; changed arguments refused. Lost-ACK history response and retained steer after later-turn advancement fail separately."
+    },
+    {
+      "id": "REPAIR1-05",
+      "result": "PASS delivery; projection extension FAIL STD05-009",
+      "subject": "Large question batching/references/task scope",
+      "evidence": [
+        "units.log",
+        "native-combined.log",
+        "independent-probes-final.log",
+        "independent-edge-probes.log"
+      ],
+      "detail": "10-question aggregate with65,536-byte item and8\u00d716,000-byte items plus later small question resolves in two actual native deliveries in both topologies. Exact full reference digest/text retrievable; foreign task refused. Unbounded dashboard projection separately fails."
+    },
+    {
+      "id": "REPAIR1-06",
+      "result": "PASS",
+      "subject": "Atomic complete retained publication",
+      "evidence": [
+        "units.log",
+        "independent-probes-final.log",
+        "kernel-short-write.strace"
+      ],
+      "detail": "Private create_new/no-follow stage, write_all+fsync, renameat2 NOREPLACE and directory fsync. Awaited owned partial-stage child exits86 before publication; reopen/concurrency preserves one input and unknown orphan. Independent RLIMIT_FSIZE1024/SIGXFSZ-ignore real kernel write16384\u21921024 thenEFBIG leaves no final digest, removes owned stage, and full16384-byte unrestricted retry succeeds. No power-loss/SIGKILL proof inferred."
+    }
+  ],
+  "actual_runs": [
+    {
+      "name": "independent-edge-probes",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/edge-probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_edge",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/edge-probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/edge-target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T23:07:39.627629+00:00",
+      "pid": 3480526,
+      "start_stat": "3480526 (cargo) R 3480525 3480524 3480524 0 -1 4194304 20 0 0 0 0 0 0 0 20 0 1 0 57083992 18980864 2 18446744073709551615 93883545419776 93883562897436 140731932411760 0 0 0 0 0 0 0 0 0 17 65 0 0 0 0 0 93883564996816 93883566089392 93883574185984 140731932414262 140731932414493 140731932414493 140731932422094 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 19.193,
+      "completed_at": "2026-10-04T23:07:58.820969+00:00",
+      "log_sha256": "58e705e82195b77ab6a50e0270e96350e8e445ea0cf8792ed52872d6c717ac69",
+      "meaning": "observed defects independently reproduced; assertions of bad behavior passed, so review remains FAIL"
+    },
+    {
+      "name": "independent-probes-corrected",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_owned",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-target",
+        "CARGO_BUILD_JOBS": "2",
+        "STANDARDS_PROBE_EVIDENCE_ROOT": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm"
+      },
+      "started_at": "2026-10-04T22:54:54.961569+00:00",
+      "pid": 3312544,
+      "start_stat": "3312544 (cargo) R 3312539 3312538 3312538 0 -1 4194304 20 0 0 0 0 0 0 0 20 0 1 0 57007526 18980864 2 18446744073709551615 94471626686464 94471644164124 140723185989056 0 0 0 0 0 0 0 0 0 17 211 0 0 0 0 0 94471646263504 94471647356080 94471678877696 140723185995982 140723185996209 140723185996209 140723186003918 0\n",
+      "exit_code": 101,
+      "elapsed_seconds": 1.761,
+      "completed_at": "2026-10-04T22:54:56.722177+00:00",
+      "log_sha256": "e92f265d8f11b7c83a9e8282917cfb12d185ba413ce3ceb6104b532a3622d816",
+      "meaning": "reviewer fixture setup failure retained, corrected later; not a source finding"
+    },
+    {
+      "name": "independent-probes-final",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_owned",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-target",
+        "CARGO_BUILD_JOBS": "2",
+        "STANDARDS_PROBE_EVIDENCE_ROOT": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm"
+      },
+      "started_at": "2026-10-04T23:00:26.365211+00:00",
+      "pid": 3392676,
+      "start_stat": "3392676 (cargo) R 3392675 3392674 3392674 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 57040666 18980864 2 18446744073709551615 94470047531008 94470065008668 140731671690912 0 0 0 0 0 0 0 0 0 17 89 0 0 0 0 0 94470067108048 94470068200624 94470090625024 140731671695566 140731671695793 140731671695793 140731671703502 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 1.503,
+      "completed_at": "2026-10-04T23:00:27.868715+00:00",
+      "log_sha256": "e458769bf9e5e49f80d629d9d018240c4e70fcbd64e3b17a11512b6d584952ac",
+      "meaning": "focused behavioral qualification; not whole repository gate"
+    },
+    {
+      "name": "independent-probes",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_owned",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-target",
+        "CARGO_BUILD_JOBS": "2",
+        "STANDARDS_PROBE_EVIDENCE_ROOT": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm"
+      },
+      "started_at": "2026-10-04T22:53:19.265788+00:00",
+      "pid": 3285508,
+      "start_stat": "3285508 (cargo) R 3285427 3285404 3285404 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 56997956 18980864 2 18446744073709551615 94173292134400 94173309612060 140737436807312 0 0 0 0 0 0 0 0 0 17 85 0 0 0 0 0 94173311711440 94173312804016 94173341106176 140737436815566 140737436815793 140737436815793 140737436823502 0\n",
+      "exit_code": 101,
+      "elapsed_seconds": 17.851,
+      "completed_at": "2026-10-04T22:53:37.117144+00:00",
+      "log_sha256": "76e13f3f4f9d68f70f00edc0ae3f012ca8dc76a3e20bc7f32c09d148473c6380",
+      "meaning": "reviewer fixture setup failure retained, corrected later; not a source finding"
+    },
+    {
+      "name": "independent-sealed-dependency",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_owned_sealed_dependency",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-crate",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/probe-target",
+        "CARGO_BUILD_JOBS": "2",
+        "STANDARDS_PROBE_EVIDENCE_ROOT": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm"
+      },
+      "started_at": "2026-10-04T22:56:20.819229+00:00",
+      "pid": 3332050,
+      "start_stat": "3332050 (cargo) R 3332045 3332044 3332044 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 57016111 18980864 2 18446744073709551615 94008669896704 94008687374364 140728487742448 0 0 0 0 0 0 0 0 0 17 78 0 0 0 0 0 94008689473744 94008690566320 94008721346560 140728487743676 140728487743921 140728487743921 140728487751630 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 1.345,
+      "completed_at": "2026-10-04T22:56:22.163956+00:00",
+      "log_sha256": "7e4079ea10a474bc1dcbdc4a0513fb65a75d770d3ae1c59c1f21d952f8ea340f",
+      "meaning": "focused behavioral qualification; not whole repository gate"
+    },
+    {
+      "name": "initial-confirm-default",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "repair2_initial_turn_receipt_survives_app_restart_before_adoption",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T22:53:29.039681+00:00",
+      "pid": 3289489,
+      "start_stat": "3289489 (cargo) R 3239330 3239328 3239328 0 -1 4194304 19 0 0 0 0 0 0 0 20 0 1 0 56998933 18980864 2 18446744073709551615 94852991680512 94853009158172 140723235226688 0 0 0 0 0 0 0 0 0 17 145 0 0 0 0 0 94853011257552 94853012350128 94853026627584 140723235234032 140723235234338 140723235234338 140723235241934 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 61.025,
+      "completed_at": "2026-10-04T22:54:30.065062+00:00",
+      "log_sha256": "69f6a6fc3d7bbc454fd378a9603f5111d0eab97d798bd3dbb476a4f9b32513e7",
+      "meaning": "focused behavioral qualification; not whole repository gate"
+    },
+    {
+      "name": "native-combined",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "actual_native_control_races_and_authenticated_correction",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/target",
+        "CARGO_BUILD_JOBS": "2",
+        "CORENIUS_TEST_UI_FIXTURE": "1",
+        "CORENIUS_TEST_UI_DRAIN_RACE": "1",
+        "CORENIUS_TEST_TOOL_INTERLEAVING": "1",
+        "CORENIUS_TEST_UI_REPAIR": "both",
+        "CORENIUS_TEST_QUESTION_BYTES": "1"
+      },
+      "started_at": "2026-10-04T22:51:08.855898+00:00",
+      "pid": 3246216,
+      "start_stat": "3246216 (cargo) R 3239330 3239328 3239328 0 -1 4194304 21 0 0 0 0 0 0 0 20 0 1 0 56984915 18980864 2 18446744073709551615 93898665885696 93898683363356 140734430618096 0 0 0 0 0 0 0 0 0 17 29 0 0 0 0 0 93898685462736 93898686555312 93898693771264 140734430625890 140734430626187 140734430626187 140734430633934 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 140.183,
+      "completed_at": "2026-10-04T22:53:29.039084+00:00",
+      "log_sha256": "347eb0138fd99882e1d73e2d3a609991317731e66cf242bd78590ae13a647f88",
+      "meaning": "focused behavioral qualification; not whole repository gate"
+    },
+    {
+      "name": "public-monitor-controls",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--test",
+        "control_center",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T22:57:40.758279+00:00",
+      "pid": 3353991,
+      "start_stat": "3353991 (cargo) R 3353988 3353987 3353987 0 -1 4194304 20 0 0 0 0 0 0 0 20 0 1 0 57024105 18980864 2 18446744073709551615 94751340625920 94751358103580 140721122149504 0 0 0 0 0 0 0 0 0 17 209 0 0 0 0 0 94751360202960 94751361295536 94751391010816 140721122156841 140721122157090 140721122157090 140721122164686 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 0.849,
+      "completed_at": "2026-10-04T22:57:41.607189+00:00",
+      "log_sha256": "22c04b6994ef03e92894dd5d04fcc0df902d893e1096653bf30ae016cdb35cbf",
+      "meaning": "focused behavioral qualification; not whole repository gate"
+    },
+    {
+      "name": "units",
+      "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot/crates/sqlite-controller/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/snapshot",
+      "environment_overrides": {
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/target",
+        "CARGO_BUILD_JOBS": "2"
+      },
+      "started_at": "2026-10-04T22:50:50.645893+00:00",
+      "pid": 3239342,
+      "start_stat": "3239342 (cargo) R 3239330 3239328 3239328 0 -1 4194304 20 0 0 0 0 0 0 0 20 0 1 0 56983094 18980864 2 18446744073709551615 94834438176768 94834455654428 140734408025600 0 0 0 0 0 0 0 0 0 17 146 0 0 0 0 0 94834457753808 94834458846384 94834465419264 140734408028473 140734408028706 140734408028706 140734408036302 0\n",
+      "exit_code": 0,
+      "elapsed_seconds": 18.209,
+      "completed_at": "2026-10-04T22:51:08.855239+00:00",
+      "log_sha256": "77f28e3ab613600567257897180d52e91b9ca2f1cfd8d78e8c004385e0fa2b65",
+      "meaning": "focused behavioral qualification; not whole repository gate"
+    }
+  ],
+  "retained_author_evidence_verification": {
+    "admission_sha256": "445d1ec1bde81b9963784ee6048ab0b0990cd8ee3d2ff93fbe540f7a2e219228",
+    "checks": [
+      {
+        "id": "repair1-68-strict-clippy",
+        "record_sha256": "13628f2728b9b2298aa2d313b80dcacfa7e0e179a979ace080bbafd8df78abbb",
+        "log_sha256": "4cce5817c646f63864404aadda154b8af3284c16726169046a60dfd25858ceb9",
+        "declared_actual_exit": 0,
+        "record_exit_fields": {
+          "exit": 0
+        },
+        "archive_sha256": "5556f47603b660e820adfd442c5ca2df26028677ece017957f71ae26651a5eba",
+        "map_sha256": "fb58ab0c8ee254906d82c4a536b03ebeb368b76e6d430b431d3ad6aef4b2ac6e",
+        "all43_match_source": true
+      },
+      {
+        "id": "repair1-69-final-focused",
+        "record_sha256": "5068827e34d090614a3a832f04a7356cc07f26f6b5b5df2fcb907a5ee9ef84b8",
+        "log_sha256": "4f97dae1a9d0061558fe045b9e426978abc7620397382af277237b0e3daa3a33",
+        "declared_actual_exit": 0,
+        "record_exit_fields": {
+          "exit": 0
+        },
+        "archive_sha256": "116967691aac765030f1ea662832aff1dc91d40cd2c2c27a67ec07db2c763f4b",
+        "map_sha256": "246dcab91ec6e1880ee5209d39f755df2bffbf064748417d1a64584132ca99a7",
+        "all43_match_source": true
+      },
+      {
+        "id": "repair1-70-final-native",
+        "record_sha256": "2ee75bb54e6a91430aae43d28c93db518b133948c05ea2fed4075bb3449ccd35",
+        "log_sha256": "b5eecb8ad773aea7b3294b30541f73b607b08396dbce3243863cb3bdaff01292",
+        "declared_actual_exit": 0,
+        "record_exit_fields": {
+          "exit": 0
+        },
+        "archive_sha256": "392ecc6f674324dab17069ccc62d1db141502bba4941cb6fd3187198ae880984",
+        "map_sha256": "bbd63fc67493afbf9506089a64b028fa8add7423f25b8ffcca111991826bf510",
+        "all43_match_source": true
+      },
+      {
+        "id": "repair1-71-format-check",
+        "record_sha256": "c163b03f7bf51a4ae31387dfabec8bd858ba96bb1b0c976a61018b78cec98ed6",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "declared_actual_exit": 0,
+        "record_exit_fields": {
+          "exit": 0
+        },
+        "archive_sha256": "865c123c5d25771cf5434fdd92ce471b21db122680ef0d260350025e90d48d5f",
+        "map_sha256": "2e37d0d374cdb9f3998678470e3a192184273404e1de9c3964205829c1694fe2",
+        "all43_match_source": true
+      }
+    ],
+    "measurement_delta_byte_exact": true,
+    "measurement_after_is_source_driver": true,
+    "measurement_ruling": {
+      "changed_at": "2026-10-04T22:27:34.937840+00:00",
+      "root_decision_sha256": "d11494af5ec79471967a8a23298da8d1476dfc6b4c25b01d24243d5f3e30b0de",
+      "before_sha256": "0bfe72fba7d9eefe2293b8fde043f9162ca2f174e4e7f8f9b69c2b6ea0b8e64f",
+      "after_sha256": "8b567d9598eb009c1936ab70103f89e8f2e7644e579f147fb342dea71883c65c",
+      "delta_path": "initial-driver-only.diff",
+      "only_changed_path": "crates/sqlite-controller/tests/support/native_registry.py",
+      "criterion": "exact ORIGINAL turn and clientId predicate",
+      "deadline_seconds": 10,
+      "final_assertion_preserved": true,
+      "runtime_fences_changed": false,
+      "causal_attribution": "measurement correction only; no historical full-gate cause/05 attribution"
+    }
+  },
+  "owned_processes": {
+    "recorded_identities": 55,
+    "all_absent": true,
+    "record": "owned-process-cleanup-final.json",
+    "no_broad_signals": true
+  },
+  "retained_native_artifacts": [
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/separate-cnr-w78ypk_w.tar.gz",
+      "sha256": "37500518667b551f366395b32d97984acb819e77edc9cbd9975b75a8bcd8b41c",
+      "bytes": 653370
+    },
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/separate-cnr-g1hu1j76.tar.gz",
+      "sha256": "9fa99bfe28ec2770ef3f4afa548388b6009ebbca7c197c969881837e455752a6",
+      "bytes": 2190180
+    },
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/shared-cnr-0gp2mdjp.tar.gz",
+      "sha256": "77808f4f3d7139f2a0e76990b6acd1ce36ea70fd304089c898ffdf48b28a77c8",
+      "bytes": 1635464
+    },
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/shared-cnr-gevwnsh3.tar.gz",
+      "sha256": "aea831c63c58cfee2a5a4f4e6ffda94ac97f3eb4f798900f2c2e4ce9e87631c3",
+      "bytes": 383631
+    }
+  ],
+  "branch651_provenance": {
+    "path": "root-branch651-result.json",
+    "sha256": "f9aae558d805dc6928d75e982937f5b0acb9adfd35cdd039b38952c3fc5b826a",
+    "treated_as": "concrete concerns only; actual independent probes determine findings"
+  },
+  "limitations": [
+    "Root full gate80070, Spec review, branch review and acceptance are separate; no result for them is claimed here. Candidate remains unaccepted.",
+    "No paid/live LLM, user session, tmux or author/root process/target mutation. Product permanent recurring runner/live outer qualification stays06.",
+    "Edge native response/retry probes invoke actual product private caller with declared qualified owned binding, actual saved controller commands/history reconciliation, and no native subprocess. They establish caller contracts, not extra wire/live qualification.",
+    "Publication source crash child used actual exit86 after partial stage, not a power-loss/SIGKILL test. Its PID was not emitted; awaited output/exit and recorded process checks bound this limitation.",
+    "Two reviewer setup failures are retained. First RLIMIT also affected inherited regular stdout; pipe setup corrected. Second immutable dependency DELETE was correctly denied; declared owned-only metadata corruption then tests unavailable publication. Reviewer-only unused_mut warning does not characterize frozen source strict Clippy.",
+    "Original gate36 stays31PASS/2FAIL, exit1,1101.68s; original async-cause/initial-confirm raw historical evidence limitations remain unresolved. No retroactive success/cause attribution. Original02/04 final caps3/3 and original04nine findings unchanged.",
+    "Initial-confirm driver-only authorized change waits original exact turn/clientId predicate within same10 seconds and retains final assertion. Byte-exact before/after proof and default actual both-topology success do not establish cause of older gate36 failures."
+  ],
+  "evidence_index": "evidence-sha256.json"
+}

@@ -1,0 +1,56 @@
+{
+  "reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+  "namespace": "pid:[4026539690]",
+  "anchor": {
+    "pid": 3472194,
+    "start_ticks": 46710788,
+    "namespace": "pid:[4026539690]",
+    "inner_pid": 1
+  },
+  "launcher": 3472193,
+  "observations": [
+    {
+      "role": "setsid-descendant",
+      "inner_pid": 2,
+      "namespace": "pid:[4026539690]",
+      "network_namespace": "net:[4026539692]",
+      "external_connect_denied": true,
+      "owner_ledger_visible": false,
+      "private_roots_visible": false
+    }
+  ],
+  "shutdown": {
+    "exit": 137,
+    "namespace": "pid:[4026539690]",
+    "anchor": {
+      "pid": 3472194,
+      "start_ticks": 46710788,
+      "namespace": "pid:[4026539690]",
+      "inner_pid": 1
+    },
+    "inventory_before": [
+      {
+        "pid": 3472194,
+        "start_ticks": 46710788,
+        "namespace": "pid:[4026539690]",
+        "inner_pid": 1
+      },
+      {
+        "pid": 3472195,
+        "start_ticks": 46710792,
+        "namespace": "pid:[4026539690]",
+        "inner_pid": 2
+      }
+    ],
+    "inventory_after": [],
+    "launcher_terminal": true,
+    "quarantined": false,
+    "physical_error": null,
+    "inventory_error": null,
+    "physical_stop": "pidfd_SIGKILL",
+    "namespace_pin": {
+      "device": 4,
+      "inode": 4026539690
+    }
+  }
+}

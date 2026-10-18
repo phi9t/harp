@@ -1,0 +1,30 @@
+{
+  "schema": "corenius.collab_ops_review.v1",
+  "base": "c0a2fc0370f18ff28009dbe9b62a59916de0e582",
+  "candidate": "80888fa2b26b01ec54887b55aff4446362c46a9d",
+  "round": 1,
+  "axes": {
+    "standards": {
+      "result": "passed",
+      "reviewer_context": "/root/standards_review",
+      "scope": "Frozen repair changes and documented repository standards; five independent public CLI regressions from extracted frozen sources.",
+      "findings": []
+    },
+    "spec": {
+      "result": "passed",
+      "reviewer_context": "/root/spec_review",
+      "scope": "Frozen repair changes against previously reviewed SPEC and 18 tickets; independent original three failure scenarios and hidden-subject recovery.",
+      "findings": [],
+      "retained_reproduction_directory": "/data02/home/philip.yang/devx/tmp/spec-round1-ko5e5opm"
+    }
+  },
+  "resolved_findings": [
+    "GC checks live and unknown workers and foreign locks before any removal or unlock.",
+    "Legacy gate receipts reject hidden index flags and revalidate retained workspace identity, bytes and quiescence during landing and recovery.",
+    "A failed push preserves unresolved intent unless targeted rejection and an inspected unchanged remote prove rejection; an exact remotely published Integration can recover without repushing."
+  ],
+  "limitations": [
+    "These reviews do not claim the repository gate was rerun by the reviewers.",
+    "A remote descendant or conflicting tip remains unresolved and requires inspection."
+  ]
+}

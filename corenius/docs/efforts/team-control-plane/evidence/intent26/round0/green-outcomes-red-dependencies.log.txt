@@ -1,0 +1,78 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+error[E0425]: cannot find value `accepted` in this scope
+   --> src/contracts.rs:415:395
+    |
+415 | ...ents,"sources":sources,"plans":plans,"accepted":accepted});
+    |                                                    ^^^^^^^^ not found in this scope
+
+error[E0277]: the trait bound `tokio_postgres::Row: serde::Serialize` is not satisfied
+   --> src/contracts/outcomes.rs:102:48
+    |
+102 |               let id = crate::validation::digest(&(
+    |  ______________________-------------------------_^
+    | |                      |
+    | |                      required by a bound introduced by this call
+103 | |                 envelope.task,
+104 | |                 episode,
+105 | |                 intent,
+...   |
+110 | |                 envelope.recovery_epoch,
+111 | |             ))?;
+    | |_____________^ the trait `domain::_::_serde::Serialize` is not implemented for `tokio_postgres::Row`
+    |
+    = note: for local types consider adding `#[derive(serde::Serialize)]` to your `tokio_postgres::Row` type
+    = note: for types from other crates check whether the crate offers a `serde` feature flag
+    = help: the following other types implement trait `domain::_::_serde::Serialize`:
+              &'a T
+              &'a mut T
+              ()
+              (T,)
+              (T0, T1)
+              (T0, T1, T2)
+              (T0, T1, T2, T3)
+              (T0, T1, T2, T3, T4)
+            and 1402 others
+    = note: required for `(Uuid, &Uuid, &String, &AcceptanceContract, Row, &String, Uuid, Uuid)` to implement `domain::_::_serde::Serialize`
+note: required by a bound in `validation::digest`
+   --> src/validation.rs:4:35
+    |
+  4 | pub(crate) fn digest(value: &impl serde::Serialize) -> Result<String> {
+    |                                   ^^^^^^^^^^^^^^^^ required by this bound in `digest`
+    = note: the full name for the type has been written to '/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/team_control_plane-4ff36ab5339ec0a3.long-type-612086821677696569.txt'
+    = note: consider using `--verbose` to print the full type name to the console
+
+error[E0308]: mismatched types
+   --> src/contracts/outcomes.rs:112:258
+    |
+112 | ...sode,intent,acceptance,&actor.principal,policy,environment,&envelope.recovery_epoch]).await?;
+    |                                            ^^^^^^ expected `&dyn ToSql + Sync`, found `Row`
+    |
+    = note: expected reference `&dyn ToSql + std::marker::Sync`
+                  found struct `tokio_postgres::Row`
+
+error[E0277]: the trait bound `AcceptanceContract: ToSql` is not satisfied
+   --> src/contracts/outcomes.rs:112:230
+    |
+112 | ...$7,$8,$9)",&[&id,&envelope.task,episode,intent,acceptance,&actor.principal,policy,environment,&envelope.recovery_epoch]).await?;
+    |                                                   ^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `ToSql` is not implemented for `AcceptanceContract`
+   --> src/contracts.rs:49:1
+    |
+ 49 | pub struct AcceptanceContract {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `ToSql`:
+              &T
+              &[T]
+              &[u8]
+              &str
+              Box<T>
+              Box<[T]>
+              Box<str>
+              Cow<'_, [u8]>
+            and 22 others
+    = note: required for the cast from `&AcceptanceContract` to `&dyn ToSql + std::marker::Sync`
+
+Some errors have detailed explanations: E0277, E0308, E0425.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `team-control-plane` (lib) due to 4 previous errors

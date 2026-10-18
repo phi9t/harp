@@ -1,0 +1,15 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review575-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.51s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 7 tests
+test failed_known_legacy_effect_with_unknown_usage_remains_discoverable ... ok
+test legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only ... ok
+test alternate_current_grant_cannot_make_expired_issuing_execution_current ... ok
+test merged_journals_share_one_bound_and_preserve_colliding_operation_ids ... ok
+test operator_historical_records_require_current_lead_and_recovery_epoch_authority ... ok
+test thirty_three_actual_operator_records_bound_summary_and_allow_omitted_exact_lookup ... ok
+test monitor_finalizes_large_output_under_owned_measured_memory_limit ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.44s
+

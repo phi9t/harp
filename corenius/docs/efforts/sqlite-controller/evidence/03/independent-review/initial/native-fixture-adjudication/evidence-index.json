@@ -1,0 +1,187 @@
+{
+  "source": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "files": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/gate.json",
+      "sha256": "f67a728c35114c5c4edabe6fa959e86a7febac91f8382aaef26331f4d77ec529"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/root-test.log",
+      "sha256": "1027530514fe7afc18e55dfe0a2f5d7f45fc8e153a70eaa80e809d05b9d65aa5"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/03/root-gate/root-resources.json",
+      "sha256": "ac5e9259f26cbb4231c7a227d8fcce230e2aae2165947ce230fa5802de7e063b"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-native-unchanged.log",
+      "sha256": "8c2f94a1a80b78e4d7b1cadbabfa33d3c48f02bc7c453a91ec3398a1d61d9ea8"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-native-unchanged-before.json",
+      "sha256": "3404e006c9cbdec22169c48fdb18e0afc5fa8c37b7016bd97840afe0b0825923"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-native-unchanged-before-source.tar.gz",
+      "sha256": "360d61ef30e0ef938311e1988f6e0c4af54934f41610617698e866accbe5dbc5"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-native-diagnostic2.log",
+      "sha256": "8a523d8c5dcf0996cb698817ce45822e9265658aba257fa2c0709ae54871b5c5"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-native-diagnostic2-before.json",
+      "sha256": "497a3b6448f38576cfe7c101df2b7a20a462051dd32fa7b4f35ef4a1abf868ef"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/.scratch/sqlite-controller/03/repair1-native-diagnostic2-source.tar.gz",
+      "sha256": "f68737a29e7ea512d660693b2e9292f1abc83b14b080e9ecc2e64de04884fe76"
+    }
+  ],
+  "frozen_native_sources": {
+    "src/codex.rs": "b18a11f60a7c5fa2fa92513c50addff06a0707c1152c14649e3e0b306dbdd45d",
+    "src/native_ws.rs": "223e34e3db112d5f24ab29dd2b28f02b51fa2ce976a03d728848161c08f9c42e",
+    "tests/codex.rs": "6345dafdd1bbbda5dc1d5a3aed00e863359ffc241d7ae5c2c147daa2da12280b",
+    "tests/support/native_registry.py": "b448b532467bedb4e8ee54bd5bec701280404bd12261689040d9e19090492227",
+    "src/service.rs": "e44cfd8c34156395482cd7ab76dd7c8db0d0147e96b74e38742d02f894e02959"
+  },
+  "integrity": {
+    "unchanged_archive": {
+      "entries": 29,
+      "manifest_mismatches": []
+    },
+    "diagnostic2_archive": {
+      "entries": 3,
+      "manifest_mismatches": []
+    },
+    "native_diff_from_ticket03_base": []
+  },
+  "diagnostic2_summary": [
+    {
+      "line": 2,
+      "mode": "shared",
+      "flags": {
+        "hold-codex": false,
+        "event-barrier": true,
+        "event-barrier.observed": false,
+        "adopt-events.projection": false
+      },
+      "bindings": []
+    },
+    {
+      "line": 3,
+      "mode": "shared",
+      "flags": {
+        "hold-codex": false,
+        "event-barrier": true,
+        "event-barrier.observed": false,
+        "adopt-events.projection": false
+      },
+      "bindings": [
+        {
+          "attempt": "9159a2d6-9015-4c3f-885e-7e06f78bfe0d",
+          "state": "unknown",
+          "thread_id": null,
+          "turn_id": null,
+          "ui_input_ready": false
+        },
+        {
+          "attempt": "5191cd59-335b-4bd9-b7d0-b6c9c5ec4be5",
+          "state": "unknown",
+          "thread_id": null,
+          "turn_id": null,
+          "ui_input_ready": false
+        }
+      ]
+    },
+    {
+      "line": 5,
+      "mode": "shared",
+      "flags": {
+        "hold-codex": true,
+        "event-barrier": false,
+        "event-barrier.observed": true,
+        "adopt-events.projection": true
+      },
+      "bindings": [
+        {
+          "attempt": "9159a2d6-9015-4c3f-885e-7e06f78bfe0d",
+          "state": "bound",
+          "thread_id": "01a10763-8ee7-7243-98fd-cb8f3db66389",
+          "turn_id": "01a10763-a2b2-7960-a54a-206418c2164e",
+          "ui_input_ready": true
+        },
+        {
+          "attempt": "5191cd59-335b-4bd9-b7d0-b6c9c5ec4be5",
+          "state": "bound",
+          "thread_id": "01a10763-a393-7553-81bd-a4125e3a1278",
+          "turn_id": "01a10763-b73d-7510-bb38-9bd97d3a0db5",
+          "ui_input_ready": true
+        }
+      ]
+    },
+    {
+      "line": 38,
+      "mode": "separate",
+      "flags": {
+        "hold-codex": false,
+        "event-barrier": true,
+        "event-barrier.observed": false,
+        "adopt-events.projection": false
+      },
+      "bindings": []
+    },
+    {
+      "line": 39,
+      "mode": "separate",
+      "flags": {
+        "hold-codex": false,
+        "event-barrier": true,
+        "event-barrier.observed": false,
+        "adopt-events.projection": false
+      },
+      "bindings": [
+        {
+          "attempt": "ebb33e46-49ea-490b-8244-3ad12882c5af",
+          "state": "unknown",
+          "thread_id": null,
+          "turn_id": null,
+          "ui_input_ready": false
+        },
+        {
+          "attempt": "ce6bbc12-a904-4c81-b78c-3ecc46ba7608",
+          "state": "unknown",
+          "thread_id": null,
+          "turn_id": null,
+          "ui_input_ready": false
+        }
+      ]
+    },
+    {
+      "line": 41,
+      "mode": "separate",
+      "flags": {
+        "hold-codex": true,
+        "event-barrier": false,
+        "event-barrier.observed": true,
+        "adopt-events.projection": true
+      },
+      "bindings": [
+        {
+          "attempt": "ebb33e46-49ea-490b-8244-3ad12882c5af",
+          "state": "bound",
+          "thread_id": "01a10764-01fa-7413-9f21-ca20d083c46b",
+          "turn_id": "01a10764-15c7-72f0-b8f7-961a38324b4d",
+          "ui_input_ready": true
+        },
+        {
+          "attempt": "ce6bbc12-a904-4c81-b78c-3ecc46ba7608",
+          "state": "bound",
+          "thread_id": "01a10764-16b4-7311-88f2-ad36fa995122",
+          "turn_id": "01a10764-2a4f-7be3-a993-6754973bbd58",
+          "ui_input_ready": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+error[E0753]: expected outer doc comment
+ --> tests/assembled_operator.rs:4:1
+  |
+4 | //! Real PostgreSQL operator-view proof; no runtime dispatch or fabricated rows.
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: inner doc comments like this (starting with `//!` or `/*!`) can only appear before items
+help: you might have meant to write a regular comment
+  |
+4 - //! Real PostgreSQL operator-view proof; no runtime dispatch or fabricated rows.
+4 + // Real PostgreSQL operator-view proof; no runtime dispatch or fabricated rows.
+  |
+
+error[E0753]: expected outer doc comment
+ --> tests/assembled_operator.rs:5:1
+  |
+5 | //! Mutation targets: unbounded summaries, incorrect overflow flags, summary-only
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: inner doc comments like this (starting with `//!` or `/*!`) can only appear before items
+help: you might have meant to write a regular comment
+  |
+5 - //! Mutation targets: unbounded summaries, incorrect overflow flags, summary-only
+5 + // Mutation targets: unbounded summaries, incorrect overflow flags, summary-only
+  |
+
+error[E0753]: expected outer doc comment
+ --> tests/assembled_operator.rs:6:1
+  |
+6 | //! exact lookup, unauthorized disclosure, and historical grants becoming current.
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+9 | mod support;
+  | ------------ the inner doc comment doesn't annotate this module
+  |
+help: to annotate the module, change the doc comment from inner to outer style
+  |
+6 - //! exact lookup, unauthorized disclosure, and historical grants becoming current.
+6 + /// exact lookup, unauthorized disclosure, and historical grants becoming current.
+  |
+
+For more information about this error, try `rustc --explain E0753`.
+error: could not compile `team-control-plane` (test "assembled_operator") due to 3 previous errors

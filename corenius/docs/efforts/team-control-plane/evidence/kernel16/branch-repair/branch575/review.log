@@ -1,0 +1,37 @@
+Reviewing branch "codex/reference-design": 5 commits since main
+Enqueued job 575 for 1f16415..c4599e8 (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/kernel.rs:245`
+- **Problem**: Status always returns the same first 32 missions, with no pagination or exact control lookup. For an omitted mission, a fresh Owner cannot retrieve `control_revision` to recover a lost pause response and resume dispatch. The existing Mission snapshot omits this field too.
+- **Fix**: Add pagination or an authenticated exact mission-control lookup.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/kernel.rs:248`
+- **Problem**: The inner join with `episode_executions` hides every workspace allocated through `Supervisor::create_attempt`, including existing running or quarantined workloads. Status can therefore report no executions while those workloads still hold capacity.
+- **Fix**: Include legacy workspaces, deriving their scope from the associated Attempt and Task.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/artifacts.rs:554`
+- **Problem**: Verification requires raw command output to round-trip through a JSON string. A successful command emitting invalid UTF-8, such as byte `0xff`, cannot produce evidence whose `output.as_bytes()` matches the monitor’s log digest. Its valid execution evidence is consequently rejected.
+- **Fix**: Represent output as encoded bytes or a separate binary artifact, and validate the digest of the original bytes.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:2062`
+- **Problem**: Finalization reads the entire unrestricted workload log into memory to hash it. A sufficiently large log can exhaust monitor memory before `kernel_execution_results` is persisted. The new release guard then prevents releasing that stopped execution and its capacity.
+- **Fix**: Compute the digest incrementally from the log file using bounded buffers.
+
+## Summary
+
+The change assembles durable episode execution, supervised verification, cancellation, capacity accounting, and operator recovery around PostgreSQL and Temporal.

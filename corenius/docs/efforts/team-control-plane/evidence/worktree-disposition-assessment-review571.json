@@ -1,0 +1,112 @@
+{
+  "reviewer": "/root/artifacts11",
+  "mode": "read-only historical inventory assessment; current commit ancestry independently verified by root",
+  "inventory_counts": {
+    "observations": 1328,
+    "distinct_path_hash_pairs": 1235,
+    "paths": 1164
+  },
+  "candidate_commit": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+  "proof_commits": {
+    "1715155": {
+      "commit": "1715155d33102605f6670cdb2bb374f06c3445ed",
+      "ancestor_main": true,
+      "ancestor_current_candidate": true
+    },
+    "12d6f12": {
+      "commit": "12d6f124997ac1f29e00b1e0ab38409244d8ffe2",
+      "ancestor_main": true,
+      "ancestor_current_candidate": true
+    },
+    "15a5ead": {
+      "commit": "15a5ead8622d36d06723d8f11edfa769898e3b5c",
+      "ancestor_main": true,
+      "ancestor_current_candidate": true
+    },
+    "366361b": {
+      "commit": "366361b5a46045823cf6b45941c66ad8379dfebe",
+      "ancestor_main": true,
+      "ancestor_current_candidate": true
+    },
+    "58c9681": {
+      "commit": "58c96816ecfd8224d4e2b6f8f01e59eda1eff249",
+      "ancestor_main": false,
+      "ancestor_current_candidate": true
+    },
+    "4ed6397": {
+      "commit": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "ancestor_main": false,
+      "ancestor_current_candidate": false
+    }
+  },
+  "integration_candidates": {
+    "historical_reference_tree_observations": 275,
+    "evidence": 261,
+    "durable_documents": 14,
+    "disposition": "current root durable record packaging after branchreview; six final sourcepaths now committed"
+  },
+  "superseded": {
+    "4ed6397": "historical evidence known digestdefect; successor1715155 inmain, preserve do notmerge",
+    "old_kernel_prefix": "58c9681 contained in currentcandidate; olderdirtyvariants mustnot overwrite finalsource",
+    "blade_manifests": "ten oldvariants omit mains protectedsourcepath safeguards; preserve",
+    "trial2_summary": "main15a5ead retains with provenance header"
+  },
+  "preserve_pending_assessment": {
+    "benchmark_observations": 830,
+    "project_files": 450,
+    "run_files": 177,
+    "home_cache_files": 145,
+    "other_files": 58,
+    "remaining": "sourcevariants semanticcomparison; hooks/config and transcript unread"
+  },
+  "scope_limits": [
+    "Counts from historical snapshot not fresh complete landingproof",
+    "Overlapping categories are not additive",
+    "Dirtywork is not landed by commit ancestry",
+    "No cleanup, deletion, branchrewrite or blindmerge performed"
+  ],
+  "semantic_followup": {
+    "reviewer": "/root/artifacts11",
+    "candidate": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+    "observations_examined": 111,
+    "disjoint_categories": {
+      "current_candidate_matches": {
+        "observations": 3,
+        "path_hash_pairs": 3
+      },
+      "accepted_historical_manifests": {
+        "observations": 57,
+        "path_hash_pairs": 26
+      },
+      "older_semantically_superseded_source_tools": {
+        "observations": 41,
+        "path_hash_pairs": 37
+      },
+      "superseded_benchmark_manifests": {
+        "observations": 10,
+        "path_hash_pairs": 10
+      }
+    },
+    "inventory_drift": "review571 author mailbox/supervisor/assembledcancellation nowmatch currentcandidate",
+    "source_groups": [
+      "Cargo/modules/storage/auth/admission/HTTP and gate shim: later authenticated multi-role and Temporal contracts retain old interfaces",
+      "Old kernel/schema/runtime/fixtures: later authoritative usage/provenance constraints, typed waits and launch/recovery guards supersede old variants",
+      "claims ordering test: later multi-seed full-order check supersedes old probabilistic seed inequality",
+      "Blade manifests: main protected sourcepaths and proto fidelity limitation supersede old variants"
+    ],
+    "proof_chain": [
+      "2316e09",
+      "66e221a",
+      "58c9681",
+      "da7ff9b",
+      "c4599e8"
+    ],
+    "concrete_missing_integration_candidates": 0,
+    "limits": [
+      "37 pairs classified semantically, not identical committedbytes; preserve hashes/trees",
+      "Not exhaustive correctness proof for variants",
+      "Private configs/hooks/transcripts and generated/scratch projects excluded",
+      "Does not prove all dirty work landed"
+    ]
+  }
+}

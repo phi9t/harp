@@ -1,0 +1,16 @@
+Diff in /data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane/src/supervisor.rs:1457:
+             replaced: Cell::new(false),
+             signals: Cell::new(0),
+         };
+-        let decision = decide_namespace(&old, std::slice::from_ref(&old), None, true, None, &observer);
++        let decision = decide_namespace(
++            &old,
++            std::slice::from_ref(&old),
++            None,
++            true,
++            None,
++            &observer,
++        );
+         assert_eq!(
+             observer.signals.get(),
+             0,

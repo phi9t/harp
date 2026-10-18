@@ -1,0 +1,8 @@
+{
+  "recorded_at": "2026-10-05T02:03:15.469872+00:00",
+  "operation": "first inline archive/member and read-only DB-state evidence export",
+  "actual_exit": 1,
+  "raw_error": "Traceback (most recent call last):\n  File \"<stdin>\", line 30, in <module>\nsqlite3.OperationalError: no such column: state\n",
+  "cause": "Exporter assumed every selected table has a state column; git_workspaces does not. Product and original archives unchanged. No final index was written and no evidence validation credited.",
+  "next": "Inspect table_info and export counts without invented state for tables that lack it. Preserve partial derived read copies and created Kata archives."
+}

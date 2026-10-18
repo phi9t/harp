@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/c02-link-order"
+description = "Static library dependency is linked in the wrong order"
+
+[metadata]
+track = "C"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cmake -S . -B build -G Ninja && cmake --build build && ctest --test-dir build --output-on-failure"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

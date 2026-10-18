@@ -1,0 +1,14 @@
+test_concurrent_operation_executes_once (test_trae_case_control.DurableControllerBehavior.test_concurrent_operation_executes_once) ... FAIL
+
+======================================================================
+FAIL: test_concurrent_operation_executes_once (test_trae_case_control.DurableControllerBehavior.test_concurrent_operation_executes_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/tools/probes/test_trae_case_control.py", line 60, in test_concurrent_operation_executes_once
+    self.assertEqual(sum(r['executed'] for r in results), 1)
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)

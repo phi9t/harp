@@ -1,0 +1,10 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 1 test
+short_normal_termination_retained_identity={"binding":{"attempt":"ae3374a3-0a9d-48a9-beb6-59663aa9c57c","base":"0123456789abcdef0123456789abcdef01234567","brief":"53039ba8-e4b7-4736-be24-6afabcbed1d1","operation":"45b683bc-6b03-4447-b5bd-e380a7e9c751","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"8eb6cfe9-8d95-451e-a357-97386bf320f2","incarnation":"f5b3d740-658d-4e56-9a8d-a2bf06fd3f56","init_start_ticks":"50773693","namespace_init":2533776,"outcome":"owned namespace init terminated: exit status: 0","pid":2533775,"pid_namespace":4026539690,"start_ticks":"50773693","state":"exited"}
+test short_lived_execution_has_a_retained_terminal_identity ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.12s
+

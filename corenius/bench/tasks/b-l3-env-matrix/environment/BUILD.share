@@ -1,0 +1,18 @@
+import os
+
+
+def matrix_binary(name, srcs):
+    mode = os.environ.get("FEATURE_MODE", "compact")
+    defs = []
+    if mode == "wide":
+        defs = ["FEATURE_MODE_WIDE=1"]
+        deps = ["//variants/compact:variant"]
+    else:
+        deps = ["//variants/compact:variant"]
+
+    native["cc_binary"](
+        name=name,
+        srcs=srcs,
+        defs=defs,
+        deps=deps,
+    )

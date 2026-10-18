@@ -1,0 +1,1890 @@
+[
+  {
+    "run": "green-complete-lifecycle",
+    "raw_line": 366,
+    "round": "first-research",
+    "purpose": "implementation",
+    "execution": "a732e58d-7f8a-485b-8eb5-5bc36737565f",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ae1d0977ef9be80ae436e4d8788ccaf09c63e87bba287b2bdcb076a4da945f96",
+      "sha256": "ae1d0977ef9be80ae436e4d8788ccaf09c63e87bba287b2bdcb076a4da945f96",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "d46596a7-7cde-499f-a019-6c95c48de9db",
+      "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+      "candidate": null,
+      "episode": "ac48ed8b-c497-4a48-b645-61ab03ca985e",
+      "generation": 1,
+      "input": {
+        "digest": "180bdd6f2089d6c63261d798988ef559843e3f1a119987311969deda4144a374",
+        "id": "860d2093-40e3-4d9b-b264-27c525ae6ed9"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/a732e58d-7f8a-485b-8eb5-5bc36737565f.log",
+      "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/a732e58d-7f8a-485b-8eb5-5bc36737565f",
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+      "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2080390,
+        "pid": 2080390,
+        "start_ticks": 48581152
+      },
+      "execution": "a732e58d-7f8a-485b-8eb5-5bc36737565f",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2080390,
+        "pid": 2080390,
+        "start_ticks": 48581152
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2080620,
+        "pid": 2080620,
+        "start_ticks": 48581155
+      },
+      "manifest": {
+        "attempt": "d46596a7-7cde-499f-a019-6c95c48de9db",
+        "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+        "candidate": null,
+        "episode": "ac48ed8b-c497-4a48-b645-61ab03ca985e",
+        "generation": 1,
+        "input": {
+          "digest": "180bdd6f2089d6c63261d798988ef559843e3f1a119987311969deda4144a374",
+          "id": "860d2093-40e3-4d9b-b264-27c525ae6ed9"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/a732e58d-7f8a-485b-8eb5-5bc36737565f.log",
+        "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/a732e58d-7f8a-485b-8eb5-5bc36737565f",
+        "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+        "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-complete-lifecycle",
+    "raw_line": 372,
+    "round": "first-research",
+    "purpose": "verification",
+    "execution": "99a187e6-b586-4d23-ab8d-99d33c101346",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/00ac9c4d22c8fa7f7cd500fdffaf353149b88520baea1749f70a34447c0ded7f",
+      "sha256": "00ac9c4d22c8fa7f7cd500fdffaf353149b88520baea1749f70a34447c0ded7f",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "d46596a7-7cde-499f-a019-6c95c48de9db",
+      "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+      "candidate": null,
+      "episode": "7aa868c4-b541-4b62-a7b1-cd1210a0ba75",
+      "generation": 1,
+      "input": {
+        "digest": "1135b5af7b88171effb0efbd7e2a99bbeb15b3506a89f9e63a569d81014b0c60",
+        "id": "735b111f-a878-45b6-9d94-8d715fabb35d"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/99a187e6-b586-4d23-ab8d-99d33c101346.log",
+      "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/99a187e6-b586-4d23-ab8d-99d33c101346",
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "research_verification": {
+        "acceptance": "dd4c76b54c9b534f93f0880f48c4185e2e3adbc63cb9fd0bfba2230b7b9d056d",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "6ceae73a7f86e9aaf0c5046d347401afd30b1d418ed3e9c8a88b85a7fb098b41",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "d18de168-83c6-44a5-b554-1c1f260b803b"
+      },
+      "scopes": [],
+      "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+      "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2080682,
+        "pid": 2080682,
+        "start_ticks": 48581179
+      },
+      "execution": "99a187e6-b586-4d23-ab8d-99d33c101346",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2080682,
+        "pid": 2080682,
+        "start_ticks": 48581179
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2080904,
+        "pid": 2080904,
+        "start_ticks": 48581183
+      },
+      "manifest": {
+        "attempt": "d46596a7-7cde-499f-a019-6c95c48de9db",
+        "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+        "candidate": null,
+        "episode": "7aa868c4-b541-4b62-a7b1-cd1210a0ba75",
+        "generation": 1,
+        "input": {
+          "digest": "1135b5af7b88171effb0efbd7e2a99bbeb15b3506a89f9e63a569d81014b0c60",
+          "id": "735b111f-a878-45b6-9d94-8d715fabb35d"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/99a187e6-b586-4d23-ab8d-99d33c101346.log",
+        "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/99a187e6-b586-4d23-ab8d-99d33c101346",
+        "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+        "research_verification": {
+          "acceptance": "dd4c76b54c9b534f93f0880f48c4185e2e3adbc63cb9fd0bfba2230b7b9d056d",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "6ceae73a7f86e9aaf0c5046d347401afd30b1d418ed3e9c8a88b85a7fb098b41",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "d18de168-83c6-44a5-b554-1c1f260b803b"
+        },
+        "scopes": [],
+        "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+        "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-complete-lifecycle",
+    "raw_line": 394,
+    "round": "second-research",
+    "purpose": "implementation",
+    "execution": "f828139a-9e0e-46b0-a1d3-28dc11d7ede2",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/015cc0818b09b1be3e0e78ffd9748bcbc048286a5645cc397c81107c2d7961d5",
+      "sha256": "015cc0818b09b1be3e0e78ffd9748bcbc048286a5645cc397c81107c2d7961d5",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "c64f6128-ca8c-4a76-ad30-5bc11c359527",
+      "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+      "candidate": null,
+      "episode": "5827211f-2127-41f0-8eb5-b8e1bbddc4aa",
+      "generation": 3,
+      "input": {
+        "digest": "9ff7c601f864bafe54dbce4eaa108c7cb537780b6d0cbe853001d554d01bb9f0",
+        "id": "92cbed43-1480-45c2-b654-faf1b7b2f31f"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/f828139a-9e0e-46b0-a1d3-28dc11d7ede2.log",
+      "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/f828139a-9e0e-46b0-a1d3-28dc11d7ede2",
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+      "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2081029,
+        "pid": 2081029,
+        "start_ticks": 48581229
+      },
+      "execution": "f828139a-9e0e-46b0-a1d3-28dc11d7ede2",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2081029,
+        "pid": 2081029,
+        "start_ticks": 48581229
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2081251,
+        "pid": 2081251,
+        "start_ticks": 48581233
+      },
+      "manifest": {
+        "attempt": "c64f6128-ca8c-4a76-ad30-5bc11c359527",
+        "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+        "candidate": null,
+        "episode": "5827211f-2127-41f0-8eb5-b8e1bbddc4aa",
+        "generation": 3,
+        "input": {
+          "digest": "9ff7c601f864bafe54dbce4eaa108c7cb537780b6d0cbe853001d554d01bb9f0",
+          "id": "92cbed43-1480-45c2-b654-faf1b7b2f31f"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/f828139a-9e0e-46b0-a1d3-28dc11d7ede2.log",
+        "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/f828139a-9e0e-46b0-a1d3-28dc11d7ede2",
+        "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+        "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-complete-lifecycle",
+    "raw_line": 400,
+    "round": "second-research",
+    "purpose": "verification",
+    "execution": "3804b4ba-f180-47ed-b939-c926d856ebe8",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/adb22c721b36053ac9a76e8dec3762d6bd736f0cde15f0d21f7defd509aa2651",
+      "sha256": "adb22c721b36053ac9a76e8dec3762d6bd736f0cde15f0d21f7defd509aa2651",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "c64f6128-ca8c-4a76-ad30-5bc11c359527",
+      "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+      "candidate": null,
+      "episode": "e90dc82f-8f75-47dc-87d6-ac6c7e91e338",
+      "generation": 3,
+      "input": {
+        "digest": "5bbcfb00c1596b705ba4bf7894c06c85221e6922cb42683532c058495571ad17",
+        "id": "47c2760b-d823-4a08-a2fe-e82d0842f029"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/3804b4ba-f180-47ed-b939-c926d856ebe8.log",
+      "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/3804b4ba-f180-47ed-b939-c926d856ebe8",
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "research_verification": {
+        "acceptance": "dd4c76b54c9b534f93f0880f48c4185e2e3adbc63cb9fd0bfba2230b7b9d056d",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "65c4b836214751337ee588dd60f82b36234d38cb7d891fc986bc98d7b1b4cf6c",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "d18de168-83c6-44a5-b554-1c1f260b803b"
+      },
+      "scopes": [],
+      "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+      "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2081276,
+        "pid": 2081276,
+        "start_ticks": 48581254
+      },
+      "execution": "3804b4ba-f180-47ed-b939-c926d856ebe8",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2081276,
+        "pid": 2081276,
+        "start_ticks": 48581254
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2081499,
+        "pid": 2081499,
+        "start_ticks": 48581258
+      },
+      "manifest": {
+        "attempt": "c64f6128-ca8c-4a76-ad30-5bc11c359527",
+        "base": "fccd37160c9e2050e5483e85192b3459442b0dfb",
+        "candidate": null,
+        "episode": "e90dc82f-8f75-47dc-87d6-ac6c7e91e338",
+        "generation": 3,
+        "input": {
+          "digest": "5bbcfb00c1596b705ba4bf7894c06c85221e6922cb42683532c058495571ad17",
+          "id": "47c2760b-d823-4a08-a2fe-e82d0842f029"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/.execution-logs/3804b4ba-f180-47ed-b939-c926d856ebe8.log",
+        "mission": "9c4f19a8-a3a1-490e-8413-47bd750591fd",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/workspaces/3804b4ba-f180-47ed-b939-c926d856ebe8",
+        "recovery_epoch": "12cad7b9-8778-4040-b2c9-ae7085b6cf10",
+        "research_verification": {
+          "acceptance": "dd4c76b54c9b534f93f0880f48c4185e2e3adbc63cb9fd0bfba2230b7b9d056d",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "65c4b836214751337ee588dd60f82b36234d38cb7d891fc986bc98d7b1b4cf6c",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "d18de168-83c6-44a5-b554-1c1f260b803b"
+        },
+        "scopes": [],
+        "spec_digest": "f510b9d6bc800239ebbbc51d57c53974aa56e9567476179a0d69af1c3521aed3",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-99f8818b-bc8f-448e-b460-cec6081e56a9/store",
+        "task": "95f0ac7f-b3c2-4d33-9faf-004466c31041",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility",
+    "raw_line": 492,
+    "round": "first-research",
+    "purpose": "implementation",
+    "execution": "77c1ea6b-5896-4c3e-9d2a-efa166fdc134",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/a800fe87af4c14004f124bea5564c2ca537c984bf33caa610a9876a81d802f4b",
+      "sha256": "a800fe87af4c14004f124bea5564c2ca537c984bf33caa610a9876a81d802f4b",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "3dc9bc1c-f295-4e8c-8b0d-7ea074c33d72",
+      "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+      "candidate": null,
+      "episode": "f297b6fe-08ec-4bc8-ad08-e4c7fbf34695",
+      "generation": 1,
+      "input": {
+        "digest": "29c2d124e9f6d9904356d60cc44ee691a7d77f56e833bb5c2abf6048c77b8c0b",
+        "id": "a484e27f-afa7-4e86-8a94-ca54af125a3f"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/77c1ea6b-5896-4c3e-9d2a-efa166fdc134.log",
+      "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/77c1ea6b-5896-4c3e-9d2a-efa166fdc134",
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+      "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2457735,
+        "pid": 2457735,
+        "start_ticks": 48675559
+      },
+      "execution": "77c1ea6b-5896-4c3e-9d2a-efa166fdc134",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2457735,
+        "pid": 2457735,
+        "start_ticks": 48675559
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2457958,
+        "pid": 2457958,
+        "start_ticks": 48675569
+      },
+      "manifest": {
+        "attempt": "3dc9bc1c-f295-4e8c-8b0d-7ea074c33d72",
+        "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+        "candidate": null,
+        "episode": "f297b6fe-08ec-4bc8-ad08-e4c7fbf34695",
+        "generation": 1,
+        "input": {
+          "digest": "29c2d124e9f6d9904356d60cc44ee691a7d77f56e833bb5c2abf6048c77b8c0b",
+          "id": "a484e27f-afa7-4e86-8a94-ca54af125a3f"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/77c1ea6b-5896-4c3e-9d2a-efa166fdc134.log",
+        "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/77c1ea6b-5896-4c3e-9d2a-efa166fdc134",
+        "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+        "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility",
+    "raw_line": 498,
+    "round": "first-research",
+    "purpose": "verification",
+    "execution": "72f4b065-293f-49f3-8acc-4f55339dc305",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/883e4e28d3c258286a20630b663f7a8ad9eec601d3d098bea3c174a776b5afea",
+      "sha256": "883e4e28d3c258286a20630b663f7a8ad9eec601d3d098bea3c174a776b5afea",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "3dc9bc1c-f295-4e8c-8b0d-7ea074c33d72",
+      "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+      "candidate": null,
+      "episode": "dad7b31c-1743-4124-8d11-8e59e4c6b770",
+      "generation": 1,
+      "input": {
+        "digest": "1f39aff2cd17f612d5fb00f3f9ffa4c7b8a49e12bbbfd48ca308ba5fa8fcaec3",
+        "id": "35f08bbb-6616-40d2-bcc0-c8bb270cb503"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/72f4b065-293f-49f3-8acc-4f55339dc305.log",
+      "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/72f4b065-293f-49f3-8acc-4f55339dc305",
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "research_verification": {
+        "acceptance": "389dbdb0eb7ab8cc014ace6b6ad732facccb85c52ace94c1d130fb26c632efb3",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "fbbe93e7932d76eb60cb1c9d1a9e0fb2273f47f3fe7d56418e5829dba5de1c9f",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "5aad0855-769c-47ba-b9c8-8fa1dd69aa83"
+      },
+      "scopes": [],
+      "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+      "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458012,
+        "pid": 2458012,
+        "start_ticks": 48675614
+      },
+      "execution": "72f4b065-293f-49f3-8acc-4f55339dc305",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458012,
+        "pid": 2458012,
+        "start_ticks": 48675614
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458246,
+        "pid": 2458246,
+        "start_ticks": 48675622
+      },
+      "manifest": {
+        "attempt": "3dc9bc1c-f295-4e8c-8b0d-7ea074c33d72",
+        "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+        "candidate": null,
+        "episode": "dad7b31c-1743-4124-8d11-8e59e4c6b770",
+        "generation": 1,
+        "input": {
+          "digest": "1f39aff2cd17f612d5fb00f3f9ffa4c7b8a49e12bbbfd48ca308ba5fa8fcaec3",
+          "id": "35f08bbb-6616-40d2-bcc0-c8bb270cb503"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/72f4b065-293f-49f3-8acc-4f55339dc305.log",
+        "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/72f4b065-293f-49f3-8acc-4f55339dc305",
+        "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+        "research_verification": {
+          "acceptance": "389dbdb0eb7ab8cc014ace6b6ad732facccb85c52ace94c1d130fb26c632efb3",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "fbbe93e7932d76eb60cb1c9d1a9e0fb2273f47f3fe7d56418e5829dba5de1c9f",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "5aad0855-769c-47ba-b9c8-8fa1dd69aa83"
+        },
+        "scopes": [],
+        "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+        "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility",
+    "raw_line": 520,
+    "round": "second-research",
+    "purpose": "implementation",
+    "execution": "b4e5360d-809b-4b24-b281-c96cd7bf2095",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/91e91080f2c8502dc765db0c9da6a9eaae9e0ead62f9e341b3aeebc5471f4593",
+      "sha256": "91e91080f2c8502dc765db0c9da6a9eaae9e0ead62f9e341b3aeebc5471f4593",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "63e7d419-8772-4a67-8741-f7038bf99af6",
+      "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+      "candidate": null,
+      "episode": "7b89e1f6-de32-4f15-8f04-28fc22bc2582",
+      "generation": 3,
+      "input": {
+        "digest": "8fb2b6d09d8ecf960db1de030650fe9f523d8b9d185384a0cc5dc92d5b7543e2",
+        "id": "57995b7f-9899-40e8-84f3-f1a8d35dda0e"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/b4e5360d-809b-4b24-b281-c96cd7bf2095.log",
+      "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/b4e5360d-809b-4b24-b281-c96cd7bf2095",
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+      "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458389,
+        "pid": 2458389,
+        "start_ticks": 48675701
+      },
+      "execution": "b4e5360d-809b-4b24-b281-c96cd7bf2095",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458389,
+        "pid": 2458389,
+        "start_ticks": 48675701
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458614,
+        "pid": 2458614,
+        "start_ticks": 48675710
+      },
+      "manifest": {
+        "attempt": "63e7d419-8772-4a67-8741-f7038bf99af6",
+        "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+        "candidate": null,
+        "episode": "7b89e1f6-de32-4f15-8f04-28fc22bc2582",
+        "generation": 3,
+        "input": {
+          "digest": "8fb2b6d09d8ecf960db1de030650fe9f523d8b9d185384a0cc5dc92d5b7543e2",
+          "id": "57995b7f-9899-40e8-84f3-f1a8d35dda0e"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/b4e5360d-809b-4b24-b281-c96cd7bf2095.log",
+        "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/b4e5360d-809b-4b24-b281-c96cd7bf2095",
+        "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+        "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility",
+    "raw_line": 526,
+    "round": "second-research",
+    "purpose": "verification",
+    "execution": "b37a81c3-4094-416a-9087-73146d5a9f4b",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/0e679cb0454abdb1b296470ca0431486476a18f495d2da3ab9bf497f9b2bed6d",
+      "sha256": "0e679cb0454abdb1b296470ca0431486476a18f495d2da3ab9bf497f9b2bed6d",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "63e7d419-8772-4a67-8741-f7038bf99af6",
+      "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+      "candidate": null,
+      "episode": "1f368cb0-45a7-4773-8b3a-660b83e16027",
+      "generation": 3,
+      "input": {
+        "digest": "4825e9d039e4d7d968ce850121c082352acee6f9775e16bf04a492082bed2ffb",
+        "id": "f95d764a-d767-4bd9-8448-b900593786e9"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/b37a81c3-4094-416a-9087-73146d5a9f4b.log",
+      "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/b37a81c3-4094-416a-9087-73146d5a9f4b",
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "research_verification": {
+        "acceptance": "389dbdb0eb7ab8cc014ace6b6ad732facccb85c52ace94c1d130fb26c632efb3",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "0fc60bb4e0f02f108a3088a84159434638bf3fecce429c7c74e60bd144f97796",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "5aad0855-769c-47ba-b9c8-8fa1dd69aa83"
+      },
+      "scopes": [],
+      "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+      "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458858,
+        "pid": 2458858,
+        "start_ticks": 48675761
+      },
+      "execution": "b37a81c3-4094-416a-9087-73146d5a9f4b",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2458858,
+        "pid": 2458858,
+        "start_ticks": 48675761
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2459087,
+        "pid": 2459087,
+        "start_ticks": 48675769
+      },
+      "manifest": {
+        "attempt": "63e7d419-8772-4a67-8741-f7038bf99af6",
+        "base": "90c0779e8ad55a73f50ae0c44c7d1778e3cd0589",
+        "candidate": null,
+        "episode": "1f368cb0-45a7-4773-8b3a-660b83e16027",
+        "generation": 3,
+        "input": {
+          "digest": "4825e9d039e4d7d968ce850121c082352acee6f9775e16bf04a492082bed2ffb",
+          "id": "f95d764a-d767-4bd9-8448-b900593786e9"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/.execution-logs/b37a81c3-4094-416a-9087-73146d5a9f4b.log",
+        "mission": "9d5b8256-aa36-4408-969d-92f88a9303fb",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/workspaces/b37a81c3-4094-416a-9087-73146d5a9f4b",
+        "recovery_epoch": "c518ffd0-8e20-4e14-b33c-2b4b79e8f5e0",
+        "research_verification": {
+          "acceptance": "389dbdb0eb7ab8cc014ace6b6ad732facccb85c52ace94c1d130fb26c632efb3",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "0fc60bb4e0f02f108a3088a84159434638bf3fecce429c7c74e60bd144f97796",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "5aad0855-769c-47ba-b9c8-8fa1dd69aa83"
+        },
+        "scopes": [],
+        "spec_digest": "0bb343525d72510780dba164c6644f3973d2befcd00946b9c9bec0d6e47e79f1",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-6b3c41ee-920a-4e52-af87-9c6850c9b769/store",
+        "task": "4256b701-b8f6-4084-b1d1-721364de723c",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-final",
+    "raw_line": 506,
+    "round": "first-research",
+    "purpose": "implementation",
+    "execution": "c43108cd-e7f7-45d1-ae4b-6416bbe5bb91",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/4d712b21b28215c529c95738c42e75b32eb1c6fcc61342924c3b46188397dc21",
+      "sha256": "4d712b21b28215c529c95738c42e75b32eb1c6fcc61342924c3b46188397dc21",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "c1573569-93f5-46a2-8c61-a22893eead3e",
+      "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+      "candidate": null,
+      "episode": "9950dec9-c254-4835-956e-caded325d660",
+      "generation": 1,
+      "input": {
+        "digest": "943ed15679eee0f584b5a9a7b44ff11ab2982d14acb75311d55fcaaef2892c54",
+        "id": "b4398a70-829f-41a5-a1eb-f530f34363a7"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/c43108cd-e7f7-45d1-ae4b-6416bbe5bb91.log",
+      "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/c43108cd-e7f7-45d1-ae4b-6416bbe5bb91",
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+      "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529330,
+        "pid": 2529330,
+        "start_ticks": 48708759
+      },
+      "execution": "c43108cd-e7f7-45d1-ae4b-6416bbe5bb91",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529330,
+        "pid": 2529330,
+        "start_ticks": 48708759
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529568,
+        "pid": 2529568,
+        "start_ticks": 48708765
+      },
+      "manifest": {
+        "attempt": "c1573569-93f5-46a2-8c61-a22893eead3e",
+        "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+        "candidate": null,
+        "episode": "9950dec9-c254-4835-956e-caded325d660",
+        "generation": 1,
+        "input": {
+          "digest": "943ed15679eee0f584b5a9a7b44ff11ab2982d14acb75311d55fcaaef2892c54",
+          "id": "b4398a70-829f-41a5-a1eb-f530f34363a7"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/c43108cd-e7f7-45d1-ae4b-6416bbe5bb91.log",
+        "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/c43108cd-e7f7-45d1-ae4b-6416bbe5bb91",
+        "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+        "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-final",
+    "raw_line": 512,
+    "round": "first-research",
+    "purpose": "verification",
+    "execution": "d11493b3-0d45-476e-9a42-b85ab0fb3cd8",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ed046606ad4ca14c86c87ca7433c93bd6bde4357a71115274ff48a9a12b718e6",
+      "sha256": "ed046606ad4ca14c86c87ca7433c93bd6bde4357a71115274ff48a9a12b718e6",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "c1573569-93f5-46a2-8c61-a22893eead3e",
+      "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+      "candidate": null,
+      "episode": "fe47bc1b-7e51-4b57-93d0-60562e06c352",
+      "generation": 1,
+      "input": {
+        "digest": "33b5c1e41a5c4bd0be16f0f06a67ff89d4b33e25d4adaa280ed952419bb5467b",
+        "id": "c43ba35d-0b93-495d-a781-cca895778236"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/d11493b3-0d45-476e-9a42-b85ab0fb3cd8.log",
+      "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/d11493b3-0d45-476e-9a42-b85ab0fb3cd8",
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "research_verification": {
+        "acceptance": "47c53b822a5c4a5f39296ca0c36d31f7f6774cb2fbaa572b56165e6ad37b62ae",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "7cda75a815e2c280fe1b80b2e1c7912bf08bfed099664ce93c6aad5a4087a5a8",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "3c70f7ee-cd7e-493e-98bd-61d79544c21e"
+      },
+      "scopes": [],
+      "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+      "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529620,
+        "pid": 2529620,
+        "start_ticks": 48708793
+      },
+      "execution": "d11493b3-0d45-476e-9a42-b85ab0fb3cd8",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529620,
+        "pid": 2529620,
+        "start_ticks": 48708793
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529849,
+        "pid": 2529849,
+        "start_ticks": 48708799
+      },
+      "manifest": {
+        "attempt": "c1573569-93f5-46a2-8c61-a22893eead3e",
+        "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+        "candidate": null,
+        "episode": "fe47bc1b-7e51-4b57-93d0-60562e06c352",
+        "generation": 1,
+        "input": {
+          "digest": "33b5c1e41a5c4bd0be16f0f06a67ff89d4b33e25d4adaa280ed952419bb5467b",
+          "id": "c43ba35d-0b93-495d-a781-cca895778236"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/d11493b3-0d45-476e-9a42-b85ab0fb3cd8.log",
+        "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/d11493b3-0d45-476e-9a42-b85ab0fb3cd8",
+        "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+        "research_verification": {
+          "acceptance": "47c53b822a5c4a5f39296ca0c36d31f7f6774cb2fbaa572b56165e6ad37b62ae",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "7cda75a815e2c280fe1b80b2e1c7912bf08bfed099664ce93c6aad5a4087a5a8",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "3c70f7ee-cd7e-493e-98bd-61d79544c21e"
+        },
+        "scopes": [],
+        "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+        "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-final",
+    "raw_line": 534,
+    "round": "second-research",
+    "purpose": "implementation",
+    "execution": "7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/52792f8a8c117482331419cd0c98ea4e4427de007e4834f513e9d0756ed86625",
+      "sha256": "52792f8a8c117482331419cd0c98ea4e4427de007e4834f513e9d0756ed86625",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "35c6bee7-d774-4d49-8744-b8609b8dbc6e",
+      "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+      "candidate": null,
+      "episode": "ed7d0f7a-ae5d-499f-92cb-8a2fda398f3f",
+      "generation": 3,
+      "input": {
+        "digest": "db9f902ceac2e3cf461d92a963b66eeb76bbf114a25a551b139ad190e5632c65",
+        "id": "47b75c66-1126-42d5-9a16-aabb1096cc36"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e.log",
+      "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e",
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+      "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529976,
+        "pid": 2529976,
+        "start_ticks": 48708858
+      },
+      "execution": "7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2529976,
+        "pid": 2529976,
+        "start_ticks": 48708858
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2530202,
+        "pid": 2530202,
+        "start_ticks": 48708864
+      },
+      "manifest": {
+        "attempt": "35c6bee7-d774-4d49-8744-b8609b8dbc6e",
+        "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+        "candidate": null,
+        "episode": "ed7d0f7a-ae5d-499f-92cb-8a2fda398f3f",
+        "generation": 3,
+        "input": {
+          "digest": "db9f902ceac2e3cf461d92a963b66eeb76bbf114a25a551b139ad190e5632c65",
+          "id": "47b75c66-1126-42d5-9a16-aabb1096cc36"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e.log",
+        "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/7bf1599e-1f74-4b92-b6c8-0deafb3e8b1e",
+        "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+        "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-final",
+    "raw_line": 540,
+    "round": "second-research",
+    "purpose": "verification",
+    "execution": "2fccb848-5732-4236-acba-3fbb726045b6",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/9ecb67d153caa83273f668f20973bd07f4e57bff880517a45b7cbb8664f4a430",
+      "sha256": "9ecb67d153caa83273f668f20973bd07f4e57bff880517a45b7cbb8664f4a430",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "35c6bee7-d774-4d49-8744-b8609b8dbc6e",
+      "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+      "candidate": null,
+      "episode": "86bd1151-c305-4b66-8969-ad1b929f39a2",
+      "generation": 3,
+      "input": {
+        "digest": "a04cfea63cd636c703217e3a637ce12907bd48936b21e3323fb4678187655977",
+        "id": "da465618-2aa6-49d1-801d-331302e634ee"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/2fccb848-5732-4236-acba-3fbb726045b6.log",
+      "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/2fccb848-5732-4236-acba-3fbb726045b6",
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "research_verification": {
+        "acceptance": "47c53b822a5c4a5f39296ca0c36d31f7f6774cb2fbaa572b56165e6ad37b62ae",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "50bd48b8e73ca231c9401c45a45ab375055b464385d54e919f1047e2eb56085c",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "3c70f7ee-cd7e-493e-98bd-61d79544c21e"
+      },
+      "scopes": [],
+      "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+      "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2530245,
+        "pid": 2530245,
+        "start_ticks": 48708892
+      },
+      "execution": "2fccb848-5732-4236-acba-3fbb726045b6",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2530245,
+        "pid": 2530245,
+        "start_ticks": 48708892
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2530467,
+        "pid": 2530467,
+        "start_ticks": 48708898
+      },
+      "manifest": {
+        "attempt": "35c6bee7-d774-4d49-8744-b8609b8dbc6e",
+        "base": "27d9e632ad2622dd36594bb4d9920d7b1deb0763",
+        "candidate": null,
+        "episode": "86bd1151-c305-4b66-8969-ad1b929f39a2",
+        "generation": 3,
+        "input": {
+          "digest": "a04cfea63cd636c703217e3a637ce12907bd48936b21e3323fb4678187655977",
+          "id": "da465618-2aa6-49d1-801d-331302e634ee"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/.execution-logs/2fccb848-5732-4236-acba-3fbb726045b6.log",
+        "mission": "fb88dc2a-a286-43de-9c8b-4f8b50a61581",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/workspaces/2fccb848-5732-4236-acba-3fbb726045b6",
+        "recovery_epoch": "f56b4ad6-bdaa-4fe3-b532-780bbad7df6e",
+        "research_verification": {
+          "acceptance": "47c53b822a5c4a5f39296ca0c36d31f7f6774cb2fbaa572b56165e6ad37b62ae",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "50bd48b8e73ca231c9401c45a45ab375055b464385d54e919f1047e2eb56085c",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "3c70f7ee-cd7e-493e-98bd-61d79544c21e"
+        },
+        "scopes": [],
+        "spec_digest": "ae30621e9982e6eeaa7c574cc54f4553b1d67021fbf177ef081f511e5b2a2511",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-96bec308-62b0-4c8e-b03d-8ca0f1ea4c27/store",
+        "task": "bb83f0fb-4357-4565-a9a5-b691ff07fc81",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 506,
+    "round": "first-research",
+    "purpose": "implementation",
+    "execution": "abe0c7b5-a243-4efc-8c09-1819aac113be",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/14d26942addb174324655e50efee38fdea2e19b52fdf009363187cb4bd613065",
+      "sha256": "14d26942addb174324655e50efee38fdea2e19b52fdf009363187cb4bd613065",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "6cc878cf-7125-40e3-a939-22a60c20aec3",
+      "base": "c81ec24722268321067fd7a969e816a0e522677e",
+      "candidate": null,
+      "episode": "07449043-310c-44f9-8e7d-0db427cec9c7",
+      "generation": 1,
+      "input": {
+        "digest": "38e22a2fbbaa0e8d8b93c929d714b48a043b8d17c127b68f79809c7c591b7dda",
+        "id": "7c677d6f-5639-4eb2-8bed-9516f3fe4ff3"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/abe0c7b5-a243-4efc-8c09-1819aac113be.log",
+      "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/abe0c7b5-a243-4efc-8c09-1819aac113be",
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+      "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578192,
+        "pid": 2578192,
+        "start_ticks": 48742706
+      },
+      "execution": "abe0c7b5-a243-4efc-8c09-1819aac113be",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578192,
+        "pid": 2578192,
+        "start_ticks": 48742706
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578415,
+        "pid": 2578415,
+        "start_ticks": 48742710
+      },
+      "manifest": {
+        "attempt": "6cc878cf-7125-40e3-a939-22a60c20aec3",
+        "base": "c81ec24722268321067fd7a969e816a0e522677e",
+        "candidate": null,
+        "episode": "07449043-310c-44f9-8e7d-0db427cec9c7",
+        "generation": 1,
+        "input": {
+          "digest": "38e22a2fbbaa0e8d8b93c929d714b48a043b8d17c127b68f79809c7c591b7dda",
+          "id": "7c677d6f-5639-4eb2-8bed-9516f3fe4ff3"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/abe0c7b5-a243-4efc-8c09-1819aac113be.log",
+        "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/abe0c7b5-a243-4efc-8c09-1819aac113be",
+        "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+        "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 512,
+    "round": "first-research",
+    "purpose": "verification",
+    "execution": "004a2007-a665-44cf-ae67-e9984078670d",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/436e2bf5a686e93f9d3b6cfb886206744f070c4d45f19e811c879b7720330bb5",
+      "sha256": "436e2bf5a686e93f9d3b6cfb886206744f070c4d45f19e811c879b7720330bb5",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "6cc878cf-7125-40e3-a939-22a60c20aec3",
+      "base": "c81ec24722268321067fd7a969e816a0e522677e",
+      "candidate": null,
+      "episode": "c397d657-652e-4286-90ea-e4058eaeca9d",
+      "generation": 1,
+      "input": {
+        "digest": "33638c0f6b5608332c54b1eb986769c96ce56c756d53be07753833e05aae9b2f",
+        "id": "429a4e0d-7979-45bb-acda-30e631f5440a"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/004a2007-a665-44cf-ae67-e9984078670d.log",
+      "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/004a2007-a665-44cf-ae67-e9984078670d",
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "research_verification": {
+        "acceptance": "b8369909fb4a126b370c843b9dfe2594be91de1b20f4065ed531c9e48be22703",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "76516a73c6d47110603eb0831cfad5a8f50092e914d5446b47f41e221b1ef973",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "d58d93c1-b44c-4f7b-9877-ebee492f2ba0"
+      },
+      "scopes": [],
+      "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+      "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578464,
+        "pid": 2578464,
+        "start_ticks": 48742734
+      },
+      "execution": "004a2007-a665-44cf-ae67-e9984078670d",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578464,
+        "pid": 2578464,
+        "start_ticks": 48742734
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578686,
+        "pid": 2578686,
+        "start_ticks": 48742738
+      },
+      "manifest": {
+        "attempt": "6cc878cf-7125-40e3-a939-22a60c20aec3",
+        "base": "c81ec24722268321067fd7a969e816a0e522677e",
+        "candidate": null,
+        "episode": "c397d657-652e-4286-90ea-e4058eaeca9d",
+        "generation": 1,
+        "input": {
+          "digest": "33638c0f6b5608332c54b1eb986769c96ce56c756d53be07753833e05aae9b2f",
+          "id": "429a4e0d-7979-45bb-acda-30e631f5440a"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/004a2007-a665-44cf-ae67-e9984078670d.log",
+        "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/004a2007-a665-44cf-ae67-e9984078670d",
+        "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+        "research_verification": {
+          "acceptance": "b8369909fb4a126b370c843b9dfe2594be91de1b20f4065ed531c9e48be22703",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "76516a73c6d47110603eb0831cfad5a8f50092e914d5446b47f41e221b1ef973",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "d58d93c1-b44c-4f7b-9877-ebee492f2ba0"
+        },
+        "scopes": [],
+        "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+        "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 534,
+    "round": "second-research",
+    "purpose": "implementation",
+    "execution": "f4c98262-7e88-4421-a6d9-ec98d5c6d33e",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/4154465cdc4d6a0fcd16af8e17bfbffe9b693ef7b95f9de6422a1d346409113d",
+      "sha256": "4154465cdc4d6a0fcd16af8e17bfbffe9b693ef7b95f9de6422a1d346409113d",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "9690a137-41b9-4f77-8809-c3b42f7b2378",
+      "base": "c81ec24722268321067fd7a969e816a0e522677e",
+      "candidate": null,
+      "episode": "f8f6e022-8907-4069-8b7e-8173e238c997",
+      "generation": 3,
+      "input": {
+        "digest": "4337c432931321c78897ab684943774dc69de15e8e12dcd6de87da9cfda95ddf",
+        "id": "a95eba5d-98f9-423f-b58a-e0a552b4bffb"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/f4c98262-7e88-4421-a6d9-ec98d5c6d33e.log",
+      "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/f4c98262-7e88-4421-a6d9-ec98d5c6d33e",
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "research_verification": null,
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+      "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+      "verification_policy": null,
+      "write_scope": [
+        "src"
+      ]
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578762,
+        "pid": 2578762,
+        "start_ticks": 48742788
+      },
+      "execution": "f4c98262-7e88-4421-a6d9-ec98d5c6d33e",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578762,
+        "pid": 2578762,
+        "start_ticks": 48742788
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2578984,
+        "pid": 2578984,
+        "start_ticks": 48742793
+      },
+      "manifest": {
+        "attempt": "9690a137-41b9-4f77-8809-c3b42f7b2378",
+        "base": "c81ec24722268321067fd7a969e816a0e522677e",
+        "candidate": null,
+        "episode": "f8f6e022-8907-4069-8b7e-8173e238c997",
+        "generation": 3,
+        "input": {
+          "digest": "4337c432931321c78897ab684943774dc69de15e8e12dcd6de87da9cfda95ddf",
+          "id": "a95eba5d-98f9-423f-b58a-e0a552b4bffb"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/f4c98262-7e88-4421-a6d9-ec98d5c6d33e.log",
+        "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/f4c98262-7e88-4421-a6d9-ec98d5c6d33e",
+        "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+        "research_verification": null,
+        "scopes": [
+          {
+            "kind": "directory",
+            "path": "src"
+          }
+        ],
+        "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+        "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+        "verification_policy": null,
+        "write_scope": [
+          "src"
+        ]
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  },
+  {
+    "run": "green-compatibility-freeze",
+    "raw_line": 540,
+    "round": "second-research",
+    "purpose": "verification",
+    "execution": "5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d",
+    "artifact": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/c83ae7e627f48d0847445322b41b6a5154334191f1ad7ef740a4a9b461540a24",
+      "sha256": "c83ae7e627f48d0847445322b41b6a5154334191f1ad7ef740a4a9b461540a24",
+      "bytes": 795
+    },
+    "measured_log": {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46
+    },
+    "manifest": {
+      "attempt": "9690a137-41b9-4f77-8809-c3b42f7b2378",
+      "base": "c81ec24722268321067fd7a969e816a0e522677e",
+      "candidate": null,
+      "episode": "8014aafb-edff-4cc3-bdb5-805eeb0d1fb2",
+      "generation": 3,
+      "input": {
+        "digest": "a7837bb51e9ea77f3d62cb2e9fcc29611b14d8e787fee8689633eee44fe0a18a",
+        "id": "248513b3-cb27-431b-bdcf-8d9225eeb5a6"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d.log",
+      "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d",
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "research_verification": {
+        "acceptance": "b8369909fb4a126b370c843b9dfe2594be91de1b20f4065ed531c9e48be22703",
+        "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "intent": "f0e63c09ac8796b0b7459e39b7031031497198642c3221c7a6b036c93fd33a17",
+        "policy": "suite-v2",
+        "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "verifier": "d58d93c1-b44c-4f7b-9877-ebee492f2ba0"
+      },
+      "scopes": [],
+      "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+      "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+      "verification_policy": null,
+      "write_scope": []
+    },
+    "measurement": {
+      "argv": [
+        "/bin/sh",
+        "-c",
+        "test ! -e src/result && printf 'negative research: no result at admitted base\\n'"
+      ],
+      "candidate": null,
+      "completion": {
+        "kind": "monitor_wait"
+      },
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2579013,
+        "pid": 2579013,
+        "start_ticks": 48742817
+      },
+      "execution": "5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d",
+      "exit_code": 0,
+      "logs": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "namespace_stopped": true,
+      "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+      "signal": null
+    },
+    "released": {
+      "controller": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2579013,
+        "pid": 2579013,
+        "start_ticks": 48742817
+      },
+      "launcher": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 2579235,
+        "pid": 2579235,
+        "start_ticks": 48742821
+      },
+      "manifest": {
+        "attempt": "9690a137-41b9-4f77-8809-c3b42f7b2378",
+        "base": "c81ec24722268321067fd7a969e816a0e522677e",
+        "candidate": null,
+        "episode": "8014aafb-edff-4cc3-bdb5-805eeb0d1fb2",
+        "generation": 3,
+        "input": {
+          "digest": "a7837bb51e9ea77f3d62cb2e9fcc29611b14d8e787fee8689633eee44fe0a18a",
+          "id": "248513b3-cb27-431b-bdcf-8d9225eeb5a6"
+        },
+        "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/.execution-logs/5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d.log",
+        "mission": "852ee681-00de-4b60-a089-47e9c292df01",
+        "path": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/workspaces/5ee4e82c-6d4c-4ee8-9346-43e1753bbc3d",
+        "recovery_epoch": "cf504737-e136-4df1-a000-fb7540a7b462",
+        "research_verification": {
+          "acceptance": "b8369909fb4a126b370c843b9dfe2594be91de1b20f4065ed531c9e48be22703",
+          "environment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "intent": "f0e63c09ac8796b0b7459e39b7031031497198642c3221c7a6b036c93fd33a17",
+          "policy": "suite-v2",
+          "suite": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "verifier": "d58d93c1-b44c-4f7b-9877-ebee492f2ba0"
+        },
+        "scopes": [],
+        "spec_digest": "7e34f3c1513129273f552152b0207f6a7f31501594b1626760b781ca1f9dd1a7",
+        "store": "/data02/home/philip.yang/devx/tmp/kernel16-4b7fad40-23f8-4c94-b9c8-14b19123319f/store",
+        "task": "bf28d3be-0a0d-4065-afe3-587bde07312f",
+        "verification_policy": null,
+        "write_scope": []
+      },
+      "members": [],
+      "quarantine_reason": null,
+      "state": "released"
+    }
+  }
+]

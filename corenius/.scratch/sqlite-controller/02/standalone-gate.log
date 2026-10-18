@@ -1,0 +1,101 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.43s
+     Running unittests src/lib.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-38fca9f880171600)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/corenius-attempt-supervisor.rs (crates/sqlite-controller/target/debug/deps/corenius_attempt_supervisor-99d8720b5cfe2706)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-9ef736948a92244c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-aad6745ace979f10)
+
+running 4 tests
+daemon_ready pid=2766366 socket=/data02/home/philip.yang/devx/tmp/.tmpPX2KtL/api.sock
+daemon_ready pid=2766367 socket=/data02/home/philip.yang/devx/tmp/.tmpidCiGN/api.sock
+daemon_ready pid=2766368 socket=/data02/home/philip.yang/devx/tmp/.tmpj3USVd/api.sock
+daemon_ready pid=2766369 socket=/data02/home/philip.yang/devx/tmp/.tmppKmwT0/api.sock
+alias_competitor pid=2766377 path=/data02/home/philip.yang/devx/tmp/.tmpPX2KtL/target.db status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+admission_barrier_observed pid=2766367 marker=/data02/home/philip.yang/devx/tmp/.tmpidCiGN/before-commit
+owned_daemon_killed pid=2766367 status=signal: 9 (SIGKILL)
+alias_competitor pid=2766380 path=/data02/home/philip.yang/devx/tmp/.tmpPX2KtL/alias.db status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+owned_daemon_killed pid=2766366 status=signal: 9 (SIGKILL)
+daemon_ready pid=2766383 socket=/data02/home/philip.yang/devx/tmp/.tmpidCiGN/api.sock
+daemon_ready pid=2766384 socket=/data02/home/philip.yang/devx/tmp/.tmpPX2KtL/api.sock
+test existing_database_aliases_share_process_ownership ... ok
+rollback_observed revision=2 occupied_slots=0 attempts=0 operations=0
+competing_controller pid=2766391 status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+owned_daemon_killed pid=2766368 status=signal: 9 (SIGKILL)
+daemon_ready pid=2766394 socket=/data02/home/philip.yang/devx/tmp/.tmpj3USVd/api.sock
+test kill_during_atomic_admission_exposes_none_then_retry_exposes_all ... ok
+restart_observed revision=6 occupied_slots=1 attempt_state="unknown" pending_operation_state="prepared"
+test real_process_restart_retains_operations_and_ownership ... ok
+slow_client_queued_request_elapsed_ms=1013
+test slow_drip_client_cannot_extend_the_whole_request_deadline ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-ae2823e85e2c8fb3)
+
+running 20 tests
+test controller_files_have_private_permissions ... ok
+test sqlite_like_user_table_is_foreign_and_keeps_its_data ... ok
+test canonical_work_ref_cannot_be_admitted_under_two_aliases ... ok
+test foreign_or_future_database_is_refused_without_import ... ok
+test dispatch_credentials_and_receipts_are_not_in_public_events_or_other_attempts ... ok
+test message_ack_reconnect_reaches_original_sender_and_recipient ... ok
+test exclusive_lifetime_writer_lock_and_bootstrap_refusal ... ok
+test hardlinked_database_is_refused_through_each_name ... ok
+test same_task_racing_commands_admit_once ... ok
+test dangling_database_symlink_cannot_create_two_controller_owners ... ok
+test restart_retains_journal_questions_decisions_and_unknown_capacity ... ok
+test own_operation_events_use_retained_attempt_identity ... ok
+test two_slots_atomic_admission_and_scoped_replay ... ok
+test own_attempt_events_use_retained_task_identity ... ok
+test project_scopes_and_two_global_slots_hold_across_projects ... ok
+test lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope ... ok
+test message_events_ignore_forged_task_and_preserve_peer_participants ... ok
+test messages_answers_and_operation_outcomes_are_retained ... ok
+test project_base_must_be_a_full_commit_oid_and_failure_is_atomic ... ok
+test answers_reconnect_to_own_attempt_and_storage_busy_is_bounded ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 7 tests
+symlink_refused_without_target_mutation; stale_binding_and_profile_injection_denied
+test symlink_roots_and_stale_execution_bindings_are_refused ... ok
+cancel_before_start_tombstone={"ok":{"binding":{"attempt":"3cd8262b-6761-4940-9c94-e1117c6dd741","base":"0123456789abcdef0123456789abcdef01234567","brief":"1920085f-92d8-4dec-826a-95a579f22e1d","operation":"f3a9e7ae-20ff-4d25-a966-e47eb756af8b","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"74908c62-747b-4c0f-95f3-42c0ecb00a49","incarnation":"bfa78b87-6bf2-4d7f-bd98-1a010b3ef3e7","init_start_ticks":null,"namespace_init":null,"outcome":"cancel tombstone: effect never started","pid":null,"pid_namespace":null,"start_ticks":null,"state":"exited"}}
+test pause_prevents_prepared_dispatch_and_cancel_overtakes_start ... ok
+lost_reply_adopted={"binding":{"attempt":"4199ce03-d41a-486d-824f-25ea341674ea","base":"0123456789abcdef0123456789abcdef01234567","brief":"3ad1a493-f6b3-431a-bba7-349c07b6261c","operation":"915f4d4d-314c-47bd-9acb-2e1cf751aea9","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"785dd761-7ec9-4ca0-bf43-086e10374933","incarnation":"443e513a-3cdb-4205-b0b9-5880062919c1","init_start_ticks":"50806879","namespace_init":2767775,"outcome":null,"pid":2767770,"pid_namespace":4026539690,"start_ticks":"50806878","state":"running"}; unreachable_supervisor_occupied_slots=1
+test lost_start_reply_is_looked_up_and_unavailable_supervisor_keeps_capacity ... ok
+short_normal_termination_retained_identity={"binding":{"attempt":"b3493f79-d851-467f-890a-032e893446dd","base":"0123456789abcdef0123456789abcdef01234567","brief":"9f2b2362-6e3f-4f6a-97ac-0795ad12a436","operation":"c472e146-0a20-48f6-9063-b692db1ceefb","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"22c8f5df-03fe-4768-b306-5a521fa3e0c5","incarnation":"0905de51-28db-4b39-83c8-077294757c0e","init_start_ticks":"50806882","namespace_init":2767797,"outcome":"owned namespace init terminated: exit status: 0","pid":2767790,"pid_namespace":4026539875,"start_ticks":"50806881","state":"exited"}
+test short_lived_execution_has_a_retained_terminal_identity ... ok
+actual_private_boundary_probe={"workspace_inode": 149644389, "pid": 1, "descendant": 2, "home": "/home/worker", "network": "blocked", "forbidden": ["/data02/home/philip.yang/devx/tmp/.tmp7ur657", "/data02/home/philip.yang/devx/tmp/.tmp7ur657/api.sock", "/data02/home/philip.yang/devx/tmp/.tmp7ur657/supervisor.sock", "/root/.ssh", "/home/philip.yang", "/workspace/.git"]}
+two_live_execution_identities a={"binding":{"attempt":"c86ce09a-6d10-4316-bfd1-ea9680abe31f","base":"0123456789abcdef0123456789abcdef01234567","brief":"62daf652-9c15-4738-869a-ef51026500ca","operation":"e4acc0e4-39e7-4876-ba53-c88f91bd7ea3","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"1942c617-9e47-4ce1-bb1f-4bac66dd4c97","incarnation":"16ca4010-ba92-4542-b618-e554774846b0","init_start_ticks":"50806884","namespace_init":2767820,"outcome":null,"pid":2767816,"pid_namespace":4026539959,"start_ticks":"50806883","state":"running"} b={"binding":{"attempt":"a66a213c-8fe5-4c61-961f-97a77446609c","base":"0123456789abcdef0123456789abcdef01234567","brief":"3c866935-e056-4b93-a0fe-26069359b75d","operation":"01117f16-c867-419b-b60f-f2f75740934a","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"6bdeabf7-1e32-4512-ab5f-206aa4a36335","incarnation":"16ca4010-ba92-4542-b618-e554774846b0","init_start_ticks":"50806886","namespace_init":2767843,"outcome":null,"pid":2767830,"pid_namespace":4026540040,"start_ticks":"50806885","state":"running"}
+supervisor_restart_uncertain_retained_identity={"binding":{"attempt":"9bbcd97e-7e6d-4b36-9dc4-a1d381c43945","base":"0123456789abcdef0123456789abcdef01234567","brief":"44d66daf-2147-44cc-a485-72843aee3325","operation":"3fd6dc91-3d69-4a84-bfdf-2aa93719c362","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"3b52fd70-5d6d-474a-9e3b-b9c387f38c48","incarnation":"6e782ba5-554c-4244-8831-ed6f2e6fa8db","init_start_ticks":"50806880","namespace_init":2767787,"outcome":"supervisor ownership lost; PID reconstruction refused","pid":2767776,"pid_namespace":4026539790,"start_ticks":"50806879","state":"unknown"}; cancelled_unknown_occupied_slots=1
+test supervisor_restart_refuses_pid_adoption_and_retains_revoked_capacity ... ok
+host_namespace_worker_pids=[2767820, 2767860]
+controller_restart_adopted_same_handles; cancellation_observed_removed_host_descendants=[2767820, 2767860]
+test independently_supervised_workers_survive_restart_and_cancel_descendants ... ok
+autonomous_admission_cancel_observed_through_controller_only="{\"binding\":{\"project\":\"p\",\"attempt\":\"06750d3d-322b-4709-b167-d56eb34e9d0b\",\"operation\":\"1c6aee68-408d-47dc-b31f-20d76336e4e9\",\"scope_epoch\":1,\"base\":\"0123456789abcdef0123456789abcdef01234567\",\"brief\":\"b6908b4e-e915-4ceb-877a-ea88fc712d1b\"},\"handle\":\"ec7304f0-f2d7-4bd9-95dc-8639a3c2635e\",\"incarnation\":\"6622014f-264d-46ae-9fb9-f4a02705a396\",\"boot_id\":\"6f48f645-3b26-40c9-93fb-db4190c7629b\",\"pid\":2767937,\"start_ticks\":\"50806899\",\"namespace_init\":2767941,\"init_start_ticks\":\"50806899\",\"pid_namespace\":4026539779,\"state\":\"exited\",\"outcome\":\"owned namespace init terminated: signal: 9 (SIGKILL)\"}"
+test configured_controller_autonomously_drains_admission_and_cancellation ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+   Doc-tests corenius_sqlite_controller
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

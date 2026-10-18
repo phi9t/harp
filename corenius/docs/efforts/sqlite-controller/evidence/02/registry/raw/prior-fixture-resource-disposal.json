@@ -1,0 +1,965 @@
+{
+  "scope": "only retained qualified namespace-init identities from terminal prior own logs; no other process scan or signal",
+  "records": [
+    {
+      "pid": 3471210,
+      "start_ticks": "52105084",
+      "execution_handle": "82bdbe1c-73ac-433e-b181-2cb80d818d48",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3472108,
+      "start_ticks": "52105138",
+      "execution_handle": "3780c992-4737-4061-acaa-8ed21a1b006c",
+      "pid_namespace": 4026540118,
+      "source_log": "red-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3471212,
+      "start_ticks": "52105085",
+      "execution_handle": "d1d062ae-12ad-4844-a473-b81d3600a164",
+      "pid_namespace": 4026539952,
+      "source_log": "red-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3325006,
+      "start_ticks": "52034984",
+      "execution_handle": "a3df5f4d-061c-422e-904d-b9e48eadcc23",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3325458,
+      "start_ticks": "52035038",
+      "execution_handle": "dbe25cfe-720f-407a-a2f2-b7c358609f26",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3325008,
+      "start_ticks": "52034986",
+      "execution_handle": "eb6b24d9-4d6e-4cc8-bf6b-e5ee30fd6315",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3412333,
+      "start_ticks": "52082720",
+      "execution_handle": "ef0a213e-093d-497a-9ca3-c80c7b6b04b2",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3413191,
+      "start_ticks": "52082774",
+      "execution_handle": "d3f3ce62-4eb3-4c05-89fa-814df9b7eeef",
+      "pid_namespace": 4026540035,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3412395,
+      "start_ticks": "52082721",
+      "execution_handle": "82aa035a-f59d-41f4-b394-9fca70911afc",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3424677,
+      "start_ticks": "52085725",
+      "execution_handle": "99450cb0-9a2a-40e3-a91a-90bd58a8a6c1",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3425192,
+      "start_ticks": "52085779",
+      "execution_handle": "36f2f927-26ca-4dd2-b8e8-fce304a76d6b",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3424680,
+      "start_ticks": "52085726",
+      "execution_handle": "9e897ba5-5636-4ee1-bb9b-f2ca6397e9da",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3425194,
+      "start_ticks": "52085780",
+      "execution_handle": "b979daca-41e9-4fc9-9dec-7aa206709692",
+      "pid_namespace": 4026539952,
+      "source_log": "green-native-missing-config.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2769032,
+      "start_ticks": "51706378",
+      "execution_handle": "6268df05-3969-4aa0-8229-8c7da58fcb6f",
+      "pid_namespace": 4026539641,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2769495,
+      "start_ticks": "51706432",
+      "execution_handle": "090f127a-851e-43fd-a0b2-5300739542e4",
+      "pid_namespace": 4026539869,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2769034,
+      "start_ticks": "51706379",
+      "execution_handle": "e92165df-1112-46e0-9095-c6bbc2eb7802",
+      "pid_namespace": 4026539785,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2771041,
+      "start_ticks": "51709313",
+      "execution_handle": "2db430d8-f878-4ca8-95cd-e7635e6e05a4",
+      "pid_namespace": 4026539641,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2771492,
+      "start_ticks": "51709367",
+      "execution_handle": "bbb62496-c46a-4399-85a7-ae570866b3c5",
+      "pid_namespace": 4026539870,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2771043,
+      "start_ticks": "51709314",
+      "execution_handle": "1a1247ea-84ed-4989-9748-5cf6ffbcb242",
+      "pid_namespace": 4026539785,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2771494,
+      "start_ticks": "51709368",
+      "execution_handle": "8216effb-db06-4e2e-89f7-653a2c76e3d1",
+      "pid_namespace": 4026539953,
+      "source_log": "green-routing-rpc-diagnosis.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3316349,
+      "start_ticks": "52022920",
+      "execution_handle": "d863d605-83ed-41ba-ba4f-230eacc1b07b",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-confirm-adoption.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3316807,
+      "start_ticks": "52022973",
+      "execution_handle": "c0fdf026-eda4-4788-85df-d0ab84ea75a9",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-confirm-adoption.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3316351,
+      "start_ticks": "52022921",
+      "execution_handle": "79f8c857-d180-4a49-a3a7-89f4f104ef62",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-confirm-adoption.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2922089,
+      "start_ticks": "51820262",
+      "execution_handle": "a4f87920-24a8-4e00-a485-e0ed5e21b181",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2922539,
+      "start_ticks": "51820316",
+      "execution_handle": "0604bf5c-be44-4848-a20f-6b01f2dc35f8",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2922091,
+      "start_ticks": "51820264",
+      "execution_handle": "cba15339-acde-4bc1-bce5-0a2f93451195",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2850505,
+      "start_ticks": "51768750",
+      "execution_handle": "663283c5-a68b-429b-8b40-e17549b72646",
+      "pid_namespace": 4026539641,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2850968,
+      "start_ticks": "51768803",
+      "execution_handle": "2eebc95c-6aa2-4d5c-b1ec-7e56e8006ed1",
+      "pid_namespace": 4026539869,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2850508,
+      "start_ticks": "51768751",
+      "execution_handle": "897bcb68-6d6a-4286-b323-199153da5b72",
+      "pid_namespace": 4026539785,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2853731,
+      "start_ticks": "51772419",
+      "execution_handle": "a8c9c6b9-a1d9-4e45-88b4-5ba3aed1df29",
+      "pid_namespace": 4026539641,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2854272,
+      "start_ticks": "51772473",
+      "execution_handle": "4bbb2101-8e50-48df-82b6-aa8758dc92c1",
+      "pid_namespace": 4026539869,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2853733,
+      "start_ticks": "51772421",
+      "execution_handle": "4f639486-bfd8-4aa4-af55-9b2213701ebc",
+      "pid_namespace": 4026539785,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2854274,
+      "start_ticks": "51772474",
+      "execution_handle": "2d1dce45-f18d-4f2a-93b0-33d1823830b0",
+      "pid_namespace": 4026539953,
+      "source_log": "green-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3471185,
+      "start_ticks": "52105055",
+      "execution_handle": "146aa385-a077-4f9b-86f4-94b96d5645a7",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3471659,
+      "start_ticks": "52105109",
+      "execution_handle": "4590d317-e114-4517-9cbb-a880541a7d86",
+      "pid_namespace": 4026540035,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3471187,
+      "start_ticks": "52105056",
+      "execution_handle": "b996de76-de04-4c9a-a941-f50a97d473a9",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3476402,
+      "start_ticks": "52108983",
+      "execution_handle": "6d112d33-766a-4c54-8980-3b236744aca0",
+      "pid_namespace": 4026539687,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3476852,
+      "start_ticks": "52109037",
+      "execution_handle": "599f7cf5-8399-4b37-8be6-76cafaa75050",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3476404,
+      "start_ticks": "52108984",
+      "execution_handle": "d4034ccc-b15c-4544-9b4c-1a2fcb298610",
+      "pid_namespace": 4026539787,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3476854,
+      "start_ticks": "52109038",
+      "execution_handle": "56211729-5f44-459c-870e-4024914dad8f",
+      "pid_namespace": 4026539952,
+      "source_log": "green-native-scoped-projection.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3482840,
+      "start_ticks": "52116367",
+      "execution_handle": "c1375c62-2732-4baa-9fc5-1ef9586e7f22",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3483300,
+      "start_ticks": "52116421",
+      "execution_handle": "6e8ba95f-d487-4d17-9259-ace79c957efb",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3482842,
+      "start_ticks": "52116368",
+      "execution_handle": "e563ba56-8bf5-4f63-8346-e7f339e82c15",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3487140,
+      "start_ticks": "52120373",
+      "execution_handle": "60113e3a-a9cf-4dab-ba67-eed72fe66bf3",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3487954,
+      "start_ticks": "52120427",
+      "execution_handle": "fc42baa1-3ccf-48ab-8ddf-98939129f276",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3487142,
+      "start_ticks": "52120375",
+      "execution_handle": "bea11e89-962a-4672-8a1b-280ed0b8565e",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3487956,
+      "start_ticks": "52120429",
+      "execution_handle": "af5e50eb-efcd-4cf7-a4d4-c640aaed0595",
+      "pid_namespace": 4026539952,
+      "source_log": "green-native-unknown-start-fence.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3256608,
+      "start_ticks": "51982442",
+      "execution_handle": "c71fc543-a16d-4122-b431-03ee5363b613",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3257057,
+      "start_ticks": "51982496",
+      "execution_handle": "307c1ac5-a8fd-4eb0-922d-ff474dce984c",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3256610,
+      "start_ticks": "51982443",
+      "execution_handle": "8c93767d-c24a-4bc9-844e-e131ecb22895",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3260666,
+      "start_ticks": "51986411",
+      "execution_handle": "9bbbb1a2-d5dc-4688-8409-0cc4cb444982",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3261117,
+      "start_ticks": "51986465",
+      "execution_handle": "d78717e9-1905-4457-8613-98dfde6c90e6",
+      "pid_namespace": 4026539870,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3260668,
+      "start_ticks": "51986412",
+      "execution_handle": "f5a593b5-65c6-416a-92f1-4a1c9fcb5be5",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3261119,
+      "start_ticks": "51986466",
+      "execution_handle": "82ae3e7a-0c86-47f6-8b32-eef425b33827",
+      "pid_namespace": 4026539953,
+      "source_log": "green-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2861991,
+      "start_ticks": "51774599",
+      "execution_handle": "0d052abc-466c-42bc-bd15-4de57c613a5b",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2862450,
+      "start_ticks": "51774653",
+      "execution_handle": "6fa336b0-04e7-4837-ac3b-0f417c3d70e6",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2861993,
+      "start_ticks": "51774601",
+      "execution_handle": "22d99003-1fa4-4077-b349-354af6bb6029",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3061936,
+      "start_ticks": "51845292",
+      "execution_handle": "1cc7ceeb-fb83-4178-a0e6-54b7873c4cbe",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-retirement.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3062415,
+      "start_ticks": "51845346",
+      "execution_handle": "846e0da1-1db5-4050-a84b-8fecfd9ee449",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-retirement.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3061938,
+      "start_ticks": "51845293",
+      "execution_handle": "d71d7a65-e8e0-46ae-83b0-b10995d99240",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-retirement.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3175872,
+      "start_ticks": "51921642",
+      "execution_handle": "c2e29fab-4042-407b-84cb-558b1ee94f0f",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3176328,
+      "start_ticks": "51921695",
+      "execution_handle": "181b3c80-ebce-43c2-85b6-421d04080e0f",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3175874,
+      "start_ticks": "51921643",
+      "execution_handle": "50e2bbce-9d75-48d1-8d5e-097a092ebcd7",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3212099,
+      "start_ticks": "51925450",
+      "execution_handle": "643a1b48-f686-4437-b8d0-cba3f9b36fca",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3212905,
+      "start_ticks": "51925504",
+      "execution_handle": "a134c9da-c930-45be-a9de-ca7b6cf40744",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3212108,
+      "start_ticks": "51925451",
+      "execution_handle": "4390acd1-a7be-4cb5-9ac7-18e629bc8709",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3212915,
+      "start_ticks": "51925505",
+      "execution_handle": "9e2a4ed4-f4df-4009-9c5c-e116d3798981",
+      "pid_namespace": 4026539952,
+      "source_log": "red-native-disconnect-observed.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3413060,
+      "start_ticks": "52082756",
+      "execution_handle": "613c912f-6ecf-47da-b3d3-94dec456935e",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3414183,
+      "start_ticks": "52082809",
+      "execution_handle": "217148b6-3fb8-4ecd-b01e-8e0422c51557",
+      "pid_namespace": 4026540118,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3413063,
+      "start_ticks": "52082757",
+      "execution_handle": "b80bd4a6-e5b6-464c-bffe-a4be60afb8f7",
+      "pid_namespace": 4026539952,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3425996,
+      "start_ticks": "52086700",
+      "execution_handle": "60d32eac-f2bf-4ef4-b4ba-633ae107cb94",
+      "pid_namespace": 4026540035,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3426518,
+      "start_ticks": "52086754",
+      "execution_handle": "b45c0ce2-16ce-4c2b-8a78-0d4cb07df750",
+      "pid_namespace": 4026540201,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3425999,
+      "start_ticks": "52086701",
+      "execution_handle": "c5d8e79f-9725-4d7e-983f-10824181aebd",
+      "pid_namespace": 4026540118,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3426520,
+      "start_ticks": "52086755",
+      "execution_handle": "885a60dc-1f18-45f3-a453-1e22a34228aa",
+      "pid_namespace": 4026540284,
+      "source_log": "green-native-confirm-adoption-same-incarnation.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3003647,
+      "start_ticks": "51833359",
+      "execution_handle": "ea721074-ec75-453e-82f4-48443f296fef",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3005085,
+      "start_ticks": "51833413",
+      "execution_handle": "f5cdf8bc-3136-48cd-a562-648ca19ac298",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3003652,
+      "start_ticks": "51833360",
+      "execution_handle": "8b3a2e9e-a8f5-4de4-b405-5980253dd9b7",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3030040,
+      "start_ticks": "51836294",
+      "execution_handle": "ed2f8865-88a0-4b67-9683-02c87d3a6cdb",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3031450,
+      "start_ticks": "51836347",
+      "execution_handle": "944dac02-e62f-45aa-80f8-cc5a4ec81267",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3030101,
+      "start_ticks": "51836295",
+      "execution_handle": "aedc4b93-3d3f-451b-9c79-b2d3829d49e5",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3031510,
+      "start_ticks": "51836349",
+      "execution_handle": "47274a69-a912-49e0-b242-9b9138efb574",
+      "pid_namespace": 4026539952,
+      "source_log": "green-native-config-identity.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3238968,
+      "start_ticks": "51956681",
+      "execution_handle": "cedd00e5-3bd1-477c-9804-51736279a93d",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3239426,
+      "start_ticks": "51956735",
+      "execution_handle": "09cd593f-6fa7-4189-9b5c-2b201370fc7e",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3238970,
+      "start_ticks": "51956682",
+      "execution_handle": "b9df4fce-8bf4-46a7-9d90-540865aeb226",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-active-cancel.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2780500,
+      "start_ticks": "51720436",
+      "execution_handle": "a62aa3ef-f7c1-41f0-8fed-b3a3dd3d30d1",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-recovery.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2780951,
+      "start_ticks": "51720490",
+      "execution_handle": "f31f670b-4a39-46ce-80a8-54725bfc06e5",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-recovery.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2780502,
+      "start_ticks": "51720438",
+      "execution_handle": "64a514d7-2fe0-48b6-a10d-c97684dc90ec",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-recovery.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2868193,
+      "start_ticks": "51783215",
+      "execution_handle": "c1f1e106-740c-434b-b5b8-1122e13f0941",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-lost-ack-history.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2868649,
+      "start_ticks": "51783268",
+      "execution_handle": "185c9cc0-bb47-4823-baea-a84a613ddc1c",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-lost-ack-history.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2868198,
+      "start_ticks": "51783216",
+      "execution_handle": "c3f60bf0-07b8-4bc4-a701-0ed4274a5ea2",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-lost-ack-history.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2890659,
+      "start_ticks": "51795358",
+      "execution_handle": "b25cc305-37e7-4e11-b4b9-d4b17f495b16",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2891119,
+      "start_ticks": "51795412",
+      "execution_handle": "59e2bc8e-0951-4610-94d9-0b90ce429f7e",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2890661,
+      "start_ticks": "51795360",
+      "execution_handle": "d8484708-db37-4cd2-a0f6-360b1342b27f",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2894392,
+      "start_ticks": "51799125",
+      "execution_handle": "15ee1bb0-593c-4e3f-9241-ba6825bfeeac",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2894845,
+      "start_ticks": "51799178",
+      "execution_handle": "868d425c-e848-4e66-9bb9-edeb34346fee",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2894394,
+      "start_ticks": "51799126",
+      "execution_handle": "dd665a2e-778d-4312-9002-7f5a0255ba91",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2894847,
+      "start_ticks": "51799180",
+      "execution_handle": "3b363366-cb12-4797-9e5f-57cd6f39a3b9",
+      "pid_namespace": 4026539952,
+      "source_log": "green-native-lost-ack.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3154339,
+      "start_ticks": "51901512",
+      "execution_handle": "95c4d520-9c28-469c-92f7-32fe6cc62b76",
+      "pid_namespace": 4026539641,
+      "source_log": "red-native-disconnect.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3154853,
+      "start_ticks": "51901566",
+      "execution_handle": "d6abaf0d-651a-46b5-975f-2e7545375a43",
+      "pid_namespace": 4026539869,
+      "source_log": "red-native-disconnect.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3154341,
+      "start_ticks": "51901513",
+      "execution_handle": "2aab4477-e330-4af6-8bcb-873cc899d9a8",
+      "pid_namespace": 4026539785,
+      "source_log": "red-native-disconnect.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3136745,
+      "start_ticks": "51885863",
+      "execution_handle": "062893a5-e54d-4539-b9e3-5f7cb4afdad9",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3137202,
+      "start_ticks": "51885917",
+      "execution_handle": "cb207874-8c09-4e6c-87f6-308d11892885",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3136747,
+      "start_ticks": "51885865",
+      "execution_handle": "f889674a-d39d-456f-927d-04341c1e22d8",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3140763,
+      "start_ticks": "51889679",
+      "execution_handle": "dee60cf9-9c64-429e-97ff-a48601c007da",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3141222,
+      "start_ticks": "51889733",
+      "execution_handle": "999f3034-d521-4eee-ae3b-dad5f23b8d68",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3140765,
+      "start_ticks": "51889680",
+      "execution_handle": "f7fbb393-7cdb-4571-9962-93fbb0155798",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3141226,
+      "start_ticks": "51889734",
+      "execution_handle": "6ca64b92-6378-4ead-8f77-2fff14722e76",
+      "pid_namespace": 4026539953,
+      "source_log": "green-native-retirement-fixture-repaired.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2838621,
+      "start_ticks": "51757456",
+      "execution_handle": "858f0876-f145-4cee-becf-ee3b718b01db",
+      "pid_namespace": 4026539641,
+      "source_log": "red-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2839069,
+      "start_ticks": "51757509",
+      "execution_handle": "bff287c0-43e5-406a-809a-823ec776c23f",
+      "pid_namespace": 4026539869,
+      "source_log": "red-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2838623,
+      "start_ticks": "51757457",
+      "execution_handle": "e39a06c3-86e9-4e8c-bcd6-7eacfb12f976",
+      "pid_namespace": 4026539785,
+      "source_log": "red-recovery-tool-effects.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2827418,
+      "start_ticks": "51742874",
+      "execution_handle": "2118d046-ae09-4f0f-875f-5e68700aedf3",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2827938,
+      "start_ticks": "51742928",
+      "execution_handle": "f87a5b9d-2a41-4f65-ae50-cbf7a8ac1a4f",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2827420,
+      "start_ticks": "51742876",
+      "execution_handle": "8d8f03ca-6588-411e-afe1-2840f3bf54fd",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2830704,
+      "start_ticks": "51746565",
+      "execution_handle": "01e3dd51-951c-412c-aef3-58b9a5c9ba49",
+      "pid_namespace": 4026539864,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2831245,
+      "start_ticks": "51746619",
+      "execution_handle": "844d3c6e-c724-4529-a5ab-a243e62281e1",
+      "pid_namespace": 4026539686,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2830706,
+      "start_ticks": "51746567",
+      "execution_handle": "46f34975-4c18-47ca-aa9d-29f383e1af52",
+      "pid_namespace": 4026539946,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 2831251,
+      "start_ticks": "51746621",
+      "execution_handle": "012fa8f0-31eb-4c87-8587-8963c193dadf",
+      "pid_namespace": 4026539787,
+      "source_log": "green-native-recovery-first.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3106442,
+      "start_ticks": "51868636",
+      "execution_handle": "30247140-45d9-41bf-a0ba-dddc3b43f33e",
+      "pid_namespace": 4026539641,
+      "source_log": "green-native-retirement.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3107619,
+      "start_ticks": "51868690",
+      "execution_handle": "12513960-0516-4b57-abc0-d3d8bff21b4e",
+      "pid_namespace": 4026539869,
+      "source_log": "green-native-retirement.log",
+      "state": "already_absent"
+    },
+    {
+      "pid": 3106446,
+      "start_ticks": "51868637",
+      "execution_handle": "b366211e-234c-4a86-a1d5-a57d70ddccc7",
+      "pid_namespace": 4026539785,
+      "source_log": "green-native-retirement.log",
+      "state": "already_absent"
+    }
+  ]
+}

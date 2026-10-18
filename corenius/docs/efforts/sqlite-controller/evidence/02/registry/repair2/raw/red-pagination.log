@@ -1,0 +1,130 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.91s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-5ccbdc162d59f0df)
+
+running 1 test
+exact_native_profile_configs shared {"workers": {"root": "/tmp/cnr-3ymxyuu6/workers", "profile": {"executable": "/usr/bin/python3", "args": ["/run/codex/launcher.py"], "codex": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "config": {"path": "/tmp/cnr-3ymxyuu6/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"}, "kind": "exec", "transport_root": "/tmp/cnr-3ymxyuu6/t-exec"}}}, "controlplanes": {"root": "/tmp/cnr-3ymxyuu6/controlplanes", "profile": {"executable": "/usr/bin/python3", "args": ["/run/codex/launcher.py"], "codex": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "config": {"path": "/tmp/cnr-3ymxyuu6/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"}, "kind": "app", "transport_root": "/tmp/cnr-3ymxyuu6/t-app", "provider_socket": "/tmp/cnr-3ymxyuu6/provider.sock", "executor_root": "/tmp/cnr-3ymxyuu6/t-exec", "own_executor_only": false}}}, "controller": {"schema_migration": "1-to-2", "topology": "shared", "transport_root": "/tmp/cnr-3ymxyuu6/t-app", "servers": [{"id": "native", "supervisor_socket": "/tmp/cnr-3ymxyuu6/controlplanes.sock", "auth_ref": "CONTROLPLANE_SECRET", "transport_root": "/tmp/cnr-3ymxyuu6/t-app", "worker_supervisor_socket": "/tmp/cnr-3ymxyuu6/workers.sock", "worker_auth_ref": "CORENIUS_SUPERVISOR_TOKEN", "worker_transport_root": "/tmp/cnr-3ymxyuu6/t-exec", "schema_digest": "e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455"}]}, "native_config_toml": "model_catalog_json = \"/run/codex/catalog.json\"\n# Static readiness example; port/model are illustrative, not a live run selection.\nmodel = \"gpt-6-sol\"\nmodel_provider = \"corenius-relay\"\nweb_search = \"disabled\"\n\n[model_providers.corenius-relay]\nname = \"Corenius private provider relay\"\nbase_url = \"http://127.0.0.1:8777/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = false\nsupports_websockets = false\nsupports_standalone_web_search = false\nrequest_max_retries = 0\nstream_max_retries = 0\nstream_idle_timeout_ms = 30000\n# No upstream env_key, bearer token, auth helper, or auth.json inside the attempt.\n# Optional env_key may name an attempt-scoped RELAY_GRANT, never an upstream token.\n\n[analytics]\nenabled = false\n[feedback]\nenabled = false\n[otel]\nexporter = \"none\"\ntrace_exporter = \"none\"\nmetrics_exporter = \"none\"\nlog_user_prompt = false\n[memories]\ngenerate_memories = false\nuse_memories = false\n[features]\napps = false\nplugins = false\nremote_plugin = false\nplugin_sharing = false\nrecommended_plugins = false\nhooks = false\nmemories = false\nexternal_agent_memory_import = false\nmulti_agent = false\nmulti_agent_v2 = false\nbrowser_use = false\nbrowser_use_external = false\nbrowser_use_full_cdp_access = false\ncomputer_use = false\nin_app_browser = false\nimage_generation = false\nrealtime_conversation = false\nstandalone_web_search = false\ncode_mode = true\ncode_mode_host = true\ndaemon_auto_start = false\nenable_request_compression = false\nunbounded_connection_retries = false\nsystem_proxy_fallback = false\nrespect_system_proxy = false\n\n[tui]\nscreen_reader_detection_done = true\n"}
+owned_fixture_namespaces [{"pid": 837405, "start_ticks": "52926659", "execution_handle": "e12ff2d9-4aac-4266-b8be-68c1d4788921", "pid_namespace": 4026539641, "terminated_after_service_cleanup": false, "fixture_cleanup_signalled": true, "whole_process_terminated": true}, {"pid": 837407, "start_ticks": "52926661", "execution_handle": "4b7668ab-b06b-417c-92f8-138f359c8dc7", "pid_namespace": 4026539785, "terminated_after_service_cleanup": true, "fixture_cleanup_signalled": false, "whole_process_terminated": true}, {"pid": 837863, "start_ticks": "52926713", "execution_handle": "3fd6ed62-2726-43d5-96aa-ea89d0a21c27", "pid_namespace": 4026539869, "terminated_after_service_cleanup": true, "fixture_cleanup_signalled": false, "whole_process_terminated": true}]
+owned_fixture_resources [{"name": "workers", "pid": 836718, "start_stat": "836718 (corenius-attemp) R 836709 836056 836056 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 52925005 2113536 1 18446744073709551615 93905971583328 93905972773360 140733862905776 0 0 0 0 0 0 0 0 0 17 91 0 0 0 0 0 93905972844456 93905972846992 93905998524416 140733862911542 140733862911731 140733862911731 140733862911865 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-3ymxyuu6/workers.json", "/tmp/cnr-3ymxyuu6/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 837053, "start_stat": "837053 (corenius-attemp) R 836709 836056 836056 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 52925811 2113536 1 18446744073709551615 94891675330912 94891676520944 140722055958800 0 0 0 0 0 0 0 0 0 17 85 0 0 0 0 0 94891676592040 94891676594576 94891708174336 140722055966246 140722055966447 140722055966447 140722055966585 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-3ymxyuu6/controlplanes.json", "/tmp/cnr-3ymxyuu6/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 837401, "start_stat": "837401 (corenius-sqlite) R 836709 836056 836056 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 52926632 4722688 1 18446744073709551615 93975430282528 93975433565536 140728322604544 0 0 0 0 0 0 0 0 0 17 198 0 0 0 0 0 93975433693600 93975433718080 93975436505088 140728322608109 140728322608296 140728322608296 140728322609018 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-3ymxyuu6/state.db", "/tmp/cnr-3ymxyuu6/controller.sock"], "exit": -9}]
+owned_log controller.stderr native reconcile 98c4e9e5-585f-4cf1-a5c8-b14e52dd4701: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 73413225-271b-48b3-a8bb-b85050985129: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 98c4e9e5-585f-4cf1-a5c8-b14e52dd4701: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 73413225-271b-48b3-a8bb-b85050985129: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 98c4e9e5-585f-4cf1-a5c8-b14e52dd4701: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 73413225-271b-48b3-a8bb-b85050985129: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 98c4e9e5-585f-4cf1-a5c8-b14e52dd4701: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 73413225-271b-48b3-a8bb-b85050985129: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 98c4e9e5-585f-4cf1-a5c8-b14e52dd4701: remote executor not ready: {"status":"pending"}
+native reconcile 73413225-271b-48b3-a8bb-b85050985129: remote executor not ready: {"status":"pending"}
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "52926743", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52926690", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52926690", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+test repair2_empty_thread_after_first_loaded_page_recovers has been running for over 60 seconds
+exact_native_profile_configs separate {"workers": {"root": "/tmp/cnr-9zqnunjc/workers", "profile": {"executable": "/usr/bin/python3", "args": ["/run/codex/launcher.py"], "codex": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "config": {"path": "/tmp/cnr-9zqnunjc/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"}, "kind": "exec", "transport_root": "/tmp/cnr-9zqnunjc/t-exec"}}}, "controlplanes": {"root": "/tmp/cnr-9zqnunjc/controlplanes", "profile": {"executable": "/usr/bin/python3", "args": ["/run/codex/launcher.py"], "codex": {"binary": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex", "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"}, "companion": {"path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host", "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"}, "catalog": {"path": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json", "sha256": "262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6"}, "config": {"path": "/tmp/cnr-9zqnunjc/runtime.toml", "sha256": "4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660"}, "launcher": {"path": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py", "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"}, "kind": "app", "transport_root": "/tmp/cnr-9zqnunjc/t-app", "provider_socket": "/tmp/cnr-9zqnunjc/provider.sock", "executor_root": "/tmp/cnr-9zqnunjc/t-exec", "own_executor_only": true}}}, "controller": {"schema_migration": "1-to-2", "topology": "separate", "transport_root": "/tmp/cnr-9zqnunjc/t-app", "servers": [{"id": "native", "supervisor_socket": "/tmp/cnr-9zqnunjc/controlplanes.sock", "auth_ref": "CONTROLPLANE_SECRET", "transport_root": "/tmp/cnr-9zqnunjc/t-app", "worker_supervisor_socket": "/tmp/cnr-9zqnunjc/workers.sock", "worker_auth_ref": "CORENIUS_SUPERVISOR_TOKEN", "worker_transport_root": "/tmp/cnr-9zqnunjc/t-exec", "schema_digest": "e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455"}]}, "native_config_toml": "model_catalog_json = \"/run/codex/catalog.json\"\n# Static readiness example; port/model are illustrative, not a live run selection.\nmodel = \"gpt-6-sol\"\nmodel_provider = \"corenius-relay\"\nweb_search = \"disabled\"\n\n[model_providers.corenius-relay]\nname = \"Corenius private provider relay\"\nbase_url = \"http://127.0.0.1:8777/v1\"\nwire_api = \"responses\"\nrequires_openai_auth = false\nsupports_websockets = false\nsupports_standalone_web_search = false\nrequest_max_retries = 0\nstream_max_retries = 0\nstream_idle_timeout_ms = 30000\n# No upstream env_key, bearer token, auth helper, or auth.json inside the attempt.\n# Optional env_key may name an attempt-scoped RELAY_GRANT, never an upstream token.\n\n[analytics]\nenabled = false\n[feedback]\nenabled = false\n[otel]\nexporter = \"none\"\ntrace_exporter = \"none\"\nmetrics_exporter = \"none\"\nlog_user_prompt = false\n[memories]\ngenerate_memories = false\nuse_memories = false\n[features]\napps = false\nplugins = false\nremote_plugin = false\nplugin_sharing = false\nrecommended_plugins = false\nhooks = false\nmemories = false\nexternal_agent_memory_import = false\nmulti_agent = false\nmulti_agent_v2 = false\nbrowser_use = false\nbrowser_use_external = false\nbrowser_use_full_cdp_access = false\ncomputer_use = false\nin_app_browser = false\nimage_generation = false\nrealtime_conversation = false\nstandalone_web_search = false\ncode_mode = true\ncode_mode_host = true\ndaemon_auto_start = false\nenable_request_compression = false\nunbounded_connection_retries = false\nsystem_proxy_fallback = false\nrespect_system_proxy = false\n\n[tui]\nscreen_reader_detection_done = true\n"}
+owned_fixture_namespaces [{"pid": 851420, "start_ticks": "52932002", "execution_handle": "21a3e7b5-7949-4db7-ab69-1549975a05dc", "pid_namespace": 4026539686, "terminated_after_service_cleanup": false, "fixture_cleanup_signalled": true, "whole_process_terminated": true}, {"pid": 851423, "start_ticks": "52932003", "execution_handle": "53ead298-7af9-4e71-b19e-f9c334b5cf60", "pid_namespace": 4026539786, "terminated_after_service_cleanup": false, "fixture_cleanup_signalled": true, "whole_process_terminated": true}, {"pid": 851953, "start_ticks": "52932056", "execution_handle": "a113701d-55cd-4b71-baff-3a1b71fb7bd1", "pid_namespace": 4026539870, "terminated_after_service_cleanup": false, "fixture_cleanup_signalled": true, "whole_process_terminated": true}, {"pid": 851955, "start_ticks": "52932057", "execution_handle": "747e7fad-da91-4ce3-9be4-806e306ace7f", "pid_namespace": 4026540036, "terminated_after_service_cleanup": true, "fixture_cleanup_signalled": false, "whole_process_terminated": true}]
+owned_fixture_resources [{"name": "workers", "pid": 849874, "start_stat": "849874 (corenius-attemp) R 849502 836056 836056 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 52930367 2113536 1 18446744073709551615 94923742447968 94923743638000 140734594441520 0 0 0 0 0 0 0 0 0 17 196 0 0 0 0 0 94923743709096 94923743711632 94923763232768 140734594448950 140734594449139 140734594449139 140734594449273 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-9zqnunjc/workers.json", "/tmp/cnr-9zqnunjc/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 851100, "start_stat": "851100 (corenius-attemp) R 849502 836056 836056 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 52931173 2113536 1 18446744073709551615 93854811253088 93854812443120 140729797854656 0 0 0 0 0 0 0 0 0 17 199 0 0 0 0 0 93854812514216 93854812516752 93854845087744 140729797860902 140729797861103 140729797861103 140729797861241 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-9zqnunjc/controlplanes.json", "/tmp/cnr-9zqnunjc/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 851413, "start_stat": "851413 (corenius-sqlite) R 849502 836056 836056 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 52931975 4722688 1 18446744073709551615 94165056564512 94165059847520 140724513357008 0 0 0 0 0 0 0 0 0 17 195 0 0 0 0 0 94165059975584 94165060000064 94165067685888 140724513364973 140724513365160 140724513365160 140724513365882 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-9zqnunjc/state.db", "/tmp/cnr-9zqnunjc/controller.sock"], "exit": -9}]
+owned_log controller.stderr native reconcile a9883d71-287a-4009-9ed9-92b4935df1b1: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c26de556-3cba-4f19-b6e6-5ac68ca87f99: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile a9883d71-287a-4009-9ed9-92b4935df1b1: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c26de556-3cba-4f19-b6e6-5ac68ca87f99: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile a9883d71-287a-4009-9ed9-92b4935df1b1: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c26de556-3cba-4f19-b6e6-5ac68ca87f99: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile a9883d71-287a-4009-9ed9-92b4935df1b1: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile c26de556-3cba-4f19-b6e6-5ac68ca87f99: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile a9883d71-287a-4009-9ed9-92b4935df1b1: remote executor not ready: {"status":"pending"}
+native reconcile c26de556-3cba-4f19-b6e6-5ac68ca87f99: remote executor not ready: {"status":"pending"}
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "52932086", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "52932086", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52932033", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52932033", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+
+thread 'repair2_empty_thread_after_first_loaded_page_recovers' (836708) panicked at tests/codex.rs:231:5:
+shared: Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 511, in <module>
+    for topology in os.environ.get('CORENIUS_TEST_TOPOLOGY','shared,separate').split(','):run(topology)
+                                                                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 203, in run
+    try:registry=wait(bound,30)
+                 ^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 26, in wait
+    result=predicate()
+           ^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 194, in bound
+    try:registry=query('codex_registry')
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 120, in query
+    value=request(r/'controller.sock',{'auth':auth,'project':'p','query':{'kind':kind,'args':{}}});assert 'ok' in value,value
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 15, in request
+    s.settimeout(35);s.connect(str(path));s.sendall(json.dumps(value).encode()+b'\n');return json.loads(s.makefile('rb').readline())
+                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+separate: Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 511, in <module>
+    for topology in os.environ.get('CORENIUS_TEST_TOPOLOGY','shared,separate').split(','):run(topology)
+                                                                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 203, in run
+    try:registry=wait(bound,30)
+                 ^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 26, in wait
+    result=predicate()
+           ^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 194, in bound
+    try:registry=query('codex_registry')
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 120, in query
+    value=request(r/'controller.sock',{'auth':auth,'project':'p','query':{'kind':kind,'args':{}}});assert 'ok' in value,value
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 15, in request
+    s.settimeout(35);s.connect(str(path));s.sendall(json.dumps(value).encode()+b'\n');return json.loads(s.makefile('rb').readline())
+                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair2_empty_thread_after_first_loaded_page_recovers ... FAILED
+
+failures:
+
+failures:
+    repair2_empty_thread_after_first_loaded_page_recovers
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 19 filtered out; finished in 107.25s
+
+error: test failed, to rerun pass `--test codex`

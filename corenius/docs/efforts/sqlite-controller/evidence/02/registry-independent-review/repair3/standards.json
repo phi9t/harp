@@ -1,0 +1,56 @@
+{
+  "axis": "Standards",
+  "verdict": "PASS",
+  "base": "cc774921be6e8e00b8de54942b56fa0fee01d56d",
+  "source": "8d05117a5d7be0793e37667bd0a245073305e757",
+  "crate_tree": "9ecb1686cfa424fd1f6e31a4c38ce1e25e8924b4",
+  "scope": "Two branch641/Spec fixes and important fix-delta regressions only",
+  "blocking_findings": [],
+  "documented_standard_breaches": [],
+  "baseline_smells": [],
+  "addressed": [
+    {
+      "requirement": "Activate only exact qualified confirmed adopted thread before recovered first-turn RPCs",
+      "path": "crates/sqlite-controller/src/codex.rs",
+      "line": 1574,
+      "standards_assessment": "Addressed; existing bounded receive identity filter remains intact"
+    },
+    {
+      "requirement": "Preserve confirmed terminal receipt and later failed observation separately; independently qualify single logical pending native cleanup retry",
+      "path": "crates/sqlite-controller/src/codex.rs",
+      "line": 291,
+      "related_line": 444,
+      "standards_assessment": "Addressed; unresolved identity changes do not silently retire pending native effect"
+    }
+  ],
+  "unaddressed_standards_findings": [],
+  "standards": [
+    "CONSTITUTION.md sections1,4,5",
+    "AGENTS.md one-writer/read-only review boundaries",
+    "docs/agents/agentic-engineering.md gated step6 and retained evidence",
+    "code-review complete smell baseline; tooling issues excluded"
+  ],
+  "evidence": {
+    "adoption": "red-adoption-status.log genuine missing actual delivered frames; green-adoption.log passes both modes; earlier user-message oracle failures uncredited",
+    "cleanup": "red-cleanup.log genuine terminal overwrite failure; green-cleanup.log pass; red-cleanup-retained-error.log genuinely exposes erased separate failure observation",
+    "combined": "green-combined.log4 passed0 failed123.03s; contemporaneous command record exit0/124.16s; both topologies and both changed-qualification controls",
+    "hashes": "Seven25-file source inventories match archive bytes; gate inventory matches frozen8d; only combined-to-frozen product change caches serialized intent value without behavior change",
+    "resources": "Six inspected focused logs namespace counts7/7/7/7/7/28 all terminated; service counts8/8/6/6/6/28 all terminal exits",
+    "final_static_checks": "Final prefreeze fmt and strict all-targets fault-injection Clippy command records exit0/source unchanged"
+  },
+  "qualification": {
+    "status": "PENDING",
+    "author_full68_gate": "pending per coordinator",
+    "root_full68_gate": "pending per coordinator",
+    "final_evidence_handoff": "pending; handoff.md absent during inspection",
+    "distinction": "Standards code-review PASS does not imply exact full-gate qualification or acceptance"
+  },
+  "limits": [
+    "No tests executed by reviewer",
+    "No checkout writes",
+    "Prior unchanged fixes and parkedP3 not reopened",
+    "Spec axis separate",
+    "Receipt discard/read observation loss feature-gated and explicitly classified",
+    "Actual model-free protocol proof only, no live/paid/downstream gateway/TUI qualification"
+  ]
+}

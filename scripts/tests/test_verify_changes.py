@@ -53,6 +53,13 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual({j["surface"] for j in self.selected()["checks"]}, {"diff", "docs"})
 
+    def test_corenius_import_selects_its_preservation_gate(self):
+        self.write("corenius/controller/src/lib.rs", "// retained upstream source\n")
+        self.write("corenius/docs/historical.md", "[Historical locator](missing-at-capture.md)\n")
+        jobs = self.selected()["checks"]
+        self.assertEqual({j["surface"] for j in jobs}, {"diff", "corenius-import"})
+        self.assertIn(["python3", "scripts/verify_corenius_import.py"], [j["command"] for j in jobs])
+
     def test_staged_untracked_and_both_rename_surfaces_are_selected(self):
         (self.root / "atlas").mkdir()
         self.git("mv", "AGENTS.md", "atlas/renamed.md")

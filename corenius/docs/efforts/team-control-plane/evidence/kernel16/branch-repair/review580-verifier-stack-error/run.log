@@ -1,0 +1,12 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review580-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.04s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 2 tests
+
+thread 'review580_recovered_real_verifier_cannot_verify_or_accept_exact_candidate' (3903951) has overflowed its stack
+fatal runtime error: stack overflow, aborting
+error: test failed, to rerun pass `--test assembled_vertical`
+
+Caused by:
+  process didn't exit successfully: `/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66 review580 --nocapture` (signal: 6, SIGABRT: process abort signal)

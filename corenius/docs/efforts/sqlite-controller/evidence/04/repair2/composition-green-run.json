@@ -1,0 +1,27 @@
+{
+  "name": "composition-green",
+  "source": "7d8daaebb6b63bc5aedde5111fa594750f4f134b",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--features",
+    "fault-injection",
+    "--test",
+    "git",
+    "--",
+    "--nocapture",
+    "--test-threads=2"
+  ],
+  "started": "2026-10-04T18:23:29.868922+00:00",
+  "ended": "2026-10-04T18:23:38.899861+00:00",
+  "elapsed_seconds": 9.03092565794941,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair2/composition-green.log",
+  "environment": {
+    "CORENIUS_TEST_GIT_MODES": "accepted-verification"
+  }
+}

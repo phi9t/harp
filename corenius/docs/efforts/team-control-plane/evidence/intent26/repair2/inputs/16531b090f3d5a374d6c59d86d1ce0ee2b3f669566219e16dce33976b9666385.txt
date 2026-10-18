@@ -1,0 +1,1698 @@
+{
+  "schema_version": 1,
+  "axis": "Standards",
+  "status": "PASS",
+  "blocking_findings": [],
+  "nonblocking_heuristics": [
+    {
+      "name": "possible Data Clumps",
+      "new_finding": false,
+      "status": "retained_nonblocking_prior_heuristic",
+      "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "line": 14,
+      "quote": "current: &(String, String, IntentRevision)",
+      "disposition": "No unrelated refactoring under the bounded repair decision."
+    }
+  ],
+  "candidate_accepted": false,
+  "ticket_resolved": false,
+  "review_mode": "independent clean-context static/hash review; no resource launches or candidate mutation",
+  "reviewed_utc": "2026-10-03T20:26:32.311897+00:00",
+  "report": {
+    "path": "/tmp/corenius-intent26-repair1-standards-review-20261003/report.md",
+    "sha256": "d7eefac6660c8ccaacd723cba4e5c3e6a5523f4595dc53147589d738bfe8710f",
+    "bytes": 2684,
+    "words": 319
+  },
+  "bindings_and_static_checks": {
+    "named_artifacts": [
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/author-freeze.json",
+        "sha256": "d565a4e32d8f472bcd65876ee78c3744268fae5945fd74dad76bf5a54c3bf507",
+        "bytes": 68539,
+        "expected_sha256": "d565a4e32d8f472bcd65876ee78c3744268fae5945fd74dad76bf5a54c3bf507"
+      },
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/source-manifest.json",
+        "sha256": "b2afcbf12715a918a6fe39e52af1162212e73543f90df19c7040c9a7accce1fb",
+        "bytes": 24545,
+        "expected_sha256": "b2afcbf12715a918a6fe39e52af1162212e73543f90df19c7040c9a7accce1fb"
+      },
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/source.patch",
+        "sha256": "82b8a5bf3159a1dc890023526110a413d66cee1de781e50a89e3f89cb9a56cbc",
+        "bytes": 155006,
+        "expected_sha256": "82b8a5bf3159a1dc890023526110a413d66cee1de781e50a89e3f89cb9a56cbc"
+      },
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/repair.patch",
+        "sha256": "762018f6ec8a93a6d80b36f7c8b3b3d49e90155326731303acf0c06802fa2555",
+        "bytes": 40843,
+        "expected_sha256": "762018f6ec8a93a6d80b36f7c8b3b3d49e90155326731303acf0c06802fa2555"
+      },
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/public-proof-index.json",
+        "sha256": "e8333fb27a0c33cace7958b243a629da66301d76a3835d24d1c3067bdeed9217",
+        "bytes": 16433,
+        "expected_sha256": "e8333fb27a0c33cace7958b243a629da66301d76a3835d24d1c3067bdeed9217"
+      },
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/report.md",
+        "sha256": "a273996d8b8f8de80e36dd04201f925d166d176cd79642c8015882819dd04926",
+        "bytes": 6796,
+        "expected_sha256": "a273996d8b8f8de80e36dd04201f925d166d176cd79642c8015882819dd04926"
+      }
+    ],
+    "selected_records_verified": 268,
+    "root_retained_records_verified": 269,
+    "root_retention_file": {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair1/root-retention-and-disposition.json",
+      "sha256": "6cab1dc3e218951acf21e0119414b616d3a4d7c33d7e4b55a57c77fe9a760c52",
+      "active_source_integrated": false,
+      "accepted": false
+    },
+    "git": {
+      "head": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+      "branch": "codex-intent26/contracts",
+      "base": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+      "commits": []
+    },
+    "sources": [
+      {
+        "base_preimage": {
+          "bytes": 15041,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109.txt",
+          "sha256": "eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109"
+        },
+        "bytes": 19342,
+        "path": "crates/team-control-plane/README.md",
+        "round0_preimage": {
+          "bytes": 18433,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/README.md",
+          "sha256": "2f661392cb45f26f56a9c233f1387ccd64e275b9ba272f2114454035f2a17cc3"
+        },
+        "sha256": "b89ff1641517bb430ba56fe499863f8fbe552a211a2d063cf004389ad71ff13b"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 7639,
+        "path": "crates/team-control-plane/migrations/0008.sql",
+        "round0_preimage": {
+          "bytes": 7639,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/migrations/0008.sql",
+          "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+        },
+        "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+      },
+      {
+        "base_preimage": {
+          "bytes": 19619,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c.txt",
+          "sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+        },
+        "bytes": 19683,
+        "path": "crates/team-control-plane/src/admission.rs",
+        "round0_preimage": {
+          "bytes": 19683,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/admission.rs",
+          "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+        },
+        "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+      },
+      {
+        "base_preimage": {
+          "bytes": 52941,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57.txt",
+          "sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+        },
+        "bytes": 53193,
+        "path": "crates/team-control-plane/src/artifacts.rs",
+        "round0_preimage": {
+          "bytes": 52963,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/artifacts.rs",
+          "sha256": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22"
+        },
+        "sha256": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 22926,
+        "path": "crates/team-control-plane/src/contracts.rs",
+        "round0_preimage": {
+          "bytes": 22518,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/contracts.rs",
+          "sha256": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5"
+        },
+        "sha256": "fcec3f66c303af44a5e336f5e062bf4ba6a4d8f95e494425a437401b54c2d0ed"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 8307,
+        "path": "crates/team-control-plane/src/contracts/authority.rs",
+        "round0_preimage": {
+          "bytes": 7984,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/contracts/authority.rs",
+          "sha256": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c"
+        },
+        "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 6863,
+        "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+        "round0_preimage": {
+          "bytes": 6003,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/contracts/dependencies.rs",
+          "sha256": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3"
+        },
+        "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 18122,
+        "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+        "round0_preimage": {
+          "bytes": 17662,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/contracts/outcomes.rs",
+          "sha256": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918"
+        },
+        "sha256": "8eb1271946fd78c432d8ea5e6f82d73613ecaf45c75acfbc0e0be86663d442ef"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 6716,
+        "path": "crates/team-control-plane/src/contracts/strategy.rs",
+        "round0_preimage": {
+          "bytes": 6716,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs",
+          "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+        },
+        "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+      },
+      {
+        "base_preimage": {
+          "bytes": 3760,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966.txt",
+          "sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+        },
+        "bytes": 3781,
+        "path": "crates/team-control-plane/src/domain.rs",
+        "round0_preimage": {
+          "bytes": 3781,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/domain.rs",
+          "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+        },
+        "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+      },
+      {
+        "base_preimage": {
+          "bytes": 42667,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a.txt",
+          "sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        "bytes": 42809,
+        "path": "crates/team-control-plane/src/episode_runtime.rs",
+        "round0_preimage": {
+          "bytes": 42667,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a.txt",
+          "sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+        },
+        "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+      },
+      {
+        "base_preimage": {
+          "bytes": 36901,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1.txt",
+          "sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+        },
+        "bytes": 37187,
+        "path": "crates/team-control-plane/src/gateway.rs",
+        "round0_preimage": {
+          "bytes": 37187,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/gateway.rs",
+          "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+        },
+        "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+      },
+      {
+        "base_preimage": {
+          "bytes": 9410,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92.txt",
+          "sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92"
+        },
+        "bytes": 10472,
+        "path": "crates/team-control-plane/src/http.rs",
+        "round0_preimage": {
+          "bytes": 10472,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/http.rs",
+          "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+        },
+        "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+      },
+      {
+        "base_preimage": {
+          "bytes": 367,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa.txt",
+          "sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa"
+        },
+        "bytes": 386,
+        "path": "crates/team-control-plane/src/lib.rs",
+        "round0_preimage": {
+          "bytes": 386,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/lib.rs",
+          "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+        },
+        "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+      },
+      {
+        "base_preimage": {
+          "bytes": 104201,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a.txt",
+          "sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+        },
+        "bytes": 104271,
+        "path": "crates/team-control-plane/src/mailbox.rs",
+        "round0_preimage": {
+          "bytes": 104271,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/mailbox.rs",
+          "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+        },
+        "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+      },
+      {
+        "base_preimage": {
+          "bytes": 16071,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68.txt",
+          "sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68"
+        },
+        "bytes": 16160,
+        "path": "crates/team-control-plane/src/storage.rs",
+        "round0_preimage": {
+          "bytes": 16160,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/storage.rs",
+          "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+        },
+        "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+      },
+      {
+        "base_preimage": {
+          "bytes": 125877,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3.txt",
+          "sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+        },
+        "bytes": 126040,
+        "path": "crates/team-control-plane/src/supervisor.rs",
+        "round0_preimage": {
+          "bytes": 126040,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/src/supervisor.rs",
+          "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+        },
+        "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+      },
+      {
+        "base_preimage": null,
+        "bytes": 64891,
+        "path": "crates/team-control-plane/tests/intent_contracts.rs",
+        "round0_preimage": {
+          "bytes": 43563,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/round0/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs",
+          "sha256": "7b3226287f174dffc85054cc6e6b21841d1c4ee3fb24af7ed18dbf19583c1b4b"
+        },
+        "sha256": "c4f2370982996de90198eec5d247a83d1f1760fcb92282d18708222eb84f697f"
+      }
+    ],
+    "patches": {
+      "source_files_reconstructed": 18,
+      "repair_files_reconstructed": 8,
+      "mode": "strict in-memory application"
+    },
+    "canonical_inputs": [
+      {
+        "archive": {
+          "bytes": 3080,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9.txt",
+          "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "AGENTS.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 3484,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097.txt",
+          "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "CONSTITUTION.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 2816,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173.txt",
+          "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "CONTEXT.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 9722,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926.txt",
+          "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/agents/agentic-engineering.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 2045,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99.txt",
+          "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/agents/domain.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 9818,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0.txt",
+          "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/agents/skill-orchestration.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 33123,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c.txt",
+          "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/efforts/team-control-plane/SPEC.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 17345,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924.txt",
+          "sha256": "93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/efforts/team-control-plane/PLAN.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 21340,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c.txt",
+          "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/efforts/team-control-plane/v02-reconciliation.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 3534,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513.txt",
+          "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513"
+        },
+        "authority": "canonical_repository_input",
+        "origin": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 6970,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4.txt",
+          "sha256": "b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4"
+        },
+        "authority": "session_micro_plan",
+        "origin": ".scratch/team-control-plane/ticket26/micro-plan.md",
+        "root_origin_exists": false,
+        "root_origin_matches": false
+      },
+      {
+        "archive": {
+          "bytes": 1912,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989.txt",
+          "sha256": "70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989"
+        },
+        "authority": "prior_design_gate",
+        "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/conformance.json",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 2302,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655.txt",
+          "sha256": "37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655"
+        },
+        "authority": "prior_design_gate",
+        "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/final-contract-inputs.json",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 2660,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d.txt",
+          "sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d"
+        },
+        "authority": "prior_design_gate",
+        "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/revised-report.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      },
+      {
+        "archive": {
+          "bytes": 2253,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349.txt",
+          "sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349"
+        },
+        "authority": "prior_design_gate",
+        "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/spec/report.md",
+        "root_origin_exists": true,
+        "root_origin_matches": true
+      }
+    ],
+    "repair_inputs": [
+      {
+        "archive": "docs/efforts/team-control-plane/evidence/intent26/repair1/inputs/38ddddd9a47869f0672fc931805b48d1e3d6d52cac805ed31cd84b019ed11ea9.txt",
+        "origin": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-review1-repair.md",
+        "sha256": "38ddddd9a47869f0672fc931805b48d1e3d6d52cac805ed31cd84b019ed11ea9"
+      },
+      {
+        "archive": "docs/efforts/team-control-plane/evidence/intent26/repair1/inputs/a5d59f1fcbc31b8089034d73fad7236aeec1445132c952954c722aaef926e312.txt",
+        "origin": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/round0/reviews/spec-report.md",
+        "sha256": "a5d59f1fcbc31b8089034d73fad7236aeec1445132c952954c722aaef926e312"
+      },
+      {
+        "archive": "docs/efforts/team-control-plane/evidence/intent26/repair1/inputs/0332e5526bd8849918da339c11d643f204c4bde487b6e8ee1d65028eeae1051c.txt",
+        "origin": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/round0/reviews/spec-metadata.json",
+        "sha256": "0332e5526bd8849918da339c11d643f204c4bde487b6e8ee1d65028eeae1051c"
+      },
+      {
+        "archive": "docs/efforts/team-control-plane/evidence/intent26/repair1/inputs/8aa76c1263456bdfdc5063f0c086477df9532c3cd83b8674a410adb0c7cd7b5f.txt",
+        "origin": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/round0/reviews/standards-report.md",
+        "sha256": "8aa76c1263456bdfdc5063f0c086477df9532c3cd83b8674a410adb0c7cd7b5f"
+      },
+      {
+        "archive": "docs/efforts/team-control-plane/evidence/intent26/repair1/inputs/28a67f7678c1d1d8fe831f0507f6ab9438c3a8b41ba47ea0fc6ebaf1f8287193.txt",
+        "origin": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/round0/reviews/standards-citation-errata.json",
+        "sha256": "28a67f7678c1d1d8fe831f0507f6ab9438c3a8b41ba47ea0fc6ebaf1f8287193"
+      },
+      {
+        "archive": "docs/efforts/team-control-plane/evidence/intent26/repair1/inputs/e7ac3d6b2a20b3e7e6d0b19e3a29c50c559446f9302090d25d06a47717da1e1b.txt",
+        "origin": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/round0/reviews/standards-metadata.json",
+        "sha256": "e7ac3d6b2a20b3e7e6d0b19e3a29c50c559446f9302090d25d06a47717da1e1b"
+      }
+    ],
+    "round0_archives_verified": 76,
+    "retained-red1-fixture.json": {
+      "records": 59,
+      "cleanup": {
+        "test": "assertion unwind bypassed Fixture.finish",
+        "postgres": "existing runner EXIT cleanup trap after cargo101; distinct from filesystem cleanup",
+        "physical": "this regression allocates Ready work and prepares receipts; never dispatches or launches a runtime; original fixture files remain retained"
+      },
+      "original_files_rehashed": false
+    },
+    "retained-red2-fixture.json": {
+      "records": 72,
+      "cleanup": {
+        "process": "test runner returned101",
+        "postgres": "existing run-postgres.sh EXIT cleanup trap ran after cargo101; no Fixture.finish assertion follows the failed test",
+        "fixture_finish": "bypassed by assertion unwind; original owned temp paths remain retained",
+        "physical_verifier": "already measured exit0 and namespace_stopped=true before failed legacy Accept assertion; no additional physical probe performed"
+      },
+      "original_files_rehashed": false
+    },
+    "runs": [
+      {
+        "name": "red-episode-start-after-suspension",
+        "classification": "test_setup_compile_failure",
+        "exit_code": 101,
+        "archive": {
+          "bytes": 671,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-episode-start-after-suspension.log.txt",
+          "sha256": "2c2bd538bf278d14879bcd4aaf0080f946ba6bbc202df6618321f977bc8ae6f4"
+        },
+        "summaries": [],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "d91ff3671a5e360c75d3177e46ed1ceb9048621b70c10fa5930cbfc1ea29f17d",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "red-episode-start-after-suspension-2",
+        "classification": "test_setup_existing_episode_fence",
+        "exit_code": 101,
+        "archive": {
+          "bytes": 5837,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-episode-start-after-suspension-2.log.txt",
+          "sha256": "e5ba01c2c49292cadda08238b32ca248751a695598d0191be9e8517373bbff92"
+        },
+        "summaries": [
+          {
+            "result": "FAILED",
+            "passed": 0,
+            "failed": 1
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "ac40bf3736db8a18e37056628f4cd6487fb42ed36807cd7c4d4d975112c4df9c",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "red-episode-start-after-suspension-3",
+        "classification": "behavioral_red",
+        "exit_code": 101,
+        "archive": {
+          "bytes": 6927,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-episode-start-after-suspension-3.log.txt",
+          "sha256": "653e188bfadab316e16c01f7a4a2fa1ea940913827ca052374270a1dc20c243b"
+        },
+        "summaries": [
+          {
+            "result": "FAILED",
+            "passed": 0,
+            "failed": 1
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "a9ff1ed2c544961723b29866e293d1561f24725d14ed3322715ff470e172cd04",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "green-episode-start-after-suspension",
+        "classification": "green",
+        "exit_code": 0,
+        "archive": {
+          "bytes": 12101,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-episode-start-after-suspension.log.txt",
+          "sha256": "201cbf8df4cdf34a24065f09f7fc81d9c60c68ddac03e96606b7e104e609be7a"
+        },
+        "summaries": [
+          {
+            "result": "ok",
+            "passed": 2,
+            "failed": 0
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "supersession",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "a9ff1ed2c544961723b29866e293d1561f24725d14ed3322715ff470e172cd04",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "red-mapped-legacy-accept",
+        "classification": "behavioral_red",
+        "exit_code": 101,
+        "archive": {
+          "bytes": 4759,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-mapped-legacy-accept.log.txt",
+          "sha256": "9a0efa1aa2d68ff50e078bd0ebb33e864cc14a01406d2ade9a1b424ae94a5bb2"
+        },
+        "summaries": [
+          {
+            "result": "FAILED",
+            "passed": 0,
+            "failed": 1
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "361813565011bbad869d969b23a8f82db9c274c3df2845a838c7f31c28487c22",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "a4476ebcf0c48d34eee6ea873605f62326fb351c3ad45aa105066a51dd8740f5",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "f10f876a792c4b752244caf472d8427171a7a83a11a892db66313989fbac6119",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "green-mapped-and-historical-acceptance",
+        "classification": "green",
+        "exit_code": 0,
+        "archive": {
+          "bytes": 36945,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-mapped-and-historical-acceptance.log.txt",
+          "sha256": "6214839b91ae542a0c30fd0b90896c7a1c3ef564cda62607b7046e0a1030383b"
+        },
+        "summaries": [
+          {
+            "result": "ok",
+            "passed": 11,
+            "failed": 0
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "f10f876a792c4b752244caf472d8427171a7a83a11a892db66313989fbac6119",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "red-delegated-prerequisite-removal",
+        "classification": "behavioral_red",
+        "exit_code": 101,
+        "archive": {
+          "bytes": 9009,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-delegated-prerequisite-removal.log.txt",
+          "sha256": "e169ab192a81fa34cba9728565d62c6e2e0f1f80e66556afcfa27ae43b0a416b"
+        },
+        "summaries": [
+          {
+            "result": "FAILED",
+            "passed": 0,
+            "failed": 1
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "delegated_lead_cannot_remove_suspended_prerequisites_but_owner_can_amend_explicitly",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330",
+          "crates/team-control-plane/src/contracts/authority.rs": "7685f36b398f4a072d9b09aa539bdff39dea76b10bd869442affbc7519e90b2c",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "35a00a2f3d6e821ae77d49daacb8e6fc3d60029646252b3212a8f792b4ffcdd3",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "8699fcf081b4089c883adad23904de409c5299a72c698e0d7212b1f16471315f",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "green-delegated-prerequisite-removal",
+        "classification": "green",
+        "exit_code": 0,
+        "archive": {
+          "bytes": 43563,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-delegated-prerequisite-removal.log.txt",
+          "sha256": "846c0d0e94554b865bf81a89a76aa358082f2bd5649b8499298e095f34271d82"
+        },
+        "summaries": [
+          {
+            "result": "ok",
+            "passed": 12,
+            "failed": 0
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330",
+          "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "8699fcf081b4089c883adad23904de409c5299a72c698e0d7212b1f16471315f",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "red-cancelled-contract-results",
+        "classification": "behavioral_red",
+        "exit_code": 101,
+        "archive": {
+          "bytes": 41753,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/red-cancelled-contract-results.log.txt",
+          "sha256": "92ca61b3862e03b5d815515817af5bb8d13cf1bb0f46c1b5f57b99ac1841947f"
+        },
+        "summaries": [
+          {
+            "result": "FAILED",
+            "passed": 0,
+            "failed": 3
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "cancellation_fences",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "314c1fe7a3511a2f3b2354d1238bf1ca72987ecfc88d4c8963d8c57b7d2df330",
+          "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "6a795481163a135d979efe0a9ab2c079b61da16f79561e46afa9026219388918",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "403448564da80dde90437748f03edf2a4d5f6ebad545311541dc43d8cf78db3a",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "green-cancelled-contract-results",
+        "classification": "green",
+        "exit_code": 0,
+        "archive": {
+          "bytes": 82203,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-cancelled-contract-results.log.txt",
+          "sha256": "c45ed867037d8d3cf67ce21cbcb8cd70478510ea90575eb0dc866af48942776f"
+        },
+        "summaries": [
+          {
+            "result": "ok",
+            "passed": 15,
+            "failed": 0
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "fcec3f66c303af44a5e336f5e062bf4ba6a4d8f95e494425a437401b54c2d0ed",
+          "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "8eb1271946fd78c432d8ea5e6f82d73613ecaf45c75acfbc0e0be86663d442ef",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "c4f2370982996de90198eec5d247a83d1f1760fcb92282d18708222eb84f697f",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      },
+      {
+        "name": "green-final-repair1-compatibility",
+        "classification": "green",
+        "exit_code": 0,
+        "archive": {
+          "bytes": 92027,
+          "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/green-final-repair1-compatibility.log.txt",
+          "sha256": "2c7b00ca43fc79fb6bf258c2f4a681189b3f7bfd12b3f57d59239fb849bcbce9"
+        },
+        "summaries": [
+          {
+            "result": "ok",
+            "passed": 9,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 11,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 4,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 15,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 16,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 2,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 3,
+            "failed": 0
+          },
+          {
+            "result": "ok",
+            "passed": 20,
+            "failed": 0
+          }
+        ],
+        "argv": [
+          "bash",
+          "crates/team-control-plane/tests/run-postgres.sh",
+          "--offline",
+          "--lib",
+          "--test",
+          "artifacts",
+          "--test",
+          "kernel",
+          "--test",
+          "mailbox",
+          "--test",
+          "mailbox_delivery",
+          "--test",
+          "mailbox_artifacts",
+          "--test",
+          "supervisor",
+          "--test",
+          "gateway",
+          "--test",
+          "intent_contracts",
+          "--",
+          "--nocapture"
+        ],
+        "environment": {
+          "CARGO_BUILD_JOBS": "2",
+          "CARGO_NET_OFFLINE": "true",
+          "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+          "RUST_TEST_THREADS": "1"
+        },
+        "sources": {
+          "crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+          "crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+          "crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+          "crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+          "crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+          "crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+          "crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+          "crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+          "crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+          "crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+          "crates/team-control-plane/src/admission.rs": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+          "crates/team-control-plane/src/artifacts.rs": "507fd92698144fccbf61f7d6419c030cf0464ac872abf2dc2615179b044dbd45",
+          "crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+          "crates/team-control-plane/src/contracts.rs": "fcec3f66c303af44a5e336f5e062bf4ba6a4d8f95e494425a437401b54c2d0ed",
+          "crates/team-control-plane/src/contracts/authority.rs": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+          "crates/team-control-plane/src/contracts/dependencies.rs": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+          "crates/team-control-plane/src/contracts/outcomes.rs": "8eb1271946fd78c432d8ea5e6f82d73613ecaf45c75acfbc0e0be86663d442ef",
+          "crates/team-control-plane/src/contracts/strategy.rs": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+          "crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+          "crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+          "crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+          "crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+          "crates/team-control-plane/src/kernel.rs": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+          "crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+          "crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+          "crates/team-control-plane/src/mailbox.rs": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+          "crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+          "crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+          "crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+          "crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+          "crates/team-control-plane/src/supervisor.rs": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+          "crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+          "crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+          "crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+          "crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+          "crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+          "crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+          "crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+          "crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+          "crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+          "crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+          "crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+          "crates/team-control-plane/tests/intent_contracts.rs": "c4f2370982996de90198eec5d247a83d1f1760fcb92282d18708222eb84f697f",
+          "crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+          "crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+          "crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+          "crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+          "crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+          "crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+          "crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+          "crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+          "crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+          "crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+          "crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+        }
+      }
+    ],
+    "final_run_inputs_verified": 54,
+    "final_runner_pass_count": 81,
+    "public_records_verified": 596,
+    "public_record_run_counts": {
+      "red-episode-start-after-suspension-2": 16,
+      "red-episode-start-after-suspension-3": 17,
+      "green-episode-start-after-suspension": 37,
+      "red-mapped-legacy-accept": 7,
+      "green-mapped-and-historical-acceptance": 102,
+      "red-delegated-prerequisite-removal": 13,
+      "green-delegated-prerequisite-removal": 116,
+      "red-cancelled-contract-results": 18,
+      "green-cancelled-contract-results": 135,
+      "green-final-repair1-compatibility": 135
+    },
+    "review_guidance": [
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+        "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+        "bytes": 3484
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+        "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+        "bytes": 3080
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+        "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+        "bytes": 2816
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+        "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+        "bytes": 9722
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+        "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+        "bytes": 9818
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/evidence-bound-method.md",
+        "sha256": "4bcd61bea24b101808694cac00b5ce1bcb0c980ad5938c96c86f20fa49238ef1",
+        "bytes": 15772
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/domain.md",
+        "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+        "bytes": 2045
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/SPEC.md",
+        "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+        "bytes": 33123
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/v02-reconciliation.md",
+        "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+        "bytes": 21340
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+        "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513",
+        "bytes": 3534
+      },
+      {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-review1-repair.md",
+        "sha256": "38ddddd9a47869f0672fc931805b48d1e3d6d52cac805ed31cd84b019ed11ea9",
+        "bytes": 3117
+      }
+    ],
+    "issues": [],
+    "audited_utc": "2026-10-03T20:20:43.914068+00:00",
+    "run_source_delta_audit": {
+      "run_count": 28,
+      "issues": [],
+      "final_input_match": true
+    },
+    "selection_audit": {
+      "observed_changed_count": 269,
+      "frozen_count_with_seal": 269,
+      "unfrozen_changes": [],
+      "selected_not_git_changed": [],
+      "staged_paths": []
+    },
+    "final_rehash": {
+      "verified_records": 269,
+      "sha256_mismatches": [],
+      "seal_sha256": "d565a4e32d8f472bcd65876ee78c3744268fae5945fd74dad76bf5a54c3bf507"
+    }
+  },
+  "rules_checked": [
+    {
+      "source": "docs/agents/skill-orchestration.md",
+      "line": 63,
+      "quote": "Every behavior slice must then show red before implementation and green afterward."
+    },
+    {
+      "source": "docs/efforts/team-control-plane/decisions/20261003-intent26-review1-repair.md",
+      "line": 33,
+      "quote": "Cancellation must fence v2 result/acceptance mutations and acceptance replay"
+    },
+    {
+      "source": "docs/efforts/team-control-plane/decisions/20261003-intent26-review1-repair.md",
+      "line": 41,
+      "quote": "do not relabel old test runs as proof for changed sources."
+    },
+    {
+      "source": "docs/efforts/team-control-plane/decisions/20261003-intent26-review1-repair.md",
+      "line": 38,
+      "quote": "possible Data Clumps heuristic does not justify unrelated refactoring."
+    }
+  ],
+  "limitations": [
+    "Review inspected source, retained artifacts, raw logs, hashes and read-only Git state. No tests, Cargo, PostgreSQL, Temporal, provider, namespace or runtime probe was launched.",
+    "81/81 compatibility and 15/15 focused are independently parsed author logs, not fresh reviewer execution.",
+    "No source, root, author, tracker or Git mutation occurred. Only /tmp review artifacts were written.",
+    "Original temporary fixture files were not rehashed or probed; durable retained fixture archives were rehashed. Exit and cleanup observations are reported separately.",
+    "No acceptance of whole v0.2, qualification of adapters, runtime launch or integration is implied. Root owns fresh focused/broad checks and a distinct fixed-range branch defect gate.",
+    "The suspected code paths were inspected statically. New unmeasured path hypotheses are not represented as measured findings."
+  ],
+  "prohibited_inspection": "Sureal was not inspected",
+  "self_exclusion": "metadata.json"
+}

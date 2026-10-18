@@ -1,0 +1,31 @@
+--- 86/kata_protocol.py
++++ 87/kata_protocol.py
+@@ -410,7 +410,27 @@
+             reconcile()
+             ctx = query('participant_context')
+             assert all(x['state']=='confirmed' for x in ctx['synchronization']['effects']),'maximum accepted progress created unpublishable effect'
+-            events = query('events',{'after':0,'limit':100},actor=worker)
++            # The bounded public read protocol preserves full inputs behind exact refs.
++            def exact_body(descriptor):
++                reference=descriptor['text_reference'];offset=0;chunks=[]
++                while True:
++                    part=query('control_input',dict(reference,offset=offset),actor=worker);chunks.append(part['text'])
++                    if part['next_offset'] is None:break
++                    assert part['next_offset']>offset;offset=part['next_offset']
++                raw=''.join(chunks)
++                assert len(raw.encode())==descriptor['bytes'] and hashlib.sha256(raw.encode()).hexdigest()==descriptor['sha256']
++                return json.loads(raw)
++            events=[];cursor=0
++            while True:
++                page=query('event_page',{'after':cursor,'limit':20},actor=worker)
++                for event in page['items']:
++                    if 'text_reference' in event.get('body',{}):event['body']=exact_body(event['body'])
++                    events.append(event)
++                if not page['page']['has_more']:break
++                assert page['page']['after']>cursor;cursor=page['page']['after']
++            reported=ctx['workers'][0]['reported_progress']
++            if 'text_reference' in reported:reported=exact_body(reported)
++            assert reported['args']['text']==text, 'full reported-progress reference lost'
+             assert any(x.get('kind')=='report_progress' and x.get('body',{}).get('args',{}).get('text')==text for x in events),'full accepted local progress lost'
+             remote = http('GET',ipath,token=token)
+             assert remote['comments'] and all(len(x['body'].encode())<=65536 for x in remote['comments'])

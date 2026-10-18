@@ -1,0 +1,1120 @@
+ crates/sqlite-controller/README.md                 |  17 +-
+ crates/sqlite-controller/src/codex.rs              | 114 +++++++++--
+ crates/sqlite-controller/src/kata.rs               | 214 ++++++++++++++++-----
+ crates/sqlite-controller/src/service.rs            |  20 +-
+ crates/sqlite-controller/tests/kata.rs             |  41 +++-
+ .../tests/support/kata_protocol.py                 | 149 +++++++++++++-
+ .../tests/support/native_registry.py               |  16 +-
+ 7 files changed, 492 insertions(+), 79 deletions(-)
+diff --git a/crates/sqlite-controller/README.md b/crates/sqlite-controller/README.md
+index 2f54694..2067c7f 100644
+--- a/crates/sqlite-controller/README.md
++++ b/crates/sqlite-controller/README.md
+@@ -397,17 +397,19 @@ use `create_kata_task` with `task`, immutable item UID,
+  "commit":"FULL_COMMIT_OID","paths":["spec.md","tasks/task-a.md"]}}
+ ```
+ 
+ The operator selects the complete set of files necessary to interpret intent,
+ including referenced files. Relative paths are explicit and unique. Git mode
+ reads exact commit objects, independent of worktree dirt. For dirty/untracked
+ input use `mode:"snapshot"` without `commit`: the controller captures actual
+ bytes, exact HEAD provenance, dirty disposition, each SHA256 and an aggregate
+-snapshot digest. Snapshots refuse filesystem symlinks; all selections refuse traversal and unknown
++snapshot digest. Snapshots use descriptor-relative traversal and read the same
++opened regular file they validate, refusing symlinks even during path replacement.
++All selections refuse traversal and unknown
+ storage IDs. Git selections retain exact blob bytes; a symlink target is not
+ dereferenced and any referenced target must be explicitly included.
+ Immutable version records retain the original bytes, including after filesystem
+ changes; the brief names their immutable version/digests. The live pathname is
+ not execution authority. A file-selection change requires a new admitted
+ contract workflow; this adapter does not silently revise any admitted brief.
+ 
+ `admit` rereads the qualified item and registered source selection. The actual WorkRef is globally unique across local-project aliases. Unlinked
+@@ -444,18 +446,25 @@ revisions without generating source amendments; human intent, dependency, status
+ and other metadata changes remain proposals. External execution-summary drift
+ withholds publication and stays visible.
+ 
+ Reconciliation reads exact effects before retry. Metadata uses guarded patch and
+ readback; comments use `Idempotency-Key` and unique body/author readback. Lost
+ acknowledgements remain unknown until proof is retained. Server comment keys last
+ seven days: an absent ambiguous comment older than that is withheld for explicit
+ reconciliation, never blindly repeated. Operation histories retain earlier
+-failures even after confirmation. HTTP runs outside SQLite locks/transactions.
+-The configured service drains automatically; an operator can also send
++failures even after confirmation. Publication remains ordered within each task;
++an unresolved effect withholds that task's later effects while unrelated tasks
++continue. Visible progress summaries use a bounded excerpt while the full
++accepted report remains in the controller ledger. Successful unchanged-source
++observations clear current availability uncertainty, preserve historical failures,
++and independently retain actual execution-projection drift.
++HTTP runs outside SQLite locks/transactions. The configured service reconciles
++Kata on a separate controller-owned thread so slow upstream observations leave
++the socket loop available for control requests; an operator can also send
+ `{"auth":AUTH,"project":"PROJECT","kata":{"kind":"reconcile"}}`.
+ 
+ `participant_context` is a scoped query returning admitted/current/proposed
+ sources, assignments, decisions, questions/answers, messages/acknowledgements,
+ followup proposals, pending effects/history and acknowledged Kata revisions.
+ A replacement lead reconstructs context without prior conversation. Native
+ binding/operation projections preserve pending cleanup uncertainty; this ticket
+ does not qualify native retirement or replacement-lead runtime completion.
+@@ -468,15 +477,17 @@ Candidate execution/submission remains ticket04's separate contract.
+ 
+ The retained public qualification runs the exact real daemon with unique private
+ KATA_HOME/project/input repository, loopback ports and fixture-only credentials:
+ 
+ ```sh
+ cargo test --locked --offline --features fault-injection --test kata -- --nocapture
+ ```
+ 
++The deterministic fixtures are gated by `fault-injection`; default builds/tests
++do not run fixtures that rely on manual reconciliation or declared test barriers.
+ It retains each fixture under the checkout's `.scratch/k3-*`, including real
+ Kata/controller databases, source Git objects, original source bytes, sanitized
+ public requests/responses, process identities/exits and failed runs. It injects
+ dropped acknowledgements with a forwarding proxy that only forwards genuine
+ responses. The alternative deployment control uses its own private bootstrap
+ credential to isolate actual instance-UID refusal. This is deterministic Kata
+ and participant proof; it makes no live-model or native cleanup qualification claim.
+diff --git a/crates/sqlite-controller/src/codex.rs b/crates/sqlite-controller/src/codex.rs
+index aeb57c8..23c8c79 100644
+--- a/crates/sqlite-controller/src/codex.rs
++++ b/crates/sqlite-controller/src/codex.rs
+@@ -80,16 +80,105 @@ fn crash_boundary(point: &str, observation: Value) -> Result<(), String> {
+     {
+         fs::remove_file(&path).map_err(|e| e.to_string())?;
+         fs::write(format!("{path}.observed"), observation.to_string())
+             .map_err(|e| e.to_string())?;
+         std::process::exit(79);
+     }
+     Ok(())
+ }
++#[cfg(feature = "fault-injection")]
++fn adoption_fixture_defer(worker: &Binding) -> Result<(), String> {
++    let Ok(path) = std::env::var("CORENIUS_TEST_ADOPT_EVENTS") else {
++        return Ok(());
++    };
++    if !Path::new(&path).is_file() {
++        return Ok(());
++    }
++    let actors: Value =
++        serde_json::from_slice(&fs::read(format!("{path}.actors")).map_err(|e| e.to_string())?)
++            .map_err(|e| e.to_string())?;
++    if actors["b"] != worker.attempt {
++        return Ok(());
++    }
++    if Path::new(&format!("{path}.disarmed")).is_file() {
++        fs::write(format!("{path}.retry-B"), worker.attempt.as_bytes())
++            .map_err(|e| e.to_string())?;
++        return Ok(());
++    }
++    let phase = if Path::new(&format!("{path}.projection")).is_file() {
++        fs::write(format!("{path}.disarmed"), worker.attempt.as_bytes())
++            .map_err(|e| e.to_string())?;
++        "once after actual A projection; disarmed for next pass"
++    } else {
++        "until actual A projection"
++    };
++    use std::io::Write;
++    let mut log = fs::OpenOptions::new()
++        .create(true)
++        .append(true)
++        .open(format!("{path}.deferrals"))
++        .map_err(|e| e.to_string())?;
++    writeln!(
++        log,
++        "{}",
++        json!({"attempt":worker.attempt,"phase":phase,"native_rpc_performed":false})
++    )
++    .map_err(|e| e.to_string())?;
++    Err("declared exact-B adoption fixture scheduling deferral; no native RPC".into())
++}
++#[cfg(feature = "fault-injection")]
++fn adoption_fixture_snapshot_path(worker: &Binding) -> Result<Option<(String, String)>, String> {
++    let Ok(path) = std::env::var("CORENIUS_TEST_ADOPT_EVENTS") else {
++        return Ok(None);
++    };
++    if !Path::new(&path).is_file() {
++        return Ok(None);
++    }
++    let actors: Value =
++        serde_json::from_slice(&fs::read(format!("{path}.actors")).map_err(|e| e.to_string())?)
++            .map_err(|e| e.to_string())?;
++    let suffix = if actors["a"] == worker.attempt {
++        "projection"
++    } else if actors["b"] == worker.attempt {
++        "peer-projection"
++    } else {
++        return Ok(None);
++    };
++    Ok(Some((path.clone(), format!("{path}.{suffix}"))))
++}
++#[cfg(feature = "fault-injection")]
++fn adoption_fixture_snapshot(worker: &Binding, document: &Value) -> Result<(), String> {
++    let Some((path, snapshot)) = adoption_fixture_snapshot_path(worker)? else {
++        return Ok(());
++    };
++    if document["ui_input_ready"] != true
++        || document["thread_id"].as_str().is_none()
++        || document["turn_id"].as_str().is_none()
++        || document["environment_id"].as_str().is_none()
++    {
++        return Ok(());
++    }
++    if !Path::new(&snapshot).exists() {
++        fs::write(snapshot, document.to_string()).map_err(|e| e.to_string())?;
++    }
++    // Only the fixture's two exact, independently qualified actors permit global freeze.
++    if Path::new(&format!("{path}.projection")).is_file()
++        && Path::new(&format!("{path}.peer-projection")).is_file()
++    {
++        let hold = std::env::var("CORENIUS_TEST_HOLD_CODEX").map_err(|_| "fixture hold missing")?;
++        fs::write(
++            hold,
++            b"declared freeze after both real qualified actor projections",
++        )
++        .map_err(|e| e.to_string())?;
++    }
++    Ok(())
++}
++
+ impl CodexRuntime {
+     pub fn requires_configuration(controller: &Controller) -> Result<bool, String> {
+         let c = controller
+             .connection
+             .lock()
+             .map_err(|_| "controller lock poisoned")?;
+         let version: i64 = db(c.pragma_query_value(None, "user_version", |r| r.get(0)))?;
+         if version != 2 {
+@@ -819,16 +908,25 @@ impl CodexRuntime {
+         &self,
+         controller: &Controller,
+         server: &Server,
+         worker: &Binding,
+         body: &str,
+         role: &str,
+         id: &str,
+     ) -> Result<(), String> {
++        #[cfg(feature = "fault-injection")]
++        if let Some((_, snapshot)) = adoption_fixture_snapshot_path(worker)?
++            && Path::new(&snapshot).is_file()
++        {
++            // Retain this actor's first observed fixture projection while its peer retries.
++            return Ok(());
++        }
++        #[cfg(feature = "fault-injection")]
++        adoption_fixture_defer(worker)?;
+         let executor = supervisor::native_lookup(
+             &server.worker_supervisor_socket,
+             &secret(&server.worker_auth_ref)?,
+             worker,
+         )?;
+         if executor["runtime"]["kind"] != "exec"
+             || executor["runtime"]["endpoint"]
+                 != json!(
+@@ -1676,31 +1774,17 @@ impl CodexRuntime {
+                 format!("{path}.native-{actor}"),
+                 serde_json::to_vec(ws.buffered_events()).map_err(|e| e.to_string())?,
+             )
+             .map_err(|e| e.to_string())?;
+         }
+         document["native_activity"] = json!(ws.take_events_for(text(document, "thread_id")?));
+         self.save_binding(controller, id, document, "bound")?;
+         #[cfg(feature = "fault-injection")]
+-        if body.starts_with("TASK_A")
+-            && let Ok(path) = std::env::var("CORENIUS_TEST_ADOPT_EVENTS")
+-            && Path::new(&path).is_file()
+-            && !Path::new(&format!("{path}.projection")).exists()
+-        {
+-            fs::write(format!("{path}.projection"), document.to_string())
+-                .map_err(|e| e.to_string())?;
+-            let hold =
+-                std::env::var("CORENIUS_TEST_HOLD_CODEX").map_err(|_| "fixture hold missing")?;
+-            fs::write(
+-                hold,
+-                b"declared freeze after first recovered native projection",
+-            )
+-            .map_err(|e| e.to_string())?;
+-        }
++        adoption_fixture_snapshot(worker, document)?;
+         #[cfg(feature = "fault-injection")]
+         if body.starts_with("TASK_B")
+             && let Ok(path) = std::env::var("CORENIUS_TEST_RETIRED_EVENTS")
+             && Path::new(&format!("{path}.observed")).is_file()
+         {
+             let events = document["native_activity"]
+                 .as_array()
+                 .ok_or("fixture native activity absent")?;
+diff --git a/crates/sqlite-controller/src/kata.rs b/crates/sqlite-controller/src/kata.rs
+index 4302a31..7cacf5e 100644
+--- a/crates/sqlite-controller/src/kata.rs
++++ b/crates/sqlite-controller/src/kata.rs
+@@ -1,18 +1,23 @@
+ //! Supported pinned Kata API adapter. SQLite owns execution; Kata is a visible projection.
+ //! All external I/O occurs outside SQL locks/transactions. Ambiguous effects retain their IDs.
+ use crate::*;
+ use base64::{Engine, engine::general_purpose::STANDARD};
+ use serde::{Deserialize, Serialize};
+ use std::{
+     collections::BTreeMap,
++    ffi::{CString, OsStr},
++    fs::File,
+     io::{Read, Write},
+     net::{SocketAddr, TcpStream},
+-    os::unix::fs::PermissionsExt,
++    os::{
++        fd::{AsRawFd, FromRawFd},
++        unix::{ffi::OsStrExt, fs::PermissionsExt},
++    },
+     path::{Component, PathBuf},
+     process::Command as ProcessCommand,
+     sync::Arc,
+     time::{Instant, SystemTime, UNIX_EPOCH},
+ };
+ const API_VERSION: &str = "0.24.0";
+ const SUMMARY_KEY: &str = "corenius.execution";
+ const MAX_HTTP: usize = 4 * 1024 * 1024;
+@@ -388,59 +393,115 @@ impl KataRuntime {
+         } else {
+             return Err("source_files mode must be git or explicit immutable snapshot".into());
+         };
+         commit_oid(&commit)?;
+         if git(&["cat-file", "-t", &commit])? != b"commit\n" {
+             return Err("source version must be an exact Git commit object".into());
+         }
+         let dirty = !git(&["status", "--porcelain", "--untracked-files=all"])?.is_empty();
++        let snapshot_root = (mode == "snapshot")
++            .then(|| open_snapshot_root(root))
++            .transpose()?;
+         let mut artifacts = Vec::new();
+         let mut seen = std::collections::BTreeSet::new();
+         for path in paths {
+             let path = path.as_str().ok_or("source path must be text")?;
+             if path.is_empty()
+                 || !Path::new(path)
+                     .components()
+                     .all(|c| matches!(c, Component::Normal(_)))
+                 || !seen.insert(path)
+             {
+                 return Err("source paths must be unique relative regular files".into());
+             }
+             let content = if mode == "git" {
+                 git(&["show", &format!("{commit}:{path}")])?
+             } else {
+-                let mut resolved = root.clone();
+-                for component in Path::new(path).components() {
+-                    resolved.push(component);
+-                    if std::fs::symlink_metadata(&resolved)
+-                        .map_err(|e| e.to_string())?
+-                        .file_type()
+-                        .is_symlink()
+-                    {
+-                        return Err("source snapshot symlink refused".into());
+-                    }
+-                }
+-                if !resolved.is_file() {
+-                    return Err("source snapshot regular file required".into());
+-                }
+-                std::fs::read(resolved).map_err(|e| e.to_string())?
++                read_snapshot(snapshot_root.as_ref().ok_or("snapshot root missing")?, path)?
+             };
+             if content.len() > 512 * 1024 {
+                 return Err("source artifact limit".into());
+             }
+             artifacts.push(json!({"path":path,"sha256":format!("{:x}",Sha256::digest(&content)),"bytes":content.len(),"content_base64":STANDARD.encode(content)}));
+         }
+         // Exact git captures are independent of mutable worktree dirt. Snapshot explicitly retains it.
+         let manifest = json!({"storage":storage,"mode":mode,"commit":commit,"dirty":mode=="snapshot" && dirty,"artifacts":artifacts});
+         Ok(
+             json!({"snapshot_digest":hash(&manifest.to_string()),"storage":storage,"mode":mode,"commit":commit,"dirty":mode=="snapshot" && dirty,"artifacts":manifest["artifacts"]}),
+         )
+     }
+ }
++fn open_relative(directory: &File, name: &OsStr, flags: i32) -> Result<File> {
++    let name = CString::new(name.as_bytes()).map_err(|_| "source path contains NUL")?;
++    // The directory descriptor stays open across lookup; no symlink is followed.
++    let fd = unsafe {
++        libc::openat(
++            directory.as_raw_fd(),
++            name.as_ptr(),
++            flags | libc::O_NOFOLLOW | libc::O_CLOEXEC,
++        )
++    };
++    if fd < 0 {
++        return Err(format!(
++            "source snapshot descriptor lookup refused: {}",
++            std::io::Error::last_os_error()
++        ));
++    }
++    // openat returned this owned descriptor, so File is its sole owner.
++    Ok(unsafe { File::from_raw_fd(fd) })
++}
++fn open_snapshot_root(root: &Path) -> Result<File> {
++    let mut directory = File::open("/").map_err(|e| e.to_string())?;
++    for component in root.components() {
++        if let Component::Normal(name) = component {
++            directory = open_relative(&directory, name, libc::O_RDONLY | libc::O_DIRECTORY)?;
++        }
++    }
++    Ok(directory)
++}
++fn read_snapshot(root: &File, path: &str) -> Result<Vec<u8>> {
++    let mut directory = root.try_clone().map_err(|e| e.to_string())?;
++    let mut parts = Path::new(path).components().peekable();
++    while let Some(Component::Normal(name)) = parts.next() {
++        if parts.peek().is_some() {
++            directory = open_relative(&directory, name, libc::O_RDONLY | libc::O_DIRECTORY)?;
++        } else {
++            #[cfg(feature = "fault-injection")]
++            snapshot_barrier()?;
++            let file = open_relative(&directory, name, libc::O_RDONLY | libc::O_NONBLOCK)?;
++            if !file.metadata().map_err(|e| e.to_string())?.is_file() {
++                return Err("source snapshot regular file required".into());
++            }
++            let mut content = Vec::new();
++            file.take(512 * 1024 + 1)
++                .read_to_end(&mut content)
++                .map_err(|e| e.to_string())?;
++            return Ok(content);
++        }
++    }
++    Err("source snapshot relative file required".into())
++}
++#[cfg(feature = "fault-injection")]
++fn snapshot_barrier() -> Result<()> {
++    if let Ok(path) = std::env::var("CORENIUS_TEST_SNAPSHOT_BARRIER")
++        && Path::new(&path).is_file()
++    {
++        std::fs::write(format!("{path}.observed"), b"snapshot lookup boundary")
++            .map_err(|e| e.to_string())?;
++        let deadline = Instant::now() + Duration::from_secs(5);
++        while Path::new(&path).is_file() {
++            if Instant::now() >= deadline {
++                return Err("snapshot fixture barrier deadline".into());
++            }
++            std::thread::sleep(Duration::from_millis(2));
++        }
++    }
++    Ok(())
++}
+ fn chunks(mut bytes: &[u8]) -> Result<Vec<u8>> {
+     let mut result = Vec::new();
+     loop {
+         let end = bytes
+             .windows(2)
+             .position(|w| w == b"\r\n")
+             .ok_or("Kata chunk size missing")?;
+         let line = std::str::from_utf8(&bytes[..end]).map_err(|e| e.to_string())?;
+@@ -590,22 +651,39 @@ fn record_source_observation(
+     source: &Value,
+ ) -> Result<()> {
+     let mut c = controller
+         .connection
+         .lock()
+         .map_err(|_| "controller lock poisoned")?;
+     let current: String = db(c.query_row("SELECT v.body FROM kata_sources s JOIN kata_versions v ON v.id=s.current WHERE s.project=?1 AND s.task=?2",params![project,task],|r|r.get(0)))?;
+     let current: Value = serde_json::from_str(&current).map_err(|e| e.to_string())?;
++    let tx = db(c.transaction_with_behavior(TransactionBehavior::Immediate))?;
+     if current == *source {
+-        return Ok(());
++        let drift: Option<String> = db(tx.query_row(
++            "SELECT drift FROM kata_sources WHERE project=?1 AND task=?2",
++            params![project, task],
++            |r| r.get(0),
++        ))?;
++        if drift.as_deref() == projection_drift(&tx, project, task, source)? {
++            return Ok(());
++        }
+     }
+-    let tx = db(c.transaction_with_behavior(TransactionBehavior::Immediate))?;
+     let result = observe_source(&tx, project, task, source)?;
+-    source_event(&tx, project, task, "kata_source_observed", result)?;
++    source_event(
++        &tx,
++        project,
++        task,
++        if current == *source {
++            "kata_source_recovered"
++        } else {
++            "kata_source_observed"
++        },
++        result,
++    )?;
+     db(tx.commit())
+ }
+ fn source_event(
+     tx: &Transaction<'_>,
+     project: &str,
+     task: &str,
+     kind: &str,
+     observation: Value,
+@@ -721,34 +799,42 @@ fn observe_source(
+     let version = retain_version(tx, project, task, source)?;
+     let proposed = source["digest"] != admitted;
+     if proposed {
+         db(tx.execute(
+             "INSERT OR IGNORE INTO kata_proposals(id,project,task,version) VALUES(?1,?2,?3,?4)",
+             params![id(), project, task, version],
+         ))?;
+     }
++    let drift = projection_drift(tx, project, task, source)?;
++    db(tx.execute(
++        "UPDATE kata_sources SET current=?3,drift=?4 WHERE project=?1 AND task=?2",
++        params![project, task, version, drift],
++    ))?;
++    Ok(
++        json!({"task":task,"version":version,"disposition":if proposed {"proposed"} else {"unchanged"},"drift":drift}),
++    )
++}
++fn projection_drift(
++    tx: &Transaction<'_>,
++    project: &str,
++    task: &str,
++    source: &Value,
++) -> Result<Option<&'static str>> {
+     let acknowledged: Option<String> = db(tx.query_row(
+         "SELECT acknowledged_summary FROM kata_sources WHERE project=?1 AND task=?2",
+         params![project, task],
+         |r| r.get(0),
+     ))?;
+     let expected = acknowledged
+         .map(|s| serde_json::from_str::<Value>(&s))
+         .transpose()
+         .map_err(|e| e.to_string())?
+         .unwrap_or(Value::Null);
+-    let drift = (source["projection"] != expected).then_some("external execution projection drift");
+-    db(tx.execute(
+-        "UPDATE kata_sources SET current=?3,drift=?4 WHERE project=?1 AND task=?2",
+-        params![project, task, version, drift],
+-    ))?;
+-    Ok(
+-        json!({"task":task,"version":version,"disposition":if proposed {"proposed"} else {"unchanged"},"drift":drift}),
+-    )
++    Ok((source["projection"] != expected).then_some("external execution projection drift"))
+ }
+ pub(super) fn check_admission(
+     tx: &Transaction<'_>,
+     project: &str,
+     task: &str,
+     source: Option<&Value>,
+ ) -> Result<()> {
+     if !is_configured(tx)? {
+@@ -821,20 +907,29 @@ fn execution_summary(
+         params![project, task],
+         |r| r.get(0),
+     ))?;
+     let progress: Option<String> = db(tx.query_row("SELECT body FROM events WHERE project=?1 AND task=?2 AND kind='report_progress' ORDER BY seq DESC LIMIT 1",params![project,task],|r|r.get(0)).optional())?;
+     let progress = progress
+         .map(|s| serde_json::from_str::<Value>(&s))
+         .transpose()
+         .map_err(|e| e.to_string())?;
++    let full_progress = progress.as_ref().and_then(|p| p["args"]["text"].as_str());
++    let visible_progress = full_progress.map(|p| excerpt(p, 4096));
+     Ok(
+-        json!({"controller":config["controller_id"],"project":project,"task":task,"controller_revision":revision,"event_seq":event,"state":visible,"task_state":state,"brief":brief,"admitted_version":admitted,"attempt":attempt.as_ref().map(|a|&a.0),"observed_attempt_state":attempt.as_ref().map(|a|&a.1),"cancel_requested":attempt.as_ref().is_some_and(|a|a.2),"unanswered_questions":unanswered,"reported_progress":progress.map(|p|p["args"]["text"].clone()),"runtime_cleanup_qualified":false}),
++        json!({"controller":config["controller_id"],"project":project,"task":task,"controller_revision":revision,"event_seq":event,"state":visible,"task_state":state,"brief":brief,"admitted_version":admitted,"attempt":attempt.as_ref().map(|a|&a.0),"observed_attempt_state":attempt.as_ref().map(|a|&a.1),"cancel_requested":attempt.as_ref().is_some_and(|a|a.2),"unanswered_questions":unanswered,"reported_progress":visible_progress,"reported_progress_bytes":full_progress.map(str::len),"reported_progress_truncated":full_progress.zip(visible_progress).is_some_and(|(full,shown)|full!=shown),"runtime_cleanup_qualified":false}),
+     )
+ }
++fn excerpt(value: &str, limit: usize) -> &str {
++    let mut end = value.len().min(limit);
++    while !value.is_char_boundary(end) {
++        end -= 1;
++    }
++    &value[..end]
++}
+ pub(super) fn queue_for_event(
+     tx: &Transaction<'_>,
+     project: &str,
+     task: Option<&str>,
+     kind: &str,
+     revision: i64,
+     event: i64,
+ ) -> Result<()> {
+@@ -867,17 +962,24 @@ pub(super) fn queue_for_event(
+     let summary = execution_summary(tx, project, task, revision, event)?;
+     for kind in ["metadata", "comment"] {
+         let operation = id();
+         let mut summary = summary.clone();
+         summary["operation"] = json!(operation);
+         let payload = if kind == "metadata" {
+             summary
+         } else {
+-            json!({"body":format!("Corenius execution: {}. Task {task}; admitted version {}; controller event {event}, revision {revision}. Observed attempt: {}; reported progress: {}. Runtime cleanup qualification pending. [corenius operation {operation}]",summary["state"].as_str().unwrap_or("unknown"),summary["admitted_version"].as_str().unwrap_or("unknown"),summary["observed_attempt_state"],summary["reported_progress"])})
++            let body = format!(
++                "Corenius execution: {}. Task {task}; admitted version {}; controller event {event}, revision {revision}. Observed attempt: {}; reported progress: {}. Runtime cleanup qualification pending.",
++                summary["state"].as_str().unwrap_or("unknown"),
++                summary["admitted_version"].as_str().unwrap_or("unknown"),
++                summary["observed_attempt_state"],
++                summary["reported_progress"].as_str().unwrap_or("none")
++            );
++            json!({"body":format!("{} [corenius operation {operation}]",excerpt(&body,8192))})
+         };
+         db(tx.execute("INSERT INTO kata_effects(id,project,task,event_seq,controller_revision,kind,state,payload,prepared_at) VALUES(?1,?2,?3,?4,?5,?6,'prepared',?7,?8)",params![operation,project,task,event,revision,kind,payload.to_string(),now()?]))?;
+         db(tx.execute("INSERT INTO kata_effect_history(effect,state,observation) VALUES(?1,'prepared','intent committed before any HTTP effect')",[&operation]))?;
+     }
+     Ok(())
+ }
+ pub(super) fn reconcile_request(controller: &Controller, request: Value) -> Result<Value> {
+     let object = request
+@@ -955,39 +1057,47 @@ impl KataRuntime {
+     fn drain(&self, controller: &Controller) -> Result<Value> {
+         self.drain_project(controller, None)
+     }
+     fn drain_project(&self, controller: &Controller, project: Option<&str>) -> Result<Value> {
+         let _gate = controller
+             .kata_effect_gate
+             .lock()
+             .map_err(|_| "Kata effect gate poisoned")?;
+-        let effects = {
+-            let c = controller
+-                .connection
+-                .lock()
+-                .map_err(|_| "controller lock poisoned")?;
+-            let mut statement = db(c.prepare("SELECT e.id,e.project,e.task,s.item,e.kind,e.payload,e.prepared_at,s.acknowledged_summary FROM kata_effects e JOIN kata_sources s ON s.project=e.project AND s.task=e.task WHERE e.state<>'confirmed' AND (?1 IS NULL OR e.project=?1) ORDER BY e.rowid LIMIT 100"))?;
+-            let rows = db(statement.query_map([project], |r| {
+-                Ok((
+-                    r.get::<_, String>(0)?,
+-                    r.get::<_, String>(1)?,
+-                    r.get::<_, String>(2)?,
+-                    r.get::<_, String>(3)?,
+-                    r.get::<_, String>(4)?,
+-                    r.get::<_, String>(5)?,
+-                    r.get::<_, i64>(6)?,
+-                    r.get::<_, Option<String>>(7)?,
+-                ))
+-            }))?;
+-            db(rows.collect::<rusqlite::Result<Vec<_>>>())?
+-        };
++        let mut blocked = std::collections::BTreeSet::new();
+         let mut results = Vec::new();
+-        // Ordered retry prevents an old ambiguous projection overwriting a later acknowledgement.
+-        for (id, project, task, item, kind, payload, prepared_at, _) in effects {
++        // Consider only the earliest pending effect for each task. Recent failed
++        // heads rotate behind untouched heads, including across bounded batches.
++        for _ in 0..100 {
++            let effects = {
++                let c = controller
++                    .connection
++                    .lock()
++                    .map_err(|_| "controller lock poisoned")?;
++                let mut statement = db(c.prepare("SELECT e.id,e.project,e.task,s.item,e.kind,e.payload,e.prepared_at,s.acknowledged_summary FROM kata_effects e JOIN kata_sources s ON s.project=e.project AND s.task=e.task WHERE e.state<>'confirmed' AND (?1 IS NULL OR e.project=?1) AND NOT EXISTS(SELECT 1 FROM kata_effects earlier WHERE earlier.project=e.project AND earlier.task=e.task AND earlier.state<>'confirmed' AND earlier.rowid<e.rowid) ORDER BY (SELECT MAX(h.rowid) FROM kata_effect_history h WHERE h.effect=e.id AND h.state<>'prepared') NULLS FIRST,e.rowid LIMIT 100"))?;
++                let rows = db(statement.query_map([project], |r| {
++                    Ok((
++                        r.get::<_, String>(0)?,
++                        r.get::<_, String>(1)?,
++                        r.get::<_, String>(2)?,
++                        r.get::<_, String>(3)?,
++                        r.get::<_, String>(4)?,
++                        r.get::<_, String>(5)?,
++                        r.get::<_, i64>(6)?,
++                        r.get::<_, Option<String>>(7)?,
++                    ))
++                }))?;
++                db(rows.collect::<rusqlite::Result<Vec<_>>>())?
++            };
++            let Some((id, project, task, item, kind, payload, prepared_at, _)) = effects
++                .into_iter()
++                .find(|row| !blocked.contains(&(row.1.clone(), row.2.clone())))
++            else {
++                break;
++            };
+             // Read current acknowledged guard after the previous effect has committed.
+             let prior = {
+                 let c = controller
+                     .connection
+                     .lock()
+                     .map_err(|_| "controller lock poisoned")?;
+                 db(c.query_row(
+                     "SELECT acknowledged_summary FROM kata_sources WHERE project=?1 AND task=?2",
+@@ -1025,17 +1135,17 @@ impl KataRuntime {
+                     effect_state(
+                         controller,
+                         &effect,
+                         "unknown",
+                         json!({"error":error,"retry":"readback required; no acceptance or stop inferred"}),
+                         None,
+                     )?;
+                     results.push(json!({"effect":effect.id,"state":"unknown","error":error}));
+-                    break;
++                    blocked.insert((effect.project.clone(), effect.task.clone()));
+                 }
+             }
+         }
+         // Poll pinned human source as proposals independently from execution publication.
+         self.refresh_sources(controller, project)?;
+         Ok(json!({"configured":true,"effects":results}))
+     }
+     fn apply_effect(&self, effect: &Effect) -> Result<(i64, Value)> {
+diff --git a/crates/sqlite-controller/src/service.rs b/crates/sqlite-controller/src/service.rs
+index 422a0b7..761b8fc 100644
+--- a/crates/sqlite-controller/src/service.rs
++++ b/crates/sqlite-controller/src/service.rs
+@@ -4,16 +4,17 @@ use serde_json::json;
+ use std::{
+     fs,
+     io::{Read, Write},
+     os::unix::{
+         fs::{FileTypeExt, PermissionsExt},
+         net::{UnixListener, UnixStream},
+     },
+     path::Path,
++    sync::Arc,
+     time::{Duration, Instant},
+ };
+ const MAX_REQUEST: usize = 1_048_576;
+ const REQUEST_DEADLINE: Duration = Duration::from_secs(1);
+ 
+ /// Serve until process shutdown. A stale socket may be removed only after proving no listener.
+ /// Keep the socket and database directory outside worker mounts.
+ pub fn serve(controller: Controller, socket: impl AsRef<Path>) -> Result<(), String> {
+@@ -53,31 +54,44 @@ pub fn serve_with_codex(
+         let enabled = runtime.is_some()
+             || codex.is_some()
+             || crate::kata::requires_configuration(&controller)?;
+         #[cfg(feature = "fault-injection")]
+         let enabled =
+             enabled && std::env::var("CORENIUS_TEST_MANUAL_RUNTIME").as_deref() != Ok("1");
+         enabled
+     };
++    let controller = Arc::new(controller);
++    if autonomous && crate::kata::requires_configuration(&controller)? {
++        let owner = Arc::downgrade(&controller);
++        std::thread::Builder::new()
++            .name("kata-reconcile".into())
++            .spawn(move || {
++                while let Some(controller) = owner.upgrade() {
++                    if let Err(error) = controller.drain_kata() {
++                        eprintln!("Kata drain: {error}");
++                    }
++                    drop(controller);
++                    std::thread::sleep(Duration::from_millis(250));
++                }
++            })
++            .map_err(|e| format!("Kata reconciler start: {e}"))?;
++    }
+     loop {
+         if autonomous && Instant::now() >= next_reconcile {
+             if let Some(runtime) = &runtime
+                 && let Err(error) = runtime.drain(&controller)
+             {
+                 eprintln!("runtime drain: {error}");
+             }
+             if let Some(codex) = &codex
+                 && let Err(error) = codex.drain(&controller)
+             {
+                 eprintln!("Codex drain: {error}");
+             }
+-            if let Err(error) = controller.drain_kata() {
+-                eprintln!("Kata drain: {error}");
+-            }
+             next_reconcile = Instant::now() + Duration::from_millis(250);
+         }
+         let stream = match listener.accept() {
+             Ok((stream, _)) => stream,
+             Err(error) if error.kind() == std::io::ErrorKind::WouldBlock => {
+                 std::thread::sleep(Duration::from_millis(10));
+                 continue;
+             }
+diff --git a/crates/sqlite-controller/tests/kata.rs b/crates/sqlite-controller/tests/kata.rs
+index b01d90e..60902b1 100644
+--- a/crates/sqlite-controller/tests/kata.rs
++++ b/crates/sqlite-controller/tests/kata.rs
+@@ -1,20 +1,55 @@
++#![cfg(feature = "fault-injection")]
++
+ use std::process::Command;
+ 
+ #[test]
+ fn pinned_kata_public_protocol() {
+-    let status = Command::new("python3")
++    run_fixture(None);
++}
++
++#[test]
++fn snapshot_path_replacement_stays_within_registered_source() {
++    run_fixture(Some("snapshot"));
++}
++
++#[test]
++fn unchanged_source_recovery_retains_history_and_projection_drift() {
++    run_fixture(Some("availability"));
++}
++
++#[test]
++fn unresolved_task_preserves_own_order_and_peer_publication() {
++    run_fixture(Some("isolation"));
++}
++
++#[test]
++fn maximum_progress_is_retained_and_publishes_bounded_summary() {
++    run_fixture(Some("progress"));
++}
++
++#[test]
++fn genuine_upstream_delay_does_not_starve_control_receipts() {
++    run_fixture(Some("responsiveness"));
++}
++
++fn run_fixture(case: Option<&str>) {
++    let mut command = Command::new("python3");
++    command
+         .arg(concat!(
+             env!("CARGO_MANIFEST_DIR"),
+             "/tests/support/kata_protocol.py"
+         ))
+         .env(
+             "CONTROLLER_BINARY",
+             env!("CARGO_BIN_EXE_corenius-sqlite-controller"),
+         )
+-        .status()
+-        .expect("run retained real Kata fixture");
++        .env_remove("CORENIUS_KATA_REPAIR_CASE");
++    if let Some(case) = case {
++        command.env("CORENIUS_KATA_REPAIR_CASE", case);
++    }
++    let status = command.status().expect("run retained real Kata fixture");
+     assert!(
+         status.success(),
+         "real Kata/public controller qualification failed"
+     );
+ }
+diff --git a/crates/sqlite-controller/tests/support/kata_protocol.py b/crates/sqlite-controller/tests/support/kata_protocol.py
+index 7b1e8fb..c55b196 100644
+--- a/crates/sqlite-controller/tests/support/kata_protocol.py
++++ b/crates/sqlite-controller/tests/support/kata_protocol.py
+@@ -96,20 +96,29 @@ def http(method, path, body=None, token=bootstrap, headers=None):
+     try:
+         with urllib.request.urlopen(req, timeout=3) as r:
+             return json.load(r)
+     except urllib.error.HTTPError as error:
+         diagnostic = error.read().decode()
+         records.append({'name':'actual-kata-http-error','path':path,'status':error.code,'body':diagnostic})
+         raise AssertionError(diagnostic) from error
+ 
++class Finished(Exception):
++    pass
++
++def finish_case(name):
++    records.append({'name':'repair1-'+name,'status':'PASS'})
++    raise Finished()
++
+ class Proxy(httpserver.BaseHTTPRequestHandler):
+     protocol_version = 'HTTP/1.1'
+     drop = None
+     offline = False
++    delay = 0
++    delayed = threading.Event()
+     def log_message(self, *args):
+         pass
+     def serve(self):
+         body = self.rfile.read(int(self.headers.get('Content-Length','0')))
+         if Proxy.offline:
+             self.connection.close()
+             self.close_connection = True
+             return
+@@ -119,16 +128,19 @@ class Proxy(httpserver.BaseHTTPRequestHandler):
+             r = c.getresponse()
+             data = r.read()
+             if self.command == 'POST' and Proxy.drop and self.path.endswith(Proxy.drop):
+                 records.append({'name':'actual-effect-reply-dropped','path':self.path,'status':r.status})
+                 Proxy.drop = None
+                 self.connection.close()
+                 self.close_connection = True
+                 return
++            if Proxy.delay:
++                Proxy.delayed.set()
++                time.sleep(Proxy.delay)
+             self.send_response(r.status)
+             self.send_header('Content-Type','application/json')
+             self.send_header('Content-Length',str(len(data)))
+             self.send_header('Connection','close')
+             self.end_headers()
+             self.wfile.write(data)
+         except (OSError, httpclient.HTTPException):
+             self.connection.close()
+@@ -168,29 +180,32 @@ def denied(kind,args,actor,match='authorization'):
+         cmd(kind,args,actor=actor)
+     except AssertionError as e:
+         assert match in str(e), str(e)
+         records.append({'name':'refused-'+kind,'error':str(e)})
+     else:
+         raise AssertionError('forbidden command succeeded: ' + kind)
+ def reconcile():
+     return api({'auth':auth,'project':'p','kata':{'kind':'reconcile'}})
+-def start_controller(enabled=True, database="state.db"):
++def start_controller(enabled=True, database="state.db", manual=True, socket_only=False):
+     log = open(ROOT / ('controller-'+str(len(processes))+'.log'),'ab')
+     logs.append(log)
+     env = os.environ.copy()
+     env.update(CORENIUS_OPERATOR_TOKEN=operator,CORENIUS_KATA_CONFIG=str(config),CORENIUS_TEST_MANUAL_RUNTIME='1')
++    if not manual:
++        env.pop('CORENIUS_TEST_MANUAL_RUNTIME',None)
++    env['CORENIUS_TEST_SNAPSHOT_BARRIER'] = str(ROOT/'snapshot-barrier')
+     if not enabled:
+         env.pop('CORENIUS_KATA_CONFIG',None)
+     for name in ('CORENIUS_CODEX_CONFIG','CORENIUS_SUPERVISOR_SOCKET','CORENIUS_SUPERVISOR_TOKEN'):
+         env.pop(name,None)
+     p = subprocess.Popen([os.environ['CONTROLLER_BINARY'],str(ROOT/database),str(csock)],env=env,cwd=ROOT,stdout=log,stderr=log)
+     processes.append(p)
+     identity(p,'controller')
+-    ready(p, lambda: api({'auth':auth,'project':'p','query':{'kind':'storage_configuration','args':{}}}))
++    ready(p, lambda: csock.stat() if socket_only else api({'auth':auth,'project':'p','query':{'kind':'storage_configuration','args':{}}}))
+     return p
+ 
+ try:
+     kata = start_kata()
+     health = http('GET','/health',token=None)
+     assert health['api_schema_version'] == '0.24.0'
+     token = http('POST','/tokens',{'actor':'corenius-fixture-controller','name':'controller-only'})['plaintext']
+     (ROOT/'kata.token').write_text(token)
+@@ -228,16 +243,144 @@ try:
+     assert len(artifacts) == 2
+     expected_files = {'spec.md':b'Acceptance: exact immutable intent and no closure authority.\n','task.md':b'Read spec.md; explicit uncommitted source snapshot.\n'}
+     for artifact in artifacts:
+         exact = base64.b64decode(artifact['content_base64'])
+         assert exact == expected_files[artifact['path']]
+         assert artifact['sha256'] == hashlib.sha256(exact).hexdigest()
+     assert cmd('create_kata_task',creation,key='capture-a',revision=first['revision']-1) == first
+     cmd('create_kata_task',{'task':'b','item':other['uid'],'expected_source_revision':other['revision'],'source_files':{'storage':'fixture-input','mode':'git','commit':base,'paths':['spec.md','task.md']}},key='capture-b')
++    case = os.environ.get('CORENIUS_KATA_REPAIR_CASE')
++    if case == 'snapshot':
++        outside = ROOT/'outside-private'
++        outside.write_text('outside registered source must never appear')
++        for ancestor in [False,True]:
++            race_issue = http('POST',project_path+'/issues',{'title':'snapshot path race'},token=token)['issue']
++            container = repo/'nested' if ancestor else repo
++            container.mkdir(exist_ok=True)
++            target = container/'race.md'
++            target.write_text('registered source bytes')
++            barrier = ROOT/'snapshot-barrier'
++            barrier.write_text('declared descriptor/path replacement observation barrier')
++            observed = Path(str(barrier)+'.observed')
++            observed.unlink(missing_ok=True)
++            original = repo/'nested-original' if ancestor else repo/'race-original.md'
++            attack_errors = []
++            def replace_checked_path():
++                try:
++                    end = time.monotonic()+5
++                    while not observed.exists():
++                        assert time.monotonic()<end,'snapshot barrier not reached'
++                        time.sleep(.002)
++                    if ancestor:
++                        container.rename(original)
++                        escape = ROOT/'outside-directory'
++                        escape.mkdir(exist_ok=True)
++                        (escape/'race.md').write_text(outside.read_text())
++                        container.symlink_to(escape,target_is_directory=True)
++                    else:
++                        target.rename(original)
++                        target.symlink_to(outside)
++                except BaseException as error:
++                    attack_errors.append(str(error))
++                finally:
++                    barrier.unlink(missing_ok=True)
++            attack = threading.Thread(target=replace_checked_path)
++            attack.start()
++            response = None
++            try:
++                response = cmd('create_kata_task',{'task':'race-'+str(ancestor),'item':race_issue['uid'],'expected_source_revision':race_issue['revision'],'source_files':{'storage':'fixture-input','mode':'snapshot','paths':['nested/race.md' if ancestor else 'race.md']}})
++            except AssertionError as error:
++                records.append({'name':'snapshot-path-replacement-refused','ancestor':ancestor,'error':str(error)})
++            finally:
++                attack.join(timeout=5)
++                assert not attack.is_alive() and not attack_errors,attack_errors
++                if ancestor:
++                    container.unlink()
++                    original.rename(container)
++                else:
++                    target.unlink()
++                    original.rename(target)
++            if response:
++                captured = base64.b64decode(response['result']['source']['files']['artifacts'][0]['content_base64'])
++                assert captured == b'registered source bytes','snapshot race exposed outside registered source'
++            assert outside.read_text() not in json.dumps(query('participant_context')),'outside bytes exposed through participant context'
++        finish_case(case)
++    if case == 'availability':
++        old = query('participant_context')['sources'][0]
++        assert old['drift'] is None
++        stop(kata)
++        reconcile()
++        failed = query('participant_context')
++        assert 'source observation unavailable' in failed['sources'][0]['drift']
++        kata = start_kata()
++        reconcile()
++        recovered = query('participant_context')
++        assert recovered['sources'][0]['current'] == old['current']
++        assert recovered['sources'][0]['admitted'] == old['admitted']
++        assert recovered['sources'][0]['drift'] is None,'unchanged source retained obsolete outage'
++        events = query('events',{'after':0,'limit':100})
++        assert 'kata_source_unavailable' in json.dumps(events)
++        # Existing projection drift survives outage and recovery of identical content.
++        http('POST',ipath+'/metadata',{'patch':{'corenius.execution':{'controller':'human'}},'guard':{'key':'corenius.execution','if_absent':True}},token=token,headers={'If-Match':'"rev-'+str(issue['revision'])+'"'})
++        reconcile()
++        drifted = query('participant_context')['sources'][0]
++        assert 'external execution projection drift' in drifted['drift']
++        stop(kata)
++        reconcile()
++        kata = start_kata()
++        reconcile()
++        after = query('participant_context')['sources'][0]
++        assert after['current']==drifted['current'] and 'external execution projection drift' in after['drift']
++        assert not query('participant_context')['synchronization']['effects']
++        finish_case(case)
++    if case == 'isolation':
++        http('POST',ipath+'/metadata',{'patch':{'corenius.execution':{'controller':'human'}},'guard':{'key':'corenius.execution','if_absent':True}},token=token,headers={'If-Match':'"rev-'+str(issue['revision'])+'"'})
++        cmd('sync_kata_task',{'task':'a'})
++        cmd('report_progress',{'task':'a','text':'later A effect must remain ordered'})
++        cmd('report_progress',{'task':'b','text':'healthy B still publishes'})
++        reconcile()
++        ctx = query('participant_context')
++        effects = ctx['synchronization']['effects']
++        a_effects = [x for x in effects if x['task']=='a']
++        b_effects = [x for x in effects if x['task']=='b']
++        assert a_effects[0]['state']=='unknown' and all(x['state']=='prepared' for x in a_effects[1:])
++        assert b_effects and all(x['state']=='confirmed' for x in b_effects),'unresolved A blocked independent B publication'
++        remote_b = http('GET',project_path+'/issues/'+other['uid'],token=token)
++        assert remote_b['issue']['metadata']['corenius.execution']['reported_progress']=='healthy B still publishes'
++        assert remote_b['comments'] and http('GET',ipath,token=token)['issue']['metadata']['corenius.execution']=={'controller':'human'}
++        finish_case(case)
++    if case == 'progress':
++        admitted = cmd('admit',{'task':'a'})
++        worker = {k:admitted['result'][k] for k in ('principal','token')}
++        for text in ['x'*65536,('"\\\n'+'é')*13107+'x']:
++            assert len(text.encode())==65536
++            result = cmd('report_progress',{'task':'a','text':text},actor=worker)
++            reconcile()
++            ctx = query('participant_context')
++            assert all(x['state']=='confirmed' for x in ctx['synchronization']['effects']),'maximum accepted progress created unpublishable effect'
++            events = query('events',{'after':0,'limit':100},actor=worker)
++            assert any(x.get('kind')=='report_progress' and x.get('body',{}).get('args',{}).get('text')==text for x in events),'full accepted local progress lost'
++            remote = http('GET',ipath,token=token)
++            assert remote['comments'] and all(len(x['body'].encode())<=65536 for x in remote['comments'])
++        finish_case(case)
++    if case == 'responsiveness':
++        stop(ctrl)
++        csock.unlink()
++        Proxy.delay = .3
++        Proxy.delayed.clear()
++        ctrl = start_controller(manual=False,socket_only=True)
++        assert Proxy.delayed.wait(3),'real upstream delay control did not start'
++        began = time.monotonic()
++        receipt = cmd('pause_dispatch',{'paused':True})
++        elapsed = time.monotonic()-began
++        records.append({'name':'control-receipt-with-genuine-delayed-upstream','seconds':elapsed,'receipt':receipt['receipt']})
++        assert elapsed<.8,'autonomous Kata reconciliation starved control receipt'
++        Proxy.delay = 0
++        finish_case(case)
+     denied('create_task',{'task':'forged','work_ref':{'deployment':instance,'project':project['uid'],'item':'invented'},'source_revision':'rev-1','brief':'unverified caller content'},auth,match='qualified Kata')
+     api({'auth':auth,'project':'alias','command':{'kind':'create_project','args':{'name':'alias','base':base},'idempotency_key':'alias-project','expected_revision':0}})
+     try:
+         api({'auth':auth,'project':'alias','command':{'kind':'create_kata_task','args':creation,'idempotency_key':'alias-capture','expected_revision':1}})
+     except AssertionError as error:
+         assert 'WorkRef already bound' in str(error)
+         records.append({'name':'global-Kata-WorkRef-alias-refused','error':str(error)})
+     else:
+@@ -366,16 +509,18 @@ try:
+     ctrl = start_controller(enabled=False,database='unlinked.db')
+     cmd('create_project',{'name':'p','base':base},revision=0)
+     cmd('create_task',{'task':'fixture','work_ref':{'deployment':'fixture','project':'fixture','item':'fixture'},'source_revision':'fixture-r1','brief':'not a qualified Kata source'})
+     stop(ctrl)
+     ctrl = start_controller(database='unlinked.db')
+     denied('admit',{'task':'fixture'},auth,match='qualified Kata source')
+     assert query()['tasks'][0]['state']=='created' and not query()['attempts']
+     records.append({'name':'qualification','status':'PASS','public_source_capture':True,'immutable_admitted':True,'real_metadata_comments':True,'duplicate_effect_readback':True,'offline_restart_recovery':True,'worker_boundary':True,'replacement_context':True,'runtime_cleanup_qualified':False})
++except Finished:
++    pass
+ except BaseException as error:
+     records.append({'name':'qualification','status':'FAIL','error':str(error)})
+     raise
+ finally:
+     for p in processes:
+         stop(p)
+     proxy.shutdown()
+     proxy.server_close()
+diff --git a/crates/sqlite-controller/tests/support/native_registry.py b/crates/sqlite-controller/tests/support/native_registry.py
+index 8225143..1e56345 100644
+--- a/crates/sqlite-controller/tests/support/native_registry.py
++++ b/crates/sqlite-controller/tests/support/native_registry.py
+@@ -120,17 +120,17 @@ def run(topology):
+      assert process.poll() is None,(r/(root+'.stderr')).read_text()
+      return (r/(root+'.sock')).exists()
+     wait(ready,30)
+    runtime_config=r/'controller-native.json';runtime_config.write_text(json.dumps({'schema_migration':'1-to-2','topology':topology,'transport_root':str(r/'t-app'),'servers':[{'id':'native','supervisor_socket':str(r/'controlplanes.sock'),'auth_ref':'CONTROLPLANE_SECRET','transport_root':str(r/'t-app'),'worker_supervisor_socket':str(r/'workers.sock'),'worker_auth_ref':'CORENIUS_SUPERVISOR_TOKEN','worker_transport_root':str(r/'t-exec'),'schema_digest':SCHEMA}]}))
+    print('exact_native_profile_configs',topology,json.dumps({'workers':json.loads((r/'workers.json').read_text()),'controlplanes':json.loads((r/'controlplanes.json').read_text()),'controller':json.loads(runtime_config.read_text()),'native_config_toml':cfg.read_text()}),flush=True)
+    env={'PATH':'/usr/bin:/bin','CORENIUS_OPERATOR_TOKEN':TOKEN,'CORENIUS_CODEX_CONFIG':str(runtime_config),'CORENIUS_SUPERVISOR_SOCKET':str(r/'workers.sock'),'CORENIUS_SUPERVISOR_TOKEN':SUPERVISOR,'CONTROLPLANE_SECRET':CONTROL,'CORENIUS_TEST_LOSE_NATIVE_ACK':str(r/'lose-ack'),'CORENIUS_TEST_HOLD_CODEX':str(r/'hold-codex'),'CORENIUS_TEST_CRASH_AFTER_NATIVE_CONFIRM':str(r/'crash-confirm'),'CORENIUS_TEST_ACK_FENCE_FIXTURE':os.environ.get('CORENIUS_TEST_ACK_FENCE_FIXTURE','0'),'CORENIUS_TEST_CRASH_FILE':str(r/'crash-boundary'),'CORENIUS_TEST_CRASH_POINT':os.environ.get('CORENIUS_TEST_ADOPT_CRASH','initial_turn_confirmation' if os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1' else 'empty_thread_binding' if os.environ.get('CORENIUS_TEST_EMPTY_CRASH')=='1' else ''),'CORENIUS_TEST_EVENT_BARRIER':str(r/'event-barrier'),'CORENIUS_TEST_PAGE_SETUP':str(r/'page-setup'),'CORENIUS_TEST_RETIRED_EVENTS':str(r/'retired-events'),'CORENIUS_TEST_LOSE_UNSUBSCRIBE_ACK':str(r/'lose-unsubscribe'),'CORENIUS_TEST_ADOPT_EVENTS':str(r/'adopt-events'),'CORENIUS_TEST_CLEANUP_HISTORY':str(r/'cleanup-history')}
+    if os.environ.get('CORENIUS_TEST_CONFIRM_FIXTURE')=='1':(r/'crash-confirm').write_text('declared test-only post-confirmation crash')
+    if os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1':
+-    (r/'adopt-events').write_text('declared actual native frame/projection observation');(r/'event-barrier').write_text('declared wait for actual recovered first-turn completion')
++    (r/'adopt-events').write_text('declared actual native frame/projection observation');(r/'event-barrier').write_text('declared wait for actual recovered first-turn completion');(r/'hold-codex').write_text('fixture setup only: pin exact admitted actors before native RPC')
+    if os.environ.get('CORENIUS_TEST_EMPTY_CRASH')=='1':(r/'crash-boundary').write_text('declared durable empty binding crash')
+    if os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1':(r/'crash-boundary').write_text('declared initial native turn receipt before projection adoption')
+    if os.environ.get('CORENIUS_TEST_PAGE_FIXTURE')=='1':(r/'page-setup').write_text('declared native-only setup threads, no controller assignments')
+    controller=owned.spawn([sys.argv[1],str(r/'state.db'),str(r/'controller.sock')],'controller',env)
+    def startup():
+     assert controller.poll() is None,(r/'controller.stderr').read_text()
+     return (r/'controller.sock').exists()
+    wait(startup)
+@@ -146,16 +146,18 @@ def run(topology):
+      if 'ok' in value:return value['ok']['result']
+      assert 'revision' in value.get('error',''),value
+     raise AssertionError('command revision contention')
+    command('create_project',{'name':'p','base':'0123456789abcdef0123456789abcdef01234567'})
+    grants=[]
+    for task in ['TASK_A','TASK_B']:
+     command('create_task',{'task':task,'work_ref':{'deployment':'fixture','project':'p','item':task},'source_revision':'r1','brief':task+' MODEL_FREE_ACTUAL_PROTOCOL'})
+     grants.append(command('admit',{'task':task}))
++   if os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1':
++    (r/'adopt-events.actors').write_text(json.dumps({'a':grants[0]['attempt'],'b':grants[1]['attempt']}));(r/'hold-codex').unlink()
+    confirm_restarted=False;page_ws=None;padding=[]
+    def padding_setup(document,count):
+     nonlocal page_ws
+     if page_ws is None:
+      app=request(r/'controlplanes.sock',{'token':CONTROL,'action':'native_lookup','binding':document['server_execution']['binding']})['ok'];actual=app['runtime']
+      page_ws=WS.connect('localhost',8788,app['capability'],unix=actual['endpoint'],path='/?corenius_start='+actual['runtime_start'])
+      page_ws.s.settimeout(8)
+      fixture_rpc(page_ws,'initialize',{'clientInfo':{'name':'owned-pagination-setup-only','version':'0.1'},'capabilities':{'experimentalApi':True}});page_ws.send({'method':'initialized','params':{}})
+@@ -242,16 +244,24 @@ def run(topology):
+      observation=json.loads((r/'crash-boundary.observed').read_text());empty=next((b for b in registry['bindings'] if b['document'].get('thread_id')==observation['thread_id']),None)
+      return registry if empty and empty['state']=='unknown' and empty['document'].get('recovery_state')=='qualification_unknown' else False
+     if os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1' and confirm_restarted:
+      observation=json.loads((r/'crash-boundary.observed').read_text());target=next((b['document'] for b in registry['bindings'] if b['document'].get('thread_id')==observation['thread_id']),None)
+      return registry if len(registry['bindings'])==2 and all(b['document'].get('thread_id') and b['document'].get('turn_id') for b in registry['bindings']) and target and target.get('current_turn',{}).get('id')==observation['turn_id'] and any(turn.get('id')==observation['turn_id'] for turn in target.get('native_turns',[])) and target.get('recovery_state')=='remote_registered_input_blocked' and not target.get('ui_input_ready') else False
+     return registry if len(registry['bindings'])==2 and all(b['document'].get('thread_id') and b['document'].get('turn_id') and b['document'].get('ui_input_ready') for b in registry['bindings']) else False
+    try:registry=wait(bound,30)
+    except AssertionError:
++    if os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1':
++     registry=query('codex_registry');a=next((b for b in registry['bindings'] if b['attempt']==grants[0]['attempt']),None);b=next((b for b in registry['bindings'] if b['attempt']==grants[1]['attempt']),None)
++     projection=json.loads((r/'adopt-events.projection').read_text()) if (r/'adopt-events.projection').exists() else None
++     frames=[json.loads(line) for line in (r/'adopt-events.received').read_text().splitlines()] if (r/'adopt-events.received').exists() else []
++     delivered=[event for event in frames if event.get('method')=='thread/status/changed' and projection and event.get('params',{}).get('threadId')==projection['thread_id']]
++     workspace=r/'workers'/grants[0]['attempt']/'workspace'
++     prerequisites=bool(confirm_restarted and a and projection==a['document'] and projection.get('ui_input_ready') and projection.get('current_turn',{}).get('native_status')=='completed' and (workspace/'TASK_A-shell').exists() and (workspace/'TASK_A-patch-2').exists() and [event['params']['status']['type'] for event in delivered]==['active','idle'] and all(projection['native_activity'].count(event)==1 for event in delivered) and (r/'hold-codex').exists() and (r/'adopt-events.disarmed').exists() and (r/'adopt-events.deferrals').exists() and not (r/'adopt-events.retry-B').exists() and (not b or not b['document'].get('ui_input_ready')) and not adopt_errors)
++     print('declared_exact_B_deferral_deadline',topology,json.dumps({'credited_scheduling_RED_prerequisites':prerequisites,'registry':registry,'projection':projection,'received_frames':frames,'delivered':delivered,'deferrals':(r/'adopt-events.deferrals').read_text() if (r/'adopt-events.deferrals').exists() else None,'disarmed':(r/'adopt-events.disarmed').exists(),'B_retry_after_disarm':(r/'adopt-events.retry-B').exists(),'hold':(r/'hold-codex').exists(),'adopt_errors':adopt_errors}),flush=True)
+     if os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1':print('actual_initial_recovery_failure',topology,json.dumps(query('codex_registry')),flush=True)
+     raise
+    assert query('snapshot')['occupied_slots']==2
+    if os.environ.get('CORENIUS_TEST_CONFIRM_FIXTURE')=='1':
+     assert confirm_restarted
+     for binding in registry['bindings']:
+      starts=[o for o in registry['operations'] if o['binding']==binding['id'] and o['kind']=='thread/start']
+      assert len(starts)==1 and starts[0]['observation']['thread']['id']==binding['document']['thread_id'],'confirmed native creation must be adopted without replay after daemon crash'
+@@ -653,11 +663,15 @@ def run(topology):
+    disposition=next(b['document'] for b in query('codex_registry')['bindings'] if b['attempt']==grants[0]['attempt']).get('turn_shutdown')
+    assert disposition and disposition['state'] in ['completed','interrupted','failed','unknown','interrupt_acknowledged'], 'retained native turn shutdown must distinguish receipt from executor stop'
+    print('native_active_cancellation_disposition',topology,json.dumps(disposition),flush=True)
+    value=request(r/'controller.sock',{'auth':auth,'project':'p','command':{'kind':'codex_turn','args':{'attempt':grants[0]['attempt'],'text':'REVOKED_ATTEMPT_INPUT'},'expected_revision':query('snapshot')['revision'],'idempotency_key':str(__import__('uuid').uuid4())}})
+    assert 'error' in value,'withdrawn attempt binding must not submit native input'
+    print('controller_owned_cancellation_confirmed',topology,flush=True)
+   finally:
+    release.set();event_b_release.set();cancel_hold.set();owned.stop();provider.shutdown();provider.server_close();guard.close()
++   if os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1':
++    import tarfile
++    destination=HERE.parents[1]/'.scratch/sqlite-controller/native';destination.mkdir(parents=True,exist_ok=True)
++    with tarfile.open(destination/(topology+'-'+r.name+'.tar.gz'),'w:gz') as archive:archive.add(r,arcname=r.name)
+    for log in list(r.glob('*.stderr'))+list(r.glob('*/**/output.log')):
+     if log.stat().st_size:print('owned_log',log.name,log.read_text()[-3000:],flush=True)
+ for topology in os.environ.get('CORENIUS_TEST_TOPOLOGY','shared,separate').split(','):run(topology)
+BASE d201642b36695dbd0f29a7ac857ee9e8de520728
+SOURCE_HEAD 4d5fbff0323f27c6dcb30aec5cf3df7a839511e0
+

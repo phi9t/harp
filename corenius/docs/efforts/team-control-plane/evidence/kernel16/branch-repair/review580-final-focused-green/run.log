@@ -1,0 +1,36 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review580-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.00s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 3 tests
+test review580_owned_continuation_usage_worker ... ignored, owned singleton native transport subprocess
+
+running 1 test
+test review580_allocated_continuation_history_does_not_hold_original_unbound_claim ... ok
+test review580_owned_continuation_usage_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 29 filtered out; finished in 2.01s
+
+test review580_unbound_original_and_allocated_continuation_hold_unknown_usage ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 27 filtered out; finished in 2.01s
+
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 3 tests
+test review580_fast_monitor_crash_retains_exact_launch_stop_certificate ... ok
+test review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result ... ok
+test review580_surviving_monitor_thread_group_retains_capacity ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 13.09s
+
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 4 tests
+test review580_recovered_real_verifier_cannot_verify_or_accept_exact_candidate ... ok
+test review580_actual_large_retained_log_allows_authenticated_takeover ... ok
+test review580_retained_monitor_result_without_completion_supports_verify_accept ... ok
+test review580_takeover_preserves_raw_log_security_and_receipt_size_controls ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 53 filtered out; finished in 20.29s
+

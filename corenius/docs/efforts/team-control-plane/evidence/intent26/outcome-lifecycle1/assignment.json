@@ -1,0 +1,19 @@
+{
+  "route": "gated post-architecture allocation1",
+  "skill_adapter": "Matt routing owner unavailable; canonical skill crosswalk applied, no Matt invocation claimed",
+  "base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "writer": "intent26_outcome_lifecycle1_author",
+  "limits": {
+    "cargo_test_launches": 10,
+    "each_command_seconds": 1800,
+    "cumulative_compile_test_seconds": 3600,
+    "jobs": 2,
+    "test_threads": 1
+  },
+  "pg_container": "corenius-intent26-outcome-lifecycle1-pg",
+  "pg_container_id": "df4430a4c93a644a5029ca46559557923cf52bc69a05ebe9003f79161dfc97a0",
+  "pg_dsn": "host=127.0.0.1 port=10749 user=probe dbname=probe",
+  "target": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+  "ownership": "exclusive author; not released",
+  "cleanup": "failed fixtures retained; container persistent, no automatic removal"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "gate-default",
+  "source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--",
+    "--nocapture",
+    "--test-threads=2"
+  ],
+  "started": "2026-10-04T18:37:35.042855+00:00",
+  "ended": "2026-10-04T18:40:29.723632+00:00",
+  "elapsed_seconds": 174.68076563393697,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair2/gate-default.log",
+  "environment": {}
+}

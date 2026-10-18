@@ -1,0 +1,9 @@
+command: python3 docs/efforts/multi-agent-bench/evidence/research-insula/digest_demo.py docs/efforts/multi-agent-bench/evidence/research-insula/run-digest/a
+sha256:19c68eecd776828d0a3c9ff77ce3474f679b750ae72d68b43bca1b83a795844b
+command: python3 docs/efforts/multi-agent-bench/evidence/research-insula/digest_demo.py docs/efforts/multi-agent-bench/evidence/research-insula/run-digest/a
+sha256:19c68eecd776828d0a3c9ff77ce3474f679b750ae72d68b43bca1b83a795844b
+command: python3 docs/efforts/multi-agent-bench/evidence/research-insula/digest_demo.py docs/efforts/multi-agent-bench/evidence/research-insula/run-digest/b
+sha256:19c68eecd776828d0a3c9ff77ce3474f679b750ae72d68b43bca1b83a795844b
+mutate: printf Hello > docs/efforts/multi-agent-bench/evidence/research-insula/run-digest/b/sub/file.txt
+command: python3 docs/efforts/multi-agent-bench/evidence/research-insula/digest_demo.py docs/efforts/multi-agent-bench/evidence/research-insula/run-digest/b
+sha256:70bc2625adef12cb136f25daa3e771a0645ae9fe7f3585100c045698110b4e51

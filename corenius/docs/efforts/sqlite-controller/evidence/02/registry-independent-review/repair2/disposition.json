@@ -1,0 +1,28 @@
+{
+  "disposition": "TESTED_REVIEW_REJECTED",
+  "source_commit": "6f55bc67624b2399c3430fe2c5e003baeb4c22e0",
+  "crate_tree": "9aead302dc0826d69b91112e8e5dca228d9a90cb",
+  "review_base": "cbe7854b59898f9750d1478d2277584c7eca7b42",
+  "root_gate": "PASS",
+  "standards": "PASS",
+  "spec": "FAIL",
+  "branch641": "FAIL",
+  "open_findings": [
+    "Confirmed thread/start adoption misses receive allowlist before further RPCs",
+    "Cleanup retry overwrites confirmed terminal evidence and can strand pending unsubscribe"
+  ],
+  "retained_root_owned_identities": 476,
+  "matching_live": 0,
+  "terminal_disposal_receipts": 171,
+  "classification": "MODEL_FREE_ACTUAL_PROTOCOL",
+  "author_final_evidence_tip": "cc774921be6e8e00b8de54942b56fa0fee01d56d",
+  "ticket02_accepted": false,
+  "live_qualified": false,
+  "source_mainline_landed": false,
+  "author_gate": "PASS",
+  "author_gate_test_seconds": 762.44,
+  "author_evidence_files_checked": 57,
+  "retained_author_owned_identities": 724,
+  "author_matching_live_reobserved_by_root": 0,
+  "author_terminal_disposal_receipts": 260
+}

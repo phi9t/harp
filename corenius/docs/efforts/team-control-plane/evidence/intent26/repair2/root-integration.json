@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T21:04:10.611271+00:00",
+  "accepted": false,
+  "axes": {
+    "spec": "PASS no blockers",
+    "standards": "PASS zero hard violations; Low Data Clumps nonblocking"
+  },
+  "active_source_integrated": true,
+  "source_count": 18,
+  "integration_preconditions": "all18 root preimages matched author fixed base; all18 imported postimages match frozen reviewed snapshots",
+  "resource_slot": "root owns Cargo/PG for integrated gate; no author runs",
+  "root_gate": "pending",
+  "branch_gate": "pending",
+  "scope": "ticket26 candidate integration only; no whole-v02/live/remote/lead/restore acceptance",
+  "review_records": [
+    {
+      "origin": "/tmp/corenius-intent26-repair2-standards-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair2/reviews/standards/report.md",
+      "sha256": "0db760570866c9ac7633f898ac500a685698832e7f7b88b52ce2869866b30f9e",
+      "bytes": 2314
+    },
+    {
+      "origin": "/tmp/corenius-intent26-repair2-standards-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair2/reviews/standards/metadata.json",
+      "sha256": "6884a272575f46d1e1a8faf3afca7560410c84dab9295832226bbe7cc0edac98",
+      "bytes": 184594
+    },
+    {
+      "origin": "/tmp/corenius-intent26-repair2-spec-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair2/reviews/spec/report.md",
+      "sha256": "e0e2aee8a8dbbf8d6381fda96e116f0f769d340a7b85bde43fc5590629a1def7",
+      "bytes": 2531
+    },
+    {
+      "origin": "/tmp/corenius-intent26-repair2-spec-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/intent26/repair2/reviews/spec/metadata.json",
+      "sha256": "3b91fc9716c9158ec7521036ef3e38147889a8d0a590522ff8595e4e4a07d62c",
+      "bytes": 190767
+    }
+  ],
+  "sources": [
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts.rs",
+      "sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7"
+    },
+    {
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+    },
+    {
+      "path": "crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+    },
+    {
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+id = "integration-branch"
+stories = [29, 30]
+kind = "integration-branch"
+task = "task.md"
+environment = "environment"
+
+[effort]
+name = "demo"
+integration_branch = "effort/demo"
+parallel_cap = 3
+
+[[cases]]
+id = "land-default-integration"
+action = "land-default"
+
+[[cases]]
+id = "mainline-refused"
+action = "mainline-refused"
+
+[[cases]]
+id = "mainline-owner-override"
+action = "mainline-owner-override"
+
+[[cases]]
+id = "moved-mainline-status"
+action = "status"
+
+[[cases]]
+id = "ticket-without-record-branch-refused"
+action = "ticket-without-record-branch-refused"
+
+[[cases]]
+id = "launch-from-effort-record"
+action = "launch"
+
+[[cases]]
+id = "main-checkout-effort-worktree"
+action = "main-checkout-effort-worktree"

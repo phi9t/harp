@@ -1,0 +1,1603 @@
+diff --git a/tools/probes/test_trae_candidate.py b/tools/probes/test_trae_candidate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5884162c9438431812b192811a01a980db317587
+--- /dev/null
++++ b/tools/probes/test_trae_candidate.py
+@@ -0,0 +1,23 @@
++import json
++from pathlib import Path
++import subprocess
++import sys
++import unittest
++
++class CandidateBoundary(unittest.TestCase):
++    def test_runtime_refusal_precedes_configuration_or_process_entry(self):
++        script=Path(__file__).with_name('trae_synthetic_candidate.py')
++        result=subprocess.run([sys.executable,str(script),'--launch-trae','--offline-check'],capture_output=True,timeout=2)
++        self.assertEqual(result.returncode,78)
++        self.assertIn(b'runtime admission withheld',result.stderr)
++        self.assertNotIn(b'Ran ',result.stderr)
++
++    def test_public_configuration_is_parseable_but_explicitly_unverified(self):
++        script=Path(__file__).with_name('trae_synthetic_candidate.py')
++        result=subprocess.run([sys.executable,str(script),'--render-config'],capture_output=True,timeout=2)
++        self.assertEqual(result.returncode,0,result.stderr)
++        rendered=json.loads(result.stdout);self.assertEqual(rendered['status'],'unverified_pinned_binary_hypothesis')
++        config=rendered['configuration'];provider=config['model_providers']['corenius-synthetic']
++        self.assertEqual(provider['request_max_retries'],0);self.assertEqual(provider['stream_max_retries'],0)
++        self.assertEqual(provider['request_overrides']['extra_body']['max_output_tokens'],32)
++        self.assertFalse(provider['requires_openai_auth'])
+diff --git a/tools/probes/test_trae_inventory.py b/tools/probes/test_trae_inventory.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a2bcdeb0ed9457082736d878d78e379396069106
+--- /dev/null
++++ b/tools/probes/test_trae_inventory.py
+@@ -0,0 +1,70 @@
++"""Read-only kernel/profile and owned /proc-snapshot fixtures; no process launch."""
++import os
++from pathlib import Path
++import unittest
++from trae_namespace_supervisor import NamespaceSupervisor
++
++class HostInventoryBehavior(unittest.TestCase):
++    def test_readable_host_nspid_excludes_actual_hidden_host_namespace_link(self):
++        status=Path('/proc/32161/status').read_text()
++        values=[line.split()[1:] for line in status.splitlines() if line.startswith('NSpid:')]
++        self.assertEqual(values,[['32161']])
++        self.assertEqual(Path('/proc/32161').stat().st_uid,os.getuid())
++        with self.assertRaises(PermissionError):os.readlink('/proc/32161/ns/pid')
++        error=None
++        try:NamespaceSupervisor.members('pid:[0]')
++        except (OSError,RuntimeError) as failure:error=failure
++        self.assertIsNone(error,'host-profile exclusion must precede namespace-link read: '+repr(error))
++
++class SnapshotInventoryBehavior(unittest.TestCase):
++    def setUp(self):
++        import tempfile
++        self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name)
++        (self.root/'self').mkdir();(self.root/'self/status').write_text('NSpid:\t'+str(os.getpid())+'\n')
++        self.process=self.root/'101';self.process.mkdir()
++        (self.process/'status').write_text('NSpid:\t101\n')
++    def tearDown(self):
++        ns=self.process/'ns'
++        if ns.exists():ns.chmod(0o700)
++        self.tmp.cleanup()
++    def test_single_host_component_excluded_without_any_namespace_link(self):
++        self.assertEqual(NamespaceSupervisor.members('pid:[777]',self.root),[])
++    def test_missing_empty_duplicate_or_invalid_nspid_is_uncertain(self):
++        for status in ['Name:\towned\n','NSpid:\t\n','NSpid:\t101\nNSpid:\t101\n','NSpid:\t101 unknown\n','NSpid:\t102\n']:
++            with self.subTest(status=status):
++                (self.process/'status').write_text(status)
++                with self.assertRaises(RuntimeError):NamespaceSupervisor.members('pid:[777]',self.root)
++    def test_nested_nspid_with_unreadable_identity_is_not_skipped(self):
++        (self.process/'status').write_text('NSpid:\t101 1\n')
++        ns=self.process/'ns';ns.mkdir();(ns/'pid').symlink_to('pid:[777]');ns.chmod(0o000)
++        with self.assertRaises(PermissionError):NamespaceSupervisor.members('pid:[777]',self.root)
++    def test_nested_readable_identity_is_included(self):
++        (self.process/'status').write_text('NSpid:\t101 1\n')
++        ns=self.process/'ns';ns.mkdir();(ns/'pid').symlink_to('pid:[777]')
++        (self.process/'stat').write_text('101 (owned snapshot) S '+'0 '*18+'456 0\n')
++        self.assertEqual(NamespaceSupervisor.members('pid:[777]',self.root),[{'pid':101,'start_ticks':456,'namespace':'pid:[777]','inner_pid':1}])
++    def test_nested_observer_frame_does_not_claim_host_exclusion(self):
++        (self.root/'self/status').write_text('NSpid:\t'+str(os.getpid())+' 1\n')
++        with self.assertRaises(RuntimeError):NamespaceSupervisor.members('pid:[777]',self.root)
++
++class ProcessFenceBehavior(unittest.TestCase):
++    def test_actual_existing_observer_namespace_can_be_pinned_without_launch_or_signal(self):
++        from trae_namespace_supervisor import ProcessFence
++        anchor=NamespaceSupervisor.identity(os.getpid());fence=ProcessFence(anchor)
++        try:
++            fence.validate()
++            self.assertEqual(anchor['namespace'],'pid:['+str(fence.inode)+']')
++            self.assertTrue(hasattr(os,'pidfd_open'))
++            descriptor=os.pidfd_open(os.getpid(),0)
++            os.close(descriptor)
++        finally:fence.close()
++        with self.assertRaises(RuntimeError):fence.validate()
++    def test_recorded_owner_identity_mismatch_refuses_without_signaling(self):
++        from trae_namespace_supervisor import ProcessFence
++        anchor=NamespaceSupervisor.identity(os.getpid());wrong=dict(anchor,start_ticks=anchor['start_ticks']-1)
++        with self.assertRaises(RuntimeError):ProcessFence(wrong)
++        fence=ProcessFence(anchor)
++        try:
++            with self.assertRaises(RuntimeError):fence.signal_recorded(wrong)
++            fence.validate()
++        finally:fence.close()
+diff --git a/tools/probes/test_trae_namespace.py b/tools/probes/test_trae_namespace.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..90b3ac5702b2b5de62211784ae9405016cd293e7
+--- /dev/null
++++ b/tools/probes/test_trae_namespace.py
+@@ -0,0 +1,45 @@
++"""Physical owned PID/net namespace fixture; no Trae binary or provider."""
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from trae_namespace_supervisor import NamespaceSupervisor, NamespaceSetupError
++
++class NamespaceBehavior(unittest.TestCase):
++    def test_descendant_inventory_is_exact_and_shutdown_is_empty(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            ledger=Path(tmp)/'owner-ledger';ledger.write_text('owned sentinel')
++            supervisor=NamespaceSupervisor();proof={'kind':'offline_owned_namespace'}
++            try:
++                proof['observations']=supervisor.start_fixture(Path(tmp)/'owner-ledger')
++                proof['inventory_before']=supervisor.inventory()
++                self.assertGreaterEqual(len(proof['inventory_before']),2)
++                self.assertTrue(all(o['external_connect_denied'] and not o['owner_ledger_visible'] and not o['private_roots_visible'] for o in proof['observations']))
++            finally:
++                if supervisor.process is not None:proof['shutdown']=supervisor.stop()
++                out=os.environ.get('TRAE_OFFLINE_NAMESPACE_PROOF')
++                if out:Path(out).write_text(json.dumps(proof,indent=2)+'\n')
++            self.assertEqual(proof['shutdown']['inventory_after'],[])
++            self.assertFalse(proof['shutdown']['quarantined'])
++
++    def test_injected_setup_noise_stops_exact_namespace_and_descendants(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            evidence=Path(tmp)/'owned.jsonl'
++            ledger=Path(tmp)/'owner-ledger';ledger.write_text('owned sentinel')
++            supervisor=NamespaceSupervisor(evidence)
++            with self.assertRaises(NamespaceSetupError) as raised:
++                supervisor.start_fixture(Path(tmp)/'owner-ledger',noise=True)
++            proof=raised.exception.proof
++            out=os.environ.get('TRAE_OFFLINE_NAMESPACE_PROOF')
++            if out:Path(out).write_text(json.dumps(proof,indent=2)+'\n')
++            self.assertTrue(any(o['role']=='setsid-descendant' for o in proof['observations']))
++            self.assertIsNotNone(proof['anchor'])
++            self.assertEqual(proof['anchor']['inner_pid'],1)
++            self.assertEqual(proof['shutdown']['inventory_after'],[])
++            self.assertFalse(proof['shutdown']['quarantined'])
++            self.assertTrue(proof['shutdown']['launcher_terminal'])
++            self.assertIsNotNone(proof['shutdown']['namespace_pin'])
++            self.assertEqual(proof['shutdown']['physical_stop'],'pidfd_SIGKILL')
++            stages=[json.loads(line)['stage'] for line in evidence.read_text().splitlines()]
++            self.assertIn('namespace_owned',stages);self.assertIn('stopped',stages);self.assertIn('setup_failed',stages)
+diff --git a/tools/probes/test_trae_round.py b/tools/probes/test_trae_round.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..26ff65dedbc6d62cf4736bd44d2237a71a957240
+--- /dev/null
++++ b/tools/probes/test_trae_round.py
+@@ -0,0 +1,103 @@
++import concurrent.futures
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from trae_synthetic_guard import AttemptGuard
++
++def body():
++    return json.dumps({'model':'gpt-5.5','stream':True,'max_output_tokens':32,'input':'owned fixture'}).encode()
++
++
++def owned_arm(guard,turn):
++    arm=guard.arm(turn)
++    guard.bind_native_turn(arm['operation'],turn)
++    return arm
++
++class RoundBehavior(unittest.TestCase):
++    def setUp(self):
++        self.tmp=tempfile.TemporaryDirectory();self.path=Path(self.tmp.name)/'ledger';self.stops=[]
++        self.guard=AttemptGuard(self.path,self.stops.append)
++        self.guard.start('owned-ns-1');self.arm=owned_arm(self.guard,'turn-1')
++    def tearDown(self):self.tmp.cleanup()
++    def test_terminal_without_published_case_is_unknown(self):
++        self.guard.admit('POST','/v1/responses',body())
++        self.assertFalse(self.guard.terminal(self.arm['operation'],'turn-1','failed'))
++        self.assertTrue(self.guard.snapshot()['halted'])
++    def test_foreign_terminal_and_reused_turn_do_not_change_provenance(self):
++        before=self.path.read_bytes()
++        with self.assertRaises(ValueError):self.guard.terminal(self.arm['operation'],'foreign-turn','failed')
++        self.assertTrue(self.path.read_bytes().startswith(before))
++        with self.assertRaises(ValueError):owned_arm(self.guard,'second-active')
++        with self.assertRaises(ValueError):self.guard.start('ns-two')
++        self.assertEqual(self.guard.snapshot()['incarnations'],1)
++
++    def test_real_process_crash_does_not_refund_reservation(self):
++        import subprocess,sys
++        # A fresh process opens this owner journal and dies after durable reserve.
++        code="import os,sys;from trae_synthetic_guard import AttemptGuard;g=AttemptGuard(sys.argv[1],lambda _:None);g.admit('POST','/v1/responses',sys.argv[2].encode());os._exit(17)"
++        result=subprocess.run([sys.executable,'-c',code,str(self.path),body().decode()],cwd=Path(__file__).parent,capture_output=True,timeout=2)
++        self.assertEqual(result.returncode,17,result.stderr)
++        reopened=AttemptGuard(self.path,self.stops.append)
++        self.assertEqual(reopened.snapshot()['admitted'],1);self.assertEqual(reopened.snapshot()['reserved_output_tokens'],32)
++        self.assertFalse(reopened.admit('POST','/v1/responses',body())['admitted'])
++
++    def test_corrupt_or_world_readable_journal_is_quarantined_without_reset(self):
++        self.guard.admit('POST','/v1/responses',body())
++        before=self.path.read_bytes();self.path.chmod(0o644)
++        with self.assertRaises(ValueError):self.guard.snapshot()
++        self.assertTrue(self.path.read_bytes().startswith(before));self.assertIn('journal_uncertain',self.stops)
++        self.path.chmod(0o600)
++        with self.path.open('ab') as file:file.write(b'{incomplete')
++        corrupt=self.path.read_bytes()
++        with self.assertRaises(ValueError):self.guard.snapshot()
++        self.assertEqual(self.path.read_bytes(),corrupt)
++
++    def test_symlink_journal_is_refused_without_touching_target(self):
++        target=Path(self.tmp.name)/'target';target.write_text('keep')
++        linked=Path(self.tmp.name)/'linked';linked.symlink_to(target)
++        with self.assertRaises(OSError):AttemptGuard(linked,self.stops.append).snapshot()
++        self.assertEqual(target.read_text(),'keep')
++
++    def test_unknown_terminal_ends_round_and_finite_reservation_remains(self):
++        from test_trae_synthetic_guard import publish
++        self.guard.admit('POST','/v1/responses',body());publish(self.guard,self.arm['operation'])
++        self.assertFalse(self.guard.terminal(self.arm['operation'],'turn-1','unknown'))
++        self.assertTrue(self.guard.snapshot()['halted']);self.assertEqual(self.guard.snapshot()['reserved_output_tokens'],32)
++        with self.assertRaises(ValueError):owned_arm(self.guard,'replacement')
++
++    def test_explicit_terminal_deadline_halts_and_retains_reservation(self):
++        self.guard.admit('POST','/v1/responses',body());self.guard.expire(self.arm['operation'])
++        self.assertTrue(self.guard.snapshot()['halted']);self.assertEqual(self.guard.snapshot()['admitted'],1)
++        self.assertIn('terminal_deadline',self.stops)
++    def test_real_owner_watchdog_expires_without_http_or_runtime_cooperation(self):
++        import threading
++        from trae_synthetic_guard import RoundWatchdog
++        stopped=threading.Event();path=Path(self.tmp.name)/'short-deadline'
++        guard=AttemptGuard(path,lambda reason:stopped.set(),turn_seconds=.05)
++        guard.start('short-owned-ns');owned_arm(guard,'short-turn')
++        with RoundWatchdog(guard):self.assertTrue(stopped.wait(.5))
++        self.assertTrue(guard.snapshot()['halted'])
++        with self.assertRaises(ValueError):AttemptGuard(path,lambda _:None).snapshot()
++
++    def test_deadline_cannot_be_widened_at_constructor(self):
++        with self.assertRaises(ValueError):AttemptGuard(Path(self.tmp.name)/'wide',lambda _:None,turn_seconds=121)
++        with self.assertRaises(ValueError):AttemptGuard(Path(self.tmp.name)/'wide',lambda _:None,round_seconds=601)
++    def test_incarnation_slot_reserved_before_spawn_cannot_be_replenished_after_crash(self):
++        path=Path(self.tmp.name)/'pre-spawn';guard=AttemptGuard(path,self.stops.append)
++        reservation=guard.reserve_incarnation()
++        self.assertEqual(guard.snapshot()['incarnation_slots'],1)
++        self.assertEqual(guard.snapshot()['incarnations'],0)
++        reopened=AttemptGuard(path,self.stops.append)
++        with self.assertRaises(ValueError):reopened.reserve_incarnation()
++        self.assertEqual(reopened.snapshot()['incarnation_slots'],1)
++        self.assertTrue(reopened.snapshot()['halted'])
++
++    def test_reserved_slot_bound_once_to_owned_namespace_before_arm(self):
++        path=Path(self.tmp.name)/'bind';guard=AttemptGuard(path,self.stops.append)
++        slot=guard.reserve_incarnation();guard.bind_incarnation(slot,'exact-owned-namespace')
++        arm=owned_arm(guard,'owner-turn')
++        self.assertEqual(arm['namespace'],'exact-owned-namespace')
++        with self.assertRaises(ValueError):guard.bind_incarnation(slot,'other-namespace')
++        self.assertEqual(guard.snapshot()['incarnations'],1)
+diff --git a/tools/probes/test_trae_synthetic_guard.py b/tools/probes/test_trae_synthetic_guard.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..970106bd4fa10211ea00b8c1ecac0d4bacb9581f
+--- /dev/null
++++ b/tools/probes/test_trae_synthetic_guard.py
+@@ -0,0 +1,110 @@
++#!/usr/bin/env python3
++"""Offline owner/guard seam only. Frozen predecessor retains its six-test proof."""
++import concurrent.futures
++import json
++from pathlib import Path
++import socket
++import tempfile
++import unittest
++from trae_synthetic_guard import AttemptGuard, synthetic_sse
++
++
++def request(**changes):
++    obj={'model':'gpt-5.5','stream':True,'max_output_tokens':32,'input':'owned fixture'}
++    obj.update(changes)
++    return json.dumps(obj).encode()
++
++
++def publish(guard,operation):
++    client,server=socket.socketpair()
++    try:
++        guard.send_response(server,operation)
++        data=b''
++        while True:
++            chunk=client.recv(65536)
++            if not chunk:return data
++            data+=chunk
++    finally:client.close();server.close()
++
++
++def advance(guard,turn):
++    arm=owned_arm(guard,turn)
++    decision=guard.admit('POST','/v1/responses',request())
++    assert decision['admitted']
++    wire=publish(guard,arm['operation'])
++    assert guard.terminal(arm['operation'],turn,'completed' if arm['case']=='success' else 'failed',content='preflight-ok' if arm['case']=='success' else None)
++    return wire
++
++
++
++def owned_arm(guard,turn):
++    arm=guard.arm(turn)
++    guard.bind_native_turn(arm['operation'],turn)
++    return arm
++
++class GuardBehavior(unittest.TestCase):
++    def setUp(self):
++        self.tmp=tempfile.TemporaryDirectory();self.path=Path(self.tmp.name)/'attempts.jsonl';self.stops=[]
++        self.guard=AttemptGuard(self.path,self.stops.append);self.guard.start('namespace-one')
++    def tearDown(self):self.tmp.cleanup()
++
++    def test_third_request_revokes_admission_before_response_then_waits_for_terminal(self):
++        advance(self.guard,'turn-one');advance(self.guard,'turn-two')
++        self.guard.start('namespace-two');arm=owned_arm(self.guard,'turn-three')
++        self.assertTrue(self.guard.admit('POST','/v1/responses',request())['admitted'])
++        self.assertTrue(self.guard.snapshot()['admission_revoked']);self.assertEqual(self.stops,[])
++        wire=publish(self.guard,arm['operation']);self.assertIn(b'response.completed',wire)
++        self.assertEqual(self.stops,[])
++        self.assertTrue(self.guard.terminal(arm['operation'],'turn-three','completed','preflight-ok'))
++        self.assertEqual(self.stops,['round_complete'])
++        self.assertFalse(self.guard.admit('POST','/v1/responses',request())['admitted'])
++        self.assertEqual(self.guard.snapshot()['incoming_attempts'],4)
++        self.assertEqual(self.guard.snapshot()['admitted'],3)
++        self.assertTrue(self.guard.snapshot()['envelope_violation'])
++
++    def test_concurrent_last_slot_retry_is_counted_and_never_forwarded(self):
++        advance(self.guard,'turn-one');advance(self.guard,'turn-two');self.guard.start('namespace-two');owned_arm(self.guard,'turn-three')
++        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
++            attempts=list(pool.map(lambda _:AttemptGuard(self.path,self.stops.append).begin(),range(3)))
++        self.assertEqual(sum(a['eligible'] for a in attempts),1)
++        self.assertEqual(self.guard.snapshot()['incoming_attempts'],5)
++        self.assertEqual(self.guard.snapshot()['admitted'],2)
++        self.assertEqual(len({a['attempt'] for a in attempts}),3)
++        self.assertTrue(self.guard.snapshot()['halted'])
++
++    def test_restart_preserves_uncertain_reservation_and_refuses_retry(self):
++        owned_arm(self.guard,'turn-one');self.guard.admit('POST','/v1/responses',request())
++        later=AttemptGuard(self.path,self.stops.append)
++        self.assertFalse(later.admit('POST','/v1/responses',request())['admitted'])
++        self.assertEqual(later.snapshot()['incoming_attempts'],2)
++        self.assertEqual(later.snapshot()['admitted'],1)
++        self.assertEqual(later.snapshot()['reserved_output_tokens'],32)
++
++    def test_unbounded_model_route_and_body_requests_count_then_stop(self):
++        bad=[('GET','/v1/models',b''),('POST','/v1/responses?route=alternate',request()),('POST','/v1/responses',request(model='other')),('POST','/v1/responses',request(max_output_tokens=None)),('POST','/v1/responses',request(max_output_tokens=True)),('POST','/v1/responses',request(max_output_tokens=33)),('POST','/v1/responses',b'x'*(1024*1024+1))]
++        for i,(method,path,body) in enumerate(bad):
++            with self.subTest(i=i):
++                g=AttemptGuard(Path(self.tmp.name)/f'bad-{i}.jsonl',self.stops.append);g.start('owned');owned_arm(g,'turn')
++                self.assertFalse(g.admit(method,path,body)['admitted'])
++                self.assertEqual(g.snapshot()['incoming_attempts'],1)
++                self.assertEqual(g.snapshot()['reserved_output_tokens'],0)
++                self.assertTrue(g.snapshot()['halted'])
++
++    def test_append_only_terminal_does_not_accept_reused_operation(self):
++        owned_arm(self.guard,'turn-one');decision=self.guard.admit('POST','/v1/responses',request());publish(self.guard,decision['operation'])
++        self.guard.terminal(decision['operation'],'turn-one','failed');before=self.path.read_bytes()
++        with self.assertRaises(ValueError):self.guard.terminal(decision['operation'],'turn-one','failed')
++        self.assertTrue(self.path.read_bytes().startswith(before))
++
++    def test_stream_is_coherent_bounded_and_truncation_has_no_completion(self):
++        stream=synthetic_sse('owned-response','owned-item');self.assertLess(len(stream),64*1024)
++        events=[json.loads(p[6:]) for p in stream.decode().splitlines() if p.startswith('data: ')]
++        self.assertEqual([e['sequence_number'] for e in events],list(range(len(events))))
++        self.assertEqual(events[-1]['type'],'response.completed')
++        final=events[-1]['response'];self.assertEqual(final['id'],'owned-response')
++        self.assertEqual(final['output'][0]['id'],'owned-item');self.assertEqual(final['output'][0]['content'][0]['text'],'preflight-ok')
++        truncated=synthetic_sse('owned-response','owned-item',truncate=True)
++        self.assertNotIn(b'response.completed',truncated);self.assertIn(b'response.output_text.delta',truncated)
++        with self.assertRaises(ValueError):synthetic_sse('x'*65536,'item')
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/probes/test_trae_transport.py b/tools/probes/test_trae_transport.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ca9989afc1dac560de9f41f2ec2c3fc5e723c089
+--- /dev/null
++++ b/tools/probes/test_trae_transport.py
+@@ -0,0 +1,122 @@
++"""Public transport seam: real owned socketpair, never Trae/external endpoints."""
++import json
++from pathlib import Path
++import socket
++import tempfile
++import threading
++import time
++import unittest
++from trae_synthetic_guard import AttemptGuard, receive_http, serve_connection
++
++
++def owned_arm(guard,turn):
++    arm=guard.arm(turn)
++    guard.bind_native_turn(arm['operation'],turn)
++    return arm
++
++class TransportBehavior(unittest.TestCase):
++    def test_partial_request_is_counted_before_waiting_for_headers(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            guard=AttemptGuard(Path(tmp)/'ledger',lambda _:None)
++            guard.start('owned-namespace-1');owned_arm(guard,'owned-turn-1')
++            client,server=socket.socketpair()
++            thread=threading.Thread(target=receive_http,args=(server,guard),daemon=True)
++            thread.start()
++            try:
++                client.sendall(b'P')
++                end=time.monotonic()+1
++                while time.monotonic()<end and guard.snapshot()['incoming_attempts']==0:
++                    time.sleep(.01)
++                self.assertEqual(guard.snapshot()['incoming_attempts'],1)
++            finally:
++                client.close();thread.join(2);server.close()
++
++    def exercise(self, wire, expected_count=1):
++        with tempfile.TemporaryDirectory() as tmp:
++            stops=[];guard=AttemptGuard(Path(tmp)/'ledger',stops.append)
++            guard.start('owned');owned_arm(guard,'turn')
++            client,server=socket.socketpair()
++            try:
++                client.sendall(wire);client.shutdown(socket.SHUT_WR)
++                results=serve_connection(server,guard,timeout=.2) if expected_count>1 else [receive_http(server,guard,timeout=.2)]
++                result=results[-1]
++                self.assertFalse(result['admitted']);self.assertEqual(guard.snapshot()['incoming_attempts'],expected_count)
++                self.assertEqual(guard.snapshot()['admitted'],0);self.assertTrue(guard.snapshot()['halted'])
++                self.assertTrue(stops)
++            finally:client.close();server.close()
++
++    def test_rejected_framing_is_bounded_and_counted(self):
++        examples=[b'BROKEN\r\n\r\n',b'POST /v1/responses HTTP/1.1\r\n\r\n',
++          b'POST /v1/responses HTTP/1.1\r\nTransfer-Encoding: chunked\r\n\r\n',
++          b'POST /v1/responses HTTP/1.1\r\nContent-Length: 2\r\nContent-Length: 2\r\n\r\n{}',
++          b'POST /v1/responses HTTP/1.1\r\nContent-Length: 2,3\r\n\r\n{}',
++          b'POST /v1/responses HTTP/1.1\r\nContent-Length: -1\r\n\r\n',
++          b'POST /v1/responses HTTP/1.1\r\nContent-Length: 1048577\r\n\r\n',
++          b'POST /v1/responses HTTP/1.1\r\nContent-Length: 3\r\n\r\n{}',
++          b'POST /v1/responses HTTP/1.1\r\nX: '+b'x'*8192+b'\r\n\r\n']
++        for wire in examples:
++            with self.subTest(wire=wire[:100]):self.exercise(wire)
++
++    def test_trailing_body_mismatch_is_not_an_uncounted_request(self):
++        self.exercise(b'POST /v1/responses HTTP/1.1\r\nContent-Length: 2\r\n\r\n{}GET /v1/models HTTP/1.1\r\n\r\n',expected_count=2)
++
++    def test_stalled_body_deadline_preserves_attempt(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            guard=AttemptGuard(Path(tmp)/'ledger',lambda _:None);guard.start('owned');owned_arm(guard,'turn')
++            client,server=socket.socketpair()
++            try:
++                client.sendall(b'POST /v1/responses HTTP/1.1\r\nContent-Length: 100\r\n\r\nx')
++                start=time.monotonic();result=receive_http(server,guard,timeout=.05)
++                self.assertFalse(result['admitted']);self.assertLess(time.monotonic()-start,.5)
++                self.assertEqual(guard.snapshot()['incoming_attempts'],1)
++            finally:client.close();server.close()
++
++    def test_real_transport_three_cases_exact_response_and_terminal_order(self):
++        from test_trae_synthetic_guard import request
++        with tempfile.TemporaryDirectory() as tmp:
++            stops=[];guard=AttemptGuard(Path(tmp)/'ledger',stops.append);guard.start('ns-one')
++            for number in range(3):
++                if number==2:guard.start('ns-two')
++                arm=owned_arm(guard,'turn-'+str(number));client,server=socket.socketpair()
++                body=request();wire=b'POST /v1/responses HTTP/1.1\r\nContent-Length: '+str(len(body)).encode()+b'\r\n\r\n'+body
++                try:
++                    client.sendall(wire);decision=receive_http(server,guard)
++                    self.assertTrue(decision['admitted']);guard.send_response(server,decision['operation'])
++                    response=b''
++                    while True:
++                        chunk=client.recv(65536)
++                        if not chunk:break
++                        response+=chunk
++                    self.assertLessEqual(len(response),65536)
++                    if number==0:self.assertTrue(response.startswith(b'HTTP/1.1 503'))
++                    elif number==1:self.assertIn(b'response.output_text.delta',response);self.assertNotIn(b'response.completed',response)
++                    else:self.assertIn(b'response.completed',response);self.assertIn(b'preflight-ok',response);self.assertEqual(stops,[])
++                    self.assertTrue(guard.terminal(arm['operation'],arm['turn'],'completed' if number==2 else 'failed','preflight-ok' if number==2 else None))
++                finally:client.close();server.close()
++            self.assertEqual(stops,['round_complete']);self.assertEqual(guard.snapshot()['incoming_attempts'],3)
++
++    def test_four_complete_pipelined_requests_are_all_observed_not_one_extra(self):
++        from test_trae_synthetic_guard import request
++        with tempfile.TemporaryDirectory() as tmp:
++            guard=AttemptGuard(Path(tmp)/'ledger',lambda _:None);guard.start('owned');owned_arm(guard,'turn')
++            client,server=socket.socketpair();body=request()
++            wire=b'POST /v1/responses HTTP/1.1\r\nContent-Length: '+str(len(body)).encode()+b'\r\n\r\n'+body
++            try:
++                client.sendall(wire*4);client.shutdown(socket.SHUT_WR)
++                results=serve_connection(server,guard)
++                self.assertEqual(len(results),4)
++                self.assertEqual(guard.snapshot()['incoming_attempts'],4)
++                self.assertEqual(guard.snapshot()['admitted'],1)
++                self.assertTrue(guard.snapshot()['envelope_violation'])
++            finally:client.close();server.close()
++
++    def test_ambiguous_framing_never_claims_complete_request_count_coverage(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            guard=AttemptGuard(Path(tmp)/'ledger',lambda _:None);guard.start('owned');owned_arm(guard,'turn')
++            client,server=socket.socketpair()
++            try:
++                client.sendall(b'POST /v1/responses HTTP/1.1\r\nTransfer-Encoding: chunked\r\n\r\n');client.shutdown(socket.SHUT_WR)
++                self.assertFalse(receive_http(server,guard)['admitted'])
++                self.assertTrue(guard.snapshot()['transport_uncertain'])
++                self.assertTrue(guard.snapshot()['halted'])
++            finally:client.close();server.close()
+diff --git a/tools/probes/trae_namespace_fixture.py b/tools/probes/trae_namespace_fixture.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..e7bcb8eff1d5455ce426f5bf5ce43f2c30cd1dcb
+--- /dev/null
++++ b/tools/probes/trae_namespace_fixture.py
+@@ -0,0 +1,41 @@
++"""Owned offline stand-in: two processes including a setsid descendant."""
++import json
++import os
++from pathlib import Path
++import socket
++import signal
++import sys
++import time
++
++
++def report(role):
++    denied = False
++    try:
++        connection=socket.create_connection(('192.0.2.1',443),timeout=.15)
++        connection.close()
++    except OSError:
++        denied=True
++    os.write(1,(json.dumps({'role':role,'inner_pid':os.getpid(),'namespace':os.readlink('/proc/self/ns/pid'),
++                      'network_namespace':os.readlink('/proc/self/ns/net'),'external_connect_denied':denied,
++                      'owner_ledger_visible':Path(sys.argv[1]).exists(),
++                      'private_roots_visible':any(Path(p).exists() for p in ('/home','/data02','/etc'))})+'\n').encode())
++
++# Independent finite offline fixture lifetime; PID1 explicitly handles expiry.
++signal.signal(signal.SIGALRM,lambda *_:os._exit(124))
++signal.alarm(10)
++read_ready,write_ready=os.pipe()
++child=os.fork()
++if child==0:
++    os.close(read_ready)
++    os.setsid();report('setsid-descendant')
++    os.write(write_ready,b'1');os.close(write_ready)
++else:
++    os.close(write_ready)
++    if os.read(read_ready,1)!=b'1':
++        raise RuntimeError('descendant setup acknowledgement missing')
++    os.close(read_ready)
++    if '--noise' in sys.argv:
++        # Existing setsid descendant has acknowledged readiness before failure.
++        os.write(1,b'owned injected non-JSON setup noise\n')
++    report('namespace-init')
++while True:time.sleep(.1)
+diff --git a/tools/probes/trae_namespace_supervisor.py b/tools/probes/trae_namespace_supervisor.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b1963602f8905247c14d56ccf5891cf14ede0bef
+--- /dev/null
++++ b/tools/probes/trae_namespace_supervisor.py
+@@ -0,0 +1,297 @@
++"""Offline stand-in supervision; arbitrary executable/runtime entry is absent."""
++import json
++import os
++from pathlib import Path
++import select
++import signal
++import subprocess
++import time
++
++
++def nspid_values(status, expected_pid=None):
++    lines=[line for line in status.splitlines() if line.startswith('NSpid:')]
++    if len(lines)!=1:
++        raise RuntimeError('missing or ambiguous readable NSpid; inventory uncertain')
++    values=lines[0].split()[1:]
++    if not values or any(not value.isascii() or not value.isdigit() or int(value)<=0 for value in values):
++        raise RuntimeError('invalid readable NSpid; inventory uncertain')
++    if expected_pid is not None and int(values[0])!=expected_pid:
++        raise RuntimeError('host-proc NSpid frame mismatch')
++    return list(map(int,values))
++
++
++class ProcessFence:
++    """Pins recorded namespace identity; pidfd signaling never adopts a PID."""
++    def __init__(self, anchor):
++        self.anchor=dict(anchor)
++        self.namespace_fd=None
++        path=Path('/proc')/str(anchor['pid'])/'ns/pid'
++        descriptor=os.open(path,os.O_RDONLY|os.O_CLOEXEC)
++        try:
++            pinned=os.fstat(descriptor)
++            current=path.stat()
++            if (pinned.st_dev,pinned.st_ino)!=(current.st_dev,current.st_ino) or anchor['namespace']!='pid:['+str(pinned.st_ino)+']' or NamespaceSupervisor.identity(anchor['pid'])!=anchor:
++                raise RuntimeError('namespace pin identity mismatch; refused')
++            self.namespace_fd=descriptor
++            self.device=pinned.st_dev
++            self.inode=pinned.st_ino
++        except BaseException:
++            os.close(descriptor)
++            raise
++
++    def validate(self):
++        if self.namespace_fd is None:
++            raise RuntimeError('namespace pin closed; inventory uncertain')
++        pinned=os.fstat(self.namespace_fd)
++        if (pinned.st_dev,pinned.st_ino)!=(self.device,self.inode):
++            raise RuntimeError('namespace pin changed; inventory uncertain')
++
++    def signal_recorded(self, expected):
++        self.validate()
++        if expected!=self.anchor:
++            raise RuntimeError('recorded signal identity mismatch; refused')
++        if not hasattr(os,'pidfd_open') or not hasattr(signal,'pidfd_send_signal'):
++            raise RuntimeError('pidfd capability unavailable; quarantine')
++        try:
++            descriptor=os.pidfd_open(expected['pid'],0)
++        except ProcessLookupError:
++            return 'recorded_process_disappeared'
++        try:
++            # Recheck AFTER pidfd_open: a reused numeric PID is never adopted.
++            try:
++                current=NamespaceSupervisor.identity(expected['pid'])
++            except (FileNotFoundError,ProcessLookupError):
++                return 'recorded_process_disappeared'
++            if current!=expected:
++                raise RuntimeError('post-pidfd identity mismatch; refused')
++            signal.pidfd_send_signal(descriptor,signal.SIGKILL,None,0)
++            return 'pidfd_SIGKILL'
++        finally:
++            os.close(descriptor)
++
++    def close(self):
++        if self.namespace_fd is not None:
++            os.close(self.namespace_fd)
++            self.namespace_fd=None
++
++
++class NamespaceSetupError(RuntimeError):
++    def __init__(self, proof):
++        super().__init__('offline namespace setup failed; '+proof['reason'])
++        self.proof=proof
++
++
++class NamespaceSupervisor:
++    def __init__(self, evidence=None):
++        self.process=None
++        self.namespace=None
++        self.anchor=None
++        self.fence=None
++        self.observations=[]
++        self.evidence=evidence
++        self.setup_failure=None
++        self.shutdown=None
++
++    def retain(self, stage, **values):
++        if self.evidence is None:
++            return
++        record=dict(stage=stage,launcher=self.process.pid if self.process else None,
++                    namespace=self.namespace,anchor=self.anchor,**values)
++        fd=os.open(self.evidence,os.O_WRONLY|os.O_CREAT|os.O_APPEND|os.O_NOFOLLOW,0o600)
++        try:
++            data=(json.dumps(record,sort_keys=True)+'\n').encode()
++            if os.write(fd,data)!=len(data):
++                raise OSError('short public evidence write')
++            os.fsync(fd)
++        finally:
++            os.close(fd)
++
++    @staticmethod
++    def identity(pid, proc_root=Path('/proc')):
++        directory=proc_root/str(pid)
++        namespace=os.readlink(directory/'ns/pid')
++        fields=(directory/'stat').read_text().rsplit(')',1)[1].split()
++        values=nspid_values((directory/'status').read_text(),expected_pid=pid)
++        return {'pid':pid,'start_ticks':int(fields[19]),
++                'namespace':namespace,'inner_pid':values[-1]}
++
++    @staticmethod
++    def host_frame(proc_root=Path('/proc')):
++        values=nspid_values((proc_root/'self/status').read_text(),expected_pid=os.getpid())
++        if len(values)!=1:
++            raise RuntimeError('observer requires readable host-proc NSpid frame')
++
++    @classmethod
++    def members(cls, namespace, proc_root=Path('/proc')):
++        cls.host_frame(proc_root)
++        found=[]
++        for directory in proc_root.iterdir():
++            if not directory.name.isdigit():
++                continue
++            try:
++                # Every fixed capsule descendant retains this host UID.
++                if directory.stat().st_uid!=os.getuid():
++                    continue
++                values=nspid_values((directory/'status').read_text(),expected_pid=int(directory.name))
++                # A single component in this validated host /proc frame proves
++                # this task is outside every child namespace. Read BEFORE ns/pid.
++                if len(values)==1:
++                    continue
++                identity=cls.identity(int(directory.name),proc_root)
++                if identity['namespace']==namespace:
++                    found.append(identity)
++            except (FileNotFoundError,ProcessLookupError):
++                # Disappearance is distinct from unavailable namespace identity.
++                continue
++        return sorted(found,key=lambda member:member['pid'])
++
++    def _establish(self, deadline):
++        host_namespace=os.readlink('/proc/self/ns/pid')
++        while self.anchor is None and time.monotonic()<deadline:
++            pending=[self.process.pid]
++            while pending:
++                pid=pending.pop()
++                try:
++                    identity=self.identity(pid)
++                    if identity['namespace']!=host_namespace and identity['inner_pid']==1:
++                        self.anchor=identity
++                        self.namespace=identity['namespace']
++                        self.fence=ProcessFence(identity)
++                        return
++                    children=Path('/proc/'+str(pid)+'/task/'+str(pid)+'/children').read_text().split()
++                    pending.extend(map(int,children))
++                except FileNotFoundError:
++                    continue
++            time.sleep(.01)
++        raise RuntimeError('owned namespace init identity unavailable')
++
++    def start_fixture(self, owner_ledger, noise=False):
++        """Only an offline fixed stand-in; noise exercises setup cleanup later."""
++        if self.process is not None:
++            raise RuntimeError('supervisor incarnation already spent')
++        fixture=Path(__file__).with_name('trae_namespace_fixture.py').resolve()
++        command=['/usr/bin/bwrap','--unshare-all','--die-with-parent','--new-session','--as-pid-1',
++                 '--ro-bind','/usr','/usr','--ro-bind','/lib','/lib','--ro-bind','/lib64','/lib64',
++                 '--proc','/proc','--dev','/dev','--tmpfs','/tmp','--dir','/fixture',
++                 '--ro-bind',str(fixture),'/fixture/standin.py','--clearenv',
++                 '--setenv','PATH','/usr/bin','--setenv','PYTHONDONTWRITEBYTECODE','1',
++                 '/usr/bin/python3','-u','/fixture/standin.py',str(owner_ledger)]
++        if noise:
++            command.append('--noise')
++        self.host_frame()
++        self.process=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
++        # Every operation after Popen, including retention/parsing, is protected.
++        try:
++            deadline=time.monotonic()+5
++            self._establish(deadline)
++            self.retain('namespace_owned',inventory=self.inventory())
++            buffer=b''
++            while len(self.observations)<2 and time.monotonic()<deadline:
++                if select.select([self.process.stdout],[],[],.1)[0]:
++                    chunk=os.read(self.process.stdout.fileno(),65536)
++                    if not chunk:
++                        break
++                    buffer+=chunk
++                    if len(buffer)>65536:
++                        raise RuntimeError('bounded setup output exceeded')
++                    while b'\n' in buffer:
++                        line,buffer=buffer.split(b'\n',1)
++                        self.observations.append(json.loads(line))
++            if len(self.observations)!=2:
++                raise RuntimeError('two stand-in identities not observed')
++            if any(record['namespace']!=self.namespace for record in self.observations):
++                raise RuntimeError('namespace observation mismatch')
++            self.retain('fixture_ready',observations=self.observations)
++            return self.observations
++        except BaseException as error:
++            # Cleanup runs even if the public evidence sink itself has failed.
++            proof={'reason':type(error).__name__+': '+str(error),'namespace':self.namespace,
++                   'anchor':self.anchor,'launcher':self.process.pid,'observations':self.observations}
++            try:
++                proof['shutdown']=self.stop()
++            except BaseException as cleanup_error:
++                proof['cleanup_uncertain']=type(cleanup_error).__name__+': '+str(cleanup_error)
++            self.setup_failure=proof
++            try:
++                self.retain('setup_failed',proof=proof)
++            except BaseException as retention_error:
++                proof['retention_uncertain']=type(retention_error).__name__+': '+str(retention_error)
++            raise NamespaceSetupError(proof) from error
++
++    def inventory(self):
++        if not self.namespace:
++            raise RuntimeError('no established owned namespace')
++        if self.fence is None:
++            raise RuntimeError('validated namespace pin unavailable')
++        self.fence.validate()
++        return self.members(self.namespace)
++
++    def stop(self):
++        if self.shutdown is not None:
++            return self.shutdown
++        before=None
++        inventory_error=None
++        try:
++            before=self.inventory()
++        except BaseException as error:
++            inventory_error=type(error).__name__+': '+str(error)
++        physical_error=None
++        signal_outcome=None
++        if self.anchor is not None:
++            try:
++                if self.fence is None:
++                    self.fence=ProcessFence(self.anchor)
++                signal_outcome=self.fence.signal_recorded(self.anchor)
++            except (FileNotFoundError,ProcessLookupError):
++                signal_outcome='recorded_process_disappeared'
++            except BaseException as error:
++                physical_error=type(error).__name__+': '+str(error)
++                if self.process.poll() is None:
++                    self.process.kill()  # Owned unreaped Popen child only; not init adoption.
++        elif self.process is not None and self.process.poll() is None:
++            self.process.kill()
++        deadline=time.monotonic()+2
++        after=None
++        while time.monotonic()<deadline and self.namespace:
++            try:
++                after=self.inventory()
++                if not after:
++                    break
++            except BaseException as error:
++                inventory_error=type(error).__name__+': '+str(error)
++                break
++            time.sleep(.01)
++        launcher_terminal=True
++        try:
++            self.process.wait(timeout=max(.01,deadline-time.monotonic()))
++        except subprocess.TimeoutExpired:
++            launcher_terminal=False
++        finally:
++            self.process.stdout.close()
++            self.process.stderr.close()
++        proof={'exit':self.process.returncode,'namespace':self.namespace,'anchor':self.anchor,
++               'inventory_before':before,'inventory_after':after,'launcher_terminal':launcher_terminal,
++               'quarantined':not self.namespace or after!=[] or not launcher_terminal or physical_error is not None,
++               'physical_error':physical_error,
++               'inventory_error':inventory_error,'physical_stop':signal_outcome or 'owned launcher only; namespace unknown',
++               'namespace_pin':{'device':self.fence.device,'inode':self.fence.inode} if self.fence else None}
++        self.shutdown=proof
++        try:
++            self.retain('stopped',proof=proof)
++        except (OSError,ValueError) as error:
++            proof['retention_uncertain']=str(error)
++        finally:
++            if self.fence is not None:
++                self.fence.close()
++        return proof
++
++    def wait_terminal_then_stop(self, terminal, timeout):
++        deadline=time.monotonic()+timeout
++        observed=None
++        while time.monotonic()<deadline:
++            observed=terminal()
++            if observed is not None:
++                break
++            time.sleep(.01)
++        shutdown=self.stop()
++        return {'terminal':observed,'terminal_unknown':observed is None,'shutdown':shutdown}
+diff --git a/tools/probes/trae_synthetic_candidate.py b/tools/probes/trae_synthetic_candidate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a5ec0f99a0a9c93614ff5a9edf938be3f2d50576
+--- /dev/null
++++ b/tools/probes/trae_synthetic_candidate.py
+@@ -0,0 +1,43 @@
++#!/usr/bin/env python3
++"""Preparation entry: validates/renders public proposal; runtime always refused."""
++import argparse
++import json
++from pathlib import Path
++import subprocess
++import sys
++import tomllib
++
++
++def configuration():
++    path=Path(__file__).with_suffix('.toml')
++    config=tomllib.loads(path.read_text())
++    provider=config['model_providers']['corenius-synthetic']
++    if config['model_provider']!='corenius-synthetic' or config['model']!='gpt-5.5':
++        raise ValueError('frozen provider/model mismatch')
++    if provider['request_max_retries']!=0 or provider['stream_max_retries']!=0 or provider['requires_openai_auth'] or provider['supports_websockets']:
++        raise ValueError('unreviewed transport/retry proposal')
++    if provider['base_url']!='http://127.0.0.1:1234/v1' or provider['wire_api']!='responses' or provider['request_overrides']['extra_body']['max_output_tokens']!=32:
++        raise ValueError('unreviewed route/cap proposal')
++    return config
++
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--render-config',action='store_true')
++    parser.add_argument('--offline-check',action='store_true')
++    parser.add_argument('--launch-trae',action='store_true')
++    args=parser.parse_args()
++    if args.launch_trae:
++        print('REFUSED: runtime admission withheld; this preparation entry has no Trae launcher.',file=sys.stderr)
++        return 78
++    config=configuration()
++    if args.render_config:
++        print(json.dumps({'status':'unverified_pinned_binary_hypothesis','configuration':config},indent=2))
++    if args.offline_check:
++        result=subprocess.run([sys.executable,'-m','unittest','test_trae_round','test_trae_transport','test_trae_synthetic_guard','test_trae_candidate'],cwd=Path(__file__).parent,timeout=30)
++        return result.returncode
++    if not args.render_config:
++        parser.print_help()
++    return 0
++
++if __name__=='__main__':sys.exit(main())
+diff --git a/tools/probes/trae_synthetic_candidate.toml b/tools/probes/trae_synthetic_candidate.toml
+new file mode 100644
+index 0000000000000000000000000000000000000000..e148615f567ef015644396d31ed32ba689b1f4ef
+--- /dev/null
++++ b/tools/probes/trae_synthetic_candidate.toml
+@@ -0,0 +1,19 @@
++# Public proposal, NOT proof of pinned Trae parser acceptance or key semantics.
++model = "gpt-5.5"
++model_provider = "corenius-synthetic"
++approval_policy = "never"
++sandbox_mode = "read-only"
++
++[model_providers.corenius-synthetic]
++name = "Corenius owned synthetic fixture"
++base_url = "http://127.0.0.1:1234/v1"
++wire_api = "responses"
++requires_openai_auth = false
++supports_websockets = false
++request_max_retries = 0
++stream_max_retries = 0
++request_timeout_ms = 1000
++stream_idle_timeout_ms = 1000
++
++[model_providers.corenius-synthetic.request_overrides.extra_body]
++max_output_tokens = 32
+diff --git a/tools/probes/trae_synthetic_guard.py b/tools/probes/trae_synthetic_guard.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4200533925c68dfa5e8010b44ad9cb861f9cf107
+--- /dev/null
++++ b/tools/probes/trae_synthetic_guard.py
+@@ -0,0 +1,466 @@
++"""Owner-controlled offline synthetic guard; never forwards to a provider.
++
++No entry in this module launches Trae. Runtime config/retry support is unproved.
++"""
++import fcntl
++import hashlib
++import json
++import os
++from pathlib import Path
++import socket
++import stat
++import time
++import threading
++import uuid
++
++BODY_LIMIT = 1024 * 1024
++RESPONSE_LIMIT = 64 * 1024
++CASES = (('http_503', 1, 'failed'), ('truncated', 1, 'failed'), ('success', 2, 'completed'))
++
++
++class Journal:
++    """Bounded owner-only append journal; reservations survive process failure."""
++    def __init__(self, path):
++        self.path = Path(path)
++
++    def transact(self, action):
++        directory = self.path.parent.stat()
++        if directory.st_uid != os.getuid() or directory.st_mode & 0o077:
++            raise ValueError('journal directory must be owner-only')
++        fd = os.open(self.path, os.O_RDWR | os.O_APPEND | os.O_CREAT | os.O_NOFOLLOW, 0o600)
++        try:
++            fcntl.flock(fd, fcntl.LOCK_EX)
++            info = os.fstat(fd)
++            if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077 or info.st_nlink != 1:
++                raise ValueError('unsafe journal')
++            if info.st_size > 65536:
++                raise ValueError('journal capacity exhausted')
++            raw = os.read(fd, 65537)
++            records = []
++            previous = ''
++            for line in raw.splitlines(keepends=True):
++                if not line.endswith(b'\n'):
++                    raise ValueError('incomplete journal record; quarantine')
++                record = json.loads(line)
++                checksum = record.pop('sha256')
++                if record['sequence'] != len(records) or record['previous'] != previous or hashlib.sha256(json.dumps(record, sort_keys=True).encode()).hexdigest() != checksum:
++                    raise ValueError('invalid journal chain; quarantine')
++                record['sha256'] = checksum
++                previous = checksum
++                records.append(record)
++            result, additions = action(records)
++            encoded = b''
++            for addition in additions:
++                record = dict(addition, sequence=len(records), previous=previous)
++                previous = hashlib.sha256(json.dumps(record, sort_keys=True).encode()).hexdigest()
++                record['sha256'] = previous
++                encoded += (json.dumps(record, sort_keys=True) + '\n').encode()
++                records.append(record)
++            if len(encoded) + info.st_size > 65536:
++                raise ValueError('journal capacity exhausted')
++            if encoded:
++                if os.write(fd, encoded) != len(encoded):
++                    raise OSError('short journal write; quarantine')
++                os.fsync(fd)
++                directory_fd = os.open(self.path.parent, os.O_RDONLY | os.O_DIRECTORY)
++                try:
++                    os.fsync(directory_fd)
++                finally:
++                    os.close(directory_fd)
++            return result
++        finally:
++            os.close(fd)
++
++
++class AttemptGuard:
++    """One round, two namespace incarnations, three fixed sequential cases.
++
++Only the trusted owner calls start/arm/terminal. HTTP cannot supply attribution.
++Stop callback requests immediate physical stop for violations/unknowns. Third
++reservation revokes admission, but physical stop waits for terminal/deadline.
++"""
++    def __init__(self, path, stop, turn_seconds=120, round_seconds=600):
++        if not 0 < turn_seconds <= 120 or not 0 < round_seconds <= 600:
++            raise ValueError('deadline widening refused')
++        self.journal = Journal(path)
++        self.stop = stop
++        self.turn_seconds = turn_seconds
++        self.round_seconds = round_seconds
++
++    def _transaction(self, action):
++        try:
++            def checked(records):
++                for record in records:
++                    if record['kind'] in ('incarnation', 'incarnation_reserved') and (record['turn_seconds'] != self.turn_seconds or record['round_seconds'] != self.round_seconds):
++                        raise ValueError('durable deadline policy mismatch')
++                return action(records)
++            return self.journal.transact(checked)
++        except (OSError, ValueError, KeyError, TypeError):
++            try:
++                self.journal.transact(lambda records: (None, [{'kind': 'halt', 'reason': 'owner_operation_or_journal_uncertain'}]))
++            except (OSError, ValueError, KeyError, TypeError):
++                pass
++            self.stop('journal_uncertain')
++            raise
++
++    @staticmethod
++    def _state(records):
++        attempts = [r for r in records if r['kind'] == 'attempt']
++        reservations = [r for r in records if r['kind'] == 'reservation']
++        arms = [r for r in records if r['kind'] == 'arm']
++        terminals = [r for r in records if r['kind'] == 'terminal']
++        bindings = [r for r in records if r['kind'] == 'native_turn']
++        active = arms[-1] if len(arms)>len(terminals) else None
++        binding = next((r for r in bindings if active and r['operation']==active['operation']), None)
++        incarnations = [r for r in records if r['kind'] == 'incarnation']
++        slots = [r for r in records if r['kind'] == 'incarnation_reserved']
++        halted = any(r['kind'] == 'halt' for r in records)
++        return {'incoming_attempts': len(attempts), 'admitted': len(reservations),
++                'reserved_output_tokens': sum(r['output_cap'] for r in reservations),
++                'envelope_violation': len(attempts) > 3,
++                'admission_revoked': len(attempts) >= 3 or halted,
++                'halted': halted, 'active': active, 'native_turn': binding['native_turn'] if binding else None,
++                'terminals': len(terminals), 'incarnations': len(incarnations),
++                'incarnation_slots': len(slots), 'unbound_slot': slots[-1] if len(slots)>len(incarnations) else None,
++                'namespace': incarnations[-1]['namespace'] if incarnations else None,
++                'round_deadline': slots[0]['round_deadline'] if slots else None,
++                'transport_uncertain': any(r['kind'] == 'transport_uncertain' for r in records),
++                'connections': sum(r['kind'] == 'connection' for r in records)}
++
++    def snapshot(self):
++        return self._transaction(lambda records: (self._state(records), []))
++
++    def reserve_incarnation(self):
++        """Owner must durably reserve BEFORE any runtime process creation."""
++        self.check_deadlines()
++        def action(records):
++            state = self._state(records)
++            if state['active'] or state['admission_revoked'] or state['incarnation_slots'] >= 2 or state['unbound_slot']:
++                raise ValueError('incarnation reservation refused')
++            n = state['incarnation_slots'] + 1
++            if (n == 1 and state['terminals'] != 0) or (n == 2 and state['terminals'] != 2):
++                raise ValueError('case-to-incarnation mapping refused')
++            record = {'kind': 'incarnation_reserved', 'incarnation': n, 'launch_operation': str(uuid.uuid4()),
++                      'round_deadline': state['round_deadline'] or time.monotonic()+self.round_seconds,
++                      'turn_seconds': self.turn_seconds, 'round_seconds': self.round_seconds,
++                      'boot_id': Path('/proc/sys/kernel/random/boot_id').read_text().strip()}
++            return record, [record]
++        return self._transaction(action)
++
++    def bind_incarnation(self, reservation, namespace):
++        def action(records):
++            state = self._state(records)
++            pending = state['unbound_slot']
++            if state['halted'] or not pending or pending['launch_operation'] != reservation['launch_operation'] or not isinstance(namespace, str) or not namespace or any(r.get('namespace') == namespace for r in records):
++                raise ValueError('incarnation binding refused')
++            record = {key: pending[key] for key in ('incarnation','launch_operation','round_deadline','turn_seconds','round_seconds','boot_id')}
++            record.update(kind='incarnation',namespace=namespace)
++            return pending['incarnation'], [record]
++        return self._transaction(action)
++
++    def start(self, namespace):
++        """Offline convenience; runtime owner separates reserve/spawn/bind."""
++        return self.bind_incarnation(self.reserve_incarnation(), namespace)
++
++    def arm(self, turn):
++        self.check_deadlines()
++        def action(records):
++            state = self._state(records)
++            if not isinstance(turn, str) or not turn or state['active'] or state['admission_revoked'] or state['terminals'] >= 3 or not state['incarnations'] or any(r.get('turn') == turn for r in records):
++                raise ValueError('turn admission refused')
++            case, incarnation, _ = CASES[state['terminals']]
++            if incarnation != state['incarnations']:
++                raise ValueError('wrong case incarnation')
++            record = {'kind': 'arm', 'operation': str(uuid.uuid4()), 'turn': turn, 'case': case,
++                      'incarnation': incarnation, 'namespace': state['namespace'], 'turn_deadline': time.monotonic()+self.turn_seconds}
++            return record, [record]
++        return self._transaction(action)
++
++    def bind_native_turn(self, operation, native_turn):
++        """Trusted owner appends native ID from exact turn/start response, once."""
++        def action(records):
++            state = self._state(records)
++            active = state['active']
++            if state['halted'] or not active or active['operation'] != operation or state['native_turn'] or not isinstance(native_turn, str) or not native_turn or any(r.get('native_turn') == native_turn for r in records):
++                raise ValueError('native turn binding refused')
++            return None, [{'kind': 'native_turn', 'operation': operation, 'owner_turn': active['turn'],
++                           'native_turn': native_turn, 'namespace': active['namespace'],
++                           'incarnation': active['incarnation']}]
++        return self._transaction(action)
++
++    def connection(self):
++        return self._transaction(lambda records: (None, [{'kind': 'connection'}]))
++
++    def check_deadlines(self):
++        def action(records):
++            state = self._state(records)
++            boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
++            invalid_boot = any(r['kind'] in ('incarnation', 'incarnation_reserved') and r['boot_id'] != boot for r in records)
++            expired = invalid_boot or bool(state['round_deadline'] and time.monotonic() >= state['round_deadline']) or bool(state['active'] and time.monotonic() >= state['active']['turn_deadline'])
++            return expired, [{'kind': 'halt', 'reason': 'deadline_or_boot_uncertain'}] if expired and not state['halted'] else []
++        expired = self._transaction(action)
++        if expired:
++            self.stop('deadline_or_boot_uncertain')
++        return expired
++
++    def begin(self):
++        """Called immediately upon first request byte, before parsing any field."""
++        def action(records):
++            state = self._state(records)
++            active = state['active']
++            duplicate = bool(active and any(r['kind'] == 'attempt' and r.get('operation') == active['operation'] for r in records))
++            allowed = bool(active and not state['admission_revoked'] and not duplicate)
++            record = {'kind': 'attempt', 'attempt': str(uuid.uuid4()), 'ordinal': state['incoming_attempts'] + 1,
++                      'eligible': allowed, 'operation': active['operation'] if active else None,
++                      'turn': active['turn'] if active else None, 'native_turn': state['native_turn'],
++                      'incarnation': active['incarnation'] if active else state['incarnations'],
++                      'namespace': active['namespace'] if active else state['namespace']}
++            additions = [record]
++            if not allowed:
++                additions.append({'kind': 'halt', 'reason': 'unexpected_or_extra_attempt'})
++            return record, additions
++        self.check_deadlines()
++        result = self._transaction(action)
++        if not result['eligible']:
++            self.stop('envelope_violation' if result['ordinal'] > 3 else 'unexpected_or_extra_attempt')
++        return result
++
++    def reject(self, attempt, reason):
++        def action(records):
++            if not any(r['kind'] == 'attempt' and r['attempt'] == attempt['attempt'] for r in records):
++                raise ValueError('unknown attempt')
++            return {'admitted': False, 'operation': attempt['operation']}, [{'kind': 'halt', 'reason': reason, 'attempt': attempt['attempt']}]
++        result = self._transaction(action)
++        self.stop(reason)
++        return result
++
++    def reserve(self, attempt, method, route, body):
++        try:
++            obj = json.loads(body) if len(body) <= BODY_LIMIT else None
++        except (ValueError, UnicodeError):
++            obj = None
++        allowed = (attempt['eligible'] and method == 'POST' and route == '/v1/responses'
++                   and isinstance(obj, dict) and obj.get('model') == 'gpt-5.5' and obj.get('stream') is True
++                   and type(obj.get('max_output_tokens')) is int and 0 < obj['max_output_tokens'] <= 32)
++        if not allowed:
++            return self.reject(attempt, 'request_rejected')
++        def action(records):
++            state = self._state(records)
++            if state['halted'] or not state['native_turn'] or not any(r['kind'] == 'attempt' and r == dict(attempt, sequence=r['sequence'], previous=r['previous'], sha256=r['sha256']) for r in records) or any(r['kind'] == 'reservation' and r['attempt'] == attempt['attempt'] for r in records):
++                raise ValueError('reservation refused')
++            record = {'kind': 'reservation', 'attempt': attempt['attempt'], 'operation': attempt['operation'],
++                      'native_turn': state['native_turn'], 'output_cap': obj['max_output_tokens'], 'body_bytes': len(body),
++                      'body_sha256': hashlib.sha256(body).hexdigest(), 'model': obj['model'],
++                      'stream': True, 'method': method, 'route': route,
++                      'admission_revoked_before_response': state['incoming_attempts'] >= 3}
++            return {'admitted': True, 'operation': attempt['operation'], 'case': state['active']['case']}, [record]
++        return self._transaction(action)
++
++    def admit(self, method, route, body):
++        """Offline buffered convenience seam; production transport uses begin first."""
++        return self.reserve(self.begin(), method, route, body)
++
++    def send_response(self, connection, operation):
++        """Reserve immutable response intent, write bounded bytes, record publication."""
++        response_id = 'resp_' + operation
++        item_id = 'msg_' + operation
++        def action(records):
++            state = self._state(records)
++            active = state['active']
++            if not active or active['operation'] != operation or state['halted'] or not any(r['kind'] == 'reservation' and r['operation'] == operation for r in records) or any(r['kind'] == 'response_intent' and r['operation'] == operation for r in records):
++                raise ValueError('response publication refused')
++            case = active['case']
++            if case == 'http_503':
++                status = '503 Service Unavailable'
++                payload = b'{"error":{"message":"owned synthetic retryable failure","type":"server_error"}}'
++                mime = 'application/json'
++            else:
++                status = '200 OK'
++                payload = synthetic_sse(response_id, item_id, truncate=case == 'truncated')
++                mime = 'text/event-stream'
++            wire = ('HTTP/1.1 ' + status + '\r\nContent-Type: ' + mime + '\r\nContent-Length: ' + str(len(payload)) + '\r\nConnection: close\r\n\r\n').encode() + payload
++            if len(wire) > RESPONSE_LIMIT:
++                raise ValueError('response capacity exceeded')
++            record = {'kind': 'response_intent', 'operation': operation, 'case': case,
++                      'bytes': len(wire), 'sha256_wire': hashlib.sha256(wire).hexdigest(),
++                      'response_id': response_id, 'item_id': item_id,
++                      'truncate_boundary': 'after response.output_text.delta' if case == 'truncated' else None}
++            return wire, [record]
++        wire = self._transaction(action)
++        try:
++            connection.settimeout(1)
++            connection.sendall(wire)
++            connection.shutdown(socket.SHUT_WR)
++        except OSError:
++            self.expire(operation)
++            raise
++        self._transaction(lambda records: (None, [{'kind': 'published', 'operation': operation}]))
++        return len(wire)
++
++    def terminal(self, operation, turn, outcome, content=None):
++        def action(records):
++            state = self._state(records)
++            active = state['active']
++            if not active or active['operation'] != operation or state['native_turn'] != turn:
++                raise ValueError('terminal attribution refused')
++            attempted = [r for r in records if r['kind'] == 'attempt' and r['operation'] == operation]
++            reserved = [r for r in records if r['kind'] == 'reservation' and r['operation'] == operation]
++            expected = CASES[state['terminals']][2]
++            published = [r for r in records if r['kind'] == 'published' and r['operation'] == operation]
++            known = not state['halted'] and len(attempted) == len(reserved) == len(published) == 1 and outcome == expected and (outcome != 'completed' or content == 'preflight-ok')
++            record = {'kind': 'terminal', 'operation': operation, 'turn': turn, 'outcome': outcome, 'known': known}
++            additions = [record]
++            if not known:
++                additions.append({'kind': 'halt', 'reason': 'unknown_terminal'})
++            return known, additions
++        self.check_deadlines()
++        known = self._transaction(action)
++        if not known or self.snapshot()['admission_revoked']:
++            self.stop('round_complete' if known else 'unknown_terminal')
++        return known
++
++    def halt(self, reason):
++        self._transaction(lambda records: (None, [{'kind': 'halt', 'reason': reason}]))
++        self.stop(reason)
++
++    def expire(self, operation):
++        self._transaction(lambda records: (None, [{'kind': 'halt', 'reason': 'terminal_deadline', 'operation': operation}]))
++        self.stop('terminal_deadline')
++
++
++class RoundWatchdog:
++    """Trusted owner timer; physical stop proof still comes from supervisor."""
++    def __init__(self, guard):
++        self.guard = guard
++        self.closed = threading.Event()
++        self.thread = threading.Thread(target=self._watch, name='synthetic-owner-deadline', daemon=True)
++
++    def _watch(self):
++        while not self.closed.wait(.01):
++            try:
++                if self.guard.check_deadlines() or self.guard.snapshot()['halted']:
++                    return
++            except (OSError, ValueError, KeyError, TypeError):
++                return  # Guard already requested stop and retained uncertainty.
++
++    def __enter__(self):
++        self.thread.start()
++        return self
++
++    def __exit__(self, *unused):
++        self.closed.set()
++        self.thread.join(timeout=1)
++        if self.thread.is_alive():
++            self.guard.stop('watchdog_terminal_unknown')
++            raise RuntimeError('owner watchdog failed to terminate')
++
++
++def receive_http(connection, guard, timeout=1.0, record_connection=True):
++    """One request per connection, bounded reads; connection always closed by caller.
++
++First byte is the counting point. A connection with zero bytes is separately
++recorded. Pipelined bytes are rejected (no keepalive/discovery exemptions).
++"""
++    if record_connection:
++        guard.connection()
++    deadline = time.monotonic() + timeout
++    def read(size):
++        connection.settimeout(max(.001, deadline - time.monotonic()))
++        if time.monotonic() >= deadline:
++            raise TimeoutError('read deadline')
++        return connection.recv(size)
++    try:
++        first = read(1)
++    except TimeoutError:
++        return None
++    if not first:
++        return None
++    attempt = guard.begin()
++    try:
++        headers = bytearray(first)
++        while not headers.endswith(b'\r\n\r\n'):
++            if len(headers) >= 8192:
++                raise ValueError('headers too large')
++            byte = read(1)
++            if not byte:
++                raise ValueError('short headers')
++            headers += byte
++        lines = bytes(headers[:-4]).decode('ascii').split('\r\n')
++        request = lines[0].split(' ')
++        if len(request) != 3 or request[2] != 'HTTP/1.1':
++            raise ValueError('request line')
++        lengths = []
++        for line in lines[1:]:
++            name, separator, value = line.partition(':')
++            if not separator or not name or name.strip() != name or any(c.isspace() for c in name):
++                raise ValueError('header syntax')
++            if name.lower() == 'transfer-encoding':
++                raise ValueError('chunked/transfer encoding refused')
++            if name.lower() == 'content-length':
++                lengths.append(value.strip())
++        if len(lengths) != 1 or not lengths[0].isascii() or not lengths[0].isdigit():
++            raise ValueError('ambiguous length')
++        length = int(lengths[0])
++        if length > BODY_LIMIT:
++            raise ValueError('body too large')
++        body = bytearray()
++        while len(body) < length:
++            chunk = read(min(65536, length - len(body)))
++            if not chunk:
++                raise ValueError('body length mismatch')
++            body += chunk
++        return guard.reserve(attempt, request[0], request[1], bytes(body))
++    except (ValueError, UnicodeError, TimeoutError, OSError) as error:
++        result = guard.reject(attempt, type(error).__name__ + ': ' + str(error))
++        guard._transaction(lambda records: (None, [{'kind': 'transport_uncertain', 'attempt': attempt['attempt'], 'reason': 'ambiguous_or_incomplete_framing'}]))
++        result['framing_uncertain'] = True
++        return result
++
++
++def serve_connection(connection, guard, timeout=1.0):
++    """Consume complete pipelined requests without concealing buffered retries.
++
++The entire connection has a finite deadline. Once framing becomes ambiguous,
++record the malformed request and halt; remaining unparsed bytes are uncertainty,
++not fabricated request counts. No persistent connections are advertised.
++"""
++    guard.connection()
++    deadline = time.monotonic() + timeout
++    decisions = []
++    try:
++        while time.monotonic() < deadline:
++            decision = receive_http(connection, guard, timeout=max(.001, deadline-time.monotonic()), record_connection=False)
++            if decision is None:
++                break
++            decisions.append(decision)
++            if decision['admitted']:
++                guard.send_response(connection, decision['operation'])
++            if decision.get('framing_uncertain'):
++                break
++    finally:
++        connection.close()
++    return decisions
++
++
++def synthetic_sse(response_id, item_id, truncate=False):
++    if not all(isinstance(value, str) and 0 < len(value) <= 128 for value in (response_id, item_id)):
++        raise ValueError('bounded response identity required')
++    item = {'id': item_id, 'type': 'message', 'role': 'assistant', 'status': 'completed',
++            'content': [{'type': 'output_text', 'text': 'preflight-ok', 'annotations': []}]}
++    response = {'id': response_id, 'object': 'response', 'created_at': 0, 'status': 'completed', 'model': 'gpt-5.5',
++                'output': [item], 'usage': {'input_tokens': 1, 'output_tokens': 1, 'total_tokens': 2}, 'error': None, 'incomplete_details': None}
++    events = [{'type': 'response.created', 'response': dict(response, status='in_progress', output=[])},
++              {'type': 'response.in_progress', 'response': dict(response, status='in_progress', output=[])},
++              {'type': 'response.output_item.added', 'output_index': 0, 'item': dict(item, status='in_progress', content=[])},
++              {'type': 'response.content_part.added', 'output_index': 0, 'item_id': item_id, 'content_index': 0,
++               'part': {'type': 'output_text', 'text': '', 'annotations': []}},
++              {'type': 'response.output_text.delta', 'output_index': 0, 'item_id': item_id, 'content_index': 0, 'delta': 'preflight-ok'}]
++    if not truncate:
++        events += [{'type': 'response.output_text.done', 'output_index': 0, 'item_id': item_id, 'content_index': 0, 'text': 'preflight-ok'},
++                   {'type': 'response.content_part.done', 'output_index': 0, 'item_id': item_id, 'content_index': 0, 'part': item['content'][0]},
++                   {'type': 'response.output_item.done', 'output_index': 0, 'item': item},
++                   {'type': 'response.completed', 'response': response}]
++    encoded = b''.join(('event: ' + e['type'] + '\ndata: ' + json.dumps(dict(e, sequence_number=n)) + '\n\n').encode() for n, e in enumerate(events))
++    if len(encoded) > RESPONSE_LIMIT:
++        raise ValueError('response capacity exceeded')
++    return encoded
+diff --git a/docs/efforts/team-control-plane/evidence/20261003-trae-budget-inventory-repair.json b/docs/efforts/team-control-plane/evidence/20261003-trae-budget-inventory-repair.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..12bafd7001769f5d9782e43d5d786601c28bbcbf
+--- /dev/null
++++ b/docs/efforts/team-control-plane/evidence/20261003-trae-budget-inventory-repair.json
+@@ -0,0 +1,99 @@
++{
++  "commit_read": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
++  "status": "pure_inventory_repair_verified_physical_case_unadmitted",
++  "pure_tests": 8,
++  "terminal_exit": 0,
++  "real_red": "inventory-repair/actual-host-red.log",
++  "same_command_green": "inventory-repair/actual-host-green.log",
++  "new_standin_processes": 0,
++  "new_namespaces": 0,
++  "signals_sent": 0,
++  "trae_launches": 0,
++  "historical_namespace_quarantines": [
++    1749400,
++    1793051
++  ],
++  "scope": "qualified readable host-proc single-component NSpid exclusion; nested/unavailable identity still refuses",
++  "remaining_unknowns": [
++    "positive revised pidfd signal and physical namespace cleanup",
++    "custom retry/cap semantics",
++    "native turn ID ordering",
++    "nested runtime/guard integration",
++    "external token/quota/billing enforcement"
++  ],
++  "public_freeze": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/inventory-repair/freeze",
++  "source_hashes": [
++    {
++      "path": "tools/probes/test_trae_candidate.py",
++      "bytes": 1360,
++      "sha256": "3daddf2b65885eece36d81dd2a04430c9447d951a6fd2ae631bd61fcf1c10db3"
++    },
++    {
++      "path": "tools/probes/test_trae_inventory.py",
++      "bytes": 4133,
++      "sha256": "4da0304f43b0c183e7ac72d71fcb83ab6341f73eb750eca082e13d01724d1838"
++    },
++    {
++      "path": "tools/probes/test_trae_namespace.py",
++      "bytes": 2767,
++      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
++    },
++    {
++      "path": "tools/probes/test_trae_round.py",
++      "bytes": 6219,
++      "sha256": "0c3402b6e5400ef8ee0ea88fb76f01adc6e998022dc58a46ae295cd6eaeaeaaf"
++    },
++    {
++      "path": "tools/probes/test_trae_synthetic_guard.py",
++      "bytes": 6150,
++      "sha256": "7884adc86cb888c14679597249f164fa5b10413b1cb575388fb4febd723b8657"
++    },
++    {
++      "path": "tools/probes/test_trae_transport.py",
++      "bytes": 7117,
++      "sha256": "0edca413d7ab7e019210be31194f3ff61e4f2e892259fe8f431a7feaa566df6a"
++    },
++    {
++      "path": "tools/probes/trae_namespace_fixture.py",
++      "bytes": 1502,
++      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
++    },
++    {
++      "path": "tools/probes/trae_namespace_supervisor.py",
++      "bytes": 13476,
++      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
++    },
++    {
++      "path": "tools/probes/trae_synthetic_candidate.py",
++      "bytes": 1948,
++      "sha256": "55b399fc2e2ebc05a8e1448756eeb28ec9acf8374da7b09c0a7ac918466b7c9b"
++    },
++    {
++      "path": "tools/probes/trae_synthetic_candidate.toml",
++      "bytes": 580,
++      "sha256": "62472f9c00526067c118ed3345c3bea60e36ecf79ecfaebef94e4e3c42fcbf26"
++    },
++    {
++      "path": "tools/probes/trae_synthetic_guard.py",
++      "bytes": 25293,
++      "sha256": "99ef23a101efa15214497d886ae36da7b3e23dacafdfb028a6f1d4a59a973556"
++    }
++  ],
++  "physical_case_sources": [
++    {
++      "path": "tools/probes/test_trae_namespace.py",
++      "bytes": 2767,
++      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
++    },
++    {
++      "path": "tools/probes/trae_namespace_fixture.py",
++      "bytes": 1502,
++      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
++    },
++    {
++      "path": "tools/probes/trae_namespace_supervisor.py",
++      "bytes": 13476,
++      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
++    }
++  ]
++}
+diff --git a/docs/efforts/team-control-plane/evidence/20261003-trae-budget-offline-candidate.json b/docs/efforts/team-control-plane/evidence/20261003-trae-budget-offline-candidate.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..944ea7409026580c3f5c4d6de11d37e6493d8cdf
+--- /dev/null
++++ b/docs/efforts/team-control-plane/evidence/20261003-trae-budget-offline-candidate.json
+@@ -0,0 +1,87 @@
++{
++  "commit_read": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
++  "status": "offline_candidate_blocked_for_admission",
++  "runtime_launches_in_resumed_preparation": 0,
++  "old_trae_envelope": {
++    "incarnations": 4,
++    "incoming_attempts": 9,
++    "accepted": 6,
++    "denied": 3,
++    "status": "failed_and_exhausted"
++  },
++  "pure_offline_tests": {
++    "passed": 26,
++    "exit": 0,
++    "proof": ".scratch/team-control-plane/trae20-budget-repair/final-pure-terminal.json"
++  },
++  "physical_namespace_tests": "withheld_pending_root_admission",
++  "failed_offline_fixture_launchers": [
++    1749400,
++    1793051
++  ],
++  "historical_failed_namespace_cleanup": "unknown_quarantined_not_reclassified",
++  "current_inventory_limitation": "same-owner /proc/32161/ns/pid is unreadable; prior zero permission-gap statement was cmdline-only",
++  "blocking_gaps": [
++    "revised physical cleanup not verified",
++    "full namespace membership cannot be established by current scanner",
++    "PID/starttime stop lacks pidfd and retained namespace-FD guarantees",
++    "custom provider retry/output keys and on-wire application unproved",
++    "nested runtime/guard network composition and RPC controller not yet implemented/proved",
++    "native-ID ordering and terminal protocol compatibility unmeasured"
++  ],
++  "source_patch_sha256": "44b7f2e34033ddd9304363eba3797f237e48ab62d80e44d7d737fe10a207cc2d",
++  "source_hashes": [
++    {
++      "path": "tools/probes/test_trae_candidate.py",
++      "bytes": 1360,
++      "sha256": "3daddf2b65885eece36d81dd2a04430c9447d951a6fd2ae631bd61fcf1c10db3"
++    },
++    {
++      "path": "tools/probes/test_trae_namespace.py",
++      "bytes": 2673,
++      "sha256": "e2a326df50cde105aa5ef64648ac0cc6168bad074fa2edabe83c3b34a69939a2"
++    },
++    {
++      "path": "tools/probes/test_trae_round.py",
++      "bytes": 6219,
++      "sha256": "0c3402b6e5400ef8ee0ea88fb76f01adc6e998022dc58a46ae295cd6eaeaeaaf"
++    },
++    {
++      "path": "tools/probes/test_trae_synthetic_guard.py",
++      "bytes": 6150,
++      "sha256": "7884adc86cb888c14679597249f164fa5b10413b1cb575388fb4febd723b8657"
++    },
++    {
++      "path": "tools/probes/test_trae_transport.py",
++      "bytes": 7117,
++      "sha256": "0edca413d7ab7e019210be31194f3ff61e4f2e892259fe8f431a7feaa566df6a"
++    },
++    {
++      "path": "tools/probes/trae_namespace_fixture.py",
++      "bytes": 1502,
++      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
++    },
++    {
++      "path": "tools/probes/trae_namespace_supervisor.py",
++      "bytes": 9610,
++      "sha256": "86c2298fe3b06478f93a20188769ae238694adab285f6cff262d9cfa7976b7ea"
++    },
++    {
++      "path": "tools/probes/trae_synthetic_candidate.py",
++      "bytes": 1948,
++      "sha256": "55b399fc2e2ebc05a8e1448756eeb28ec9acf8374da7b09c0a7ac918466b7c9b"
++    },
++    {
++      "path": "tools/probes/trae_synthetic_candidate.toml",
++      "bytes": 580,
++      "sha256": "62472f9c00526067c118ed3345c3bea60e36ecf79ecfaebef94e4e3c42fcbf26"
++    },
++    {
++      "path": "tools/probes/trae_synthetic_guard.py",
++      "bytes": 25293,
++      "sha256": "99ef23a101efa15214497d886ae36da7b3e23dacafdfb028a6f1d4a59a973556"
++    }
++  ],
++  "public_freeze": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/resumed-freeze",
++  "notes": "No 04/20 acceptance, no provider billing cap or automatic retry suppression claim."
++}

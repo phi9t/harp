@@ -1,0 +1,480 @@
+{
+  "base": "1f164156261a3aa927c823919bf73d6e6d11a771",
+  "tree": "/tmp/corenius-kernel16-author",
+  "status": "frozen for independent review555 repair Standards/Spec review; not accepted",
+  "source_manifest_sha256": "939225e1d509bcc88d360361c731770076041cec49f28b1405d94d3ee5989a6c",
+  "coverage_sha256": "94247bb006102f9b1956954fe5e89e0463823240418ce90845eb223983c4a176",
+  "baseline_diff_sha256": "d2994f56dbb04b5f2ea084245de87f6b8552a32ca1e07165be48566335f284e6",
+  "immutable_checks": [
+    "root Cargo.toml",
+    "root Cargo.lock",
+    "accepted migrations0005/0006",
+    "all45 original frozen source files"
+  ],
+  "limitations": [
+    "Historical namespace membership EACCES cause remains unproven; persistent inaccessible inventory still quarantines and holds capacity.",
+    "Already committed quarantine is not reopened.",
+    "Legacy unsupported transfer and later live/restore/Kata/jj phases remain open.",
+    "Independent review and root exact integration gate required."
+  ],
+  "capabilities": {
+    "filesystem": "danger-full-access",
+    "network": "enabled",
+    "approval": "never",
+    "overrides_used": false
+  },
+  "repair_bounds": {
+    "max_inventory_attempts": 3,
+    "retry_admission_window_ms": 20,
+    "inter_attempt_wait_ms": 1,
+    "individual_syscall_hard_deadline": false
+  },
+  "focused_evidence": {
+    "branch-review-accepted-green1/run.log": "c8a84a88099444a7dc3e1c937d8ac911a973a9c65e2d10b0765f692ee8db46fb",
+    "branch-review-accepted-green2/run.log": "e69c4c63882c8fe48d25b3a46c3a21234f7d78fdc89ec7adc7bb8a4378708079",
+    "branch-review-boundaries-green1/run.log": "c7b30d85b147e940d1a968416132efd5ac414bfd19e56dc6b8b8a4e0ac582532",
+    "branch-review-boundaries-green2/run.log": "a370caf2a0388807878459254cc9477711928429973f4708841513f5c45c2f12",
+    "branch-review-controls-green1/run.log": "1b001d5058b0e16fc34f695f30e6d1a56479c9f3b074f5dc22e503f4d4e8dec8",
+    "branch-review-cycle-green1/run.log": "55348268ac475068eb6193c57db17c19355b3ff5aae66a7ab8f2ec7f196800d2",
+    "branch-review-cycle-green2/run.log": "e33cdfafa18d3744cfd0e1cfc8cc32413ae9ede89ee7f7754e4ecb543a618037",
+    "branch-review-finalization-red1/run.log": "a5e4708f4c6029b17fe2ee98a4d1f2d6f4808113de6c895988a74dafd141a7f1",
+    "branch-review-fresh-green1/run.log": "ca9a78484a7a890da50094a880332fe3cf2640ef88c1c1f4ad9a37664e7bf9a0",
+    "branch-review-full-gate1/run.log": "7ac774c3bb833769598d419d320e9cef0ef7c49cea415b664ed851226669a1d6",
+    "branch-review-history-red1/run.log": "949edbc6e2ee924e630ccc692607b041649eb317f9f4c7c93a4ebd14610e6a62",
+    "branch-review-history-red2/run.log": "32dd50316b8b0b94fe81cabf89c1d4f49d45867da118ac19e02a8e875b8b4920",
+    "branch-review-prepared-green1/run.log": "9fedba50c28fc02ee2ddd5fcab53609e2f148c17f62122039f13af96e8b802c2",
+    "branch-review-prepared-green2/run.log": "4c7a84e6500cde28bac7372a2c3c9269afbb750d376608c84869feea8e2c2416",
+    "branch-review-repair-green1/run.log": "3e8335ad4caa7c4c3a011e93aaa6a8242e69bb5344a4c009242e0e8dc99c002c",
+    "branch-review-repair-green2/run.log": "ed0960f359abf29cf5b4ee97d7a78e257ae433e6627a8fff2d3264fd29560118",
+    "branch-review-repair-red1/run.log": "62192ff09e8f278c25c7c000139019f93387c173c1a415d19cb39317826eba38",
+    "branch-review-repair-red2/run.log": "9cf93022215ee88b6d0951ebd4899f8ed1d9b3a891a9e24328837a0bed78fce4",
+    "branch-review-repair-red3/run.log": "bf4e27260e90b9e81a9a41937cdfe66d1a41c134f408a3f8dbc3972f522bb076",
+    "branch-review-repair-red4/run.log": "4df6f3b221ee1eff53fecefcdca931555164f1cb1bdf90a14afbdf8bec86bf9c",
+    "branch-review-sdk-green1/run.log": "469b49f37f41c95b94f876cd29a72fc0719c49d69eccb05072a9ca2365ccb148"
+  },
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "bytes": 85457,
+      "sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "baseline_sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "bytes": 876,
+      "sha256": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "baseline_sha256": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "bytes": 12548,
+      "sha256": "49774778894c1078212cf3802dd10c0fff95bc3519b3a46fa0b31c617f7bca52",
+      "baseline_sha256": "7d05cf200a9b52c49778e2c4e6360ee7b8068a86bff27eeaf44082338a489b9c",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "bytes": 6830,
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "baseline_sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "bytes": 2497,
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "baseline_sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "bytes": 1715,
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "baseline_sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "bytes": 2931,
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "baseline_sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "bytes": 1738,
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "baseline_sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0006.sql",
+      "bytes": 11782,
+      "sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "baseline_sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0007.sql",
+      "bytes": 13543,
+      "sha256": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "bytes": 19619,
+      "sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c",
+      "baseline_sha256": "fecaff361c82e0f2f96cc9aab19437e9d0212647de85651186b0b6459546fce6",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "bytes": 51215,
+      "sha256": "3f3861460d5e32754bfa5a02b5a9d3495c5dd6cfff51e45db893e6a1888fbd8f",
+      "baseline_sha256": "c26dea8bd2e83cb4df68087aad379daa09c6e36e810fae42d7e1fa66e47b3aad",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "bytes": 6455,
+      "sha256": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+      "baseline_sha256": "1f386e9ad98af2ae85d28ab29ff43e79816a427bc5ec5b23edc2bcf9f97cd470",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "bytes": 3760,
+      "sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966",
+      "baseline_sha256": "c2de920c9d93a99f1996c7002a0bf9f9343fe7aa998ceda66bd822cae48e3bf5",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/episode_runtime.rs",
+      "bytes": 42286,
+      "sha256": "15b3e60f7e6c5c064b16626be1e79400b4f21ac45dd196223e8f287fb2924d0f",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "bytes": 36770,
+      "sha256": "00ac9fc3e40e81cdfcd23c921a50d37c29097fc94cefb2fd9ad8bc2135aaeb9d",
+      "baseline_sha256": "009f64f4628857d51ffd401e198fc3122b6a76a15c5e6d056931525e22f3ab5f",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "bytes": 9410,
+      "sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92",
+      "baseline_sha256": "2d50a457b62ca54b18ba520e2e22328558f186bc6605d21f856b9bd42d2e97e4",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/kernel.rs",
+      "bytes": 20927,
+      "sha256": "182039cff58ab1b32f7a73c5a9df3f03cbd338437eca102eadf171ae1078342d",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/kernel_usage.rs",
+      "bytes": 6657,
+      "sha256": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "bytes": 367,
+      "sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa",
+      "baseline_sha256": "04a947ee3fa31d18b554d5adf068cba2e53af78aa40baceb0868557bf103c5a8",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "bytes": 103810,
+      "sha256": "c664d969119b65209a191db922e53846d5be6b29e72061de110b085f4d534f45",
+      "baseline_sha256": "d6e93f1376da6ef7622e7b4c3224a7410493daddc59c67768f9cc694b6292f4e",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "bytes": 14304,
+      "sha256": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+      "baseline_sha256": "056d02ae4fb08c528774ae6c688c63a64fb6c92eae9c86e02ddc81a4c3a75ec1",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/mcp.rs",
+      "bytes": 20937,
+      "sha256": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "baseline_sha256": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/src/model_free_runtime.rs",
+      "bytes": 28076,
+      "sha256": "828bcb01c33aa3e22c2a96e86a4dd8f9ca6b86368fd55dbc1d2ef630129ef6d2",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "bytes": 15858,
+      "sha256": "68222e8420154ac22b86c80ba821faf21c16935afed6782b5849caaf7df30021",
+      "baseline_sha256": "176931a937074598b4e0381bab46b7f20a50b11007a6ffcba616234e0d19a27f",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "bytes": 105699,
+      "sha256": "e99be1da4751d4e2119e4fa99d5b80c4a7ae8b88aa658389ae7cbc1e15549e01",
+      "baseline_sha256": "ee712817fba6dea4276c59bee313c278f7deef5bce989b6a465041d65b3b5c24",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "bytes": 50413,
+      "sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "baseline_sha256": "616444bcb65855721aac27412e99a5c7da6344e22e18a2e580028966ed9bb893",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/src/validation.rs",
+      "bytes": 4356,
+      "sha256": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+      "baseline_sha256": "7f42857ada05bc1fa311532860f3d3a48135d1f3213c9471256e95dc9c75be35",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "bytes": 62847,
+      "sha256": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+      "baseline_sha256": "4fee2401a0001a49e3082821d59205d6354f13ab94b122f5e8310247a3440bf9",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_cancellation.rs",
+      "bytes": 77766,
+      "sha256": "566626bd9227216cd0208f337e6b5a4988ece06138f80e23819854438a3ec6f6",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_capacity.rs",
+      "bytes": 32647,
+      "sha256": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_kernel.rs",
+      "bytes": 23348,
+      "sha256": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_operator.rs",
+      "bytes": 33883,
+      "sha256": "865e79a2e3549df82b37eaf0b8c14ed8db4f136e601464ab7fcf391441b89d2e",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_vertical.rs",
+      "bytes": 291503,
+      "sha256": "418a502d28c341e258139c3aaa6ab5887901fc702242fb30055817d0bb957b11",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/fault_runtime.py",
+      "bytes": 1579,
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "baseline_sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/mailbox_runtime.py",
+      "bytes": 2343,
+      "sha256": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+      "baseline_sha256": "aef05ec7453ac02b910702e6e9f6463aeed42851c64d7ca1d1288aef1667ba61",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "bytes": 33599,
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "baseline_sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/kernel.rs",
+      "bytes": 41285,
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "baseline_sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox.rs",
+      "bytes": 50467,
+      "sha256": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "baseline_sha256": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox_artifacts.rs",
+      "bytes": 42045,
+      "sha256": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "baseline_sha256": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox_delivery.rs",
+      "bytes": 48039,
+      "sha256": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+      "baseline_sha256": "714d0b8b977f9993ad0c7326791ae2bcacafe6dfaf4980b76e4ef36886164ce4",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "bytes": 2049,
+      "sha256": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+      "baseline_sha256": "dc105acad613094b0484777008537f32ab8b19e838315db17f9bab89552fd411",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "bytes": 1335,
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "baseline_sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/supervisor.rs",
+      "bytes": 43770,
+      "sha256": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+      "baseline_sha256": "b95b0116902f24597249d3b1fd2234a345988d0d90bc35132959bf153f969768",
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/assembled.rs",
+      "bytes": 9899,
+      "sha256": "5201c4ec5647537b8e9bb4b1b38157d45ac36cb4db2599819f6fdb1f3cb9781c",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/episode_native.rs",
+      "bytes": 148,
+      "sha256": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+      "baseline_sha256": null,
+      "changed_from_baseline": true
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/gateway_fault.rs",
+      "bytes": 5053,
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "baseline_sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "changed_from_baseline": false
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "bytes": 52189,
+      "sha256": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510",
+      "baseline_sha256": "f4b34f6a7eefddd30538cd42329bc0abfc06a57655c354378ec4e0d50f3b379b",
+      "changed_from_baseline": true
+    }
+  ],
+  "changed_from_review_five": [
+    "crates/team-control-plane/tests/temporal.rs"
+  ],
+  "round_five_manifest_sha256": "d743de1ae098baa33da323cdad570e36cda357d6112687509c1518620bcb50e8",
+  "changed_from_review_six": [
+    "crates/team-control-plane/migrations/0007.sql",
+    "crates/team-control-plane/src/artifacts.rs",
+    "crates/team-control-plane/src/gateway.rs",
+    "crates/team-control-plane/src/mailbox.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/src/temporal.rs",
+    "crates/team-control-plane/tests/artifacts.rs",
+    "crates/team-control-plane/tests/assembled_cancellation.rs",
+    "crates/team-control-plane/tests/assembled_vertical.rs"
+  ],
+  "round_six_manifest_sha256": "55b0ffbd1aa5062e2f556f5002cd396e54f25843ce30a3c25a16886175605fdf",
+  "changed_from_review_seven": [
+    "crates/team-control-plane/tests/assembled_vertical.rs"
+  ],
+  "round_seven_manifest_sha256": "1a225de7e3e73444f26c40517713994cc39579ebb7316d58c1c9a5633dc2231f",
+  "historical_review7_verification": {
+    "service_command": "CARGO_HOME=/tmp/corenius-kernel16-managed-handoff/cargo-home CARGO_TARGET_DIR=/tmp/corenius-kernel16-managed-handoff/target-control-plane TEMPORAL_FIXTURE_EVIDENCE=/tmp/corenius-kernel16-author/.scratch/team-control-plane-author/branch-review-full-gate1 bash crates/team-control-plane/tests/run-temporal.sh --offline -- --nocapture",
+    "service_exit": 0,
+    "passed": 133,
+    "ignored": 4,
+    "summary_groups": 16,
+    "service_log_sha256": "7ac774c3bb833769598d419d320e9cef0ef7c49cea415b664ed851226669a1d6",
+    "strict_command": "cargo clippy --manifest-path crates/team-control-plane/Cargo.toml --locked --offline --all-targets -- -D warnings",
+    "strict_exit": 0,
+    "strict_log_sha256": "925d9b138f30895ed9c36891259c6223cbdb14a802f5420b05c7509d2648560e",
+    "fmt_exit": 0,
+    "diff_check_exit": 0,
+    "cleanup": {
+      "temporal_listener_closed": true
+    }
+  },
+  "verification": {
+    "service_command": "CARGO_HOME=/tmp/corenius-kernel16-managed-handoff/cargo-home CARGO_TARGET_DIR=/tmp/corenius-kernel16-managed-handoff/target-control-plane TEMPORAL_FIXTURE_EVIDENCE=/tmp/corenius-kernel16-author/.scratch/team-control-plane-author/review555-full-gate2 bash crates/team-control-plane/tests/run-temporal.sh --offline -- --nocapture",
+    "service_exit": 0,
+    "passed": 140,
+    "ignored": 4,
+    "summary_groups": 16,
+    "service_log_sha256": "ff2aa353854a36598615d95a4918ad4bdec5ee1e84a03517471f9945ec2a8f2f",
+    "strict_command": "cargo clippy --manifest-path crates/team-control-plane/Cargo.toml --locked --offline --all-targets -- -D warnings",
+    "strict_exit": 0,
+    "strict_log_sha256": "71bae778834d5c167397ef8e0f0aa4744e43f1fda9009f941e175c190fcd1f92",
+    "fmt_exit": 0,
+    "diff_check_exit": 0,
+    "cleanup": {
+      "temporal_listener_closed": true
+    }
+  },
+  "changed_from_review_eight": [
+    "crates/team-control-plane/src/episode_runtime.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/src/temporal.rs",
+    "crates/team-control-plane/tests/artifacts.rs",
+    "crates/team-control-plane/tests/assembled_cancellation.rs",
+    "crates/team-control-plane/tests/assembled_vertical.rs",
+    "crates/team-control-plane/tests/mailbox_delivery.rs",
+    "crates/team-control-plane/tests/temporal.rs"
+  ],
+  "round_eight_manifest_sha256": "25e447213ecfc736bd2bfb57adaecf39b43368e6c092f2cfb5d8f4b9235638f1",
+  "review_eight_relative_diff_sha256": "f4fe22547479a457b9f031ea7b423453903865db43327f5136be194f2f464ad6",
+  "review555_evidence": {
+    "review555-boundaries-green1/run.log": "add8031361fd5e49bd718f2bc23ee2ea1c9bdb1c3d97c712f2fd42a2b346923e",
+    "review555-collision-red1/run.log": "6228354c003c87c84a8ae8570ddb4887968be614f9dab969fb9e9d1543bbc535",
+    "review555-controls-green1/run.log": "f3af45e9cee138670e2616d5a21ace1465d188c892f810bebf1a08d45d482486",
+    "review555-episode-cancel-red1/run.log": "e4fb47c4f1e5e31565e0f1d473551d464f5c7b528b4258c2266652b12edd4df8",
+    "review555-episode-cancel-red2/run.log": "688551aeb08a05f8b26b97e07eace20dbbd8417659331269a95061fbd4e698c7",
+    "review555-full-gate1/run.log": "05b35716dca81c41af85319537d633193fa7214af68203c1eb6c477eaf172875",
+    "review555-full-gate2/run.log": "ff2aa353854a36598615d95a4918ad4bdec5ee1e84a03517471f9945ec2a8f2f",
+    "review555-pause-red1/run.log": "af431287eb8ec941adee1fee77ff918ff2de84cdc6ca55802730ff64fbc14f06",
+    "review555-pause-red2/run.log": "183deae3fa33e31d666c373e48cdeb60b440da1231e01f35a14575d81ba85ea0",
+    "review555-pause-red3/run.log": "a29211114c20d842c8fbae978ca6864db20c639ced86f62a2708f236139274b3",
+    "review555-pg-green1/run.log": "5d1f221232a4b13b646a86a7477c308194a222816eb1ff277b9f7975e4437499",
+    "review555-pg-red1/run.log": "3a873c03f7edcaf607318c50d872d361332983d154cbf86203e81fbf183cb657",
+    "review555-reservation-green1/run.log": "7468da0ceecaf432af99c3bfdbfb0d38285d7f5d4540434d78706fc49929b711",
+    "review555-scope-green1/run.log": "b116cb2dc76309598736135da4ff7fd0a5aabf2596af0be9406d94183b6e0804",
+    "review555-scope-green2/run.log": "90d6e42a72974672dd805103a0f50439c351df4282ce826fa62800f2777c0460",
+    "review555-scope-green3/run.log": "5a19f8953a23e86c89baaf985f7198402d0ec08c008c8eafabd9dee868edb2e2",
+    "review555-sdk-diag1/run.log": "0dbad45081006565cfac4c72417c1f4cc477cf1fa0e63add9475c3c40a576c02",
+    "review555-sdk-diag2/run.log": "d11bb688da71b32cc6f3cbda5dddb0847835fa213d0e2754e18a05bee71a87f7",
+    "review555-sdk-green1/run.log": "6b083045657ba5c9b9ee288397b5c2a5acb4ae655ba791c8e2d65940f0f19c94",
+    "review555-sdk-green2/run.log": "316e0959045dad01ddb980c427cb0f51b42e5c4a6884a4acd6e50623e197a5ef",
+    "review555-sdk-green3/run.log": "0fbcbaed50c4506d8423fd810af61ff97caaa3df8372d9c517ef532e39d3261a"
+  }
+}

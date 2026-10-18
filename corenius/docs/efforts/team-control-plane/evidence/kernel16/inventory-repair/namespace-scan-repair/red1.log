@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.04s
+     Running unittests src/lib.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 1 test
+
+thread 'supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan' (2376938) panicked at src/supervisor.rs:2004:125:
+called `Result::unwrap()` on an `Err` value: Os { code: 13, kind: PermissionDenied, message: "Permission denied" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... FAILED
+
+failures:
+
+failures:
+    supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

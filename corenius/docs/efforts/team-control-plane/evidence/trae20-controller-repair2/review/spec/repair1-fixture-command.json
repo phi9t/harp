@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "-m",
+    "unittest",
+    "-v",
+    "test_trae_case_control.DurableControllerBehavior.test_prior_terminal_without_start_retains_new_refusal_and_spends_start"
+  ],
+  "cwd": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture",
+  "env_controls": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "tools/probes"
+  },
+  "source": {
+    "path": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture/tools/probes/trae_case_control.py",
+    "sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+    "bytes": 8706
+  },
+  "tests": {
+    "path": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/repair1-fixture/tools/probes/test_trae_case_control.py",
+    "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "bytes": 19935
+  },
+  "terminal_exit_code": 1
+}

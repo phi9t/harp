@@ -1,0 +1,215 @@
+18728 0000000001a29fc0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a29fc0:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a29fc7:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a29fce:	00 
+ 1a29fcf:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a29fd6:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a29fdd:	00 
+ 1a29fde:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a29fe5:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a29fec:	00 
+ 1a29fed:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a29ff4:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a29ffb:	00 
+ 1a29ffc:	48 81 ec 28 09 00 00 	sub    $0x928,%rsp
+ 1a2a003:	48 89 bc 24 78 02 00 	mov    %rdi,0x278(%rsp)
+ 1a2a00a:	00 
+ 1a2a00b:	48 89 b4 24 88 02 00 	mov    %rsi,0x288(%rsp)
+ 1a2a012:	00 
+ 1a2a013:	48 89 bc 24 98 46 00 	mov    %rdi,0x4698(%rsp)
+ 1a2a01a:	00 
+ 1a2a01b:	48 89 bc 24 a0 46 00 	mov    %rdi,0x46a0(%rsp)
+ 1a2a022:	00 
+ 1a2a023:	0f b6 87 f8 02 00 00 	movzbl 0x2f8(%rdi),%eax
+ 1a2a02a:	48 89 84 24 80 02 00 	mov    %rax,0x280(%rsp)
+ 1a2a031:	00 
+ 1a2a032:	48 8b 8c 24 80 02 00 	mov    0x280(%rsp),%rcx
+ 1a2a039:	00 
+ 1a2a03a:	48 8d 05 23 27 c3 fe 	lea    -0x13cd8dd(%rip),%rax        # 65c764 <GCC_except_table0+0x569b4>
+ 1a2a041:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a2a045:	48 01 c8             	add    %rcx,%rax
+ 1a2a048:	ff e0                	jmp    *%rax
+ 1a2a04a:	0f 0b                	ud2
+ 1a2a04c:	48 8b b4 24 78 02 00 	mov    0x278(%rsp),%rsi
+ 1a2a053:	00 
+ 1a2a054:	c6 84 24 97 46 00 00 	movb   $0x0,0x4697(%rsp)
+
+17560 0000000001a35a90 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a35a90:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a35a97:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a35a9e:	00 
+ 1a35a9f:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a35aa6:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a35aad:	00 
+ 1a35aae:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a35ab5:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a35abc:	00 
+ 1a35abd:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a35ac4:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a35acb:	00 
+ 1a35acc:	48 81 ec 98 04 00 00 	sub    $0x498,%rsp
+ 1a35ad3:	48 89 74 24 68       	mov    %rsi,0x68(%rsp)
+ 1a35ad8:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+ 1a35add:	48 89 7c 24 78       	mov    %rdi,0x78(%rsp)
+ 1a35ae2:	48 89 94 24 88 00 00 	mov    %rdx,0x88(%rsp)
+ 1a35ae9:	00 
+ 1a35aea:	48 89 b4 24 70 44 00 	mov    %rsi,0x4470(%rsp)
+ 1a35af1:	00 
+ 1a35af2:	48 89 b4 24 78 44 00 	mov    %rsi,0x4478(%rsp)
+ 1a35af9:	00 
+ 1a35afa:	0f b6 86 58 23 00 00 	movzbl 0x2358(%rsi),%eax
+ 1a35b01:	48 89 84 24 80 00 00 	mov    %rax,0x80(%rsp)
+ 1a35b08:	00 
+ 1a35b09:	48 8b 8c 24 80 00 00 	mov    0x80(%rsp),%rcx
+ 1a35b10:	00 
+ 1a35b11:	48 8d 05 a0 6c c2 fe 	lea    -0x13d9360(%rip),%rax        # 65c7b8 <GCC_except_table0+0x56a08>
+ 1a35b18:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a35b1c:	48 01 c8             	add    %rcx,%rax
+ 1a35b1f:	ff e0                	jmp    *%rax
+ 1a35b21:	0f 0b                	ud2
+ 1a35b23:	48 8b 7c 24 68       	mov    0x68(%rsp),%rdi
+ 1a35b28:	48 81 c7 10 02 00 00 	add    $0x210,%rdi
+
+8008 0000000001a28470 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a28470:	49 89 e3             	mov    %rsp,%r11
+ 1a28473:	49 81 eb 00 90 00 00 	sub    $0x9000,%r11
+ 1a2847a:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a28481:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a28488:	00 
+ 1a28489:	4c 39 dc             	cmp    %r11,%rsp
+ 1a2848c:	75 ec                	jne    1a2847a <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa>
+ 1a2848e:	48 81 ec 48 0f 00 00 	sub    $0xf48,%rsp
+ 1a28495:	48 89 b4 24 10 01 00 	mov    %rsi,0x110(%rsp)
+ 1a2849c:	00 
+ 1a2849d:	48 89 bc 24 18 01 00 	mov    %rdi,0x118(%rsp)
+ 1a284a4:	00 
+ 1a284a5:	48 89 bc 24 20 01 00 	mov    %rdi,0x120(%rsp)
+ 1a284ac:	00 
+ 1a284ad:	48 89 94 24 30 01 00 	mov    %rdx,0x130(%rsp)
+ 1a284b4:	00 
+ 1a284b5:	48 89 b4 24 18 9e 00 	mov    %rsi,0x9e18(%rsp)
+ 1a284bc:	00 
+ 1a284bd:	48 89 b4 24 20 9e 00 	mov    %rsi,0x9e20(%rsp)
+ 1a284c4:	00 
+ 1a284c5:	0f b6 86 d8 00 00 00 	movzbl 0xd8(%rsi),%eax
+ 1a284cc:	48 89 84 24 28 01 00 	mov    %rax,0x128(%rsp)
+ 1a284d3:	00 
+ 1a284d4:	48 8b 8c 24 28 01 00 	mov    0x128(%rsp),%rcx
+ 1a284db:	00 
+ 1a284dc:	48 8d 05 61 42 c3 fe 	lea    -0x13cbd9f(%rip),%rax        # 65c744 <GCC_except_table0+0x56994>
+ 1a284e3:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a284e7:	48 01 c8             	add    %rcx,%rax
+ 1a284ea:	ff e0                	jmp    *%rax
+ 1a284ec:	0f 0b                	ud2
+ 1a284ee:	48 8b 84 24 10 01 00 	mov    0x110(%rsp),%rax
+ 1a284f5:	00 
+ 1a284f6:	c6 80 d9 00 00 00 00 	movb   $0x0,0xd9(%rax)
+ 1a284fd:	48 89 c7             	mov    %rax,%rdi
+
+5080 00000000019c1550 <assembled_vertical::assembled_engineering_fixture::{{closure}}>:
+ 19c1550:	41 56                	push   %r14
+ 19c1552:	53                   	push   %rbx
+ 19c1553:	49 89 e3             	mov    %rsp,%r11
+ 19c1556:	49 81 eb 00 60 17 00 	sub    $0x176000,%r11
+ 19c155d:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 19c1564:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 19c156b:	00 
+ 19c156c:	4c 39 dc             	cmp    %r11,%rsp
+ 19c156f:	75 ec                	jne    19c155d <assembled_vertical::assembled_engineering_fixture::{{closure}}+0xd>
+ 19c1571:	48 81 ec d8 03 00 00 	sub    $0x3d8,%rsp
+ 19c1578:	48 89 bc 24 f8 65 00 	mov    %rdi,0x65f8(%rsp)
+ 19c157f:	00 
+ 19c1580:	48 89 b4 24 08 66 00 	mov    %rsi,0x6608(%rsp)
+ 19c1587:	00 
+ 19c1588:	48 89 bc 24 28 d0 16 	mov    %rdi,0x16d028(%rsp)
+ 19c158f:	00 
+ 19c1590:	48 89 bc 24 48 d0 16 	mov    %rdi,0x16d048(%rsp)
+ 19c1597:	00 
+ 19c1598:	0f b6 87 ee 39 00 00 	movzbl 0x39ee(%rdi),%eax
+ 19c159f:	48 89 84 24 00 66 00 	mov    %rax,0x6600(%rsp)
+ 19c15a6:	00 
+ 19c15a7:	48 8b 8c 24 00 66 00 	mov    0x6600(%rsp),%rcx
+ 19c15ae:	00 
+ 19c15af:	48 8d 05 36 ae c9 fe 	lea    -0x13651ca(%rip),%rax        # 65c3ec <GCC_except_table0+0x5663c>
+ 19c15b6:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 19c15ba:	48 01 c8             	add    %rcx,%rax
+ 19c15bd:	ff e0                	jmp    *%rax
+ 19c15bf:	0f 0b                	ud2
+ 19c15c1:	48 8b 84 24 f8 65 00 	mov    0x65f8(%rsp),%rax
+ 19c15c8:	00 
+ 19c15c9:	c6 80 c3 39 00 00 00 	movb   $0x0,0x39c3(%rax)
+ 19c15d0:	c6 84 24 27 d0 16 00 	movb   $0x0,0x16d027(%rsp)
+ 19c15d7:	00 
+ 19c15d8:	c6 80 ed 39 00 00 00 	movb   $0x0,0x39ed(%rax)
+
+4904 0000000001a2dd60 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2dd60:	49 89 e3             	mov    %rsp,%r11
+ 1a2dd63:	49 81 eb 00 10 01 00 	sub    $0x11000,%r11
+ 1a2dd6a:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a2dd71:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a2dd78:	00 
+ 1a2dd79:	4c 39 dc             	cmp    %r11,%rsp
+ 1a2dd7c:	75 ec                	jne    1a2dd6a <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa>
+ 1a2dd7e:	48 81 ec 28 03 00 00 	sub    $0x328,%rsp
+ 1a2dd85:	48 89 b4 24 98 05 00 	mov    %rsi,0x598(%rsp)
+ 1a2dd8c:	00 
+ 1a2dd8d:	48 89 bc 24 a0 05 00 	mov    %rdi,0x5a0(%rsp)
+ 1a2dd94:	00 
+ 1a2dd95:	48 89 bc 24 a8 05 00 	mov    %rdi,0x5a8(%rsp)
+ 1a2dd9c:	00 
+ 1a2dd9d:	48 89 94 24 b8 05 00 	mov    %rdx,0x5b8(%rsp)
+ 1a2dda4:	00 
+ 1a2dda5:	48 89 b4 24 a0 0a 01 	mov    %rsi,0x10aa0(%rsp)
+ 1a2ddac:	00 
+ 1a2ddad:	48 89 b4 24 b0 0a 01 	mov    %rsi,0x10ab0(%rsp)
+ 1a2ddb4:	00 
+ 1a2ddb5:	0f b6 86 d8 01 00 00 	movzbl 0x1d8(%rsi),%eax
+ 1a2ddbc:	48 89 84 24 b0 05 00 	mov    %rax,0x5b0(%rsp)
+ 1a2ddc3:	00 
+ 1a2ddc4:	48 8b 8c 24 b0 05 00 	mov    0x5b0(%rsp),%rcx
+ 1a2ddcb:	00 
+ 1a2ddcc:	48 8d 05 b9 e9 c2 fe 	lea    -0x13d1647(%rip),%rax        # 65c78c <GCC_except_table0+0x569dc>
+ 1a2ddd3:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a2ddd7:	48 01 c8             	add    %rcx,%rax
+ 1a2ddda:	ff e0                	jmp    *%rax
+ 1a2dddc:	0f 0b                	ud2
+ 1a2ddde:	48 8b 84 24 98 05 00 	mov    0x598(%rsp),%rax
+ 1a2dde5:	00 
+ 1a2dde6:	c6 80 da 01 00 00 00 	movb   $0x0,0x1da(%rax)
+ 1a2dded:	c6 84 24 7f 0a 01 00 	movb   $0x0,0x10a7f(%rsp)
+
+776 0000000001a27c20 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a27c20:	48 81 ec 08 03 00 00 	sub    $0x308,%rsp
+ 1a27c27:	48 89 7c 24 38       	mov    %rdi,0x38(%rsp)
+ 1a27c2c:	48 89 74 24 48       	mov    %rsi,0x48(%rsp)
+ 1a27c31:	48 89 bc 24 b8 02 00 	mov    %rdi,0x2b8(%rsp)
+ 1a27c38:	00 
+ 1a27c39:	48 89 bc 24 c0 02 00 	mov    %rdi,0x2c0(%rsp)
+ 1a27c40:	00 
+ 1a27c41:	0f b6 87 50 02 00 00 	movzbl 0x250(%rdi),%eax
+ 1a27c48:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
+ 1a27c4d:	48 8b 4c 24 40       	mov    0x40(%rsp),%rcx
+ 1a27c52:	48 8d 05 db 4a c3 fe 	lea    -0x13cb525(%rip),%rax        # 65c734 <GCC_except_table0+0x56984>
+ 1a27c59:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a27c5d:	48 01 c8             	add    %rcx,%rax
+ 1a27c60:	ff e0                	jmp    *%rax
+ 1a27c62:	0f 0b                	ud2
+ 1a27c64:	48 8b 74 24 38       	mov    0x38(%rsp),%rsi
+ 1a27c69:	48 8d bc 24 80 01 00 	lea    0x180(%rsp),%rdi
+ 1a27c70:	00 
+ 1a27c71:	48 89 7c 24 30       	mov    %rdi,0x30(%rsp)
+ 1a27c76:	ba 28 01 00 00       	mov    $0x128,%edx
+ 1a27c7b:	48 8b 05 86 f5 27 02 	mov    0x227f586(%rip),%rax        # 3ca7208 <memcpy@GLIBC_2.14>
+ 1a27c82:	ff d0                	call   *%rax
+ 1a27c84:	48 8b 74 24 30       	mov    0x30(%rsp),%rsi
+ 1a27c89:	48 8b 05 a8 34 28 02 	mov    0x22834a8(%rip),%rax        # 3cab138 <_DYNAMIC+0x4198>
+ 1a27c90:	48 8d 7c 24 58       	lea    0x58(%rsp),%rdi
+ 1a27c95:	ff d0                	call   *%rax
+ 1a27c97:	eb 65                	jmp    1a27cfe <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xde>
+ 1a27c99:	31 c0                	xor    %eax,%eax
+ 1a27c9b:	a8 01                	test   $0x1,%al
+ 1a27c9d:	75 fa                	jne    1a27c99 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x79>
+ 1a27c9f:	e9 8f 00 00 00       	jmp    1a27d33 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x113>
+ 1a27ca4:	31 c0                	xor    %eax,%eax
+ 1a27ca6:	a8 01                	test   $0x1,%al
+ 1a27ca8:	75 fa                	jne    1a27ca4 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x84>

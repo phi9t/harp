@@ -1,0 +1,103 @@
+    Checking corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> src/codex.rs:663:43
+    |
+663 |             self.save_binding(controller, &id, &document, "reconciling")?;
+    |                                           ^^^ help: change this to: `id`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+    = note: `-D clippy::needless-borrow` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_borrow)]`
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> src/codex.rs:698:17
+    |
+698 |                 &id,
+    |                 ^^^ help: change this to: `id`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> src/codex.rs:711:43
+    |
+711 |             self.save_binding(controller, &id, &document, "reconciling")?;
+    |                                           ^^^ help: change this to: `id`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> src/codex.rs:715:13
+    |
+715 |             &id,
+    |             ^^^ help: change this to: `id`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this function has too many arguments (9/7)
+    --> src/codex.rs:1061:5
+     |
+1061 | /     fn configure_thread(
+1062 | |         &self,
+1063 | |         controller: &Controller,
+1064 | |         id: &str,
+...    |
+1070 | |         body: &str,
+1071 | |     ) -> Result<(), String> {
+     | |___________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#too_many_arguments
+     = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+error: this `if` statement can be collapsed
+    --> src/codex.rs:1142:9
+     |
+1142 | /         if document["thread_id"].is_null() {
+1143 | |             if let Some(observed) = self.confirmed_creation(controller, id, "thread/start")? {
+1144 | |                 if observed["_controller_server_incarnation"] != incarnation {
+1145 | |                     return Err(
+...    |
+1155 | |         }
+     | |_________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+     = note: `-D clippy::collapsible-if` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+     |
+1142 ~         if document["thread_id"].is_null()
+1143 ~             && let Some(observed) = self.confirmed_creation(controller, id, "thread/start")? {
+1144 |                 if observed["_controller_server_incarnation"] != incarnation {
+ ...
+1153 |                 self.save_binding(controller, id, document, "thread_bound")?;
+1154 ~             }
+     |
+
+error: this `if` statement can be collapsed
+   --> src/native_profile.rs:129:9
+    |
+129 | /         if let Some(socket) = &self.provider_socket {
+130 | |             if !socket.is_absolute()
+131 | |                 || socket.starts_with("/usr")
+132 | |                 || socket.canonicalize().map_err(|e| e.to_string())? != *socket
+...   |
+140 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+129 ~         if let Some(socket) = &self.provider_socket
+130 ~             && (!socket.is_absolute()
+131 |                 || socket.starts_with("/usr")
+...
+135 |                     .file_type()
+136 ~                     .is_socket())
+137 |             {
+138 |                 return Err("scoped provider Unix socket required".into());
+139 ~             }
+    |
+
+error: could not compile `corenius-sqlite-controller` (lib) due to 7 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `corenius-sqlite-controller` (lib test) due to 7 previous errors

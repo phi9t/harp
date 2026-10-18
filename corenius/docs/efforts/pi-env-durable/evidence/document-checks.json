@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-06T21:18:05.775105+00:00",
+  "pi_commit": "ae92585d3b3e5f1e4b123d14a34314d826d8d9f5",
+  "corenius_base": "d7f674829e9844d011869b711d64fcf55313f7f1",
+  "branch": "codex/pi-env-deep-dive",
+  "markdown_files_checked": 10,
+  "immutable_upstream_citations_checked": 140,
+  "checks": [
+    "upstream citation paths and line bounds",
+    "local Markdown links exist",
+    "reference citations defined",
+    "new Markdown/Python/TypeScript whitespace diff checks",
+    "tracker.py lint pi-env-durable",
+    "probe implementation hashes match fresh reproduction",
+    "fresh reproduction cleanup assertions"
+  ],
+  "errors": [],
+  "report_sha256": {
+    "docs/spikes/pi-env-durable/pi-durable-source-review.md": "c9e270b4d5b3cfaf9838e51289a8703c4af447ad69494beef6f55d52fabe1758",
+    "docs/spikes/pi-env-durable/pi-env-source-review.md": "58db3119226878ec8f2597494cef5580457119bb41cf3014428e000956a7d799",
+    "docs/spikes/pi-env-durable/interrupted-effect-probe.md": "4258f99931a2b81fc95e87753d4151163faa3fd67d9d83058ac3f9f34a700c30",
+    "docs/spikes/pi-env-durable/README.md": "7f7eda3c2d48071922d762c3c469ef757181a300dbf839c7b58da3c12bc5a9e9",
+    "docs/efforts/pi-env-durable/STATE.md": "2398053e6c2493ec675f524e70c0b76b17dc044e5cecff325d45d4645d8d5cb9",
+    "docs/efforts/pi-env-durable/EFFORT.md": "dbf44b7f96664ec2afd9a731b62d98eb3b26a5455e28243c76cd8da2124fd19b",
+    "docs/efforts/pi-env-durable/tickets/02-interrupted-effect-probe.md": "5fed9b53bbb6265b9ba88d3d1e415ef0c494e770c57935fb4733288594405a9c",
+    "docs/efforts/pi-env-durable/tickets/01-pi-research.md": "b2777da5cdbebca00965531137b729d1be849785adeb5d776e1e2968e3c3ac59",
+    "docs/efforts/pi-env-durable/evidence/interrupted-effect-probe/review.md": "a9d31a8f2ba29a2642ec4005faf889a1a3111f33cfdae4aa724bf94158ef41d4",
+    "experiments/pi-env-durable/README.md": "e059bc63dba667d4b7242123661854e7f8200b696510d9f5e9c4c552fabf200f"
+  }
+}

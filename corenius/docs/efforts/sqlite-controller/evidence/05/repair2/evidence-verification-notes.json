@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-05T00:59:20.464391+00:00",
+  "check": [
+    "git",
+    "diff",
+    "HEAD^",
+    "HEAD",
+    "--check",
+    "--",
+    "docs/efforts/sqlite-controller/evidence/05/repair2/control-center-native-driver.diff"
+  ],
+  "actual_exit": 2,
+  "stdout": "docs/efforts/sqlite-controller/evidence/05/repair2/control-center-native-driver.diff:9: trailing whitespace.\n+ \n",
+  "qualification": "The retained unified-diff blank context line consists of the required single space prefix. It is byte-exact patch provenance, not source whitespace. It remains preserved; this check is a warning/failure, not PASS. Final source fmt103 passed. The earlier multi-command evidence-commit shell continued after the warning and committed normally.",
+  "artifact_sha256": "303c8aad4134c40250daea7821fb6bd289fbe6786dbe8230817bb909e648c31b",
+  "source_commit": "6f2c41556a50b3ab0b74da9a7b499e458d445156"
+}

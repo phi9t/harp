@@ -1,0 +1,398 @@
+{
+  "acceptance": "root independent full regression and Standards/Spec/branch reviews pending",
+  "private_reasoning": "excluded",
+  "raw_root": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center/.scratch/sqlite-controller/05",
+  "records": [
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 417,
+          "path": ".scratch/sqlite-controller/05/repair1-57-dispatcher-input-red.log",
+          "sha256": "919c03de04dd2fe07245230034b9992a629a82e6e98988dd23b44abc2c30dea0"
+        },
+        {
+          "bytes": 215187,
+          "path": ".scratch/sqlite-controller/05/repair1-57-dispatcher-input-red-source.tar.gz",
+          "sha256": "374358ae4ec50c7e8020fc194c25fe58ac48641a0bfe74c96734b056e60f4450"
+        },
+        {
+          "bytes": 5572,
+          "path": ".scratch/sqlite-controller/05/repair1-57-dispatcher-input-red-start.json",
+          "sha256": "bef5eda4faec8a64946876a590dccfeb231591adcbddaa384aea12fff2e84258"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-57-dispatcher-input-red",
+      "qualification": "Compiler setup failure: unclosed test module delimiter. No behavioral RED credit.",
+      "record": "runs/repair1-57-dispatcher-input-red.json",
+      "record_sha256": "6457af38b936d746bda786a563712831e3118168d6089a3f3a9c2665de203bdb",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 2582,
+          "path": ".scratch/sqlite-controller/05/repair1-58-dispatcher-input-red.log",
+          "sha256": "4792f4e11bae8d6e797ec44c8339dae84d4737ed8a11a1eb38430189157ad73a"
+        },
+        {
+          "bytes": 215185,
+          "path": ".scratch/sqlite-controller/05/repair1-58-dispatcher-input-red-source.tar.gz",
+          "sha256": "f2d99b32ce7ffcd617f2db57cf2b071e86f631b2fbf7601bbeadb8da29425012"
+        },
+        {
+          "bytes": 5572,
+          "path": ".scratch/sqlite-controller/05/repair1-58-dispatcher-input-red-start.json",
+          "sha256": "f59e8a264be8f5f80b6a26d66520d49621b53279412f4bf13aa30a1742383bf3"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-58-dispatcher-input-red",
+      "qualification": "Actual dispatcher SQLite abort/reopen/reconcile/dispatch/prepare strands applying+prepared one-operation state; missing full40KB sealed input falsely advances history0\u21922. Both meaningful RED.",
+      "record": "runs/repair1-58-dispatcher-input-red.json",
+      "record_sha256": "8fbaa8f3d3e1e4ebbff071b1154e2f9a7f00e3124fb677817b78a298757ad220",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1622,
+          "path": ".scratch/sqlite-controller/05/repair1-59-batch-retention-red.log",
+          "sha256": "cd1c70aaede11cfa84972c0df4fa59549763823f540518333ab9982de5f8ff38"
+        },
+        {
+          "bytes": 216359,
+          "path": ".scratch/sqlite-controller/05/repair1-59-batch-retention-red-source.tar.gz",
+          "sha256": "7bf878b58260b34bae2167bbd0a00b45d4923e2c1b64e93092006b57aaf867c1"
+        },
+        {
+          "bytes": 5576,
+          "path": ".scratch/sqlite-controller/05/repair1-59-batch-retention-red-start.json",
+          "sha256": "9dbd8939076c6d739063263589ebe9512695cd1050b27f14985cdca79085e466"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-59-batch-retention-red",
+      "qualification": "Valid65536B individual plus8x16000B aggregate and later question repeatedly fail batch bound; actual injected short write publishes54B partial final and normal reingestion refuses. Both meaningful RED.",
+      "record": "runs/repair1-59-batch-retention-red.json",
+      "record_sha256": "3d77075432a55a84a80a7e517219899d00617d79916c077aacdf06bd2d9e2264",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 167477,
+          "path": ".scratch/sqlite-controller/05/repair1-60-ui-native-red.log",
+          "sha256": "af4c4033230ade4f4ca2b26d4bd427b7e290795e1697842d88db2a499e40fd8d"
+        },
+        {
+          "bytes": 216961,
+          "path": ".scratch/sqlite-controller/05/repair1-60-ui-native-red-source.tar.gz",
+          "sha256": "a35d422ba51ed2b2e0d58570593144849fce0810a25d46af4e56b3c70c6795b4"
+        },
+        {
+          "bytes": 5651,
+          "path": ".scratch/sqlite-controller/05/repair1-60-ui-native-red-start.json",
+          "sha256": "c9b230927fa7ddb7e68da2a7770af012fedec44b38b901706c23591ce5e983ee"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-60-ui-native-red",
+      "qualification": "Actual cargo101/1PASS1FAIL166.66s BOTH. Exact pinned interrupt stable-ID refusal is RED. Start replay returned same non-null turn and unchanged22\u219222/17\u219217 operation counts: positive with active-state coverage unproved, NOT replay-defect RED.",
+      "record": "runs/repair1-60-ui-native-red.json",
+      "record_sha256": "ea64cf852d1cde56c5ebcff3b55b7c29bbf4a7460f080279d85297438812ffcc",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 168975,
+          "path": ".scratch/sqlite-controller/05/repair1-61-replay-initial-order-red.log",
+          "sha256": "7996ad0d28635246dfcfc6973016b64bc7e2b459c4a811349aa1203cc97c5988"
+        },
+        {
+          "bytes": 217452,
+          "path": ".scratch/sqlite-controller/05/repair1-61-replay-initial-order-red-source.tar.gz",
+          "sha256": "974b4503861e38f1313523b17a2c9184f55b1fc1e3e8b1da76b23f4ee1186d54"
+        },
+        {
+          "bytes": 5600,
+          "path": ".scratch/sqlite-controller/05/repair1-61-replay-initial-order-red-start.json",
+          "sha256": "b46848ca47c167742021ab2958fcfba4e184f673bd6789c2666d187de667b1fb"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-61-replay-initial-order-red",
+      "qualification": "Actual cargo101/0PASS2FAIL130.61s BOTH. Held exact-current-active replay returns null ID. Original shared first snapshot exact turn/items=[] fails preserved assertion, later exact original client matches42.986ms; separate first read matches. Diagnostic establishes readiness ordering only for this run, no historical cause or05 attribution.",
+      "record": "runs/repair1-61-replay-initial-order-red.json",
+      "record_sha256": "f7b6a89d13cdd2ff0a9394dfdbd34c82dee64512be92f057a2885932c64d8176",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 81683,
+          "path": ".scratch/sqlite-controller/05/repair1-62-ui-active-metadata-red.log",
+          "sha256": "849a5f29840456334c95321cab005bbd917b24b093b909e49a38ba1e31b9c397"
+        },
+        {
+          "bytes": 217627,
+          "path": ".scratch/sqlite-controller/05/repair1-62-ui-active-metadata-red-source.tar.gz",
+          "sha256": "3167dcc7ef1d9732e4dbe78d8afbfa5a1f9885c318a9eb69f27c28a5d7853ad9"
+        },
+        {
+          "bytes": 5629,
+          "path": ".scratch/sqlite-controller/05/repair1-62-ui-active-metadata-red-start.json",
+          "sha256": "63777248fcff7667871863ef28fd9de62ce8304b733893f732f6d38dd9e09167"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-62-ui-active-metadata-red",
+      "qualification": "Actual cargo101/1FAIL77.40s BOTH. Immediate SQLite persisted active current turn, saved command codex_turn and owned provider hold=true precede null-ID retry; counts unchanged21\u219221/17\u219217. Meaningful active-state replay RED.",
+      "record": "runs/repair1-62-ui-active-metadata-red.json",
+      "record_sha256": "3f3a74de94ed41942cc7aabb712ff030d966f4f81bc3306a268723363723bd15",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 1325,
+          "path": ".scratch/sqlite-controller/05/repair1-63-six-controls-unit-green.log",
+          "sha256": "5f470cf7aa017efeba564f351448a4c1106d79357a19405d555a3525fff572c1"
+        },
+        {
+          "bytes": 219897,
+          "path": ".scratch/sqlite-controller/05/repair1-63-six-controls-unit-green-source.tar.gz",
+          "sha256": "464e801221f329d5a4f02a8d924c930a8b203731c1b1c1707386aad718a9818a"
+        },
+        {
+          "bytes": 5572,
+          "path": ".scratch/sqlite-controller/05/repair1-63-six-controls-unit-green-start.json",
+          "sha256": "1164184e6f52b72feee029afc3ad43b932d1e06fc3a59f714e1578eab2b4b169"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-63-six-controls-unit-green",
+      "qualification": "Compiler shadowed text function error. No GREEN despite filename.",
+      "record": "runs/repair1-63-six-controls-unit-green.json",
+      "record_sha256": "3699bcd7e4906b38c16b149cdcb58f8a96b7ad98a19732547144ebb304518c1c",
+      "source_unchanged": true
+    },
+    {
+      "exit": 101,
+      "ignored_raw": [
+        {
+          "bytes": 3988,
+          "path": ".scratch/sqlite-controller/05/repair1-64-focused-green.log",
+          "sha256": "513777e85f0707851b9df674875827047998a56b62bfce42e5047dd9b452f877"
+        },
+        {
+          "bytes": 221171,
+          "path": ".scratch/sqlite-controller/05/repair1-64-focused-green-source.tar.gz",
+          "sha256": "d8ec0859f58256ed140663873176a103367574195740a612e4e33a253d57722f"
+        },
+        {
+          "bytes": 5620,
+          "path": ".scratch/sqlite-controller/05/repair1-64-focused-green-start.json",
+          "sha256": "9bfd9cff17d3766aa214d9c24a3b096ea4d71010abb73f4dae39209e0d19e38d"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-64-focused-green",
+      "qualification": "Actual cargo101/19unitPASS1FAIL. Six input/retention/batch controls pass. Recovery fixture JOIN assumes old delivery remains current, but ordinary recovery correctly creates a new delivery: NoRows fixture failure preserved;65 measures old operation and current question separately.",
+      "record": "runs/repair1-64-focused-green.json",
+      "record_sha256": "6d3f01a44ae6148f552117834d848ebc7aee308d6fc1611bfd62ec98ddbaa8cf",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 5120,
+          "path": ".scratch/sqlite-controller/05/repair1-65-focused-green.log",
+          "sha256": "ab4822c4be3f0e2842c14345560dab51205102963b4805c28c0ea4e3eddc3605"
+        },
+        {
+          "bytes": 221195,
+          "path": ".scratch/sqlite-controller/05/repair1-65-focused-green-source.tar.gz",
+          "sha256": "b890d61cc583019abae372c51ad925c04c563ba38d3156fea44459502e2404c7"
+        },
+        {
+          "bytes": 5620,
+          "path": ".scratch/sqlite-controller/05/repair1-65-focused-green-start.json",
+          "sha256": "8497a06d4b0570aaa4aba1b99767310fe5a40c72f15119c30fd997f5344e6218"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-65-focused-green",
+      "qualification": "Actual0:20units+7public controls+2process clients PASS. Actual dispatcher abort recovery, all unavailable full-input modes, same payload/cached version replay, short-write/reingestion and actual child exit86/private stage/concurrent dedup controls pass. No powerloss/native-kill claim.",
+      "record": "runs/repair1-65-focused-green.json",
+      "record_sha256": "57ec093fba6938df26a58942db3bd0773d27e34f09b98a83c369b5d9c17093c9",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 149761,
+          "path": ".scratch/sqlite-controller/05/repair1-66-native-combined-green.log",
+          "sha256": "be9a249b1b086802447fc0a2506fbbc771b5361607c68821a6cdfb2cf58ef8b9"
+        },
+        {
+          "bytes": 221861,
+          "path": ".scratch/sqlite-controller/05/repair1-66-native-combined-green-source.tar.gz",
+          "sha256": "094ca97032f25fb8fb8f323d39c7da88eed247221ea032335fa0985f396b51ec"
+        },
+        {
+          "bytes": 5831,
+          "path": ".scratch/sqlite-controller/05/repair1-66-native-combined-green-start.json",
+          "sha256": "744e2dcbd85110e1cffd1405b6d30215ecad2bd4006c4ecb2f8a51f0d2665172"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-66-native-combined-green",
+      "qualification": "Actual0: combined real pinned native+companion+TUI BOTH133.78s, deterministic local model-free provider. Exact active replay, scoped interrupt/no-effect negatives, ten exact large questions via two bounded batches each and existing races/authority/cleanup regressions pass. Subsequent schema discovery/sealed native dependency edits qualified69/70.",
+      "record": "runs/repair1-66-native-combined-green.json",
+      "record_sha256": "1120f10c6c9beaa55ef64c082e4d948fe6cd74b13fe9951a9919df3f996b5ff0",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 125698,
+          "path": ".scratch/sqlite-controller/05/repair1-67-default-initial-green.log",
+          "sha256": "56ea44131b20340a2393e26e554f86f50634c51179ada46dcb51b8c508dc6d04"
+        },
+        {
+          "bytes": 221861,
+          "path": ".scratch/sqlite-controller/05/repair1-67-default-initial-green-source.tar.gz",
+          "sha256": "f8af2f150984e4d5a02fccb4cbc58eb0ea78e9f60590c064b64592909ba0795b"
+        },
+        {
+          "bytes": 5643,
+          "path": ".scratch/sqlite-controller/05/repair1-67-default-initial-green-start.json",
+          "sha256": "060268acfcd34bad2483a371814881b45c3c2ce8cb79648a78c8d9f69d0e4ce9"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-67-default-initial-green",
+      "qualification": "Actual0: mandatory DEFAULT initial-confirm BOTH60.86s, no optional ordering/persistence env. Root-adjudicated original exact turn+clientId poll within SAME10s and unchanged final assertion. Driver measurement correction, not historical full-gate causality/runtime-fence repair.",
+      "record": "runs/repair1-67-default-initial-green.json",
+      "record_sha256": "bcc3e6ae1f44cb72a7277de032c313f95268ba0720781c705579035867b08ec1",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 214,
+          "path": ".scratch/sqlite-controller/05/repair1-68-strict-clippy.log",
+          "sha256": "4cce5817c646f63864404aadda154b8af3284c16726169046a60dfd25858ceb9"
+        },
+        {
+          "bytes": 222265,
+          "path": ".scratch/sqlite-controller/05/repair1-68-strict-clippy-source.tar.gz",
+          "sha256": "5556f47603b660e820adfd442c5ca2df26028677ece017957f71ae26651a5eba"
+        },
+        {
+          "bytes": 5549,
+          "path": ".scratch/sqlite-controller/05/repair1-68-strict-clippy-start.json",
+          "sha256": "fb58ab0c8ee254906d82c4a536b03ebeb368b76e6d430b431d3ad6aef4b2ac6e"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-68-strict-clippy",
+      "qualification": "Actual0 strict all-target fault-injection Clippy, -D warnings, final source bytes.",
+      "record": "runs/repair1-68-strict-clippy.json",
+      "record_sha256": "13628f2728b9b2298aa2d313b80dcacfa7e0e179a979ace080bbafd8df78abbb",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 5134,
+          "path": ".scratch/sqlite-controller/05/repair1-69-final-focused.log",
+          "sha256": "4f97dae1a9d0061558fe045b9e426978abc7620397382af277237b0e3daa3a33"
+        },
+        {
+          "bytes": 222265,
+          "path": ".scratch/sqlite-controller/05/repair1-69-final-focused-source.tar.gz",
+          "sha256": "116967691aac765030f1ea662832aff1dc91d40cd2c2c27a67ec07db2c763f4b"
+        },
+        {
+          "bytes": 5620,
+          "path": ".scratch/sqlite-controller/05/repair1-69-final-focused-start.json",
+          "sha256": "246dcab91ec6e1880ee5209d39f755df2bffbf064748417d1a64584132ca99a7"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-69-final-focused",
+      "qualification": "Actual0 final bytes:20units+7public controls+2actual process-client tests PASS.",
+      "record": "runs/repair1-69-final-focused.json",
+      "record_sha256": "5068827e34d090614a3a832f04a7356cc07f26f6b5b5df2fcb907a5ee9ef84b8",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 150496,
+          "path": ".scratch/sqlite-controller/05/repair1-70-final-native.log",
+          "sha256": "b5eecb8ad773aea7b3294b30541f73b607b08396dbce3243863cb3bdaff01292"
+        },
+        {
+          "bytes": 222264,
+          "path": ".scratch/sqlite-controller/05/repair1-70-final-native-source.tar.gz",
+          "sha256": "392ecc6f674324dab17069ccc62d1db141502bba4941cb6fd3187198ae880984"
+        },
+        {
+          "bytes": 5831,
+          "path": ".scratch/sqlite-controller/05/repair1-70-final-native-start.json",
+          "sha256": "bbd63fc67493afbf9506089a64b028fa8add7423f25b8ffcca111991826bf510"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-70-final-native",
+      "qualification": "Actual0 final source combined pinned native/companion/TUI BOTH. Final source/input/execution pins and original acceptance assertions/deadlines retained. Root acceptance remains pending.",
+      "record": "runs/repair1-70-final-native.json",
+      "record_sha256": "2ee75bb54e6a91430aae43d28c93db518b133948c05ea2fed4075bb3449ccd35",
+      "source_unchanged": true
+    },
+    {
+      "exit": 0,
+      "ignored_raw": [
+        {
+          "bytes": 0,
+          "path": ".scratch/sqlite-controller/05/repair1-71-format-check.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 222264,
+          "path": ".scratch/sqlite-controller/05/repair1-71-format-check-source.tar.gz",
+          "sha256": "865c123c5d25771cf5434fdd92ce471b21db122680ef0d260350025e90d48d5f"
+        },
+        {
+          "bytes": 5453,
+          "path": ".scratch/sqlite-controller/05/repair1-71-format-check-start.json",
+          "sha256": "2e37d0d374cdb9f3998678470e3a192184273404e1de9c3964205829c1694fe2"
+        }
+      ],
+      "input_count": 43,
+      "name": "repair1-71-format-check",
+      "qualification": "Actual0 final source cargo fmt --all --check.",
+      "record": "runs/repair1-71-format-check.json",
+      "record_sha256": "c163b03f7bf51a4ae31387dfabec8bd858ba96bb1b0c976a61018b78cec98ed6",
+      "source_unchanged": true
+    }
+  ],
+  "source_commit": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8"
+}

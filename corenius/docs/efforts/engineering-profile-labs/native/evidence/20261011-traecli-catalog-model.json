@@ -1,0 +1,152 @@
+{
+  "classification": "REAL_PROVIDER_ATTEMPT",
+  "kind": "traecli",
+  "model": "GPT-6.1-Sol",
+  "binary_sha256": "45e23a4c33ddac34b7a2455cecc54fc1e3fcbc39761fba38615ffcc7df8a8891",
+  "prompt": "Without tools, files, commands, or explanation, answer only: what is 19 + 23?",
+  "boundary": "trusted_installed_cli_on_host_read_only_tools_disabled",
+  "insula": false,
+  "credentials_read_by_lab": false,
+  "deadline_seconds": 35,
+  "hard_output_token_limit": null,
+  "hard_billing_limit": null,
+  "max_provider_turns_requested": 1,
+  "projected_events": [
+    {
+      "type": "thread.started",
+      "thread_id": "01a12c6d-3075-7842-a1f2-ad03a004ece9",
+      "item_type": null
+    },
+    {
+      "type": "item.completed",
+      "item_type": "error",
+      "error_categories": [
+        "unclassified_runtime_error"
+      ]
+    },
+    {
+      "type": "item.completed",
+      "item_type": "error",
+      "error_categories": [
+        "unclassified_runtime_error"
+      ]
+    },
+    {
+      "type": "turn.started",
+      "item_type": null
+    },
+    {
+      "type": "error",
+      "item_type": null,
+      "error_categories": [
+        "unclassified_runtime_error"
+      ]
+    },
+    {
+      "type": "item.completed",
+      "item_type": "error",
+      "error_categories": [
+        "unclassified_runtime_error"
+      ]
+    },
+    {
+      "type": "turn.failed",
+      "item_type": null,
+      "error_categories": [
+        "unclassified_runtime_error"
+      ]
+    }
+  ],
+  "structured_turn_completed": false,
+  "expected_answer_observed": false,
+  "unexpected_tool_observed": false,
+  "accepted": false,
+  "argv": [
+    "/data02/home/philip.yang/.local/bin/traecli",
+    "exec",
+    "--json",
+    "--ephemeral",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--color",
+    "never",
+    "-m",
+    "GPT-6.1-Sol",
+    "-c",
+    "project_doc_max_bytes=0",
+    "-c",
+    "model_reasoning_effort=low",
+    "-c",
+    "approval_policy=\"never\"",
+    "-c",
+    "features.memories=false",
+    "-c",
+    "features.goals=false",
+    "-c",
+    "features.multi_agent=false",
+    "-c",
+    "features.multi_agent_v2=false",
+    "-c",
+    "features.code_mode_host=false",
+    "-c",
+    "features.plugins=false",
+    "-c",
+    "features.plugin_hooks=false",
+    "-c",
+    "features.hooks=false",
+    "-c",
+    "features.shell_tool=false",
+    "-c",
+    "features.unified_exec=false",
+    "--disallowed-tool",
+    "exec",
+    "--disallowed-tool",
+    "exec_command",
+    "--disallowed-tool",
+    "write_stdin",
+    "--disallowed-tool",
+    "shell",
+    "--disallowed-tool",
+    "shell_command",
+    "--disallowed-tool",
+    "run_shell_command",
+    "--disallowed-tool",
+    "web_search",
+    "--disallowed-tool",
+    "apply_patch",
+    "--disallowed-tool",
+    "view_image",
+    "--disallowed-tool",
+    "update_plan",
+    "--disallowed-tool",
+    "LSP",
+    "--disallowed-tool",
+    "wait",
+    "--disallowed-tool",
+    "get_goal",
+    "--disallowed-tool",
+    "create_goal",
+    "--disallowed-tool",
+    "update_goal",
+    "--disallowed-tool",
+    "spawn_agent",
+    "--disallowed-tool",
+    "send_input",
+    "--disallowed-tool",
+    "wait_agent",
+    "--disallowed-tool",
+    "close_agent",
+    "--disallowed-tool",
+    "resume_agent",
+    "Without tools, files, commands, or explanation, answer only: what is 19 + 23?"
+  ],
+  "exit_code": 1,
+  "timed_out": false,
+  "stderr_bytes": 127,
+  "stderr_sha256": "059aadcdddfb1bdf8c4ca93a98902b73bc14712935602e1cb8a541478fcc77f2",
+  "owned_process_group_disposed": true,
+  "observed_at_utc": "2026-10-11T19:25:15.268853+00:00"
+}

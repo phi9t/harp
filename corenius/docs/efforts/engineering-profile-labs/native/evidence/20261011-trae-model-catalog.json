@@ -1,0 +1,40 @@
+{
+  "classification": "MODEL_FREE_NATIVE_CATALOG",
+  "model_names": [
+    "Seed-Evolving",
+    "Seed-2.1-Turbo",
+    "openrouter-3o",
+    "openrouter-2o",
+    "openrouter-1o",
+    "openrouter-1",
+    "GPT-6.1-Sol",
+    "GPT-6-Astra",
+    "GPT-6-Sol",
+    "GPT-6-Luna",
+    "GPT-5.6-Sol",
+    "GPT-5.6-Terra",
+    "GPT-5.6-Luna",
+    "Gemini-3.1-Pro-Preview",
+    "Gemini-3-Flash-Preview",
+    "MiniMax-M2.7",
+    "Kimi-K2.5",
+    "GPT-5.5",
+    "GPT-5.4",
+    "GPT-5.2"
+  ],
+  "entitlement_verified": false,
+  "run": {
+    "argv": [
+      "/data02/home/philip.yang/.local/bin/traecli",
+      "models",
+      "--json"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "owned_process_group_disposed": true
+  },
+  "outcome": "completed_catalog_probe",
+  "observed_at_utc": "2026-10-11T19:27:44.330707+00:00"
+}

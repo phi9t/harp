@@ -1,0 +1,15 @@
+def blade_component(name, srcs, main_srcs, extra_defs=[]):
+    if not isinstance(srcs, list) or not isinstance(main_srcs, list) or not isinstance(extra_defs, list):
+        raise ValueError("blade_component expects list arguments")
+    component_def = "BLADE_COMPONENT_%s" % name.upper()
+    native["cc_library"](
+        name=name + "_core",
+        srcs=srcs,
+        defs=[component_def] + extra_defs,
+        export_incs=["."],
+    )
+    native["cc_binary"](
+        name=name + "_tool",
+        srcs=main_srcs,
+        deps=[":" + name + "_core"],
+    )

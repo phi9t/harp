@@ -1,0 +1,56 @@
+{
+  "acknowledged_at": "2026-10-05T02:46:40.529676+00:00",
+  "owner_design_commit": "832e76947f64e853092c0ea34bd9c314da6015f0",
+  "owner_exact_files": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/manifest.json",
+  "root_sole_coordination_owner": true,
+  "04_writer": "original tree clean/frozenEVID706ca8e;04accepted, not reopened",
+  "batch_policy": "20completed canonical command/public message/peer activities or10minutes plus compaction/handoff; mid-turn checks; deduplicate source/turn/item; no private reasoning/healthy nudge spam",
+  "first_checkpoint": {
+    "receipts": [
+      "04-r1-live01.json",
+      "04-r1-live02.json"
+    ],
+    "raw_range": [
+      1471,
+      1643
+    ],
+    "visible_actions": 25,
+    "interpretation": "historical handoff11 +mid-turn14 source-bound review; not fresh execution or acceptance"
+  },
+  "current04_coverage": {
+    "ingested": 2455,
+    "reviewed_range_frontier": 2451,
+    "live_origin": 1471,
+    "original_range_receipts": 12,
+    "original_step_assessments": 155,
+    "supplemental_receipts": 1,
+    "supplemental_step_assessments": 1,
+    "unique_reviewed_visible_actions_now": 156,
+    "historical_contiguous": 0,
+    "external_owner_ranges": [
+      [
+        13,
+        121
+      ],
+      [
+        1263,
+        1470
+      ]
+    ],
+    "history122_1262": "UNREVIEWED"
+  },
+  "count_correction": {
+    "omitted_original_ordinal": 2388,
+    "supplement": "04-r3-supplement-2388.json",
+    "sha256": "c8ebdccbb0bf6fb68b547e2f680363806c4d567f90d1a56e0a7bc381c8d51a78",
+    "original_receipts_unchanged": true,
+    "frontiers_unchanged": true,
+    "prior_full_step_claim_superseded": true
+  },
+  "nine_finding_matrix": "docs/efforts/sqlite-controller/evidence/04/independent-review/repair3/nine-finding-root-matrix.json",
+  "nine_matrix_sha256": "f65b58717a46d8448eb9e64f05c61d225e23ed8b6719bf320d09fe5bf90e8edd",
+  "product_routing": "05controller/cursor/correction views and06 supervised retained recurring qualification, no second scheduler or deployed-unattended claim",
+  "current_blocker": "05unaccepted final3/3 and two confirmed defects; pending ONEextra-round question unanswered. Receipt reaffirms caps, not renewed repair authority.01\u201304 acceptance and06blocked unchanged.",
+  "owner_private_ledger": "never written",
+  "safety": "No gate/process/session interruption, no private reasoning or prior receipt rewrite; source/mutable evidence checked before review credit."
+}

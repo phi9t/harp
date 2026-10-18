@@ -1,0 +1,21 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.75s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'public_cancel_stops_actual_nested_writers_and_never_refunds_unknown' (3151363) panicked at tests/assembled_cancellation.rs:517:13:
+assertion `left == right` failed
+  left: "cancellation_requested"
+ right: "cancelled"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... FAILED
+
+failures:
+
+failures:
+    public_cancel_stops_actual_nested_writers_and_never_refunds_unknown
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 1.29s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

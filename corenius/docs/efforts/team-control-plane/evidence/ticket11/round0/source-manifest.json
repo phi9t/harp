@@ -1,0 +1,33 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "content_baseline": "docs/efforts/team-control-plane/evidence/ticket10-accepted-manifest.json",
+  "source_frozen_utc": "2026-10-01T08:25:20.269338+00:00",
+  "files": [
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c9be7135044c084db1c6558cb217e6a3c06aad56ba1aa2c365cc9f3355e5d30e",
+      "bytes": 35974
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "9a0b2d16f6be3adde7fdab4ad990e69e54ae9fe3390324026403c2123a0605d5",
+      "bytes": 1938
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "cf7fbce34cfa5e9340fa30e5c7bafc9de183c6e185d6a1bf2f3f96a4ac648a8f",
+      "bytes": 28178
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "b579ec92191c07167b11cb7735b54e61c9ee944d7e9d46713a33066be8f866df",
+      "bytes": 181
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "d1151926135771a693bd6f60b9244b16b1f251b1996806f3b4ccad39f0e69bd2",
+      "bytes": 14615
+    }
+  ],
+  "patch_sha256": "14596fc90358693091edba2907173800aa7882d1e82871db2cadea87c07995af"
+}

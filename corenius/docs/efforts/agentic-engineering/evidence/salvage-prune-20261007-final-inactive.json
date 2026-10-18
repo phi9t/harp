@@ -1,0 +1,875 @@
+{
+  "schema": "corenius.salvage_prune_progress.v3",
+  "commit_read": "84cbfebde694cad4acd46ab29b6c6c3cafe64a4a",
+  "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f",
+  "inactive_retirements_this_increment": 49,
+  "orphan_refs_retired": 19,
+  "remaining_counts": {
+    "worktrees": 5,
+    "branches": 5
+  },
+  "recovery": {
+    "unmerged-tree-retirement-receipts.json": {
+      "sha256": "ca3555e9eae1aece963df7f3e650c843fa49a662ff062afd06fa7e80ff7884ed",
+      "data": {
+        "retired": [
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-native-fix-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-native-fix-20261007",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-native-fix-20261007",
+            "head": "9f8fc069a5d013708f4582475632eb2895982a4b",
+            "branch": "codex/landing-native-fix-20261007",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/review-ib2/wt",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/wt",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/wt",
+            "head": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+            "branch": "",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-root-9schiseo/source",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/sqlite05-c1c2-root-9schiseo-source",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/sqlite05-c1c2-root-9schiseo-source",
+            "head": "a70ddebc27b8971370af93f6be961fcf4f483990",
+            "branch": "",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/sqlite05-c1c2-spec-fo_7e_fp-source",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/sqlite05-c1c2-spec-fo_7e_fp-source",
+            "head": "a70ddebc27b8971370af93f6be961fcf4f483990",
+            "branch": "",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-standards-thvd61ju/source",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/sqlite05-c1c2-standards-thvd61ju-source",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/sqlite05-c1c2-standards-thvd61ju-source",
+            "head": "a70ddebc27b8971370af93f6be961fcf4f483990",
+            "branch": "",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-intent26-candidate-import2",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-intent26-candidate-import2",
+            "head": "29bd30a38c6253c3144756323eee6b78fca89699",
+            "branch": "codex-intent26/candidate-import2",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-intent26-outcome-lifecycle1",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-intent26-outcome-lifecycle1",
+            "head": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+            "branch": "codex-intent26/outcome-lifecycle1",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-mac-operator-dashboard",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-mac-operator-dashboard",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-mac-operator-dashboard",
+            "head": "880d37114e33084e5ea0cf42d849cdcb37a17a24",
+            "branch": "codex/mac-binding-observation",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-mac-operator-tmux",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-mac-operator-tmux",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-mac-operator-tmux",
+            "head": "52c14104e13deca6c7b73520b7a3b7c6d55ededa",
+            "branch": "codex/mac-operator-tmux",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-mac-runtime-views",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-mac-runtime-views",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-mac-runtime-views",
+            "head": "7837501da2373f883eef4405392624bb21e51d7c",
+            "branch": "codex/mac-runtime-views",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-mac-state-views",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-mac-state-views",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-mac-state-views",
+            "head": "5a8047f74a862ac6cf30b7da0e92c7e4e79af860",
+            "branch": "codex/mac-state-views",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-reference-design",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-reference-design",
+            "head": "c99be598333b8d7b18a566f3ca239c3c1733f07e",
+            "branch": "codex/reference-design",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-sqlite-controller-execution",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-sqlite-controller-execution",
+            "head": "c498c389ec58e87496f2c62ef854ec1d69795fc7",
+            "branch": "codex/sqlite-controller-execution",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-lwr-18-interactive-launch-and-monitors",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lwr-18-interactive-launch-and-monitors",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lwr-18-interactive-launch-and-monitors",
+            "head": "3ab9ec45cd46779632d19238f496903be9695287",
+            "branch": "work/lead-worker-readiness/18-interactive-launch-and-monitors",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-lwr-19-safe-on-a-shared-repository",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lwr-19-safe-on-a-shared-repository",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lwr-19-safe-on-a-shared-repository",
+            "head": "bdda6518d8c33005dc6c63baf8983edc416eeefe",
+            "branch": "work/lead-worker-readiness/19-safe-on-a-shared-repository",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-lwr-21-scenarios-that-can-fail",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lwr-21-scenarios-that-can-fail",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lwr-21-scenarios-that-can-fail",
+            "head": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+            "branch": "work/lead-worker-readiness/21-scenarios-that-can-fail",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-lwr-22-no-host-tmp",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lwr-22-no-host-tmp",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lwr-22-no-host-tmp",
+            "head": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+            "branch": "work/lead-worker-readiness/22-no-host-tmp",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite01-storage",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite01-storage",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite01-storage",
+            "head": "15ae62ca8eaa39c3f5e96bed6aa8dfea23951fcf",
+            "branch": "sqlite01/storage",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite01verify-check",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite01verify-check",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite01verify-check",
+            "head": "15ae62ca8eaa39c3f5e96bed6aa8dfea23951fcf",
+            "branch": "sqlite01verify/check",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite02-runtime",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite02-runtime",
+            "head": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+            "branch": "sqlite02/runtime",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite02verify-check",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite02verify-check",
+            "head": "7b20a886576c125c634913edadc4bb6f8c115352",
+            "branch": "sqlite02verify/check",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite03-kata",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite03-kata",
+            "head": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+            "branch": "sqlite03/kata",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite04-git",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite04-git",
+            "head": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+            "branch": "sqlite04/git",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite05-c1c2-happy",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite05-c1c2-happy",
+            "head": "864a3da625fabf839abca8bdd08672dfb24e0785",
+            "branch": "sqlite05/c1c2-happy",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite05-control-center",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite05-control-center",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite05-control-center",
+            "head": "d529d1f55c1f7183fd801734e5d35405d9bee676",
+            "branch": "sqlite05/control-center",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite05-repair3",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite05-repair3",
+            "head": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+            "branch": "sqlite05/repair3",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite06-happy-path",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite06-happy-path",
+            "head": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+            "branch": "sqlite06/happy-path",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-portfolio-stabilization-design",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-portfolio-stabilization-design",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-trae-controller-portfolio-stabilization-design",
+            "head": "fec99d6cc3527d38ffed148643c58a9d8341faf2",
+            "branch": "trae/controller-portfolio-stabilization-design",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-evidence",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-evidence",
+            "head": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+            "branch": "worker/mb-evidence",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence-2",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-evidence-2",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-evidence-2",
+            "head": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+            "branch": "worker/mb-evidence-2",
+            "recovery_verified": true,
+            "disposition": "previous independent queue audit found integrated/superseded/parked source, no new ready delta; unique history and every whole-tree file preserved; no obsolete source activated"
+          }
+        ],
+        "skipped_live": [
+          {
+            "path": "/data02/home/philip.yang/.local/share/kata-spike/repo",
+            "live_pid": 2503565
+          },
+          {
+            "path": "/data02/home/philip.yang/workspace/corenius-codex-controller-bench-integration",
+            "live_pid": 660254
+          },
+          {
+            "path": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation",
+            "live_pid": 665477
+          },
+          {
+            "path": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-03",
+            "live_pid": 630090
+          }
+        ]
+      }
+    },
+    "copied-tree-retirement-receipts.json": {
+      "sha256": "587c149fae823fbe8edb2c3d2c7a8085d6e9acd2af18efad02bd14cb8fe7e78f",
+      "data": {
+        "retired": [
+          {
+            "original": "/tmp/corenius-jj19-evaluation-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-jj19-evaluation-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-jj19-evaluation-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-jj19-evaluation-author",
+            "head": "264756edd550225449202b6f20ac4b560808d14e",
+            "branch": "codex/jj19-evaluation-author",
+            "files_verified": 3401,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-jj19-history-export-repair",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-jj19-history-export-repair",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-jj19-history-export-repair",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-jj19-history-export-repair",
+            "head": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+            "branch": "codex/jj19-history-export-repair",
+            "files_verified": 3437,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-jj19-verification-repair",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-jj19-verification-repair",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-jj19-verification-repair",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-jj19-verification-repair",
+            "head": "264756edd550225449202b6f20ac4b560808d14e",
+            "branch": "codex/jj19-verification-repair",
+            "files_verified": 3249,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-author",
+            "head": "1f164156261a3aa927c823919bf73d6e6d11a771",
+            "branch": "codex/kernel16-author",
+            "files_verified": 9084,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-capacity",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-capacity",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-capacity",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-capacity",
+            "head": "1f164156261a3aa927c823919bf73d6e6d11a771",
+            "branch": "codex/kernel16-capacity",
+            "files_verified": 1799,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review560-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review560-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review560-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review560-author",
+            "head": "58c96816ecfd8224d4e2b6f8f01e59eda1eff249",
+            "branch": "codex/kernel16-review560-author",
+            "files_verified": 3971,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review571-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review571-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review571-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review571-author",
+            "head": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+            "branch": "codex/kernel16-review571-author",
+            "files_verified": 3594,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review575-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review575-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review575-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review575-author",
+            "head": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+            "branch": "codex/kernel16-review575-author",
+            "files_verified": 2489,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review580-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review580-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review580-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review580-author",
+            "head": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+            "branch": "codex/kernel16-review580-author",
+            "files_verified": 3359,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review584-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review584-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review584-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review584-author",
+            "head": "480d7c22bdfd926e1534c4680988d63d50618d2e",
+            "branch": "codex/kernel16-review584-author",
+            "files_verified": 1408,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review591-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review591-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review591-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review591-author",
+            "head": "3e2622ecdb860e656e80f3023da8738e90fe4ac4",
+            "branch": "codex/kernel16-review591-author",
+            "files_verified": 3544,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-kernel16-review611-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-kernel16-review611-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-d3473c1c/corenius-kernel16-review611-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel16-review611-author",
+            "head": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
+            "branch": "codex/kernel16-review611-author",
+            "files_verified": 5832,
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-landing-audit-20261005",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-landing-audit-20261005",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-landing-audit-20261005",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-audit-20261005",
+            "head": "9a92c9523102af409e86f9d59a480f32f0a77c2b",
+            "branch": "codex/landing-audit-20261005",
+            "files_verified": 7947,
+            "socket_metadata": [
+              {
+                "path": ".scratch/k3-xuj7ef8j/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-filzmckg/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-jb73yqu0/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-_vet13po/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-od0pd5yi/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-qpjcxy3x/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-d8qtacin/unlinked.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-d8qtacin/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-dys2ct3z/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              },
+              {
+                "path": ".scratch/k3-xdcmx_zt/controller.sock",
+                "mode": 384,
+                "disposition": "unbound UNIX endpoint; no byte payload; original node retained in raw backup"
+              }
+            ],
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-monitor-wakeup",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-monitor-wakeup",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-monitor-wakeup",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-monitor-wakeup",
+            "head": "b034844ef108580ad9ba3b3d05b77bb859a18077",
+            "branch": "codex/monitor-wakeup",
+            "files_verified": 6173,
+            "socket_metadata": [],
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-rfc0002-capture",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-rfc0002-capture",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-rfc0002-capture",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-rfc0002-capture",
+            "head": "768bb943e9a95b9e761e3d1e7de08c0ac8df74b4",
+            "branch": "codex/rfc0002-capture",
+            "files_verified": 3041,
+            "socket_metadata": [],
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-sqlite-controller-baseline",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-sqlite-controller-baseline",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-sqlite-controller-baseline",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-sqlite-controller-baseline",
+            "head": "abe87156cc89a991f5059ee2f4a9eedcd60ca1f4",
+            "branch": "codex/sqlite-controller-baseline",
+            "files_verified": 3578,
+            "socket_metadata": [],
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-team-operating-improvements",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-team-operating-improvements",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-team-operating-improvements",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-team-operating-improvements",
+            "head": "81d9d831fa31a7fb85a5a2cf80bfeb312d7a611d",
+            "branch": "codex/team-operating-improvements",
+            "files_verified": 3543,
+            "socket_metadata": [],
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-trae20-budget-repair-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-trae20-budget-repair-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-trae20-budget-repair-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-trae20-budget-repair-author",
+            "head": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+            "branch": "codex/trae20-budget-repair-author",
+            "files_verified": 3366,
+            "socket_metadata": [],
+            "bundle_only_status_recovery": true
+          },
+          {
+            "original": "/tmp/corenius-trae20-preflight-author",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-copied-trees/corenius-trae20-preflight-author",
+            "additional_raw_backup": "/tmp/corenius-salvage-retired-0f1b3dfb/corenius-trae20-preflight-author",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-trae20-preflight-author",
+            "head": "264756edd550225449202b6f20ac4b560808d14e",
+            "branch": "codex/trae20-preflight-author",
+            "files_verified": 3082,
+            "socket_metadata": [],
+            "bundle_only_status_recovery": true
+          }
+        ],
+        "skipped_live": []
+      }
+    },
+    "salvaged-orphan-ref-retirements.json": {
+      "sha256": "2a48aa32fe65afc4e85c13a2f249e0fe304a0392d51fa03a94769670b51a2f0d",
+      "data": [
+        {
+          "branch": "codex/mac-external-observer-views",
+          "head": "3ef84a59009b06e1adeba635566612f8e446ce1b",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "codex/mac-operator-dashboard",
+          "head": "2b030ea0538c733596bd0abef745bcfd89413add",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "codex/mac-runtime-roster-envelope",
+          "head": "894fc88fd7298bef9cd0f2410e44aa1a2894af30",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/01-one-scenario-end-to-end",
+          "head": "2bc91245e38fedd28ccedf20b27c5b72b34a5870",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/02-exact-candidate-lands",
+          "head": "cddfa2087d51644861ed39ee1f76e5ade1aa6fd9",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/03-acceptance-record",
+          "head": "dc96ae0d25503b7a214eec42dc7a898c2ade4b32",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/04-rework-round",
+          "head": "a7ba1a74db0010b62090c44869cb19057061c206",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/05-launch-by-edges-and-triage",
+          "head": "028d837cc6d5fb914d7694c356890bf8a142ed86",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/06-parallel-workers-and-overlap",
+          "head": "3b9baeb2ce8497b5195993e232ab044f83e6e0b4",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/07-integration-branch",
+          "head": "c75abcd66f3a832b6d19bf17f21f8d785214df04",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/08-launch-access-profile",
+          "head": "5b1f23abdcffce430e7f485d0373919ab69e2c9d",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/09-external-state-report",
+          "head": "f8588e112dbb20c98aaf47fa5f410e7de771e539",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/10-watching-limits-accounting",
+          "head": "eebb10292c89667a29894acf67aff5f38040d865",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/11-handoffs-into-briefs",
+          "head": "716019bcb34950d0513253a24887c2f622a649c4",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/12-codex-worker-runtime",
+          "head": "536a2b1675176bee21665f075e8e1fff51999344",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/13-results-table-and-notes",
+          "head": "fcfd998974ed0923289640f7778e5e224dbf351d",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/16-bookkeeping-off-code-branch",
+          "head": "f92a2349a89e4538e06e72594cfc9240ba84bb37",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/17-sandboxed-worker-can-commit",
+          "head": "7fddf822548fbe0db81a5671155f3c66548218dc",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        },
+        {
+          "branch": "work/lead-worker-readiness/20-rework-and-resume-hold",
+          "head": "62b50ecbf5f7541f5c4ef4a4a67c4f1ae47ce526",
+          "preserved_at_same_tip_in_verified_bundle": true,
+          "disposition": "published readiness implementation or consolidated MAC source; historical source preserved, no additional ready delta per independent group audit"
+        }
+      ]
+    },
+    "stale-socket-disposition.json": {
+      "sha256": "e44d44ebe357087c5639ca328b9d91548547b4ac63f638df581ce51e29be9b1b",
+      "data": {
+        "source": "/tmp/corenius-landing-audit-20261005",
+        "stale_endpoints": [
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-xuj7ef8j/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-filzmckg/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-jb73yqu0/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-_vet13po/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-od0pd5yi/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-qpjcxy3x/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-d8qtacin/unlinked.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-d8qtacin/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-dys2ct3z/controller.sock",
+          "/tmp/corenius-landing-audit-20261005/.scratch/k3-xdcmx_zt/controller.sock"
+        ],
+        "currently_bound": {},
+        "disposition": "UNIX socket entries have no persistent byte payload; original endpoints remain in raw directory backup. Durable archive must retain all files/symlinks and explicit socket metadata; skip only verified unbound endpoint entries."
+      }
+    }
+  },
+  "completion": "not achieved; own integration cleanup and active Ticket03/watcher/Kata ownership remain pending",
+  "additional_recovery": {
+    "readiness-tree-retirement-receipts.json": {
+      "sha256": "fc9dc31610fba99c8a20040e3ad3039e99df9c4c66c9bbc2c867933019bcd8b9",
+      "data": [
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-lead-worker-readiness",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lead-worker-readiness",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lead-worker-readiness",
+          "branch": "effort/lead-worker-readiness",
+          "head": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+          "bundle_only_status_recovery": true,
+          "disposition": "integrated implementation and selectively published records; original complete tree and historical refs retained in recovery archive"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-lwr-records",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lwr-records",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lwr-records",
+          "branch": "effort/lead-worker-readiness-records",
+          "head": "540f8f7c652ccfec4a283454cd70234c244d9758",
+          "bundle_only_status_recovery": true,
+          "disposition": "integrated implementation and selectively published records; original complete tree and historical refs retained in recovery archive"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-lwr-journal",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-lwr-journal",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-lwr-journal",
+          "branch": "journal/lead-worker-readiness",
+          "head": "7053f39199aa010bb326c14e97f5a17291969c8c",
+          "bundle_only_status_recovery": true,
+          "disposition": "integrated implementation and selectively published records; original complete tree and historical refs retained in recovery archive"
+        }
+      ]
+    },
+    "kata-fixture-retirement-receipts.json": {
+      "sha256": "a44998f5163bd791dd1615e696bcc3839a76b0d92ffc7386753de573baf2cbf6",
+      "data": {
+        "stopped_fixtures": [
+          {
+            "pid": 665477,
+            "state": "gracefully stopped; terminal/missing verified",
+            "original_home": "/tmp/cb-20261005T040718Z-c23b16/kata",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/stopped-fixture-homes/cb-20261005T040718Z-c23b16",
+            "file_hashes": {
+              "kata.db": "3e7d006dd01a5ab8a746c81709d524f43b0010482473cf6296103fa7fcd3facd",
+              "config.toml": "501ea4448557dcc79dc0c516755f26355668c0c45884c738497bdb8eca8b2407",
+              "hooks/7b3fce0e6a89/runs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "independent_audit": "zero active claims, bindings, recurrences; data retained; ownerless evaluation fixtures"
+          },
+          {
+            "pid": 699450,
+            "state": "gracefully stopped; terminal/missing verified",
+            "original_home": "/tmp/cb-20261005T040926Z-c8403c/kata",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/stopped-fixture-homes/cb-20261005T040926Z-c8403c",
+            "file_hashes": {
+              "kata.db": "2c8f9ebc8fad67a69056eef396038d4f79d17c38998fece2310eccf50502fc01",
+              "config.toml": "fdf52355be6c9b032e35297a142f24b8e016646ced858b13c23f84190f441ede",
+              "hooks/b4cbd78c2b68/runs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "independent_audit": "zero active claims, bindings, recurrences; data retained; ownerless evaluation fixtures"
+          }
+        ],
+        "retired_worktree": {
+          "original": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-kata-evaluation",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-kata-evaluation",
+          "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+          "bundle_only_status_recovery": true
+        }
+      }
+    }
+  },
+  "state_pointer_retirements": {
+    "sha256": "3864f6329751f36a29484b2eadcea756af689de80db82bfcd085a77b5d25cda5",
+    "data": [
+      {
+        "effort": "agentic-engineering",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "8a9950310bed5f715b3c7cd654b9b4143591232c052fd0f059c5a2d4c25e72c1",
+        "retired_machine_worktrees": [
+          {
+            "branch": "claude/durable-efforts",
+            "dirty": [],
+            "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+            "path": "/data02/home/philip.yang/workspace/corenius-efforts",
+            "pushed": false
+          },
+          {
+            "branch": "claude/milestone-b",
+            "dirty": [],
+            "head": "366361b5a46045823cf6b45941c66ad8379dfebe",
+            "path": "/data02/home/philip.yang/workspace/corenius-mb",
+            "pushed": false
+          },
+          {
+            "branch": "claude/worker-mechanism",
+            "dirty": [],
+            "head": "03368f42253dd344c6230d8381fc855f4b7af698",
+            "path": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      },
+      {
+        "effort": "controller-portfolio-stabilization",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "c0ae5736348eb1f1560868c61103f00c6fd015bec178c380de1590b576b89789",
+        "retired_machine_worktrees": [
+          {
+            "branch": "trae/controller-portfolio-stabilization-design",
+            "dirty": [],
+            "head": "fc9d285dcc661105487bbb2be0070ebed33de778",
+            "path": "/data02/home/philip.yang/workspace/corenius-trae-controller-portfolio-stabilization-design",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      },
+      {
+        "effort": "multi-agent-bench",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "051893d062491b063e8870be87d1c6de1cff1737a5aa3ec4c944a01239012682",
+        "retired_machine_worktrees": [
+          {
+            "branch": "effort/multi-agent-bench",
+            "dirty": [],
+            "head": "d0512102500deb98411b219e0734d33279203b41",
+            "path": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      },
+      {
+        "effort": "team-control-plane",
+        "commit_read": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+        "old_state_sha256": "896e95baed29006498c1192901d7cc66798483ec747e3f8913363a3dfad9480e",
+        "retired_machine_worktrees": [
+          {
+            "branch": "codex/reference-design",
+            "dirty": [],
+            "head": "10ae64052232591b4bcf670998790093e301d1f7",
+            "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+            "pushed": false
+          }
+        ],
+        "preservation": "original machine snapshot stays in git history and recovered full directory; recorded heads verified in independent bundle clone",
+        "tool_operation": "dehydrate with explicit --forget for recovered retired paths and the transient own integration checkout"
+      }
+    ]
+  },
+  "briefing_fix": {
+    "candidate": "5bbcc850a39cdefb3b8891915b944adae5dea88c",
+    "behavior": "historical headings no longer override current next actions/traps in readiness rehydrate output",
+    "verification": "real rehydrate invocation checks current instructions; main advance yields the tool\u2019s documented WARN exit1, not missing/diverged pointer errors"
+  },
+  "owned_checkout_retirement": {
+    "planned_after_publication": true,
+    "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-reconcile-8f143abf",
+    "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-reconcile-8f143abf",
+    "receipt": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/owned-integration-retirement.json",
+    "remaining_after_verified_retirement": {
+      "worktrees": 4,
+      "branches": 4
+    },
+    "goal_status": "active; live Ticket03 and integration watcher plus persistent Kata spike require final owner routing"
+  }
+}

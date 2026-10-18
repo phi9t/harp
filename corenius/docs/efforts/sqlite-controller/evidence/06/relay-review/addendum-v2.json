@@ -1,0 +1,77 @@
+{
+  "type": "Narrow S1 repair addendum; preserves original sealed review",
+  "generated": 1791173243.968358,
+  "source_commit": "c0346486b683a043d51028e95900ee6b66b2f065",
+  "source_pins": {
+    "sqlite_responses_relay.py": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
+    "test_sqlite_responses_relay.py": "c0f22e117fdf40e80c1a00ed885e7be2e46167df2795f6a08fdb7ce3b049d396"
+  },
+  "original_review_source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "original_report_sha256": "a90e5f801b132414fc63db0e4041197521cc322724eecac64c42a3afa93cf7c8",
+  "original_report_json_sha256": "a87e4846806d3221621b16996959a4cbe0e43fc9d512a5c43c6d15e95d904a50",
+  "original_evidence_index_sha256": "e57dabb30d7da0ec9bb9167a2b84be7a1cf94109b1bcff3c62fb68afab27a2a8",
+  "original_indexed_files_unchanged": true,
+  "standards": {
+    "status": "NO_NEW_SCOPED_FINDINGS",
+    "finding_count": 0,
+    "scope": "Minimal v1-to-v2 diff removes caller model/session_id fields from record; author adds runtime canary test. No broader Standards/baseline qualification.",
+    "prior_TEST_timing_flaw": "UNREVIEWED/UNRESOLVED in this task"
+  },
+  "spec": {
+    "S1": {
+      "status": "RESOLVED on exact v2 pins",
+      "observed_change": "record.update now retains only request_bytes and request_sha256, omitting both caller-controlled evidence values.",
+      "focused_independent_tests": 3,
+      "focused_actual_exit": 0,
+      "body_canary_retained": false,
+      "session_header_canary_retained": false,
+      "proof": "evidence-v2/focused-results.json and evidence-v2/process-results.json; fresh independent runtime-generated canaries"
+    },
+    "S2": {
+      "status": "OPEN HARDENING; PROTOTYPE-NONBLOCKING",
+      "authority": "Root message adjudicated the confirmed bookkeeping gap as prototype-nonblocking.",
+      "claim": "No strict 180-second wall cap. Socket reads remain bounded at 30 seconds, with 180-second between-read checks. Prior delayed-EOF failure remains in v1 evidence.",
+      "rerun": false,
+      "continuity": "The inspected v1-to-v2 diff changes only record fields; stream deadline implementation is unchanged."
+    }
+  },
+  "verification": {
+    "focused_checks": [
+      "privacy-body/header-evidence",
+      "routing-negatives",
+      "caller-credential/authority-stripping"
+    ],
+    "focused_tests_run": 3,
+    "focused_actual_child_exit": 0,
+    "author_tests_run": 2,
+    "author_actual_child_exit": 0,
+    "all_input_hashes_before_after_equal": true,
+    "author_source_hashes_after_checks": {
+      "sqlite_responses_relay.py": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
+      "test_sqlite_responses_relay.py": "c0f22e117fdf40e80c1a00ed885e7be2e46167df2795f6a08fdb7ce3b049d396"
+    },
+    "all_children_reaped": true,
+    "synthetic_non_main_threads_remaining": [],
+    "remaining_private_temp_entries": 0,
+    "blocked_non_unix_socket_attempts": []
+  },
+  "evidence_classes": {
+    "supplied_actual_preflight": "Unchanged v1 sealed supplied actual observation; not repeated.",
+    "local_synthetic": "Fresh focused v2 checks, independently executed; no provider request/auth read.",
+    "later_actual_team_model_proof": "Not in this handoff; root/author continue actual demo separately."
+  },
+  "privacy": {
+    "runtime_canary_values_in_reports_or_stdout_stderr": false,
+    "real_host_auth_read": false,
+    "real_provider_model_request": false,
+    "raw_canary_artifacts_retained": false,
+    "source_repair_by_reviewer": false,
+    "additional_agents": false
+  },
+  "decision": "S1 supplies no remaining review blocker for ordinary disposable kickoff. Root controls launch/adjudication; S2 remains explicitly pending, and the broader baseline stays unqualified.",
+  "limits": [
+    "Only the privacy repair and routing/authority continuity were rechecked.",
+    "No fault/stream expansion, new product architecture or additional gate before demo.",
+    "Official source fetch/ABI assurance limit, prior TEST timing flaw, and absence of actual team proof remain as in v1."
+  ]
+}

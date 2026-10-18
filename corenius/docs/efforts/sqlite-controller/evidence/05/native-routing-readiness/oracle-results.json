@@ -1,0 +1,17 @@
+{
+  "same_native_tool_request_broadcast_to_controller_and_tui": true,
+  "unsubscribed_authenticated_client_reply_used_by_native_provider": true,
+  "gateway_denied_tui_helper_thread_creation": true,
+  "gateway_withheld_dynamic_requests": true,
+  "bound_native_tui_input_forwarded": true,
+  "native_retained_history:Question Q_IDLE from ATTEMPT_A": true,
+  "native_retained_history:Question Q_ACTIVE from ATTEMPT_B": true,
+  "native_retained_history:UI_BOUND_INPUT": true,
+  "wrong_expected_turn_rejected": true,
+  "completed_turn_steer_rejected": true,
+  "pending_request_replayed_identically_after_reconnect": true,
+  "Q_IDLE_explicitly_resolved": true,
+  "Q_ACTIVE_explicitly_resolved": true,
+  "lost_ack_fixture_effect_recorded_once": true,
+  "latest_fixture_owned_processes_terminated": true
+}

@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/t07-csv-join-pipeline"
+description = "Join CSV files without losing duplicates"
+
+[metadata]
+track = "T"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "python3 tests/test_join.py"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

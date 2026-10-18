@@ -1,0 +1,76 @@
+id = "handoff"
+stories = [1, 2, 4, 44]
+task = "task.md"
+environment = "environment"
+benchmark_task = "t01-log-window"
+
+[worker]
+allow = ["result.txt"]
+
+[[participants]]
+id = "commit-ready"
+mode = "commit-ready"
+stories = [1, 2, 44]
+expect_ready = true
+
+[[participants]]
+id = "dirty-final-message"
+mode = "dirty-final-message"
+stories = [2, 44]
+expect_ready = false
+
+[[participants]]
+id = "no-commit"
+mode = "no-commit"
+stories = [2, 44]
+expect_ready = false
+default = false
+
+[[participants]]
+id = "move-foreign-branch"
+mode = "move-foreign-branch"
+stories = [4]
+expect_ready = false
+default = false
+
+[[participants]]
+id = "create-foreign-branch"
+mode = "create-foreign-branch"
+stories = [4]
+expect_ready = false
+default = false
+
+[[participants]]
+id = "rewrite-base"
+mode = "rewrite-base"
+stories = [4]
+expect_ready = false
+default = false
+
+[[participants]]
+id = "marker-ready"
+mode = "marker-ready"
+stories = [1, 2]
+expect_ready = true
+handoff_mode = "marker"
+handoff_marker = "ticket 01: ready for review"
+default = false
+
+[[participants]]
+id = "marker-dirty"
+mode = "marker-dirty"
+stories = [2]
+expect_ready = false
+handoff_mode = "marker"
+handoff_marker = "ticket 01: ready for review"
+default = false
+
+[[participants]]
+id = "marker-rewrite"
+mode = "marker-rewrite"
+stories = [1, 2]
+expect_ready = true
+handoff_mode = "marker"
+handoff_marker = "ticket 01: ready for review"
+expect_candidate_moved = true
+default = false

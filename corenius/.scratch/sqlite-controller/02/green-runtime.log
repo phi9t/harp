@@ -1,0 +1,14 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.26s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 2 tests
+two_live_execution_identities a={"binding":{"attempt":"c2a3cc92-0865-479c-95d8-7bbb8c882e64","operation":"e368fbf7-c010-4e2d-a660-b4daf8172c57","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"e88308b6-8cfc-4247-9f50-d02e4b09451d","incarnation":"82445126-9e66-4d58-85b9-a209841c4799","outcome":null,"pid":2478276,"start_ticks":"50708758","state":"running"} b={"binding":{"attempt":"4e95cd9b-823d-4ebf-bfbb-baa8bb88538a","operation":"ebe71cad-d5a2-442b-95ea-590faf3b91e7","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"097ca53a-7366-451c-9b41-5aa04959a899","incarnation":"82445126-9e66-4d58-85b9-a209841c4799","outcome":null,"pid":2478278,"start_ticks":"50708759","state":"running"}
+lost_reply_adopted={"binding":{"attempt":"8289a2d7-a19e-4c01-8147-237bedad2698","operation":"cdb5dd19-7534-4421-afba-1bf44c25a417","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"0b9b4b97-5225-4377-88af-97da6cf6e2bb","incarnation":"5eddab19-bd69-44ae-8b6b-ec67f47cc449","outcome":null,"pid":2478275,"start_ticks":"50708757","state":"running"}; unreachable_supervisor_occupied_slots=1
+test lost_start_reply_is_looked_up_and_unavailable_supervisor_keeps_capacity ... ok
+host_namespace_worker_pids=[2478279, 2478289]
+controller_restart_adopted_same_handles; cancellation_observed_removed_host_descendants=[2478279, 2478289]
+test independently_supervised_workers_survive_restart_and_cancel_descendants ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+

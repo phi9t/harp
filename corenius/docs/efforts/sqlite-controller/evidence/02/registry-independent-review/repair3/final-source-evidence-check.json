@@ -1,0 +1,14 @@
+{
+  "candidate": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+  "source_commit": "8d05117a5d7be0793e37667bd0a245073305e757",
+  "crate_tree": "9ecb1686cfa424fd1f6e31a4c38ce1e25e8924b4",
+  "source_files": 25,
+  "evidence_files": 64,
+  "evidence_only_tip": true,
+  "r1_r2_evidence_unchanged": true,
+  "author_gate_all_zero": true,
+  "handoff_sha256": "47d13cf0a56c2cde91756dcbbd1397b7d22c2a10d15f34f0668d3990976fc9b7",
+  "evidence_manifest_sha256": "cfb210d7e938b5836ed801f2920ff20f6cfa91a85799a1df47d0f64be69388cd",
+  "author_matching_live_reobserved_by_root": 0,
+  "disposition": "TESTED_REVIEW_UNACCEPTED_CAP_ROUTED"
+}

@@ -1,0 +1,28 @@
+{
+  "genuine_repair1_red": {
+    "tool_chunk": "e1b806",
+    "unittest_exit": 1,
+    "checked_outer_exit": 0,
+    "source_sha256": "11f37f9620a983378f979acf5b7dc8c542dc279aafa97f4c58ee588cb0aa63f5",
+    "log": "prior-terminal-red.log.txt"
+  },
+  "focused_green": {
+    "tool_chunk": "84a061",
+    "exit_code": 0,
+    "log": "prior-terminal-green.log.txt"
+  },
+  "additional_red": {
+    "tool_chunk": "42a263",
+    "unittest_exit": 1,
+    "checked_outer_exit": 0,
+    "log": "occupied-uncertainty-red.log.txt",
+    "classification": "additional incompatible-output regression on intermediate repair2 source"
+  },
+  "final_green": {
+    "tool_chunk": "5396a2",
+    "exit_code": 0,
+    "tests": 20,
+    "log": "frozen-green.log.txt"
+  },
+  "physical_launches": 0
+}

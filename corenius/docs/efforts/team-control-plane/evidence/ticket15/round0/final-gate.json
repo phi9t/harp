@@ -1,0 +1,38 @@
+{
+  "recorded_utc": "2026-10-01T09:50:32.171836+00:00",
+  "commands": {
+    "focused": "bash crates/team-control-plane/tests/run-postgres.sh --test supervisor -- --nocapture",
+    "fmt": "cargo fmt --manifest-path crates/team-control-plane/Cargo.toml --check",
+    "clippy": "cargo clippy --manifest-path crates/team-control-plane/Cargo.toml --all-targets --locked -- -D warnings",
+    "full_gate": "bash tools/agents/check.sh"
+  },
+  "exit_codes": {
+    "fmt": 0,
+    "focused": 0,
+    "clippy": 0,
+    "full_gate": 0
+  },
+  "logs": {
+    "red-registration.log": {
+      "sha256": "b05195e5e452b1dd7e64446b2dca0296760ce29454266ddbdacb2aa2c9a57f5a",
+      "bytes": 1234,
+      "retained_path": ".scratch/team-control-plane/ticket15/red-registration.log"
+    },
+    "focused-final.log": {
+      "sha256": "a54f8d4ccf08c9f67527b639bf849ff255de8603ceb9a18f9d309e870d9eef7a",
+      "bytes": 1180,
+      "retained_path": ".scratch/team-control-plane/ticket15/focused-final.log"
+    },
+    "clippy-final.log": {
+      "sha256": "08e1d1b5a86bfe5146450298ffc4f873de6849a419b2df3eda7201c3f8f10ee8",
+      "bytes": 213,
+      "retained_path": ".scratch/team-control-plane/ticket15/clippy-final.log"
+    },
+    "full-gate.log": {
+      "sha256": "fdff263c2b44470fff571872846affd6658d219be8df3e6e0abda73a1bb59feb",
+      "bytes": 22999,
+      "retained_path": ".scratch/team-control-plane/ticket15/full-gate.log"
+    }
+  },
+  "patch_sha256": "bb8660c906106c00416617c8ea0cc25922e933cea1b51fe36842900407d562d3"
+}

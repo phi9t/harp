@@ -1,0 +1,11 @@
+Spec review: no blocking findings in the bounded portable-auditor contract.
+
+The exact candidate separates artifact storage from historical execution origin (`portable_audit.py:32–42,71–79`), cross-checking proof/pre-run identity, case cwd, grant output, callback command, Git argv and fsync paths (`:81–102,127–146`). It checks the externally pinned original seal before candidate inputs and hashes all 176 indexed artifacts (`:49–62`); checks record preservation, 11 outcomes and 132 rawlogs (`:111–143`); and validates bundle refs/closure (`:150–174`). Original `audit.py:10–161,270–271` has imports/definitions and a guarded main; loading its sealed helpers under a non-main name does not call the controller, old main, proof.py or Git. The adapter contains no artifact writes.
+
+Fresh independent hash checks matched all 37 follow-up files and 181 snapshot originals, pinned seals/indexes, before/after manifests and rawlog references. The archive additionally contains `.gitignore` and `root-retention.json`; they are outside those 181 frozen records.
+
+Retained RED binds the genuine old path-comparison failure (`red.stderr.log`, original `audit.py:217`); unchanged regression bytes bind GREEN’s six passes and four refusal controls (`regression.py:42–97`, `red-run.json`, `green-run.json`, `portable-commands.jsonl`). The retained commands invoke audits only, with no original callback rerun.
+
+Limitations: candidate metadata/index/bundle controls demonstrate seal refusal, not separately exercised deeper semantic validators; that fits this immutable evidence set. RED-before-implementation chronology is asserted by `pre-green-freeze.json` without an independent timestamp anchor. This review verified records/code statically and did not rerun tests or the auditor.
+
+Ticket 20’s “Run authorized bounded live probes” and “Process cancellation includes independent supervisor observations” (`20-trae-probes.md:13,30`) remain unproved. `SPEC.md:323–350,469–472` requires exact-candidate verification, separate acceptance authority, retained unknown budgets and named runtime limitations. The follow-up report and `authority-and-scope.json` preserve those boundaries: PASS qualifies artifact portability only; physical PARTIAL, budgets/quarantines and historical TDD gaps remain unchanged.

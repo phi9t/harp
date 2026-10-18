@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-10-05T03:49:16.510657+00:00",
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "audits": [
+    {
+      "role": "spec",
+      "artifacts": 69,
+      "bytes_verified": 18903241,
+      "report_sha256": "f8a60c46c2ab5973ac95fc7cb662ea9c58adb9bb3e38f5eca11d2c26d7db190a",
+      "index_sha256": "150c003892ed77eab3fdf58a0fe9c46e10e7dde6d182142460bbc9b4e8655ce7",
+      "metadata_paths": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/process-dispositions.json",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-c1c2-spec-fo_7e_fp/source-integrity.json"
+      ]
+    },
+    {
+      "role": "standards",
+      "artifacts": 100,
+      "bytes_verified": 16741813,
+      "report_sha256": "84cefa42e3d62aaff746ef5c59ec29c5f800116f5f47bda76dbff51fc468781e",
+      "index_sha256": "e024a82a66fd94962e6ec4d5457a6ed23ce911d546e78c50f9108fe1b9f2b553",
+      "metadata_paths": [
+        "selected-fixture-evidence/attempt-progress-g4-hz33u0nn/process-dispositions.json",
+        "selected-fixture-evidence/independent-c2-privacy-g4-mfbp36nt/process-dispositions.json",
+        "selected-fixture-evidence/independent-c2-privacy-g4-x_mc7pj3/process-dispositions.json",
+        "quiescence.json"
+      ]
+    }
+  ],
+  "product_C1_C2": "Scoped independent PASS: same independently pinned fixtures predecessorRED/candidateGREEN.",
+  "review_gate": "Standards+branch654 FAIL one Medium C1-TEST-PEER-WAIT; Spec confirms source-only timeout risk; retain open. No further repair admitted.",
+  "attribution_erratum": "Standards says coordinator reported branch654 timing reproduction. Branch654 is a read-only code review; it establishes source-confirmed inconsistent peer predicate, NOT an executed false-timeout reproduction. Original report remains immutable. Root gives no runtime credit for that clause.",
+  "demo_disposition": "AUTHORIZED disposable ordinary prototype kickoff. Existing helper timing finding is outside ordinary live path; no baseline05 acceptance/mainline/source qualification. Keep scoped authority/isolation/exact candidate verification and serialized disposable physicalFF.",
+  "hardening": "Broad qualification/source freeze/integration/release gates and fixture-finding repair remain pending. Prior3 +ONE extra consumed; no cap reset."
+}

@@ -1,0 +1,1 @@
+The app uses a vendored local stand-in under `cpp3rdlib/`, but its pinned Blade dependency label is misspelled. Fix the dependency so `blade-offline build //app:main` succeeds and the binary prints `BLADE_L1_DEP value=17`. Keep the dependency in the pinned `cpp3rdlib/...:version@//...` form.

@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-10-04T17:05:22Z",
+  "source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "evidence_tip": "f85fcd15a912a59a9af7e4d0da56329f38a5c298",
+  "standards": "FAIL1",
+  "spec": "FAIL3",
+  "branch645": "FAIL7",
+  "consolidated_findings": 9,
+  "repair_round": 1,
+  "maximum_rounds": 3,
+  "root_gate": "in_progress; not acceptance",
+  "files": {
+    "spec.md": "d691d7fa733f938cb625d0151a34ff9a457045e3823a812da2663af310f6c5d2",
+    "spec.json": "cd52dc052eae92c5c29b2fb590529223d081b311871163a191fa7f4e7337f057",
+    "spec-evidence-index.json": "6d00d354525c37716212a2e7522efddd009cb565f26b276c2d2855661ec691ac",
+    "standards.md": "dbb7cd3111bbdafae30a9b94606657476647698b5b74752dbc4142e320d6cb51",
+    "standards.json": "2e09ec29f26d4736aa3cddbf478f46693eacee7225fd3f4c46588129b4cafdea",
+    "standards-evidence-index.json": "6419466516490a59dd45a38d91306dfb70711d939504c2e1b0afa61754602dc5",
+    "branch-645.md": "2b70c705588171e5ed8115aa2992bdccb30b59a18d223811f9a89423684faa96",
+    "branch-645.json": "74e149ebe6e7b1fff0a146f03d55069ee6ba07759b64535e4b2a31ccc0df9652",
+    "branch-job-metadata.json": "57168e323dc086a6fc8f7786595f1f8cba73b63f567bb81a538bf003b9e59c81",
+    "frozen-source-check.json": "3d75b5b5816e0a5b191e8f0318be707e91c9fcf59aff7a68076578a760e78d18",
+    "consolidated-repair1.md": "7bdc3c741835e6306ebc84162d92dbde542b583b418d6375875e0679bda04cab"
+  }
+}

@@ -1,0 +1,578 @@
+{
+  "candidate": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+  "manifest_sha256": "6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b",
+  "author_matrix": {
+    "passed": 162,
+    "failed": 0,
+    "ignored": 7
+  },
+  "root_gate_exit": 0,
+  "two_axis_review": "PASS/PASS",
+  "whole_branch_review": {
+    "job": 580,
+    "status": "pending"
+  },
+  "scope": "public retained evidence; full goal and landing incomplete",
+  "files": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-red/classification.json",
+      "sha256": "9a3b31e57aac53b85f2ffcaf8cbd68aa8b2e521aa9ceb27ec9eb7e245deb426e",
+      "bytes": 419
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-red/overflow/cleanup.json",
+      "sha256": "93832f1fd262a96b89e60b0bd0e055c469f6a1bb2dd0451a1f64b68efe8dc4fb",
+      "bytes": 1591
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-red/overflow/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-red/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-red/run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-red/run.log",
+      "sha256": "9decfcbfff7f792d243a1d83e2886d14cc6760008ff812143174f979cda2d491",
+      "bytes": 1101
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-green/classification.json",
+      "sha256": "5d9f401e10b4ac6dc98d85b8d555ef9d88227c5e6bfb932c7f83787fbc93997c",
+      "bytes": 339
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-green/overflow/cleanup.json",
+      "sha256": "63627041b60ee79a2c30b5bc43b65ab4b954469fbd281e12ad62727e0e0431d1",
+      "bytes": 1635
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-green/overflow/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-green/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-green/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-mission-control-green/run.log",
+      "sha256": "5b29aa612e70c40f9166b5815a1199e6215b133d34d6704b40cce7930f66f098",
+      "bytes": 536
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-red/classification.json",
+      "sha256": "6661de796b86d149f9fa3e899ca1c7eea57c1f9fd5c0b33e08e6b1914e5b36cc",
+      "bytes": 496
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-red/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-red/run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-red/run.log",
+      "sha256": "e66943c82d939ab0f7a8bb02df6bac43dab0b1b19606dcae7605f3b1ab55e311",
+      "bytes": 1135
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-green/classification.json",
+      "sha256": "23a73814c3750a86649814e5368789512b10bb815b898ed331a0cf4cd4783fce",
+      "bytes": 320
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-green/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-green/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-legacy-view-green/run.log",
+      "sha256": "80f1a586756c5f0fe488b49f026200cbd445347f3f4b5ddabad9654679c3064e",
+      "bytes": 527
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/classification.json",
+      "sha256": "5fcfdbbee5e18ce75d30c3995d0a92960de2f530d05e19646a9e04b948778306",
+      "bytes": 1037
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/kernel16-binary-output-ae7288aa-2c62-421d-b928-db419ebc564c/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f",
+      "bytes": 74
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/kernel16-binary-output-ae7288aa-2c62-421d-b928-db419ebc564c/proof.json",
+      "sha256": "f7beafbe99e1235f8125f531e20dde7ee1491b6e8203ba7e5d0fb731bbc4f391",
+      "bytes": 1811
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-red/run.log",
+      "sha256": "b3d34b12ef95c06ea72de496595c1be76e49b02fd4acc7447bee2544c7b1dcb6",
+      "bytes": 1092
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/classification.json",
+      "sha256": "730039f7afef962207784c1de37e8db1423bb9762a8e58e827694e502e71397f",
+      "bytes": 1038
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/kernel16-binary-output-d857ea6c-5aa2-47c2-bb46-bd95e2b1ec2f/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f",
+      "bytes": 74
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/kernel16-binary-output-d857ea6c-5aa2-47c2-bb46-bd95e2b1ec2f/proof.json",
+      "sha256": "83b93c1edfe04609de10005931c1785fb39e6853b90f6ccdcbe7b2d9ca5da678",
+      "bytes": 2178
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-binary-output-green/run.log",
+      "sha256": "4414f275f670383223b044bbee071175aec3fb5277a18676bac60483307f7593",
+      "bytes": 523
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/classification.json",
+      "sha256": "2d540ba46ccca8b066de91d23046ce2e46491bc8c37248f0a9041ed58d6e4606",
+      "bytes": 1458
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/monitor-memory-1048576/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/monitor-memory-1048576/memory-constraint.json",
+      "sha256": "23a614972da30c368cb450e95a09a5c78670eb2a4d12f525f4c9c5d9500c0dd4",
+      "bytes": 3088
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/monitor-memory-1048576/result.json",
+      "sha256": "e14aac32a866ca18859b0adc86734b72549e670cda1001585c6e7fff08a78168",
+      "bytes": 2539
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/monitor-memory-134217728/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/monitor-memory-134217728/memory-constraint.json",
+      "sha256": "67e2efbf96825d05d855f145919a6fe3e02b3e0cd961002220357e35abb3673b",
+      "bytes": 3090
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/monitor-memory-134217728/result.json",
+      "sha256": "5ae21eec71fb6317b6a7ac518a163c19942b5985fdf40e73a686218479f5578c",
+      "bytes": 1963
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-red/run.log",
+      "sha256": "68eb288259cc4c24ea09af3eac57b29fe6039c120d0599acfb3e4cca3ba11d82",
+      "bytes": 1070
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/classification.json",
+      "sha256": "d7a594be7c1e6a5b76c12670b2d80cfb620b2ab7f126db5718d6b1d7c4aff2d1",
+      "bytes": 1444
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/monitor-memory-1048576/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/monitor-memory-1048576/memory-constraint.json",
+      "sha256": "4652e80022d009c125e4087bfbcef54d93b8f6fe1a72b352ae8e77b66d497ed3",
+      "bytes": 3089
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/monitor-memory-1048576/result.json",
+      "sha256": "078a786e9bb14f2481568e68dd38756982e6876299aeb32ab96bd8177f73d505",
+      "bytes": 2539
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/monitor-memory-134217728/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/monitor-memory-134217728/memory-constraint.json",
+      "sha256": "2b33b5941055c90ecb8d1bc7d18fa19a5d7afd0d7ceeeae1003e29731c0a2180",
+      "bytes": 3091
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/monitor-memory-134217728/result.json",
+      "sha256": "ab6fa75c1ee076d5bf08fdaba88e8cf942844ea4236254677248cba238ea7f40",
+      "bytes": 2543
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-monitor-memory-green/run.log",
+      "sha256": "222c9cfdd43ddd7dce8de555ae6c4b09f73d1dfdb147fd357744397f20ca63ac",
+      "bytes": 520
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/classification.json",
+      "sha256": "ac0ac2daa6e67dbc253d7eb34c582a12aaf43b8303a5c1d42b12099079862fe2",
+      "bytes": 3506
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/historical/cleanup.json",
+      "sha256": "3857aaf4ad4fd9bc30bf58056139225d5fdd9612216b596968f76ab0d0ee4c38",
+      "bytes": 183
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/issuer-expiry/cleanup.json",
+      "sha256": "8693579e23970a830cd5834236d9fbae315b918e97814a344843d6914aff18d7",
+      "bytes": 183
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/legacy-quarantined/cleanup.json",
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68",
+      "bytes": 93
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/legacy-quarantined/public-status.json",
+      "sha256": "00a55bc4674c2c14032e9c6e79e07a808f0e040c922e73b6f043a9621b879532",
+      "bytes": 7246
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/legacy-running/cleanup.json",
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d",
+      "bytes": 92
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/legacy-running/public-status.json",
+      "sha256": "c3f0a94cd03691501e7f0b2822b7637f2bf7f3fba28dc04f0cfe4a2bdfc82365",
+      "bytes": 7670
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/merged-journals/cleanup.json",
+      "sha256": "eb946779153c81871ad68cfd31633197191b6b4fff16481464dccf91137029a8",
+      "bytes": 1503
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-1048576-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-1048576-read-error-false/memory-constraint.json",
+      "sha256": "ac70f6d1ee4d9cfd66070562001c10b5328a6790605694120fc58113414e1dbd",
+      "bytes": 3089
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-1048576-read-error-false/result.json",
+      "sha256": "99a456cb83b4843f869e3133fe370c15d6290d72e9de31212f8d6a6bc2c4e8c0",
+      "bytes": 2539
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-1048576-read-error-true/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-1048576-read-error-true/memory-constraint.json",
+      "sha256": "6182115bb11d4e7712ab0ad85194c34d2bdb604949672e5bdb805d3059451ff6",
+      "bytes": 3088
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-1048576-read-error-true/result.json",
+      "sha256": "e609a2a1f1b99d81e288b4cda77b0aa1ee0f91c35bf8088540716c6f5bf40c36",
+      "bytes": 1961
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-134217728-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-134217728-read-error-false/memory-constraint.json",
+      "sha256": "db824da3f7a0616252e3df732ecaa1f7916bb42f52780661be3211d9ea3301e5",
+      "bytes": 3091
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/monitor-memory-134217728-read-error-false/result.json",
+      "sha256": "8e23fc81883ef4af2277c11e15e0ccdf0e98877a43c48e53dc0e080c12f167e3",
+      "bytes": 2543
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/overflow/cleanup.json",
+      "sha256": "1bac68ebee83dcbd7817a9787adcdd00ed4192e07d3b841e920d63f42ceeae14",
+      "bytes": 1635
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/overflow/omitted-mission-exact-control.json",
+      "sha256": "730c44f935393c6e2444705283bb6ee99a90919c60d789ebdf7d50b0dd27c65f",
+      "bytes": 769
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/overflow/omitted-mission-resumed.json",
+      "sha256": "93367c1f5e7cc5afab2e5b9bdbf75154e51d27d01f08eda0a757e23fabdbd6c4",
+      "bytes": 771
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-operator-final/run.log",
+      "sha256": "23aa8276a43de77b839bd9ce07af0b80fc8177d3919be2cf272670b76d76ff7e",
+      "bytes": 1032
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-setup-cleanup/cleanup.json",
+      "sha256": "813a5386168427f1d022d09a7ec049ebc3942d5dd7f0ea4426a4fd73946dc45e",
+      "bytes": 780
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-matrix/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-matrix/run.log",
+      "sha256": "a67fe15e21870ab6ea4cb843610067465cfba5b69134fe4f488170510faefdcd",
+      "bytes": 17500
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-matrix/summary.json",
+      "sha256": "33670dc4ea7d41d7553149669ae230fbc88f384ebd2a88006f3c993e6aab34ee",
+      "bytes": 262
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-validation/diff-check.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-validation/fmt.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-validation/strict.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-validation/strict.log",
+      "sha256": "a15c04c8d8309676a46ec259d8a63e059a97e03f915f34ca17cb602cd03584f6",
+      "bytes": 180
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-validation/verification-index.json",
+      "sha256": "c826f3380d30b06b6297e696e31ea13994f4c6b9f31a0fe113c4719eabc98d7d",
+      "bytes": 1332
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-freeze/manifest.json",
+      "sha256": "6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b",
+      "bytes": 10166
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-freeze/repair.patch",
+      "sha256": "23ef97df592c409cff0aebb8b8c6c5d4407c489acac7655b1c33a8b9f5757f58",
+      "bytes": 36497
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-freeze/spec-review.json",
+      "sha256": "29b550bf0f3def1ba38d3cfa1336b66005e0c68f895497b94e7d7839e4402c60",
+      "bytes": 415
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review575-freeze/standards-review.json",
+      "sha256": "063194f1ab7c91ee332ce75960ea6bc5a9f929cba8942fdd9af6bc087f279d13",
+      "bytes": 648
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/classification.json",
+      "sha256": "ba4efbe64848ccafd785af9288e55cf503a7649840c86278e4f0d79fb34beb57",
+      "bytes": 254
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/historical/cleanup.json",
+      "sha256": "8015b5fa380d97c61b9e0b1b110be13ea55d764e55d8991bf3c24e8d76de74a6",
+      "bytes": 183
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/historical/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/issuer-expiry/cleanup.json",
+      "sha256": "be68da0399ebba5bbfcfd344b8e4b1720e2ae3cbe844a85b31c6dddbd2b7df8b",
+      "bytes": 183
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/issuer-expiry/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/kernel16-binary-output-37d9016e-7846-43c9-9735-ea33a336fedb/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f",
+      "bytes": 74
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/known/cleanup.json",
+      "sha256": "18a01f03507fb428d4fe4ca851c6bbd338f478b1cbcdea7159a7a0dc81fe0414",
+      "bytes": 105
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/legacy-quarantined/cleanup.json",
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68",
+      "bytes": 93
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/legacy-running/cleanup.json",
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d",
+      "bytes": 92
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/merged-journals/cleanup.json",
+      "sha256": "3db0b148154ae235e3edd7715daaaf7b4579c2ac78bdaa4396a0b6dac29a0673",
+      "bytes": 1503
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/monitor-memory-1048576-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/monitor-memory-1048576-read-error-true/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/monitor-memory-134217728-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/overflow/cleanup.json",
+      "sha256": "2777e424c6ae8a05c5a4691b0ba9ef39786050b9ea03c107ac444121f327ea3d",
+      "bytes": 1635
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/overflow/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/postgres-final.json",
+      "sha256": "2cc91eea2ee07cd32b4fd4742e09397a8350fe7d6da5da776d4435cb86cac8cc",
+      "bytes": 47
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/unknown-effect/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda",
+      "bytes": 78
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup/unknown-usage/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda",
+      "bytes": 78
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/cleanup-index.json",
+      "sha256": "4e13300e049ed82e94062b9ffc8ad1ffacff773fe6bb929550c16ba822064fc6",
+      "bytes": 2812
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/root-gate8/run.log",
+      "sha256": "cf6e7dcc138257db276f93856c68bccc485295eb948a2adf8174ac9f57bd2617",
+      "bytes": 30888
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "terminal_agent",
+    "controller",
+    "experiments/team_control_plane",
+]
+default-members = ["terminal_agent"]
+resolver = "3"

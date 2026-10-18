@@ -1,0 +1,17 @@
+{
+  "snapshot_root": "/tmp/corenius-sqlite06-harness-review-vi_ol81g",
+  "inputs": [
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/harness-options-review.json",
+      "snapshot": "/tmp/corenius-sqlite06-harness-review-vi_ol81g/harness-options-review.json",
+      "sha256": "fa1e51950ff09fce2fdfc71b503c306138b4e0e6f3abfd48c5ab33be4e635395",
+      "bytes": 1161
+    },
+    {
+      "source": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/harness-options.diff",
+      "snapshot": "/tmp/corenius-sqlite06-harness-review-vi_ol81g/harness-options.diff",
+      "sha256": "2181170bc5c0d9f2653ffc90ce092ae883b3140254c72d853bb52fc90d485b17",
+      "bytes": 16370
+    }
+  ]
+}

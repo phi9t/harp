@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.05s
+     Running tests/temporal.rs (target/debug/deps/temporal-8210ec28f7bc216c)
+
+running 7 tests
+test temporal_worker_process ... ignored, child worker process; parent fixture owns lifetime
+
+thread 'sigkill_fixture_rejects_unexpected_prior_exit' (1205519) panicked at tests/temporal.rs:790:5:
+unexpected worker exit before injected SIGKILL
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test sigkill_fixture_rejects_unexpected_prior_exit ... ok
+test command_identity_contains_operation_family ... ok
+test queued_old_generation_driver_cannot_dispatch_after_close_and_replacement ... ok
+test verifier_cannot_suppress_initial_wakeup ... ok
+test public_migration_installs_transactional_workflow_registry ... ok
+test real_temporal_recovers_lost_hints_rollover_and_retained_replay ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 10.84s
+

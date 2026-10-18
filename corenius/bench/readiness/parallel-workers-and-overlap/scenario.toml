@@ -1,0 +1,14 @@
+id = "parallel-workers-and-overlap"
+stories = [3, 25, 26, 28]
+kind = "parallel-overlap"
+task = "task.md"
+environment = "environment"
+
+[effort]
+name = "demo"
+integration_branch = "effort/demo"
+parallel_cap = 2
+
+[[cases]]
+id = "two-workers"
+action = "parallel-overlap"

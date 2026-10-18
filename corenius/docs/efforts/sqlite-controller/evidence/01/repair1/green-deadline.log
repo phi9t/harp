@@ -1,0 +1,13 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.19s
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-b82c9322483fdbbb)
+
+running 1 test
+daemon_ready pid=1672560 socket=/data02/home/philip.yang/devx/tmp/.tmpNNxAKz/api.sock
+slow_client_queued_request_elapsed_ms=1003
+test slow_drip_client_cannot_extend_the_whole_request_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 1.08s
+
+
+# Recorded command exit status: 0

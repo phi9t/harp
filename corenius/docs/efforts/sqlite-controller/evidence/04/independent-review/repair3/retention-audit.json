@@ -1,0 +1,21 @@
+{
+  "captured_at": "2026-10-04T19:04:44.817656+00:00",
+  "helper_commit": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+  "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "evidence_tip": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+  "retention_records_verified": 11,
+  "raw_logs_verified": 3,
+  "source_archives_verified": 9,
+  "archived_source_files_verified": 330,
+  "relocated_fixture_input_files_verified": 92,
+  "historical_files_unchanged": 578,
+  "product_files_unchanged": 34,
+  "matched_driver_input_old_failure_corrected_success": true,
+  "actual_FileExistsError_and_unchanged_output": true,
+  "duplicate_digest_controls": "actual refusals, output absent",
+  "explicit_waited_process_identities_checked": 9,
+  "matching_live": [],
+  "unknown_reads": [],
+  "scope": "Immutable committed evidence plus root real relocated helper; no model/runtime or new Rust gate claim.",
+  "verdict": "PASS"
+}

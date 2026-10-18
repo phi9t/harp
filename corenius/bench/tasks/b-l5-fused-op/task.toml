@@ -1,0 +1,27 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l5-fused-op"
+description = "Composite Blade IDL/codegen, native plugin, and Python ctypes wrapper"
+
+[metadata]
+track = "B"
+level = "L5"
+tags = ["multi", "blade-L5"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[multi]
+expected_conflicts = 1
+expected_landing = "t2 and t3 both rewrite the top-level BUILD component manifest from the same base; the second one conflicts, then redo composes the manifest"
+
+[verifier]
+command = "sh tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "tools/gen_params.py", "csrc/fused.h"]
+
+[agent]
+timeout_sec = 900

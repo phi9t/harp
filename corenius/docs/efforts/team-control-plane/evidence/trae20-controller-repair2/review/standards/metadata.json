@@ -1,0 +1,117 @@
+{
+  "axis": "Standards",
+  "date": "2026-10-03",
+  "status": "NO_NEW_BLOCKING_FINDINGS_HISTORICAL_TDD_DEVIATION_RETAINED",
+  "candidate": {
+    "author_tree": "/tmp/corenius-trae20-budget-repair-author",
+    "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+    "dirty_snapshot": true,
+    "index": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/controller-repair2-20261003-v1/freeze/public-index.json",
+    "index_sha256": "ce51e01dcdaee0d0ab8788b2327899679fde66413bc534b635d6d60f1c970523",
+    "record_count": 22,
+    "controller_sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+    "test_sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "full_patch_sha256": "3888efd5606191a5df21b2fac7a227c2f70844c6410041be27c8544e8f8e2f57",
+    "repair_patch_sha256": "ee9d9efef249a0d774bd21204b888602cfe516769ed18734e726f8e7de1efec0"
+  },
+  "policy_tree": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "policy_tree_head_read": "93263309bac03e1898a14b2d65df0a921a94c21f",
+  "read_resources": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/evidence-bound-method.md",
+      "sha256": "4bcd61bea24b101808694cac00b5ce1bcb0c980ad5938c96c86f20fa49238ef1"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-launch-controller-provenance-repair.md",
+      "sha256": "5ac1c12b289b58eb6f199d1a26dfefe5d2cbd79d7594a3c004fc274c1957397a"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-controller-review1-repair.md",
+      "sha256": "d9ee974e52e4c312bde606c015344b08cf08dcc1e5e73285b021de906d0e7d37"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-controller-review2-repair.md",
+      "sha256": "7e7fe81fdc697bde08b9bac190ca45be3d3e53353503727c47da6689cadab2f4"
+    }
+  ],
+  "independent_checks": {
+    "hashes": {
+      "path": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/independent-hashes.json",
+      "sha256": "2af181d9b6abd4b63ee128a6be1115a77484da3489659f30cd7d59ec19ac4b7d"
+    },
+    "test_runs": {
+      "path": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/independent-test-runs.json",
+      "sha256": "3eb55219e665f7281e96d8592a30934e3cacfde09ad6c999a0019113757888b6"
+    },
+    "final_tests": {
+      "exit_code": 0,
+      "count": 20
+    },
+    "exact_repair1_negative_reproduction": {
+      "exit_code": 1,
+      "tests": 2,
+      "assertion_failures": 2,
+      "errors": 0,
+      "historical_chronology_claim": false
+    }
+  },
+  "new_material_findings": [],
+  "historical_findings_retained": [
+    {
+      "priority": "P2",
+      "subject": "seven original durable slices lack retained before-implementation RED evidence",
+      "rule": "docs/agents/agentic-engineering.md:104-107; docs/agents/skill-orchestration.md:63-65",
+      "disposition": "Preserved process deviation; post-review sensitivity controls cannot repair historical chronology. Repair2 decision expressly preserves this gap."
+    }
+  ],
+  "limitations": [
+    "Positive fixtures inject a committed-byte reader and recording executor; production Git-positive path remains separate after reviewed integration.",
+    "No runtime, namespace, provider, service, timeout enforcement, descendant containment, or physical admission is qualified.",
+    "Hostile ancestor replacement and concurrent source mutation remain outside the qualified sole-writer frozen-input model.",
+    "Persistent storage faults or concurrent occupancy of both permitted retention names can prevent complete persistence; explicit retention_error and spent reservation remain.",
+    "No ordinary-Git durable integration/retention gate or overall workflow completion is claimed.",
+    "No fresh historical physicalresult1, quarantine, or spending-ledger qualification; the authoritative decisions preserve their previous dispositions.",
+    "Independent reruns establish current behavior and sensitivity, not original development timing."
+  ],
+  "actions": {
+    "author_tree_mutations": 0,
+    "root_tree_mutations": 0,
+    "git_mutations": 0,
+    "physical_launches": 0,
+    "namespace_launches": 0,
+    "provider_or_paid_model_launches": 0,
+    "service_launches": 0,
+    "cargo_pg_temporal_launches": 0,
+    "writes": "Review artifacts and isolated test copies under this review directory only.",
+    "forbidden_repository_inspection": false
+  },
+  "report": {
+    "path": "/tmp/corenius-trae-controller-repair2-standards-review-20261003/report.md",
+    "sha256": "dc3bb728dc21fd4e5962df665af22481318c69ad3f0ce95d88c0b7aff250a38a",
+    "words": 251
+  }
+}

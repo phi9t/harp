@@ -1,0 +1,195 @@
+{
+  "reviewer": "/root/corenius_v02_adoption_critique",
+  "reviewed_at_utc": "2026-10-03T18:15:22.377438+00:00",
+  "verdict": "PASS_EXACT_BOUNDED_OFFLINE_PRELAUNCH_CASE",
+  "remaining_blockers": [],
+  "scope": "Narrow read-only re-review of exact oracle and durable-event export repair; unchanged supervisor/fixture round-0 review reused",
+  "author_root": "/tmp/corenius-trae20-budget-repair-author",
+  "freeze_root": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/freeze",
+  "freeze_base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "public_index_sha256": "2d87eb20ec4418c59f800bc1a238175acd8837b2dcbca4eeee769c9c582fdfd0",
+  "case_sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+  "case": {
+    "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+    "cwd": "/tmp/corenius-trae20-budget-repair-author",
+    "command": "TRAE_OFFLINE_NAMESPACE_PROOF=.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.json PYTHONPATH=tools/probes timeout --signal=TERM --kill-after=2s 28s python3 -m unittest test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants",
+    "status": "unadmitted",
+    "maximum_namespace_starts": 1,
+    "maximum_fixture_seconds": 10,
+    "maximum_command_seconds": 30,
+    "auto_retry": false,
+    "trae_launches": 0,
+    "provider_or_service_launches": 0,
+    "expected_reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "proof": ".scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.json",
+    "raw_owner_events": ".scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.owned.jsonl",
+    "raw_export": "exact bytes fsynced in finally before TemporaryDirectory cleanup; O_EXCL prevents overwrite",
+    "historical_quarantines": [
+      1749400,
+      1793051
+    ],
+    "sources": [
+      {
+        "path": "tools/probes/trae_namespace_supervisor.py",
+        "bytes": 13476,
+        "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+      },
+      {
+        "path": "tools/probes/trae_namespace_fixture.py",
+        "bytes": 1502,
+        "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+      },
+      {
+        "path": "tools/probes/test_trae_namespace.py",
+        "bytes": 4336,
+        "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2"
+      }
+    ]
+  },
+  "indexed_record_checks": [
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 4336,
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "source.patch",
+      "bytes": 20564,
+      "sha256": "a6af5b6a0d08ee179844bb3dddcd8d84cf26e52819faf3589699a3422ffd76a9",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "test-only-review.diff",
+      "bytes": 4776,
+      "sha256": "9eac8743ea847eebc9219355645b681b25ce3731c7de9b6100ac9961d8685fba",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "case.json",
+      "bytes": 1693,
+      "sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "pure-serialization.log",
+      "bytes": 308,
+      "sha256": "efb99eb71404a7d59b4dd44eb3087bdad8789ed3ed51ccfb439bbbe822c711e2",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "checks.json",
+      "bytes": 467,
+      "sha256": "70f729e961aaefafff351a266166577487d6c4091501e9bffde531522ee98422",
+      "bytes_match": true,
+      "sha256_match": true
+    }
+  ],
+  "live_source_checks": [
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "match": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "match": true
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2",
+      "match": true
+    }
+  ],
+  "unchanged_from_round0": {
+    "trae_namespace_supervisor.py": true,
+    "trae_namespace_fixture.py": true
+  },
+  "prior_report": "/tmp/corenius-trae20-physical-admission-review-20261003/report.md",
+  "closed_findings": [
+    {
+      "id": "P1",
+      "repair": "Exact JSONDecodeError reason assertion"
+    },
+    {
+      "id": "P2",
+      "repair": "Finally export of exact raw event bytes and proof using exclusive creation, file fsync and directory fsync"
+    }
+  ],
+  "author_retained_pure_serialization": {
+    "checks": [
+      "normal export retains exact raw bytes and proof",
+      "finally export runs on assertion failure",
+      "existing export refused without overwrite",
+      "missing raw file remains explicit empty bytes without fabricated stages"
+    ],
+    "exit": 0,
+    "fixture_starts": 0,
+    "trae_starts": 0
+  },
+  "author_retained_checks": {
+    "test_only_repair": true,
+    "compile_exit": 0,
+    "diff_check_exit": 0,
+    "pure_serialization_exit": 0,
+    "physical_starts": 0,
+    "namespace_starts": 0,
+    "trae_starts": 0,
+    "unchanged_supervisor_sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+    "unchanged_fixture_sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+    "prior_test_sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+  },
+  "selected_case_output_exists": {
+    "proof": false,
+    "raw_owner_events": false
+  },
+  "admission_state_observed": "unadmitted",
+  "physical_result_qualification": "not performed",
+  "required_outer_positive_contract": {
+    "test_terminal": 0,
+    "reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "setsid_descendant_observed": true,
+    "anchor_inner_pid": 1,
+    "validated_namespace_pin": true,
+    "physical_stop": "pidfd_SIGKILL",
+    "consistent_durable_raw_event_stages": [
+      "namespace_owned",
+      "stopped",
+      "setup_failed"
+    ],
+    "inventory_after": [],
+    "launcher_terminal": true,
+    "quarantined": false,
+    "cleanup_uncertain": "absent",
+    "retention_uncertain": "absent in setup and shutdown proof"
+  },
+  "historical_quarantines_preserved": [
+    1749400,
+    1793051
+  ],
+  "reviewer_fixture_starts": 0,
+  "reviewer_test_runs": 0,
+  "reviewer_provider_starts": 0,
+  "author_or_root_tree_mutations": false,
+  "report_sha256": "af0196bb15c8fcca8eaab9cc7087ea562ead24ea4199b307ac2a1b34d5e21fda"
+}

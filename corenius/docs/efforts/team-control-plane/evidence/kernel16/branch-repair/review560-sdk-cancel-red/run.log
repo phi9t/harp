@@ -1,0 +1,22 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.96s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+test real_sdk_cancelled_native_prepared_wait_retains_current_workflow ... FAILED
+
+failures:
+
+---- real_sdk_cancelled_native_prepared_wait_retains_current_workflow stdout ----
+
+thread 'real_sdk_cancelled_native_prepared_wait_retains_current_workflow' (3597384) panicked at tests/assembled_vertical.rs:7789:5:
+current Workflow must complete native fenced Activity after cancellation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    real_sdk_cancelled_native_prepared_wait_retains_current_workflow
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 46 filtered out; finished in 20.68s
+
+error: test failed, to rerun pass `--test assembled_vertical`

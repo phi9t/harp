@@ -1,0 +1,117 @@
+{
+  "version": "2026.10.13.1",
+  "source_repository": "corenius",
+  "mainline_branch": "ultron/mainline",
+  "managed_policy_files": [
+    "CONSTITUTION.md",
+    "docs/agents/agentic-engineering.md",
+    "docs/agents/skill-orchestration.md"
+  ],
+  "local_tracker_files": [
+    "docs/agents/issue-tracker.md",
+    "docs/agents/triage-labels.md",
+    "docs/agents/domain.md"
+  ],
+  "required_symlinks": [
+    {
+      "path": "torchtitan/AGENTS.md",
+      "target": ".claude/CLAUDE.md"
+    },
+    {
+      "path": "megatronlm/CLAUDE.md",
+      "target": "AGENTS.md"
+    }
+  ],
+  "required_content": [
+    {
+      "path": "monarch/CLAUDE.md",
+      "snippets": [
+        "@CONSTITUTION.md",
+        "`AGENTS.md`"
+      ]
+    }
+  ],
+  "repositories": [
+    {
+      "name": "corenius",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": false,
+      "base_branch": "main"
+    },
+    {
+      "name": "ultron",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": false,
+      "base_branch": "main"
+    },
+    {
+      "name": "torchtitan",
+      "instruction_files": [
+        ".claude/CLAUDE.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "main"
+    },
+    {
+      "name": "monarch",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "main"
+    },
+    {
+      "name": "megatronlm",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "main"
+    },
+    {
+      "name": "nccl",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "master"
+    },
+    {
+      "name": "ferric_continuum",
+      "instruction_files": [
+        "AGENTS.md",
+        "CLAUDE.md"
+      ],
+      "install_local_tracker": false,
+      "base_branch": "main"
+    },
+    {
+      "name": "vaso",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "master"
+    },
+    {
+      "name": "miles_diffusion",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "main"
+    },
+    {
+      "name": "cutlass",
+      "instruction_files": [
+        "AGENTS.md"
+      ],
+      "install_local_tracker": true,
+      "base_branch": "main"
+    }
+  ]
+}

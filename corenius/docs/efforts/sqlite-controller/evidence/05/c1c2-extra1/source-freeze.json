@@ -1,0 +1,46 @@
+{
+  "time": "2026-10-05T03:29:40.310636+00:00",
+  "source": "a70ddebc27b8971370af93f6be961fcf4f483990",
+  "source_tree": "b55b0537e7db60885cd0742e76280e49f5214826",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "source_files": [
+    {
+      "path": "crates/sqlite-controller/src/monitor.rs",
+      "sha256": "527b6268a57fbfd8e65cf780e3d137341843e156ab9c54d36683229990c39739"
+    },
+    {
+      "path": "crates/sqlite-controller/src/view.rs",
+      "sha256": "3bff6c43708b102665a5b5c9969bd318353ddf2541de5e2bf2bf289d95f66a0c"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/codex.rs",
+      "sha256": "e3c7ffbdbce4b7919ed7b70682dbd4444060c5e7e49c6bf2a9f0e2336dc5fd22"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/git.rs",
+      "sha256": "c20f9c390f2589288ba845bbb421ec7cd5002a68f0457cde4f2711b309a8b4a5"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/support/git_protocol.py",
+      "sha256": "d42cf4a91f94391950e843d165ca68b8b435b2ed6154397df299413721484b8b"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/support/native_registry.py",
+      "sha256": "0a071eaf726fb87da2d6c75beaec3f5e8536c192eae845aa5edb7e8ff33a1695"
+    },
+    {
+      "path": "crates/sqlite-controller/tests/support/correction_authority.py",
+      "sha256": "dd5a8587cd03ff7b7d4bbf00dcc09359ee8a45794d571ba34d0aaebefe6c3925"
+    }
+  ],
+  "diff_sha256": "d25ed6b3ae4431a7fc413e2790eb5a0b98da39c83fdc7464b66857cd3ee3c8e7",
+  "pre_source_matrix_sha256": "3effd2238a54edb0e758f11a431704d89e1a40e04c683c1d4d2941997cae6262",
+  "evidence_status": "scoped RED/GREEN proof; independent disposition pending",
+  "author": "/root/sqlite05_c1c2_happy_author",
+  "thread": "01a10a0d-f18a-7641-9ca5-1cb49cb81603",
+  "active_handles": [],
+  "unknown_effects": [],
+  "caps": "prior05/02/04 repair3 and EMPTY2 immutable; ONE extra C1/C2 round consumed",
+  "trial": "not started; no source integration or mainline/product acceptance",
+  "command_source_identity": "Run records report git HEAD EVID43d585c2 while tested C1/C2 edits were dirty. Final-build and GREEN evaluated source files matching the seven sealed hashes in this exact SOURCE; no implementation edit occurred after final-build/GREEN. Earlier setup/RED used frozen unchanged source."
+}

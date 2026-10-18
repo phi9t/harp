@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "-v",
+    "tools.agents.test_sqlite_baseline.BaselineEntry.test_start_accepts_explicit_existing_session_and_pinned_reuse_options",
+    "tools.agents.test_sqlite_baseline.BaselineEntry.test_reuse_kata_qualifies_instance_before_copying_private_grant",
+    "tools.agents.test_sqlite_baseline.BaselineEntry.test_retained_entry_point_exposes_start_status_and_literal_input"
+  ],
+  "cwd": "/tmp/corenius-sqlite06-harness-review-vi_ol81g/snapshot",
+  "started_at": 1791176115.0630596,
+  "ended_at": 1791176115.7755234,
+  "exit": 0,
+  "tests": 3,
+  "skipped": "literal_tmux_ingress_preserves_utf8_and_shell_metacharacters invokes new-session/kill-session; explicit no tmux mutation review boundary"
+}

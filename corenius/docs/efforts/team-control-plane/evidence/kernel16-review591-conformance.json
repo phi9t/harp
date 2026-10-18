@@ -1,0 +1,24 @@
+{
+  "base": "3e2622ecdb860e656e80f3023da8738e90fe4ac4",
+  "candidate_patch_sha256": "eebc19a3c9e184171a88bb3e4f3c3c78af61bf94bc04e79698c37074b8dc52a9",
+  "Standards": {
+    "reviewer": "/root/kernel16_review584_author",
+    "verdict": "PASS",
+    "blocking_findings": [],
+    "nonblocking": "Possible duplicated fixture allocation/StartRequest setup; extraction unnecessary for bounded repair"
+  },
+  "Spec": {
+    "reviewer": "/root/kernel16_acceptance580",
+    "verdict": "PASS",
+    "blocking_findings": [],
+    "coverage": [
+      "nonOwner episode role equality before SQL ordering/33row bound",
+      "Owner access and principal/scope fences retained",
+      "legacy predicates preserved",
+      "sameprincipal Worker/Verifier public exact inspection and summaries",
+      "31/32/33 row counts and continuation flags"
+    ],
+    "selected_proof_hashes_independently_checked": 76
+  },
+  "limits": "Read-only conformance, no independent execution; whole-branch review, ticket16 acceptance and landing pending."
+}

@@ -1,0 +1,331 @@
+[
+  {
+    "finding": 1,
+    "topic": "trusted imports",
+    "original_actual_failure": "shadow-red",
+    "declared_hypothesis": "Worker cwd shadows trusted Python imports and forges repository status.",
+    "changed_fixture_rationale": "Worker module writes a positive execution marker; candidate evaluation remains deliberately enabled.",
+    "focused_result": "Actual untracked work retained and shadow module not executed.",
+    "source_paired_runs": [
+      {
+        "name": "shadow-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "63cd09a93fcf2ddbd0c663a32d66085a5ecbc5e97c263e89ed5e4fe16dd340d0",
+        "after_archive_sha256": "1fb6de9ed9946ae936d6f84711d7fc7042f1980ea7cbde6053e89a31d139074e"
+      },
+      {
+        "name": "shadow-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "4d4c130080da8a049eabb6c9773ed7daabdf84947a8dff88c84af649203dfca8",
+        "after_archive_sha256": "52c49bd002b3bebda90b7b3b54858906018511b31dafbf9deca3447f7fdd1f28"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "No new unresolved import control; hostile outside-read and hook/config refusals remain required.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Independent public shadow/dirty/ref and outside-boundary checks on frozen source."
+  },
+  {
+    "finding": 2,
+    "topic": "landing authority",
+    "original_actual_failure": "authority-red",
+    "declared_hypothesis": "Initial request journal does not authorize a later physical-ref admission after lead replacement.",
+    "changed_fixture_rationale": "Declared barriers bracket the actionable admission; before replacement must refuse, after replacement must preserve admitted decision.",
+    "focused_result": "Pre-admission replacement refuses physical effect; post-admission decision lands/reconciles.",
+    "source_paired_runs": [
+      {
+        "name": "authority-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "e0e029fd4cb853841e639ac6c3d5be502ccfdb031ff7977e56f18f4d190782b7",
+        "after_archive_sha256": "9fed9e2cb69c326a353b7831c4dce8ac8a58bebe60658f6fe7dd620dd9a8313e"
+      },
+      {
+        "name": "authority-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "fde85d32097c010ba83977321891ede92fa6616b6a796e9f4bfb95aaaad577c7",
+        "after_archive_sha256": "db72dd59d5af66c533f5302f4eb390a0595ac66b3f922e8e322c81bac7dfabf5"
+      },
+      {
+        "name": "publication-green2",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-after.json",
+        "same_files": true,
+        "before_archive_sha256": "e966775fe91649acf6a9a5ff2bf54d5ee1ac12b6deadb1fa3cf435fb22127e02",
+        "after_archive_sha256": "ffa3be683d7e29b97faff1d3db6571c1156db568c1dff93c5c01b34df4c374cd"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Revoked old grant remains refused on later fresh/replay requests.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Independent admission-boundary barrier test and source review of actor/candidate/proof/state transaction."
+  },
+  {
+    "finding": 3,
+    "topic": "recovered publication",
+    "original_actual_failure": "publication-red",
+    "declared_hypothesis": "Physical confirmation omitted the shared revision/event/receipt/Kata publication transaction.",
+    "changed_fixture_rationale": "First Kata revision oracle included autonomous acknowledgement revisions; final fixture pauses automatic runtime for domain observation, then calls public Kata reconcile.",
+    "focused_result": "Both ref crash boundaries; replacement, cursor, one landing revision/event/receipt and exactly two confirmed Kata effects. Kata2/2 PASS9.47s.",
+    "source_paired_runs": [
+      {
+        "name": "publication-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "9509ce975537a8746d9c417d71ff3a1fbd08871cdd46d88220a48318c446a306",
+        "after_archive_sha256": "c1afc12e7fb9cf5cfa07bb52557129b30f02757bacedce8e567afd97937adee7"
+      },
+      {
+        "name": "publication-green2",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-after.json",
+        "same_files": true,
+        "before_archive_sha256": "e966775fe91649acf6a9a5ff2bf54d5ee1ac12b6deadb1fa3cf435fb22127e02",
+        "after_archive_sha256": "ffa3be683d7e29b97faff1d3db6571c1156db568c1dff93c5c01b34df4c374cd"
+      },
+      {
+        "name": "kata-publication-green2",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green2-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green2-after.json",
+        "same_files": true,
+        "before_archive_sha256": "d57f46a1f2ac4c806185461058785dc3b0fad3400db9f782fa04cda57b3f6184",
+        "after_archive_sha256": "12b5605c9798de499bfc2326cb969382f9283d5a0c1521f7839bc07875c3c6f6"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Legacy rejected initial04 formats are unsupported under root adopted adjudication: retain missing-provenance landing unknown and missing-root cleanup refusal/error (may be failed), old databases/objects/artifacts preserved; no migration/backfill. Exact-qualified-build recovery remains required.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Root source/document review of exact-build/config qualification and existing qualified-build recovery gates; no unsupported legacy upgrade execution proof claimed."
+  },
+  {
+    "finding": 4,
+    "topic": "terminal lifecycle",
+    "original_actual_failure": "terminal-capture-red,terminal-accept-red,accepted-capture-red; repair2 composition-red: fresh proof passed, reports1->2/revision9->10, original accepted proof could no longer land",
+    "declared_hypothesis": "Fresh verification on accepted state supersedes the accepted proof; even a late semantic refusal consumes the newest git-verify operation. Validate candidate/task inside the existing journal-admission transaction before operation insertion.",
+    "changed_fixture_rationale": "New public mode uses actual private Git, fixed isolated suite and stable verifier key. Identical RED/GREEN driver; no timing shim, model, journal injection or semantic oracle change.",
+    "focused_result": "composition-green2/2 PASS7.56s (run elapsed9.03s): refused accepted/landed fresh verification without new operation/report/task/revision, stable original proof replayed, original exact accepted proof landed.",
+    "source_paired_runs": [
+      {
+        "name": "composition-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "484ee52238f2e146df7604c520714cc3a80ff84fc807ca4727d356325d2c6ae4",
+        "after_archive_sha256": "6ce97a764d164755873df76e9e642d07e9c0fdf5eb801350ed98eb4c08442958"
+      },
+      {
+        "name": "composition-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair2/source/composition-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "fe65194fc321a47e95945c1234837d2bfc9ab9540bac03372634984ea95418dd",
+        "after_archive_sha256": "bc2967ff8e8b7d297167fac8a56e88867a3020f30c0a98191df35816dd0720d5"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Root independent scoped reviews/gates reported PASS and branch648 retains solely evidence-helper LOW. Stable old-key auth fencing, submitted verification, staleD2 and in-flight withdrawal fences remain enforced; no acceptance inferred.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Root independent accepted verify->accept->freshverify refusal/no journal mutation->stable replay->original land, plus required affected/default/native4 checks and scoped reviews on e31."
+  },
+  {
+    "finding": 5,
+    "topic": "selected stop retry",
+    "original_actual_failure": "native-final-driver-red",
+    "declared_hypothesis": "Pending unsubscribe retry falls back to immutable old stop instead of the exact qualification used when the operation was admitted.",
+    "changed_fixture_rationale": "Shared first GREEN changed connection due to active peer and correctly refused. Final fixture retires peer before restart; same final driver replayed genuine RED in owned initial-stop source materialization. Disposal failure also retained.",
+    "focused_result": "Matched same-driver RED2/2 FAIL50.94s and GREEN2/2 PASS35.75s; same logical ID/current selected stop, original stop immutable.",
+    "source_paired_runs": [
+      {
+        "name": "native-final-driver-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "560a7e4ec1ee78b0e0c86681cc6d61dc07111eaee180c625594950ee13ca5c83",
+        "after_archive_sha256": "061d82c58f92a8c66d77f059438ab93dfab49d30cc592b23074839f3787779aa"
+      },
+      {
+        "name": "native-final-driver-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "a349bd7ee41b9ec9de142a7d5405548aab07f304e504898fff88aece34267d54",
+        "after_archive_sha256": "0c311c442bbb7a67228ff1357a2527720adc3ec9cfa8c6db60b513dc5255d21d"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Active-peer connection mismatch remains fail-closed; inherited changed connection/incarnation unknown operations are not qualification successes.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Independent shared/separate matched native proof and all three inherited pending fences on frozen source."
+  },
+  {
+    "finding": 6,
+    "topic": "inventory responsiveness",
+    "original_actual_failure": "inventory-red",
+    "declared_hypothesis": "Untrusted slow Git inspection runs while holding the single SQLite connection mutex.",
+    "changed_fixture_rationale": "Real clean filter sleeps six seconds and records execution; concurrent status/progress/cancel must finish while inventory stays blocked.",
+    "focused_result": "Controls prompt with blocked inspection; snapshot revision/age/drift explicit;2/2 PASS8.30s.",
+    "source_paired_runs": [
+      {
+        "name": "inventory-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "4bcaa581f56f356162b634d83dcc0495315a24034964bb7a34331a54a3b14756",
+        "after_archive_sha256": "0ae189155beae7e2f7537eefd84fcc9b248ddd3b45cfb791ebe75a8c51e11a0a"
+      },
+      {
+        "name": "inventory-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "211603c2bfeee2dcd2328d4ad29cbb515995e88280bb5cf32d9cb7bfc4517a23",
+        "after_archive_sha256": "38c8a8cd1b29eeb6d370506648f6e641fbaf60414b017bdad2fc3d02338b526e"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Physical Git gate remains serialized; unknown/live/dirty/shared preservation unchanged.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Independent slow-filter concurrency check and connection-lock lifetime review."
+  },
+  {
+    "finding": 7,
+    "topic": "final output",
+    "original_actual_failure": "final-output-red",
+    "declared_hypothesis": "Exit-first polling accepts a fast exited oversized producer with a truncated passing log.",
+    "changed_fixture_rationale": "Declared FI waits for owned verifier exit before polling; candidate handles closed pipe and exits zero. First correction recorded limit but ignored it in verdict, retained failure.",
+    "focused_result": "Actual exit zero + output-bound limit refuses verification/acceptance; bounded diagnostics and owned PID/start/wait retained.",
+    "source_paired_runs": [
+      {
+        "name": "final-output-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "1e647a750dce961f586523ecad07af1964e37347a06b0448cac05810786b04ab",
+        "after_archive_sha256": "9b7755b4b59c49080bb397fd2afaec89a510f88da5dd630f65249b15094dfec1"
+      },
+      {
+        "name": "final-output-green2",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green2-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green2-after.json",
+        "same_files": true,
+        "before_archive_sha256": "f677c24ab57a0de49ae95be35a76a4aaf6496370160b0d1595e0c5ad80490610",
+        "after_archive_sha256": "372bb144fdbf6f390fa028e15b8d5febd2514f1083f4ab3191ce6d52a0531b1f"
+      },
+      {
+        "name": "freeze-controls",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-after.json",
+        "same_files": true,
+        "before_archive_sha256": "abc1eae326461d3cb02534700369337c3bb45564007c4b2f8ea210c667886633",
+        "after_archive_sha256": "15ec69d253904ce8d82f0172341a9edc1805959e5c99d2f9d39c97f78816d320"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "FI scheduling is explicit; fixed suite evaluation and OS isolation remain actual.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Independent declared exit-zero size control plus source review of final reader-limit consumption."
+  },
+  {
+    "finding": 8,
+    "topic": "archive producer",
+    "original_actual_failure": "archive-red",
+    "declared_hypothesis": "Archive storage/diagnostics are bounded only after tar finishes.",
+    "changed_fixture_rationale": "64MiB sparse owned scratch fixture avoids host disk filling; first public failure exposes actual expanded archive size, then owned truncation isolates retry.",
+    "focused_result": "Producer pipe bound32MiB/deadline30s/diagnostics1MiB; owned pidfd termination/wait recorded; root preserved and public retry succeeds.",
+    "source_paired_runs": [
+      {
+        "name": "archive-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "bed5cdd3eb2caf1345d87b45f83aa30be4af3e395a31b181ade4191756ee62da",
+        "after_archive_sha256": "07c8fd1b1a6912d372673aee928221d41b138d8600f5e1786df7cf25db6038e6"
+      },
+      {
+        "name": "archive-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "8258717b500a12521b4e22f11317b38f6e05943bc671a4de577cf1e868a6daf7",
+        "after_archive_sha256": "7f25c3cc11fdc1b82595b67f370b67ac9ab2a9494ff3c9705fce8d42693fabe2"
+      },
+      {
+        "name": "freeze-controls",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-after.json",
+        "same_files": true,
+        "before_archive_sha256": "abc1eae326461d3cb02534700369337c3bb45564007c4b2f8ea210c667886633",
+        "after_archive_sha256": "15ec69d253904ce8d82f0172341a9edc1805959e5c99d2f9d39c97f78816d320"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Failure keeps original attempt; no expanding archive file on fixed path.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Independent stopped sparse archive failure/producer evidence/root preservation/retry and budget review."
+  },
+  {
+    "finding": 9,
+    "topic": "partial deletion",
+    "original_actual_failure": "partial-red",
+    "declared_hypothesis": "Recovery requires intact .git/owner rather than original journaled root/disposition authority.",
+    "changed_fixture_rationale": "Actual recursive .git deletion and owner removal precede declared crash; later replacement/alias/new-file controls are owned fixture mutations and restored only by fixture.",
+    "focused_result": "Same operation/retention/root/stop resumes after real deletion; replacement/alias/new work remains preserved;2/2 PASS13.50s.",
+    "source_paired_runs": [
+      {
+        "name": "partial-red",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-red-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-red-after.json",
+        "same_files": true,
+        "before_archive_sha256": "d43dd63a027a924cec9cb9836d3294cab482246289a7056b75e591838ea1d1f6",
+        "after_archive_sha256": "b80a2f538241b5289ad29455b21652bb4359bf7e09a545d2ccd18947f9ff39a8"
+      },
+      {
+        "name": "partial-controls-green",
+        "before": "docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-controls-green-before.json",
+        "after": "docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-controls-green-after.json",
+        "same_files": true,
+        "before_archive_sha256": "4777259149c59c05f68b7b6ba91795df7030ba6c63b8ebfb273e32baeaef6068",
+        "after_archive_sha256": "56f841e8dc9b934f9ec92a0d6603012045f3726f17a8219d7d887a5a76980c0d"
+      }
+    ],
+    "proof_scope": "Inherited repair1 author focused proof and root complete82 including29native PASS1116.10s, Standards/Spec PASS; repair2 only changes fresh verification admission/docs/test. Root reported repair2 independent affected49/native4/default Git/Kata/fmt/strictClippy/normal build PASS,34 unchanged source files; scoped Standards/Spec PASS. Branch648 sole LOW retained helper relocation blocker keeps acceptance withheld.",
+    "unresolved_controls": "Legacy rejected initial04 formats are unsupported under root adopted adjudication: retain missing-provenance landing unknown and missing-root cleanup refusal/error (may be failed), old databases/objects/artifacts preserved; no migration/backfill. Exact-qualified-build recovery remains required.",
+    "next_discriminating_test": "Final bounded round3/3 retained-helper relocation read-check with original author checkout inaccessible/unused, after authenticated root brief; no repeated current product gates.",
+    "repair_round": "ticket04 round2/3, same phase; ticket02 remains capped3/3, no fourth repair or new ticket reset",
+    "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/repair1/nine-finding-matrix.json",
+    "evidence_helper_control": "Branch648 sole LOW: original absolute retained archive paths in repair1 artifact-observations.py; preserve historical output, wait for final bounded round3/3 brief before helper-only relocation correction.",
+    "next_discriminating_test_inherited": "Root source/document review of exact-build/config qualification and existing qualified-build recovery gates; no unsupported legacy upgrade execution proof claimed."
+  }
+]

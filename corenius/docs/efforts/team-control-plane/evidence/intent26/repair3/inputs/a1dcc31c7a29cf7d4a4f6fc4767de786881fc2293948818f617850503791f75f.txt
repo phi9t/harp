@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T21:33:09.613660+00:00",
+  "job": 632,
+  "tool_session": 73194,
+  "tool_terminal_exit": 1,
+  "base": "a21316f74672f55f3c22eff94f93ce1511b51822",
+  "reviewed_tip": "0a9760f1c2160dab5a63335268daa6413a26263a",
+  "accepted": false,
+  "disposition": "REJECT: High accepted-intent amendment cannot run; Medium source amendment clears previous Plan ceiling guard",
+  "root_static_confirmation": "contracts.rs intent.admit clears plan_id but never advances accepted tasks to new-revision execution; strategy.rs previous ceilings only join current.plan_id",
+  "behavioral_reproduction": "pending; actual HTTP/PostgreSQL RED required before repair3 edits",
+  "root_gate70687": "PASS remains retained; does not override branch rejection",
+  "landing": "withheld",
+  "raw_log": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/branch632/review.log.txt",
+    "bytes": 1949,
+    "sha256": "c3e5d40d0843252c9a16db0c3b522819bf45e472c884c0d6e6bfc726fc4ad5d9"
+  }
+}

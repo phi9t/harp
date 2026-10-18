@@ -1,0 +1,8 @@
+{
+  "recorded_at": "2026-10-05T03:22:59.171913+00:00",
+  "owner_source": "c9d78bf71d132dab3fef8bbceecbebdcba3dd8eb",
+  "disposition": "Scoped C1/C2 candidate review boundary precedes happy-path demo. It is not final baseline source acceptance.",
+  "qualification": "Focused behavioral regressions + independent scoped reviews bind exact candidate source. Existing broad gates stay mandatory at final product-source freeze, integration and release; unchanged old-source broadPASS is not credited as new-source PASS.",
+  "deferred": "Unrelated full crash/history/oversize/recovery expansions and broad repeated hardening do not block disposable live prototype.",
+  "caps": "Prior3 plus ONE extra authorized round; no general reset."
+}

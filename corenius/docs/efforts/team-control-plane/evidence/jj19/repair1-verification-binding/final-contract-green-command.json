@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-contract-green.json",
+    "--retain-artifacts",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts"
+  ],
+  "exit": 0,
+  "stdout": "{\n  \"outcome\": \"passed\",\n  \"fixture_sha256\": \"2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": ""
+}

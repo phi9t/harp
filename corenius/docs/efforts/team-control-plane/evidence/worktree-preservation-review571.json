@@ -1,0 +1,686 @@
+{
+  "observed_at": "2026-10-02T20:53:36.181759+00:00",
+  "inspection": "gitstatus optional locks disabled; no edit/index/stage/rebase/delete",
+  "worktrees": [
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius",
+      "HEAD": "1f164156261a3aa927c823919bf73d6e6d11a771",
+      "branch": "refs/heads/main",
+      "status_exit": 0,
+      "working_changes": [
+        "?? 2026-10-01-013755-this-session-is-being-continued-from-a-previous-c.txt"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/.local/share/kata-spike/courier-wt",
+      "HEAD": "1a662cca7389172fde3894ab76354818c08036a7",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/.local/share/kata-spike/repo",
+      "HEAD": "dff59f0c8f4b696a2e652f806c807a6610ce5632",
+      "status_exit": 0,
+      "working_changes": [
+        " M .gitignore",
+        "?? .kata.toml"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/.local/share/kata-spike/trae-probe",
+      "HEAD": "1a662cca7389172fde3894ab76354818c08036a7",
+      "status_exit": 0,
+      "working_changes": [
+        " M .gitignore",
+        "?? .codex/",
+        "?? .kata.toml",
+        "?? .trae/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-aime-hardening",
+      "HEAD": "a8e7e30805f92571765fc891877e50054d479792",
+      "branch": "refs/heads/aime-harness-hardening",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-b1",
+      "HEAD": "b8a3742a100ed952161f7ee81b6fab3d59a856a3",
+      "branch": "refs/heads/claude/b1-worker-supervisor",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/artifact-acceptance",
+      "status_exit": 0,
+      "working_changes": [
+        "?? crates/",
+        "?? docs/efforts/team-control-plane/",
+        "?? tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-gateway-journal",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/gateway-journal",
+      "status_exit": 0,
+      "working_changes": [
+        "?? crates/",
+        "?? docs/efforts/team-control-plane/",
+        "?? tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-jj-preflight",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/jj-preflight",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/team-control-plane/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/kata-evaluation",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/team-control-plane/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-kernel-proof",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/kernel-proof",
+      "status_exit": 0,
+      "working_changes": [
+        "?? crates/",
+        "?? docs/efforts/team-control-plane/",
+        "?? tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/mailbox-lead",
+      "status_exit": 0,
+      "working_changes": [
+        "?? crates/",
+        "?? docs/efforts/team-control-plane/",
+        "?? tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+      "HEAD": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+      "branch": "refs/heads/codex/reference-design",
+      "status_exit": 0,
+      "working_changes": [
+        " M docs/efforts/team-control-plane/STATE.md",
+        " M docs/efforts/team-control-plane/completion-audit.md",
+        " M docs/efforts/team-control-plane/evidence/execution-ledger.md",
+        " M docs/efforts/team-control-plane/implementation-history.md",
+        " M docs/efforts/team-control-plane/tickets/04-runtime-probe-contract.md",
+        " M docs/efforts/team-control-plane/tickets/16-kernel-proof.md",
+        " M docs/efforts/team-control-plane/worktree-landing.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-continuation-authority.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-episode-physical-launch-fence.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-inventory-observation-recovery.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-kernel-dispatch-recovery-separation.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-kernel-lifecycle-repair571.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-original-launch-admission-provenance.md",
+        "?? docs/efforts/team-control-plane/decisions/20261002-original-launch-provenance-all-roles.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-acceptance-audit-review11.json",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-handoff.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review10.json",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review11.json",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review3.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review4.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review5.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review555-assessment.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review555-repair-map.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review560-assessment.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review560-repair-map.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review571-assessment.json",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review6.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review7.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review8.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16-review9.md",
+        "?? docs/efforts/team-control-plane/evidence/kernel16/",
+        "?? docs/efforts/team-control-plane/evidence/worktree-inventory-prelanding-review11.json",
+        "?? docs/efforts/team-control-plane/research/live-trae-provider-preflight.md"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-supervised-environments",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/supervised-environments",
+      "status_exit": 0,
+      "working_changes": [
+        "?? crates/",
+        "?? docs/efforts/team-control-plane/",
+        "?? tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/temporal-bridge",
+      "status_exit": 0,
+      "working_changes": [
+        "?? crates/",
+        "?? docs/efforts/team-control-plane/",
+        "?? tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-collab-spike",
+      "HEAD": "049d79f42bef9be78951356eaece0957e9333585",
+      "branch": "refs/heads/claude/collab-spike",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-efforts",
+      "HEAD": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+      "branch": "refs/heads/claude/durable-efforts",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-kernel-admission",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/kernel-admission",
+      "status_exit": 0,
+      "working_changes": [
+        " A crates/team-control-plane/Cargo.lock",
+        " A crates/team-control-plane/Cargo.toml",
+        " A crates/team-control-plane/README.md",
+        " A crates/team-control-plane/migrations/0001.sql",
+        " A crates/team-control-plane/src/admission.rs",
+        " A crates/team-control-plane/src/auth.rs",
+        " A crates/team-control-plane/src/domain.rs",
+        " A crates/team-control-plane/src/http.rs",
+        " A crates/team-control-plane/src/lib.rs",
+        " A crates/team-control-plane/src/main.rs",
+        " A crates/team-control-plane/src/storage.rs",
+        " A crates/team-control-plane/src/validation.rs",
+        " A crates/team-control-plane/tests/kernel.rs",
+        " A crates/team-control-plane/tests/run-postgres.sh",
+        " A docs/efforts/team-control-plane/evidence/ticket10-kernel-admission.md",
+        " A tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-m1-sync",
+      "HEAD": "680651de81c45c82371f615e02395d9c5821b330",
+      "branch": "refs/heads/claude/m1-sync-local-trackers",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-m3-interception",
+      "HEAD": "1ba387ad07dc25ba9ba5bdc5d6aedba3764bcac1",
+      "branch": "refs/heads/claude/m3-interception",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-mb",
+      "HEAD": "366361b5a46045823cf6b45941c66ad8379dfebe",
+      "branch": "refs/heads/claude/milestone-b",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+      "HEAD": "0d107b1776a87bee8d1def23f7e56af6a87f3456",
+      "branch": "refs/heads/effort/multi-agent-bench",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-postgres-feasibility",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/postgres-feasibility",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/team-control-plane/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-research-control-plane-sources",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/research/control-plane-sources",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/team-control-plane/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-research-trae-runtime",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/research/trae-runtime",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/team-control-plane/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-temporal-spike",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/team-control-plane/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-tmuxh",
+      "HEAD": "55964db2acb2171f8c64d867f58aa2109d25b771",
+      "branch": "refs/heads/claude/tmuxh",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-c",
+      "HEAD": "145eb116a0fd41156aadc825b9883391901099bc",
+      "branch": "refs/heads/worker/author-c",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/c02-link-order/",
+        "?? bench/tasks/c03-sanitizer-ub/",
+        "?? bench/tasks/c04-header-refactor/",
+        "?? bench/tasks/c05-generated-table/",
+        "?? bench/tasks/p05-offline-wheel-conflict/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-mh1-py-inventory",
+      "HEAD": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+      "branch": "refs/heads/worker/author-mh1-py-inventory",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/mh1-py-inventory/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-mh2-rs-scheduler",
+      "HEAD": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+      "branch": "refs/heads/worker/author-mh2-rs-scheduler",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/mh2-rs-scheduler/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-mh3-cxx-engine",
+      "HEAD": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+      "branch": "refs/heads/worker/author-mh3-cxx-engine",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/mh3-cxx-engine/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-pr",
+      "HEAD": "145eb116a0fd41156aadc825b9883391901099bc",
+      "branch": "refs/heads/worker/author-pr",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/p03-cli-subcommand/",
+        "?? bench/tasks/p04-cache-key-normalization/",
+        "?? bench/tasks/p06-typing-contract/",
+        "?? bench/tasks/r02-borrowed-index/",
+        "?? bench/tasks/r03-trait-format/",
+        "?? bench/tasks/r04-workspace-feature/",
+        "?? bench/tasks/r05-channel-shutdown/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-t",
+      "HEAD": "145eb116a0fd41156aadc825b9883391901099bc",
+      "branch": "refs/heads/worker/author-t",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/t03-jsonl-rollup/",
+        "?? bench/tasks/t04-permission-repair/",
+        "?? bench/tasks/t05-git-conflict-marker-cleanup/",
+        "?? bench/tasks/t06-process-lock/",
+        "?? bench/tasks/t07-csv-join-pipeline/",
+        "?? bench/tasks/t08-log-rotation-recovery/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-1",
+      "HEAD": "2469854f28ce3533e7c808b0949ebbbb886911f5",
+      "branch": "refs/heads/worker/blade-author-1",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/b-l0-add-target/",
+        "?? bench/tasks/b-l0-incs-srcs/",
+        "?? bench/tasks/b-l1-misspelled-dep/",
+        "?? bench/tasks/b-l1-pinned-version-bump/",
+        "?? bench/tasks/b-l2-cuda-kernel/",
+        "?? bench/tasks/b-l2-shared-macro/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-2",
+      "HEAD": "2469854f28ce3533e7c808b0949ebbbb886911f5",
+      "branch": "refs/heads/worker/blade-author-2",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/b-l3-env-matrix/",
+        "?? bench/tasks/b-l3-settler-conflict/",
+        "?? bench/tasks/b-l4-proto-codegen/",
+        "?? bench/tasks/b-l4-wrapper-macro/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-3",
+      "HEAD": "1d77de7698e53ec3878e4dea982b5856bfc24d65",
+      "branch": "refs/heads/worker/blade-author-3",
+      "status_exit": 0,
+      "working_changes": [
+        "?? bench/tasks/b-l5-fused-op/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-capsule-smoke",
+      "HEAD": "da5900683dbb56173d1b5b06f227ccfee1dbf404",
+      "branch": "refs/heads/worker/capsule-smoke",
+      "status_exit": 0,
+      "working_changes": [
+        "?? capsule-smoke.txt"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-claims",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-claims",
+      "status_exit": 0,
+      "working_changes": [
+        "?? tools/agents/checks.d/60-claims.sh",
+        "?? tools/agents/claims.py",
+        "?? tools/agents/test_claims.py"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence",
+      "HEAD": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "branch": "refs/heads/worker/mb-evidence",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence-2",
+      "HEAD": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "branch": "refs/heads/worker/mb-evidence-2",
+      "status_exit": 0,
+      "working_changes": [
+        " M tools/agents/evidence.py",
+        " M tools/agents/test_evidence.py"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-land",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-land",
+      "status_exit": 0,
+      "working_changes": [
+        "?? tools/agents/checks.d/20-land.sh",
+        "?? tools/agents/land.py",
+        "?? tools/agents/test_land.py"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-msg",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-msg",
+      "status_exit": 0,
+      "working_changes": [
+        "?? tools/agents/checks.d/40-msg.sh",
+        "?? tools/agents/msg.py",
+        "?? tools/agents/test_msg.py"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-tracker",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-tracker",
+      "status_exit": 0,
+      "working_changes": [
+        "?? tools/agents/checks.d/30-tracker.sh",
+        "?? tools/agents/test_tracker.py",
+        "?? tools/agents/tracker.py"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-wt-core",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-wt-core",
+      "status_exit": 0,
+      "working_changes": [
+        "?? tools/agents/checks.d/10-wt.sh",
+        "?? tools/agents/test_wt.py",
+        "?? tools/agents/wt.py"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+      "HEAD": "03368f42253dd344c6230d8381fc855f4b7af698",
+      "branch": "refs/heads/claude/worker-mechanism",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-blade",
+      "HEAD": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+      "branch": "refs/heads/worker/research-blade",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/multi-agent-bench/evidence/research-blade.md",
+        "?? docs/efforts/multi-agent-bench/evidence/research-blade/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-blade-cuda",
+      "HEAD": "57ef679a5a9d4894d090024e0655f437ed182b31",
+      "branch": "refs/heads/worker/research-blade-cuda",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/multi-agent-bench/evidence/research-blade-cuda.md",
+        "?? docs/efforts/multi-agent-bench/evidence/research-blade-cuda/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-insula",
+      "HEAD": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+      "branch": "refs/heads/worker/research-insula",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/multi-agent-bench/evidence/research-insula.md",
+        "?? docs/efforts/multi-agent-bench/evidence/research-insula/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-tasks",
+      "HEAD": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+      "branch": "refs/heads/worker/research-tasks",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/efforts/multi-agent-bench/evidence/research-tasks.md",
+        "?? docs/efforts/multi-agent-bench/evidence/research-tasks/"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-trial2",
+      "HEAD": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+      "branch": "refs/heads/worker/trial2",
+      "status_exit": 0,
+      "working_changes": [
+        "?? docs/practice/trial-2-effort-summary.md"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-verify",
+      "HEAD": "bccdcee8f0a47115bec8fa835b4c1763be72cdc4",
+      "branch": "refs/heads/traecli/verify-milano-reference",
+      "status_exit": 0,
+      "working_changes": [],
+      "read_error": null
+    },
+    {
+      "worktree": "/tmp/corenius-kernel16-author",
+      "HEAD": "1f164156261a3aa927c823919bf73d6e6d11a771",
+      "branch": "refs/heads/codex/kernel16-author",
+      "status_exit": 0,
+      "working_changes": [
+        " M crates/team-control-plane/README.md",
+        " M crates/team-control-plane/src/admission.rs",
+        " M crates/team-control-plane/src/artifacts.rs",
+        " M crates/team-control-plane/src/auth.rs",
+        " M crates/team-control-plane/src/domain.rs",
+        " M crates/team-control-plane/src/gateway.rs",
+        " M crates/team-control-plane/src/http.rs",
+        " M crates/team-control-plane/src/lib.rs",
+        " M crates/team-control-plane/src/mailbox.rs",
+        " M crates/team-control-plane/src/main.rs",
+        " M crates/team-control-plane/src/storage.rs",
+        " M crates/team-control-plane/src/supervisor.rs",
+        " M crates/team-control-plane/src/temporal.rs",
+        " M crates/team-control-plane/src/validation.rs",
+        " M crates/team-control-plane/tests/artifacts.rs",
+        " M crates/team-control-plane/tests/fixtures/mailbox_runtime.py",
+        " M crates/team-control-plane/tests/mailbox_delivery.rs",
+        " M crates/team-control-plane/tests/run-postgres.sh",
+        " M crates/team-control-plane/tests/supervisor.rs",
+        " M crates/team-control-plane/tests/temporal.rs",
+        "?? crates/team-control-plane/migrations/0007.sql",
+        "?? crates/team-control-plane/src/episode_runtime.rs",
+        "?? crates/team-control-plane/src/kernel.rs",
+        "?? crates/team-control-plane/src/kernel_usage.rs",
+        "?? crates/team-control-plane/src/model_free_runtime.rs",
+        "?? crates/team-control-plane/tests/assembled_cancellation.rs",
+        "?? crates/team-control-plane/tests/assembled_capacity.rs",
+        "?? crates/team-control-plane/tests/assembled_kernel.rs",
+        "?? crates/team-control-plane/tests/assembled_operator.rs",
+        "?? crates/team-control-plane/tests/assembled_vertical.rs",
+        "?? crates/team-control-plane/tests/support/assembled.rs",
+        "?? crates/team-control-plane/tests/support/episode_native.rs"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/tmp/corenius-kernel16-capacity",
+      "HEAD": "1f164156261a3aa927c823919bf73d6e6d11a771",
+      "branch": "refs/heads/codex/kernel16-capacity",
+      "status_exit": 0,
+      "working_changes": [
+        " M crates/team-control-plane/README.md",
+        " M crates/team-control-plane/src/artifacts.rs",
+        " M crates/team-control-plane/src/gateway.rs",
+        " M crates/team-control-plane/src/lib.rs",
+        " M crates/team-control-plane/src/mailbox.rs",
+        " M crates/team-control-plane/src/main.rs",
+        " M crates/team-control-plane/src/storage.rs",
+        " M crates/team-control-plane/src/supervisor.rs",
+        " M crates/team-control-plane/src/temporal.rs",
+        " M crates/team-control-plane/tests/fixtures/mailbox_runtime.py",
+        " M crates/team-control-plane/tests/supervisor.rs",
+        "?? crates/team-control-plane/migrations/0007.sql",
+        "?? crates/team-control-plane/src/episode_runtime.rs",
+        "?? crates/team-control-plane/src/kernel.rs",
+        "?? crates/team-control-plane/src/kernel_usage.rs",
+        "?? crates/team-control-plane/src/model_free_runtime.rs",
+        "?? crates/team-control-plane/tests/assembled_capacity.rs",
+        "?? crates/team-control-plane/tests/assembled_kernel.rs",
+        "?? crates/team-control-plane/tests/assembled_operator.rs",
+        "?? crates/team-control-plane/tests/assembled_vertical.rs",
+        "?? crates/team-control-plane/tests/support/assembled.rs",
+        "?? crates/team-control-plane/tests/support/episode_native.rs"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/tmp/corenius-kernel16-review560-author",
+      "HEAD": "58c96816ecfd8224d4e2b6f8f01e59eda1eff249",
+      "branch": "refs/heads/codex/kernel16-review560-author",
+      "status_exit": 0,
+      "working_changes": [
+        " M crates/team-control-plane/src/episode_runtime.rs",
+        " M crates/team-control-plane/src/supervisor.rs",
+        " M crates/team-control-plane/tests/assembled_cancellation.rs",
+        " M crates/team-control-plane/tests/assembled_vertical.rs",
+        " M crates/team-control-plane/tests/support/assembled.rs"
+      ],
+      "read_error": null
+    },
+    {
+      "worktree": "/tmp/corenius-kernel16-review571-author",
+      "HEAD": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+      "branch": "refs/heads/codex/kernel16-review571-author",
+      "status_exit": 0,
+      "working_changes": [
+        " M crates/team-control-plane/src/mailbox.rs",
+        " M crates/team-control-plane/src/supervisor.rs",
+        " M crates/team-control-plane/tests/assembled_cancellation.rs"
+      ],
+      "read_error": null
+    }
+  ],
+  "limitations": "Author tree and root evidence continue changing; refresh exact landing targets at landing."
+}

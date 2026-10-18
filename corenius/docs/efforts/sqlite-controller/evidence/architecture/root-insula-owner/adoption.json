@@ -1,0 +1,33 @@
+{
+  "adopted_at": "2026-10-05T03:03:35.041492+00:00",
+  "owner_documentation_commit": "dfe56610eab18d1f68e0b60796e9d9b5eacb8d4b",
+  "retained": [
+    {
+      "source": "docs/efforts/sqlite-controller/ROOT-INSULA.md",
+      "source_commit": "dfe56610eab18d1f68e0b60796e9d9b5eacb8d4b",
+      "source_blob": "25901475866edb611f0ccef1b926572a7568f6f6",
+      "retained": "docs/efforts/sqlite-controller/evidence/architecture/root-insula-owner/ROOT-INSULA.md",
+      "sha256": "06f7f2651cbb704e89d318ad0cc2c898f66120e7a7ec9ff8623613e49eb47ca6"
+    },
+    {
+      "source": "docs/efforts/sqlite-controller/evidence/root-insula-feasibility.md",
+      "source_commit": "dfe56610eab18d1f68e0b60796e9d9b5eacb8d4b",
+      "source_blob": "a148613189b65c901858a4811b9535e02ef9eeb3",
+      "retained": "docs/efforts/sqlite-controller/evidence/architecture/root-insula-owner/root-insula-feasibility.md",
+      "sha256": "ba9b69540a6b3b9475c0190537b4141891aa4e0e79208692266fe6240d19ac7d"
+    }
+  ],
+  "disposition": "PROPOSED architectural extension and future interface/qualification input; no implementation, live relocation, scope expansion or readiness claim",
+  "scope": "One persistent per-team root Insula plus narrower lead/worker/verifier/tool capsules; separate role appservers first; private SQLite/Kata/Git/tmux/state; scoped bridges; independent host/root supervision. Smoke evidence is bounded feasibility only.",
+  "review": {
+    "actor": "/root/root_insula_interface_review",
+    "mode": "fresh non-inheriting/read-only",
+    "root": "/data02/home/philip.yang/devx/tmp/corenius-root-insula-interface-irxje6iz",
+    "input_manifest_sha256": "aa858f295e73f9a09e2c3831467c8c4bb6ae3232a3ee547d94f89281fe29c922",
+    "ownership_ACK_received": true,
+    "result": "pending"
+  },
+  "authority": "root retains sole implementation admission/coordination; no running product writer.04accepted/frozen;05final3/3unaccepted/cap exceptionpending; all current source/review/candidate boundaries and requirements remain unchanged. Read-only reviewer is not an implementation author.",
+  "context": "Coordinator high context prompted fresh read-only working review. This is not a claimed root runtime compaction; no further product phase admitted.",
+  "existing_monitor": "Mainlead01a10084 owns existing15mintimer/privateledger; proposal migration remains future and cannot move currentlead/ledger/timer or create second scheduler."
+}

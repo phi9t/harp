@@ -1,0 +1,37 @@
+{
+  "schema": "corenius.collab_ops_review.v1",
+  "base": "c0a2fc0370f18ff28009dbe9b62a59916de0e582",
+  "candidate": "795b5714dd752d37d26814730db03ce272619eab",
+  "round": 2,
+  "axes": {
+    "standards": {
+      "result": "passed",
+      "reviewer_context": "/root/standards_review",
+      "independent_regressions_passed": 22,
+      "scope": "Combined frozen repair source, documentation and attributed salvage evidence; execution, sweep, legacy push and identity regressions executed from extracted frozen sources.",
+      "findings": [],
+      "qualification_note": "An initial identity test selector used the wrong class name; corrected selectors were freshly rerun successfully."
+    },
+    "spec": {
+      "result": "passed",
+      "reviewer_context": "/root/spec_review",
+      "independent_regressions_passed": 10,
+      "scope": "Combined frozen repair against the approved SPEC, 18 tickets and six branch-review findings; independently executed material public CLI scenarios.",
+      "findings": [],
+      "retained_reproduction_directory": "/data02/home/philip.yang/devx/tmp/spec-round2-ji78733o"
+    }
+  },
+  "resolved_findings": [
+    "Abandonment, GC and destructive sweep acquire the check execution lock.",
+    "Legacy Git children inherit both landing locks; uncertain pushes remain fenced without affirmative exact-ref rejection evidence.",
+    "Check receipts require process-group quiescence after timeout and after a successful leader exit.",
+    "Bookkeeping commits validate and retain the original repository identity before publication.",
+    "Corenius abandonment releases the exact owned claim through a committed tracker transition with recoverable before and after hashes.",
+    "Dirty cleanup revalidates current ownership, liveness, locks, source bytes and recovery archives before clearing files."
+  ],
+  "limitations": [
+    "Reviewers did not repeat the broad repository gate.",
+    "Salvage cleanup qualification is separately attributed in salvage-cleanup.json.",
+    "Changed claims or ticket bytes require explicit reconciliation; automatic release preserves them."
+  ]
+}

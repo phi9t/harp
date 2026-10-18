@@ -1,0 +1,3196 @@
+{
+  "verification": {
+    "canonical_head": "3e4e029a2adf41abbec68c51f75badebdd9168d2",
+    "author_head": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+    "author_branch": "codex-intent26/outcome-lifecycle1",
+    "seal_records_verified_both_trees": 320,
+    "pairs": [
+      {
+        "path": "crates/team-control-plane/README.md",
+        "sha256": "9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5",
+        "rejected_preimage_sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba"
+      },
+      {
+        "path": "crates/team-control-plane/migrations/0008.sql",
+        "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+        "rejected_preimage_sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+      },
+      {
+        "path": "crates/team-control-plane/migrations/0009.sql",
+        "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": null,
+        "rejected_preimage_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d"
+      },
+      {
+        "path": "crates/team-control-plane/src/admission.rs",
+        "sha256": "06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+        "rejected_preimage_sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+      },
+      {
+        "path": "crates/team-control-plane/src/artifacts.rs",
+        "sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+        "rejected_preimage_sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b"
+      },
+      {
+        "path": "crates/team-control-plane/src/contracts.rs",
+        "sha256": "e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf",
+        "rejected_preimage_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955"
+      },
+      {
+        "path": "crates/team-control-plane/src/contracts/authority.rs",
+        "sha256": "ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+        "rejected_preimage_sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b"
+      },
+      {
+        "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+        "sha256": "7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+        "rejected_preimage_sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f"
+      },
+      {
+        "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+        "sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": null,
+        "rejected_preimage_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2"
+      },
+      {
+        "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+        "sha256": "c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+        "rejected_preimage_sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7"
+      },
+      {
+        "path": "crates/team-control-plane/src/contracts/strategy.rs",
+        "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+        "rejected_preimage_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48"
+      },
+      {
+        "path": "crates/team-control-plane/src/domain.rs",
+        "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+        "rejected_preimage_sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+      },
+      {
+        "path": "crates/team-control-plane/src/episode_runtime.rs",
+        "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+        "rejected_preimage_sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+      },
+      {
+        "path": "crates/team-control-plane/src/gateway.rs",
+        "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+        "rejected_preimage_sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+      },
+      {
+        "path": "crates/team-control-plane/src/http.rs",
+        "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+        "rejected_preimage_sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+      },
+      {
+        "path": "crates/team-control-plane/src/kernel.rs",
+        "sha256": "305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+        "rejected_preimage_sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6"
+      },
+      {
+        "path": "crates/team-control-plane/src/lib.rs",
+        "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+        "rejected_preimage_sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+      },
+      {
+        "path": "crates/team-control-plane/src/mailbox.rs",
+        "sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+        "rejected_preimage_sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+      },
+      {
+        "path": "crates/team-control-plane/src/storage.rs",
+        "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+        "rejected_preimage_sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+      },
+      {
+        "path": "crates/team-control-plane/src/supervisor.rs",
+        "sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+        "rejected_preimage_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a"
+      },
+      {
+        "path": "crates/team-control-plane/tests/intent_contracts.rs",
+        "sha256": "fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264",
+        "rejected_preimage_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9"
+      },
+      {
+        "path": "crates/team-control-plane/tests/support/outcome_lifecycle.rs",
+        "sha256": "7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad",
+        "live_frozen_match": true,
+        "root_matches_base_preimage": true,
+        "base_preimage_sha256": null,
+        "rejected_preimage_sha256": null
+      }
+    ],
+    "patches": [
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base.patch",
+        "sha256": "9563f336ba5b6c9bf84bd50d04970aafad8bb5dbeaeec3e8ec25f35a01836aea",
+        "patched_paths": 15,
+        "hunks": 71,
+        "all22_reconstruct": true
+      },
+      {
+        "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-repair3-delta.patch",
+        "sha256": "a47703815bcbe0248548fa1314a37875f55efd1a0ecd2da8b29833cea9a6feaa",
+        "patched_paths": 13,
+        "hunks": 58,
+        "all22_reconstruct": true
+      }
+    ],
+    "errors": [],
+    "seal.json": "d2b0ed5e5fcc81ae0b61de0bbcbf754823c41d2035b805ba81f27d11f1c18d73",
+    "author-freeze.json": "e68e774465d754432cd444f5045e6e0a43134eb740d2a110b2d88b0dd671983e",
+    "source-manifest.json": "f867229a30cdce7e1efc9d881c7f1404a330ec925329bd8c1e5fa3da69a6572c",
+    "resource-final.json": "120ee0cd96507345cb65137959b72f70b17687eed40604f8ced9f832774f9fcd",
+    "root-retention.json": "205b33c300039cacc8b5c25480fe0af339560fa44642e89afa5cb2c0fdbe098b"
+  },
+  "schema_version": 1,
+  "axis": "Standards",
+  "verdict": "REJECT",
+  "completed_utc": "2026-10-04T00:20:19.726533+00:00",
+  "allocation": "one independent clean-context static conformance pass for adopted outcome-lifecycle1; no automatic repair",
+  "canonical_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "author_tree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1",
+  "canonical_inputs": [
+    {
+      "path": "AGENTS.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "CONSTITUTION.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "CONTEXT.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/agents/domain.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "bytes": 2045,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/agents/agentic-engineering.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/agents/skill-orchestration.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/agents/issue-tracker.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/issue-tracker.md",
+      "sha256": "9d7300ea195b3c876228c9fc66f2223a09c5d2b793e2b483b236311d85f57be8",
+      "bytes": 2166,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "ed12eca0d43145b0bc58c914b70589bb1441a0fa120f49c52e3206e93107fbd4",
+      "bytes": 8390,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "bytes": 33123,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+      "bytes": 21340,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+      "sha256": "5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5",
+      "bytes": 3465,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a",
+      "bytes": 2321,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f",
+      "bytes": 1876,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e",
+      "bytes": 6546,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+      "sha256": "1d233a5f8a20732dc936801487ddc3a121f6410c264361d5ea7588289049edf0",
+      "bytes": 5083,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "sha256": "ef466fbab46183da3033ff76bdf332dceb85445a2f0d4502b4ae5d69976a184c",
+      "bytes": 1103,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-design-critique/report.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-design-critique/report.md",
+      "sha256": "8ab5e89878cb5a4031a736fbaff36c10830f39f07d5e1129e779e1755dc6bbd2",
+      "bytes": 6443,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/report.md",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/report.md",
+      "sha256": "610e6eb213c269e5fdbe09cdec841f75d5eca43e00fac6ac100165120e3cbd3f",
+      "bytes": 4577,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/metadata.json",
+      "absolute_path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/metadata.json",
+      "sha256": "de53ba36a7911fe7e3c658247c1a69526eaa0f92b7437aa3131155f4aade5c58",
+      "bytes": 32635,
+      "matches_pinned_HEAD": true,
+      "inspection": "semantic read"
+    }
+  ],
+  "evidence_inputs": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/assignment.json",
+      "sha256": "a0a624bd04df0eb743fc5362187fb16e30efa5c99cf802362167a71c5f1af506",
+      "bytes": 852,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-freeze.json",
+      "sha256": "e68e774465d754432cd444f5045e6e0a43134eb740d2a110b2d88b0dd671983e",
+      "bytes": 6753,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-git-status.txt",
+      "sha256": "c982876ad0c3bb277532909db52c296cef9fffbbff891efc0d1e161436c3fc1c",
+      "bytes": 833,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/chronology.py",
+      "sha256": "5c437870b228e32a3482e2fd8d64b288c5fd0266ed70950c8b71aed265672b33",
+      "bytes": 4348,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/finish-resources.py",
+      "sha256": "1c14db05ae3d9077e8a42c9b064abcf302e06b895f853bf76fce30806c4a85f0",
+      "bytes": 3525,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/freeze.py",
+      "sha256": "b396836d8b5ac6f7dc8100515a36c87bb6c9be94e2ab188ee74aaf3daa23410a",
+      "bytes": 6620,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/index-extra.py",
+      "sha256": "5d151c2251af50d6055492a2db1537e0de2f439724e34e426075e40eb6ec183c",
+      "bytes": 1616,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/resources-initial.py",
+      "sha256": "6a973b008e9b230e6f3a6dbed1078511fdb4f146b2f21bb4de5537222b7c494b",
+      "bytes": 4619,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/resources.py",
+      "sha256": "b320620b421c20f58b73c1cf19be799c5d84f4c7dfee76a0088c7b28951cad99",
+      "bytes": 4894,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/author-tools/run.py",
+      "sha256": "23dcf1e2ec359e4ef90f278bd36d23deb567270125adb4a34b93dcd36eb4c6f5",
+      "bytes": 1922,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/baseline-overlay.patch",
+      "sha256": "7ccb960cfbeca38aea5af449cba43414244a000169e1b5d1112fdc68988dd7a9",
+      "bytes": 59845,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/baseline-verification.json",
+      "sha256": "d5f7f20e7dcbe3f84d7cad3f25b5c60bead6af812313cbba58ab6dfa8e7e698d",
+      "bytes": 4362,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/consumer-audit.md",
+      "sha256": "46ba082e38c6b795ecd75615c2cee93c912c7534b72b212d28d01ce41e09e612",
+      "bytes": 8829,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/README.md",
+      "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "bytes": 20872,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/migrations/0009.sql",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/contracts/lifecycle.rs",
+      "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "bytes": 3892,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/contracts.rs",
+      "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "bytes": 23071,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/kernel.rs",
+      "sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "bytes": 21853,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "bytes": 127057,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/delta-preimages/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+      "bytes": 117514,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/environment.json",
+      "sha256": "b3b301a82d4cbfa25185cac3000ef61628d373c84351384c1f5db560debff3f8",
+      "bytes": 1224,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-compatibility.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-compatibility.start.json",
+      "sha256": "0d258de7a56f0b7329bcc639792aa56dc75cdc1967d589dd8beb72126bb85eea",
+      "bytes": 12261,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-final.start.json",
+      "sha256": "153492399f7a7132b1c1f9a26abbcf1c4790ba11a979d1129ad09b78d5560a48",
+      "bytes": 12253,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-freeze.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting-freeze.start.json",
+      "sha256": "c131d50f456a5dfbb79ae2e6c41398a206a0fe9783f4bbeaddcd9761d4c3c192",
+      "bytes": 12254,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/formatting.start.json",
+      "sha256": "417c1f693e60b8a9c435e9f1e09cf67f06427996ad14d12aca393a7579c05078",
+      "bytes": 12247,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-final.log",
+      "sha256": "59b7a0c1d8bd143fdf6d48d569827e725cafa617dbb650f72e51b7b16451dcd9",
+      "bytes": 440583,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-final.start.json",
+      "sha256": "f27e7a5488da6eea2dd8fbf15423d50946251eeb91184c8733e884969622f6f7",
+      "bytes": 12603,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.log",
+      "sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+      "bytes": 450500,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility-freeze.start.json",
+      "sha256": "f6ed0b2dbe4515b90d8e9a2f5c71d462fa72bac76824b700d333a2290d1c104c",
+      "bytes": 12604,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility.log",
+      "sha256": "b95e47eb3cf20f10521ee4c2daec49b14a882b14f4668630f41e7dd5b72d994f",
+      "bytes": 427853,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-compatibility.start.json",
+      "sha256": "1df8252036363e3da1429a74c57a372ac248c274eed0153e5579a7e96acf4136",
+      "bytes": 12596,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-complete-lifecycle.log",
+      "sha256": "7d47b58f408d088b8d4a4bb817891d6f7d0cc8bc5563eb20b1340a76e9083fd4",
+      "bytes": 392440,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-complete-lifecycle.start.json",
+      "sha256": "f327adeee8eca03df34cb9f46ce02e11af72e212fb97c8c27aa1e182cfd5c116",
+      "bytes": 12362,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-lifecycle.log",
+      "sha256": "0a7d1a54a7490502bed7ad77a4bcf54f71a10085d04a1a2abb1576039b8d2c0d",
+      "bytes": 45238,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/green-lifecycle.start.json",
+      "sha256": "8c5316dfeb180e81aab89c87e66f3e68bdba52acdb098780d40da06c964dc403",
+      "bytes": 12373,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/handoff.md",
+      "sha256": "98aec42529b49d307be2901ac57b4851973f435bd9e3d49f5ce818b229b7f3f5",
+      "bytes": 10228,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/inventory-collector-adjustment.json",
+      "sha256": "07ff6ab93ef1ad049c86c4fe21fd1973683c939a3af75e853d032cb91121f613",
+      "bytes": 431,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifact-bindings.json",
+      "sha256": "589c1f45e24577a8a6b248d92225cff87eb044bf434ce9a1ee8eac1b75482f63",
+      "bytes": 81955,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/00ac9c4d22c8fa7f7cd500fdffaf353149b88520baea1749f70a34447c0ded7f",
+      "sha256": "00ac9c4d22c8fa7f7cd500fdffaf353149b88520baea1749f70a34447c0ded7f",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/015cc0818b09b1be3e0e78ffd9748bcbc048286a5645cc397c81107c2d7961d5",
+      "sha256": "015cc0818b09b1be3e0e78ffd9748bcbc048286a5645cc397c81107c2d7961d5",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/0e679cb0454abdb1b296470ca0431486476a18f495d2da3ab9bf497f9b2bed6d",
+      "sha256": "0e679cb0454abdb1b296470ca0431486476a18f495d2da3ab9bf497f9b2bed6d",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/14d26942addb174324655e50efee38fdea2e19b52fdf009363187cb4bd613065",
+      "sha256": "14d26942addb174324655e50efee38fdea2e19b52fdf009363187cb4bd613065",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/16fef1a4a845f7b1b43d55476cb63f3ae07cfff1910cf517727000b4d58aa7cc",
+      "sha256": "16fef1a4a845f7b1b43d55476cb63f3ae07cfff1910cf517727000b4d58aa7cc",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/3de1e379337857b7e9bd1fa9b48951f975959fe6681996f80f473246b0e58e2d",
+      "sha256": "3de1e379337857b7e9bd1fa9b48951f975959fe6681996f80f473246b0e58e2d",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/3f2621a82cad9ee615620d3354cff077bad57a62e7d003f610e530c11907a0f9",
+      "sha256": "3f2621a82cad9ee615620d3354cff077bad57a62e7d003f610e530c11907a0f9",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/4154465cdc4d6a0fcd16af8e17bfbffe9b693ef7b95f9de6422a1d346409113d",
+      "sha256": "4154465cdc4d6a0fcd16af8e17bfbffe9b693ef7b95f9de6422a1d346409113d",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/436e2bf5a686e93f9d3b6cfb886206744f070c4d45f19e811c879b7720330bb5",
+      "sha256": "436e2bf5a686e93f9d3b6cfb886206744f070c4d45f19e811c879b7720330bb5",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/4d712b21b28215c529c95738c42e75b32eb1c6fcc61342924c3b46188397dc21",
+      "sha256": "4d712b21b28215c529c95738c42e75b32eb1c6fcc61342924c3b46188397dc21",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/52792f8a8c117482331419cd0c98ea4e4427de007e4834f513e9d0756ed86625",
+      "sha256": "52792f8a8c117482331419cd0c98ea4e4427de007e4834f513e9d0756ed86625",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/568e6be7aac48cc291994c4ea1168a5531c5bd2a4438ca193d0c4971d665b7c5",
+      "sha256": "568e6be7aac48cc291994c4ea1168a5531c5bd2a4438ca193d0c4971d665b7c5",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/61f7ff5e2875894929b70ffcedb41e8ba95542255905f71376c809e36f6ae146",
+      "sha256": "61f7ff5e2875894929b70ffcedb41e8ba95542255905f71376c809e36f6ae146",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70",
+      "bytes": 17,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/743a83c6eda79436e08ee6261ec6e514f272189f6c3dcdd5a8f7b32e28568cd3",
+      "sha256": "743a83c6eda79436e08ee6261ec6e514f272189f6c3dcdd5a8f7b32e28568cd3",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/883e4e28d3c258286a20630b663f7a8ad9eec601d3d098bea3c174a776b5afea",
+      "sha256": "883e4e28d3c258286a20630b663f7a8ad9eec601d3d098bea3c174a776b5afea",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/89a80e74a734f12b6c8c1a6e429098c5f762974afb8ee6bc2ec3a37cfe218fc6",
+      "sha256": "89a80e74a734f12b6c8c1a6e429098c5f762974afb8ee6bc2ec3a37cfe218fc6",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/91e91080f2c8502dc765db0c9da6a9eaae9e0ead62f9e341b3aeebc5471f4593",
+      "sha256": "91e91080f2c8502dc765db0c9da6a9eaae9e0ead62f9e341b3aeebc5471f4593",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/9ecb67d153caa83273f668f20973bd07f4e57bff880517a45b7cbb8664f4a430",
+      "sha256": "9ecb67d153caa83273f668f20973bd07f4e57bff880517a45b7cbb8664f4a430",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/a800fe87af4c14004f124bea5564c2ca537c984bf33caa610a9876a81d802f4b",
+      "sha256": "a800fe87af4c14004f124bea5564c2ca537c984bf33caa610a9876a81d802f4b",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/a9c3eb4631922d54275eeeb5a74c4475aff80a81acb9df23d60c67391110837f",
+      "sha256": "a9c3eb4631922d54275eeeb5a74c4475aff80a81acb9df23d60c67391110837f",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/adb22c721b36053ac9a76e8dec3762d6bd736f0cde15f0d21f7defd509aa2651",
+      "sha256": "adb22c721b36053ac9a76e8dec3762d6bd736f0cde15f0d21f7defd509aa2651",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ae1d0977ef9be80ae436e4d8788ccaf09c63e87bba287b2bdcb076a4da945f96",
+      "sha256": "ae1d0977ef9be80ae436e4d8788ccaf09c63e87bba287b2bdcb076a4da945f96",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/c83ae7e627f48d0847445322b41b6a5154334191f1ad7ef740a4a9b461540a24",
+      "sha256": "c83ae7e627f48d0847445322b41b6a5154334191f1ad7ef740a4a9b461540a24",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/d551af4f1db6af09c5eadd5f4e3f240e4c787d71611fb183dcf6b773c8882a87",
+      "sha256": "d551af4f1db6af09c5eadd5f4e3f240e4c787d71611fb183dcf6b773c8882a87",
+      "bytes": 986,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "sha256": "ea13dcb2f30f470797c4a3d101b8d94a108ce06580eb170eb0f576517f97d91a",
+      "bytes": 46,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/measured-artifacts/ed046606ad4ca14c86c87ca7433c93bd6bde4357a71115274ff48a9a12b718e6",
+      "sha256": "ed046606ad4ca14c86c87ca7433c93bd6bde4357a71115274ff48a9a12b718e6",
+      "bytes": 795,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/observation-index.json",
+      "sha256": "021a16235961561c7fdb38c5f332ac7daf35a2c025ed1bf900c878a1fe319296",
+      "bytes": 522551,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/owner-target-guard-counterfactual.patch",
+      "sha256": "4d8dd574079ba7ba54d396daf8c50e5d6ed7348da9a036b957264b48aa9f46a2",
+      "bytes": 571,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/owner-target-guard-preimage.rs",
+      "sha256": "33c6dea2dd6c99c91fdbdf2053deb1260bf6221b37b6f260e7fad702f61b7ac3",
+      "bytes": 105394,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/owner-target-proof.json",
+      "sha256": "b34e9d240bebd370a5fd91bf563f03413f546ed739f0b2b4a7fe77423b01ad41",
+      "bytes": 465,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/postgres-stop.log",
+      "sha256": "490204b9c2f12e6b1302b21bb2398a91d9ac3db9a5991b183abc82cf7bb27355",
+      "bytes": 40,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/production-artifact-bindings.json",
+      "sha256": "f805a5c001e15e73fe0d98add0c866b3c9ab26039c4693b4e6e160237ef719cd",
+      "bytes": 17976,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reconstruction-rejected-repair3.log",
+      "sha256": "fbfc7d6ec366124100395d88d8c074b4cac057d92f1f889781ee863f377e642f",
+      "bytes": 799,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/reconstruction-whole-base.log",
+      "sha256": "497debfa77854050b4db7f4ec321cc7a30c6b936906dc74ada3a054006c63388",
+      "bytes": 925,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-independent-research-verifier.log",
+      "sha256": "38cb30f94308dd3da74c98272597d2eb538fee5d5bd3eeb2bca75f3c9b0a361e",
+      "bytes": 3475,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-independent-research-verifier.start.json",
+      "sha256": "8f0f381de21dbbb7be3c05b17b5d0d9b820d3d88e21911eb5b1870ac3ca4368a",
+      "bytes": 12413,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle-expanded.log",
+      "sha256": "29c9b35ab3874cf7e60fd1b5227bc24b3d2ccb82613eb321de1ffa95ecb19ba3",
+      "bytes": 59551,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle-expanded.start.json",
+      "sha256": "eb370dfd593e65d4ae404ee070cdfcadf0dde03dce518d62c3d1fb6cde321383",
+      "bytes": 12380,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.log",
+      "sha256": "0ad3dc424f61af5c077408ee839bee6be493657f11b96b179f326e5531a29501",
+      "bytes": 47377,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-lifecycle.start.json",
+      "sha256": "3b113b7ddbc54b5689ab1b10065830617bab42f25988c74d0c35834b720960ae",
+      "bytes": 12354,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-owner-operation-target.log",
+      "sha256": "bd09bc13f840d746a94c9c5383d9a01c3c3ac8c72e6965d917a6b6f2340284a0",
+      "bytes": 9747,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-owner-operation-target.start.json",
+      "sha256": "673550a1a3e93bdf7220643b109c676a7285fe654c96bb7510cbdbfb5b16667f",
+      "bytes": 12395,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-research-verifier.log",
+      "sha256": "078f11024e2e1cda583e96c6bff5efb14e8e6811dca9757336d5fd921cb98e27",
+      "bytes": 3186,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/red-research-verifier.start.json",
+      "sha256": "10d62b49834850a2382762ea9ac294eee73cc5223c1eed18df439b1323ed7e6f",
+      "bytes": 12395,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/README.md",
+      "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "bytes": 20872,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/migrations/0009.sql",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/contracts/lifecycle.rs",
+      "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "bytes": 3892,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/contracts.rs",
+      "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "bytes": 23071,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "bytes": 127057,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-baseline/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+      "bytes": 117514,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/rejected-repair3-delta.patch",
+      "sha256": "a47703815bcbe0248548fa1314a37875f55efd1a0ecd2da8b29833cea9a6feaa",
+      "bytes": 98584,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-collection-batched.log",
+      "sha256": "33809c1540964b6d23007a05a62b671ac2e9a6c5a303bf6eb6e77d9565ea7603",
+      "bytes": 154,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-collection.log",
+      "sha256": "83108bb370c031b1770b4f4d9cf1f54c5bd3e9d39a8f4ccf5356520b17ec48d1",
+      "bytes": 55969,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-final.json",
+      "sha256": "120ee0cd96507345cb65137959b72f70b17687eed40604f8ced9f832774f9fcd",
+      "bytes": 9236,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/resource-prestop.json",
+      "sha256": "1333c00d6dac6f8bfda628bd65e8feaf8a8a81451958f898b946dd1015587e1a",
+      "bytes": 25355,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-00.sql.gz",
+      "sha256": "534407486a589a69cf18f40c147b8073be078d8b806eb62e83d251fbe338f886",
+      "bytes": 170955,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-01.sql.gz",
+      "sha256": "d8f5f2a167a616c9bfb6d949dcbb88a3b321468272f7c34c02e83be06eccdc24",
+      "bytes": 173541,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-02.sql.gz",
+      "sha256": "cf880df1975d78c08cee2bac5dbd79457801507a9cde4d4a6e105f4d899057d6",
+      "bytes": 180188,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-03.sql.gz",
+      "sha256": "d84fa70a301e43d3ebe5005fbf133ad93ba626b866f5e0a979e6985a072cb607",
+      "bytes": 196105,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-04.sql.gz",
+      "sha256": "92a10a1241f61bba62443fb72d49cfe20bad4649a4e69318059cb69cf64ea22a",
+      "bytes": 168864,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-05.sql.gz",
+      "sha256": "eb688a3f510cf36049207590444acb48b7fd705682321237ca1f70bc1d2cdddb",
+      "bytes": 155659,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-06.sql.gz",
+      "sha256": "e0025f3a1f2c909689632c88c67925ecb59cf3a4471383fd26f2dda89879c0a3",
+      "bytes": 167723,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-07.sql.gz",
+      "sha256": "2b2ef4ab1d48d2fdd0d0d38ed313e627734064d193b5feb055f0efc9f1c46a0a",
+      "bytes": 179537,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-08.sql.gz",
+      "sha256": "eef3d1dc6e2a7996135881b4d5db26e8b0bb3cb421b502514824f71fa19a7b41",
+      "bytes": 164533,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-09.sql.gz",
+      "sha256": "c316d662dc7167cf4d20e43630b619ef74d00ed8e60b2ca8f0013ece0efa0922",
+      "bytes": 158948,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-10.sql.gz",
+      "sha256": "377955c008d8c8341cdd1370782bd20f1f4da9c50fb9da57c99e082465d2d2e7",
+      "bytes": 157968,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-11.sql.gz",
+      "sha256": "541636ddf6c2d15fba2cad6437228fb29af9a6b2e11ac9f02bdb3f9f302bae49",
+      "bytes": 159018,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-12.sql.gz",
+      "sha256": "36d75221f0483f4bed0d86b647bee755effb4c65233a9ad7d560ebfa9b7b14ab",
+      "bytes": 159031,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres/batch-13.sql.gz",
+      "sha256": "5419c26085da8a10a69a81f07155ef546ecd648f72d7259d374da42a4a2d60a3",
+      "bytes": 111926,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres-dumps.json",
+      "sha256": "f43a1208cd1db777a4bc96f77aad0d3aec2a1981e313b1898a31b507d5f03121",
+      "bytes": 30017,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/retained-postgres-inventory.json",
+      "sha256": "6ca7c8723c0a0e2391b1da949db935311e9700ce09c04d17e2b2251c36bd03bf",
+      "bytes": 998694,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/README.md",
+      "sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5",
+      "bytes": 19706,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+      "bytes": 6716,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/contracts.rs",
+      "sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf",
+      "bytes": 22933,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+      "bytes": 126040,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-preimages/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264",
+      "bytes": 77584,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-chronology.json",
+      "sha256": "8ee567396458751ca041f92b3439f92957ce985c32239280dbb93a3da60a570a",
+      "bytes": 32681,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/002ebb002294fecea01d0279ddef576074ae865f7f2d20f6383d6766af0b4d19",
+      "sha256": "002ebb002294fecea01d0279ddef576074ae865f7f2d20f6383d6766af0b4d19",
+      "bytes": 120539,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6",
+      "sha256": "06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6",
+      "bytes": 19773,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+      "sha256": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+      "bytes": 148,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/0e9429a196c762fb6f4eaf416d5e996b57820e3dfe0929514ee00cc148c57f57",
+      "sha256": "0e9429a196c762fb6f4eaf416d5e996b57820e3dfe0929514ee00cc148c57f57",
+      "bytes": 128085,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/0f9d38f6a04ac3f2430b91a0179d9decbac01b49c9c7efc43003e7f665dba7f6",
+      "sha256": "0f9d38f6a04ac3f2430b91a0179d9decbac01b49c9c7efc43003e7f665dba7f6",
+      "bytes": 10083,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "bytes": 1579,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/1ac4e075538ad1dc797d4ea60b989b8379b643770003eb91198260c34df8637c",
+      "sha256": "1ac4e075538ad1dc797d4ea60b989b8379b643770003eb91198260c34df8637c",
+      "bytes": 104692,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+      "sha256": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+      "bytes": 165741,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/1dfb993793a77a3b75306cc2f95880ebda3585e969b62e5533adc0dcc564061b",
+      "sha256": "1dfb993793a77a3b75306cc2f95880ebda3585e969b62e5533adc0dcc564061b",
+      "bytes": 14092,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/1e7b49c89dabbb50478965abcc6c656e3f3c3ed9175f0d5e7c5c125bda5ef8fa",
+      "sha256": "1e7b49c89dabbb50478965abcc6c656e3f3c3ed9175f0d5e7c5c125bda5ef8fa",
+      "bytes": 40400,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/23dcf1e2ec359e4ef90f278bd36d23deb567270125adb4a34b93dcd36eb4c6f5",
+      "sha256": "23dcf1e2ec359e4ef90f278bd36d23deb567270125adb4a34b93dcd36eb4c6f5",
+      "bytes": 1922,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "bytes": 11782,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/26734bf2bd964a939b53c5eab88d28e4292321fc288bbbfdb35bbf28f2ed009b",
+      "sha256": "26734bf2bd964a939b53c5eab88d28e4292321fc288bbbfdb35bbf28f2ed009b",
+      "bytes": 56165,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/2d149192e111c30aade3f884656add65471f0c775c82ead1a4289e7f0c97efdb",
+      "sha256": "2d149192e111c30aade3f884656add65471f0c775c82ead1a4289e7f0c97efdb",
+      "bytes": 21876,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a",
+      "sha256": "305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a",
+      "bytes": 21929,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/33c6dea2dd6c99c91fdbdf2053deb1260bf6221b37b6f260e7fad702f61b7ac3",
+      "sha256": "33c6dea2dd6c99c91fdbdf2053deb1260bf6221b37b6f260e7fad702f61b7ac3",
+      "bytes": 105394,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/3c2e641763fabe83d1a3553bffe71a3d0126659126ca198d80a7baa17d2dc9c0",
+      "sha256": "3c2e641763fabe83d1a3553bffe71a3d0126659126ca198d80a7baa17d2dc9c0",
+      "bytes": 128143,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "bytes": 41285,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/3e28dddd90a71779808a3cc17554110dfc05e2e1985ef60becb494f39df2c9af",
+      "sha256": "3e28dddd90a71779808a3cc17554110dfc05e2e1985ef60becb494f39df2c9af",
+      "bytes": 121888,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "bytes": 2931,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "sha256": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "bytes": 42045,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+      "sha256": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+      "bytes": 62847,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+      "sha256": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+      "bytes": 32647,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "bytes": 128514,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/50c75786c1be670cae6c3c147dc99ff4d406a2bce8fea487fbe33ec087abde99",
+      "sha256": "50c75786c1be670cae6c3c147dc99ff4d406a2bce8fea487fbe33ec087abde99",
+      "bytes": 6800,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "bytes": 5053,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/56ee899a7cb01ca67f75da5ed8db97f0463c7679139064a6e4bf3a40bb13514c",
+      "sha256": "56ee899a7cb01ca67f75da5ed8db97f0463c7679139064a6e4bf3a40bb13514c",
+      "bytes": 1800,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/5a6808c14ae119a8c5664c6a3bd859e7c5ee79efa765c05a916cff2331e30679",
+      "sha256": "5a6808c14ae119a8c5664c6a3bd859e7c5ee79efa765c05a916cff2331e30679",
+      "bytes": 20877,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+      "sha256": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+      "bytes": 4356,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/5d923252065c649f3bc7bf296f042fd0b1dadf8345f279d974ffe423f4a8af05",
+      "sha256": "5d923252065c649f3bc7bf296f042fd0b1dadf8345f279d974ffe423f4a8af05",
+      "bytes": 128534,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+      "sha256": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+      "bytes": 6455,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/60f2acaa9a0181967b93e1841824588e5d570d4d45bcc5afb4022ac65c7c70b6",
+      "sha256": "60f2acaa9a0181967b93e1841824588e5d570d4d45bcc5afb4022ac65c7c70b6",
+      "bytes": 120587,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "sha256": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "bytes": 20937,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/6b10187a018b907623e037131b3adc39364d6d78cdaf7c5cfa135cf745b659b7",
+      "sha256": "6b10187a018b907623e037131b3adc39364d6d78cdaf7c5cfa135cf745b659b7",
+      "bytes": 119160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+      "sha256": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+      "bytes": 43770,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/6cefde073aa908d4b5e919ebf10413705be7ffc96270324b9d62e95ceabe8fcc",
+      "sha256": "6cefde073aa908d4b5e919ebf10413705be7ffc96270324b9d62e95ceabe8fcc",
+      "bytes": 54438,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "bytes": 23071,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/73e734c5d16b90b2b57ad3e7ef8001e69e43eb5ff306239bf7d40c37db9ea780",
+      "sha256": "73e734c5d16b90b2b57ad3e7ef8001e69e43eb5ff306239bf7d40c37db9ea780",
+      "bytes": 24302,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "bytes": 20872,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927",
+      "sha256": "7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927",
+      "bytes": 6853,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad",
+      "sha256": "7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad",
+      "bytes": 40817,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "bytes": 106196,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/81c12479984f7883582cef7944e192feaa21ddbdc7bb337f76832d19bed83753",
+      "sha256": "81c12479984f7883582cef7944e192feaa21ddbdc7bb337f76832d19bed83753",
+      "bytes": 19727,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+      "sha256": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+      "bytes": 28867,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+      "sha256": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+      "bytes": 2343,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+      "sha256": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+      "bytes": 359552,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "bytes": 1738,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/937f75a5cc419de611720c020f64e120eca294c9ecebd1241f2e525e1351e325",
+      "sha256": "937f75a5cc419de611720c020f64e120eca294c9ecebd1241f2e525e1351e325",
+      "bytes": 117579,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b",
+      "sha256": "9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b",
+      "bytes": 22570,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/9ad844a18ed7cc69eb2f3a6649b2c2584b525797c02576cc3406438cb0b81dc7",
+      "sha256": "9ad844a18ed7cc69eb2f3a6649b2c2584b525797c02576cc3406438cb0b81dc7",
+      "bytes": 40790,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+      "sha256": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+      "bytes": 74257,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/9d81335f57cf0ed1ef9417ab8a4e773d74a23c6e36b97417c45671673bdf8013",
+      "sha256": "9d81335f57cf0ed1ef9417ab8a4e773d74a23c6e36b97417c45671673bdf8013",
+      "bytes": 5203,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/9f077340d5ffe168a02843193aef37f1b44cb764f52eaae3163fa23d06d51d3e",
+      "sha256": "9f077340d5ffe168a02843193aef37f1b44cb764f52eaae3163fa23d06d51d3e",
+      "bytes": 105357,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/a67ac55c97e39d9481684c1e7d6d938c8735f82fe4d8821663babd1c30e4b930",
+      "sha256": "a67ac55c97e39d9481684c1e7d6d938c8735f82fe4d8821663babd1c30e4b930",
+      "bytes": 121134,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/a8b9d15d8223bdcb64a35f1c4c15fdc5838b11a04813b49e1f363e8b275ba36b",
+      "sha256": "a8b9d15d8223bdcb64a35f1c4c15fdc5838b11a04813b49e1f363e8b275ba36b",
+      "bytes": 105573,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/aa37b9deb153f448cefdfce737415e745bd78fac050b2f6a7f845bc2ad644e12",
+      "sha256": "aa37b9deb153f448cefdfce737415e745bd78fac050b2f6a7f845bc2ad644e12",
+      "bytes": 117583,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/abbf44d730961dd1acd263e98675e9ece713ce519f4f45994e499097d2fda8b1",
+      "sha256": "abbf44d730961dd1acd263e98675e9ece713ce519f4f45994e499097d2fda8b1",
+      "bytes": 6363,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5",
+      "sha256": "ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5",
+      "bytes": 8283,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "bytes": 85457,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/ae6eef460dcc1f0732569cf9d4af72630e3c7dc9cbc25f0374b482ce4c2e822c",
+      "sha256": "ae6eef460dcc1f0732569cf9d4af72630e3c7dc9cbc25f0374b482ce4c2e822c",
+      "bytes": 10382,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+      "sha256": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+      "bytes": 2049,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "bytes": 21853,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/b5cf713262e68bfda6a45e9eb9ccf9056f26f34078901b561d6f434d941ed153",
+      "sha256": "b5cf713262e68bfda6a45e9eb9ccf9056f26f34078901b561d6f434d941ed153",
+      "bytes": 31536,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "sha256": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "bytes": 876,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+      "sha256": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+      "bytes": 6657,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+      "sha256": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+      "bytes": 13543,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5",
+      "sha256": "c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5",
+      "bytes": 22304,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+      "sha256": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+      "bytes": 23348,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/cfeb08ebbcd516b9ce0715e35e4feae021648f04eca414e59502be6b008b6edc",
+      "sha256": "cfeb08ebbcd516b9ce0715e35e4feae021648f04eca414e59502be6b008b6edc",
+      "bytes": 127121,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+      "sha256": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+      "bytes": 48039,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d1c0f86bff53748d623ea24e9a5f391a41cd716ccef2b3127d372788fe355a47",
+      "sha256": "d1c0f86bff53748d623ea24e9a5f391a41cd716ccef2b3127d372788fe355a47",
+      "bytes": 27143,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d3a1b1ebfb4623e37abae148195e4e15ed249c8170a4d6890c68aa9cb5afab8a",
+      "sha256": "d3a1b1ebfb4623e37abae148195e4e15ed249c8170a4d6890c68aa9cb5afab8a",
+      "bytes": 40104,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d4189f3d4a8d82174abb32c5f68282445650e6fb4d2515a688db436d96823258",
+      "sha256": "d4189f3d4a8d82174abb32c5f68282445650e6fb4d2515a688db436d96823258",
+      "bytes": 24196,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "bytes": 56363,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "bytes": 3892,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "bytes": 127057,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "sha256": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "bytes": 50467,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+      "sha256": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+      "bytes": 11170,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c",
+      "sha256": "e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c",
+      "bytes": 24333,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "bytes": 6973,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/efd0990f681635462ff9ebdbd22348ce0e821614d87103e2d73752e5da5f7da6",
+      "sha256": "efd0990f681635462ff9ebdbd22348ce0e821614d87103e2d73752e5da5f7da6",
+      "bytes": 36912,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/f56f8bd1766207fc5916d7e8b08c53bd1f1eb89b7501fb1c7da5367fa01b7540",
+      "sha256": "f56f8bd1766207fc5916d7e8b08c53bd1f1eb89b7501fb1c7da5367fa01b7540",
+      "bytes": 21600,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/f5e9d02baa87c47bc17488b8fb695df4bd39553c8aac862f6c796959b94e178b",
+      "sha256": "f5e9d02baa87c47bc17488b8fb695df4bd39553c8aac862f6c796959b94e178b",
+      "bytes": 21486,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "bytes": 50413,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4",
+      "sha256": "fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4",
+      "bytes": 121943,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+      "sha256": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+      "bytes": 14304,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/run-inputs/ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510",
+      "sha256": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510",
+      "bytes": 52189,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/runs.jsonl",
+      "sha256": "434477e92cc539627f61d615bb4c04fb01b5a147f823b3219f19969e7946a0fc",
+      "bytes": 219320,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-manifest.json",
+      "sha256": "f867229a30cdce7e1efc9d881c7f1404a330ec925329bd8c1e5fa3da69a6572c",
+      "bytes": 28545,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/README.md",
+      "sha256": "9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b",
+      "bytes": 22570,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/migrations/0009.sql",
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "bytes": 458,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/admission.rs",
+      "sha256": "06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6",
+      "bytes": 19773,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "bytes": 56363,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5",
+      "bytes": 8283,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927",
+      "bytes": 6853,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts/lifecycle.rs",
+      "sha256": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "bytes": 6973,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5",
+      "bytes": 22304,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "bytes": 6943,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/contracts.rs",
+      "sha256": "e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c",
+      "bytes": 24333,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/kernel.rs",
+      "sha256": "305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a",
+      "bytes": 21929,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "bytes": 106196,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "bytes": 128514,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4",
+      "bytes": 121943,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/source-snapshots/crates/team-control-plane/tests/support/outcome_lifecycle.rs",
+      "sha256": "7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad",
+      "bytes": 40817,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-compatibility.log",
+      "sha256": "bd3128c28de3032b04f925289c8d06815d6dfa1d37deb39cf9ac6143532fa693",
+      "bytes": 217,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-compatibility.start.json",
+      "sha256": "2523ac60d177e34135739ef58a48b2afd092567d312af65761ddfe99e511b999",
+      "bytes": 12358,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-final.log",
+      "sha256": "ab8e8598f0c4cefb2b6ec7af4110cec0f2c1dd3aec79bbe6afd404ead585b4cb",
+      "bytes": 218,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-final.start.json",
+      "sha256": "dcc9f1f4fdc872d6341baf36eb4de55e56725045a30c7df72955c761555e5f93",
+      "bytes": 12350,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-freeze.log",
+      "sha256": "f11dfc89fd8d76ad49766d4f8745fa2ef42c76adb89b119ff28ae4423dc816b7",
+      "bytes": 217,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint-freeze.start.json",
+      "sha256": "c36a1b356c3d952e1d0b41a1f034b5928fdc108f08852033966c348d20e07e82",
+      "bytes": 12349,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint.log",
+      "sha256": "71546846061d279f744e6c0e7f92162bfdc86c5af708cf0993dfcd51b344898c",
+      "bytes": 13221,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/strict-lint.start.json",
+      "sha256": "08e2bf3e83c13c244ba8dffc6575c4d4aac94da8b93f56bafbfb28114a0f0ab1",
+      "bytes": 12344,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/README.md",
+      "sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5",
+      "bytes": 19706,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/migrations/0008.sql",
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "bytes": 7639,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/admission.rs",
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+      "bytes": 19683,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+      "bytes": 54339,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/contracts/authority.rs",
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+      "bytes": 8307,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/contracts/dependencies.rs",
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+      "bytes": 6863,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/contracts/outcomes.rs",
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+      "bytes": 19829,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb",
+      "bytes": 6716,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/contracts.rs",
+      "sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf",
+      "bytes": 22933,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/domain.rs",
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "bytes": 3781,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "bytes": 42809,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/gateway.rs",
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "bytes": 37187,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/http.rs",
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "bytes": 10472,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/kernel.rs",
+      "sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "bytes": 21853,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/lib.rs",
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "bytes": 386,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/mailbox.rs",
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+      "bytes": 104271,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/storage.rs",
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "bytes": 16160,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/src/supervisor.rs",
+      "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2",
+      "bytes": 126040,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base-preimages/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264",
+      "bytes": 77584,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/whole-base.patch",
+      "sha256": "9563f336ba5b6c9bf84bd50d04970aafad8bb5dbeaeec3e8ec25f35a01836aea",
+      "bytes": 154102,
+      "inspection": "hash/byte verification in both trees; semantic extent documented separately"
+    }
+  ],
+  "additional_evidence_inputs": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/seal.json",
+      "sha256": "d2b0ed5e5fcc81ae0b61de0bbcbf754823c41d2035b805ba81f27d11f1c18d73",
+      "bytes": 84615
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/outcome-lifecycle1/root-retention.json",
+      "sha256": "205b33c300039cacc8b5c25480fe0af339560fa44642e89afa5cb2c0fdbe098b",
+      "bytes": 7274
+    }
+  ],
+  "semantic_evidence_reads": [
+    "source-manifest.json",
+    "author-freeze.json",
+    "assignment.json",
+    "baseline-verification.json",
+    "environment.json",
+    "whole-base.patch",
+    "rejected-repair3-delta.patch",
+    "handoff.md",
+    "consumer-audit.md",
+    "run-chronology.json",
+    "runs.jsonl",
+    "resource-final.json",
+    "root-retention.json",
+    "owner-target-proof.json",
+    "owner-target-guard-counterfactual.patch",
+    "owner-target-guard-preimage.rs",
+    "source-snapshots/crates/team-control-plane/src/contracts/lifecycle.rs",
+    "source-snapshots/crates/team-control-plane/tests/support/outcome_lifecycle.rs",
+    "red-owner-operation-target.log",
+    "raw behavioral/read/measurement lines in chronological logs as cited"
+  ],
+  "findings": [
+    {
+      "id": "S1",
+      "severity": "Important",
+      "blocking": true,
+      "category": "documented-standard behavioral-proof chronology",
+      "standards": [
+        {
+          "path": "docs/agents/skill-orchestration.md",
+          "lines": "38,63-65",
+          "rule": "Each behavior slice visibly fails before implementation and passes afterward."
+        },
+        {
+          "path": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+          "lines": "50-54",
+          "rule": "Show actual RED before each changed behavior, then GREEN with genuinely measured evidence."
+        }
+      ],
+      "candidate_hunk": {
+        "path": "crates/team-control-plane/src/mailbox.rs",
+        "delta_hunk": "@@ -463,24 +463,31 @@",
+        "lines": "469-490",
+        "quote": "if let Some(task) = target { crate::contracts::lifecycle::require_open(&tx, task).await?; }"
+      },
+      "chronology_facts": {
+        "launch3_mailbox_sha256": "1ac4e075538ad1dc797d4ea60b989b8379b643770003eb91198260c34df8637c",
+        "launch3_fence_lines": "481-483",
+        "launch5_preimage_sha256": "33c6dea2dd6c99c91fdbdf2053deb1260bf6221b37b6f260e7fad702f61b7ac3",
+        "launch6_counterfactual_sha256": "9f077340d5ffe168a02843193aef37f1b44cb764f52eaae3163fa23d06d51d3e",
+        "valid_target_test_first_present_launch": 6,
+        "launch6_test_input_sha256": "d1c0f86bff53748d623ea24e9a5f391a41cd716ccef2b3127d372788fe355a47",
+        "red_log_sha256": "bd09bc13f840d746a94c9c5383d9a01c3c3ac8c72e6965d917a6b6f2340284a0",
+        "red_raw_lines": {
+          "valid_preaccept_binding": 10,
+          "valid_preaccept_delivery": 12,
+          "accepted_cached_binding200": 18,
+          "accepted_cached_delivery200": 19,
+          "assertion_failure": 22
+        },
+        "initial_baseline_probes": [
+          {
+            "log": "red-lifecycle.log",
+            "lines": [
+              319,
+              320
+            ],
+            "statuses": [
+              401,
+              404
+            ],
+            "codes": [
+              "unauthorized",
+              "not_found"
+            ]
+          },
+          {
+            "log": "red-lifecycle-expanded.log",
+            "lines": [
+              86,
+              87
+            ],
+            "statuses": [
+              401,
+              404
+            ],
+            "codes": [
+              "unauthorized",
+              "not_found"
+            ]
+          }
+        ],
+        "final_cached_refusal_lines": [
+          430,
+          431
+        ]
+      },
+      "finding": "Actual valid Owner-target RED follows implementation by removal/restoration of the fence. Counterfactual mutation sensitivity and final behavior proof do not demonstrate RED before the original implementation. No retrospective waiver is present.",
+      "smallest_disposition": "Preserve rejection and chronological source evidence; stop this allocation for explicit root/Owner disposition of process nonconformance. No code repair is inferred. Further baseline/final proof, if required, needs a new bounded assignment; do not relabel prior runs or extend allocation1.",
+      "current_behavior_limit": "Retained final valid target calls refuse as required; this finding does not assert a current behavioral defect."
+    }
+  ],
+  "nonblocking_findings": [],
+  "smell_baseline": [
+    {
+      "heuristic": "Mysterious Name",
+      "assessment": "Lifecycle/current/completed/terminal/research pins identify their purpose.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Duplicated Code",
+      "assessment": "Repeated role/input checks occur at separate authenticated admission and workspace boundaries; required revalidation is intentional. No actionable duplication escalated.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Feature Envy",
+      "assessment": "Lifecycle authority derives within contracts; consumers call the owner interface.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Data Clumps",
+      "assessment": "ResearchVerification bundles exact research pins.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Primitive Obsession",
+      "assessment": "Existing digest/UUID shapes retained; CurrentWork derives typed accepted records rather than adding a generic authority store.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Repeated Switches",
+      "assessment": "Operation-specific policy is intentionally distinct; neutral completion classification is centralized.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Shotgun Surgery",
+      "assessment": "Multiple consumers necessarily change to share one lifecycle classification; no new scattered authority definition.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Divergent Change",
+      "assessment": "Lifecycle migration, amendment, and research authority concern admitted work; no unrelated functionality found.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Speculative Generality",
+      "assessment": "Small CurrentWork/ResearchVerification interfaces serve current required consumers; no speculative provider/scope abstraction.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Message Chains",
+      "assessment": "Consumers query lifecycle directly; no actionable navigation chain found.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Middle Man",
+      "assessment": "Wrappers distinguish current/historical evidence semantics and preserve existing APIs; delegation is warranted.",
+      "classification": "judgement; no finding"
+    },
+    {
+      "heuristic": "Refused Bequest",
+      "assessment": "No inheritance/ignored contract addition identified.",
+      "classification": "judgement; no finding"
+    }
+  ],
+  "proof_audit": {
+    "chronological_runs": [
+      {
+        "name": "red-lifecycle",
+        "kind": "test",
+        "test_launch": 1,
+        "seconds": 121.08758425712585,
+        "exit_code": 101,
+        "start_unix": 1791069054.2524543,
+        "log_sha256": "0ad3dc424f61af5c077408ee839bee6be493657f11b96b179f326e5531a29501",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "lifecycle_",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Genuine baseline RED: accepted research amendment does not fence generation; exact historical receipt stale; terminal mutation and projection gaps. Missing delivery/start IDs are not Owner target proof."
+      },
+      {
+        "name": "red-lifecycle-expanded",
+        "kind": "test",
+        "test_launch": 2,
+        "seconds": 5.421530723571777,
+        "exit_code": 101,
+        "start_unix": 1791069300.3306742,
+        "log_sha256": "29c9b35ab3874cf7e60fd1b5227bc24b3d2ccb82613eb321de1ffa95ecb19ba3",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "lifecycle_",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Genuine baseline expanded RED: terminal cached proposal/verification and artifact configure allowed, research wait lacks attention, production historical acceptance receipt refuses. Earlier source-only setup retained."
+      },
+      {
+        "name": "green-lifecycle",
+        "kind": "test",
+        "test_launch": 3,
+        "seconds": 15.73616886138916,
+        "exit_code": 101,
+        "start_unix": 1791069512.8310666,
+        "log_sha256": "0a7d1a54a7490502bed7ad77a4bcf54f71a10085d04a1a2abb1576039b8d2c0d",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "lifecycle_",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Partial GREEN4/5; production historical accepted receipt still fails nested ArtifactService current-generation check. Failure retained; not final pass."
+      },
+      {
+        "name": "red-research-verifier",
+        "kind": "test",
+        "test_launch": 4,
+        "seconds": 2.7679951190948486,
+        "exit_code": 101,
+        "start_unix": 1791069694.5350604,
+        "log_sha256": "078f11024e2e1cda583e96c6bff5efb14e8e6811dca9757336d5fd921cb98e27",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "lifecycle_research_verifier",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Genuine public RED: exact independent research verifier Episode refused without production candidate after valid current captured input; wrong-role401 is a positive control."
+      },
+      {
+        "name": "green-complete-lifecycle",
+        "kind": "test",
+        "test_launch": 5,
+        "seconds": 163.07888436317444,
+        "exit_code": 101,
+        "start_unix": 1791070106.45438,
+        "log_sha256": "7d47b58f408d088b8d4a4bb817891d6f7d0cc8bc5563eb20b1340a76e9083fd4",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "24 passed / 2 fixture setup failures: Ready workspace Release attempted without effect Cancel. Full measured two-generation research lifecycle passed. These setup failures are not RED proof. Fixed fixture uses existing Owner Cancel then Release; no terminal semantics change."
+      },
+      {
+        "name": "red-owner-operation-target",
+        "kind": "test",
+        "test_launch": 6,
+        "seconds": 10.879582166671753,
+        "exit_code": 101,
+        "start_unix": 1791070416.4582253,
+        "log_sha256": "bd09bc13f840d746a94c9c5383d9a01c3c3ac8c72e6965d917a6b6f2340284a0",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "lifecycle_owner_cached",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Counterfactual RED: current candidate with ONLY operation-target terminal fence removed. Actual preaccept native runtime/binding/delivery positives; accepted cached binding/delivery wrongly200. Exact guard preimage/delta/restoration retained. Native turn completed physically, usage unknown retained. Not original20-source baseline."
+      },
+      {
+        "name": "red-independent-research-verifier",
+        "kind": "test",
+        "test_launch": 7,
+        "seconds": 9.930727481842041,
+        "exit_code": 101,
+        "start_unix": 1791070544.7729816,
+        "log_sha256": "38cb30f94308dd3da74c98272597d2eb538fee5d5bd3eeb2bca75f3c9b0a361e",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--test",
+          "intent_contracts",
+          "lifecycle_research_verifier_must",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Genuine public RED on research route before independence guard: selected verifier principal equals exact current Attempt worker, second verifier credential; Episode admitted200 instead of401. Narrow current-Attempt guard added, no historical ever-worker ban."
+      },
+      {
+        "name": "formatting",
+        "kind": "fmt",
+        "test_launch": 7,
+        "seconds": 4.074170827865601,
+        "exit_code": 0,
+        "start_unix": 1791070646.3787816,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "strict-lint",
+        "kind": "clippy",
+        "test_launch": 7,
+        "seconds": 76.35382437705994,
+        "exit_code": 101,
+        "start_unix": 1791070650.4952123,
+        "log_sha256": "71546846061d279f744e6c0e7f92162bfdc86c5af708cf0993dfcd51b344898c",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Failed strict lint: preexisting large command enum/collapsible baseline branches plus one new collapsible condition. Behavior-preserving cleanups and targeted existing enum API lint allowance; later strict lint passed."
+      },
+      {
+        "name": "formatting-final",
+        "kind": "fmt",
+        "test_launch": 7,
+        "seconds": 3.969456434249878,
+        "exit_code": 0,
+        "start_unix": 1791070785.1515336,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "strict-lint-final",
+        "kind": "clippy",
+        "test_launch": 7,
+        "seconds": 19.546273708343506,
+        "exit_code": 0,
+        "start_unix": 1791070789.1621907,
+        "log_sha256": "ab8e8598f0c4cefb2b6ec7af4110cec0f2c1dd3aec79bbe6afd404ead585b4cb",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "green-compatibility",
+        "kind": "test",
+        "test_launch": 8,
+        "seconds": 218.70854568481445,
+        "exit_code": 101,
+        "start_unix": 1791071002.217649,
+        "log_sha256": "b95e47eb3cf20f10521ee4c2daec49b14a882b14f4668630f41e7dd5b72d994f",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--lib",
+          "--test",
+          "artifacts",
+          "--test",
+          "gateway",
+          "--test",
+          "intent_contracts",
+          "--test",
+          "kernel",
+          "--test",
+          "mailbox",
+          "--test",
+          "mailbox_artifacts",
+          "--test",
+          "mailbox_delivery",
+          "--test",
+          "supervisor",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Lib9/artifacts11/gateway4 pass; intent28 pass/1 expectation failure. Source-only old input409 and prepared execution refusal correct; test expected DependencyUnmet although Supervisor::start maps dispatch-current=false to StaleGeneration. Test-only correction, failed fixture retained."
+      },
+      {
+        "name": "formatting-compatibility",
+        "kind": "fmt",
+        "test_launch": 8,
+        "seconds": 6.32974100112915,
+        "exit_code": 0,
+        "start_unix": 1791071342.4793718,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "strict-lint-compatibility",
+        "kind": "clippy",
+        "test_launch": 8,
+        "seconds": 3.1723382472991943,
+        "exit_code": 0,
+        "start_unix": 1791071348.8567479,
+        "log_sha256": "bd3128c28de3032b04f925289c8d06815d6dfa1d37deb39cf9ac6143532fa693",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "green-compatibility-final",
+        "kind": "test",
+        "test_launch": 9,
+        "seconds": 179.02125239372253,
+        "exit_code": 101,
+        "start_unix": 1791071368.8190587,
+        "log_sha256": "59b7a0c1d8bd143fdf6d48d569827e725cafa617dbb650f72e51b7b16451dcd9",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--lib",
+          "--test",
+          "artifacts",
+          "--test",
+          "gateway",
+          "--test",
+          "intent_contracts",
+          "--test",
+          "kernel",
+          "--test",
+          "mailbox",
+          "--test",
+          "mailbox_artifacts",
+          "--test",
+          "mailbox_delivery",
+          "--test",
+          "supervisor",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Lib9/artifacts11/gateway4 pass; intent29 pass/1 test observation failure. New concurrency test compared changing snapshot_time. Test-only correction excludes snapshot_time while comparing all stored fields; provisional filename retained unchanged. Not final pass."
+      },
+      {
+        "name": "formatting-freeze",
+        "kind": "fmt",
+        "test_launch": 9,
+        "seconds": 4.020486354827881,
+        "exit_code": 0,
+        "start_unix": 1791071636.7064795,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "fmt",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "strict-lint-freeze",
+        "kind": "clippy",
+        "test_launch": 9,
+        "seconds": 1.6164190769195557,
+        "exit_code": 0,
+        "start_unix": 1791071640.768523,
+        "log_sha256": "f11dfc89fd8d76ad49766d4f8745fa2ef42c76adb89b119ff28ae4423dc816b7",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Formatting or strict-lint check; see exact exit/output."
+      },
+      {
+        "name": "green-compatibility-freeze",
+        "kind": "test",
+        "test_launch": 10,
+        "seconds": 200.22920513153076,
+        "exit_code": 0,
+        "start_unix": 1791071724.772439,
+        "log_sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+        "input_count": 59,
+        "all_archived_inputs_verified": true,
+        "command": [
+          "cargo",
+          "test",
+          "--manifest-path",
+          "crates/team-control-plane/Cargo.toml",
+          "--locked",
+          "--offline",
+          "--lib",
+          "--test",
+          "artifacts",
+          "--test",
+          "gateway",
+          "--test",
+          "intent_contracts",
+          "--test",
+          "kernel",
+          "--test",
+          "mailbox",
+          "--test",
+          "mailbox_artifacts",
+          "--test",
+          "mailbox_delivery",
+          "--test",
+          "supervisor",
+          "--",
+          "--nocapture"
+        ],
+        "env": {
+          "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+          "CARGO_BUILD_JOBS": "2",
+          "RUST_TEST_THREADS": "1",
+          "CARGO_NET_OFFLINE": "true"
+        },
+        "interpretation_from_author": "Final bounded compatibility suite; this record alone supplies the final source-bound pass, if exit0. No further test launches authorized under this allocation."
+      }
+    ],
+    "top_level_test_launches": 10,
+    "cumulative_compile_test_format_lint_seconds": 1045.9441862106323,
+    "all_commands_below1800s": true,
+    "all_test_env_jobs2_threads1": true,
+    "final_input_count": 59,
+    "final_inputs": {
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/Cargo.lock": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/Cargo.toml": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/README.md": "9a658d1eb74824bb494e92401d81c853d30b44ca1657f41451e404219480321b",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0001.sql": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0002.sql": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0003.sql": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0004.sql": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0005.sql": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0006.sql": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0007.sql": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0008.sql": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/migrations/0009.sql": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/admission.rs": "06c1b17a650f722363bf44009f17d9ca79784538b306de685dba2201ba58dca6",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/artifacts.rs": "d7d0abee78aa8e8a292841aba5e80cd9ec5f227a5fa810a8a917643c7728bda3",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/auth.rs": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/authority.rs": "ac286c8240d8040eda4ecc6547dad8830bc84efdc523743180358af74cb525b5",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/dependencies.rs": "7a6ae97645f1400731f67303db6311264ea7d7a5506e5443fb55e0cdddb76927",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/lifecycle.rs": "e745feba6808e6ad1a83e19b03d63954507a9c7086d32a28f67239e26ecbdd5a",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/outcomes.rs": "c2d9b4d5f1973d044298c85d908fc99fb12495deee72e96dcb9353989da958b5",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts/strategy.rs": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/contracts.rs": "e2548717c10b94b555085da47740f3d2d21ce003c3122763f61e53e82e23708c",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/domain.rs": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/episode_runtime.rs": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/gateway.rs": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/http.rs": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/kernel.rs": "305525b27796547fe2aef9e801837906bb0c3327ba6a6eba52e1bd9299fab59a",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/kernel_usage.rs": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/lib.rs": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/mailbox.rs": "8098eda3592204205c5f15706c8d79b355fe756a3963d1ef2ca6584cfa4a49f6",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/main.rs": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/mcp.rs": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/model_free_runtime.rs": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/storage.rs": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/supervisor.rs": "4f555f303c5feec5bb81c5c58c31b6850ed39b138d95dcb826037877ca06faa6",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/temporal.rs": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/src/validation.rs": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/artifacts.rs": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/assembled_cancellation.rs": "1d6f7f0ca430f59703aaf2744e6acb4b0ebb580c0c9b472d69f2ca9a859b0e69",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/assembled_capacity.rs": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/assembled_kernel.rs": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/assembled_operator.rs": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/assembled_vertical.rs": "8ef5629fe7b2cba26042275edf394f7d36dbae2b8d133645f7920313b64f9eb8",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/fixtures/fault_runtime.py": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/fixtures/mailbox_runtime.py": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/gateway.rs": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/intent_contracts.rs": "fe199ab5b568b3dc6d329b9837e32cf1c2cd60ca79fa347a765a34e33130c4b4",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/kernel.rs": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/mailbox.rs": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/mailbox_artifacts.rs": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/mailbox_delivery.rs": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/run-postgres.sh": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/run-temporal.sh": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/supervisor.rs": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/support/assembled.rs": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/support/episode_native.rs": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/support/gateway_fault.rs": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/support/outcome_lifecycle.rs": "7dd44fe3d084046da80230a1f76fad54155ee2af16e4f0a8fe5d89ece24e2bad",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/crates/team-control-plane/tests/temporal.rs": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510",
+      "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1/.scratch/team-control-plane/outcome-lifecycle1/run.py": "23dcf1e2ec359e4ef90f278bd36d23deb567270125adb4a34b93dcd36eb4c6f5"
+    },
+    "final_live_and_archived_inputs_match": true,
+    "final_suite_summary": {
+      "total_passed": 96,
+      "intent_contracts_passed": 30,
+      "failures": 0,
+      "log_sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+      "source": "author retained run; not independent runtime reproduction"
+    },
+    "classifications": "Launches1/2 original behavior RED; launch3 partial GREEN; launch4 genuine research-route RED; launch5 two fixture setup failures; launch6 explicit postimplementation Owner-target counterfactual; launch7 genuine independence RED; launches8/9 test-only error-code/timestamp expectations; launch10 final GREEN. Strict lint failure retained. Setup/counterfactual are not original-baseline RED."
+  },
+  "preservation_audit": {
+    "migrations0008_and0009_match_rejected_baseline": true,
+    "root_active_sources_match_base_preimages": true,
+    "source_integrated": false,
+    "ticket_accepted": false,
+    "retained_dump_batches_verified": 14,
+    "retained_schemas": 137,
+    "decompressed_raw_bytes": 31075965,
+    "measured_research_bindings_hash_and_original_raw_observation_verified": 16,
+    "production_bindings_artifact_monitor_and_log_hash_verified": 9,
+    "postgres_stopped_observation": {
+      "command": [
+        "docker",
+        "stop",
+        "--time",
+        "15",
+        "corenius-intent26-outcome-lifecycle1-pg"
+      ],
+      "exit_code": 0,
+      "seconds": 0.43077731132507324,
+      "container_id": "df4430a4c93a644a5029ca46559557923cf52bc69a05ebe9003f79161dfc97a0",
+      "container_name": "/corenius-intent26-outcome-lifecycle1-pg",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-03T23:10:40.218343835Z",
+        "FinishedAt": "2026-10-04T00:08:04.544758514Z"
+      },
+      "mounts_retained": [
+        {
+          "Type": "volume",
+          "Name": "440ee68b6570c4a4a151b47aaa79636d79ba746248a39a9ef51bc83e02806728",
+          "Source": "/data00/docker/volumes/440ee68b6570c4a4a151b47aaa79636d79ba746248a39a9ef51bc83e02806728/_data",
+          "Destination": "/var/lib/postgresql/data",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        }
+      ]
+    },
+    "remaining_roots": 17,
+    "remaining_unresolved_runtime_rows": 29,
+    "cleanup_claim_limit": "Retained stop observations are data, not newly independently observed runtime state. Neither PID/path absence nor native turn completion reconciles unknown usage or proves physical cleanup."
+  },
+  "standards_assessment": {
+    "isolation": "Dedicated clean-context writer/worktree and explicit bounded assignment retained. No author commit/ref action claimed. Review made no repository mutations.",
+    "interface": "Single derived contract lifecycle; operation-specific receipt/mutation distinctions remain explicit. No second authority table.",
+    "migration_history": "0008 and inherited0009 bytes unchanged; serde default for additive research manifest field preserves decoding shape. Exact historical subjects and original nullable provenance retained; no new migration redesign.",
+    "documentation": "README describes current accepted research/production, legacy historical case, exact replay, research pins, amendment/dispatch and accounting limits; matches intended interface.",
+    "authority": "Full-goal authorization avoids routine permission stops but does not override specific proof timing/allocation requirements. Repair rounds1-3 remain rejected/exhausted; allocation1 ten launches exhausted."
+  },
+  "review_limits": [
+    "Static Standards review only; no fresh tests or runtime reproduction.",
+    "No Cargo, tests, services, containers, runtime/provider launches, archived script execution, subagents or Git mutation.",
+    "Only this report.md and metadata.json written.",
+    "No full repository, Temporal, provider, remote/live-v2 qualification or root acceptance/integration inferred.",
+    "Independent Spec/branch/root gates remain separate."
+  ],
+  "skills_read": [
+    {
+      "path": "/data02/home/philip.yang/.codex/plugins/cache/openai-curated-remote/superpowers/6.4.2/skills/using-superpowers/SKILL.md",
+      "sha256": "82c5c8866ad7f5dd4440ce66bd7806ba48a2f13771beae5cf112e53f08fe36ba"
+    },
+    {
+      "path": "/data02/home/philip.yang/.agents/skills/code-review/SKILL.md",
+      "sha256": "9cf46653dd9c710ea1e6c22423caf31a794c88773bc94bdaa23140277f470442"
+    }
+  ],
+  "report": {
+    "path": "/tmp/corenius-intent26-outcome-lifecycle1-standards-20261004/report.md",
+    "sha256": "282c51e9eacfbec59223846c34fb061e60f3dba17975c7a79ef1d6027763d336",
+    "word_count": 302
+  }
+}

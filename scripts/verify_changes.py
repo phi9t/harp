@@ -67,7 +67,11 @@ def plan(root, paths):
     rust_paths = []
     for path in paths:
         parts = Path(path).parts
-        if path == "docs/import-receipt.md" or path.startswith("evidence/") or path == ".gitattributes":
+        if path.startswith("corenius/"):
+            # Imported historical prose and artifacts retain their original bytes.
+            # Check their pinned source instead of rewriting old links or formatting.
+            add("corenius-import", "python3", "scripts/verify_corenius_import.py")
+        elif path == "docs/import-receipt.md" or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith(("knowledge/", "content/", "lessons/")):
             for command in ("check", "build"):
@@ -201,7 +205,9 @@ def main():
         check_docs(root, args.check_docs)
         return
     base, paths = changed_paths(root, args.base)
-    jobs = [{"surface": "diff", "command": ["git", "diff", "--check", base, "--"]}] + plan(root, paths)
+    # Imported Corenius bytes are checked against retained Git objects by their
+    # own gate. Existing whitespace in those source captures is not an edit.
+    jobs = [{"surface": "diff", "command": ["git", "diff", "--check", base, "--", ".", ":(exclude)corenius"]}] + plan(root, paths)
     if args.plan:
         print(json.dumps({"base": base, "paths": paths, "checks": jobs}, indent=2))
         return

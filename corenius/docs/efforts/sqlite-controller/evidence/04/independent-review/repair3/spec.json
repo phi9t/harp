@@ -1,0 +1,44 @@
+{
+  "verdict": "PASS",
+  "findings": [],
+  "scope": "final ticket04 repair3/3 retained evidence-helper portability only",
+  "base": "0b97408bf8f7cd8663da181425cb35f230af9c01",
+  "helper_commit": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+  "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "resolved_finding": {
+    "review": "branch648 LOW",
+    "path": "docs/efforts/sqlite-controller/evidence/04/repair1/artifact-observations.py",
+    "lines": [
+      12,
+      30,
+      56
+    ],
+    "requirement": "repair3 brief: relocated current fixtures, unique/digest validation, provenance-only original paths, fresh exclusive output, historical preservation"
+  },
+  "old_helper_sha256": "89041ef208162bf4380e3a8fd939601298aa31f5a5edb5900040a30fce58a4e2",
+  "new_helper_sha256": "b35323cd6f189c11aa94d1b8d736a028192e3237d3f4ecbf8e314997505807ef",
+  "driver_sha256": "9eec04db0de74cfa0f8a7ec4fe7539c4457f4ec533901d2285fc9ca8ae70e78e",
+  "paired_input_manifest_sha256": "0b733570f427e9ab57bc8be25a6fec2ccba5315bc8a51d9ac3e65ba8fbcc1d51",
+  "checks": {
+    "paired_red_exit": 1,
+    "paired_green_exit": 0,
+    "records_matching_historical_content": 59,
+    "archived_inputs_validated": 92,
+    "archives": 89,
+    "product_files_unchanged": 34,
+    "historical_files_unchanged": 578,
+    "sole_historical_change": "docs/efforts/sqlite-controller/evidence/04/repair1/artifact-observations.py",
+    "overwrite_error": "FileExistsError",
+    "duplicate_and_digest_controls": "refused; no output",
+    "root_separate_helper_proof": "retained PASS, not reviewer execution",
+    "exact_branch649": "retained PASS"
+  },
+  "qualification_limits": [
+    "Final committed evidence retention audit and acceptance remain root-owned.",
+    "04 final3/3 and02 exhausted cap unchanged; no renewal.",
+    "Repair2 scoped product gates and prior SpecPASS inherited; no repeated/current full-suite claim.",
+    "Initial RED and intermediate seals preserved; corrected same-driver final RED/GREEN is credited.",
+    "No live/assembled06 or new controller migration qualification."
+  ],
+  "captured_at": "2026-10-04T19:05:20.376922+00:00"
+}

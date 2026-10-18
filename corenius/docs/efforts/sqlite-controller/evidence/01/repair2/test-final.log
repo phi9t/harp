@@ -1,0 +1,67 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.76s
+     Running unittests src/lib.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-71c971a5d266114b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-46bf4401f33ecc7a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/process.rs (crates/sqlite-controller/target/debug/deps/process-a6e3513898dcf692)
+
+running 3 tests
+daemon_ready pid=1815680 socket=/data02/home/philip.yang/devx/tmp/.tmp0PlO4I/api.sock
+daemon_ready pid=1815681 socket=/data02/home/philip.yang/devx/tmp/.tmpupUD8X/api.sock
+daemon_ready pid=1815682 socket=/data02/home/philip.yang/devx/tmp/.tmpnJDXRF/api.sock
+admission_barrier_observed pid=1815680 marker=/data02/home/philip.yang/devx/tmp/.tmp0PlO4I/before-commit
+owned_daemon_killed pid=1815680 status=signal: 9 (SIGKILL)
+competing_controller pid=1815684 status=exit status: 1 reason=controller ownership unavailable: lock acquisition failed because the operation would block
+owned_daemon_killed pid=1815681 status=signal: 9 (SIGKILL)
+daemon_ready pid=1815685 socket=/data02/home/philip.yang/devx/tmp/.tmp0PlO4I/api.sock
+rollback_observed revision=2 occupied_slots=0 attempts=0 operations=0
+test kill_during_atomic_admission_exposes_none_then_retry_exposes_all ... ok
+daemon_ready pid=1815686 socket=/data02/home/philip.yang/devx/tmp/.tmpupUD8X/api.sock
+restart_observed revision=6 occupied_slots=1 attempt_state="unknown" pending_operation_state="prepared"
+test real_process_restart_retains_operations_and_ownership ... ok
+slow_client_queued_request_elapsed_ms=1002
+test slow_drip_client_cannot_extend_the_whole_request_deadline ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s
+
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-278996ffb6167437)
+
+running 18 tests
+test sqlite_like_user_table_is_foreign_and_keeps_its_data ... ok
+test foreign_or_future_database_is_refused_without_import ... ok
+test controller_files_have_private_permissions ... ok
+test exclusive_lifetime_writer_lock_and_bootstrap_refusal ... ok
+test canonical_work_ref_cannot_be_admitted_under_two_aliases ... ok
+test dispatch_credentials_and_receipts_are_not_in_public_events_or_other_attempts ... ok
+test message_ack_reconnect_reaches_original_sender_and_recipient ... ok
+test own_operation_events_use_retained_attempt_identity ... ok
+test same_task_racing_commands_admit_once ... ok
+test own_attempt_events_use_retained_task_identity ... ok
+test messages_answers_and_operation_outcomes_are_retained ... ok
+test restart_retains_journal_questions_decisions_and_unknown_capacity ... ok
+test two_slots_atomic_admission_and_scoped_replay ... ok
+test project_scopes_and_two_global_slots_hold_across_projects ... ok
+test message_events_ignore_forged_task_and_preserve_peer_participants ... ok
+test lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope ... ok
+test project_base_must_be_a_full_commit_oid_and_failure_is_atomic ... ok
+test answers_reconnect_to_own_attempt_and_storage_busy_is_bounded ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+
+   Doc-tests corenius_sqlite_controller
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+# Recorded command exit status: 0

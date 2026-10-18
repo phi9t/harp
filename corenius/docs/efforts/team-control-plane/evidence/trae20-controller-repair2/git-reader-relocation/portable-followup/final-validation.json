@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/tmp/corenius-controller-git-reader-portability-proof-20261003/verify_followup.py",
+    "--original-root",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader"
+  ],
+  "exit_code": 0,
+  "public_index_sha256": "d8b99e668d986ccebc393aa59f60fab062a8af96722874a0dccd27062c399973",
+  "stderr": "final-validation.stderr.log",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout": "final-validation.stdout.log",
+  "stdout_sha256": "495a07de9d3ace741750100c4c2f7f2841cca7ae4d8882ad8a9218b9a2e8c1b9",
+  "verify_script_sha256": "7f9c5c5e48faf2d3a48eafdf1d53a0bdcc5ebc6e05894e01d98d6b517ddba847"
+}

@@ -1,0 +1,32 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.11s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-6c9795750c2ac521)
+
+running 6 tests
+test repair_database_symlink_target_inside_worker_toolchain_is_refused_before_open ... ok
+test repair_paused_dispatch_survives_first_lookup_transport_failure ... ok
+test repair_setup_failure_disposes_owned_children_even_with_unknown_record ... ok
+
+thread 'repair_zombie_init_leader_with_live_thread_cannot_release_early' (427421) panicked at tests/runtime.rs:667:52:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair_zombie_init_leader_with_live_thread_cannot_release_early ... FAILED
+
+thread 'repair_short_exit_during_delayed_identity_sampling_is_confirmed' (427419) panicked at tests/runtime.rs:34:9:
+behavior deadline exceeded
+test repair_short_exit_during_delayed_identity_sampling_is_confirmed ... FAILED
+
+thread 'repair_sampling_barrier_precedes_workload_and_preserves_short_exit' (427417) panicked at tests/runtime.rs:34:9:
+behavior deadline exceeded
+test repair_sampling_barrier_precedes_workload_and_preserves_short_exit ... FAILED
+
+failures:
+
+failures:
+    repair_sampling_barrier_precedes_workload_and_preserves_short_exit
+    repair_short_exit_during_delayed_identity_sampling_is_confirmed
+    repair_zombie_init_leader_with_live_thread_cannot_release_early
+
+test result: FAILED. 3 passed; 3 failed; 0 ignored; 0 measured; 7 filtered out; finished in 8.96s
+
+error: test failed, to rerun pass `--test runtime`

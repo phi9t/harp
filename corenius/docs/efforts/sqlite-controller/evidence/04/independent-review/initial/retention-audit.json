@@ -1,0 +1,16 @@
+{
+  "captured_at": "2026-10-04T17:11:17.053928+00:00",
+  "source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "evidence_tip": "f85fcd15a912a59a9af7e4d0da56329f38a5c298",
+  "retention_records_verified": 95,
+  "raw_logs_verified": 29,
+  "source_archives_verified": 36,
+  "archived_source_files_verified": 1212,
+  "retained_fixture_identities_checked": 772,
+  "recorded_terminal_receipts_including_duplicates": 925,
+  "matching_current_kernel_identities": [],
+  "unresolved_kernel_reads": [],
+  "scope": "Immutable initial04 evidence plus root initial gate. Only explicit fixture process/namespace receipts scanned; exact PID/start checks, no signals or broad process discovery. Historical unknown domain rows remain unknown. Does not qualify repair1 or live Codex.",
+  "runner_sha256": "09b921fe8de94c869d09f4be550bdd8e88155df5e48f20657415023efd70fe6d",
+  "verdict": "PASS"
+}

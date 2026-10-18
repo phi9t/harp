@@ -1,0 +1,37 @@
+{
+  "reviewer": "/root/kernel16_review571_spec_final",
+  "mode": "independent read-only requirement audit",
+  "verdict": "behavioral coverage present; acceptance pending rootgate and committed branch review",
+  "base_commit_read": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+  "manifest_sha256": "c96e88974f36bb181bb2f7c35191f4111040c2786a3a09bce9c81bc3c6ab5d48",
+  "verified_source_files": 48,
+  "author_evidence_index": "kernel16/branch-repair/review571-freeze3/author-verification.json",
+  "evidence_hashes_verified": true,
+  "prior_requirement_mapping": "kernel16-acceptance-audit-review11.json",
+  "updates": {
+    "capacity": "Worker continuation/Verifier once refunds, reuse with cumulative bounds, uncertain allocation holds, exact old-binary public Yield compatibility",
+    "unresolved_yield": "imported firstWorker1\u21921 and continuation2\u21922, repeated quarantine while actual job live",
+    "native_cancel": "before/after revocation one Cancel3RPCs child terminal; work/auth/stale controls and unknown usage retained",
+    "verifier_provenance": "real completed report survives producer expiry; live Owner acceptance/replay and expired current caller denial"
+  },
+  "limits": [
+    "Actual v1 replay demonstrated; v2 payload roundtrip does not prove actual v2 replay",
+    "Legacy gateway restart safe quarantine; successful registered live SDK takeover demonstrated separately",
+    "No live Trae/Codex/Claude or rollback restore proof"
+  ],
+  "pending": [
+    "independent architectural validation and scope assessment of branch575 findings",
+    "any required public regression/repair and fresh verification",
+    "ticket/evidence handoff and acceptance",
+    "exacttip gated landing"
+  ],
+  "full_goal_complete": false,
+  "candidate_commit": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+  "root_followup": {
+    "whole_repo_gate7": 0,
+    "committed_source_blobs_verified": 48,
+    "branch_review_job": 575,
+    "branch_review_status": "CHANGES REQUIRED",
+    "findings": 4
+  }
+}

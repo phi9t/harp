@@ -1,0 +1,93 @@
+{
+  "captured_at": "2026-10-04T19:56:28.298389+00:00",
+  "owner": "root sole authenticated coordinator",
+  "scope": "Manual operational supervision; product recurring runner remains ticket06, not deployed unattended coverage.",
+  "owner_design_commit": "832e76947f64e853092c0ea34bd9c314da6015f0",
+  "worker": "/root/sqlite05_control_center_author",
+  "source_thread": "01a10854-c05f-7640-8823-954ceb788816",
+  "adapter": {
+    "name": "local-observed-item-completed-v1",
+    "assurance": "local observed/pinned export; not stable API assurance",
+    "canonical_completed_only": true,
+    "deduplication": "source/turn/item",
+    "private_reasoning": "excluded"
+  },
+  "coverage": {
+    "ingested_raw": 508,
+    "deep_reviewed_visible_frontier_raw": 451,
+    "reviewed_visible_actions": 60,
+    "receipt_count": 4,
+    "historical_reviewed_frontier": 0,
+    "04": {
+      "reviewed_live_origin": 1471,
+      "reviewed_live_raw_end": 2451,
+      "reviewed_visible_actions": 156,
+      "receipts": 12,
+      "historical_122_1262": "unreviewed",
+      "external_owner_coverage": "13..121 and spot1263..1470, separately attributed"
+    }
+  },
+  "receipts": [
+    {
+      "id": "05-live01",
+      "start_raw": 1,
+      "end_raw": 109,
+      "sha256": "4dfa1065eb556364bded5539f41f9bc3a3c5909d6e219476e446b90dafa7d470",
+      "prefix_sha256": "e9bf9edef43e06f8a5278cb96bbdabfa5df5e2e9c17577a1dc3dfdb840fab979"
+    },
+    {
+      "id": "05-live02",
+      "start_raw": 110,
+      "end_raw": 195,
+      "sha256": "6617684e767ba4052967718ee3bf22ad84eaff463f704ded19c64f97061b9d59",
+      "prefix_sha256": "30c479ef1e67601de5fa8683f7ff124e2cd92d95fffb8bface003095dd37de32"
+    },
+    {
+      "id": "05-live03",
+      "start_raw": 196,
+      "end_raw": 356,
+      "sha256": "2db1d28ca43d2501806c2f3510e7941b0ec9502b8de188035b8cb2e5132e09eb",
+      "prefix_sha256": "b03c57f5c7c6914e2a4c055603f8688147af5afb3702140cda4906b021bd1323"
+    },
+    {
+      "id": "05-live04",
+      "start_raw": 357,
+      "end_raw": 451,
+      "sha256": "687d45a1f86a1bd5468ebc7631a3a2aa239af27400d39a66107db49d07c17146",
+      "prefix_sha256": "4b9cdce08f16a7435db472214b0e5ccf34cdc758b180c772d12ef104b07de021"
+    }
+  ],
+  "interventions": [
+    {
+      "id": "05-initial-red-retention",
+      "target": "/root/sqlite05_control_center_author",
+      "state": "resolved",
+      "requested_at": "2026-10-04T19:18:23.722790+00:00",
+      "dispatched_at": "2026-10-04T19:18:23.722790+00:00",
+      "acknowledged_at": "2026-10-04T19:22:28.361243+00:00",
+      "resolved_at": "2026-10-04T19:47:02.271652+00:00"
+    },
+    {
+      "id": "05-native-fixture-qualification",
+      "target": "/root/sqlite05_control_center_author",
+      "state": "resolved",
+      "requested_at": "2026-10-04T19:35:00Z",
+      "dispatched_at": "2026-10-04T19:35:00Z",
+      "acknowledged_at": "2026-10-04T19:47:02.271652+00:00",
+      "resolved_at": "2026-10-04T19:47:02.271652+00:00"
+    },
+    {
+      "id": "05-monitor-version-rerun",
+      "target": "/root/sqlite05_control_center_author",
+      "state": "acknowledged",
+      "requested_at": "2026-10-04T19:49:31.697218+00:00",
+      "dispatched_at": "2026-10-04T19:49:47.822688+00:00",
+      "acknowledged_at": "2026-10-04T19:50:35.619924+00:00",
+      "resolved_at": null
+    }
+  ],
+  "assessment": "No established goal drift or replacement trigger. Actual question delivery and scoped UI compatibility remain bounded05 work. Filename or source PASS text receives no execution credit.",
+  "acceptance": "Tickets01\u201304 remain accepted; original nine-finding matrix and02/04 exhausted three-round caps retained.05 is unaccepted initial implementation; all independent gates binding.",
+  "retention": "Private bootstrap inputs/cursors stay in root-owned scratch. Owner private monitor.sqlite is never written. Publication lag and historical gaps are explicit.",
+  "routing": "Controller-owned product monitor belongs to05 control-center and06 retained qualification. No second scheduler or coordination ownership change."
+}

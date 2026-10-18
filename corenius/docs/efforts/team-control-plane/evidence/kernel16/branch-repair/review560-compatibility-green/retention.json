@@ -1,0 +1,74 @@
+{
+  "status": "focused compatibility pass; not whole suite acceptance",
+  "author_session": 28842,
+  "exit": 0,
+  "scope": [
+    "lost-reply capacity",
+    "legacy/episode physical store exclusion",
+    "physical monitor authority"
+  ],
+  "explicit_exclusion": "confirmed_native_effect_without_usage_observation_retains_reservation was not selected",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "3b381ffddbf4a6f4de457787e866b35567f3f8925a9467c3493d860a38294ce2",
+      "bytes": 666
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "kernel16-owned-episode-usage-lost-reply-cf3b85be-918e-40ec-825d-c8f5f674b18e/terminal.json",
+      "sha256": "7ce015ef4dd9a09d5ef3fd1160ba59b19d1330349ae5faaaa5b4ecebad88996b",
+      "bytes": 43
+    },
+    {
+      "path": "kernel16-owned-episode-usage-store-exclusion-6d21c1b7-69ce-4ed8-9afb-e3faf2c3a8f2/terminal.json",
+      "sha256": "7ce015ef4dd9a09d5ef3fd1160ba59b19d1330349ae5faaaa5b4ecebad88996b",
+      "bytes": 43
+    },
+    {
+      "path": "kernel16-physical-authority-credential-epoch-e5f3a6b9-b18b-431e-97b1-9c2f9be9a63c/refusal.json",
+      "sha256": "860300b5fe6d640ef31e21902a905b8acab39838ef86331296bcad583948673f",
+      "bytes": 130
+    },
+    {
+      "path": "kernel16-physical-authority-credential-generation-9854b309-ee36-4cfa-a89e-e4497a9b9fb0/refusal.json",
+      "sha256": "928d7326832bde36aa7f8a6a7e36dcad1bdccb5f4c6c8efb1bd9edf781d5e6aa",
+      "bytes": 135
+    },
+    {
+      "path": "kernel16-physical-authority-expiry-fbccafa8-7d44-4533-a8b0-98cf96c5b995/refusal.json",
+      "sha256": "eb9df6834c4e3799089d5207c2bd9b43367b7fe97dd7b0b83bada57754ebf64a",
+      "bytes": 120
+    },
+    {
+      "path": "kernel16-physical-authority-input-digest-5a575cb3-5a71-4778-b1bd-6e7ced4ad19a/refusal.json",
+      "sha256": "e8559944aea02fe4f555811d045c869fb1a9a2aa41bdf3e6c22a220b67ff7342",
+      "bytes": 126
+    },
+    {
+      "path": "kernel16-physical-authority-input-reference-0603ce21-3ee9-44c4-9b1d-661809c6a6f3/refusal.json",
+      "sha256": "2e46205e9a4357ec7fb7f8220c2d004baffc35d7d50fcc557582bed961ca473a",
+      "bytes": 129
+    },
+    {
+      "path": "kernel16-physical-authority-scope-90db2f14-deed-4494-8ce2-bd3e5179cf6d/refusal.json",
+      "sha256": "96f5dc2dcf6b62e860469175056930375974b8c8598ac09c4695cafefa688e4f",
+      "bytes": 119
+    },
+    {
+      "path": "kernel16-physical-authority-task-generation-628f7a3e-958c-4c34-8249-334903946b7e/refusal.json",
+      "sha256": "854cad4d893da7d38e9444b8cf63e53e65f4ecfe68906080f6285f3f5bc13051",
+      "bytes": 129
+    }
+  ],
+  "author_terminal_confirmation": "session28842 terminal0; exact three selected cases passed3.67s"
+}

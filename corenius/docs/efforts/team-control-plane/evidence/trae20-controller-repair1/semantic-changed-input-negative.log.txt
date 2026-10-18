@@ -1,0 +1,14 @@
+test_changed_case_grant_and_source_refuse (test_trae_case_control.DurableControllerBehavior.test_changed_case_grant_and_source_refuse) ... FAIL
+
+======================================================================
+FAIL: test_changed_case_grant_and_source_refuse (test_trae_case_control.DurableControllerBehavior.test_changed_case_grant_and_source_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py", line 67, in test_changed_case_grant_and_source_refuse
+    self.assertFalse(self.run_controller()['executed'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

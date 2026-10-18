@@ -1,0 +1,72 @@
+[
+  {
+    "archive": ".scratch/sqlite-controller/native/separate-cnr-mpa2rpht.tar.gz",
+    "sha256": "d9cd54ebdde75a9622c1c4c7fb5a588fa771e5dbde600eebf7acd4d74b4ff126",
+    "actors": {
+      "a": "d0b6e72b-1416-40f4-9cea-f7b799ed1b85",
+      "b": "6687941a-0846-4a67-903d-42d1128d3269"
+    },
+    "deferral_disarmed_for_exact_B": true,
+    "actual_B_retry_after_disarm": false,
+    "A_thread": "01a10776-8de9-7562-8d0f-257cc35327b7",
+    "A_turn": "01a10776-a1b6-7b32-9452-89a040d9475f",
+    "A_ready": true,
+    "peer_snapshot": false,
+    "started_native_execution_matching_identity_live": []
+  },
+  {
+    "archive": ".scratch/sqlite-controller/native/separate-cnr-wonh_a64.tar.gz",
+    "sha256": "99116a80b95c3dedfd51933b9dc2093800db847051e740169bf1f3595e998894",
+    "actors": {
+      "a": "bb4763e2-1937-45de-a174-c65b2d897416",
+      "b": "02e513db-f575-4da8-acae-10b72a6e73fe"
+    },
+    "deferral_disarmed_for_exact_B": true,
+    "actual_B_retry_after_disarm": true,
+    "A_thread": "01a10779-d59b-7460-a5c3-7d446045a33c",
+    "A_turn": "01a10779-e968-7b03-bd0b-b48692df9d70",
+    "A_ready": true,
+    "peer_snapshot": true,
+    "started_native_execution_matching_identity_live": [],
+    "B_ready": true,
+    "B_thread": "01a10779-ee83-7ea2-9e31-9e3cbad696dc",
+    "B_turn": "01a1077a-021c-7a22-ba18-ae1c25a65567",
+    "B_environment": "executor-02e513db-f575-4da8-acae-10b72a6e73fe-54236674",
+    "B_creation_control": true
+  },
+  {
+    "archive": ".scratch/sqlite-controller/native/shared-cnr-6db18kgq.tar.gz",
+    "sha256": "8eadaf6cbc1a13ae74f5068d6dab12daec25afd3bca3613f0f0a3124554bf694",
+    "actors": {
+      "a": "f7b255df-b1e5-4165-afb5-0e8152320cc7",
+      "b": "a3a8b8cb-8c45-4916-b5e9-b3ec3a94faa0"
+    },
+    "deferral_disarmed_for_exact_B": true,
+    "actual_B_retry_after_disarm": false,
+    "A_thread": "01a10775-d5bf-7970-a11d-7c23568a5c55",
+    "A_turn": "01a10775-e98b-7042-a82d-55a8cf67c186",
+    "A_ready": true,
+    "peer_snapshot": false,
+    "started_native_execution_matching_identity_live": []
+  },
+  {
+    "archive": ".scratch/sqlite-controller/native/shared-cnr-ecjma1zb.tar.gz",
+    "sha256": "9dbfd12eb226314b22b47888f5c2e3336102ec88ee7093ff1dd42064b9d1c09d",
+    "actors": {
+      "a": "87246365-884c-48e3-ac88-34dfeb233642",
+      "b": "a31c7f31-faed-4375-92ac-7ab84e18990a"
+    },
+    "deferral_disarmed_for_exact_B": true,
+    "actual_B_retry_after_disarm": true,
+    "A_thread": "01a10779-602c-70e1-84a0-baf3fe1a15cf",
+    "A_turn": "01a10779-73f8-7513-bc3e-d9dab5db546d",
+    "A_ready": true,
+    "peer_snapshot": true,
+    "started_native_execution_matching_identity_live": [],
+    "B_ready": true,
+    "B_thread": "01a10779-76f0-7dc3-9904-f2ca1944c844",
+    "B_turn": "01a10779-8a9b-7c02-8d71-acf4c2d38413",
+    "B_environment": "executor-a31c7f31-faed-4375-92ac-7ab84e18990a-54233667",
+    "B_creation_control": true
+  }
+]

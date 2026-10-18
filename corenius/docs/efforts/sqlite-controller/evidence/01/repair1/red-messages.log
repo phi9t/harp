@@ -1,0 +1,32 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-71954cf30dfe09a5)
+
+running 2 tests
+test message_events_ignore_forged_task_and_preserve_peer_participants ... FAILED
+test message_ack_reconnect_reaches_original_sender_and_recipient ... FAILED
+
+failures:
+
+---- message_events_ignore_forged_task_and_preserve_peer_participants stdout ----
+
+thread 'message_events_ignore_forged_task_and_preserve_peer_participants' (1659568) panicked at tests/public.rs:621:9:
+events leaked private message to B
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- message_ack_reconnect_reaches_original_sender_and_recipient stdout ----
+
+thread 'message_ack_reconnect_reaches_original_sender_and_recipient' (1659567) panicked at tests/public.rs:641:9:
+assertion `left == right` failed: original message participant cannot replay ack
+  left: Null
+ right: Number(7)
+
+
+failures:
+    message_ack_reconnect_reaches_original_sender_and_recipient
+    message_events_ignore_forged_task_and_preserve_peer_participants
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test public`
+
+# Recorded command exit status: 101

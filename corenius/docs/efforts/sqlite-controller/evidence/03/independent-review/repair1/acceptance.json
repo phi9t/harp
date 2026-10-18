@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-10-04T15:31:35.663381+00:00",
+  "ticket": "03",
+  "disposition": "ACCEPTED_SCOPED_KATA_PARTICIPANT_IMPLEMENTATION",
+  "source_commit": "4d5fbff0323f27c6dcb30aec5cf3df7a839511e0",
+  "retained_evidence_tip": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "crate_tree": "fd4c1993248cadf90e5ac06cb55f13c53e141550",
+  "review_base": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "Standards": "PASS",
+  "Spec": "PASS",
+  "branch_review644": "PASS",
+  "root_gate": "Fresh50 affected checks/default-feature/fmt/strictClippy/normalbuild PASS, source unchanged; precise checks in root-gate/gate.json",
+  "retention": "144evidencefiles/22Kata+6nativearchives/67protected600files/token exclusion;79positiveownedidentities0live. Root31native/runtime+20Kata identities0live/7namespace+28Kata terminalrecords",
+  "scope_limits": [
+    "No current complete native25 suite PASS claimed; prior full failure and unchanged24 passing cases retained historically.",
+    "No conclusive attribution/recovery of original disposed list_turns refusal claimed.",
+    "Full02/04 native cleanup642 remains mandatory and unaccepted.",
+    "No assembled/live trial, mainline landing or optionaljj qualification.",
+    "Root sourceFF deferred until safe accepted assembled04; no source/history rewritten."
+  ],
+  "source_pins": "frozen-source-check.json",
+  "handoff_audit": "final-handoff-check.json"
+}

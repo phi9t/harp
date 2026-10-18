@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-05T02:47:33.673865+00:00",
+  "unique_step_assessments": 156,
+  "original_range_receipts": 12,
+  "supplemental_receipts": 1,
+  "source_turn_item_deduplication": true,
+  "cursor_frontiers": {
+    "ordinal": 2455,
+    "live_reviewed": 2451,
+    "historical_reviewed": 0
+  },
+  "statuses": {
+    "05-lead-control-center.md": "Status: claimed",
+    "06-retained-baseline-proof.md": "Status: open"
+  },
+  "scope": "Read-only exact receipt/hash/dedup/frontier verification; no behavioral test, acceptance/cap reset, new worker or product deployment."
+}

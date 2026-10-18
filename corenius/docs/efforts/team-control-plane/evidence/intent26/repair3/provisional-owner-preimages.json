@@ -1,0 +1,20 @@
+{
+  "scope": "Before final canonical all-caller Plan refusal RED and correction; earlier Owner-bypass runs retain original hashes/logs and are not final conformance",
+  "entries": [
+    {
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/provisional-owner-preimages/crates/team-control-plane/src/contracts/strategy.rs",
+      "sha256": "21a090b19f977c34d93ef8483099f39fe4a3c020cb03ab88a060ddc4324e460f"
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/provisional-owner-preimages/crates/team-control-plane/README.md",
+      "sha256": "f61154a3ce408576ec53b2c18068c81569b230fb6dd2016369994924e82d7198"
+    },
+    {
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/provisional-owner-preimages/crates/team-control-plane/tests/intent_contracts.rs",
+      "sha256": "6ae1fd889e1782555d248752072dbefe82ac834fce6c31990e68f373a861ab0c"
+    }
+  ]
+}

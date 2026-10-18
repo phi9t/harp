@@ -1,0 +1,159 @@
+{
+  "review_axis": "Standards",
+  "reviewer_role": "independent non-author read-only reviewer",
+  "created_utc": "2026-10-03T18:40:21.559064+00:00",
+  "base": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "head": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "branch": "codex/jj19-history-export-repair",
+  "diff_command": "git diff d819a946c742e9a2178564c4fd0c481ff02f7ae8 plus git diff --no-index -- /dev/null docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+  "author_commits": [],
+  "inputs": [
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "size": 40541
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+      "sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+      "size": 8468
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "sha256": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+      "size": 24591
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "sha256": "0b0712e9d4d98453ddc41eafcb5bf5528b2892c84151d908d75f578e675dce36",
+      "size": 4407
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "size": 3484
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "size": 3080
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "size": 2816
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "size": 2045
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "size": 9722
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "size": 9818
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/agents/evidence-bound-method.md",
+      "sha256": "4bcd61bea24b101808694cac00b5ce1bcb0c980ad5938c96c86f20fa49238ef1",
+      "size": 15772
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/agents/issue-tracker.md",
+      "sha256": "9d7300ea195b3c876228c9fc66f2223a09c5d2b793e2b483b236311d85f57be8",
+      "size": 2166
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-handoff.json",
+      "sha256": "8e1534acfb4fcc0d90cb87cd1d58c0c2394b1a63e2cf82dc2673520c4d25bab9",
+      "size": 3651
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-freeze.json",
+      "sha256": "2d646f8da63e6185d04706375dfa2b268f5691af5636b99bb932ad2a2ea73c3e",
+      "size": 7150
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/public-proof-index.json",
+      "sha256": "e5416ca4e428bebbbbb8ffa8c5b50b248b10b6527a433c3b9da40f8596f81f98",
+      "size": 91517
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source.patch",
+      "sha256": "7f7253272ab510c9a69270c6977d9cfe487c2a91ec58e7fefea9046bceef3b55",
+      "size": 42924
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/run-ledger.json",
+      "sha256": "8d19562ecb751f257bd4c9721e41d6db7b8da803e7af58dfdfbf89f8b6342630",
+      "size": 47876
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-checks.json",
+      "sha256": "c663b413024d26a92f3b9645f94741f9af34b21979ef041c52536fac0f882760",
+      "size": 2244
+    },
+    {
+      "path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/prior-evidence-inventory.json",
+      "sha256": "15f09686cae97f4b0dac30cc34ddb308bfbe758149f30bf8f34d298276fdaeef",
+      "size": 48022
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-jj19-history-export-repair630.md",
+      "sha256": "d78403b57692aa82e352e2fb424f6e7507d13e3d34eedc0155e0923a63d11c79",
+      "size": 1384
+    }
+  ],
+  "disposition": "PASS",
+  "documented_violations": 0,
+  "unresolved_blockers": 0,
+  "possible_smells": [
+    {
+      "name": "Duplicated Code",
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "new_lines": [
+        173,
+        178
+      ],
+      "existing_lines": [
+        145,
+        149
+      ],
+      "severity": "non-blocking judgment",
+      "quoted_hunks": [
+        "set(paths) - {'.gitignore', 'artifact.txt'}",
+        "line.startswith(('120000 ', '160000 '))"
+      ]
+    }
+  ],
+  "checks": {
+    "source_patch_equals_tracked_diff_plus_untracked": true,
+    "freeze_source_records_verified": 25,
+    "preimages_verified": 6,
+    "indexed_records_verified": 274,
+    "all_indexed_records_normally_git_selectable": true,
+    "historical_records_unchanged": 213,
+    "local_report_links_resolved": 38,
+    "ledger_terminals_and_output_digests_verified": 13,
+    "examined_command_journals_exact": true,
+    "final_fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+    "final_fixture_bound_greens_examined": 5,
+    "final_fixture_bound_behavioral_controls_examined": 4,
+    "retained_candidate_reverifications": 4
+  },
+  "limitations": [
+    "No runtime execution or fresh behavioral test claim; examined retained evidence and static code only.",
+    "No edit, stage, commit, push, ref mutation, provider, namespace, Cargo, PostgreSQL or Temporal operation.",
+    "No arbitrary secret detector, shared history rewrite, general export/history completeness or backend adoption qualification.",
+    "Exceptional I/O/timeouts are not proven by successful retained cases.",
+    "Parent retains canonical ticket and root630 history separately; review grants no integration authority."
+  ],
+  "report_word_count": 300,
+  "report_sha256": "06c4f77134c5cb444e3408a8e43c712ae30c2925d43fcf42c810523f65c25631",
+  "artifact_policy": "Created once in new reviewer-owned directory; files 0444 and directory 0555; hashes freeze contents."
+}

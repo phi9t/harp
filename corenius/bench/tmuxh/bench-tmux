@@ -1,0 +1,4 @@
+#!/bin/sh
+# bench-tmux: tmux harness for the corenius benchmark. Installs libtmux on first use through uv (PyPI).
+dir="$(cd "$(dirname "$0")" && pwd)"
+exec uv run --quiet --project "$dir" python "$dir/cli.py" "$@"

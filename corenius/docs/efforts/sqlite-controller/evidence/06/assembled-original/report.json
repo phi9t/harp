@@ -1,0 +1,570 @@
+{
+  "schema": 1,
+  "at": 1791174693.5023282,
+  "reviewer": "/root/sqlite06_live_assembled_review",
+  "scope": "fresh independent READ-ONLY actual happy-path DEMO assessment; not ticket05 acceptance, baseline qualification or mainline release",
+  "run": "/tmp/cb-20261005T040926Z-c8403c",
+  "source_commit": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+  "source_tree": "fe85928a1df5d02b568a40d1b05ca44da6d40fad",
+  "intent_commit": "0083d5701436c1c2c4b288a11e09337d8c3e7591",
+  "tmux_session": "corenius-baseline-20261005T040926Z-c8403c",
+  "manifest_launch": [
+    "python3",
+    "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/tools/agents/sqlite_baseline.py",
+    "start"
+  ],
+  "authority_receipt": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/evidence/owner-amendments/20261005T031128Z/receipt.json",
+  "authority_amendment_sha256": "449496d6f81b0f42df995f8343c6d5733d588fbfea4786e894b8410ad2971ea9",
+  "outcome": "INCOMPLETE / original outer harness FAILED; happy path NOT demonstrated",
+  "original_outer_failure": {
+    "at": 1791174219.0999286,
+    "class": "TimeoutError",
+    "message": "two useful candidates captured",
+    "exit": 1,
+    "label": "initial setup or target failure; retained, no success claim"
+  },
+  "earlier_setup_failure": {
+    "at": 1791173240.0067255,
+    "class": "HTTPError",
+    "message": "HTTP Error 409: Conflict",
+    "exit": 1,
+    "label": "initial setup or target failure; retained, no success claim"
+  },
+  "solo": {
+    "task": "solo",
+    "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+    "candidate": "b41396ac-9b82-410c-86ea-33cfb570a429",
+    "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+    "commit": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+    "tree": "7fd28f140ae15435fb213836ef6c4cfff27b2829",
+    "verification": "e7ea6759-74aa-4c2f-9f6b-c50c07c83353",
+    "acceptance": "df18a04b-bbdd-42ba-8287-f08d702c46cc",
+    "accepted_by": "lead:35c9c08f-30fa-459b-9e59-287b655e19f0",
+    "land_operation": "0c160cdf-4691-4c69-812f-e14f477381ce",
+    "physical_ff": {
+      "at": 1791174302.019686,
+      "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+      "protected_ref": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+      "base_ancestor_exit": 0,
+      "commit_tree": "7fd28f140ae15435fb213836ef6c4cfff27b2829",
+      "parents": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9 2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+      "files": [
+        "README.md",
+        "task_solo.py"
+      ]
+    },
+    "retained_verifier": {
+      "artifact": "a536055a2ee3f29d63886baa284b06b2bfd68c9534f78beed90229ccca959929",
+      "pid": 776622,
+      "start_ticks": "58926436",
+      "waited": true,
+      "exit": 0
+    },
+    "independent_exact_candidate_check": {
+      "pid": 955971,
+      "start_ticks": "59005605",
+      "exit": 0,
+      "waited": true,
+      "started": 1791174475.755398,
+      "finished": 1791174475.8259466
+    }
+  },
+  "two_worker": {
+    "a_pid": 807255,
+    "b_pid": 815154,
+    "a_start_ticks": "58940860",
+    "b_start_ticks": "58943994",
+    "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+    "common_base": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+    "first_retained_two_slot_observation": 1791173859.0506015,
+    "first_independent_live_observation": 1791174256.9323764,
+    "process_overlap_start_approx_utc": "2026-10-05T04:17:38.940000+00:00",
+    "approximation": "wall time from integer btime plus clock ticks; <1s boot-time quantization",
+    "model_tool_episode_overlap": "UNPROVEN: per-role timed start/terminal intervals not retained in selected public evidence",
+    "relay_global_overlaps": 24,
+    "relay_global_max_seconds": 15.157506704330444,
+    "relay_attribution": "No role/thread/turn identifiers retained; cannot credit a/b episode overlap",
+    "useful_b_private_commit": "9f3592a64fbf78d510f097cc528e5080b69597f8",
+    "b_candidate_capture": "absent from selected controller evidence",
+    "a_candidate_capture": "absent from selected controller evidence"
+  },
+  "stale_base_reintegration": {
+    "old_stale_candidate": null,
+    "new_base_candidate": null,
+    "new_proof_and_acceptance": null,
+    "disposition": "NOT REACHED / UNPROVEN; do not infer from absent candidate"
+  },
+  "bounded_correction": {
+    "ingress": 1791174208.6812956,
+    "ingress_sha256": "515603011a4c428ec384ebdacb9da22455e71604ee96dfd36b5b606409e7f66c",
+    "original_provider_error": {
+      "at": 1791174125.122418,
+      "errors": [
+        {
+          "binding": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+          "turn": {
+            "id": "01a10a47-ba18-76f3-90c6-42876c28ceb7",
+            "native_status": "failed",
+            "source": "typed_native_history",
+            "state": "terminal"
+          },
+          "codexErrorInfo": "serverOverloaded",
+          "additionalDetails": null
+        }
+      ]
+    },
+    "same_attempt": "0a42d7cc-1d6a-4296-8aef-fde18eacdc2f",
+    "lead_correction_turn": "01a10a4d-71a4-7a52-9fc9-6cbaca501929",
+    "last_public_receipt": {
+      "at": 1791174376.1057177,
+      "source": "read-only SQLite; controller socket unavailable",
+      "a_operations": [
+        {
+          "id": "a0041127-da20-45b8-9ef4-8f675a1deeb7",
+          "binding": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+          "kind": "environment/add",
+          "state": "confirmed"
+        },
+        {
+          "id": "89cc48e6-979f-4d14-9379-044c76d5cce8",
+          "binding": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+          "kind": "thread/start",
+          "state": "confirmed"
+        },
+        {
+          "id": "fc562a34-0f24-4682-bad3-000fbc4533d2",
+          "binding": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+          "kind": "turn/start",
+          "state": "confirmed"
+        },
+        {
+          "id": "a73945da-9198-41ef-b109-d6dedde3e5b4",
+          "binding": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+          "kind": "thread/resume",
+          "state": "confirmed"
+        }
+      ],
+      "bindings": [
+        {
+          "binding": "lead:demo:1",
+          "state": "bound",
+          "current_turn": {
+            "id": "01a10a4d-71a4-7a52-9fc9-6cbaca501929",
+            "source": "typed_native_history",
+            "state": "terminal"
+          }
+        },
+        {
+          "binding": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+          "state": "bound",
+          "current_turn": {
+            "id": "01a10a47-ba18-76f3-90c6-42876c28ceb7",
+            "source": "typed_native_history",
+            "state": "terminal"
+          }
+        }
+      ]
+    },
+    "new_a_turn_or_effect": "NONE in latest retained public receipt",
+    "queue_presentation_ack_application_latency": "UNKNOWN; literal ingress receipt is not correction application",
+    "outcome": "not applied/proven before service disappearance; no further automatic retry credited"
+  },
+  "runtime_bindings": [
+    {
+      "attempt": null,
+      "authority_epoch": 1,
+      "cursor": 1,
+      "document": {
+        "current_turn": {
+          "id": "01a10a46-e65b-77f2-b8ba-3ee42ac6b58d",
+          "source": "typed_native_history",
+          "state": "terminal"
+        },
+        "environment_id": "executor-2b250d8f-5b2a-4624-afcf-8916dae23e65-58896989",
+        "executor": {
+          "control_endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/2b250d8f-5b2a-4624-afcf-8916dae23e65/control.sock",
+          "endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/2b250d8f-5b2a-4624-afcf-8916dae23e65/native.sock",
+          "incarnation": "85a12da5792c419dd540b64a29ee75b68c404e52a893716805886f1ce65cdb7b",
+          "kind": "exec",
+          "pid_namespace": 4026539613,
+          "store_id": "973ff82c-288f-46c8-bd47-44f1766cf3df",
+          "workspace_generation": "31b409f7-58a2-41ed-8c05-a5328e850d4c"
+        },
+        "executor_effect_binding": {
+          "attempt": "2b250d8f-5b2a-4624-afcf-8916dae23e65",
+          "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+          "brief": "lead-authority:1",
+          "operation": "2f0e3244-ae60-4c21-92a8-c1aac368b9ba",
+          "project": "demo",
+          "scope_epoch": 1
+        },
+        "executor_execution": {
+          "binding": {
+            "attempt": "2b250d8f-5b2a-4624-afcf-8916dae23e65",
+            "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+            "brief": "lead-authority:1",
+            "operation": "2f0e3244-ae60-4c21-92a8-c1aac368b9ba",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "31b409f7-58a2-41ed-8c05-a5328e850d4c",
+          "incarnation": "dc4b70a6-9f7a-43ce-ab17-fb5d04d6efb6",
+          "init_start_ticks": "58896952",
+          "namespace_init": 705020,
+          "native_store": "973ff82c-288f-46c8-bd47-44f1766cf3df",
+          "outcome": null,
+          "pid": 705011,
+          "pid_namespace": 4026539613,
+          "start_ticks": "58896951",
+          "state": "running"
+        },
+        "observed_environments": [
+          {}
+        ],
+        "recovery_state": "remote_validated",
+        "resumed_environments": [
+          {}
+        ],
+        "server_execution": {
+          "binding": {
+            "attempt": "2b250d8f-5b2a-4624-afcf-8916dae23e65",
+            "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+            "brief": "lead-authority:1",
+            "operation": "908887a6-2bd8-4a46-ba70-96371cdd0c3f",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "ed2fb5c4-e596-41e0-aee1-841ce89b97e7",
+          "incarnation": "87c44689-cc9e-441e-90e9-80119bd933c6",
+          "init_start_ticks": "58897004",
+          "namespace_init": 705271,
+          "native_store": "79e6d7bf-6abe-4d14-b27d-ae12db510381",
+          "outcome": null,
+          "pid": 705269,
+          "pid_namespace": 4026539743,
+          "start_ticks": "58897003",
+          "state": "running"
+        },
+        "server_id": "native:2b250d8f-5b2a-4624-afcf-8916dae23e65",
+        "server_incarnation": "894ce67efb7e2491a4865f838fe5ff13d164d8fd1cda9705f7943322802f1363",
+        "server_store": "79e6d7bf-6abe-4d14-b27d-ae12db510381",
+        "thread_id": "01a10a40-f217-75a1-8d26-88b790b84e54",
+        "turn_id": "01a10a46-e65b-77f2-b8ba-3ee42ac6b58d",
+        "ui_input_ready": true
+      },
+      "id": "lead:demo:1",
+      "retained_lead_gap": null,
+      "retained_lead_items": 45,
+      "role": "lead",
+      "state": "bound"
+    },
+    {
+      "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+      "authority_epoch": 1,
+      "cursor": 2,
+      "document": {
+        "authority_state": "revoked",
+        "current_turn": {
+          "id": "01a10a43-398f-7922-8f9f-24fb17effa24",
+          "source": "typed_native_history",
+          "state": "terminal"
+        },
+        "environment_id": "executor-81a5f478-21ad-46a2-a25c-7cc67b425d82-58911423",
+        "executor": {
+          "control_endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/81a5f478-21ad-46a2-a25c-7cc67b425d82/control.sock",
+          "endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/81a5f478-21ad-46a2-a25c-7cc67b425d82/native.sock",
+          "incarnation": "209b09ec90bf609a4619a48256cb793c99a163f2df858c55d696fc1eebe5fba1",
+          "kind": "exec",
+          "pid_namespace": 4026539927,
+          "store_id": "b5f564ae-e096-4160-9077-3c72dae28057",
+          "workspace_generation": "24e143af-ffc0-4509-b945-039d73e0408a"
+        },
+        "executor_execution": {
+          "binding": {
+            "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+            "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+            "brief": "359b8a12-eea9-4b72-9e27-bacd75d53181",
+            "operation": "f4452c79-60ac-4fac-9b7c-d6765dd916d4",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "24e143af-ffc0-4509-b945-039d73e0408a",
+          "incarnation": "dc4b70a6-9f7a-43ce-ab17-fb5d04d6efb6",
+          "init_start_ticks": "58911390",
+          "namespace_init": 740996,
+          "native_store": "b5f564ae-e096-4160-9077-3c72dae28057",
+          "outcome": null,
+          "pid": 740995,
+          "pid_namespace": 4026539927,
+          "start_ticks": "58911389",
+          "state": "running"
+        },
+        "observed_environments": [
+          {}
+        ],
+        "recovery_state": "remote_validated",
+        "resumed_environments": [
+          {}
+        ],
+        "server_execution": {
+          "binding": {
+            "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+            "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+            "brief": "359b8a12-eea9-4b72-9e27-bacd75d53181",
+            "operation": "96c12efa-ec34-4600-8c09-5732f5585a15",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "2c9e10ee-76db-4f59-9775-ad62d84bb26d",
+          "incarnation": "87c44689-cc9e-441e-90e9-80119bd933c6",
+          "init_start_ticks": "58911431",
+          "namespace_init": 741256,
+          "native_store": "350c7338-1fae-48bc-b870-0c2c7c01335b",
+          "outcome": null,
+          "pid": 741253,
+          "pid_namespace": 4026540177,
+          "start_ticks": "58911430",
+          "state": "running"
+        },
+        "server_id": "native:81a5f478-21ad-46a2-a25c-7cc67b425d82",
+        "server_incarnation": "929ba8db7ce7f096b9ce1bea7309c9e3100f05ce23dac0a50152cbb19764a022",
+        "server_store": "350c7338-1fae-48bc-b870-0c2c7c01335b",
+        "subscription_retirement": {
+          "state": "confirmed"
+        },
+        "thread_id": "01a10a43-25c7-70a0-a8e6-136c83546858",
+        "turn_id": "01a10a43-398f-7922-8f9f-24fb17effa24",
+        "turn_shutdown": {
+          "server_incarnation": "929ba8db7ce7f096b9ce1bea7309c9e3100f05ce23dac0a50152cbb19764a022",
+          "server_store": "350c7338-1fae-48bc-b870-0c2c7c01335b",
+          "source": "typed_native_history",
+          "state": "completed",
+          "terminal_receipt": true,
+          "turn_id": "01a10a43-398f-7922-8f9f-24fb17effa24"
+        },
+        "ui_input_ready": false
+      },
+      "id": "worker:81a5f478-21ad-46a2-a25c-7cc67b425d82:1",
+      "retained_lead_gap": null,
+      "retained_lead_items": null,
+      "role": "attempt",
+      "state": "revoked"
+    },
+    {
+      "attempt": "0a42d7cc-1d6a-4296-8aef-fde18eacdc2f",
+      "authority_epoch": 1,
+      "cursor": 3,
+      "document": {
+        "current_turn": {
+          "id": "01a10a47-ba18-76f3-90c6-42876c28ceb7",
+          "source": "typed_native_history",
+          "state": "terminal"
+        },
+        "environment_id": "executor-0a42d7cc-1d6a-4296-8aef-fde18eacdc2f-58940888",
+        "executor": {
+          "control_endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/0a42d7cc-1d6a-4296-8aef-fde18eacdc2f/control.sock",
+          "endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/0a42d7cc-1d6a-4296-8aef-fde18eacdc2f/native.sock",
+          "incarnation": "ef16ab6b36e85f4016bf03ae0100e3e35b9c5735b022547886e7c36252e298da",
+          "kind": "exec",
+          "pid_namespace": 4026539929,
+          "store_id": "8c360df9-248f-4145-a9a1-3e4720b7c679",
+          "workspace_generation": "13653f8e-0798-4527-87c1-cad08b8ad6f3"
+        },
+        "executor_execution": {
+          "binding": {
+            "attempt": "0a42d7cc-1d6a-4296-8aef-fde18eacdc2f",
+            "base": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+            "brief": "2f157441-6f21-4693-bb17-fb10157200fc",
+            "operation": "9b73528c-d33e-4194-99dc-30f20b7772e7",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "13653f8e-0798-4527-87c1-cad08b8ad6f3",
+          "incarnation": "dc4b70a6-9f7a-43ce-ab17-fb5d04d6efb6",
+          "init_start_ticks": "58940861",
+          "namespace_init": 807256,
+          "native_store": "8c360df9-248f-4145-a9a1-3e4720b7c679",
+          "outcome": null,
+          "pid": 807255,
+          "pid_namespace": 4026539929,
+          "start_ticks": "58940860",
+          "state": "running"
+        },
+        "observed_environments": [
+          {}
+        ],
+        "recovery_state": "remote_validated",
+        "server_execution": {
+          "binding": {
+            "attempt": "0a42d7cc-1d6a-4296-8aef-fde18eacdc2f",
+            "base": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+            "brief": "2f157441-6f21-4693-bb17-fb10157200fc",
+            "operation": "c58718ac-53fa-4046-9dce-985d1a42fb82",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "5f07494a-af48-4739-a3ff-f52e468f9b85",
+          "incarnation": "87c44689-cc9e-441e-90e9-80119bd933c6",
+          "init_start_ticks": "58940924",
+          "namespace_init": 807622,
+          "native_store": "18e2ba3f-7737-414e-b043-4cff3e9f382c",
+          "outcome": null,
+          "pid": 807621,
+          "pid_namespace": 4026540178,
+          "start_ticks": "58940924",
+          "state": "running"
+        },
+        "server_id": "native:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f",
+        "server_incarnation": "16de7257731cffdf94d0a1dd9bccbac39ae27c33787b76e09d805201346673b0",
+        "server_store": "18e2ba3f-7737-414e-b043-4cff3e9f382c",
+        "thread_id": "01a10a47-a659-7973-8d84-25d45945c3af",
+        "turn_id": "01a10a47-ba18-76f3-90c6-42876c28ceb7",
+        "ui_input_ready": true
+      },
+      "id": "worker:0a42d7cc-1d6a-4296-8aef-fde18eacdc2f:1",
+      "retained_lead_gap": null,
+      "retained_lead_items": null,
+      "role": "attempt",
+      "state": "bound"
+    },
+    {
+      "attempt": "982b31f9-519e-4e84-b0e5-7fae9a6fb1d3",
+      "authority_epoch": 1,
+      "cursor": 4,
+      "document": {
+        "current_turn": {
+          "id": "01a10a48-35ec-7543-a3c7-35227541eb93",
+          "source": "typed_native_history",
+          "state": "active"
+        },
+        "environment_id": "executor-982b31f9-519e-4e84-b0e5-7fae9a6fb1d3-58944025",
+        "executor": {
+          "control_endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/982b31f9-519e-4e84-b0e5-7fae9a6fb1d3/control.sock",
+          "endpoint": "/tmp/cb-20261005T040926Z-c8403c/t-exec/982b31f9-519e-4e84-b0e5-7fae9a6fb1d3/native.sock",
+          "incarnation": "01a121fc5d5fc71f81098179e7be302073eae06b202b9630000ef95255509207",
+          "kind": "exec",
+          "pid_namespace": 4026540345,
+          "store_id": "a306ba8d-ec02-414d-8df8-444ba9729506",
+          "workspace_generation": "10c4eb36-90a1-497e-8445-ef62c83d9e10"
+        },
+        "executor_execution": {
+          "binding": {
+            "attempt": "982b31f9-519e-4e84-b0e5-7fae9a6fb1d3",
+            "base": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+            "brief": "6c61f061-511f-4ba0-9e68-26de0b6f93e1",
+            "operation": "f5d5a684-851d-4500-abfc-efaacc44c801",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "10c4eb36-90a1-497e-8445-ef62c83d9e10",
+          "incarnation": "dc4b70a6-9f7a-43ce-ab17-fb5d04d6efb6",
+          "init_start_ticks": "58943995",
+          "namespace_init": 815158,
+          "native_store": "a306ba8d-ec02-414d-8df8-444ba9729506",
+          "outcome": null,
+          "pid": 815154,
+          "pid_namespace": 4026540345,
+          "start_ticks": "58943994",
+          "state": "running"
+        },
+        "observed_environments": [
+          {}
+        ],
+        "recovery_state": "remote_validated",
+        "server_execution": {
+          "binding": {
+            "attempt": "982b31f9-519e-4e84-b0e5-7fae9a6fb1d3",
+            "base": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+            "brief": "6c61f061-511f-4ba0-9e68-26de0b6f93e1",
+            "operation": "635d5844-4713-4501-ba96-a9c63de330db",
+            "project": "demo",
+            "scope_epoch": 1
+          },
+          "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+          "handle": "582bf552-7aa4-48ba-b3c8-7e102e158c42",
+          "incarnation": "87c44689-cc9e-441e-90e9-80119bd933c6",
+          "init_start_ticks": "58944074",
+          "namespace_init": 815491,
+          "native_store": "0670d63b-dfe9-4587-8f90-da3a3e31a862",
+          "outcome": null,
+          "pid": 815490,
+          "pid_namespace": 4026540430,
+          "start_ticks": "58944073",
+          "state": "running"
+        },
+        "server_id": "native:982b31f9-519e-4e84-b0e5-7fae9a6fb1d3",
+        "server_incarnation": "1516bce188b4eb78ebd49abe2b1d851836f13e0264786be76ffba25a1e037dce",
+        "server_store": "0670d63b-dfe9-4587-8f90-da3a3e31a862",
+        "thread_id": "01a10a48-2252-7701-992f-4e97de7aba4b",
+        "turn_id": "01a10a48-35ec-7543-a3c7-35227541eb93",
+        "ui_input_ready": true
+      },
+      "id": "worker:982b31f9-519e-4e84-b0e5-7fae9a6fb1d3:1",
+      "retained_lead_gap": null,
+      "retained_lead_items": null,
+      "role": "attempt",
+      "state": "bound"
+    }
+  ],
+  "process_dispositions": {
+    "source": "runtime-process-dispositions.json and processes-after-refusal.json",
+    "runtime_identities_checked": 16,
+    "matching_live_runtime_identities": 0,
+    "survivors_at_last_check": [
+      "Kata pid699450/start58894763",
+      "dashboard pid706775/start58897758"
+    ],
+    "services_absent": [
+      "controller704750",
+      "relay699556",
+      "workers699592",
+      "controlplanes702025",
+      "gateway706499",
+      "lead706553"
+    ],
+    "termination_exit_codes": "UNKNOWN for disappeared processes; absence does not establish exit reason",
+    "session": "dedicated session panes absent at04:26:15Z; parent-author reports lead pane relocated into corenius-team; review did not inspect private terminal contents",
+    "cause": "UNKNOWN in selected public evidence",
+    "reviewer_process_actions": "none on existing processes; independent check child waited exit0"
+  },
+  "preservation": {
+    "source_files": 52,
+    "source_before_after_all_match": true,
+    "committed_source_all_match": true,
+    "source_status_before": "clean",
+    "source_status_after": "clean",
+    "manifest_executable_config_pins": 8,
+    "all_pins_match": true,
+    "candidate_artifact_hashes": 5,
+    "all_artifact_hashes_match": true,
+    "private_workspaces": "solo/a/b statuses all clean; retained heads and file hashes in workspace receipts",
+    "broader_coordinator_dirty_state": "not independently sampled; reviewer issued no writes to existing checkouts/run/ledger",
+    "original_failures": "both run failures retained separately; no overwrite/retry relabel"
+  },
+  "known_hardening_findings": [
+    {
+      "id": "C1-TEST-PEER-WAIT",
+      "status": "OPEN / no repair performed"
+    },
+    {
+      "id": "relayS2",
+      "status": "OPEN / no repair performed"
+    }
+  ],
+  "limitations": [
+    "No concurrent useful a/b model/tool overlap proved by timestamped per-role public metadata.",
+    "No a/b exact candidates, verification or acceptance exist in selected controller evidence.",
+    "No stale rejection or new-base candidate path was reached.",
+    "Independent exact check proves only final solo candidate contract.",
+    "No broad recovery/isolation matrices, ticket05 acceptance, full baseline or mainline release checks run.",
+    "Service disappearance interrupts assessment of the single authorized recovery; stop cause requires owner reconciliation."
+  ],
+  "allowed_actions": "public read-only controller queries; source/ref/artifact/process reads; own scratch artifacts and isolated bounded exact-candidate test only"
+}

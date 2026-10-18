@@ -1,0 +1,13 @@
+{
+  "name": "agent",
+  "extends": "toolchains.json",
+  "layers": [
+    {"kind": "host-ro", "name": "traecli", "paths": ["~/.local/bin/traecli"], "probe": ["~/.local/bin/traecli --version"],
+     "path": ["~/.local/bin"]},
+    {"kind": "host-ro", "name": "trae-config", "binds": [
+      {"src": "~/.trae/traecli.toml", "dest": "/home/bench/.trae/traecli.toml"},
+      {"src": "~/.trae/cli/auth.json", "dest": "/home/bench/.trae/cli/auth.json"}]}
+  ],
+  "policy": {"net": "host", "proxy": true},
+  "env": {"TRAE_HOME": "/home/bench/.trae", "TRAECLI_HOME": "/home/bench/.trae/cli"}
+}

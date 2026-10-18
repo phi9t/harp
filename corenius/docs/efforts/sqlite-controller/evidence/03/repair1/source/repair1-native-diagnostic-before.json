@@ -1,0 +1,10 @@
+{
+  "product_head": "40d4805",
+  "diagnostic_only_changes": "prints current binding/readiness/hold once per second; archives fixture after observed cleanup; unchanged deadlines/assertions/controller bytes",
+  "files": {
+    ".scratch/sqlite-controller/03/native-diagnostic/crates/sqlite-controller/support/codex_insula.py": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+    ".scratch/sqlite-controller/03/native-diagnostic/crates/sqlite-controller/tests/support/wsutil.py": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+    ".scratch/sqlite-controller/03/native-diagnostic/crates/sqlite-controller/tests/support/native_registry.py": "52bf29082c65e6ca3b10c10c7abe22a52f534a2125fea5f214c83d1fb564222b"
+  },
+  "controller_binary_sha256": "5e19ca00e14df6eee41d5f727bc4e783faba950c1b3030a2bcbd5b12dcaa4935"
+}

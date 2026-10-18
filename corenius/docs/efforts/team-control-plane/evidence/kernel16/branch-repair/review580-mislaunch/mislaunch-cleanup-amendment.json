@@ -1,0 +1,6 @@
+{
+  "amended_file": "mislaunch-cleanup.json",
+  "reason": "Original root extractor mistakenly treated JSON-encoded ledger strings containing /kernel16 UUID as pathname ancestors; filtered to actual absolute UUID-root pathnames. Process IDs, exits, signals, root reference results and root disposition unchanged.",
+  "original_noisy_record_retained_in": "functions exec direct output for session25437 prelude; parent may retain output; no source/effect evidence altered",
+  "current_bytes": 2508
+}

@@ -1,0 +1,13 @@
+Standards: PASS for frozen ticket26 repair1; no unresolved documented blocker found. This is a read-only Standards review, not ticket acceptance.
+
+The candidate is the dirty tree on `codex-intent26/contracts` at base/HEAD `720ab7783e1b36e9e8a675f497f9c66ef2b1d87b`, sealed by `author-freeze.json` SHA256 `d565a4e32d8f472bcd65876ee78c3744268fae5945fd74dad76bf5a54c3bf507`. No commits or staged paths exist. Metadata records the complete source/proof/input bindings.
+
+`docs/agents/skill-orchestration.md:63–65` requires: “Every behavior slice must then show red before implementation and green afterward.” The retained logs distinguish four genuine behavioral finding REDs from two setup failures. Eleven attempts, all 596 extracted observations, their raw line/payload hashes, and 54 final-run input hashes independently check out. The final recorded focused run reports 15/15; recorded compatibility reports 81/81. I did not rerun tests.
+
+The frozen consumers follow the repair decision: `episode_runtime.rs:390` checks new grants after cached receipt lookup; `artifacts.rs:790` refuses fresh mapped legacy acceptance; `contracts/authority.rs:95` preserves current exact prerequisites; `contracts.rs:238` applies the cancellation fence before command replay. The decision at `decisions/20261003-intent26-review1-repair.md:33–35` requires: “Cancellation must fence v2 result/acceptance mutations and acceptance replay”. Public tests retain prior receipts, Owner amendment/revalidation controls, measured unmapped v1 acceptance, retained outcomes/evidence and unchanged capacity.
+
+The same decision at lines40–43 requires: “do not relabel old test runs as proof for changed sources.” All 268 selected records plus seal match the 269 root-retained records; 18 postimages reconstruct from Git base, eight repair postimages reconstruct from round0, 15 canonical archives and six repair inputs match, and all 28 run-source delta entries agree. Historical proof remains explicitly historical.
+
+Nonblocking heuristic only: the prior possible Data Clumps tuple, `current: &(String, String, IntentRevision)` (`contracts/outcomes.rs:14`), remains. The decision at lines37–38 states: “possible Data Clumps heuristic does not justify unrelated refactoring.” No new smell warrants expanding this repair.
+
+Limits: static inspection adds no measured failure claim. RED1 retained 59 unlaunched file records; RED2 retained 72 and records namespace stop before its failed assertion, while `Fixture.finish` was bypassed. Process exit is not complete cleanup proof. Root focused/broad verification and independent branch review remain required; whole-v0.2 acceptance is unclaimed.

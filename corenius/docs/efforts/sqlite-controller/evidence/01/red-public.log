@@ -1,0 +1,104 @@
+    Blocking waiting for file lock on package cache
+   Compiling proc-macro2 v1.0.107
+   Compiling version_check v0.9.5
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.190
+   Compiling typenum v1.20.1
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.14
+   Compiling pkg-config v0.3.34
+   Compiling vcpkg v0.2.15
+   Compiling getrandom v0.4.3
+   Compiling serde_core v1.0.229
+   Compiling cfg-if v1.0.5
+   Compiling foldhash v0.2.0
+   Compiling zmij v1.0.23
+   Compiling bitflags v2.13.2
+   Compiling rustix v1.1.5
+   Compiling serde_json v1.0.151
+   Compiling thiserror v2.0.21
+   Compiling serde v1.0.229
+   Compiling smallvec v1.16.2
+   Compiling linux-raw-sys v0.12.1
+   Compiling itoa v1.0.18
+   Compiling cpufeatures v0.2.17
+   Compiling memchr v2.8.3
+   Compiling fallible-iterator v0.3.0
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling once_cell v1.21.4
+   Compiling fastrand v2.5.0
+   Compiling hashbrown v0.16.1
+   Compiling cc v1.6.0
+   Compiling generic-array v0.14.7
+   Compiling hashlink v0.11.1
+   Compiling syn v3.0.6
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling libsqlite3-sys v0.36.0
+   Compiling uuid v1.27.0
+   Compiling sha2 v0.10.9
+   Compiling tempfile v3.27.0
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling rusqlite v0.38.0
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.79s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-64a1f5b62d9c9dd0)
+
+running 6 tests
+test exclusive_lifetime_writer_lock_and_bootstrap_refusal ... FAILED
+test lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope ... FAILED
+test messages_answers_and_operation_outcomes_are_retained ... FAILED
+test same_task_racing_commands_admit_once ... FAILED
+test two_slots_atomic_admission_and_scoped_replay ... FAILED
+test restart_retains_journal_questions_decisions_and_unknown_capacity ... FAILED
+
+failures:
+
+---- exclusive_lifetime_writer_lock_and_bootstrap_refusal stdout ----
+
+thread 'exclusive_lifetime_writer_lock_and_bootstrap_refusal' (506528) panicked at tests/public.rs:141:59:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope stdout ----
+
+thread 'lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope' (506529) panicked at tests/public.rs:12:90:
+called `Result::unwrap()` on an `Err` value: "not implemented"
+
+---- messages_answers_and_operation_outcomes_are_retained stdout ----
+
+thread 'messages_answers_and_operation_outcomes_are_retained' (506530) panicked at tests/public.rs:12:90:
+called `Result::unwrap()` on an `Err` value: "not implemented"
+
+---- same_task_racing_commands_admit_once stdout ----
+
+thread 'same_task_racing_commands_admit_once' (506532) panicked at tests/public.rs:12:90:
+called `Result::unwrap()` on an `Err` value: "not implemented"
+
+---- two_slots_atomic_admission_and_scoped_replay stdout ----
+
+thread 'two_slots_atomic_admission_and_scoped_replay' (506533) panicked at tests/public.rs:12:90:
+called `Result::unwrap()` on an `Err` value: "not implemented"
+
+---- restart_retains_journal_questions_decisions_and_unknown_capacity stdout ----
+
+thread 'restart_retains_journal_questions_decisions_and_unknown_capacity' (506531) panicked at tests/public.rs:12:90:
+called `Result::unwrap()` on an `Err` value: "not implemented"
+
+
+failures:
+    exclusive_lifetime_writer_lock_and_bootstrap_refusal
+    lead_replacement_does_not_revoke_attempt_and_attempt_cannot_read_other_scope
+    messages_answers_and_operation_outcomes_are_retained
+    restart_retains_journal_questions_decisions_and_unknown_capacity
+    same_task_racing_commands_admit_once
+    two_slots_atomic_admission_and_scoped_replay
+
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--test public`
+
+# Recorded command exit status: 101

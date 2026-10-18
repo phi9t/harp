@@ -1,0 +1,14 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+error[E0507]: cannot move out of `error.code` which is behind a shared reference
+    --> tests/assembled_vertical.rs:4506:64
+     |
+4506 |                 "code":blocked_input.as_ref().err().map(|error|error.code)
+     |                                                                ^^^^^^^^^^ move occurs because `error.code` has type `team_control_plane::ErrorCode`, which does not implement the `Copy` trait
+     |
+help: consider cloning the value if the performance cost is acceptable
+     |
+4506 |                 "code":blocked_input.as_ref().err().map(|error|error.code.clone())
+     |                                                                          ++++++++
+
+For more information about this error, try `rustc --explain E0507`.
+error: could not compile `team-control-plane` (test "assembled_vertical") due to 1 previous error

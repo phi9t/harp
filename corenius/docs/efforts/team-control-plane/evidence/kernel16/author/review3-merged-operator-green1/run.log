@@ -1,0 +1,25 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+error[E0658]: file modules in proc macro input are unstable
+   --> tests/assembled_operator.rs:524:5
+    |
+524 |     mod gateway_fault;
+    |     ^^^^^^^^^^^^^^^^^^
+    |
+    = note: see issue #54727 <https://github.com/rust-lang/rust/issues/54727> for more information
+
+error[E0609]: no field `id` on type `EpisodeOperationView`
+   --> tests/assembled_operator.rs:570:118
+    |
+570 | ...ect("assembled-worker",worker.operation).await.unwrap().id,worker.operation);
+    |                                                            ^^ unknown field
+    |
+help: some of the expressions' fields have a field of the same name
+    |
+570 |         assert_eq!(EpisodeGateway::new(f.broker.clone()).inspect("assembled-worker",worker.operation).await.unwrap().operation.id,worker.operation);
+    |                                                                                                                      ++++++++++
+570 |         assert_eq!(EpisodeGateway::new(f.broker.clone()).inspect("assembled-worker",worker.operation).await.unwrap().prepared.start.id,worker.operation);
+    |                                                                                                                      +++++++++++++++
+
+Some errors have detailed explanations: E0609, E0658.
+For more information about an error, try `rustc --explain E0609`.
+error: could not compile `team-control-plane` (test "assembled_operator") due to 2 previous errors

@@ -1,0 +1,171 @@
+{
+  "classification": "REAL_PROVIDER_ATTEMPT",
+  "kind": "codex-app-server",
+  "model": "gpt-6.1-sol",
+  "binary_sha256": "f34a4d2301892ae96c90097786bfe5dc269f187b6f69faf42a7b357b8c081e35",
+  "boundary": "trusted_installed_host_app_server_read_only_tools_denied",
+  "insula": false,
+  "credentials_read_by_lab": false,
+  "global_config_changed_by_lab": false,
+  "ambient_runtime_config_inherited": true,
+  "deadline_seconds": 35,
+  "hard_output_token_limit": null,
+  "hard_billing_limit": null,
+  "max_provider_turns_requested": 1,
+  "prompt": "Without tools, files, commands, or explanation, answer only: what is 19 + 23?",
+  "accepted": true,
+  "thread_id": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+  "resolved_model": "gpt-6.1-sol",
+  "resolved_model_provider": "openai",
+  "turn_id": "01a12c6d-308c-7801-936e-066d36c9768d",
+  "terminal_status": "completed",
+  "alive_after_turn_completed": true,
+  "expected_answer_observed": true,
+  "outcome": "completed_provider_attempt",
+  "projected_exchanges": [
+    {
+      "direction": "client_to_runtime",
+      "id": 1,
+      "method": "initialize"
+    },
+    {
+      "direction": "runtime_to_client",
+      "id": 1
+    },
+    {
+      "direction": "client_to_runtime",
+      "method": "initialized"
+    },
+    {
+      "direction": "client_to_runtime",
+      "id": 3,
+      "method": "thread/start"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "remoteControl/status/changed"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "account/updated"
+    },
+    {
+      "direction": "runtime_to_client",
+      "id": 3,
+      "thread_id": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "client_to_runtime",
+      "id": 4,
+      "method": "turn/start",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "thread/started"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "mcpServer/startupStatus/updated",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "id": 4,
+      "turn": {
+        "id": "01a12c6d-308c-7801-936e-066d36c9768d",
+        "status": "inProgress"
+      }
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "thread/settings/updated",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "warning",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "thread/status/changed",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "turn/started",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turn": {
+        "id": "01a12c6d-308c-7801-936e-066d36c9768d",
+        "status": "inProgress"
+      }
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "mcpServer/startupStatus/updated",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "item/started",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turnId": "01a12c6d-308c-7801-936e-066d36c9768d"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "item/completed",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turnId": "01a12c6d-308c-7801-936e-066d36c9768d"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "item/started",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turnId": "01a12c6d-308c-7801-936e-066d36c9768d",
+      "arithmetic_answer_matches": false
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "item/agentMessage/delta",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turnId": "01a12c6d-308c-7801-936e-066d36c9768d",
+      "itemId": "msg_077c7dbc5c69b7e4016acbe29e664881a382b85a892f6ed366",
+      "delta_matches_42": true
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "item/completed",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turnId": "01a12c6d-308c-7801-936e-066d36c9768d",
+      "arithmetic_answer_matches": true
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "thread/tokenUsage/updated",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turnId": "01a12c6d-308c-7801-936e-066d36c9768d"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "account/rateLimits/updated"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "thread/status/changed",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8"
+    },
+    {
+      "direction": "runtime_to_client",
+      "method": "turn/completed",
+      "threadId": "01a12c6d-3024-7aa0-98d9-368a12945dc8",
+      "turn": {
+        "id": "01a12c6d-308c-7801-936e-066d36c9768d",
+        "status": "completed"
+      }
+    }
+  ],
+  "exit_code_after_disposal": 0,
+  "owned_process_group_disposed": true,
+  "observed_at_utc": "2026-10-11T19:25:15.269352+00:00"
+}

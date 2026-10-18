@@ -1,0 +1,274 @@
+{
+  "upstream_commit": "ae92585d3b3e5f1e4b123d14a34314d826d8d9f5",
+  "runtime_source_manifest_sha256": "53ba87f342188d2beca87a88d1e427eca314af595b190de41d14c8b04612be00",
+  "runtime_source_files_verified": 301,
+  "node_version": "v24.13.0",
+  "dependency_lock_sha256": "036c391f97655e9601dda4a709bb81a1e1c957418c1bf10834419386be27b18d",
+  "controller_base": "d7f674829e9844d011869b711d64fcf55313f7f1",
+  "controller_source_manifest_sha256": "a104a5d163376462e9001bc598183c7699dbb77abcdab80837256904872bbabe",
+  "controller_source_files_verified": 27,
+  "controller_binary_sha256": "850a82ffee0a8ee46c306841d8aceca9ff3f085f5abd5a4d2319e439017ebb45",
+  "scenarios": [
+    {
+      "scenario": "replay",
+      "worker_kill_returncode": -9,
+      "recovery_returncode": 0,
+      "before_recovery": {
+        "effects": 1,
+        "occupied_slots": 1
+      },
+      "after_recovery": {
+        "effects": 1,
+        "occupied_slots": 1
+      },
+      "same_task_id": 12,
+      "same_invocation": "original-invocation",
+      "command": {
+        "kind": "report_progress",
+        "expected_revision": 3,
+        "idempotency_key": "b52bce6e-7c7d-4a60-9708-d5d14cdf019e",
+        "args": {
+          "task": "work",
+          "text": "one observable progress event"
+        }
+      },
+      "command_sha256": "569e49b1707a61c20249c0991e0a229cae24d4f3a0f0a58db2925688a15248cf",
+      "committed_reply": {
+        "ok": {
+          "event_seq": 4,
+          "receipt": "a81ffd7e-7a4e-4801-ad7d-3b66d1bd37f2",
+          "result": {
+            "task": "work",
+            "text": "one observable progress event"
+          },
+          "revision": 4
+        }
+      },
+      "recovered_reply": {
+        "ok": {
+          "event_seq": 4,
+          "receipt": "a81ffd7e-7a4e-4801-ad7d-3b66d1bd37f2",
+          "result": {
+            "task": "work",
+            "text": "one observable progress event"
+          },
+          "revision": 4
+        }
+      },
+      "committed_reply_sha256": "87916445b515b5a7460f019a69c3274e0cdee1b070b59b9f748507702f5934cf",
+      "recovered_reply_sha256": "87916445b515b5a7460f019a69c3274e0cdee1b070b59b9f748507702f5934cf",
+      "pi_records": [
+        {
+          "phase": "before-effect",
+          "mode": "start",
+          "taskId": 12,
+          "callId": "original-invocation",
+          "command": {
+            "kind": "report_progress",
+            "expected_revision": 3,
+            "idempotency_key": "b52bce6e-7c7d-4a60-9708-d5d14cdf019e",
+            "args": {
+              "task": "work",
+              "text": "one observable progress event"
+            }
+          },
+          "commandHash": "8e30cc52ae6074c0649c8aee5a8ea5bbf62527b8939eecea4936cc818444a4e9"
+        },
+        {
+          "phase": "before-effect",
+          "mode": "recover",
+          "taskId": 12,
+          "callId": "original-invocation",
+          "command": {
+            "kind": "report_progress",
+            "expected_revision": 3,
+            "idempotency_key": "b52bce6e-7c7d-4a60-9708-d5d14cdf019e",
+            "args": {
+              "task": "work",
+              "text": "one observable progress event"
+            }
+          },
+          "commandHash": "8e30cc52ae6074c0649c8aee5a8ea5bbf62527b8939eecea4936cc818444a4e9"
+        },
+        {
+          "phase": "reply",
+          "mode": "recover",
+          "taskId": 12,
+          "callId": "original-invocation",
+          "reply": {
+            "ok": {
+              "event_seq": 4,
+              "receipt": "a81ffd7e-7a4e-4801-ad7d-3b66d1bd37f2",
+              "result": {
+                "task": "work",
+                "text": "one observable progress event"
+              },
+              "revision": 4
+            }
+          },
+          "replyHash": "87916445b515b5a7460f019a69c3274e0cdee1b070b59b9f748507702f5934cf"
+        },
+        {
+          "phase": "settled",
+          "mode": "recover",
+          "submission": 8,
+          "status": "done",
+          "toolResults": [
+            [
+              {
+                "role": "toolResult",
+                "toolCallId": "original-invocation",
+                "toolName": "progress",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"ok\":{\"event_seq\":4,\"receipt\":\"a81ffd7e-7a4e-4801-ad7d-3b66d1bd37f2\",\"result\":{\"task\":\"work\",\"text\":\"one observable progress event\"},\"revision\":4}}"
+                  }
+                ],
+                "isError": false,
+                "durationMs": 8,
+                "timestamp": 1791321445521
+              }
+            ]
+          ]
+        }
+      ],
+      "negative_control": {
+        "same_key_changed_payload": {
+          "error": "idempotency argument mismatch"
+        },
+        "fresh_key_current_revision": {
+          "effects": 2,
+          "occupied_slots": 1
+        }
+      }
+    },
+    {
+      "scenario": "revoked",
+      "worker_kill_returncode": -9,
+      "recovery_returncode": 0,
+      "before_recovery": {
+        "effects": 1,
+        "occupied_slots": 1
+      },
+      "after_recovery": {
+        "effects": 1,
+        "occupied_slots": 1
+      },
+      "same_task_id": 12,
+      "same_invocation": "original-invocation",
+      "command": {
+        "kind": "report_progress",
+        "expected_revision": 3,
+        "idempotency_key": "2fdcb751-7114-45be-9042-68b2770176f1",
+        "args": {
+          "task": "work",
+          "text": "one observable progress event"
+        }
+      },
+      "command_sha256": "1b74fd8c29a2575959169570ac84af390e95c05d23bdeae622c8fb8fa81f0191",
+      "committed_reply": {
+        "ok": {
+          "event_seq": 4,
+          "receipt": "d4c4f4a5-5555-4e4a-8707-96d1dd7f9e78",
+          "result": {
+            "task": "work",
+            "text": "one observable progress event"
+          },
+          "revision": 4
+        }
+      },
+      "recovered_reply": {
+        "error": "authentication: revoked attempt authority"
+      },
+      "committed_reply_sha256": "65fcbf0da8b0292421dbf9f88c716772acb83260af23e9e3d68edd3e7ade0686",
+      "recovered_reply_sha256": "12f2e24f952f38d5754777d764073acd5da78ec3655cf6b42efed70aca3512ed",
+      "pi_records": [
+        {
+          "phase": "before-effect",
+          "mode": "start",
+          "taskId": 12,
+          "callId": "original-invocation",
+          "command": {
+            "kind": "report_progress",
+            "expected_revision": 3,
+            "idempotency_key": "2fdcb751-7114-45be-9042-68b2770176f1",
+            "args": {
+              "task": "work",
+              "text": "one observable progress event"
+            }
+          },
+          "commandHash": "b2e38b4afec5c8ab00c1bd64462bb46741b9c024fbe1d08387825760a2be5953"
+        },
+        {
+          "phase": "before-effect",
+          "mode": "recover",
+          "taskId": 12,
+          "callId": "original-invocation",
+          "command": {
+            "kind": "report_progress",
+            "expected_revision": 3,
+            "idempotency_key": "2fdcb751-7114-45be-9042-68b2770176f1",
+            "args": {
+              "task": "work",
+              "text": "one observable progress event"
+            }
+          },
+          "commandHash": "b2e38b4afec5c8ab00c1bd64462bb46741b9c024fbe1d08387825760a2be5953"
+        },
+        {
+          "phase": "reply",
+          "mode": "recover",
+          "taskId": 12,
+          "callId": "original-invocation",
+          "reply": {
+            "error": "authentication: revoked attempt authority"
+          },
+          "replyHash": "12f2e24f952f38d5754777d764073acd5da78ec3655cf6b42efed70aca3512ed"
+        },
+        {
+          "phase": "settled",
+          "mode": "recover",
+          "submission": 8,
+          "status": "done",
+          "toolResults": [
+            [
+              {
+                "role": "toolResult",
+                "toolCallId": "original-invocation",
+                "toolName": "progress",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "{\"error\":\"authentication: revoked attempt authority\"}"
+                  }
+                ],
+                "isError": true,
+                "durationMs": 11,
+                "timestamp": 1791321446433
+              }
+            ]
+          ]
+        }
+      ],
+      "negative_control": null
+    }
+  ],
+  "cleanup": {
+    "all_proxy_threads_stopped": true,
+    "private_case_directories_removed": true,
+    "all_owned_processes_stopped": true,
+    "process_returncodes": [
+      -15,
+      -9,
+      0,
+      -15,
+      -9,
+      0
+    ]
+  },
+  "source_sha256": {
+    "experiments/pi-env-durable/effect-worker.ts": "cc55a69f2fef08c16d9b91474f0b63a2360246e8934f261699273f45bbea22b0",
+    "experiments/pi-env-durable/interrupted-effect-probe.py": "d0dcda08998a7fd7d2de473dce4a556e262fa2467292fde497ab3d33efee641d"
+  }
+}

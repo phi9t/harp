@@ -1,0 +1,78 @@
+{
+  "source_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "pin": "af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "binary_sha256": "15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4",
+  "unsafe_control": false,
+  "observations": {
+    "crash": {
+      "before": {
+        "backend": "jj-git",
+        "store": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/store/git",
+        "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash",
+        "operation": "f90ac09719d733c8b90fe464852543950b3479a5b1020fc47af565999c284dff8e41995c2109404f4981695d68b241fd919d63477cec93e72599ce5f15443805",
+        "change": "yzuooutozksoxrtkpkkrwqsrmlxmslqt",
+        "commit": "dfd96a09c4b0d4d50fbdb3ab1fcf3fb22daf2d8f",
+        "tree": "187c9ad549d4c2a5305978f5304db7f74f1bd376",
+        "conflict": false
+      },
+      "durable_before_kill": {
+        "backend": "jj-git",
+        "store": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/store/git",
+        "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash",
+        "operation": "c7a90a78b4ce227d22b85724893d12c92db115787ccbdd4c0086bf8bb75b1e612fce4e39de89620d9a36a5efefa3c90a5449723cbdde2b039dfeba8b74d1ae49",
+        "change": "ppomlrkvrutsxoqkkltypypmwzwvwunp",
+        "commit": "f022889bb981fd9ea340b4b2cbb9ff4c9d6a23fa",
+        "tree": "9c47ee7c5931ac59125b9e96ad7d013e6909291d",
+        "conflict": false
+      },
+      "working_copy_before_kill": "Type: \"local\"\nCurrent operation: OperationId(\"f90ac09719d733c8b90fe464852543950b3479a5b1020fc47af565999c284dff8e41995c2109404f4981695d68b241fd919d63477cec93e72599ce5f15443805\")\nCurrent tree: MergedTree { tree_ids: Resolved(TreeId(\"187c9ad549d4c2a5305978f5304db7f74f1bd376\")), labels: Unlabeled, .. }",
+      "disk_bytes_unchanged": true,
+      "strace_lock_ordinal": 5,
+      "calibration": "1211574 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>, LOCK_EX) = 0\n1211574 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>(deleted), LOCK_UN) = 0\n1211574 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/op_heads/heads/lock>, LOCK_EX) = 0\n1211574 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/op_heads/heads/lock>(deleted), LOCK_UN) = 0\n1211574 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>, LOCK_EX) = 0\n1211574 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>(deleted), LOCK_UN) = 0\n1211813 +++ exited with 0 +++\n1211812 +++ exited with 0 +++\n1211811 +++ exited with 0 +++\n1211810 +++ exited with 0 +++\n1211809 +++ exited with 0 +++\n1211808 +++ exited with 0 +++\n1211807 +++ exited with 0 +++\n1211806 +++ exited with 0 +++\n1211804 +++ exited with 0 +++\n1211803 +++ exited with 0 +++\n1211802 +++ exited with 0 +++\n1211801 +++ exited with 0 +++\n1211800 +++ exited with 0 +++\n1211799 +++ exited with 0 +++\n1211798 +++ exited with 0 +++\n1211796 +++ exited with 0 +++\n1211795 +++ exited with 0 +++\n1211794 +++ exited with 0 +++\n1211793 +++ exited with 0 +++\n1211792 +++ exited with 0 +++\n1211791 +++ exited with 0 +++\n1211790 +++ exited with 0 +++\n1211789 +++ exited with 0 +++\n1211788 +++ exited with 0 +++\n1211787 +++ exited with 0 +++\n1211786 +++ exited with 0 +++\n1211785 +++ exited with 0 +++\n1211784 +++ exited with 0 +++\n1211783 +++ exited with 0 +++\n1211782 +++ exited with 0 +++\n1211781 +++ exited with 0 +++\n1211780 +++ exited with 0 +++\n1211779 +++ exited with 0 +++\n1211778 +++ exited with 0 +++\n1211777 +++ exited with 0 +++\n1211776 +++ exited with 0 +++\n1211774 +++ exited with 0 +++\n1211773 +++ exited with 0 +++\n1211772 +++ exited with 0 +++\n1211771 +++ exited with 0 +++\n1211770 +++ exited with 0 +++\n1211769 +++ exited with 0 +++\n1211768 +++ exited with 0 +++\n1211767 +++ exited with 0 +++\n1211766 +++ exited with 0 +++\n1211765 +++ exited with 0 +++\n1211764 +++ exited with 0 +++\n1211763 +++ exited with 0 +++\n1211762 +++ exited with 0 +++\n1211761 +++ exited with 0 +++\n1211760 +++ exited with 0 +++\n1211759 +++ exited with 0 +++\n1211758 +++ exited with 0 +++\n1211757 +++ exited with 0 +++\n1211756 +++ exited with 0 +++\n1211755 +++ exited with 0 +++\n1211754 +++ exited with 0 +++\n1211753 +++ exited with 0 +++\n1211752 +++ exited with 0 +++\n1211751 +++ exited with 0 +++\n1211750 +++ exited with 0 +++\n1211749 +++ exited with 0 +++\n1211747 +++ exited with 0 +++\n1211746 +++ exited with 0 +++\n1211745 +++ exited with 0 +++\n1211743 +++ exited with 0 +++\n1211742 +++ exited with 0 +++\n1211741 +++ exited with 0 +++\n1211740 +++ exited with 0 +++\n1211739 +++ exited with 0 +++\n1211738 +++ exited with 0 +++\n1211737 +++ exited with 0 +++\n1211736 +++ exited with 0 +++\n1211734 +++ exited with 0 +++\n1211733 +++ exited with 0 +++\n1211732 +++ exited with 0 +++\n1211731 +++ exited with 0 +++\n1211730 +++ exited with 0 +++\n1211729 +++ exited with 0 +++\n1211728 +++ exited with 0 +++\n1211727 +++ exited with 0 +++\n1211725 +++ exited with 0 +++\n1211724 +++ exited with 0 +++\n1211723 +++ exited with 0 +++\n1211722 +++ exited with 0 +++\n1211721 +++ exited with 0 +++\n1211720 +++ exited with 0 +++\n1211719 +++ exited with 0 +++\n1211718 +++ exited with 0 +++\n1211717 +++ exited with 0 +++\n1211716 +++ exited with 0 +++\n1211715 +++ exited with 0 +++\n1211714 +++ exited with 0 +++\n1211713 +++ exited with 0 +++\n1211712 +++ exited with 0 +++\n1211711 +++ exited with 0 +++\n1211710 +++ exited with 0 +++\n1211709 +++ exited with 0 +++\n1211708 +++ exited with 0 +++\n1211707 +++ exited with 0 +++\n1211706 +++ exited with 0 +++\n1211705 +++ exited with 0 +++\n1211704 +++ exited with 0 +++\n1211703 +++ exited with 0 +++\n1211702 +++ exited with 0 +++\n1211700 +++ exited with 0 +++\n1211699 +++ exited with 0 +++\n1211698 +++ exited with 0 +++\n1211697 +++ exited with 0 +++\n1211696 +++ exited with 0 +++\n1211695 +++ exited with 0 +++\n1211694 +++ exited with 0 +++\n1211693 +++ exited with 0 +++\n1211692 +++ exited with 0 +++\n1211691 +++ exited with 0 +++\n1211690 +++ exited with 0 +++\n1211689 +++ exited with 0 +++\n1211688 +++ exited with 0 +++\n1211687 +++ exited with 0 +++\n1211686 +++ exited with 0 +++\n1211685 +++ exited with 0 +++\n1211684 +++ exited with 0 +++\n1211683 +++ exited with 0 +++\n1211682 +++ exited with 0 +++\n1211681 +++ exited with 0 +++\n1211680 +++ exited with 0 +++\n1211679 +++ exited with 0 +++\n1211678 +++ exited with 0 +++\n1211676 +++ exited with 0 +++\n1211675 +++ exited with 0 +++\n1211674 +++ exited with 0 +++\n1211672 +++ exited with 0 +++\n1211671 +++ exited with 0 +++\n1211670 +++ exited with 0 +++\n1211669 +++ exited with 0 +++\n1211668 +++ exited with 0 +++\n1211667 +++ exited with 0 +++\n1211666 +++ exited with 0 +++\n1211665 +++ exited with 0 +++\n1211664 +++ exited with 0 +++\n1211663 +++ exited with 0 +++\n1211662 +++ exited with 0 +++\n1211660 +++ exited with 0 +++\n1211659 +++ exited with 0 +++\n1211658 +++ exited with 0 +++\n1211657 +++ exited with 0 +++\n1211656 +++ exited with 0 +++\n1211655 +++ exited with 0 +++\n1211654 +++ exited with 0 +++\n1211653 +++ exited with 0 +++\n1211652 +++ exited with 0 +++\n1211650 +++ exited with 0 +++\n1211649 +++ exited with 0 +++\n1211648 +++ exited with 0 +++\n1211647 +++ exited with 0 +++\n1211646 +++ exited with 0 +++\n1211645 +++ exited with 0 +++\n1211644 +++ exited with 0 +++\n1211643 +++ exited with 0 +++\n1211642 +++ exited with 0 +++\n1211640 +++ exited with 0 +++\n1211639 +++ exited with 0 +++\n1211638 +++ exited with 0 +++\n1211637 +++ exited with 0 +++\n1211636 +++ exited with 0 +++\n1211635 +++ exited with 0 +++\n1211634 +++ exited with 0 +++\n1211633 +++ exited with 0 +++\n1211632 +++ exited with 0 +++\n1211631 +++ exited with 0 +++\n1211630 +++ exited with 0 +++\n1211629 +++ exited with 0 +++\n1211628 +++ exited with 0 +++\n1211627 +++ exited with 0 +++\n1211626 +++ exited with 0 +++\n1211625 +++ exited with 0 +++\n1211624 +++ exited with 0 +++\n1211623 +++ exited with 0 +++\n1211622 +++ exited with 0 +++\n1211621 +++ exited with 0 +++\n1211620 +++ exited with 0 +++\n1211619 +++ exited with 0 +++\n1211618 +++ exited with 0 +++\n1211617 +++ exited with 0 +++\n1211615 +++ exited with 0 +++\n1211614 +++ exited with 0 +++\n1211613 +++ exited with 0 +++\n1211612 +++ exited with 0 +++\n1211611 +++ exited with 0 +++\n1211610 +++ exited with 0 +++\n1211609 +++ exited with 0 +++\n1211608 +++ exited with 0 +++\n1211607 +++ exited with 0 +++\n1211606 +++ exited with 0 +++\n1211605 +++ exited with 0 +++\n1211604 +++ exited with 0 +++\n1211603 +++ exited with 0 +++\n1211602 +++ exited with 0 +++\n1211601 +++ exited with 0 +++\n1211600 +++ exited with 0 +++\n1211599 +++ exited with 0 +++\n1211598 +++ exited with 0 +++\n1211597 +++ exited with 0 +++\n1211596 +++ exited with 0 +++\n1211595 +++ exited with 0 +++\n1211594 +++ exited with 0 +++\n1211593 +++ exited with 0 +++\n1211592 +++ exited with 0 +++\n1211591 +++ exited with 0 +++\n1211589 +++ exited with 0 +++\n1211588 +++ exited with 0 +++\n1211587 +++ exited with 0 +++\n1211586 +++ exited with 0 +++\n1211585 +++ exited with 0 +++\n1211583 +++ exited with 0 +++\n1211582 +++ exited with 0 +++\n1211575 +++ exited with 0 +++\n1211574 +++ exited with 0 +++\n",
+      "fault_trace": "1211850 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>, LOCK_EX) = 0\n1211850 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>(deleted), LOCK_UN) = 0\n1211850 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/op_heads/heads/lock>, LOCK_EX) = 0\n1211850 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/op_heads/heads/lock>(deleted), LOCK_UN) = 0\n1211850 flock(3</data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/working_copy/working_copy.lock>, LOCK_EX",
+      "owned_tracer_pid": 1211843,
+      "owned_jj_pids": [
+        1211850
+      ],
+      "terminal": -9,
+      "tracer_waited": true,
+      "jj_proc_entries_absent": true
+    },
+    "recovered": {
+      "backend": "jj-git",
+      "store": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/store/git",
+      "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash",
+      "operation": "c7a90a78b4ce227d22b85724893d12c92db115787ccbdd4c0086bf8bb75b1e612fce4e39de89620d9a36a5efefa3c90a5449723cbdde2b039dfeba8b74d1ae49",
+      "change": "ppomlrkvrutsxoqkkltypypmwzwvwunp",
+      "commit": "f022889bb981fd9ea340b4b2cbb9ff4c9d6a23fa",
+      "tree": "9c47ee7c5931ac59125b9e96ad7d013e6909291d",
+      "conflict": false
+    },
+    "released": [
+      {
+        "backend": "jj-git",
+        "store": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash/.jj/repo/store/git",
+        "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash",
+        "operation": "c7a90a78b4ce227d22b85724893d12c92db115787ccbdd4c0086bf8bb75b1e612fce4e39de89620d9a36a5efefa3c90a5449723cbdde2b039dfeba8b74d1ae49",
+        "change": "ppomlrkvrutsxoqkkltypypmwzwvwunp",
+        "commit": "f022889bb981fd9ea340b4b2cbb9ff4c9d6a23fa",
+        "tree": "9c47ee7c5931ac59125b9e96ad7d013e6909291d",
+        "conflict": false
+      },
+      {
+        "backend": "jj-git",
+        "store": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash-other/.jj/repo/store/git",
+        "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-x23_ceja/crash-other",
+        "operation": "84ca5634157e8260ada6109b05a1682723dbb3baf05c7d0028daea2b20dbe832065b8ffc92dcf01bb0bd8c8d1b953ae8777d5174f9c064ba180b05666804418f",
+        "change": "pyowkrukovystvvqlslunwyvqqmrsooo",
+        "commit": "7fd248b8814b235a8a39b9f10d98bc5fa69fecf6",
+        "tree": "187c9ad549d4c2a5305978f5304db7f74f1bd376",
+        "conflict": false
+      }
+    ]
+  },
+  "version": "jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "outcome": "passed",
+  "slice": "crash",
+  "fixture_removed": true
+}

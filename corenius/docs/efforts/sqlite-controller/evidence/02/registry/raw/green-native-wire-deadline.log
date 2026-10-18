@@ -1,0 +1,9 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.41s
+     Running unittests src/lib.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-11309043649fa783)
+
+running 1 test
+test native_ws::tests::partial_native_frame_cannot_extend_absolute_rpc_deadline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

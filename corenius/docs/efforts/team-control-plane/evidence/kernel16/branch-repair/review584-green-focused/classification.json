@@ -1,0 +1,174 @@
+{
+  "status": "session68791 terminal101 setup TEMPORAL_ADDRESS missing;26individualpasses,not suitegreen",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "0f142eee94e586770e75c86ee85fdc6099c80f458597290ff1b5f2f59f50f22b"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "stopped-result-release.json",
+      "sha256": "3124c88662fd9d69cd7406762ae717b4cad9d412aee62647f21865eb1e822bcc"
+    },
+    {
+      "path": "capacity-one-replacement.json",
+      "sha256": "8e7c3323d2cb060ffcfcf895cf7215ed0aa859c88509a337fc9b695fa148e746"
+    },
+    {
+      "path": "ready-lead-native-child-terminal.json",
+      "sha256": "a0752c31ae36b7858a90366907d780ab81e3e970a1ba57930fe05bb00bc5edf0"
+    },
+    {
+      "path": "ready-lead-own-unknown.json",
+      "sha256": "384205bfb2dd4be0b2f5bde45d18dc072c70b17a165cb55350286d9ba572daab"
+    },
+    {
+      "path": "review580-capacity.json",
+      "sha256": "997f6301a3218a1ec45ea116d2608263bca6f6aebd59529265092a15c35b12b1"
+    },
+    {
+      "path": "review571-uncertain-allocation.json",
+      "sha256": "970d1713c41a2ee5ed07dfb347d47fdc02ed44d98a063f539e55458cff56ab4c"
+    },
+    {
+      "path": "review571-uncertain-sibling.json",
+      "sha256": "a6e2d3504e8eb7a20b97ab281850f123c281cc6c587153dc43eb6896519369be"
+    },
+    {
+      "path": "review571-unresolved-yield.json",
+      "sha256": "684b77ebf79f0d17a8c2c4d8ca7d8687669602e381b78c8608bf4a68f2742c5a"
+    },
+    {
+      "path": "review571-old-yield.json",
+      "sha256": "0e28a9767f6590783db91d514170fcf2532f1d890aeaac9eb160d775fc965d6c"
+    },
+    {
+      "path": "review571-native-cancel-false.json",
+      "sha256": "dcf3a18b1abff01e52fa70d06f848512e6d472b2cc5df6957a58e8f1c31dd5e1"
+    },
+    {
+      "path": "nested-worker-terminal.json",
+      "sha256": "7ce015ef4dd9a09d5ef3fd1160ba59b19d1330349ae5faaaa5b4ecebad88996b"
+    },
+    {
+      "path": "cleanup-unknown-effect.json",
+      "sha256": "89b7adc2f3f8530a935ade25fd8a043de545facd1e85db79cc8d7ea7d4f2ad34"
+    },
+    {
+      "path": "worker-cleanup-unknown-effect.json",
+      "sha256": "771dd8311fb1d0e7d790da5c1ee11643be043f8e0b4ce5e8be3cabf2714a8fc3"
+    },
+    {
+      "path": "cancel-unknown-effect-evidence.json",
+      "sha256": "c8d39253e3a7a07e4aa4c2934411fee192e104e91c09e93f20bd2be9ef0a70c4"
+    },
+    {
+      "path": "review571-native-cancel-true.json",
+      "sha256": "3720e00c3ff180f9895b56e113deec1a4eeb04c9a83ce321d1faa88a53f0f0db"
+    },
+    {
+      "path": "review571-imported-unresolved-yield.json",
+      "sha256": "c26c1cbeb74963861cb77a124b8192f80da7ae35c0e87951082d8f968035df5c"
+    },
+    {
+      "path": "cleanup-unknown-usage.json",
+      "sha256": "89b7adc2f3f8530a935ade25fd8a043de545facd1e85db79cc8d7ea7d4f2ad34"
+    },
+    {
+      "path": "worker-cleanup-unknown-usage.json",
+      "sha256": "c7ac045073222b05a76fb84077c9511f2a8a56ad47bbe70597e210ac8df70586"
+    },
+    {
+      "path": "cancel-unknown-usage-evidence.json",
+      "sha256": "76b3787fc6e376a7d3f3b539df709731d7b8ec931c061ae9c84229ad7ad2bad7"
+    },
+    {
+      "path": "review571-unallocated-continuation.json",
+      "sha256": "88a60432a7a2b55bcf7b77a4b7eba881cd8a5ffb1a00c644d5d5e27ec784f94a"
+    },
+    {
+      "path": "review571-no-allocation.json",
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "path": "review571-unallocated-verifier.json",
+      "sha256": "a9a493b93d6a16ba0b07b27e7d51dd138147c9e0cdb0b46e8e45b7eb25ab9729"
+    },
+    {
+      "path": "cleanup-known-physical.json",
+      "sha256": "89b7adc2f3f8530a935ade25fd8a043de545facd1e85db79cc8d7ea7d4f2ad34"
+    },
+    {
+      "path": "worker-cleanup-known-physical.json",
+      "sha256": "1b8acd8d92b8731318a4176ed75a634883f6858b978ff300e64f0837091d4485"
+    },
+    {
+      "path": "cancel-known-physical-evidence.json",
+      "sha256": "a35378c86ee1e9f0181ccef088b6d1f32ff41e0daab50d5e858e41ee568f2b83"
+    },
+    {
+      "path": "ready-own-native-child-terminal.json",
+      "sha256": "19a98b42ffa10a339be63f2ced70c1e35ac857f641e25a948e65d21959009a18"
+    },
+    {
+      "path": "ready-own-unknown.json",
+      "sha256": "b19c87f06e115d5306a2cfd28ecc0b50b209405fa7f3c472a8069ba2f0dbf8f4"
+    },
+    {
+      "path": "cancel-command-response.json",
+      "sha256": "ec44cfc7e2428c310993bbd5b28ae561fa0437625e70709624ef155ab05f7345"
+    },
+    {
+      "path": "reservation-sharing.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "paused-episode-driver.json",
+      "sha256": "bb8ba83e7d2d9a52b5afeeb9b75ba5639a8c45283419d04d1e9cea58b541d675"
+    },
+    {
+      "path": "reservation-stop-finalization.json",
+      "sha256": "5d81d14e376a6624dda48736bea918374d96b650d6a37b64c42280dd8151ca25"
+    },
+    {
+      "path": "fresh-status-after-lost-pause.json",
+      "sha256": "7024abb75d5eb6d3105a26d51ceb2419afda8ab3631a6d3ff4999d4fc530eadd"
+    },
+    {
+      "path": "borrowed-stop-cancellation.json",
+      "sha256": "f970a9ad984b47abcb642ec4a120b55e6d2fe7aaf1cb85086b9900c58d08f083"
+    },
+    {
+      "path": "unbound-start-cancellation.json",
+      "sha256": "7c5f78950f287c72f7a49851488f010bce8ee688f4fe2ce246af7da697bbb135"
+    },
+    {
+      "path": "confirmed-unbound-episode.json",
+      "sha256": "42cd6386e18b127f5a47af2bd71888a8aa51083c3614685e60aa90d8042ea93f"
+    },
+    {
+      "path": "colliding-waits.json",
+      "sha256": "ae7541205c5469b41fb561208ec32c42ad7d4ded42393f7eb73635bf01ccd406"
+    },
+    {
+      "path": "cancelled-episode-driver.json",
+      "sha256": "048a6cbcc023f9a2ff0af1c6798ffc0837acb89429999283b8ea15e0cba1f30f"
+    },
+    {
+      "path": "unbound-cancellation-refund.json",
+      "sha256": "fd10d454967021e0c831be415936f042813f41c9579fc840f0fd18d74488977c"
+    },
+    {
+      "path": "cancel-journal-progress.json",
+      "sha256": "e8f6831381912eb3e91e8e4ed9525a74bfccc0165d451d05dd0f52fcc796415b"
+    },
+    {
+      "path": "cancel-after-monitor-claim.json",
+      "sha256": "2b6ce73949f6731f945028e47901bee9deb665146140913bbf6feb6b6d82bbea"
+    }
+  ],
+  "acceptance": "focused only; fullmatrix and reviews pending"
+}

@@ -1,0 +1,1111 @@
+{
+  "schema": "corenius.salvage_prune_progress.v2",
+  "commit_read": "f69c109b18f009a7db475b31e2da43f5e3a644e2",
+  "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f",
+  "mainline_status": "clean",
+  "remaining_counts": {
+    "worktrees": 58,
+    "branches": 73
+  },
+  "artifacts": {
+    "full-tree-retirement-receipts.json": {
+      "sha256": "3dd3b371c95d580c51c6bd7220690132cf2291d860b89dc98fda647e0ac01065",
+      "record": [
+        {
+          "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-20261007",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-20261007",
+          "head": "29ed63e847753594ebd8ba63a40c2c2883d1f7ac",
+          "branch": "refs/heads/codex/landing-queue-20261007",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-landing-20261007"
+        },
+        {
+          "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-combined-20261007",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-combined-20261007",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-combined-20261007",
+          "head": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1",
+          "branch": "refs/heads/codex/landing-combined-20261007",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-landing-combined-20261007"
+        },
+        {
+          "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-docs-20261007",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-docs-20261007",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-docs-20261007",
+          "head": "6b67eafe573f763af65cc78bcfb13352194c4601",
+          "branch": "refs/heads/codex/landing-docs-20261007",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-landing-docs-20261007"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-aime-hardening",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-aime-hardening",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-aime-hardening",
+          "head": "a8e7e30805f92571765fc891877e50054d479792",
+          "branch": "refs/heads/aime-harness-hardening",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-aime-hardening"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-collab-spike",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-collab-spike",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-collab-spike",
+          "head": "049d79f42bef9be78951356eaece0957e9333585",
+          "branch": "refs/heads/claude/collab-spike",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-collab-spike"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-m1-sync",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-m1-sync",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-m1-sync",
+          "head": "680651de81c45c82371f615e02395d9c5821b330",
+          "branch": "refs/heads/claude/m1-sync-local-trackers",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-m1-sync"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-m3-interception",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-m3-interception",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-m3-interception",
+          "head": "1ba387ad07dc25ba9ba5bdc5d6aedba3764bcac1",
+          "branch": "refs/heads/claude/m3-interception",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-m3-interception"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-mb",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-mb",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-mb",
+          "head": "366361b5a46045823cf6b45941c66ad8379dfebe",
+          "branch": "refs/heads/claude/milestone-b",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-mb"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-multi-agent-bench",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-multi-agent-bench",
+          "head": "0d107b1776a87bee8d1def23f7e56af6a87f3456",
+          "branch": "refs/heads/effort/multi-agent-bench",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-multi-agent-bench"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-tmuxh",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-tmuxh",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-tmuxh",
+          "head": "55964db2acb2171f8c64d867f58aa2109d25b771",
+          "branch": "refs/heads/claude/tmuxh",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-tmuxh"
+        },
+        {
+          "original": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mechanism",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mechanism",
+          "head": "03368f42253dd344c6230d8381fc855f4b7af698",
+          "branch": "refs/heads/claude/worker-mechanism",
+          "preservation": "whole directory renamed on same filesystem; device/inode unchanged; all ignored contents retained",
+          "registered_gitdir": "/data02/home/philip.yang/workspace/corenius/.git/worktrees/corenius-worker-mechanism"
+        }
+      ]
+    },
+    "merged-pending-retirement-receipts.json": {
+      "sha256": "243555e4716e3cf95a72b9181e65faec867e2d705b02c4d0f03ba3754cfd4495",
+      "record": {
+        "retired": [
+          {
+            "original": "/data02/home/philip.yang/.local/share/kata-spike/trae-probe",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/trae-probe",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/trae-probe",
+            "head": "1a662cca7389172fde3894ab76354818c08036a7",
+            "branch": null,
+            "pending_entries": 5,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-controller-20261007",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-controller-20261007",
+            "head": "9a92c9523102af409e86f9d59a480f32f0a77c2b",
+            "branch": "refs/heads/codex/landing-controller-20261007",
+            "pending_entries": 133,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-readiness-fixes-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-readiness-fixes-20261007",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-landing-readiness-fixes-20261007",
+            "head": "9a92c9523102af409e86f9d59a480f32f0a77c2b",
+            "branch": "refs/heads/codex/landing-readiness-fixes-20261007",
+            "pending_entries": 152,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-registry-diagnosis-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-registry-diagnosis-20261007",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-registry-diagnosis-20261007",
+            "head": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1",
+            "branch": null,
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-report-fix-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-report-fix-20261007",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-report-fix-20261007",
+            "head": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1",
+            "branch": null,
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-artifact-acceptance",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-artifact-acceptance",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/artifact-acceptance",
+            "pending_entries": 93,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-controller-backed-bench",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-controller-backed-bench",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-controller-backed-bench",
+            "head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd",
+            "branch": "refs/heads/codex/controller-backed-bench",
+            "pending_entries": 8,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-gateway-journal",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-gateway-journal",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-gateway-journal",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/gateway-journal",
+            "pending_entries": 86,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-intent26-contracts",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-intent26-contracts",
+            "head": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+            "branch": "refs/heads/codex-intent26/contracts",
+            "pending_entries": 865,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-jj-preflight",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-jj-preflight",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-jj-preflight",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/jj-preflight",
+            "pending_entries": 130,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-kernel-proof",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-kernel-proof",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-kernel-proof",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/kernel-proof",
+            "pending_entries": 251,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-mailbox-lead",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-mailbox-lead",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/mailbox-lead",
+            "pending_entries": 173,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-pi-env-deep-dive",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-pi-env-deep-dive",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-pi-env-deep-dive",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/codex/pi-env-deep-dive",
+            "pending_entries": 14,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-semantic-polyglot-layout",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-semantic-polyglot-layout",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-semantic-polyglot-layout",
+            "head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd",
+            "branch": "refs/heads/codex/semantic-polyglot-layout",
+            "pending_entries": 9,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-supervised-environments",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-supervised-environments",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-supervised-environments",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/supervised-environments",
+            "pending_entries": 137,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-temporal-bridge",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-codex-temporal-bridge",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/temporal-bridge",
+            "pending_entries": 128,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-kernel-admission",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-kernel-admission",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-kernel-admission",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/kernel-admission",
+            "pending_entries": 16,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-postgres-feasibility",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-postgres-feasibility",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-postgres-feasibility",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/codex/postgres-feasibility",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-qwen3-training-bringup",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-qwen3-training-bringup",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-qwen3-training-bringup",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/codex/qwen3-training-bringup",
+            "pending_entries": 21,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-control-plane-sources",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-control-plane-sources",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-research-control-plane-sources",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/research/control-plane-sources",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-pi-durable",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-pi-durable",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-research-pi-durable",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/research/pi-durable",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-pi-effect-probe",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-pi-effect-probe",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-research-pi-effect-probe",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/research/pi-effect-probe",
+            "pending_entries": 4,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-pi-env",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-pi-env",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-research-pi-env",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/research/pi-env",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-trae-runtime",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-trae-runtime",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-research-trae-runtime",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": "refs/heads/research/trae-runtime",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-setup-matt-pocock-skills",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-setup-matt-pocock-skills",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-setup-matt-pocock-skills",
+            "head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd",
+            "branch": "refs/heads/codex/setup-matt-pocock-skills",
+            "pending_entries": 4,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-temporal-spike",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-temporal-spike",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-temporal-spike",
+            "head": "963f58b31e518a8162dfe719e386ef9d9843321f",
+            "branch": null,
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-01",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-bench-01",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-trae-controller-bench-01",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/trae/controller-bench-01",
+            "pending_entries": 14,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-02",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-bench-02",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-trae-controller-bench-02",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/trae/controller-bench-02",
+            "pending_entries": 27,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-runtime",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-bench-runtime",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-trae-controller-bench-runtime",
+            "head": "d7f674829e9844d011869b711d64fcf55313f7f1",
+            "branch": "refs/heads/trae/controller-bench-runtime",
+            "pending_entries": 20,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-c",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-c",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-author-c",
+            "head": "145eb116a0fd41156aadc825b9883391901099bc",
+            "branch": "refs/heads/worker/author-c",
+            "pending_entries": 58,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-mh1-py-inventory",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-mh1-py-inventory",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-author-mh1-py-inventory",
+            "head": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+            "branch": "refs/heads/worker/author-mh1-py-inventory",
+            "pending_entries": 37,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-mh2-rs-scheduler",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-mh2-rs-scheduler",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-author-mh2-rs-scheduler",
+            "head": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+            "branch": "refs/heads/worker/author-mh2-rs-scheduler",
+            "pending_entries": 46,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-mh3-cxx-engine",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-mh3-cxx-engine",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-author-mh3-cxx-engine",
+            "head": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+            "branch": "refs/heads/worker/author-mh3-cxx-engine",
+            "pending_entries": 42,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-pr",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-pr",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-author-pr",
+            "head": "145eb116a0fd41156aadc825b9883391901099bc",
+            "branch": "refs/heads/worker/author-pr",
+            "pending_entries": 65,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-t",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-t",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-author-t",
+            "head": "145eb116a0fd41156aadc825b9883391901099bc",
+            "branch": "refs/heads/worker/author-t",
+            "pending_entries": 47,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-1",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-blade-author-1",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-blade-author-1",
+            "head": "2469854f28ce3533e7c808b0949ebbbb886911f5",
+            "branch": "refs/heads/worker/blade-author-1",
+            "pending_entries": 81,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-2",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-blade-author-2",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-blade-author-2",
+            "head": "2469854f28ce3533e7c808b0949ebbbb886911f5",
+            "branch": "refs/heads/worker/blade-author-2",
+            "pending_entries": 82,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-3",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-blade-author-3",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-blade-author-3",
+            "head": "1d77de7698e53ec3878e4dea982b5856bfc24d65",
+            "branch": "refs/heads/worker/blade-author-3",
+            "pending_entries": 31,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-capsule-smoke",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-capsule-smoke",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-capsule-smoke",
+            "head": "da5900683dbb56173d1b5b06f227ccfee1dbf404",
+            "branch": "refs/heads/worker/capsule-smoke",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-claims",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-claims",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-claims",
+            "head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+            "branch": "refs/heads/worker/mb-claims",
+            "pending_entries": 3,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-land",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-land",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-land",
+            "head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+            "branch": "refs/heads/worker/mb-land",
+            "pending_entries": 3,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-msg",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-msg",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-msg",
+            "head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+            "branch": "refs/heads/worker/mb-msg",
+            "pending_entries": 3,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-tracker",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-tracker",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-tracker",
+            "head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+            "branch": "refs/heads/worker/mb-tracker",
+            "pending_entries": 3,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-wt-core",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-wt-core",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-mb-wt-core",
+            "head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+            "branch": "refs/heads/worker/mb-wt-core",
+            "pending_entries": 3,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-blade",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-blade",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-research-blade",
+            "head": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+            "branch": "refs/heads/worker/research-blade",
+            "pending_entries": 746,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-blade-cuda",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-blade-cuda",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-research-blade-cuda",
+            "head": "57ef679a5a9d4894d090024e0655f437ed182b31",
+            "branch": "refs/heads/worker/research-blade-cuda",
+            "pending_entries": 13,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-insula",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-insula",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-research-insula",
+            "head": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+            "branch": "refs/heads/worker/research-insula",
+            "pending_entries": 77,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-tasks",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-tasks",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-research-tasks",
+            "head": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+            "branch": "refs/heads/worker/research-tasks",
+            "pending_entries": 219,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-trial2",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-trial2",
+            "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-worker-trial2",
+            "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+            "branch": "refs/heads/worker/trial2",
+            "pending_entries": 1,
+            "pending_snapshot_matches": true,
+            "preservation": "same-filesystem whole directory rename, all ignored contents retained; metadata copied; no file content discarded"
+          }
+        ],
+        "skipped": [
+          {
+            "path": "/data02/home/philip.yang/.local/share/kata-spike/repo",
+            "live_pid": 2503565
+          },
+          {
+            "path": "/data02/home/philip.yang/workspace/corenius-codex-controller-bench-integration",
+            "live_pid": 660254
+          },
+          {
+            "path": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation",
+            "live_pid": 665477
+          },
+          {
+            "path": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-03",
+            "live_pid": 630090
+          }
+        ]
+      }
+    },
+    "nested-mainline-retirement.json": {
+      "sha256": "5e6d40ebe245b9d24f1d9113556499f019b5855fdcfe602b155de23e1e59823d",
+      "record": {
+        "original": "/data02/home/philip.yang/workspace/corenius/.claude/worktrees/agent-a74425ca9ef305e92",
+        "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/agent-a74425ca9ef305e92",
+        "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/agent-a74425ca9ef305e92",
+        "pending_file_sha256": "ebb4fa909e7f8e1d696e49855cd076698896a7a941b44becb1af79633801291c",
+        "disposition": "superseded exact prefix of newer main report; independent read-only audit confirmed no other unique source",
+        "parent_removed": "empty directory only"
+      }
+    },
+    "mainline-private-receipt.json": {
+      "sha256": "0967a71141a52fa96ecc44bffbd76afae3a90eb238bda2a5d02a4257e0bf3d83",
+      "record": {
+        "original": "/data02/home/philip.yang/workspace/corenius/2026-10-01-013755-this-session-is-being-continued-from-a-previous-c.txt",
+        "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/mainline-private/2026-10-01-013755-this-session-is-being-continued-from-a-previous-c.txt",
+        "sha256": "eecaa71baf2ffdd77bd3e084655bc2d36b324200f2de4ad0c04e56750a2b154a",
+        "preservation": "same-filesystem rename; inode and byte digest verified"
+      }
+    },
+    "tar-tree-retirement-receipts.json": {
+      "sha256": "0d33fee6b9c9d1d2a51c783fb9b29158d07492b9bc8e1c5fdc895aeaeb959bc2",
+      "record": [
+        {
+          "original": "/tmp/corenius-land-pending-20261004",
+          "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-tar-trees/corenius-land-pending-20261004.tar.gz",
+          "metadata": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-metadata/corenius-land-pending-20261004",
+          "head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd",
+          "branch": "codex/land-pending-20261004",
+          "files_verified": 12359,
+          "hardlinks_verified": 43,
+          "verification_correction": "Initial verifier omitted hardlinks; random-access retry was stopped because gzip hardlink reads repeatedly decompress. Single streaming pass verifies file digests and prior-entry hardlink identity; archive and source were preserved throughout."
+        }
+      ]
+    },
+    "recovery-probe-results.json": {
+      "sha256": "2e24d232dc030808363ec0eb57b027b788483a82ba2abfda0fa9f9b8aafcc8c0",
+      "record": {
+        "method": "Copied preserved git metadata; bound absolute common dir and detached recorded HEAD to archived full directory; git status compared byte-for-byte with original snapshot",
+        "results": [
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "29ed63e847753594ebd8ba63a40c2c2883d1f7ac"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-combined-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-combined-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-docs-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-docs-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "6b67eafe573f763af65cc78bcfb13352194c4601"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-aime-hardening",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-aime-hardening",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "a8e7e30805f92571765fc891877e50054d479792"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-collab-spike",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-collab-spike",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "049d79f42bef9be78951356eaece0957e9333585"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-m1-sync",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-m1-sync",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "680651de81c45c82371f615e02395d9c5821b330"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-m3-interception",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-m3-interception",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "1ba387ad07dc25ba9ba5bdc5d6aedba3764bcac1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-mb",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-mb",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "366361b5a46045823cf6b45941c66ad8379dfebe"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-multi-agent-bench",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "0d107b1776a87bee8d1def23f7e56af6a87f3456"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-tmuxh",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-tmuxh",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "55964db2acb2171f8c64d867f58aa2109d25b771"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mechanism",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "03368f42253dd344c6230d8381fc855f4b7af698"
+          },
+          {
+            "original": "/data02/home/philip.yang/.local/share/kata-spike/trae-probe",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/trae-probe",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "1a662cca7389172fde3894ab76354818c08036a7"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-controller-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "9a92c9523102af409e86f9d59a480f32f0a77c2b"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-landing-readiness-fixes-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-landing-readiness-fixes-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "9a92c9523102af409e86f9d59a480f32f0a77c2b"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-registry-diagnosis-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-registry-diagnosis-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1"
+          },
+          {
+            "original": "/data02/home/philip.yang/devx/tmp/corenius-report-fix-20261007",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-report-fix-20261007",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "60735f1f14b6c1aef8b3c9a6f370375e0ef015e1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-artifact-acceptance",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-controller-backed-bench",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-controller-backed-bench",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-gateway-journal",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-gateway-journal",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-intent26-contracts",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-jj-preflight",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-jj-preflight",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-kernel-proof",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-kernel-proof",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-mailbox-lead",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-pi-env-deep-dive",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-pi-env-deep-dive",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-semantic-polyglot-layout",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-semantic-polyglot-layout",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-supervised-environments",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-supervised-environments",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-codex-temporal-bridge",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-kernel-admission",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-kernel-admission",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-postgres-feasibility",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-postgres-feasibility",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-qwen3-training-bringup",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-qwen3-training-bringup",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-control-plane-sources",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-control-plane-sources",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-pi-durable",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-pi-durable",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-pi-effect-probe",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-pi-effect-probe",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-pi-env",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-pi-env",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-research-trae-runtime",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-research-trae-runtime",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-setup-matt-pocock-skills",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-setup-matt-pocock-skills",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-temporal-spike",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-temporal-spike",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "963f58b31e518a8162dfe719e386ef9d9843321f"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-01",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-bench-01",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-02",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-bench-02",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-runtime",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-trae-controller-bench-runtime",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "d7f674829e9844d011869b711d64fcf55313f7f1"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-c",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-c",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "145eb116a0fd41156aadc825b9883391901099bc"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-mh1-py-inventory",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-mh1-py-inventory",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-mh2-rs-scheduler",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-mh2-rs-scheduler",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-mh3-cxx-engine",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-mh3-cxx-engine",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-pr",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-pr",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "145eb116a0fd41156aadc825b9883391901099bc"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-author-t",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-author-t",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "145eb116a0fd41156aadc825b9883391901099bc"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-1",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-blade-author-1",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "2469854f28ce3533e7c808b0949ebbbb886911f5"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-2",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-blade-author-2",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "2469854f28ce3533e7c808b0949ebbbb886911f5"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-3",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-blade-author-3",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "1d77de7698e53ec3878e4dea982b5856bfc24d65"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-capsule-smoke",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-capsule-smoke",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "da5900683dbb56173d1b5b06f227ccfee1dbf404"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-claims",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-claims",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-land",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-land",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-msg",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-msg",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-tracker",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-tracker",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-mb-wt-core",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-mb-wt-core",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-blade",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-blade",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "62f4f322e877ab03835d9e2a27da3a0383caccfb"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-blade-cuda",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-blade-cuda",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "57ef679a5a9d4894d090024e0655f437ed182b31"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-insula",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-insula",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "62f4f322e877ab03835d9e2a27da3a0383caccfb"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-research-tasks",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-research-tasks",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "62f4f322e877ab03835d9e2a27da3a0383caccfb"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius-worker-trial2",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-worker-trial2",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "e0d55e2fbd196ca00365426c7fca55804d86a726"
+          },
+          {
+            "original": "/data02/home/philip.yang/workspace/corenius/.claude/worktrees/agent-a74425ca9ef305e92",
+            "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/agent-a74425ca9ef305e92",
+            "status_matches_preserved_snapshot": true,
+            "reconstructed_head": "48d71588fff00ac70fa4a29e066a47a6b05f2ebd"
+          }
+        ]
+      }
+    },
+    "independent-recovery-results.json": {
+      "sha256": "83832f17a3810491ac2dcbb34b37c03da5ad7faa3b11613039028d7bf9dacd37",
+      "record": {
+        "bundle_only_recovery_repo": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/independent-recovery-repo",
+        "status_reconstruction_verified": [
+          "/data02/home/philip.yang/devx/tmp/corenius-landing-20261007",
+          "/data02/home/philip.yang/devx/tmp/corenius-landing-combined-20261007",
+          "/data02/home/philip.yang/devx/tmp/corenius-landing-docs-20261007",
+          "/data02/home/philip.yang/workspace/corenius-aime-hardening",
+          "/data02/home/philip.yang/workspace/corenius-collab-spike",
+          "/data02/home/philip.yang/workspace/corenius-m1-sync",
+          "/data02/home/philip.yang/workspace/corenius-m3-interception",
+          "/data02/home/philip.yang/workspace/corenius-mb",
+          "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+          "/data02/home/philip.yang/workspace/corenius-tmuxh",
+          "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+          "/data02/home/philip.yang/.local/share/kata-spike/trae-probe",
+          "/data02/home/philip.yang/devx/tmp/corenius-landing-controller-20261007",
+          "/data02/home/philip.yang/devx/tmp/corenius-landing-readiness-fixes-20261007",
+          "/data02/home/philip.yang/devx/tmp/corenius-registry-diagnosis-20261007",
+          "/data02/home/philip.yang/devx/tmp/corenius-report-fix-20261007",
+          "/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance",
+          "/data02/home/philip.yang/workspace/corenius-codex-controller-backed-bench",
+          "/data02/home/philip.yang/workspace/corenius-codex-gateway-journal",
+          "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+          "/data02/home/philip.yang/workspace/corenius-codex-jj-preflight",
+          "/data02/home/philip.yang/workspace/corenius-codex-kernel-proof",
+          "/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead",
+          "/data02/home/philip.yang/workspace/corenius-codex-pi-env-deep-dive",
+          "/data02/home/philip.yang/workspace/corenius-codex-semantic-polyglot-layout",
+          "/data02/home/philip.yang/workspace/corenius-codex-supervised-environments",
+          "/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge",
+          "/data02/home/philip.yang/workspace/corenius-kernel-admission",
+          "/data02/home/philip.yang/workspace/corenius-postgres-feasibility",
+          "/data02/home/philip.yang/workspace/corenius-qwen3-training-bringup",
+          "/data02/home/philip.yang/workspace/corenius-research-control-plane-sources",
+          "/data02/home/philip.yang/workspace/corenius-research-pi-durable",
+          "/data02/home/philip.yang/workspace/corenius-research-pi-effect-probe",
+          "/data02/home/philip.yang/workspace/corenius-research-pi-env",
+          "/data02/home/philip.yang/workspace/corenius-research-trae-runtime",
+          "/data02/home/philip.yang/workspace/corenius-setup-matt-pocock-skills",
+          "/data02/home/philip.yang/workspace/corenius-temporal-spike",
+          "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-01",
+          "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-02",
+          "/data02/home/philip.yang/workspace/corenius-trae-controller-bench-runtime",
+          "/data02/home/philip.yang/workspace/corenius-worker-author-c",
+          "/data02/home/philip.yang/workspace/corenius-worker-author-mh1-py-inventory",
+          "/data02/home/philip.yang/workspace/corenius-worker-author-mh2-rs-scheduler",
+          "/data02/home/philip.yang/workspace/corenius-worker-author-mh3-cxx-engine",
+          "/data02/home/philip.yang/workspace/corenius-worker-author-pr",
+          "/data02/home/philip.yang/workspace/corenius-worker-author-t",
+          "/data02/home/philip.yang/workspace/corenius-worker-blade-author-1",
+          "/data02/home/philip.yang/workspace/corenius-worker-blade-author-2",
+          "/data02/home/philip.yang/workspace/corenius-worker-blade-author-3",
+          "/data02/home/philip.yang/workspace/corenius-worker-capsule-smoke",
+          "/data02/home/philip.yang/workspace/corenius-worker-mb-claims",
+          "/data02/home/philip.yang/workspace/corenius-worker-mb-land",
+          "/data02/home/philip.yang/workspace/corenius-worker-mb-msg",
+          "/data02/home/philip.yang/workspace/corenius-worker-mb-tracker",
+          "/data02/home/philip.yang/workspace/corenius-worker-mb-wt-core",
+          "/data02/home/philip.yang/workspace/corenius-worker-research-blade",
+          "/data02/home/philip.yang/workspace/corenius-worker-research-blade-cuda",
+          "/data02/home/philip.yang/workspace/corenius-worker-research-insula",
+          "/data02/home/philip.yang/workspace/corenius-worker-research-tasks",
+          "/data02/home/philip.yang/workspace/corenius-worker-trial2",
+          "/data02/home/philip.yang/workspace/corenius/.claude/worktrees/agent-a74425ca9ef305e92"
+        ],
+        "original_common_gitdir_used": false
+      }
+    }
+  },
+  "remaining_work": "Recover and disposition unmerged histories and remaining cross-filesystem trees; reconcile effort pointers after retirement; obtain active-owner handoff; final all-ref/worktree audit. Goal remains active."
+}

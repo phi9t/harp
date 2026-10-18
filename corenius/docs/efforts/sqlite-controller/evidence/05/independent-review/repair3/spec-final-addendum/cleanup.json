@@ -1,0 +1,503 @@
+{
+  "all_recorded_terminal": true,
+  "recorded_identity_count": 22,
+  "identities": [
+    {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "CORENIUS_TEST_TOPOLOGY=shared",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:16:43.635085+00:00",
+      "pid": 3266417,
+      "start_ticks": "58218393",
+      "exit": 1,
+      "seconds": 56.80624371999875,
+      "log_sha256": "be2eb007456e6cdb1d57cfcecf74ad3bfdb91a8e9a94e56101100c55adeacb40",
+      "finished_utc": "2026-10-05T02:17:40.441027+00:00",
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.run.json",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "command": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress-probe.py"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:15:29.583090+00:00",
+      "pid": 3253914,
+      "start_ticks": "58210988",
+      "exit": 0,
+      "seconds": 6.463947333046235,
+      "log_sha256": "45fe29c91aadc0af6f86705c1fae8c1aea4aa2e9763fcf33a1e2d49e5094e339",
+      "finished_utc": "2026-10-05T02:15:36.046641+00:00",
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.run.json",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "CORENIUS_TEST_TOPOLOGY=shared",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver-v2.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:19:07.140988+00:00",
+      "pid": 3305359,
+      "start_ticks": "58232743",
+      "exit": 0,
+      "seconds": 36.65800627192948,
+      "log_sha256": "cd9b8c8a332e93066069746d00390101de1ebcdbbf496acc12f9ac5fab64682a",
+      "finished_utc": "2026-10-05T02:19:43.798692+00:00",
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.run.json",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3271119,
+      "start_ticks": "58220066",
+      "execution_handle": "fa92fccc-9b22-413f-8835-1b6efcc8a147",
+      "pid_namespace": 4026539642,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3271122,
+      "start_ticks": "58220068",
+      "execution_handle": "cc289ef8-ccca-41de-8cdc-1f3191db83b6",
+      "pid_namespace": 4026539763,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3271793,
+      "start_ticks": "58220120",
+      "execution_handle": "624a44ab-e4b0-4094-9e3e-44ecdee61a36",
+      "pid_namespace": 4026539863,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3276861,
+      "start_ticks": "58221404",
+      "execution_handle": "8f111de7-0a02-4ccf-90c0-48c1fe4810fa",
+      "pid_namespace": 4026540871,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "workers",
+      "pid": 3266527,
+      "start_stat": "3266527 (corenius-attemp) R 3266417 3266407 3266407 0 -1 4194304 135 0 0 0 2 0 0 0 20 0 1 0 58218450 4763648 297 18446744073709551615 94646273967072 94646275323600 140734780147632 0 0 0 0 4096 1088 0 0 0 17 128 0 0 0 0 0 94646275402312 94646275404856 94646301782016 140734780153438 140734780153607 140734780153607 140734780153741 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-qu6309lz/workers.json",
+        "/tmp/cnr-qu6309lz/workers.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "sha256": "bcf2f5ee5c870f03b90cb3407cd72c2738b9dab0406f9bdcc47e055a79134a49"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "start_ticks": "58218450",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "controlplanes",
+      "pid": 3268781,
+      "start_stat": "3268781 (corenius-attemp) R 3266417 3266407 3266407 0 -1 4194304 131 0 0 0 2 0 0 0 20 0 1 0 58219246 4763648 297 18446744073709551615 94624536998880 94624538355408 140720629267632 0 0 0 0 4096 1088 0 0 0 17 14 0 0 0 0 0 94624538434120 94624538436664 94624557625344 140720629276238 140720629276419 140720629276419 140720629276557 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-qu6309lz/controlplanes.json",
+        "/tmp/cnr-qu6309lz/controlplanes.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "sha256": "bcf2f5ee5c870f03b90cb3407cd72c2738b9dab0406f9bdcc47e055a79134a49"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "start_ticks": "58219246",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "controller",
+      "pid": 3271022,
+      "start_stat": "3271022 (corenius-sqlite) S 3266417 3266407 3266407 0 -1 1077936128 416 0 0 0 0 0 0 0 20 0 2 0 58220039 81432576 2164 18446744073709551615 94825896551632 94825902622144 140735206333840 0 0 0 0 4096 1088 0 0 0 17 15 0 0 0 0 0 94825902880496 94825902905064 94825926000640 140735206336875 140735206337042 140735206337042 140735206338446 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-qu6309lz/state.db",
+        "/tmp/cnr-qu6309lz/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "sha256": "4312f5e0929bb840487e451a794b4796c61c9ab7392a211aadb416d8642ce0d3"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "start_ticks": "58220039",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "controller-restarted",
+      "pid": 3275838,
+      "start_stat": "3275838 (corenius-sqlite) S 3266417 3266407 3266407 0 -1 1077936128 365 0 0 0 0 0 0 0 20 0 2 0 58221272 80916480 1963 18446744073709551615 94827589227728 94827595298240 140729282935120 0 0 0 0 4096 1088 0 0 0 17 8 0 0 0 0 0 94827595556592 94827595581160 94827625136128 140729282943339 140729282943506 140729282943506 140729282944910 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-qu6309lz/state.db",
+        "/tmp/cnr-qu6309lz/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "sha256": "4312f5e0929bb840487e451a794b4796c61c9ab7392a211aadb416d8642ce0d3"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "start_ticks": "58221272",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "supervisor",
+      "pid": 3253998,
+      "start_ticks": "58210997",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "/tmp/g4-6yzpa2s4/supervisor.json",
+        "/tmp/g4-6yzpa2s4/supervisor.sock"
+      ],
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "controller",
+      "pid": 3254034,
+      "start_ticks": "58211057",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "/tmp/g4-6yzpa2s4/state.db",
+        "/tmp/g4-6yzpa2s4/controller.sock"
+      ],
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3254143,
+      "start_ticks": "58211186",
+      "handle": "892b24bb-d606-46fd-804f-d337920830d6",
+      "pid_namespace": 4026540117,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3254938,
+      "start_ticks": "58211574",
+      "handle": "52a7d97f-042b-41a6-866e-e25dbce5cac9",
+      "pid_namespace": 4026540290,
+      "stopped_before_fixture_cleanup": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3308843,
+      "start_ticks": "58234443",
+      "execution_handle": "bcc4bb3b-04c4-4d61-a485-fd00cbc0b873",
+      "pid_namespace": 4026540526,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3308845,
+      "start_ticks": "58234445",
+      "execution_handle": "bc461c17-e924-4f7b-8164-488dd80d10b7",
+      "pid_namespace": 4026540609,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3309360,
+      "start_ticks": "58234497",
+      "execution_handle": "40ffe857-313e-45dd-8033-fc81bc044126",
+      "pid_namespace": 4026540692,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3313299,
+      "start_ticks": "58235673",
+      "execution_handle": "91314719-1e6b-4e84-9401-60d444d91767",
+      "pid_namespace": 4026539761,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "workers",
+      "pid": 3305383,
+      "start_stat": "3305383 (corenius-attemp) R 3305359 3305351 3305351 0 -1 4194304 133 0 0 0 2 0 0 0 20 0 1 0 58232799 4763648 293 18446744073709551615 94581735457760 94581736814288 140724430980640 0 0 0 0 4096 1088 0 0 0 17 139 0 0 0 0 0 94581736893000 94581736895544 94581742780416 140724430982750 140724430982919 140724430982919 140724430983053 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-d0c9peh_/workers.json",
+        "/tmp/cnr-d0c9peh_/workers.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "sha256": "bcf2f5ee5c870f03b90cb3407cd72c2738b9dab0406f9bdcc47e055a79134a49"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "start_ticks": "58232799",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "controlplanes",
+      "pid": 3305811,
+      "start_stat": "3305811 (corenius-attemp) R 3305359 3305351 3305351 0 -1 4194304 133 0 0 0 2 0 0 0 20 0 1 0 58233612 4763648 296 18446744073709551615 94828934951904 94828936308432 140733580411136 0 0 0 0 4096 1088 0 0 0 17 134 0 0 0 0 0 94828936387144 94828936389688 94828953477120 140733580418638 140733580418819 140733580418819 140733580418957 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "/tmp/cnr-d0c9peh_/controlplanes.json",
+        "/tmp/cnr-d0c9peh_/controlplanes.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-attempt-supervisor",
+        "sha256": "bcf2f5ee5c870f03b90cb3407cd72c2738b9dab0406f9bdcc47e055a79134a49"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "start_ticks": "58233612",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "name": "controller",
+      "pid": 3308804,
+      "start_stat": "3308804 (corenius-sqlite) S 3305359 3305351 3305351 0 -1 1077936128 413 0 0 0 0 0 0 0 20 0 2 0 58234416 81432576 2119 18446744073709551615 94192254239952 94192260310464 140737023966272 0 0 0 0 4096 1088 0 0 0 17 17 0 0 0 0 0 94192260568816 94192260593384 94192261091328 140737023969643 140737023969810 140737023969810 140737023971214 0\n",
+      "argv": [
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "/tmp/cnr-d0c9peh_/state.db",
+        "/tmp/cnr-d0c9peh_/controller.sock"
+      ],
+      "executed_binary": {
+        "path": "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "sha256": "4312f5e0929bb840487e451a794b4796c61c9ab7392a211aadb416d8642ce0d3"
+      },
+      "exit": -9,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "start_ticks": "58234416",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    }
+  ],
+  "namespaces": [
+    {
+      "pid": 3271119,
+      "start_ticks": "58220066",
+      "execution_handle": "fa92fccc-9b22-413f-8835-1b6efcc8a147",
+      "pid_namespace": 4026539642,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3271122,
+      "start_ticks": "58220068",
+      "execution_handle": "cc289ef8-ccca-41de-8cdc-1f3191db83b6",
+      "pid_namespace": 4026539763,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3271793,
+      "start_ticks": "58220120",
+      "execution_handle": "624a44ab-e4b0-4094-9e3e-44ecdee61a36",
+      "pid_namespace": 4026539863,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3276861,
+      "start_ticks": "58221404",
+      "execution_handle": "8f111de7-0a02-4ccf-90c0-48c1fe4810fa",
+      "pid_namespace": 4026540871,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3254143,
+      "start_ticks": "58211186",
+      "handle": "892b24bb-d606-46fd-804f-d337920830d6",
+      "pid_namespace": 4026540117,
+      "stopped_before_fixture_cleanup": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3254938,
+      "start_ticks": "58211574",
+      "handle": "52a7d97f-042b-41a6-866e-e25dbce5cac9",
+      "pid_namespace": 4026540290,
+      "stopped_before_fixture_cleanup": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3308843,
+      "start_ticks": "58234443",
+      "execution_handle": "bcc4bb3b-04c4-4d61-a485-fd00cbc0b873",
+      "pid_namespace": 4026540526,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3308845,
+      "start_ticks": "58234445",
+      "execution_handle": "bc461c17-e924-4f7b-8164-488dd80d10b7",
+      "pid_namespace": 4026540609,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3309360,
+      "start_ticks": "58234497",
+      "execution_handle": "40ffe857-313e-45dd-8033-fc81bc044126",
+      "pid_namespace": 4026540692,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    },
+    {
+      "pid": 3313299,
+      "start_ticks": "58235673",
+      "execution_handle": "91314719-1e6b-4e84-9401-60d444d91767",
+      "pid_namespace": 4026539761,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true,
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "current_same_identity": false,
+      "current_state": "absent",
+      "terminal": true
+    }
+  ],
+  "native_product_cleanup": 3,
+  "native_fixture_signalled": 5,
+  "scope": "Both correction setups and progress run terminal, all positively recorded original PID/start identities; no global process claim or other-tree cleanup."
+}

@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-05T05:32:47.864504+00:00",
+  "actor": "/root/sqlite06_model_link_author",
+  "thread": "01a10a86-8959-7022-a25a-8504f165f2a0",
+  "original_red": {
+    "log": ".scratch/sqlite06-happy-path/model-link/author-red.log",
+    "actual_exit": 101,
+    "passed": 0,
+    "failed": 3
+  },
+  "first_green_attempt": {
+    "log": ".scratch/sqlite06-happy-path/model-link/author-green.log",
+    "actual_exit": 101,
+    "passed": 1,
+    "failed": 2
+  },
+  "fixture_corrections": [
+    "Replay uses exact original request and original revision; changed-model same-ID rejection checks the argument mismatch.",
+    "Worker binding gains only server_id/server_store for actual monitor provenance.",
+    "Worker negative assertion expects existing earlier authorization boundary, rather than the later native authority wording; production code unchanged."
+  ],
+  "authority": "Root adopted fixture completeness corrections; source writer only, no deployment/input/acceptance.",
+  "second_green_attempt": {
+    "log": ".scratch/sqlite06-happy-path/model-link/author-green-fixture-complete.log",
+    "actual_exit": 101,
+    "passed": 2,
+    "failed": 1
+  }
+}

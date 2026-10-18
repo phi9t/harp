@@ -1,0 +1,56 @@
+version = 1
+revision = 3
+requires-python = ">=3.11"
+
+[[package]]
+name = "alpha-calc"
+version = "1.0.0"
+source = { path = "vendor/alpha_calc-1.0.0-py3-none-any.whl" }
+dependencies = [
+    { name = "shared-math" },
+]
+wheels = [
+    { filename = "alpha_calc-1.0.0-py3-none-any.whl", hash = "sha256:0e9c8758643d151af1d085a415c43bfe44677116bd90cc4a8341662e31f991b8" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "shared-math", specifier = "==1.0.0" }]
+
+[[package]]
+name = "beta-calc"
+version = "1.0.1"
+source = { path = "vendor/beta_calc-1.0.1-py3-none-any.whl" }
+dependencies = [
+    { name = "shared-math" },
+]
+wheels = [
+    { filename = "beta_calc-1.0.1-py3-none-any.whl", hash = "sha256:fe32f5ba698c1344653ee2d2219b60e2f43400b1f85f2ae79304c1db24eb36e8" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "shared-math", specifier = "==1.0.0" }]
+
+[[package]]
+name = "p05-offline-wheel-conflict"
+version = "0.0.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "alpha-calc" },
+    { name = "beta-calc" },
+    { name = "shared-math" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alpha-calc", path = "vendor/alpha_calc-1.0.0-py3-none-any.whl" },
+    { name = "beta-calc", path = "vendor/beta_calc-1.0.1-py3-none-any.whl" },
+    { name = "shared-math", path = "vendor/shared_math-1.0.0-py3-none-any.whl" },
+]
+
+[[package]]
+name = "shared-math"
+version = "1.0.0"
+source = { path = "vendor/shared_math-1.0.0-py3-none-any.whl" }
+wheels = [
+    { filename = "shared_math-1.0.0-py3-none-any.whl", hash = "sha256:68ded69762c9a0f148bfd3d233ead48029b97b1e44a9a03c19390f995e2e3f6c" },
+]

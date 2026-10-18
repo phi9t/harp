@@ -1,0 +1,26 @@
+{
+  "phase": "red",
+  "label": "paired-red",
+  "helper_sha256": "89041ef208162bf4380e3a8fd939601298aa31f5a5edb5900040a30fce58a4e2",
+  "driver_sha256": "9eec04db0de74cfa0f8a7ec4fe7539c4457f4ec533901d2285fc9ca8ae70e78e",
+  "command": [
+    "/usr/bin/python3",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/artifact-observations.py",
+    "--output",
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/paired-red-output.json"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/artifact-observations.py\", line 10, in <module>\n    with tarfile.open(a) as archive:\n         ^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/tarfile.py\", line 1662, in open\n    return func(name, \"r\", fileobj, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/tarfile.py\", line 1728, in gzopen\n    fileobj = GzipFile(name, mode + \"b\", compresslevel, fileobj)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/gzip.py\", line 174, in __init__\n    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/accepted-capture-g4-qfzpjpuv.tar.gz'\n",
+  "elapsed_seconds": 0.04833793640136719,
+  "fixture": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz",
+  "process": {
+    "pid": 928815,
+    "start_ticks": "55573010",
+    "waited": true,
+    "exit": 1
+  },
+  "input_manifest_sha256": "0b733570f427e9ab57bc8be25a6fec2ccba5315bc8a51d9ac3e65ba8fbcc1d51",
+  "original_sentinel_nonexistent": true,
+  "inputs_unchanged": true
+}

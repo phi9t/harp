@@ -1,0 +1,268 @@
+diff --git a/crates/team-control-plane/README.md b/crates/team-control-plane/README.md
+index 344a060ce3faf846551dee20b976cf2717347e1b..b6b9be8491415d3c3c7a1c37f15195f6f0517ce6 100644
+--- a/crates/team-control-plane/README.md
++++ b/crates/team-control-plane/README.md
+@@ -179,7 +179,9 @@ mutations. Existing physical work then follows the strict supervisor stop path.
+ Reconciliation records `cancelled` only after stopped effects are established;
+ uncertain effects or inventory record `quarantined`. Unknown usage retains its
+ reservation even when physical effects stop. Cancellation does not refund capacity
+-implicitly. Workspace `cancel` is a physical stop operation; use the canonical
++implicitly. A current Worker retains scoped execution inspection, logs, results,
++history and bounded cancel/reconcile/release authority; cancellation fences
++dispatch separately from credential and generation validity. Workspace `cancel` is a physical stop operation; use the canonical
+ Attempt command to revoke the Attempt's continuing authority.
+ 
+ `GET /v1/kernel/status` returns a database `snapshot_time`, the recovery epoch,
+@@ -210,7 +212,7 @@ original slot; unresolved effects, usage and execution checkpoints still hold
+ capacity, and cumulative admission budgets are never refunded.
+ 
+ Authenticated reconciliation/release can finalize a launched episode after its
+-original monitor crashes. It requires an immutable exact launch/Stop observation,
++original monitor crashes, including after epoch rotation under a current Owner. It requires an immutable exact launch/Stop observation,
+ fresh certified PID1 finalization, terminated monitor and launcher thread groups,
+ known effects/usage, and a stable securely opened retained log. Recovery records
+ `completion.kind=recovered_stop`, the original execution/monitor/epoch, and the
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+index 58523adb8df10b821c9f25b6062065af9b7d9198..4870f04b2929e128aa0d6d8c0ba6fd9151ee7850 100644
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -230,10 +230,6 @@ pub(crate) async fn authorize(
+ }
+ pub(crate) async fn execution_current(tx: &Transaction<'_>, id: Uuid, epoch: Uuid) -> Result<bool> {
+     crate::kernel::schema(tx).await?;
+-    let cancelled:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM attempts a WHERE a.desired_cancel AND (a.id=(SELECT attempt_id FROM supervised_workspaces WHERE id=$1) OR a.id=(SELECT attempt_id FROM episode_executions WHERE execution_id=$1)))", &[&id]).await?.get(0);
+-    if cancelled {
+-        return Ok(false);
+-    }
+     if let Some(row)=tx.query_opt("SELECT x.recovery_epoch,e.task_generation,t.generation,e.lead_generation,coalesce(l.generation,0),x.principal_id,l.principal_id,x.role FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id LEFT JOIN tasks t ON t.id=x.task_id LEFT JOIN mission_leads l ON l.mission_id=x.mission_id WHERE x.execution_id=$1", &[&id]).await? {
+         let credential_current:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_executions x JOIN credentials c ON c.id=x.credential_id JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1 AND c.principal_id=x.principal_id AND c.role=x.role AND c.mission_id=x.mission_id AND c.task_id IS NOT DISTINCT FROM x.task_id AND c.generation IS NOT DISTINCT FROM e.task_generation AND c.recovery_epoch=$2 AND c.expires_at>clock_timestamp() AND (c.role<>'lead' OR c.lead_generation=e.lead_generation))", &[&id,&epoch]).await?.get(0);
+         if !credential_current {return Ok(false);}
+@@ -266,7 +262,7 @@ async fn execution_reservation_current(tx: &Transaction<'_>, id: Uuid) -> Result
+     }
+     Ok(tx.query_one("SELECT EXISTS(SELECT 1 FROM reservations z WHERE z.state='reserved' AND z.execution_id=$1)", &[&id]).await?.get(0))
+ }
+-// Terminal tasks retain inspection/release authority but cannot dispatch work.
++// Cancellation and terminal tasks retain inspection/cleanup authority but cannot dispatch work.
+ pub(crate) async fn execution_dispatch_current(
+     tx: &Transaction<'_>,
+     id: Uuid,
+@@ -275,6 +271,10 @@ pub(crate) async fn execution_dispatch_current(
+     if !execution_current(tx, id, epoch).await? {
+         return Ok(false);
+     }
++    let cancelled:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM attempts a WHERE a.desired_cancel AND (a.id=(SELECT attempt_id FROM supervised_workspaces WHERE id=$1) OR a.id=(SELECT attempt_id FROM episode_executions WHERE execution_id=$1)))", &[&id]).await?.get(0);
++    if cancelled {
++        return Ok(false);
++    }
+     let terminal: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM tasks t WHERE t.status IN ('accepted','cancelled') AND (t.id=(SELECT task_id FROM episode_executions WHERE execution_id=$1) OR t.id=(SELECT a.task_id FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1)))", &[&id]).await?.get(0);
+     let task: Option<Uuid> = tx.query_one(
+         "SELECT CASE WHEN x.role='worker' THEN x.task_id WHEN x.execution_id IS NULL THEN a.task_id END FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id LEFT JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1",
+@@ -1145,10 +1145,7 @@ async fn recover_result(
+     };
+     let init: ProcessIdentity = decode(init)?;
+     let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
+-    if v.state != ExecutionState::Stopped
+-        || !v.members.is_empty()
+-        || v.manifest.recovery_epoch != broker.epoch
+-    {
++    if v.state != ExecutionState::Stopped || !v.members.is_empty() {
+         return Err(rejected());
+     }
+     let controller = v.controller.clone().ok_or_else(rejected)?;
+diff --git a/crates/team-control-plane/tests/assembled_cancellation.rs b/crates/team-control-plane/tests/assembled_cancellation.rs
+index 9302e894e19b77f1d667f755ce20c0af4b563c56..18fa5245ed5c51cecb27ded4873b0462232281af 100644
+--- a/crates/team-control-plane/tests/assembled_cancellation.rs
++++ b/crates/team-control-plane/tests/assembled_cancellation.rs
+@@ -504,11 +504,7 @@ async fn owned_nested_cancel_case() {
+         let server =
+             tokio::spawn(async move { axum::serve(listener, http::router(broker)).await.unwrap() });
+         let client = reqwest::Client::new();
+-        let token = if mode == "known-physical" {
+-            "assembled-worker"
+-        } else {
+-            &f.owner
+-        };
++        let token = "assembled-worker";
+         let cancel = serde_json::json!({"schema_version":1,"key":"cancel-live","expected_revision":3,"expected_generation":1,"recovery_epoch":f.epoch,"command":{"kind":"cancel_attempt","task_id":f.task,"attempt_id":f.attempt,"reason":"cancel actual nested live writer"}});
+         let response = client
+             .post(format!("http://{address}/v1/commands"))
+@@ -596,8 +592,18 @@ async fn owned_nested_cancel_case() {
+             1,
+             "domain cancellation does not infer reservation refund"
+         );
++        let worker_inspect = supervisor.inspect("assembled-worker", execution.id).await;
++        let worker_logs = supervisor.logs("assembled-worker", execution.id).await;
++        let worker_result = supervisor.result("assembled-worker", execution.id).await;
++        let worker_history = supervisor.history("assembled-worker", execution.id).await;
++        let worker_cancel = supervisor.cancel("assembled-worker", execution.id).await;
++        let worker_reconcile = supervisor.reconcile("assembled-worker", execution.id).await;
++        let worker_release = supervisor.release("assembled-worker", execution.id).await;
+         if mode == "known-physical" {
+-            supervisor.release(&f.owner, execution.id).await.unwrap();
++            if worker_release.is_err() {
++                // Preserve physical fixture cleanup even for the intended red.
++                supervisor.release(&f.owner, execution.id).await.unwrap();
++            }
+             assert_eq!(
+                 supervisor
+                     .inspect(&f.owner, execution.id)
+@@ -675,8 +681,44 @@ async fn owned_nested_cancel_case() {
+         let evidence =
+             std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+         std::fs::write(evidence.join(format!("cancel-{mode}-evidence.json")),serde_json::to_vec(&serde_json::json!({"observed_before":before_members,"disposition":disposition,"task":snapshot.data,"stopped_output_bytes":output.len()})).unwrap()).unwrap();
++        std::fs::write(evidence.join(format!("worker-cleanup-{mode}.json")), serde_json::to_vec(&serde_json::json!({"inspect":worker_inspect.as_ref().map_err(|e|&e.code),"logs":worker_logs.as_ref().map(|v|v.len()).map_err(|e|&e.code),"result":worker_result.as_ref().map_err(|e|&e.code),"history":worker_history.as_ref().map(|v|v.len()).map_err(|e|&e.code),"cancel":worker_cancel.as_ref().map_err(|e|&e.code),"reconcile":worker_reconcile.as_ref().map_err(|e|&e.code),"release":worker_release.as_ref().map_err(|e|&e.code)})).unwrap()).unwrap();
+         server.abort();
++        let root = f.root.clone();
+         f.finish().await;
++        std::fs::write(evidence.join(format!("cleanup-{mode}.json")),serde_json::to_vec(&serde_json::json!({"fixture_removed":!root.exists(),"physical_stop_proven":true,"http_server_aborted":true})).unwrap()).unwrap();
++        assert!(
++            worker_inspect.is_ok(),
++            "cancelled current Worker retains inspection: {worker_inspect:?}"
++        );
++        assert!(
++            worker_logs.is_ok(),
++            "cancelled current Worker retains raw logs"
++        );
++        assert!(
++            worker_result.is_ok(),
++            "cancelled current Worker retains result lookup"
++        );
++        assert!(
++            worker_history.is_ok(),
++            "cancelled current Worker retains history"
++        );
++        assert!(
++            worker_cancel.is_ok(),
++            "cancelled current Worker retains bounded Stop"
++        );
++        assert!(
++            worker_reconcile.is_ok(),
++            "cancelled current Worker retains reconciliation"
++        );
++        if mode == "known-physical" {
++            worker_release.unwrap();
++        } else {
++            assert_eq!(
++                worker_release.unwrap_err().code,
++                ErrorCode::DependencyUnmet,
++                "unknown usage/effects still hold capacity for Worker"
++            );
++        }
+     }
+ }
+ 
+diff --git a/crates/team-control-plane/tests/assembled_operator.rs b/crates/team-control-plane/tests/assembled_operator.rs
+index 9a26a1ec0581f680e0c6cf1118df4f65a8e1e4a7..76a4c940e49f3a71e6f26c10ada9c8c612e8e153 100644
+--- a/crates/team-control-plane/tests/assembled_operator.rs
++++ b/crates/team-control-plane/tests/assembled_operator.rs
+@@ -1116,19 +1116,25 @@ async fn monitor_finalizes_large_output_under_owned_measured_memory_limit() {
+ 
+ #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+ async fn review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result() {
+-    review580_crash(false, false).await;
++    review580_crash(false, false, false).await;
+ }
+ #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+ async fn review580_fast_monitor_crash_retains_exact_launch_stop_certificate() {
+-    review580_crash(true, false).await;
++    review580_crash(true, false, false).await;
+ }
+ #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+ async fn review580_surviving_monitor_thread_group_retains_capacity() {
+-    review580_crash(true, true).await;
++    review580_crash(true, true, false).await;
+ }
+-async fn review580_crash(fast: bool, survivor: bool) {
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review584_crash_then_rotate_finalizes_historical_execution() {
++    review580_crash(false, false, true).await;
++}
++async fn review580_crash(fast: bool, survivor: bool, rotate: bool) {
+     let f = Fixture::new().await;
+-    let out = evidence(if survivor {
++    let out = evidence(if rotate {
++        "review584-crash-rotate"
++    } else if survivor {
+         "review580-surviving-thread"
+     } else if fast {
+         "review580-fast-crash"
+@@ -1208,16 +1214,39 @@ async fn review580_crash(fast: bool, survivor: bool) {
+         tokio::time::sleep(Duration::from_millis(20)).await;
+     }
+     db.batch_execute("SELECT pg_advisory_unlock(580580); DROP TRIGGER review580_gate ON kernel_execution_results; DROP FUNCTION review580_gate()").await.unwrap();
+-    let fresh_owner = format!("review580-owner-{}", Uuid::new_v4());
+-    grant(
+-        &f,
+-        f.mission,
+-        Uuid::new_v4(),
+-        &fresh_owner,
+-        Role::Owner,
+-        300,
++    let current_epoch = if rotate { Uuid::new_v4() } else { f.epoch };
++    let fresh_owner = if rotate {
++        f.broker
++            .rotate_epoch(&f.owner, current_epoch)
++            .await
++            .unwrap()
++    } else {
++        let token = format!("review580-owner-{}", Uuid::new_v4());
++        grant(&f, f.mission, Uuid::new_v4(), &token, Role::Owner, 300).await;
++        token
++    };
++    let broker = Broker::connect(&f.dsn, current_epoch).await.unwrap();
++    let supervisor = supervisor::Supervisor::open(
++        broker.clone(),
++        &f.root.join("workspaces"),
++        env!("CARGO_BIN_EXE_team-control-plane"),
+     )
+-    .await;
++    .await
++    .unwrap();
++    if rotate {
++        assert!(
++            supervisor
++                .inspect("assembled-worker", execution.id)
++                .await
++                .is_err()
++        );
++        assert!(
++            supervisor
++                .start(&fresh_owner, execution.id, vec!["/bin/true".into()], 30)
++                .await
++                .is_err()
++        );
++    }
+     if survivor {
+         // Negative controller-identity fault uses a genuine owned live thread
+         // group with a zombie leader; it cannot manufacture successful Stop.
+@@ -1368,8 +1397,7 @@ async fn review580_crash(fast: bool, survivor: bool) {
+         .await
+         .unwrap();
+     let repeated_result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+-    let capacity = f
+-        .broker
++    let capacity = broker
+         .snapshot(&fresh_owner, SnapshotQuery::Mission(f.mission))
+         .await
+         .unwrap()
+@@ -1379,6 +1407,7 @@ async fn review580_crash(fast: bool, survivor: bool) {
+     let epoch = f.epoch;
+     let root = f.root.clone();
+     f.finish().await;
++    std::fs::write(out.join("cleanup.json"), serde_json::to_vec(&serde_json::json!({"fixture_removed":!root.exists(),"crashed_monitor_reaped":true,"complete_stop":stopped["members"]==serde_json::json!([])})).unwrap()).unwrap();
+     assert!(!root.exists(), "owned cleanup before recovery oracle");
+     for (kind, denied, absent) in controls {
+         assert_eq!(denied.unwrap_err(), ErrorCode::DependencyUnmet, "{kind}");
+@@ -1396,6 +1425,12 @@ async fn review580_crash(fast: bool, survivor: bool) {
+     assert_eq!(result.controller, controller);
+     assert_eq!(result.logs, independent_digest);
+     assert_eq!(result.recovery_epoch, epoch);
++    match result.completion {
++        supervisor::CompletionProvenance::RecoveredStop { recovery_epoch, .. } => {
++            assert_eq!(recovery_epoch, current_epoch)
++        }
++        _ => panic!("crashed monitor cannot claim monitor-wait completion"),
++    }
+     assert_eq!(
+         serde_json::to_value(&result).unwrap(),
+         serde_json::to_value(repeated_result.unwrap()).unwrap()

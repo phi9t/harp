@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review571-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.14s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'review571_native_cancel_cleans_bound_work_after_work_revocation' (892016) panicked at tests/assembled_cancellation.rs:2944:9:
+authenticated exact Cancel must clean existing workload after revocation: Err(Error { code: DependencyUnmet })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review571_native_cancel_cleans_bound_work_after_work_revocation ... FAILED
+
+failures:
+
+failures:
+    review571_native_cancel_cleans_bound_work_after_work_revocation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 22 filtered out; finished in 0.36s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

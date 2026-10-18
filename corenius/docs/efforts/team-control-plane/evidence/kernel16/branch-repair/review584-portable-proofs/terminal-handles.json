@@ -1,0 +1,51 @@
+[
+  {
+    "handle": 19570,
+    "exit": 101,
+    "classification": "meaningful physical monitor crash-rotation red",
+    "log": "red-rotation.log",
+    "cleanup": "f.finish and root absence assertion before red; PG EXIT trap; no historical cleanup.json produced"
+  },
+  {
+    "handle": 76532,
+    "exit": 101,
+    "classification": "sequential rotation green (preceding exit0 through set-e), then meaningful Worker red",
+    "logs": [
+      "green-rotation.log",
+      "red-worker.log",
+      "red-worker/nested-worker-stderr.log",
+      "red-worker/nested-worker-terminal.json"
+    ],
+    "cleanup": "f.finish before Worker oracle; original PG-only rotation runs produced no cleanup.json"
+  },
+  {
+    "handle": 68791,
+    "exit": 101,
+    "classification": "setup environment failure: existing singleton runtime test requires TEMPORAL_ADDRESS; 26 cancellation tests passed, operator suite not started",
+    "log": "green-focused.log"
+  },
+  {
+    "handle": 96963,
+    "exit": 0,
+    "classification": "real PG/Temporal cached/new cancelled Verify/Accept focused green",
+    "log": "green-runtime.log",
+    "cleanup": "green-runtime/cleanup.json"
+  },
+  {
+    "handle": 26814,
+    "exit": 0,
+    "classification": "full real PG/Temporal all-target matrix: 173 pass, 0 fail, 8 owned ignored, 16 groups",
+    "log": "matrix.log",
+    "cleanup": "matrix/cleanup.json; container-observation-terminal-matrix.json"
+  },
+  {
+    "handle": 79620,
+    "exit": 0,
+    "classification": "strict locked offline all-target clippy -D warnings; fmt --check; git diff --check",
+    "logs": [
+      "clippy.log",
+      "fmt.log",
+      "diff-check.log"
+    ]
+  }
+]

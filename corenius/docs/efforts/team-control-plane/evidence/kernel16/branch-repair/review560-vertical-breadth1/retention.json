@@ -1,0 +1,33 @@
+{
+  "status": "non-green breadth;44passed3failed3ignored0filtered",
+  "exit": 101,
+  "author_session": 8147,
+  "seconds": 85.92,
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "e27e47e9b672d2cfdd71d05495513f275cc2835b77c3ed8c68989e5cea2eee13",
+      "bytes": 6209
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "kernel16-unknown-episode-monitor-claim-656fca85-7248-4a6e-b959-34ab4a10dd97/claim.json",
+      "sha256": "9c988c90a923bbf9390f3e9c179c303fa1633bb8377844525f2b680b599e097a",
+      "bytes": 7254
+    },
+    {
+      "path": "kernel16-unknown-episode-physical-claim-a40e2f09-48da-4e56-a40a-9061f7c04b9d/claim.json",
+      "sha256": "b8139e423da3aeed3a0384b1fb1a04d59d70aacfa90a82efbeb37c9bce3b501c",
+      "bytes": 7255
+    }
+  ]
+}

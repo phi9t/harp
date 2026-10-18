@@ -1,0 +1,23 @@
+id = "acceptance-waived-check"
+stories = [6, 7, 9]
+task = "task.md"
+benchmark_task = "t01-log-window"
+kind = "landing"
+
+[worker]
+allow = ["result.txt"]
+
+[landing]
+expect = "landed"
+repo = "source"
+target_worktree = true
+
+[acceptance]
+effort = "readiness"
+ticket = "01"
+mode = "waived-check"
+
+[[participants]]
+id = "commit-ready"
+mode = "commit-ready"
+expect_ready = true

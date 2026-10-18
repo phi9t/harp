@@ -1,0 +1,835 @@
+{
+  "repository_base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "kata_pin": "b70a4306464e319701df30a3b92860289613b15a",
+  "kata_binary_sha256": "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6",
+  "broker_binary_sha256": "02a1688836aef3b7ce847a1fb67dd169515f874744a751b10846ac8df24b3e66",
+  "broker_content_manifest_sha256": "12bc9df3b98878fade2091be043e605373b3f52786c3c9ce6a5c81249acd11f0",
+  "observations": [
+    {
+      "name": "actual-source-event-duplicate",
+      "counts": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "edit-close-cannot-mutate-admitted-execution",
+      "source_closed": true,
+      "broker_status": "running",
+      "approved_snapshot_digest_unchanged": true,
+      "ledger_token_broker_status": 401
+    },
+    {
+      "name": "actual-broker-projection-duplicate-and-loop",
+      "projection_event_count": 1,
+      "broker_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "mission_admissions_capacity": [
+        1,
+        1,
+        1
+      ],
+      "stable_binding_reloaded": true
+    },
+    {
+      "name": "ledger-pg-restore-replayed-event-one-broker-authority",
+      "source_event_uid_preserved": true,
+      "source_origin_preserved": true,
+      "approved_binding_reloaded": true,
+      "same_assignment_receipt": true,
+      "broker_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "projection_preserved": true
+    }
+  ],
+  "binding": {
+    "schema_version": 1,
+    "ledger_origin": "01M3VBN1D2JQ4V58C2MPPJ8RRY",
+    "project_uid": "01M3VBN1GAAYSB1QXX45YBBS9M",
+    "issue_uid": "01M3VBN1GGSWP7NG4DK01Z5K7Z",
+    "title": "explicitly approved objective",
+    "body": "immutable source body",
+    "acceptance": [
+      "one admitted execution authority"
+    ],
+    "deliverables": [
+      "fixture result"
+    ],
+    "write_scope": [
+      "fixture"
+    ],
+    "approved_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+    "broker_mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+    "broker_task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+    "broker_spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+    "broker_admitted_revision": 2,
+    "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15"
+  },
+  "assignment_decision": {
+    "approved_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+    "broker_task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+    "decision_id": "b0cbbb75-adf0-4631-a8da-85dea0becdc0",
+    "expected_generation": 0,
+    "expected_revision": 2,
+    "source_event_uid": "01M3VBN1R56B1SP1VQCTKT86S8",
+    "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+  },
+  "source_claim_event": {
+    "event_id": 4,
+    "event_uid": "01M3VBN1R56B1SP1VQCTKT86S8",
+    "origin_instance_uid": "01M3VBN1D2JQ4V58C2MPPJ8RRY",
+    "type": "issue.assigned",
+    "project_id": 2,
+    "project_uid": "01M3VBN1GAAYSB1QXX45YBBS9M",
+    "project_name": "broker-boundary",
+    "issue_id": 1,
+    "issue_uid": "01M3VBN1GGSWP7NG4DK01Z5K7Z",
+    "issue_short_id": "5k7z",
+    "actor": "fixture-ledger-lead",
+    "hlc_physical_ms": 1790845814533,
+    "hlc_counter": 0,
+    "content_hash": "49b30653430365618b17af486792a2f62e496653a881ca7d76ee8775da4ab733",
+    "payload": {
+      "owner": "fixture-ledger-lead",
+      "updated_at": "2026-10-01T09:10:14.532Z"
+    },
+    "created_at": "2026-10-01T09:10:14.533Z"
+  },
+  "original_assignment_receipt": {
+    "schema_version": 1,
+    "disposition": "applied",
+    "revision": 3,
+    "generation": 1,
+    "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+    "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+    "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+    "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b"
+  },
+  "duplicate_assignment_receipt": {
+    "schema_version": 1,
+    "disposition": "applied",
+    "revision": 3,
+    "generation": 1,
+    "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+    "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+    "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+    "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b"
+  },
+  "post_source_replay_snapshot": {
+    "schema_version": 1,
+    "revision": 3,
+    "snapshot_time": "2026-10-01 09:10:14.641747+00",
+    "data": {
+      "approved_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "generation": 1,
+          "id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+          "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+          "status": "reserved",
+          "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+        }
+      ],
+      "dependencies": [],
+      "events": [
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "2771d1d9-9232-472c-b499-3aaff6caeddd",
+          "kind": "task.create",
+          "payload": {
+            "command": {
+              "id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+              "kind": "create_task",
+              "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+              "spec": {
+                "acceptance": [
+                  "one admitted execution authority"
+                ],
+                "deliverables": [
+                  "fixture result"
+                ],
+                "dependencies": [],
+                "input": {
+                  "commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+                  "digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+                  "path": "approved.json",
+                  "repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning"
+                },
+                "objective": "explicitly approved objective",
+                "write_scope": [
+                  "fixture"
+                ]
+              }
+            },
+            "result": {
+              "attempt_id": null,
+              "disposition": "applied",
+              "generation": 0,
+              "operation_id": null,
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": null,
+              "revision": 1,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 1,
+          "transaction_id": 753,
+          "version": 1
+        },
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "01b9ccbe-9c3d-4c42-a2c2-7924d2f73ac0",
+          "kind": "task.admit",
+          "payload": {
+            "command": {
+              "kind": "admit_task",
+              "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+              "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a"
+            },
+            "result": {
+              "attempt_id": null,
+              "disposition": "applied",
+              "generation": 0,
+              "operation_id": null,
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": null,
+              "revision": 2,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 2,
+          "transaction_id": 755,
+          "version": 1
+        },
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "9c4f3502-ce46-4a7b-b419-dedaff0a310b",
+          "kind": "attempt.assign",
+          "payload": {
+            "command": {
+              "kind": "assign_attempt",
+              "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+              "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+            },
+            "result": {
+              "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+              "disposition": "applied",
+              "generation": 1,
+              "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+              "revision": 3,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 3,
+          "transaction_id": 760,
+          "version": 1
+        }
+      ],
+      "generation": 1,
+      "id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+      "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+      "operation_count": 1,
+      "operations": [
+        {
+          "argument_digest": "16d53628179d1a6ee03f3d4c84b59b816f99ab3928a3f118af59c21781e3d6d4",
+          "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "generation": 1,
+          "id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+          "kind": "prepare_attempt",
+          "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+          "state": "prepared"
+        }
+      ],
+      "outbox_count": 1,
+      "reservation_count": 1,
+      "reservations": [
+        {
+          "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "attempts": 1,
+          "episodes": 1,
+          "id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+          "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+          "state": "reserved"
+        }
+      ],
+      "spec": {
+        "acceptance": [
+          "one admitted execution authority"
+        ],
+        "created_at": "2026-10-01T09:10:14.493546+00:00",
+        "deliverables": [
+          "fixture result"
+        ],
+        "dependencies": [],
+        "digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+        "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+        "git_path": "approved.json",
+        "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+        "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+        "objective": "explicitly approved objective",
+        "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+        "write_scope": [
+          "fixture"
+        ]
+      },
+      "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+      "spec_history": [
+        {
+          "acceptance": [
+            "one admitted execution authority"
+          ],
+          "created_at": "2026-10-01T09:10:14.493546+00:00",
+          "deliverables": [
+            "fixture result"
+          ],
+          "dependencies": [],
+          "digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+          "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+          "git_path": "approved.json",
+          "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+          "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+          "objective": "explicitly approved objective",
+          "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "write_scope": [
+            "fixture"
+          ]
+        }
+      ],
+      "status": "running"
+    }
+  },
+  "source_events_replayed": [
+    {
+      "event_uid": "01M3VBN1GJTK77NRZQP19YB54W",
+      "type": "issue.created",
+      "disposition": "source_proposal"
+    },
+    {
+      "event_uid": "01M3VBN1GJTK77NRZQP19YB54W",
+      "type": "issue.created",
+      "disposition": "source_proposal"
+    },
+    {
+      "event_uid": "01M3VBN1SB79710AGAF5VGC116",
+      "type": "issue.updated",
+      "disposition": "source_proposal"
+    },
+    {
+      "event_uid": "01M3VBN1SB79710AGAF5VGC116",
+      "type": "issue.updated",
+      "disposition": "source_proposal"
+    },
+    {
+      "event_uid": "01M3VBN1SM4ZV0Y48AYV6DGBRD",
+      "type": "issue.closed",
+      "disposition": "completion_claim"
+    },
+    {
+      "event_uid": "01M3VBN1SM4ZV0Y48AYV6DGBRD",
+      "type": "issue.closed",
+      "disposition": "completion_claim"
+    }
+  ],
+  "broker_projection_event": {
+    "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+    "aggregate_kind": "task",
+    "id": "9c4f3502-ce46-4a7b-b419-dedaff0a310b",
+    "kind": "attempt.assign",
+    "payload": {
+      "command": {
+        "kind": "assign_attempt",
+        "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+        "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+      },
+      "result": {
+        "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+        "disposition": "applied",
+        "generation": 1,
+        "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+        "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+        "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+        "revision": 3,
+        "schema_version": 1
+      },
+      "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+    },
+    "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+    "sequence": 3,
+    "transaction_id": 760,
+    "version": 1
+  },
+  "kata_projection_event": {
+    "id": 7,
+    "uid": "01M3VBN1VW8QRBW1EST7PGNWGV",
+    "origin_instance_uid": "01M3VBN1D2JQ4V58C2MPPJ8RRY",
+    "project_id": 2,
+    "project_uid": "01M3VBN1GAAYSB1QXX45YBBS9M",
+    "project_name": "broker-boundary",
+    "issue_id": 1,
+    "issue_uid": "01M3VBN1GGSWP7NG4DK01Z5K7Z",
+    "issue_short_id": "5k7z",
+    "type": "issue.metadata_updated",
+    "actor": "fixture-ledger-lead",
+    "payload": "{\"diff\":{\"corenius_execution\":{\"from\":null,\"to\":{\"attempt_id\":\"f75744da-edec-4ca9-8e13-ad23508e1ed3\",\"broker_event_id\":\"9c4f3502-ce46-4a7b-b419-dedaff0a310b\",\"broker_revision\":3,\"broker_task_id\":\"cc5ed701-ed34-5cda-b9dc-19707cb2408a\",\"generation\":1,\"state\":\"running\"}}},\"revision_new\":4,\"updated_at\":\"2026-10-01T09:10:14.652Z\"}",
+    "hlc_physical_ms": 1790845814652,
+    "hlc_counter": 0,
+    "content_hash": "448540ec6a20d952c743005fa25ded77a4d336f32eab62b9df96b1f9a3d3cd7c",
+    "created_at": "2026-10-01T09:10:14.652Z"
+  },
+  "post_projection_snapshot": {
+    "schema_version": 1,
+    "revision": 3,
+    "snapshot_time": "2026-10-01 09:10:14.683343+00",
+    "data": {
+      "approved_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "generation": 1,
+          "id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+          "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+          "status": "reserved",
+          "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+        }
+      ],
+      "dependencies": [],
+      "events": [
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "2771d1d9-9232-472c-b499-3aaff6caeddd",
+          "kind": "task.create",
+          "payload": {
+            "command": {
+              "id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+              "kind": "create_task",
+              "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+              "spec": {
+                "acceptance": [
+                  "one admitted execution authority"
+                ],
+                "deliverables": [
+                  "fixture result"
+                ],
+                "dependencies": [],
+                "input": {
+                  "commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+                  "digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+                  "path": "approved.json",
+                  "repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning"
+                },
+                "objective": "explicitly approved objective",
+                "write_scope": [
+                  "fixture"
+                ]
+              }
+            },
+            "result": {
+              "attempt_id": null,
+              "disposition": "applied",
+              "generation": 0,
+              "operation_id": null,
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": null,
+              "revision": 1,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 1,
+          "transaction_id": 753,
+          "version": 1
+        },
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "01b9ccbe-9c3d-4c42-a2c2-7924d2f73ac0",
+          "kind": "task.admit",
+          "payload": {
+            "command": {
+              "kind": "admit_task",
+              "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+              "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a"
+            },
+            "result": {
+              "attempt_id": null,
+              "disposition": "applied",
+              "generation": 0,
+              "operation_id": null,
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": null,
+              "revision": 2,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 2,
+          "transaction_id": 755,
+          "version": 1
+        },
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "9c4f3502-ce46-4a7b-b419-dedaff0a310b",
+          "kind": "attempt.assign",
+          "payload": {
+            "command": {
+              "kind": "assign_attempt",
+              "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+              "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+            },
+            "result": {
+              "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+              "disposition": "applied",
+              "generation": 1,
+              "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+              "revision": 3,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 3,
+          "transaction_id": 760,
+          "version": 1
+        }
+      ],
+      "generation": 1,
+      "id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+      "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+      "operation_count": 1,
+      "operations": [
+        {
+          "argument_digest": "16d53628179d1a6ee03f3d4c84b59b816f99ab3928a3f118af59c21781e3d6d4",
+          "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "generation": 1,
+          "id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+          "kind": "prepare_attempt",
+          "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+          "state": "prepared"
+        }
+      ],
+      "outbox_count": 1,
+      "reservation_count": 1,
+      "reservations": [
+        {
+          "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "attempts": 1,
+          "episodes": 1,
+          "id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+          "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+          "state": "reserved"
+        }
+      ],
+      "spec": {
+        "acceptance": [
+          "one admitted execution authority"
+        ],
+        "created_at": "2026-10-01T09:10:14.493546+00:00",
+        "deliverables": [
+          "fixture result"
+        ],
+        "dependencies": [],
+        "digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+        "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+        "git_path": "approved.json",
+        "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+        "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+        "objective": "explicitly approved objective",
+        "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+        "write_scope": [
+          "fixture"
+        ]
+      },
+      "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+      "spec_history": [
+        {
+          "acceptance": [
+            "one admitted execution authority"
+          ],
+          "created_at": "2026-10-01T09:10:14.493546+00:00",
+          "deliverables": [
+            "fixture result"
+          ],
+          "dependencies": [],
+          "digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+          "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+          "git_path": "approved.json",
+          "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+          "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+          "objective": "explicitly approved objective",
+          "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "write_scope": [
+            "fixture"
+          ]
+        }
+      ],
+      "status": "running"
+    }
+  },
+  "mission_snapshot": {
+    "schema_version": 1,
+    "revision": 2,
+    "snapshot_time": "2026-10-01 09:10:14.688776+00",
+    "data": {
+      "admitted_attempts": 1,
+      "admitted_episodes": 1,
+      "capacity": 2,
+      "episode_deadline_seconds": 30,
+      "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+      "git_path": "approved.json",
+      "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+      "id": "bc87a275-847d-5496-8c33-882fc4abef42",
+      "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+      "max_attempts": 8,
+      "max_episodes": 8,
+      "max_repairs": 3,
+      "objective": "Kata bounded evaluation",
+      "used_capacity": 1
+    }
+  },
+  "post_ledger_restore_snapshot": {
+    "schema_version": 1,
+    "revision": 3,
+    "snapshot_time": "2026-10-01 09:10:15.455433+00",
+    "data": {
+      "approved_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "generation": 1,
+          "id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+          "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+          "status": "reserved",
+          "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+        }
+      ],
+      "dependencies": [],
+      "events": [
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "2771d1d9-9232-472c-b499-3aaff6caeddd",
+          "kind": "task.create",
+          "payload": {
+            "command": {
+              "id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+              "kind": "create_task",
+              "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+              "spec": {
+                "acceptance": [
+                  "one admitted execution authority"
+                ],
+                "deliverables": [
+                  "fixture result"
+                ],
+                "dependencies": [],
+                "input": {
+                  "commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+                  "digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+                  "path": "approved.json",
+                  "repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning"
+                },
+                "objective": "explicitly approved objective",
+                "write_scope": [
+                  "fixture"
+                ]
+              }
+            },
+            "result": {
+              "attempt_id": null,
+              "disposition": "applied",
+              "generation": 0,
+              "operation_id": null,
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": null,
+              "revision": 1,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 1,
+          "transaction_id": 753,
+          "version": 1
+        },
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "01b9ccbe-9c3d-4c42-a2c2-7924d2f73ac0",
+          "kind": "task.admit",
+          "payload": {
+            "command": {
+              "kind": "admit_task",
+              "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+              "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a"
+            },
+            "result": {
+              "attempt_id": null,
+              "disposition": "applied",
+              "generation": 0,
+              "operation_id": null,
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": null,
+              "revision": 2,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 2,
+          "transaction_id": 755,
+          "version": 1
+        },
+        {
+          "aggregate_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "aggregate_kind": "task",
+          "id": "9c4f3502-ce46-4a7b-b419-dedaff0a310b",
+          "kind": "attempt.assign",
+          "payload": {
+            "command": {
+              "kind": "assign_attempt",
+              "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+              "worker_id": "adf73888-3138-4cd8-aa5b-3b68e611bf03"
+            },
+            "result": {
+              "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+              "disposition": "applied",
+              "generation": 1,
+              "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+              "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+              "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+              "revision": 3,
+              "schema_version": 1
+            },
+            "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67"
+          },
+          "principal_id": "aa1666d2-524c-4983-81a8-daeaf3fdecd8",
+          "sequence": 3,
+          "transaction_id": 760,
+          "version": 1
+        }
+      ],
+      "generation": 1,
+      "id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+      "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+      "operation_count": 1,
+      "operations": [
+        {
+          "argument_digest": "16d53628179d1a6ee03f3d4c84b59b816f99ab3928a3f118af59c21781e3d6d4",
+          "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "generation": 1,
+          "id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b",
+          "kind": "prepare_attempt",
+          "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+          "state": "prepared"
+        }
+      ],
+      "outbox_count": 1,
+      "reservation_count": 1,
+      "reservations": [
+        {
+          "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+          "attempts": 1,
+          "episodes": 1,
+          "id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+          "mission_id": "bc87a275-847d-5496-8c33-882fc4abef42",
+          "state": "reserved"
+        }
+      ],
+      "spec": {
+        "acceptance": [
+          "one admitted execution authority"
+        ],
+        "created_at": "2026-10-01T09:10:14.493546+00:00",
+        "deliverables": [
+          "fixture result"
+        ],
+        "dependencies": [],
+        "digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+        "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+        "git_path": "approved.json",
+        "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+        "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+        "objective": "explicitly approved objective",
+        "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+        "write_scope": [
+          "fixture"
+        ]
+      },
+      "spec_digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+      "spec_history": [
+        {
+          "acceptance": [
+            "one admitted execution authority"
+          ],
+          "created_at": "2026-10-01T09:10:14.493546+00:00",
+          "deliverables": [
+            "fixture result"
+          ],
+          "dependencies": [],
+          "digest": "71e960bf151393d29628a76ded1b4f2e78d041b91a8ac06364a86230eca5fd67",
+          "git_commit": "f8e9c0bc56c33c134a2a2f3986b9755023959f15",
+          "git_path": "approved.json",
+          "git_repository": "/data02/home/philip.yang/devx/tmp/corenius-kata17-bridge-08c_60qd/planning",
+          "input_digest": "a8f86d44e5f06a0e8ae4c351050d33901bd93ef272e609eab90e11c5a396aec3",
+          "objective": "explicitly approved objective",
+          "task_id": "cc5ed701-ed34-5cda-b9dc-19707cb2408a",
+          "write_scope": [
+            "fixture"
+          ]
+        }
+      ],
+      "status": "running"
+    }
+  },
+  "restored_assignment_receipt": {
+    "schema_version": 1,
+    "disposition": "applied",
+    "revision": 3,
+    "generation": 1,
+    "recovery_epoch": "1082f918-16f1-478e-b8d2-6be66ed264ba",
+    "attempt_id": "f75744da-edec-4ca9-8e13-ad23508e1ed3",
+    "reservation_id": "442c191d-ed6f-4c64-ad21-f6d659df1b7a",
+    "operation_id": "6e01b4b9-719c-4f31-ad7d-a6f6d216451b"
+  },
+  "elapsed_seconds": 3.224,
+  "cleanup": {
+    "services_terminal": true,
+    "listeners_closed": true,
+    "postgres_removed": true,
+    "temporary_home_removed": true
+  }
+}

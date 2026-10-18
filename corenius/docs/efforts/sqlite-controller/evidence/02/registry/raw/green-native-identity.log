@@ -1,0 +1,25 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.80s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-2ed9953211d69908)
+
+running 1 test
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+actual_private_native_initialize {'id': 1, 'result': {'userAgent': 'corenius_private_profile/0.159.3 (Debian 12.0.0; x86_64) unknown (corenius_private_profile; 0.1)', 'codexHome': '/home/worker/.codex', 'platformFamily': 'unix', 'platformOs': 'linux'}}
+native_qualified_observation {'auth_ref': 'native:829cc6da-aa4b-4536-993b-71407179b8ce', 'control_endpoint': '/tmp/cnp-e28p68jl/transport/07a2712a-9ce8-4842-b8f7-882a3c5daf30/control.sock', 'controlplane_cwd': '/workspace', 'endpoint': '/tmp/cnp-e28p68jl/transport/07a2712a-9ce8-4842-b8f7-882a3c5daf30/native.sock', 'incarnation': 'cdf50ac2ca5b46d9fde2235d13d6733995d86757253a27c6fe5c949888b8ec5f', 'kind': 'app', 'own_executor_only': False, 'pid_namespace': 4026539641, 'pins': {'binary': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex', 'sha256': '8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479'}, 'catalog': {'path': '/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json', 'sha256': '262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6'}, 'companion': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host', 'sha256': 'fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5'}, 'config': {'path': '/tmp/cnp-e28p68jl/runtime.toml', 'sha256': '4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660'}, 'executor_root': None, 'kind': 'app', 'launcher': {'path': '/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py', 'sha256': '91553d706f326253252ca2a22d5290f93215edcde490b8d28e1ce754734cd7a7'}, 'own_executor_only': False, 'provider_socket': '/tmp/cnp-e28p68jl/provider.sock', 'transport_root': '/tmp/cnp-e28p68jl/transport'}, 'runtime_pid': 2461474, 'runtime_start': '51554101', 'store_id': 'f8e3632b-f0ee-45c5-bb1d-bed9d21d6e71', 'workspace_generation': '829cc6da-aa4b-4536-993b-71407179b8ce', 'workspace_identity': '31:3257824'}
+native_profile_cancel_identity {'ok': {'binding': {'attempt': '07a2712a-9ce8-4842-b8f7-882a3c5daf30', 'base': '0123456789abcdef0123456789abcdef01234567', 'brief': 'c16c8459-057e-4865-8a78-cb18e5c3dab2', 'operation': 'e94eb1f3-dfb2-4392-842d-b21c072d52a0', 'project': 'native', 'scope_epoch': 1}, 'boot_id': '6f48f645-3b26-40c9-93fb-db4190c7629b', 'handle': '829cc6da-aa4b-4536-993b-71407179b8ce', 'incarnation': 'c25eb47e-0cde-4996-8943-bcb3f7b8af54', 'init_start_ticks': '51554071', 'namespace_init': 2461467, 'native_store': 'f8e3632b-f0ee-45c5-bb1d-bed9d21d6e71', 'outcome': 'owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)', 'pid': 2461466, 'pid_namespace': 4026539641, 'start_ticks': '51554070', 'state': 'exited'}}
+native_owned_output {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51554101", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+
+test pinned_native_services_use_supervised_private_network_profiles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 9.03s
+

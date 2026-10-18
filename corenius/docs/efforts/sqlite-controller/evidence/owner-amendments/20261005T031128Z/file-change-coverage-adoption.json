@@ -1,0 +1,8 @@
+{
+  "recorded_at": "2026-10-05T03:17:22.951472+00:00",
+  "source_commit": "d1d3933a52940862ce6b0952da945e4786eb3352",
+  "path": "docs/efforts/worker-monitoring/evidence/periodic-review-0001.md",
+  "sha256": "df0732abd108cbf4e169a59c702132669a687211e841e84efdb4f1d89568a885",
+  "disposition": "adopted coverage requirement; qualified parser implementation pending hardening",
+  "known_limit": "Original bootstrap allowlist omits canonical FileChange and clock.sleep Extension; old receipts/gaps/frontiers remain immutable. No retroactive action/cursor credit. Public/credential/private canary controls must qualify before observer model or output."
+}

@@ -1,0 +1,65 @@
+{
+  "version": "retirement-reconciliation-1",
+  "observed_at": "2026-10-07",
+  "projection_kind": "coordinator-owned current execution disposition; historical trials preserved separately",
+  "execution_state": "quiescent",
+  "coordinator": null,
+  "writer": null,
+  "worktree": null,
+  "source": "main; verify exact HEAD before any new qualification",
+  "history": "history/CURRENT-before-retirement-reconciliation-20261007.json",
+  "history_sha256": "ec99c8de9728437bcd027d849b38598aa3e718d9c874db8c047c6aa93c23cff2",
+  "caps": {
+    "05_prior": 3,
+    "05_extra_authorized": 1,
+    "05_extra_used": 1,
+    "02": 3,
+    "04": 3,
+    "EMPTY_diagnostics": 2
+  },
+  "tickets": {
+    "01": "accepted",
+    "02": "accepted",
+    "03": "accepted",
+    "04": "accepted",
+    "05": "unaccepted; extra C1/C2 round consumed; scoped product checks pass, fixture timing finding OPEN",
+    "06": "live happy-path attempted; current outer exit1 after model capacity; qualification pending"
+  },
+  "claim": {
+    "ticket": "05",
+    "owner": "sqlite-controller-05",
+    "expires": "2026-10-05T19:11:38Z",
+    "state": "expired historical claim; tracker status remains claimed for explicit owner disposition; no renewal or writer authority"
+  },
+  "next": "Review bounded health-repair candidate and exact-source gate results; separately resolve expired ticket05 ownership and baseline qualification",
+  "authority": "No active writer or executable launch admitted by this reconciliation; historical trial grants do not authorize continuation",
+  "unknowns": [
+    "original process/session disappearance cause unestablished",
+    "controller restoration and native binding reconciliation pending",
+    "concurrent useful episode overlap and stale-base reintegration unproven",
+    "baseline/mainline qualification pending"
+  ],
+  "open_findings": {
+    "C1-TEST-PEER-WAIT": "OPEN; repair cap remains consumed",
+    "relay_S2": "OPEN; strict deadline not proven"
+  },
+  "baseline_qualified": false,
+  "recovery": {
+    "original_worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+    "archive": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/retired-full-trees/corenius-sqlite06-happy-path",
+    "receipt": "/data02/home/philip.yang/devx/tmp/corenius-salvage-a617643f/unmerged-tree-retirement-receipts.json",
+    "source": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+    "recovery_verified": true
+  },
+  "bounded_health_repair": {
+    "authority": "User said proceed after diagnosis of state, gate and controller findings; narrow repair only, no prior cap reset",
+    "ticket": "../agentic-engineering/tickets/14-current-main-health-repair.md",
+    "state": "reviewed candidate; focused regressions and isolated native correction pass; broader native gate resource-limited, full qualification uncredited",
+    "findings": [
+      "C1-TEST-PEER-WAIT",
+      "relay_S2"
+    ],
+    "qualification": "does not accept SQLite05/06 or authorize live trial",
+    "evidence": "../agentic-engineering/evidence/health-repair-20261007.md"
+  }
+}

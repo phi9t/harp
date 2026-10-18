@@ -1,0 +1,227 @@
+{
+  "base": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+  "manifest_sha256": "3cea8def696d1a4f43e3ec54f79472da7624edb2cc8fbef7f6911f065fca4c6a",
+  "public_proofs": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red1/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red1/review580-capacity.json",
+      "sha256": "47ac8e188d5b17c7b0ddef8cf58add2028e32dac79ebab0ff3b1e2504231b22b",
+      "bytes": 2203
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red2/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red2/review580-crash/crash.json",
+      "sha256": "b69f3a53d947955eb6270867de1b85e2f0ba54d8a38e92542ff2e0ea2af56d46",
+      "bytes": 4530
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red2-fast/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red2-fast/review580-fast-crash/crash.json",
+      "sha256": "fece13cb9de356f0c41952f6cf5282accfb7da3a11869ad54736c06fdc741fb1",
+      "bytes": 4530
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red2-thread/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red2-thread/review580-surviving-thread/survivor.json",
+      "sha256": "725dcc6107a641f13e9a00be2b66edc4296920fd1713aa867a8625c36f680605",
+      "bytes": 2234
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red3-corrected/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/red3-corrected/kernel16-large-log-34954e34-3271-4e88-bff3-a59e50b2b7c0/large-log.json",
+      "sha256": "9e262c6ddb77a4d0a9afc3ba8eb95289b56ac0b813337b81eb6a27c9e4913ce9",
+      "bytes": 180
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/kernel16-large-log-d3e19af7-4b13-4046-bfa7-7a8fad96f4fc/large-log.json",
+      "sha256": "9792d7909276e398fa2269b8d31ce63ffc712cf8dff4093b3d15408fe780169f",
+      "bytes": 180
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/kernel16-review580-legacy-monitor-shape-552e1916-3677-41c3-b9fe-468cc9937f98/proof.json",
+      "sha256": "9a36dd514967c4dab4470320f0dd87ceb497c082eeba7accd36cdbd7ecaf4725",
+      "bytes": 2535
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/kernel16-review580-recovered-verifier-4048e537-70ba-4538-a1b8-d5bbe49eaded/before-recovery.json",
+      "sha256": "18c412ab4671c6835626c128911c0e2fbf533b7afc2b6c95b512ec253ae4eb3a",
+      "bytes": 9154
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/kernel16-review580-recovered-verifier-d2e3c0a6-266e-475d-bde0-a320d6667902/proof.json",
+      "sha256": "0e0ccb210cb2083a9c73324b3bbb5d482c52c4ad7e004de99a20f48094212953",
+      "bytes": 6047
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/review580-capacity.json",
+      "sha256": "f67bbe7d983330c4cf9776bedae4efc7bb8e383b1d66dd98bd14a1628e1dfe6e",
+      "bytes": 2867
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/review580-continuation-usage.json",
+      "sha256": "d789e0aee7ff91150071fc4976d833f6bcfc42b98c440e05dda905589a85c479",
+      "bytes": 2311
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/review580-crash/crash.json",
+      "sha256": "ea162ee5174301e967a5b9f3d2595db4c58b99b6cfceacfdd099fcedac875112",
+      "bytes": 8720
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/review580-fast-crash/crash.json",
+      "sha256": "d56dccc075f3ad290e7844eded13d217850d7775e45be9af97c2699e2402d084",
+      "bytes": 8693
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/final-focused-boxed/review580-surviving-thread/survivor.json",
+      "sha256": "042d8743bf8e1d6f741270e18fba279b9f8573e823966ee943751a51ace3929a",
+      "bytes": 1036
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/historical/cleanup.json",
+      "sha256": "b9949544b3831bcef7fc5a00ea942f5a6b874b3a48d92c75341de9182e71412a",
+      "bytes": 183
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/issuer-expiry/cleanup.json",
+      "sha256": "9041b21f417b36ba28473c825b8d96aa78910020bb7aec94205862f16632b440",
+      "bytes": 183
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/kernel16-binary-output-5831ef25-876b-412f-b3e7-e3a29926e43d/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f",
+      "bytes": 74
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/kernel16-binary-output-5831ef25-876b-412f-b3e7-e3a29926e43d/proof.json",
+      "sha256": "7a94fdd25894139e4c58023567be7272f66cc529b6dc9bb499773cfddc6de95c",
+      "bytes": 2213
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/kernel16-large-log-4ac31389-4ad9-484c-8559-d0f02a99bda3/large-log.json",
+      "sha256": "b0131a56fb8f06552d390b3d0bf749448c8e883eb5b2f165748e4515e30e65e4",
+      "bytes": 180
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/kernel16-review580-legacy-monitor-shape-4de81376-d4d9-46f1-b5ba-a5bf47ef3f41/proof.json",
+      "sha256": "1eeef3f07b1c6035d37a47137186dd4a3d431b750f97b27fd41effa30e54749e",
+      "bytes": 2533
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/kernel16-review580-recovered-verifier-2dff32dd-efcf-4688-9529-e9961b806b83/before-recovery.json",
+      "sha256": "0813ce20428987a858d6251f2b0e88a9e220b0ae103fac739821b7b95661bd39",
+      "bytes": 9147
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/kernel16-review580-recovered-verifier-67c97961-dc87-4899-ba8a-a6f9a108ab5d/proof.json",
+      "sha256": "49559971158022e702fd33ac84d031056cde099973164c8d666b34a454790d85",
+      "bytes": 6032
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/known/cleanup.json",
+      "sha256": "18a01f03507fb428d4fe4ca851c6bbd338f478b1cbcdea7159a7a0dc81fe0414",
+      "bytes": 105
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/legacy-quarantined/cleanup.json",
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68",
+      "bytes": 93
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/legacy-running/cleanup.json",
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d",
+      "bytes": 92
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/merged-journals/cleanup.json",
+      "sha256": "ec0c5186c2cdd621d3d7ea1141eb6e6d01d0add1fea8f98dfbd9d72f5af30e58",
+      "bytes": 1503
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/monitor-memory-1048576-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/monitor-memory-1048576-read-error-true/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/monitor-memory-134217728-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/overflow/cleanup.json",
+      "sha256": "01e35c8a893320fb42e594f829db6ef6157dc265f844931ff99c55e40b45d913",
+      "bytes": 1635
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/review580-capacity.json",
+      "sha256": "273e75d45f3e273c8d68a0b0ac122dc14f412df89788e12127d3295e2d5b449d",
+      "bytes": 2867
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/review580-continuation-usage.json",
+      "sha256": "cb0a3e459f47b07547471a799b22657e3b5a6254ce1ddc57b1adcb1d34d3d568",
+      "bytes": 2311
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/review580-crash/crash.json",
+      "sha256": "85c6eb1bf1b81780c1c74525cfd313f71ae73fd98f19b2737e0b94ddffe0cea3",
+      "bytes": 8692
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/review580-fast-crash/crash.json",
+      "sha256": "83db7e52d78ea323c7057e4d165a4993aaf84ab9206632eb1054f8faacf424e4",
+      "bytes": 8665
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/review580-surviving-thread/survivor.json",
+      "sha256": "5a43dfe2b142c7cdf9a53c0ddb50b040eb4824f0e0506e4185fcd98ab1490cba",
+      "bytes": 1034
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/unknown-effect/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda",
+      "bytes": 78
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review580-portable-proofs/matrix-corrected-heap/unknown-usage/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda",
+      "bytes": 78
+    }
+  ],
+  "scope": "public selected proof records; excludes databases/configs/private transcripts; no fullgoal acceptance"
+}

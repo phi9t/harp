@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l4-proto-codegen"
+description = "Repair Blade proto codegen wiring"
+
+[metadata]
+fidelity = "gen_rule fallback: real proto_library does not link against the host protobuf under blade gcc 8.3 (GLIBCXX_3.4.29, GLIBC_2.34)"
+track = "B"
+level = "L"
+tags = ["single", "blade-L4"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "sh tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "app/main.cc"]
+
+[agent]
+timeout_sec = 900

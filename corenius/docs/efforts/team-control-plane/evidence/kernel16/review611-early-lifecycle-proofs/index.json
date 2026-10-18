@@ -1,0 +1,64 @@
+{
+  "session": 69225,
+  "exit": 101,
+  "classification": "mixed run: meaningful deadline successor behavioralred; yieldedcontrolPASS; unknownusagecontrol wrong admitted-vs-active expectation needs fixturecorrection",
+  "production_changes": "none observed",
+  "files": [
+    {
+      "path": "lifecycle-red.log",
+      "bytes": 1434,
+      "sha256": "ba20054e547579a9824c0c86be6daa9c0fb47a1a1c30c8d92f5eced5864e4fdf"
+    },
+    {
+      "path": "lifecycle-red.exit",
+      "bytes": 4,
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "lifecycle-red-service/cleanup.json",
+      "bytes": 34,
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "lifecycle-red-service/review611-uncertain/cleanup.json",
+      "bytes": 129,
+      "sha256": "5d0001d516de3d1d0ab8be67929b35992e7fac5d0a30b9f61e932700ba01c363"
+    },
+    {
+      "path": "lifecycle-red-service/review611-deadline/cleanup.json",
+      "bytes": 103,
+      "sha256": "e4fddf91a767beea7d8fe03fa6b425e54ab7f058d1d7510b3eeca82f24a3d105"
+    },
+    {
+      "path": "lifecycle-red-service/review611-yielded/cleanup.json",
+      "bytes": 103,
+      "sha256": "8a9f7ddbf99ce11138db3a847c1292800b422e05801a5b7f0f5fd4142d4be7b1"
+    },
+    {
+      "path": "uncertainty-baseline.log",
+      "bytes": 527,
+      "sha256": "b6055ff53369f03593b832870a99d6f74c746e474023fbe2c9f4b324311aaed0"
+    },
+    {
+      "path": "uncertainty-baseline.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "uncertainty-baseline-service/cleanup.json",
+      "bytes": 34,
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "uncertainty-baseline-service/review611-uncertain/cleanup.json",
+      "bytes": 129,
+      "sha256": "d13af85a207ff3525737664384d4aaa477e6060ecab06c40b17b701b18039b62"
+    }
+  ],
+  "excluded": "service logs SQLite privateconfig",
+  "corrected_uncertainty_control": {
+    "session": 91648,
+    "exit": 0,
+    "result": "1publictestPASS against unchangedproduction; unknown native usage prevents release/retirement/successor"
+  }
+}

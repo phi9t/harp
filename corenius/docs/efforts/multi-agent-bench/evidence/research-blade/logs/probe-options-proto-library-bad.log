@@ -1,0 +1,35 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_blade_build.sh options-proto-library-bad //:bad_proto
+(22:37:08)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d88f496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:08)Blade(warning): Read Tcc config from buildcloud failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d88f496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:08)Blade(warning): can't find available distribution cache and execute service from remote
+(22:37:08)Blade(warning): 当前环境下无法使用CAS分布式构建集群: not found remote service
+(22:37:08)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d88b88a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:08)Blade(warning): Request build id failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d88b88a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:09)Blade(warning): Failed to fetch idc meta data with api
+(22:37:09)Blade(error): //.:bad_proto: unrecognized options {'hdrs': ['bad.h']}
+(22:37:09)Blade(error): failed to run blade
+(22:37:09)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d87b34710>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:09)Blade(error): Report data server error: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d87b34710>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:08)Blade(info): get tcc basic_conf from online failed
+(22:37:08)Blade(info): percent=0, num=13
+No required grpc dependencies, buildboard is disabled
+(22:37:08)Blade(info): InvocationID: df5637d3-cf7b-4316-9272-71c1a9f3821a
+(22:37:08)Blade(info): TOOLCHAIN MODE: INSIDE
+(22:37:08)Blade(info): Get toolchain env file /opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/env.sh success
+(22:37:08)Blade(info): load toolchain env file done
+(22:37:08)Blade(info): get real toolchain name=x86_64-gcc494
+(22:37:08)Blade(info): get rule toolchain name=x86_64-x86_64-gcc-494
+(22:37:08)Blade(info): strategy-build-compile-priority: 
+(22:37:09)Blade(info): User Building Command: /bin/bash -lc set +e base=docs/efforts/multi-agent-bench/evidence/research-blade for spec in \   "options-cc-library-bad //:bad" \   "options-cc-binary-bad //:bad" \   "options-cu-library-bad //:bad" \   "options-proto-library-bad //:bad_proto" \   "options-thrift-library-bad //:bad_thrift" \   "options-gen-rule-bad //:bad_gen" \   "options-py-library-bad //:bad_py" \   "missing-filegroup //:files" \   "missing-genrule //:files" \   "missing-globals //:never" \   "load-no-symbols //:never" \   "load-missing-symbol //:never"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/probe-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done
+(22:37:09)Blade(info): Blade version: blade-1.2.2.1469
+(22:37:09)Blade(info): Language version: 2.7.13
+(22:37:09)Blade(info): loading BUILD files...
+error: //.:bad_proto: unrecognized options {'hdrs': ['bad.h']}, source dir: .
+(22:37:09)Blade(info): pull cost time is 0.124518156052s
+(22:37:09)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/8652f9eb7e8a5d7a8debf780bdf0a9be452c66d4/cache_manager/build_file_env.cache
+(22:37:09)Blade(info): basics: {"BPT-platform": "x86_64-gcc494", "build_command": "/opt/tiger/typhoon-blade/src/blade/bootstrap.py build //:bad_proto", "env": "devbox", "ip": "invalid", "region": "us", "dc": "maliva", "device_type": "devbox", "build_toolchain_version": "gcc494", "os_version": "debian-12", "toolchain_name(GCC)": "x86_64-gcc494", "git_branch": "worker/research-blade", "build_tool_version": "blade-1.2.2.1469", "git_repo": "unknow", "user": "philip.yang"}, build_path: /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/options-proto-library-bad
+(22:37:09)Blade(help): You have entered the ninja build phase. Next time run blade fast-build instead of /bin/bash -lc set +e base=docs/efforts/multi-agent-bench/evidence/research-blade for spec in \   "options-cc-library-bad //:bad" \   "options-cc-binary-bad //:bad" \   "options-cu-library-bad //:bad" \   "options-proto-library-bad //:bad_proto" \   "options-thrift-library-bad //:bad_thrift" \   "options-gen-rule-bad //:bad_gen" \   "options-py-library-bad //:bad_py" \   "missing-filegroup //:files" \   "missing-genrule //:files" \   "missing-globals //:never" \   "load-no-symbols //:never" \   "load-missing-symbol //:never"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/probe-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done for faster iteration
+real	0m0.635s
+user	0m0.369s
+sys	0m0.288s
+EXIT: 1

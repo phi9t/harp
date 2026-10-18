@@ -1,0 +1,28 @@
+{
+  "session": 35284,
+  "terminal_exit": 0,
+  "classification": "focused public green",
+  "scope": "original unbound claim cancellation sequence; further controls/fullmatrix pending",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "c841611f1433d767e1f442033e88189b0643191b7f04f6e36816b322d49ac723"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review580-capacity.json",
+      "sha256": "4aab33846581b9bc7447d7c331b95477e777a333ec17483e85ba5288cca946d4"
+    }
+  ]
+}

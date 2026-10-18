@@ -1,0 +1,31 @@
+{
+  "session": 26814,
+  "exit": 0,
+  "summary_count": 16,
+  "passed_including_nested_children": 173,
+  "failed": 0,
+  "ignored": 8,
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "4f45f47e5f75feb575fb972c9cb53f4895d4c5d085c280878bddab483d8d2d1a"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "container-observation-terminal-matrix.json",
+      "sha256": "d691b1165d2c5e2e2bfef1982f986d0748a1b17a0ee37424d85ca8664cf2a5a8"
+    }
+  ],
+  "acceptance": "freeze/conformance/rootgate/branchreview pending"
+}

@@ -1,0 +1,19 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-2ed9953211d69908)
+
+running 1 test
+actual_private_native_initialize {'id': 1, 'result': {'userAgent': 'corenius_private_profile/0.159.3 (Debian 12.0.0; x86_64) unknown (corenius_private_profile; 0.1)', 'codexHome': '/home/worker/.codex', 'platformFamily': 'unix', 'platformOs': 'linux'}}
+native_qualified_observation {'auth_ref': 'native:53e2b1a3-a582-496a-8494-0540003baa70', 'control_endpoint': '/tmp/cnp-r859zyk2/transport/1bbb7035-599e-4399-9c48-2a2d44bd8f01/control.sock', 'controlplane_cwd': '/workspace', 'endpoint': '/tmp/cnp-r859zyk2/transport/1bbb7035-599e-4399-9c48-2a2d44bd8f01/native.sock', 'incarnation': 'e3f0a55792f7875171e755597c816b2eb2c15670e3f8335dc7a74818f1049206', 'kind': 'app', 'own_executor_only': False, 'pid_namespace': 4026539641, 'pins': {'binary': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex', 'sha256': '8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479'}, 'catalog': {'path': '/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json', 'sha256': '262dc36e0e7beb290aef8196bd59f42acf51647b8f7b68dafa533ae7742019e6'}, 'companion': {'path': '/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host', 'sha256': 'fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5'}, 'config': {'path': '/tmp/cnp-r859zyk2/runtime.toml', 'sha256': '4577ddce438ca8a02170db9a3c772b1ee6f2a01150578f4ba15880dbb520f660'}, 'executor_root': None, 'kind': 'app', 'launcher': {'path': '/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/support/codex_insula.py', 'sha256': '16e49668f4c51779354330673afd78eca82c686d4d920adb0e965893d4ade444'}, 'own_executor_only': False, 'provider_socket': '/tmp/cnp-r859zyk2/provider.sock', 'transport_root': '/tmp/cnp-r859zyk2/transport'}, 'runtime_pid': 2487386, 'runtime_start': '51585426', 'store_id': 'd6b6b114-50fe-45b7-83d8-0e4eb18c99e6', 'workspace_generation': '53e2b1a3-a582-496a-8494-0540003baa70', 'workspace_identity': '31:3259435'}
+native_profile_cancel_identity {'ok': {'binding': {'attempt': '1bbb7035-599e-4399-9c48-2a2d44bd8f01', 'base': '0123456789abcdef0123456789abcdef01234567', 'brief': 'd58237eb-5686-4238-9196-f5fb98a43920', 'operation': '4409f01a-155b-4afc-b561-030be09db23b', 'project': 'native', 'scope_epoch': 1}, 'boot_id': '6f48f645-3b26-40c9-93fb-db4190c7629b', 'handle': '53e2b1a3-a582-496a-8494-0540003baa70', 'incarnation': '7de8df1a-b217-473b-8ba5-da9b168357b6', 'init_start_ticks': '51585397', 'namespace_init': 2487311, 'native_store': 'd6b6b114-50fe-45b7-83d8-0e4eb18c99e6', 'outcome': 'owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)', 'pid': 2487310, 'pid_namespace': 4026539641, 'start_ticks': '51585396', 'state': 'exited'}}
+native_owned_output {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51585426", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+
+test pinned_native_services_use_supervised_private_network_profiles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 9.13s
+

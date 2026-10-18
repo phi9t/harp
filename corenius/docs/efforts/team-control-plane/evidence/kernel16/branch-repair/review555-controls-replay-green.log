@@ -1,0 +1,53 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.75s
+     Running unittests src/lib.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 9 tests
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::foreign_or_unproven_observer_frames_cannot_classify_original_pids ... ok
+test supervisor::observation_tests::membership_errors_retain_structured_provenance_and_disappearance_semantics ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+test supervisor::observation_tests::only_certified_original_whole_group_finalization_proves_exit ... ok
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+test temporal::wait_wire_tests::typed_same_uuid_preserves_both_protocols_through_rollover_payload ... ok
+test temporal::wait_wire_tests::v1_admission_wait_roundtrips_without_changing_wire_shape ... ok
+test supervisor::observation_tests::whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 12 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... ok
+test confirmed_episode_effect_cannot_borrow_unused_workspace_stop ... ok
+test colliding_episode_and_admission_waits_drive_both_protocols ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test paused_prepared_episode_remains_guarded_workflow_progress ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test stopped_launched_episode_retains_workspace_until_monitor_result_is_durable ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.82s
+
+     Running tests/temporal.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/temporal-f10feb9922cd1a9b)
+
+running 8 tests
+test command_identity_contains_operation_family ... ok
+test queued_old_generation_driver_cannot_dispatch_after_close_and_replacement ... ok
+test public_migration_installs_transactional_workflow_registry ... ok
+test real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint ... ok
+
+thread 'sigkill_fixture_rejects_unexpected_prior_exit' (2820452) panicked at tests/temporal.rs:795:5:
+unexpected worker exit before injected SIGKILL
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test sigkill_fixture_rejects_unexpected_prior_exit ... ok
+test temporal_worker_process ... ignored, child worker process; parent fixture owns lifetime
+test verifier_cannot_suppress_initial_wakeup ... ok
+test real_temporal_recovers_lost_hints_rollover_and_retained_replay ... ok
+
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 11.84s
+

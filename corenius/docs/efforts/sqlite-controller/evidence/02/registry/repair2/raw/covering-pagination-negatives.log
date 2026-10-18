@@ -1,0 +1,10 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (crates/sqlite-controller/target/debug/deps/corenius_sqlite_controller-8b1b9af281467a5f)
+
+running 3 tests
+test native_ws::tests::loaded_scan_malformed_cursor_fails_closed ... ok
+test native_ws::tests::loaded_scan_exhaustion_reports_absent_identity ... ok
+test native_ws::tests::loaded_scan_repeated_cursor_fails_closed ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+

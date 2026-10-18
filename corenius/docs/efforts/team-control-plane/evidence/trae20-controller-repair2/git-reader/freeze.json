@@ -1,0 +1,83 @@
+{
+  "acceptance_authority": false,
+  "fixture_identities": {
+    "bundle_complete_history": true,
+    "bundle_refs": [
+      "e3d20b8172fcc1b4d47f00010eeb749a95f97dc9 refs/heads/fixture-only",
+      "e3d20b8172fcc1b4d47f00010eeb749a95f97dc9 HEAD"
+    ],
+    "bundle_sha256": "028466abe6de9fa412db7949e336cee971ef7e15bc1a6d6b5a7c032c5777c269",
+    "case_sha256": "569a269ef233fd1bdc0e3a34efe68cda640caa43b9a03781a3f4996bc2834007",
+    "command_sha256": "144bb3aea6e7af7b09477438822975e7a23727c8b06c61a8826f0d657321edb5",
+    "fixture_refs": [
+      "e3d20b8172fcc1b4d47f00010eeb749a95f97dc9 refs/heads/fixture-only"
+    ],
+    "fixture_tree_paths": [
+      "fixtures/case.json",
+      "fixtures/grant.json",
+      "tools/probes/trae_case_control.py"
+    ],
+    "grant_blob": "c417847fe953767f72cf1ea54e995d50e732bfa6",
+    "grant_commit_G": "e3d20b8172fcc1b4d47f00010eeb749a95f97dc9",
+    "grant_sha256": "8540ea424abe27273a92260a93e59cc6162908cf9b917070f7e510a9a8e81f5a",
+    "physical_admission": false,
+    "reviewed_root_commit": "16c15c86e9391939d5e6b5fc6c026e6a3a09fde1",
+    "reviewed_tests_sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "source_commit_C": "c9531431159c498bde379ba8a5b1e67df51ad0c9",
+    "source_sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207"
+  },
+  "hashes": {
+    "audit-run.json": "0bc628e2236ec5d886e03e2341bb18635028965d1260626113e276f6d0c9f84e",
+    "audit-run.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audit-run.stdout.log": "6265331632c27fb731f18e52dacd7f4c16dd0f56e948ffcfba605eedb8860c67",
+    "audit.py": "3550d95269bc8a426e243fb571da6cac7444c210086c94a07c708dc232f6e46d",
+    "final-validation.json": "e630cf207f1fc4e41ec27e8c6b3ef2267e1ad68366fb5b5b9f71ca0148edb17b",
+    "final-validation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-validation.stdout.log": "f6bd12e80377ba2c45e6d36d3cbc80166baaf0c21afedc953b10a9c2df7e3e0a",
+    "fixture-only.bundle": "028466abe6de9fa412db7949e336cee971ef7e15bc1a6d6b5a7c032c5777c269",
+    "proof-run.json": "1fa075fb01a6f48346e846d634a169dc00c06881cf72d8df2460021ab6873ebb",
+    "proof-run.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "proof-run.stdout.log": "35f3b3680a7f4615d57c2d237d11eff79a6db17bf752b0bd290280a15df3cf74",
+    "proof.py": "da54eb975f50f4ec35498c11122801460f813e71fc7673e93099ac8b8e63eaf1",
+    "public-index.json": "ec747dd26eb3729e7cfd593a7e2be21595c647af2e18f70ebaac3ecf4b226fc7",
+    "report.md": "5e082ff83fddbf1e98a70f0a5626c3d9ff985f8a1c7e21ab5a4c03d7703bc1e0"
+  },
+  "original_gaps_and_historical_budgets_unchanged": true,
+  "physical_admission": false,
+  "record_hashes": {
+    "started.json": "3b1f0a406db3da3409837308b23105974efe39bc845555044907db8a37b4748f",
+    "stderr.log.txt": "acd3ed079e30eb0e91e318d6a110ae211d7a3553255761f3ba2cf25b920e8a36",
+    "stdout.log.txt": "2250995928d37f60ce9b75ffa7a59a5b0dc1487a55f4054bcfa2c96779d70f22",
+    "terminal.json": "2c7adfc12b873a7b1c6ef06569128b7b87c5af23bc57b5a4447ed6997a414cb4"
+  },
+  "results": {
+    "acceptance_authority": false,
+    "actual_default_reader_git_commands": 44,
+    "actual_reader_exercised": true,
+    "case_argv_executions": 0,
+    "controller_invocations": 11,
+    "controls_passed": 9,
+    "fixture_repositories": 1,
+    "limits": [
+      "Only local Git-reader binding and durable recording boundary qualified.",
+      "No real runtime timeout or descendant enforcement demonstrated.",
+      "No physical runtime/provider/service/namespace qualification or admission.",
+      "Earlier chronological TDD gaps remain unchanged.",
+      "Original physical result remains PARTIAL; budgets/quarantines unchanged.",
+      "Runtime configuration, nested isolation, native turn-ID binding, terminal observation and request accounting remain unproved."
+    ],
+    "namespace_starts": 0,
+    "nonzero_git_exits_expected_controls": 2,
+    "provider_requests": 0,
+    "read_committed_argument": "OMITTED",
+    "recording_callbacks": 1,
+    "root_or_shared_mutations": 0,
+    "runtime_starts": 0,
+    "service_starts": 0,
+    "started_provenance": "committed-git",
+    "status": "PASS",
+    "total_git_commands": 66
+  },
+  "status": "FROZEN-PASS",
+  "version": 1
+}

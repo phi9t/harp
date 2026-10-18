@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/c05-generated-table"
+description = "Generated status lookup table is stale after a schema update"
+
+[metadata]
+track = "C"
+level = "L"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cmake -S . -B build -G Ninja && cmake --build build && ctest --test-dir build --output-on-failure"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

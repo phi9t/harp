@@ -1,0 +1,37 @@
+Reviewing branch "codex/reference-design": 2 commits since 1f164156261a3aa927c823919bf73d6e6d11a771
+Enqueued job 555 for 1f16415..66e221a (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: High
+- **Location**: `crates/team-control-plane/src/supervisor.rs:2051`
+- **Problem**: Cancellation checks for unbound confirmed native effects only in the legacy gateway. Episode dispatch permits unregistered adapters to return `Confirmed` without launching the allocated supervisor execution. Reconciliation can then stop the unused workspace and mark the Attempt `cancelled` while the adapter’s external execution remains active.
+- **Fix**: Require independent evidence binding every confirmed episode effect to its stopped execution; quarantine effects without that proof.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/episode_runtime.rs:664`
+- **Problem**: Pausing a Mission with a prepared episode makes `dispatch_guarded` return `DependencyUnmet`, which propagates as a nonretryable Activity failure and fails the workflow. Resuming the Mission cannot resume that workflow. The legacy driver handles fenced prepared operations, but the episode driver does not.
+- **Fix**: Return authenticated journal progress with a dispatch limitation for temporarily fenced prepared episodes, preserving the workflow’s durable wait.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/episode_runtime.rs:659`
+- **Problem**: The driver distinguishes episode waits from legacy admission waits solely by UUID lookup. Episode IDs are caller supplied and can equal an admission operation ID. Both entries then dispatch through the episode branch, leaving the legacy journal undriven; a collision with another Task’s episode instead produces an authorization failure.
+- **Fix**: Carry explicitly typed admission and episode references through `Progress.waits` and dispatch by reference type.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/tests/artifacts.rs:2098`
+- **Problem**: The new artifact regression test unconditionally unwraps `TEMPORAL_FIXTURE_EVIDENCE`, although the PostgreSQL runner does not initialize it. A focused PostgreSQL-only run such as `run-postgres.sh --test artifacts` now panics after its behavioral assertions pass.
+- **Fix**: Make evidence export optional or initialize an evidence directory in the PostgreSQL runner.
+
+## Summary
+
+The change assembles durable episode execution, supervised verification, operator recovery, cancellation fences, and associated integration proofs.

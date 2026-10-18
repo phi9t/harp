@@ -1,0 +1,1451 @@
+{
+  "captured_at": "2026-10-04T18:02:31.647071+00:00",
+  "provenance": "Explicit read-only filesystem snapshots; source files independently checked against frozen commit and archive; requirements checked against fixed manifest. No claim that author untracked evidence or root dirty metadata is committed.",
+  "files": {
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/AGENTS.md": {
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/CONSTITUTION.md": {
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/agents/agentic-engineering.md": {
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/agents/skill-orchestration.md": {
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/agents/domain.md": {
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "bytes": 2045,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/SPEC.md": {
+      "sha256": "57a25de6d827a5a364d41e748ea08d6b8196a81790238128ec65ed58d656cdd6",
+      "bytes": 17620,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/CONTROLLED-TRIAL.md": {
+      "sha256": "35742c7434829af4f8ef24f3a987877fcac248a8fac10bc6c7d4eb1a427b5e96",
+      "bytes": 6969,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/tickets/02-supervised-attempt-recovery.md": {
+      "sha256": "281d99cecdefcd0f1dec5baf956eae63f1f79614fedd5783f46a15d49a8e7313",
+      "bytes": 4114,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/tickets/03-kata-participant-protocol.md": {
+      "sha256": "d54a57de0be3845235a46703e702b23987c62ed018a307c11ee2353d3cbc9c5d",
+      "bytes": 5965,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/tickets/04-git-candidates-landing.md": {
+      "sha256": "eeb92a3073339585b4ea576f1590dbb64fb4884868843ae6fdbbc9ece5cb9eed",
+      "bytes": 5483,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/docs/efforts/sqlite-controller/decisions/01-registry-cleanup-cap-routing.md": {
+      "sha256": "94ce40ca7ef4a5fd40d171798f8b759ec67725050be92da700586f1c4df105b8",
+      "bytes": 3418,
+      "role": "fixed requirement"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/manifest.json": {
+      "sha256": "14251b6b21eccc1f9d5db8f9e7c4fe967ed67cc2e5cd44673f9d35794389e198",
+      "bytes": 1676,
+      "role": "review authority"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements/supplement-05.json": {
+      "sha256": "b3f7c10f721cf010408be3d6161e9a35e4389c515b3e6bfa59d5fd64ce4f1464",
+      "bytes": 426,
+      "role": "review authority"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/briefs/04-repair1.md": {
+      "sha256": "7bdc3c741835e6306ebc84162d92dbde542b583b418d6375875e0679bda04cab",
+      "bytes": 7684,
+      "role": "review authority"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/branch-645.md": {
+      "sha256": "2b70c705588171e5ed8115aa2992bdccb30b59a18d223811f9a89423684faa96",
+      "bytes": 4066,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/branch-645.json": {
+      "sha256": "74e149ebe6e7b1fff0a146f03d55069ee6ba07759b64535e4b2a31ccc0df9652",
+      "bytes": 175509,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/frozen-source-check.json": {
+      "sha256": "3d75b5b5816e0a5b191e8f0318be707e91c9fcf59aff7a68076578a760e78d18",
+      "bytes": 4444,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/spec.md": {
+      "sha256": "d691d7fa733f938cb625d0151a34ff9a457045e3823a812da2663af310f6c5d2",
+      "bytes": 2659,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/spec.json": {
+      "sha256": "cd52dc052eae92c5c29b2fb590529223d081b311871163a191fa7f4e7337f057",
+      "bytes": 8332,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/retention-audit.json": {
+      "sha256": "fd508151a32c16da311b30246f83470254306f7617572e886f14542e9c1398da",
+      "bytes": 877,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/spec-evidence-index.json": {
+      "sha256": "6d00d354525c37716212a2e7522efddd009cb565f26b276c2d2855661ec691ac",
+      "bytes": 19890,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/standards-evidence-index.json": {
+      "sha256": "6419466516490a59dd45a38d91306dfb70711d939504c2e1b0afa61754602dc5",
+      "bytes": 7895,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/standards.md": {
+      "sha256": "dbb7cd3111bbdafae30a9b94606657476647698b5b74752dbc4142e320d6cb51",
+      "bytes": 2172,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/branch-job-metadata.json": {
+      "sha256": "57168e323dc086a6fc8f7786595f1f8cba73b63f567bb81a538bf003b9e59c81",
+      "bytes": 212,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/initial/standards.json": {
+      "sha256": "2e09ec29f26d4736aa3cddbf478f46693eacee7225fd3f4c46588129b4cafdea",
+      "bytes": 4548,
+      "role": "immutable initial review"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/Cargo.lock": {
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a",
+      "bytes": 14744,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/Cargo.toml": {
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114",
+      "bytes": 432,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/README.md": {
+      "sha256": "2077aaaa5983efcf1421fcd206c4851485b8caf9a3aa4d4886a60ac330d08368",
+      "bytes": 34679,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs": {
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626",
+      "bytes": 909,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs": {
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+      "bytes": 1213,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/codex.rs": {
+      "sha256": "4da2c61ade03bf49287709605a0991966d44f94d2612f1c57b2b73d1db384761",
+      "bytes": 86527,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/codex_schema.sql": {
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e",
+      "bytes": 879,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/git.rs": {
+      "sha256": "9be65994dcbf0c6b39df541ace712251bde0129b5fb7367cdfab023a3845692b",
+      "bytes": 62628,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/git_workspace.rs": {
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7",
+      "bytes": 35876,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/kata.rs": {
+      "sha256": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+      "bytes": 56995,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/kata_schema.sql": {
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe",
+      "bytes": 2994,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/lib.rs": {
+      "sha256": "efd3c680cc8ce69e7ec32de2f5add97a33721c8f997d98b61953b1048e3e1781",
+      "bytes": 28927,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/main.rs": {
+      "sha256": "a1caf672f2aee17e07bbd3769dcde41819b1cd97e9891e2493749acb7e0b89de",
+      "bytes": 3562,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/native_profile.rs": {
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9",
+      "bytes": 8219,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/native_ws.rs": {
+      "sha256": "223e34e3db112d5f24ab29dd2b28f02b51fa2ce976a03d728848161c08f9c42e",
+      "bytes": 18289,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/query.rs": {
+      "sha256": "c2f458ed79e20876cf15e8a303350fd573d55a8269a4073a71e03cc95caf2f0f",
+      "bytes": 9866,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/runtime.rs": {
+      "sha256": "6ef2364b8c00edab0550298b23f63ab79ecef341aa3c71e6df36e65b8d0fccf7",
+      "bytes": 16056,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/schema.sql": {
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+      "bytes": 5678,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/service.rs": {
+      "sha256": "38bd4fcadf8d8e37de76e48273ad67182c85cbd9b3ddecd36dfc188ccd01065d",
+      "bytes": 8368,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/src/supervisor.rs": {
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+      "bytes": 50406,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/support/codex_insula.py": {
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+      "bytes": 6791,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/codex.rs": {
+      "sha256": "e98798ebb9b1d86cd4057cbfd3a6f99ae7da8aef5f1479753aadc19466f1a50b",
+      "bytes": 12457,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/git.rs": {
+      "sha256": "1e66b41627f3529250947768aa94055658c156c571d66d466f6eb86d09d9bae0",
+      "bytes": 1156,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/kata.rs": {
+      "sha256": "05fe7a43b0b42797d63bc5154bd5bf745d364825d1bbd1ea51c65a1c01c62500",
+      "bytes": 1646,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/process.rs": {
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02",
+      "bytes": 11048,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/public.rs": {
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae",
+      "bytes": 30630,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/runtime.rs": {
+      "sha256": "7bdcd64e6fd71c276b923167492819770fc32968bf74d7521f079be164d90fa5",
+      "bytes": 35266,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/support/git_protocol.py": {
+      "sha256": "a98e67570c4699017e24a5d9f82ee675b4fae5eeebb3200a3dd06ee19cc2723b",
+      "bytes": 39972,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/support/kata_protocol.py": {
+      "sha256": "afceb3b19fe94452cf6c12d44ce22adb16dd880aec199f5943c3c597592fff2c",
+      "bytes": 35804,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/support/native_init.py": {
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8",
+      "bytes": 2005,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/support/native_profile.py": {
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c",
+      "bytes": 4907,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/support/native_registry.py": {
+      "sha256": "947079b3a0e014bcbb2d320209e50d7167a8696bc54abbacdf11af6372cd44db",
+      "bytes": 80400,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/crates/sqlite-controller/tests/support/wsutil.py": {
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+      "bytes": 2208,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/tools/agents/checks.d/70-sqlite-controller.sh": {
+      "sha256": "284edb061d2cf790894aa0559c7f6b8183523e155d7688b983de1b3439dde62c",
+      "bytes": 231,
+      "role": "frozen source"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/accepted-capture-red-after.json": {
+      "sha256": "4e2c71994d2be1e3817d183608eea47eb9cb92e4945424095e682c2b71d48af1",
+      "bytes": 4386,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/accepted-capture-red-after-source.tar.gz": {
+      "sha256": "af9a5bbd944600aac87b0124c2dda27e632d1a2e6804be2727d2ab945b85ed0c",
+      "bytes": 153599,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/accepted-capture-red-before.json": {
+      "sha256": "89012d9a77be5c4c5be0acd544044f358a6c6ce159e0fdf01ec703b057895eca",
+      "bytes": 4387,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/accepted-capture-red-before-source.tar.gz": {
+      "sha256": "3714875dbc516ee82893e15a177314dc557fac27db1c68ca864a824ad5cece18",
+      "bytes": 153600,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-green-after.json": {
+      "sha256": "5de12e601f7b26063fd3ad12c9c5ecbea0c5ed7c8c3d89997db745b69c048c61",
+      "bytes": 4379,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-green-after-source.tar.gz": {
+      "sha256": "7f25c3cc11fdc1b82595b67f370b67ac9ab2a9494ff3c9705fce8d42693fabe2",
+      "bytes": 157360,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-green-before.json": {
+      "sha256": "9d0b205d5f24444776ca83e284c789a8e84758be5a2654f86fb4ba0b01fbd8f8",
+      "bytes": 4380,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-green-before-source.tar.gz": {
+      "sha256": "8258717b500a12521b4e22f11317b38f6e05943bc671a4de577cf1e868a6daf7",
+      "bytes": 157361,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-red-after.json": {
+      "sha256": "db1b933f70874ac2f1a11cdbbe62cd2c352df4f276cf46c619cecfcbcdfe965f",
+      "bytes": 4377,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-red-after-source.tar.gz": {
+      "sha256": "07c8fd1b1a6912d372673aee928221d41b138d8600f5e1786df7cf25db6038e6",
+      "bytes": 157173,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-red-before.json": {
+      "sha256": "a388451e834956648c27f1fbb148370ee37dd7ded61a7dd3502cdcd3963cd17a",
+      "bytes": 4378,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/archive-red-before-source.tar.gz": {
+      "sha256": "bed5cdd3eb2caf1345d87b45f83aa30be4af3e395a31b181ade4191756ee62da",
+      "bytes": 157174,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-green-after.json": {
+      "sha256": "f619244fc55ddab008c896332f0e78f11b26c27feddaa32dc86fa7a1f8a8f603",
+      "bytes": 4381,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-green-after-source.tar.gz": {
+      "sha256": "db72dd59d5af66c533f5302f4eb390a0595ac66b3f922e8e322c81bac7dfabf5",
+      "bytes": 154427,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-green-before.json": {
+      "sha256": "706c61865d7bb26a7098c88726af311be4e0aa71cb95ff761106f40ad0cf5a6a",
+      "bytes": 4382,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-green-before-source.tar.gz": {
+      "sha256": "fde85d32097c010ba83977321891ede92fa6616b6a796e9f4bfb95aaaad577c7",
+      "bytes": 154428,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-red-after.json": {
+      "sha256": "184bc4bd3389c57e25632efbf2e1502463c9d067c7e043df1481fae9053a14a1",
+      "bytes": 4379,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-red-after-source.tar.gz": {
+      "sha256": "9fed9e2cb69c326a353b7831c4dce8ac8a58bebe60658f6fe7dd620dd9a8313e",
+      "bytes": 154242,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-red-before.json": {
+      "sha256": "4bf9f68c66350187969a8fdea9f5cf43e9d21829f99c5b4877536f2692b19825",
+      "bytes": 4380,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/authority-red-before-source.tar.gz": {
+      "sha256": "e0e029fd4cb853841e639ac6c3d5be502ccfdb031ff7977e56f18f4d190782b7",
+      "bytes": 154243,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green-after.json": {
+      "sha256": "662af06d0d2cac05407db5a910d12cdb36445b2fa2dfd5a3a50af5d2bafef0f3",
+      "bytes": 4384,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green-after-source.tar.gz": {
+      "sha256": "e910f18ed8d4975161116b0a841e071330600bd0c864728193f12a2ccc955aba",
+      "bytes": 156784,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green-before.json": {
+      "sha256": "88fc057609e5b425c2bb146a3702cd5c3d613f3f8dc95b7e5dec6f1b65b38ea9",
+      "bytes": 4385,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green-before-source.tar.gz": {
+      "sha256": "4c7f38df185b473f56a40198a7fa3aa2a7b31c4ab6464d0d51d61e4e8cb68f09",
+      "bytes": 156785,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green2-after.json": {
+      "sha256": "52d27dccc47c0be17b2534f4ae655bf4a19d972fe9e050ca849f6c07290f2fa6",
+      "bytes": 4385,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green2-after-source.tar.gz": {
+      "sha256": "372bb144fdbf6f390fa028e15b8d5febd2514f1083f4ab3191ce6d52a0531b1f",
+      "bytes": 156813,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green2-before.json": {
+      "sha256": "3c19310b2519dd4cad2c399b08fe3fc863eb0d1323c10d8f8ed1f0b2793cb56c",
+      "bytes": 4386,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-green2-before-source.tar.gz": {
+      "sha256": "f677c24ab57a0de49ae95be35a76a4aaf6496370160b0d1595e0c5ad80490610",
+      "bytes": 156814,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-red-after.json": {
+      "sha256": "bbfd62d85e1bfe21f59669aff97fc8feb41225a64d7e4e9ef5f815479af0b081",
+      "bytes": 4382,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-red-after-source.tar.gz": {
+      "sha256": "9b7755b4b59c49080bb397fd2afaec89a510f88da5dd630f65249b15094dfec1",
+      "bytes": 156691,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-red-before.json": {
+      "sha256": "3c394d6a1bd34e8a577e415e9d48dd677843c243028d2e23c444d08ee170a04a",
+      "bytes": 4383,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/final-output-red-before-source.tar.gz": {
+      "sha256": "1e647a750dce961f586523ecad07af1964e37347a06b0448cac05810786b04ab",
+      "bytes": 156692,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-after.json": {
+      "sha256": "fcc517dbac7c41109396ecf12a0e79ab729c00cf9f0824dd8faeb2937e825399",
+      "bytes": 4381,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-after-source.tar.gz": {
+      "sha256": "15ec69d253904ce8d82f0172341a9edc1805959e5c99d2f9d39c97f78816d320",
+      "bytes": 160654,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-before.json": {
+      "sha256": "f01c97e311afe0a18ba659bf0ec1a7c09049ab06d569fa25a80551fa94b11121",
+      "bytes": 4382,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/freeze-controls-before-source.tar.gz": {
+      "sha256": "abc1eae326461d3cb02534700369337c3bb45564007c4b2f8ea210c667886633",
+      "bytes": 160655,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/frozen-source.json": {
+      "sha256": "1352016cd91a66f29d02edeb4636edee985e3ba5417824c1ddf761ee99678405",
+      "bytes": 4373,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/frozen-source-source.tar.gz": {
+      "sha256": "c673318274bcb1475c9c5852b85a754644d66c5e302ee3c095bfe64233e2d605",
+      "bytes": 160646,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-affected-after.json": {
+      "sha256": "740416a161b68af7dd83a3adf7273eeac6605f2c715cc88ef381a9395d03737a",
+      "bytes": 4379,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-affected-after-source.tar.gz": {
+      "sha256": "29c21f2f135239acf787a3ce8f379bd1daf5d89841798516f0bb5b8e82b33731",
+      "bytes": 160652,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-affected-before.json": {
+      "sha256": "0c85d1e2004082a5db7b296f1bd965b2729a869fed6d331f0d833199ded0e612",
+      "bytes": 4380,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-affected-before-source.tar.gz": {
+      "sha256": "6dc9f43600ef7a3d3ea8a4c3031871155c951976b88eb7980464f982ee6247c1",
+      "bytes": 160653,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-native-after.json": {
+      "sha256": "3043a0ff84eb8258e963bd2fdeccec8772fc3ad51aea0212f35aff4650ffd468",
+      "bytes": 4377,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-native-after-source.tar.gz": {
+      "sha256": "95df47ce53524a70704207f1be7bccff0d9764f8edc0baaf7d56ab82563f8c99",
+      "bytes": 160650,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-native-before.json": {
+      "sha256": "f7e846d2ba931c913efe85ba08537896048ab51db8ab52593c50364e34fc40cd",
+      "bytes": 4378,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-native-before-source.tar.gz": {
+      "sha256": "9a70b2a25a6866acce9711472f31dba67737717277bcf8729057225ccef86011",
+      "bytes": 160651,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-pending-controls-before.json": {
+      "sha256": "eca0bbba9a7958f47ef7f59918a4c7fa0bcc8a4bae6e60c80ed9f35898614f17",
+      "bytes": 4388,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/gate-pending-controls-before-source.tar.gz": {
+      "sha256": "3aa0cdfea9c3e06cda4a09c114da842e67f47ab9ff95ed6ed5ded4c600c2d8d0",
+      "bytes": 160661,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-green-after.json": {
+      "sha256": "4badac413633f6e1b494a3b4af7b20ca8c8faef2a335713bf20af0e8edc8e707",
+      "bytes": 4381,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-green-after-source.tar.gz": {
+      "sha256": "38c8a8cd1b29eeb6d370506648f6e641fbaf60414b017bdad2fc3d02338b526e",
+      "bytes": 156393,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-green-before.json": {
+      "sha256": "e4da0341d8d9ef80e63dc2142f53b5b70260401f80190c84b4bdcf82a696fc9a",
+      "bytes": 4382,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-green-before-source.tar.gz": {
+      "sha256": "211603c2bfeee2dcd2328d4ad29cbb515995e88280bb5cf32d9cb7bfc4517a23",
+      "bytes": 156394,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-red-after.json": {
+      "sha256": "4dfbd578cd3a594ba2bb8d381f2ac54f548df71e5ae83c949a082f6913743d09",
+      "bytes": 4379,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-red-after-source.tar.gz": {
+      "sha256": "0ae189155beae7e2f7537eefd84fcc9b248ddd3b45cfb791ebe75a8c51e11a0a",
+      "bytes": 156075,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-red-before.json": {
+      "sha256": "8ffb346eee5dcc3c9a88be98a2bcad83fa5eae325f8a5bf9e2530e9e0f2ea86a",
+      "bytes": 4380,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/inventory-red-before-source.tar.gz": {
+      "sha256": "4bcaa581f56f356162b634d83dcc0495315a24034964bb7a34331a54a3b14756",
+      "bytes": 156076,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green-after.json": {
+      "sha256": "df0c5a53f8fcda333241907f48d1edd7440f2e6d1f8048d2ce207c845fee5a91",
+      "bytes": 4388,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green-after-source.tar.gz": {
+      "sha256": "d33d647e3dd15e6b43e85dade1c31d78d467eba9c2e01916170a0eece3a04064",
+      "bytes": 160104,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green-before.json": {
+      "sha256": "672d1e285d06f6f429a312ec1fc4f6ecaa8e7583193f230da151972415aacd0c",
+      "bytes": 4389,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green-before-source.tar.gz": {
+      "sha256": "478628444d90a048191accbc16a8dc36ef1f3ee727ecd63632b2630f255e04ae",
+      "bytes": 160105,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green2-after.json": {
+      "sha256": "5a8697f3d7b6dabd91c9f6131498f8bf8a16b5b6a56fd1c4b4c0e905df4a9e24",
+      "bytes": 4389,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green2-after-source.tar.gz": {
+      "sha256": "12b5605c9798de499bfc2326cb969382f9283d5a0c1521f7839bc07875c3c6f6",
+      "bytes": 160183,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green2-before.json": {
+      "sha256": "d002d3c19178463540ead9a54fce5dfc5760137f2f787f2e2a89f2f2bb5b1e3b",
+      "bytes": 4390,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/kata-publication-green2-before-source.tar.gz": {
+      "sha256": "d57f46a1f2ac4c806185461058785dc3b0fad3400db9f782fa04cda57b3f6184",
+      "bytes": 160184,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/lifecycle-green-after.json": {
+      "sha256": "a69493a40ad900f19056cfa166fa71893db393976d4717e57806eaae6ae262f6",
+      "bytes": 4381,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/lifecycle-green-after-source.tar.gz": {
+      "sha256": "45535881cbf0d3896ee47e5728dbe5e078783b5cd16cbd80587ed48726845823",
+      "bytes": 153695,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/lifecycle-green-before.json": {
+      "sha256": "2a9cc90f178b96c8c7e96537dd19ebd6d96c939b60fd074a438e0426ee005443",
+      "bytes": 4382,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/lifecycle-green-before-source.tar.gz": {
+      "sha256": "f6a98ed7bde0b445cf1a4204a5035546a39ae490d0334b1082300d63fb55c9ba",
+      "bytes": 153696,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-green-after.json": {
+      "sha256": "21aa146bdd64efe76f16f97fe933c47792eb9c6cfd31f07c53e4ebfd4b4fda69",
+      "bytes": 4391,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-green-after-source.tar.gz": {
+      "sha256": "0c311c442bbb7a67228ff1357a2527720adc3ec9cfa8c6db60b513dc5255d21d",
+      "bytes": 156403,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-green-before.json": {
+      "sha256": "9f6bb3b669c37c8d9c0e5b8a062a66a1bcd895dba5360e18ae688f5ca2181a5d",
+      "bytes": 4392,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-green-before-source.tar.gz": {
+      "sha256": "a349bd7ee41b9ec9de142a7d5405548aab07f304e504898fff88aece34267d54",
+      "bytes": 156404,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-red-after.json": {
+      "sha256": "b68b42236ebe9d5586ac5e417276427309b83bc7ede81ef7df653ab7d0467502",
+      "bytes": 4446,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-red-after-source.tar.gz": {
+      "sha256": "061d82c58f92a8c66d77f059438ab93dfab49d30cc592b23074839f3787779aa",
+      "bytes": 155188,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-red-before.json": {
+      "sha256": "c6a3d1d6520a7aabd6f16d09a1c382e5e4926741002cbab575ec1b8da4120383",
+      "bytes": 4447,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-final-driver-red-before-source.tar.gz": {
+      "sha256": "560a7e4ec1ee78b0e0c86681cc6d61dc07111eaee180c625594950ee13ca5c83",
+      "bytes": 155189,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green-after.json": {
+      "sha256": "80736bc1bb086286170db1246c8b0b945948279e344d1f28c8e69ef67f31312b",
+      "bytes": 4387,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green-after-source.tar.gz": {
+      "sha256": "3bdfab4f3548ddae49b61033b30bd37a8dda12d97b31fcdc0e085098c26afd68",
+      "bytes": 155697,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green-before.json": {
+      "sha256": "19cf7874219c77e51da96ced2e0c0dcf616bbe44275c14aaca06ab30a445d658",
+      "bytes": 4388,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green-before-source.tar.gz": {
+      "sha256": "3801a268b4712727eb4ce847fdc0568441248ece738786ac8f81189bdc945e9e",
+      "bytes": 155698,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green2-after.json": {
+      "sha256": "eec63584b2c3b0c2d35fb1657f3d8fdbf755cd58f6ea136ec51887ec7d64819e",
+      "bytes": 4388,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green2-after-source.tar.gz": {
+      "sha256": "68e339cd834b5f69711ef1e1a1a68ffdb21b90e9bc6025ea4216ab9f14e92646",
+      "bytes": 155701,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green2-before.json": {
+      "sha256": "511fabb4c6431888b7f645cfa1ccf6a9a42e8a6280e586e9c0bf8d0f1afcb708",
+      "bytes": 4389,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-green2-before-source.tar.gz": {
+      "sha256": "21d0d50bf8d74bf2a90c4325180040fd34278033e1bcdc76c570b9cd20855f19",
+      "bytes": 155702,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-red-after.json": {
+      "sha256": "e3c86bfe088ff49cf1552ad42adb12d6a6b8b094815e0c305fe3cd71a451961a",
+      "bytes": 4385,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-red-after-source.tar.gz": {
+      "sha256": "1ad276f3e0f31e7ee93fd18293f5329afc3805786ba0b65c35d273cfe2c3b687",
+      "bytes": 155506,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-red-before.json": {
+      "sha256": "f174db79b3e31ac0b7f8f78a5329e4c150d09c4b24dff1084290ecf2a2d45748",
+      "bytes": 4386,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/native-lost-ack-red-before-source.tar.gz": {
+      "sha256": "79f698371a5db208ebb6e9ee36f0dd271075b9527166144989bed39c05653bde",
+      "bytes": 155507,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-controls-green-after.json": {
+      "sha256": "e5f6560bea7e399e1ee1062c9b716aecf40aae4395760e2d30e167a2d94eca8c",
+      "bytes": 4388,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-controls-green-after-source.tar.gz": {
+      "sha256": "56f841e8dc9b934f9ec92a0d6603012045f3726f17a8219d7d887a5a76980c0d",
+      "bytes": 158990,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-controls-green-before.json": {
+      "sha256": "8f4464c5f10e0720e1eb348e437cd6a350099be29af5430991a39e11b789c2c1",
+      "bytes": 4389,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-controls-green-before-source.tar.gz": {
+      "sha256": "4777259149c59c05f68b7b6ba91795df7030ba6c63b8ebfb273e32baeaef6068",
+      "bytes": 158991,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-green-after.json": {
+      "sha256": "89a7007188109b7c64f9df8ae8efde1c0aa6a2dfe5500b404e257720eb05c3c0",
+      "bytes": 4379,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-green-after-source.tar.gz": {
+      "sha256": "9ab592346a46555c4c2e74de97bfc0f55193f7f2fc0f2c3e34aac39e75965cc6",
+      "bytes": 158528,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-green-before.json": {
+      "sha256": "a9155d8a63c185d11afb9a4373e21db50ec06f098ac98f9b520a38d7b950ce6d",
+      "bytes": 4380,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-green-before-source.tar.gz": {
+      "sha256": "f96f4dde550000ecbbd1eea67398c30f99824e6870f63caaedcdb4eec27df61a",
+      "bytes": 158529,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-red-after.json": {
+      "sha256": "aa6c1daa0cc1f294376723f0a6431a8dd64571ad141ea14d32abc8652d5f790a",
+      "bytes": 4377,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-red-after-source.tar.gz": {
+      "sha256": "b80a2f538241b5289ad29455b21652bb4359bf7e09a545d2ccd18947f9ff39a8",
+      "bytes": 157469,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-red-before.json": {
+      "sha256": "285edecf1d178edaf346f2ba8b35c69286145c06738fe45a7f953be195ca6351",
+      "bytes": 4378,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/partial-red-before-source.tar.gz": {
+      "sha256": "d43dd63a027a924cec9cb9836d3294cab482246289a7056b75e591838ea1d1f6",
+      "bytes": 157470,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green-after.json": {
+      "sha256": "ad8f4b7f47673b529c61104111cdf427bd9d5fcc5689e4ef02667460102a9967",
+      "bytes": 4383,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green-after-source.tar.gz": {
+      "sha256": "990940705b7d11c6738799900ff47ad8cca1f5ad52395dd1d4c45290d4bdbe08",
+      "bytes": 155134,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green-before.json": {
+      "sha256": "b2fd419963b0bd9f1f3c92dcbdced0500f8b64b40cd2010690f3db9029820204",
+      "bytes": 4384,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green-before-source.tar.gz": {
+      "sha256": "43b192766c7dbdc039e127c02b05b8218640f9282fc3816ab66be3c1dc876495",
+      "bytes": 155135,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-after.json": {
+      "sha256": "5cca4bd9b6884a75dd1335bafb20b6c10a50ffe304b12321145b104c33fed4bc",
+      "bytes": 4384,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-after-source.tar.gz": {
+      "sha256": "ffa3be683d7e29b97faff1d3db6571c1156db568c1dff93c5c01b34df4c374cd",
+      "bytes": 155129,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-before.json": {
+      "sha256": "63f75cad5c37929ff85da88407e9493f004fb01442dc8caa202f930fc5e653ba",
+      "bytes": 4385,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-green2-before-source.tar.gz": {
+      "sha256": "e966775fe91649acf6a9a5ff2bf54d5ee1ac12b6deadb1fa3cf435fb22127e02",
+      "bytes": 155130,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-red-after.json": {
+      "sha256": "2f9761e11c5e7010f4c3d1778091042b4b588dd4a1a40dc92c101b5041ad1aa9",
+      "bytes": 4381,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-red-after-source.tar.gz": {
+      "sha256": "c1afc12e7fb9cf5cfa07bb52557129b30f02757bacedce8e567afd97937adee7",
+      "bytes": 154864,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-red-before.json": {
+      "sha256": "3b8e22f2eac81bea68d02b14520dc1e469797884f32440875fc549fc6f4daf24",
+      "bytes": 4382,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/publication-red-before-source.tar.gz": {
+      "sha256": "9509ce975537a8746d9c417d71ff3a1fbd08871cdd46d88220a48318c446a306",
+      "bytes": 154865,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-green-after.json": {
+      "sha256": "322376baeaab06084dd04062be8606e06e6dbaad0d1ec5f8db91fe9903560eb0",
+      "bytes": 4378,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-green-after-source.tar.gz": {
+      "sha256": "52c49bd002b3bebda90b7b3b54858906018511b31dafbf9deca3447f7fdd1f28",
+      "bytes": 153282,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-green-before.json": {
+      "sha256": "5dd4ba1e0d6096f3f78045795e6fb0db9b699ba9cc3a21650adbf6b14481884c",
+      "bytes": 4379,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-green-before-source.tar.gz": {
+      "sha256": "4d4c130080da8a049eabb6c9773ed7daabdf84947a8dff88c84af649203dfca8",
+      "bytes": 153283,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-red-after.json": {
+      "sha256": "89abf48992591c8a82121f5b1cde8a61d50aa3fa77ce66ae200f6d7032bcf702",
+      "bytes": 4376,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-red-after-source.tar.gz": {
+      "sha256": "1fb6de9ed9946ae936d6f84711d7fc7042f1980ea7cbde6053e89a31d139074e",
+      "bytes": 153277,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-red-before.json": {
+      "sha256": "14c4dd376261a40f55b0360d7fa27f3cced68082d5bb23fb3920598bf204b7c9",
+      "bytes": 4377,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/shadow-red-before-source.tar.gz": {
+      "sha256": "63cd09a93fcf2ddbd0c663a32d66085a5ecbc5e97c263e89ed5e4fe16dd340d0",
+      "bytes": 153278,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-accept-red-after.json": {
+      "sha256": "d3aff68c4e248bb88149d14db56128865ba5fa93ed7b66c107cf30dc4bf6539e",
+      "bytes": 4385,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-accept-red-after-source.tar.gz": {
+      "sha256": "23e11014f7eefbc235cc3cc3f9f3ce56451d828213a6d3453afe51239ae611ae",
+      "bytes": 153598,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-accept-red-before.json": {
+      "sha256": "e4670c3914e30d64a67d2888a445d58ba9cd07c080f756e977aa0cd7e3f0fd06",
+      "bytes": 4386,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-accept-red-before-source.tar.gz": {
+      "sha256": "6056139791b3e6d172361f5a06b22efe20ea19a036e90aae1c60e0ab58ace324",
+      "bytes": 153599,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-capture-red-after.json": {
+      "sha256": "a79d2ec5028ad74e0d0118ee2c3102abd29f1bb1008bb478585eb50ecd595710",
+      "bytes": 4386,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-capture-red-after-source.tar.gz": {
+      "sha256": "8bb865307c19b7bb279e9af41602bb3490ace0822a47e49f4534fdfce3252b45",
+      "bytes": 153599,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-capture-red-before.json": {
+      "sha256": "6d58d81dd07a5f452f5f94b928b5e4921ca64acab67c3132d64f96dd49b39c86",
+      "bytes": 4387,
+      "role": "source snapshot manifest"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/terminal-capture-red-before-source.tar.gz": {
+      "sha256": "403ec030d989d3b77898f1b34e276f6d0b1a5e2508c20125e14dabd163b8be4b",
+      "bytes": 153600,
+      "role": "source snapshot archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/accepted-capture-red.log": {
+      "sha256": "1e1f9123807d1f605beb25edce672b8568428204e41aff5b51f192137418a36a",
+      "bytes": 13575,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-capture-g4-qfzpjpuv.tar.gz": {
+      "sha256": "a1835d92ee29658e5ef4e6a8b70dddcf407df22040c10528ae234fa5b9822603",
+      "bytes": 45376,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/archive-green.log": {
+      "sha256": "cc821cf22e79a0860f862c11fdd9476dc07d7735aaac61be379050b8b28c906c",
+      "bytes": 8905,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-archive-g4-6hypebaj.tar.gz": {
+      "sha256": "19360df1c4203d7b1c383a75e9902d0dfab13de673a84b4463659d762c0145e8",
+      "bytes": 40283,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-_uchsf3k.tar.gz": {
+      "sha256": "bb159ee70b9f1d46c5a15ef4e98c3c3a1c6f83c29be796d5cc1aa7dfad72a3d6",
+      "bytes": 69772,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/archive-red.log": {
+      "sha256": "638974c478f5c7b452049d28b40b13fdecb513fb7a512909324c810fd321988a",
+      "bytes": 2776,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-archive-g4-xxmwvaio.tar.gz": {
+      "sha256": "ad493b6d273aac215b730d9c372fc906335e0e7d7efae04279046c76374a9839",
+      "bytes": 172307,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/authority-green.log": {
+      "sha256": "6bc10c2fad438f17bfc60ae2e861f8c1513ed2358daacc844f726c3d17f76415",
+      "bytes": 14893,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_land_admission-g4-szn0f6sa.tar.gz": {
+      "sha256": "943a19f922293330e23f0010419b4543e118fa4d793425024c2d95a3d5a57d5f",
+      "bytes": 49629,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_land_admission-g4-9xxkgc_8.tar.gz": {
+      "sha256": "4262a20888c28173eb402b779570b4506f054c18a576ecd29c6b2d798e9e298f",
+      "bytes": 51132,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/authority-red.log": {
+      "sha256": "c6ded3839892a9f488c8d903771630b89e5544ce0353d3bfab1f56b7dee31ef2",
+      "bytes": 8972,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_land_admission-g4-h_gg_msv.tar.gz": {
+      "sha256": "83d3804819a701c68aceed885a505c08828209d43a77b2e663150f248bd03976",
+      "bytes": 46626,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/final-output-green.log": {
+      "sha256": "68152c50f162fb79067a48504c4a533375be0834f66f38951e8e0aad615f86c7",
+      "bytes": 5186,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-g98z6f1w.tar.gz": {
+      "sha256": "fba75268bf18d083171b5a380d8954de7b1a4ebc0968729783a4b3ff1451737e",
+      "bytes": 65268,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/final-output-green2.log": {
+      "sha256": "b682cbfb9811665ba867095695675b62d22ed78b26f9cf13b7b5c7925998ee4c",
+      "bytes": 6064,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-pvadphsh.tar.gz": {
+      "sha256": "e97085b8bda7d9ffa50de20c8a5571ba31faffb73ef7ae84dea220afe2b732e9",
+      "bytes": 68614,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/final-output-red.log": {
+      "sha256": "43c931135c3c4626d866071fa8aca2a67212fcc5df3b80d49c98b9ab6c603fbb",
+      "bytes": 5186,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-5_3zvd7f.tar.gz": {
+      "sha256": "0b6cb823e468246d2a3ac4f823f5c0fd2ceb135d630c24b09e4bcbffd093320c",
+      "bytes": 66205,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/freeze-controls.log": {
+      "sha256": "7eb9574d400bdfd44d087961b54db62f83824941c7977a33dce806b0518ec324",
+      "bytes": 19621,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/shadow-imports-g4-4mjo9wth.tar.gz": {
+      "sha256": "6cce683a3a1614099c7644b4f9513ce20b66d89b9d6aa6199a5c06b0fa0bbcfc",
+      "bytes": 37067,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-archive-g4-nrjeefx7.tar.gz": {
+      "sha256": "92210dc3b1753677f04adc23fb4667495719c7d981273b314cf1d76fb27b1fe7",
+      "bytes": 46831,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-y9tq_30n.tar.gz": {
+      "sha256": "73e0e3bc0ad766efb6a67c77c1bddaa4798da5cab3792e6d56b734c42f44c197",
+      "bytes": 72727,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-rplq1xts.tar.gz": {
+      "sha256": "e726ec9041c74eb48e054c72e821b477da83c21784ea5935eb74586007d0b582",
+      "bytes": 44847,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/gate-affected.log": {
+      "sha256": "a689101fb1ec92f2ce5f878d84da1bf373c88c656c894241232e50a4bdba5d1f",
+      "bytes": 255696,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/normal-g4-nammc1z9.tar.gz": {
+      "sha256": "ca955acb6b493fd9473cc19abf7834ae5f19f14dc308fd4f9baf62ac39be8d02",
+      "bytes": 162364,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_ref_update-g4-u2mywfwl.tar.gz": {
+      "sha256": "c3ca671dc4469083a306e77d420010d494da4413d00725348a6173dcbbf18ddd",
+      "bytes": 47785,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_ref_update-g4-6ihvvoh0.tar.gz": {
+      "sha256": "40d2cc376e6d49892ccff8e00c4c2bfc8cb45977a61821c047ddf936f0dd5b42",
+      "bytes": 47838,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_ref_update-divergence-g4-k34rdr8t.tar.gz": {
+      "sha256": "7d4c7f8294172bb55ee35e41eec981a2dabf3c15c8cc12b4be5a68079898fa35",
+      "bytes": 50038,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/hostile-scratch-g4-8cwkgaq_.tar.gz": {
+      "sha256": "87645fee495ab303d475503caefcad755518833313886184355af820d58020f9",
+      "bytes": 28733,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-output-g4-52672ri_.tar.gz": {
+      "sha256": "fe9c867f275b29d925de36af3f41dfc2537def97617948768e5db27af22bf7e0",
+      "bytes": 73110,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/capture-cancel-race-g4-bkpgqorw.tar.gz": {
+      "sha256": "5fc919b62bd013a98add017ff8c0619269662b814e85a8c983f5c1d17b9904a8",
+      "bytes": 37181,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_workspace_cleanup-g4-45xai97t.tar.gz": {
+      "sha256": "ff343665622b1c94ca3c59772c6139905514a248d77287c7e2cce93470227810",
+      "bytes": 44322,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_workspace_cleanup-g4-jb8x1uxm.tar.gz": {
+      "sha256": "ec114bd6f8e43aa2aa9907b0cc84be71a18a739bd4337dc20e73f7828686ba30",
+      "bytes": 42674,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/shadow-imports-g4-_a62b335.tar.gz": {
+      "sha256": "dd8edba45812927d5f8241162ead3ea7cb1fe7da4cb3f88e5aaafe9c4e21af6d",
+      "bytes": 36121,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_land_admission-g4-khtupwww.tar.gz": {
+      "sha256": "66ebcda5deff66dd0b58698e919c777a86f24e768210ca2b38b5f3924bd35d42",
+      "bytes": 51195,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_land_admission-g4-j0ho5435.tar.gz": {
+      "sha256": "220e5e6511e6407ab81da16e221036d6037f88ca6714ac2e6aac063447294df0",
+      "bytes": 54039,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-before_ref_update-g4-h674j9ek.tar.gz": {
+      "sha256": "61174ebe0f2987f604c999fa409f13204f767d7ceb2804575d590eae77d22b33",
+      "bytes": 55777,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-after_ref_update-g4-e3h9z6dm.tar.gz": {
+      "sha256": "af5bddbd37b419c3275a424dd15cf1485c3f342ff8fbfbb4e7d44f125336b3fa",
+      "bytes": 55676,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-capture-g4-opdvdb5c.tar.gz": {
+      "sha256": "f7b537e03cdf488112864f3d9cf10d0d10404261c5da73fbbf5843346fb1cc9b",
+      "bytes": 49331,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-accept-g4-en5x48b5.tar.gz": {
+      "sha256": "f6e90bf84792509e0dcb68eaf26e296aaa7336f1d5de5566b8df21c756bec073",
+      "bytes": 49017,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-land-g4-36skoq8q.tar.gz": {
+      "sha256": "d18dc163ade46752357ab82416e1a4a56f29b01d78c957509d52c4e6c8f727f9",
+      "bytes": 48919,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-capture-g4-eet709wy.tar.gz": {
+      "sha256": "d067596d52b5c6a9b85537efaad5f15b940ac815f21296d74bf8d40588d50132",
+      "bytes": 46402,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/slow-inventory-g4-at5xp2_t.tar.gz": {
+      "sha256": "d8a619a6e3cce294ffebd42f7634b7b3fb3c5375cfc0c8a47ecd56e403df94b5",
+      "bytes": 31490,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-vqhslksx.tar.gz": {
+      "sha256": "10430d3759c0d72eec02d9295157b9aa02efdc9b2e5d22bc8dfb1ca640ff6d67",
+      "bytes": 73032,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/bounded-archive-g4-dospv5gz.tar.gz": {
+      "sha256": "0190ba778be93403ae4722b9267711c7500943c0fcd582ff1385f7964c48d2d1",
+      "bytes": 46910,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-9rae6h_v.tar.gz": {
+      "sha256": "3cf39c35b516199420bc0486c56e0b9e55aa1ba44c416a6ebf9d3b08dbe36829",
+      "bytes": 44812,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-after_ref_update-g4-aw1phkws.tar.gz": {
+      "sha256": "11a3444cdc9f1670ee69eeee01f4d66bde1d08b2b42f5b0350853ad81c294376",
+      "bytes": 147653,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-before_ref_update-g4-ezzqcuzf.tar.gz": {
+      "sha256": "0db2c15984463c7de900c36694dcceb28f33c1ee8731b7b7723815a97e0ebd76",
+      "bytes": 147208,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/gate-native.log": {
+      "sha256": "916a3f4dc60784b0e80ca5c0dcea943a0146900ad87d5fa9b158b01759575941",
+      "bytes": 303267,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/inventory-green.log": {
+      "sha256": "d800f396b72ff3144020a8364c42550fb5f2c05dff325b8e62fb152fab6c0c2c",
+      "bytes": 5754,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/slow-inventory-g4-_8rhzyu2.tar.gz": {
+      "sha256": "366a28a8dc488141eb1b469126b1c8032b7f7f7208898a1e10bcb5086ebc5809",
+      "bytes": 31621,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/inventory-red.log": {
+      "sha256": "80e5968640293669a7f0e84c865a9a27199e25309a16e258aa16e1cb09aea544",
+      "bytes": 6625,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/slow-inventory-g4-6hxwrydt.tar.gz": {
+      "sha256": "9196acacfcb37974dd734d7dbf1fe12400269112425bcd1fcbc8221f6634071d",
+      "bytes": 27433,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/kata-publication-green.log": {
+      "sha256": "3f09cf8ce9d99fea46c31f37d2ed1f1e90bd436c2c744b0dce87a0a5cdc48b54",
+      "bytes": 6542,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-after_ref_update-g4-q9yfyhuv.tar.gz": {
+      "sha256": "5e66047a7c16cb8904f1b9561b9ef3e7cc75d06898ae764f8add7524588b6c72",
+      "bytes": 141546,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-before_ref_update-g4-xsulc7rh.tar.gz": {
+      "sha256": "f331411a17a81abee058bd81bbdb965ef8964ee92f4632b61fa40a16d74d4d3d",
+      "bytes": 141570,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/kata-publication-green2.log": {
+      "sha256": "15f64c96467a4a80087e113944104928556c6be501c70d805bf9afb0001f10ca",
+      "bytes": 85195,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-after_ref_update-g4-y0lxx_il.tar.gz": {
+      "sha256": "f2c626cf5cf39f7ffbe6f7a5e7450f75ef8ceb7239df6ac5ded0f314ff12870b",
+      "bytes": 145881,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/git-publication-before_ref_update-g4-9w0flnrw.tar.gz": {
+      "sha256": "b6a2f8d3d8d33d8b0605389b967a9911379de019d17ba2d3a8eb325ed0f3c830",
+      "bytes": 145947,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/lifecycle-green.log": {
+      "sha256": "1337a414655847a18b93e9ae4015ba4ebc278b1a3e7e5e1417f900982f7b09af",
+      "bytes": 37111,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-capture-g4-klixfkhd.tar.gz": {
+      "sha256": "411a8693d1ae34cc9400cb47960d1d6e5441aaea29203778c9ce7274c578b647",
+      "bytes": 47901,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-accept-g4-3o4bc_vu.tar.gz": {
+      "sha256": "b000201505cf06cc60a12a5b1cc44aa75cc07b821d205ffa13a6a5b42acc2cfa",
+      "bytes": 47745,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/accepted-capture-g4-ux5368r8.tar.gz": {
+      "sha256": "bec5dd1fa7703165d6eb3bafd2423b9425161ce1b9845c9727fc45aff9971377",
+      "bytes": 44801,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/native-final-driver-green.log": {
+      "sha256": "bc335285ab0d726a14b1a2050c0b5935d41b01150d43581619c0ea1c1b36bbdc",
+      "bytes": 141571,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/native-final-driver-red.log": {
+      "sha256": "e6c6f373f8ee18156c149ad9090aa5c2a3c5c96a8d5aa8530000b266f12b0158",
+      "bytes": 120984,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/native-lost-ack-green.log": {
+      "sha256": "635621541f8434c78e6166ccead034d2d7b85c12f5277172157a1fef3bb91ebb",
+      "bytes": 129914,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/native-lost-ack-green2.log": {
+      "sha256": "d0bedfc842176a5480fe44f2ab302ee962a5570a4972686c5555f74f10ae489a",
+      "bytes": 143832,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/native-lost-ack-red.log": {
+      "sha256": "7abf1f124690c2f570857906f0c0a444826fa25a718c974f436cb961c0923927",
+      "bytes": 116985,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/partial-controls-green.log": {
+      "sha256": "1d5981fee7a8c9391200bd0d36c532f0ee389a57f34e5d2de1053d13aea9ace4",
+      "bytes": 9773,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-8fkl6jkt.tar.gz": {
+      "sha256": "93495b69e4bd8346273f5d8f83276f432fd868f79bafa93c75b2b9d1cc533b29",
+      "bytes": 41747,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/final-output-g4-9odk8kgk.tar.gz": {
+      "sha256": "46b52e7c18d367d7f28d10ee3e1718a5b3a0a0ace1eb16e70859995df498731f",
+      "bytes": 69447,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/partial-green.log": {
+      "sha256": "56938f2319d57692d8ec71423a26a3c5df0d4f719a02cca013b95c2d8562c6ec",
+      "bytes": 9461,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-yesk6wt4.tar.gz": {
+      "sha256": "d8a550aa94a900ed660ddeaa693efe0e8bad1849361dd206ecabd5c57957ec60",
+      "bytes": 41366,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_workspace_cleanup-g4-j8l_hi4m.tar.gz": {
+      "sha256": "0b4cc19f19b0fd114f9d4557342856436badd3f63ae6424d5de4ee880bd57035",
+      "bytes": 40380,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_workspace_cleanup-g4-ndt_3kyy.tar.gz": {
+      "sha256": "2f5c20ae5ed18eeb9f5691dc881ae58ce3c99baa7958ab88206707ca6fd7c57d",
+      "bytes": 41304,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/partial-red.log": {
+      "sha256": "8339d900f94bc7a6743796ae4c9f1f967728273eddf36d4e45e7d399ec9416c1",
+      "bytes": 4153,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-yurksu2d.tar.gz": {
+      "sha256": "ced427597382e20edb85bbfd4354dbc231f3e62e7cc0459ff61e8098c4f60b58",
+      "bytes": 38909,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/publication-green.log": {
+      "sha256": "ee15826c9d122bcca507cf0aee079f125ea239b03154a7042cc716e1c4fbba07",
+      "bytes": 1659,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/publication-green2.log": {
+      "sha256": "806a9b65d2323f219ff0682d309f0262223bbbc37b75899e72062dc4e65b01b2",
+      "bytes": 57662,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-before_ref_update-g4-zk0zumm_.tar.gz": {
+      "sha256": "780736cba798ea340fb6202ae3e57b56e8e99898633cdf9e6b5c7f57066973f5",
+      "bytes": 54102,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-after_ref_update-g4-yu0akd_o.tar.gz": {
+      "sha256": "d3c0aa01fd720a2c7d31d809d0df0a5fc355cfb9b6045a23c19069ee5781fa95",
+      "bytes": 53987,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-land-g4-jiorwtrb.tar.gz": {
+      "sha256": "bd5a8dbada61d1681d74984498951692be85cc32e9ded028f6412edcfd5325e4",
+      "bytes": 47267,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/before_land_admission-g4-9s0auz73.tar.gz": {
+      "sha256": "909e2c5e3adee8569abfe1f0219e0d2e659b01392ac38e8d87c17eb0390388bd",
+      "bytes": 49725,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/after_land_admission-g4-nhynnzvb.tar.gz": {
+      "sha256": "651ba7293843fb63455e29cbb0572a97317c148c1b22766bcd7924178da252ff",
+      "bytes": 52269,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/publication-red.log": {
+      "sha256": "d4ef21002425b710bfc85a4fb38c4550377b88a9c593961f8c9c4ace771c362c",
+      "bytes": 15956,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/publication-after_ref_update-g4-a4vt_l_0.tar.gz": {
+      "sha256": "cafc4f9c8355cafb76d6a964d528d1f83497791658873423fa53a11ab45a5f2f",
+      "bytes": 51168,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/shadow-green.log": {
+      "sha256": "2ceb9fec56535bf0e571cd3341973b9d98ba799f6f2a475c967ee5dd438afd52",
+      "bytes": 3981,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/shadow-imports-g4-5neyr898.tar.gz": {
+      "sha256": "1841c47a74238ed8c716a3d10b6b5425e285ce949df5e2be9b1cf50841577ee9",
+      "bytes": 34560,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/shadow-red.log": {
+      "sha256": "c919d3aa57e6a96e72bceda28f6ad6b5245c23c78f39281794fb28ba0e27913f",
+      "bytes": 4985,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/shadow-imports-g4-xdrjptp4.tar.gz": {
+      "sha256": "de42a089286f79f080b968373b363470f166764fd6ae86ad3f2cca9dc22f6853",
+      "bytes": 32646,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/terminal-accept-red.log": {
+      "sha256": "d228a11f039da37598c7d95dd06749d5896d861f69fedaf3f4b951d33906c0fb",
+      "bytes": 14461,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-accept-g4-jkic_91c.tar.gz": {
+      "sha256": "fcbd385ce8fbb5028b423e01f212b5b1f061f72c37e499b8392d2e7aa67fb16d",
+      "bytes": 47134,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair1/terminal-capture-red.log": {
+      "sha256": "39256514091f47aae9fe9246112ce9670af2ee64e0866a620fb330e625e4e09a",
+      "bytes": 15000,
+      "role": "explicit filesystem raw evidence snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/fixtures/terminal-capture-g4-9iw1m0r2.tar.gz": {
+      "sha256": "8ded6918bc24d2fa25089cf58bf895961a86221abb3696de1cbba491bc76f8fe",
+      "bytes": 49938,
+      "role": "actual fixture archive"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/gate-affected-run.json": {
+      "sha256": "6f6dad2186e292ffff6a023e9fd986c5e7cad5011431ee73b53747957c691685",
+      "bytes": 703,
+      "role": "repair evidence metadata filesystem snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/native-selection-replay.json": {
+      "sha256": "6c2dc1216a2a3ae40ef684cd0bf8cc9eafc24bd7b4623e8032599826135f74f7",
+      "bytes": 520,
+      "role": "repair evidence metadata filesystem snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/input-pins.json": {
+      "sha256": "d146b281192b8de1d7f679f3822fab46b3bd1608b8514e25cabdb5442ad8b09b",
+      "bytes": 2896,
+      "role": "repair evidence metadata filesystem snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/gate-native-run.json": {
+      "sha256": "cd7f9716bb5dab0d5dafa0f4a92e8e2237be3d5fbb9ebb60b9e49c84a342e5cf",
+      "bytes": 604,
+      "role": "repair evidence metadata filesystem snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/tool-pins.json": {
+      "sha256": "17a1e1a08f6656bd9c2657a6b4d8045b33ec76770645e0eb47f756a183a4b20c",
+      "bytes": 1966,
+      "role": "repair evidence metadata filesystem snapshot"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/run.py": {
+      "sha256": "bde5813602c3dc2c63e3070d3758bf47e63fe21a74754290bdb1424d604b0b91",
+      "bytes": 1231,
+      "role": "evidence driver"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/record.py": {
+      "sha256": "0a6ccec4b849bdc70626575e3a021b0883500d8419d65da5eb4b5adf9047cdac",
+      "bytes": 3581,
+      "role": "evidence driver"
+    },
+    "/data02/home/philip.yang/workspace/corenius-sqlite04-git/docs/efforts/sqlite-controller/evidence/04/repair1/source/seal.py": {
+      "sha256": "ebd52a6b5911d3fd0b226ffc148aa26db5638ae03fc0871681204ef90fe5f321",
+      "bytes": 979,
+      "role": "evidence driver"
+    }
+  }
+}

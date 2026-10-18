@@ -1,0 +1,18 @@
+{
+  "source_head_read": "c661309f372726a1987c6a03b2e4014fca2a94d8",
+  "classification": "model-free actual native protocol; no live model qualification",
+  "tools": [
+    {
+      "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+    },
+    {
+      "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+      "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+    },
+    {
+      "path": "/usr/bin/bwrap",
+      "sha256": "85580dd52ed366ece8844e90fa75ac7c4de8802963071344e123221fb9f6f11e"
+    }
+  ]
+}

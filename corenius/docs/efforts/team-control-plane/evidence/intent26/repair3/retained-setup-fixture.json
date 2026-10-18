@@ -1,0 +1,300 @@
+{
+  "classification": "fixture_setup_strict_credential_JSON_principal_instead_of_principal_id",
+  "files": [
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/d647b92cebce7fef805b95f78a70384e9e83df699209890b50e1e0e0a746fae7.txt",
+      "bytes": 101,
+      "fixture_relative_path": "artifacts/manifests/25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/artifacts/manifests/25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264",
+      "sha256": "d647b92cebce7fef805b95f78a70384e9e83df699209890b50e1e0e0a746fae7"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/7a8505cb860ca20b95d45cc5d45d28932901194bccaca1f893bb00b49f559780.txt",
+      "bytes": 101,
+      "fixture_relative_path": "artifacts/manifests/2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/artifacts/manifests/2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50",
+      "sha256": "7a8505cb860ca20b95d45cc5d45d28932901194bccaca1f893bb00b49f559780"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264.txt",
+      "bytes": 986,
+      "fixture_relative_path": "artifacts/objects/25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/artifacts/objects/25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264",
+      "sha256": "25e87ce01937e533b67c65b25e99b7d8b352f58ee9a84312fcca4d3874204264"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50.txt",
+      "bytes": 713,
+      "fixture_relative_path": "artifacts/objects/2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/artifacts/objects/2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50",
+      "sha256": "2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50.txt",
+      "bytes": 713,
+      "fixture_relative_path": "candidate.bundle",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/candidate.bundle",
+      "sha256": "2bc26463922812c60ca88c46b1fc16340d4b801e7db63dea2efb672e40e9de50"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/1e81270f1a47dce22a2e4985250c74b2e3374443734f1492b03ea2cd2af4ec48.txt",
+      "bytes": 10,
+      "fixture_relative_path": "store/.git/COMMIT_EDITMSG",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/COMMIT_EDITMSG",
+      "sha256": "1e81270f1a47dce22a2e4985250c74b2e3374443734f1492b03ea2cd2af4ec48"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/f6f2b945f6c411b02ba3da9c7ace88dcf71b6af65ba2e0d89aa82900042b5a10.txt",
+      "bytes": 23,
+      "fixture_relative_path": "store/.git/HEAD",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/HEAD",
+      "sha256": "f6f2b945f6c411b02ba3da9c7ace88dcf71b6af65ba2e0d89aa82900042b5a10"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/cfe7ba1238c9a78be7535d7c63bcaf5a4d5011d46b07c9b45d3bbf7d6c312dfe.txt",
+      "bytes": 92,
+      "fixture_relative_path": "store/.git/config",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/config",
+      "sha256": "cfe7ba1238c9a78be7535d7c63bcaf5a4d5011d46b07c9b45d3bbf7d6c312dfe"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee.txt",
+      "bytes": 73,
+      "fixture_relative_path": "store/.git/description",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/description",
+      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7.txt",
+      "bytes": 478,
+      "fixture_relative_path": "store/.git/hooks/applypatch-msg.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/applypatch-msg.sample",
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437.txt",
+      "bytes": 896,
+      "fixture_relative_path": "store/.git/hooks/commit-msg.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/commit-msg.sample",
+      "sha256": "1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0.txt",
+      "bytes": 4726,
+      "fixture_relative_path": "store/.git/hooks/fsmonitor-watchman.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/fsmonitor-watchman.sample",
+      "sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5.txt",
+      "bytes": 189,
+      "fixture_relative_path": "store/.git/hooks/post-update.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/post-update.sample",
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475.txt",
+      "bytes": 424,
+      "fixture_relative_path": "store/.git/hooks/pre-applypatch.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/pre-applypatch.sample",
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/f9af7d95eb1231ecf2eba9770fedfa8d4797a12b02d7240e98d568201251244a.txt",
+      "bytes": 1643,
+      "fixture_relative_path": "store/.git/hooks/pre-commit.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/pre-commit.sample",
+      "sha256": "f9af7d95eb1231ecf2eba9770fedfa8d4797a12b02d7240e98d568201251244a"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53.txt",
+      "bytes": 416,
+      "fixture_relative_path": "store/.git/hooks/pre-merge-commit.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/pre-merge-commit.sample",
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a.txt",
+      "bytes": 1374,
+      "fixture_relative_path": "store/.git/hooks/pre-push.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/pre-push.sample",
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3.txt",
+      "bytes": 4898,
+      "fixture_relative_path": "store/.git/hooks/pre-rebase.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/pre-rebase.sample",
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989.txt",
+      "bytes": 544,
+      "fixture_relative_path": "store/.git/hooks/pre-receive.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/pre-receive.sample",
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619.txt",
+      "bytes": 1492,
+      "fixture_relative_path": "store/.git/hooks/prepare-commit-msg.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/prepare-commit-msg.sample",
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f.txt",
+      "bytes": 2783,
+      "fixture_relative_path": "store/.git/hooks/push-to-checkout.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/push-to-checkout.sample",
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106.txt",
+      "bytes": 3650,
+      "fixture_relative_path": "store/.git/hooks/update.sample",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/hooks/update.sample",
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/482ec536f980d7a414baf4346153dedbc317d0f36a55587f4f0c9504dda50804.txt",
+      "bytes": 317,
+      "fixture_relative_path": "store/.git/index",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/index",
+      "sha256": "482ec536f980d7a414baf4346153dedbc317d0f36a55587f4f0c9504dda50804"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1.txt",
+      "bytes": 240,
+      "fixture_relative_path": "store/.git/info/exclude",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/info/exclude",
+      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/5e23647f3c03d89a017b3fee2d14460395ae188bb5fa113ce9b7af9f8282888b.txt",
+      "bytes": 307,
+      "fixture_relative_path": "store/.git/logs/HEAD",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/logs/HEAD",
+      "sha256": "5e23647f3c03d89a017b3fee2d14460395ae188bb5fa113ce9b7af9f8282888b"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/5e23647f3c03d89a017b3fee2d14460395ae188bb5fa113ce9b7af9f8282888b.txt",
+      "bytes": 307,
+      "fixture_relative_path": "store/.git/logs/refs/heads/master",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/logs/refs/heads/master",
+      "sha256": "5e23647f3c03d89a017b3fee2d14460395ae188bb5fa113ce9b7af9f8282888b"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/3a5036b44d09bbd98191fa94643cea2e123a84cf6cec86c6e182b46db7351708.txt",
+      "bytes": 79,
+      "fixture_relative_path": "store/.git/objects/50/142271ef218f8aa702f1bc8f74b0d52de80e9f",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/50/142271ef218f8aa702f1bc8f74b0d52de80e9f",
+      "sha256": "3a5036b44d09bbd98191fa94643cea2e123a84cf6cec86c6e182b46db7351708"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/0ec02aad2b3fc318f79d87f16a93797a18ff6e8d3885c0a235b97f882d49695d.txt",
+      "bytes": 40,
+      "fixture_relative_path": "store/.git/objects/54/cdb19f1e99d434896fe8bb937bc4edc6ae06eb",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/54/cdb19f1e99d434896fe8bb937bc4edc6ae06eb",
+      "sha256": "0ec02aad2b3fc318f79d87f16a93797a18ff6e8d3885c0a235b97f882d49695d"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/06a934404a4be802da19addba5ef5bdc9ca8503f461c2f2894c21b1f16b80e92.txt",
+      "bytes": 82,
+      "fixture_relative_path": "store/.git/objects/6d/16bf3ee03167041bec09645d29ab82b19e4791",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/6d/16bf3ee03167041bec09645d29ab82b19e4791",
+      "sha256": "06a934404a4be802da19addba5ef5bdc9ca8503f461c2f2894c21b1f16b80e92"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/3eabd3157729d7e4ee534df3299401202a93ec71f7fc1b81ae3e1c4d43e2a59f.txt",
+      "bytes": 155,
+      "fixture_relative_path": "store/.git/objects/79/a3cb533322c4671ad8ebaeb2963aa3e3b31d7c",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/79/a3cb533322c4671ad8ebaeb2963aa3e3b31d7c",
+      "sha256": "3eabd3157729d7e4ee534df3299401202a93ec71f7fc1b81ae3e1c4d43e2a59f"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/d0f784bffec8ca82cb06e77abb8d4e7481503b628df674d6de53bfa853abef9c.txt",
+      "bytes": 49,
+      "fixture_relative_path": "store/.git/objects/ac/07db60d409aa9ee637e8827ef0ee12d0d787c9",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/ac/07db60d409aa9ee637e8827ef0ee12d0d787c9",
+      "sha256": "d0f784bffec8ca82cb06e77abb8d4e7481503b628df674d6de53bfa853abef9c"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/056ecd7b8c60fdc415b9f4647428bb02c19df03b88b2f56f2ef6a2af5f8642e9.txt",
+      "bytes": 82,
+      "fixture_relative_path": "store/.git/objects/e2/de2916f936f450aced9c22032f5371b2d323c1",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/e2/de2916f936f450aced9c22032f5371b2d323c1",
+      "sha256": "056ecd7b8c60fdc415b9f4647428bb02c19df03b88b2f56f2ef6a2af5f8642e9"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/48c6e0cd02db865f4c6c3208b3bda252dbe2ad7d9215c40fea50edec7ad7f347.txt",
+      "bytes": 124,
+      "fixture_relative_path": "store/.git/objects/e7/2dfcc4e9034dfb4ed9fe1e66494fb0e8de38f2",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/e7/2dfcc4e9034dfb4ed9fe1e66494fb0e8de38f2",
+      "sha256": "48c6e0cd02db865f4c6c3208b3bda252dbe2ad7d9215c40fea50edec7ad7f347"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/d797f5c2decbcad5ab8ebdbd30325581f6fc9c526909669f05fbd25c145da526.txt",
+      "bytes": 31,
+      "fixture_relative_path": "store/.git/objects/ed/8a42a322cacdd53ae90ab40d8dc0ad71afe041",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/ed/8a42a322cacdd53ae90ab40d8dc0ad71afe041",
+      "sha256": "d797f5c2decbcad5ab8ebdbd30325581f6fc9c526909669f05fbd25c145da526"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/d87bea989af6783ba98e578bc3b566d1b594eaa29a062473906538180fc182a2.txt",
+      "bytes": 29,
+      "fixture_relative_path": "store/.git/objects/fe/95daa16fe08d63cc90170601c15403a9831eea",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/objects/fe/95daa16fe08d63cc90170601c15403a9831eea",
+      "sha256": "d87bea989af6783ba98e578bc3b566d1b594eaa29a062473906538180fc182a2"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/0657980d8e60302f3088856e008625e45eb84479c72c85259d8145fcbc79c7cb.txt",
+      "bytes": 41,
+      "fixture_relative_path": "store/.git/refs/heads/master",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/.git/refs/heads/master",
+      "sha256": "0657980d8e60302f3088856e008625e45eb84479c72c85259d8145fcbc79c7cb"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3.txt",
+      "bytes": 24,
+      "fixture_relative_path": "store/SPEC.md",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/SPEC.md",
+      "sha256": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/f83247717f412c099db21451f4e91dd777f4aa887e8182b7e24db25c82f42e90.txt",
+      "bytes": 15,
+      "fixture_relative_path": "store/src/base",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/src/base",
+      "sha256": "f83247717f412c099db21451f4e91dd777f4aa887e8182b7e24db25c82f42e90"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/75b2e37c4ee3e22ea701083c5484a5d315fd0279a4577de8893f28d62ba02be1.txt",
+      "bytes": 13,
+      "fixture_relative_path": "store/src/result",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/store/src/result",
+      "sha256": "75b2e37c4ee3e22ea701083c5484a5d315fd0279a4577de8893f28d62ba02be1"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/03cc5e09cf0b0b8a244892fb6792fa14c848ef04e178d8eaa71cb4920112ff60.txt",
+      "bytes": 194,
+      "fixture_relative_path": "workspaces/.execution-logs/5e396cb0-2b7e-494e-a026-4a63033105ad.info",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/workspaces/.execution-logs/5e396cb0-2b7e-494e-a026-4a63033105ad.info",
+      "sha256": "03cc5e09cf0b0b8a244892fb6792fa14c848ef04e178d8eaa71cb4920112ff60"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/retained-setup/655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70.txt",
+      "bytes": 17,
+      "fixture_relative_path": "workspaces/.execution-logs/5e396cb0-2b7e-494e-a026-4a63033105ad.log",
+      "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f/workspaces/.execution-logs/5e396cb0-2b7e-494e-a026-4a63033105ad.log",
+      "sha256": "655ae124da886b42b79096b8e0cf7217485b4db75aec06e5cba74c7632ca2c70"
+    }
+  ],
+  "fixture_finish": false,
+  "namespace_stopped_measured": true,
+  "origin": "/data02/home/philip.yang/devx/tmp/kernel16-a41b0b26-2989-4cb5-a5e0-5f1efe14634f",
+  "original_root_retained": true,
+  "postgres_cleanup": "existing runner terminal/EXIT trap separate from Fixture.finish",
+  "run": "red-production-amendment",
+  "schema_version": 1,
+  "supervisor_release_completed": true
+}

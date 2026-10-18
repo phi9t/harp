@@ -1,0 +1,3 @@
+# Native auth source research retention
+
+These are byte-identical metadata/report copies from the frozen original root listed in retention.json. origin-SHA256SUMS covers67 files in that original root, including42 exact-commit public source files; run it there, not in this metadata directory. The original root and all raw sources remain retained. Source URLs/commit/digests are recorded in primary-source-records.json. This source research does not establish an implemented relay, native credential availability or live account/model qualification. Future baseline fixtures must independently retain their runnable assets.

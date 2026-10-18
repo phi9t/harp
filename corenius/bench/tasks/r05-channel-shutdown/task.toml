@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/r05-channel-shutdown"
+description = "Shut down worker threads after the first job error"
+
+[metadata]
+track = "R"
+level = "L"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cargo test --offline -- --test-threads=1"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

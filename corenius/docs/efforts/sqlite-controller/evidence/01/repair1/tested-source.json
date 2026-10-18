@@ -1,0 +1,32 @@
+{
+  "base": "6fb501904a2900aae91139e67c615032925af38f",
+  "repair_round": 1,
+  "branch": "sqlite01/storage",
+  "tested_at_utc": "2026-10-04T04:36:36.546464+00:00",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "files_sha256": {
+    "crates/sqlite-controller/Cargo.toml": "12324d7fe4e265326be0dc1d0b2a48cf60e860e0dec80b7d722f619f04653844",
+    "crates/sqlite-controller/Cargo.lock": "52dc89ac3aaf894d6b765eb152b9adb7984052787bdc3974fbac4180a3b0ed3b",
+    "crates/sqlite-controller/README.md": "5b513009823018ec6f79227e90801dfec454fa45e3f9ad20542b6c4d6cce0cae",
+    "tools/agents/checks.d/70-sqlite-controller.sh": "f3949ef5dcc7ecd260e207c42f3902cc30da1b7492626ecfe97146a71c830436",
+    "crates/sqlite-controller/src/lib.rs": "bf4f8a0ef50c2ed2a10e64436826c83716c23f1f762fe5ac9b6851d6dc2b81b1",
+    "crates/sqlite-controller/src/main.rs": "5645f68875e1835bd5b16bdd7ecb9384b8dd0ea15b1b5470150f76d0d66e40b1",
+    "crates/sqlite-controller/src/query.rs": "d3e31fe5df7a01a1535cdbbe729e21ee3a056bcf2e8993a64c239c5fc9f3408d",
+    "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+    "crates/sqlite-controller/src/service.rs": "9f2ed19a6c311daf5e1bddc58c0df4196ea0ad42e32bbeb853d00664f0590f63",
+    "crates/sqlite-controller/tests/process.rs": "279994b60600272dcfa936331e4e5b10e01b896f3cd953ccfdc1ab44631dd8a6",
+    "crates/sqlite-controller/tests/public.rs": "b3b64944f712853e48c87feb9982b142808aabc7f6c7e4acbd2df4d2d15c1cd2"
+  },
+  "source_manifest_sha256": "fbcd131c90bc081aff5f4b42daf1575a22879c12671b849e636dfda103338f82",
+  "original_reviews_sha256": {
+    "standards.md": "d905b1ae74b32f15d2e0102b24a850e92e734a88c259ee94f70b46cf72a553fd",
+    "spec.md": "9241d875b2bbe0e5fb4889608c0494b1871d75404a68bd2c40362bde3eb6550a",
+    "spec-additional.md": "31d14d4ca513b1cfa79e4fd68445ef16857f61502151f24c409bd621dc9f7b71"
+  },
+  "tests": {
+    "public": 15,
+    "process": 3,
+    "failures": 0
+  },
+  "independent_rereview": "pending, root-owned"
+}

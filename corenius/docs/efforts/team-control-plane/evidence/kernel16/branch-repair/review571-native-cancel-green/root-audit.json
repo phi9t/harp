@@ -1,0 +1,9 @@
+{
+  "cases": 2,
+  "behavior": "preparedbefore and preparedafterrevocation Cancel cleanup succeeded once, replay unchanged",
+  "limits": [
+    "foreign/staleauth and continuedworkfencing controls stillrequired",
+    "Cancelreplyalone not Stop or usageproof"
+  ],
+  "terminal_exit": 0
+}

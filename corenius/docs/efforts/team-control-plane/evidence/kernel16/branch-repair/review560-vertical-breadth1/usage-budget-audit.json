@@ -1,0 +1,27 @@
+{
+  "status": "focused proof inside failing broader suite; not acceptance",
+  "controls": [
+    {
+      "fixture": "kernel16-unknown-episode-physical-claim-a40e2f09-48da-4e56-a40a-9061f7c04b9d",
+      "usage": "unknown",
+      "refused": "dependency_unmet",
+      "no_verifier_result": true,
+      "unchanged": {
+        "used_capacity": 2,
+        "admitted_attempts": 1,
+        "admitted_episodes": 2
+      }
+    },
+    {
+      "fixture": "kernel16-unknown-episode-monitor-claim-656fca85-7248-4a6e-b959-34ab4a10dd97",
+      "usage": "unknown",
+      "refused": "dependency_unmet",
+      "no_verifier_result": true,
+      "unchanged": {
+        "used_capacity": 2,
+        "admitted_attempts": 1,
+        "admitted_episodes": 2
+      }
+    }
+  ]
+}

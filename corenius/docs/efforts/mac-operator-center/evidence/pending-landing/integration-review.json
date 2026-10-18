@@ -1,0 +1,35 @@
+{
+  "observed_at": "2026-10-05T06:00:15.928706+00:00",
+  "reviewed_tip": "e4e80080f9bd1ddbe06024d73441ce730ede12c6",
+  "reviewer": "/root/landing_integration_review",
+  "Standards": "PASS",
+  "Spec": "PASS",
+  "branch_integration": "PASS",
+  "scope": "prototype source integration; no fullbaseline or live acceptance",
+  "source_checks": {
+    "sqlite": "exact483f1bc",
+    "MAC_monitor": "exactabe8715",
+    "legacy_team_control_plane": "exacta21316f"
+  },
+  "retention_checks": {
+    "public_snapshot_pins": 85,
+    "inactive_source_entries": 210
+  },
+  "required_scope_checks": {
+    "total": 16,
+    "passed": 16
+  },
+  "coordinator_handoff": {
+    "state": "FAILED",
+    "reason": "target01a0f51d archived; no unarchive attempted"
+  },
+  "landing_requested_by_owner": true,
+  "remote_configured": false,
+  "open": [
+    "two useful concurrent episodes",
+    "stale-base reintegration",
+    "ticket05fixture and06qualification",
+    "baselinehardening",
+    "rootInsula andjjbackendqualification"
+  ]
+}

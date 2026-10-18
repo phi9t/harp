@@ -1,0 +1,918 @@
+{
+  "test_launches": 10,
+  "maximum_test_launches": 10,
+  "cumulative_seconds_including_formatting_lint": 1045.9441862106323,
+  "maximum_seconds": 3600,
+  "all_commands_within_1800_seconds": true,
+  "chronology": [
+    {
+      "name": "red-lifecycle",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "lifecycle_",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 1,
+      "prior_seconds": 0,
+      "start": 1791069054.2524543,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 121.08758425712585,
+      "log_sha256": "0ad3dc424f61af5c077408ee839bee6be493657f11b96b179f326e5531a29501",
+      "interpretation": "Genuine baseline RED: accepted research amendment does not fence generation; exact historical receipt stale; terminal mutation and projection gaps. Missing delivery/start IDs are not Owner target proof.",
+      "raw_results": [
+        {
+          "raw_line": 334,
+          "text": "test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.96s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 296,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_amendment_fences_before_assignment_and_preserves_receipt' (2005001) panicked at tests/support/outcome_lifecycle.rs:64:5:"
+        },
+        {
+          "raw_line": 324,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_terminal_commands_and_current_projection' (2005039) panicked at tests/support/outcome_lifecycle.rs:44:5:"
+        },
+        {
+          "raw_line": 336,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "red-lifecycle.start.json"
+    },
+    {
+      "name": "red-lifecycle-expanded",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "lifecycle_",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 2,
+      "prior_seconds": 121.08758425712585,
+      "start": 1791069300.3306742,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 5.421530723571777,
+      "log_sha256": "29c9b35ab3874cf7e60fd1b5227bc24b3d2ccb82613eb321de1ffa95ecb19ba3",
+      "interpretation": "Genuine baseline expanded RED: terminal cached proposal/verification and artifact configure allowed, research wait lacks attention, production historical acceptance receipt refuses. Earlier source-only setup retained.",
+      "raw_results": [
+        {
+          "raw_line": 120,
+          "text": "test result: FAILED. 0 passed; 5 failed; 0 ignored; 0 measured; 20 filtered out; finished in 2.38s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 28,
+          "text": "thread 'lifecycle_explicit_production_intent_amendment_requires_fresh_generation_and_revalidation' (2015217) panicked at tests/intent_contracts.rs:1920:9:"
+        },
+        {
+          "raw_line": 47,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_amendment_fences_before_assignment_and_preserves_receipt' (2015544) panicked at tests/support/outcome_lifecycle.rs:64:5:"
+        },
+        {
+          "raw_line": 64,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_artifact_and_cached_result_mutations_refuse' (2015579) panicked at tests/support/outcome_lifecycle.rs:115:5:"
+        },
+        {
+          "raw_line": 91,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_terminal_commands_and_current_projection' (2015703) panicked at tests/support/outcome_lifecycle.rs:44:5:"
+        },
+        {
+          "raw_line": 105,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_wait_is_attention_and_historical_satisfaction_survives_amendment' (2015838) panicked at tests/support/outcome_lifecycle.rs:90:5:"
+        },
+        {
+          "raw_line": 122,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "red-lifecycle-expanded.start.json"
+    },
+    {
+      "name": "green-lifecycle",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "lifecycle_",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 3,
+      "prior_seconds": 126.50911498069763,
+      "start": 1791069512.8310666,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 15.73616886138916,
+      "log_sha256": "0a7d1a54a7490502bed7ad77a4bcf54f71a10085d04a1a2abb1576039b8d2c0d",
+      "interpretation": "Partial GREEN4/5; production historical accepted receipt still fails nested ArtifactService current-generation check. Failure retained; not final pass.",
+      "raw_results": [
+        {
+          "raw_line": 99,
+          "text": "test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 20 filtered out; finished in 2.62s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 28,
+          "text": "thread 'lifecycle_explicit_production_intent_amendment_requires_fresh_generation_and_revalidation' (2031370) panicked at tests/intent_contracts.rs:1920:9:"
+        },
+        {
+          "raw_line": 101,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "green-lifecycle.start.json"
+    },
+    {
+      "name": "red-research-verifier",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "lifecycle_research_verifier",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 4,
+      "prior_seconds": 142.2452838420868,
+      "start": 1791069694.5350604,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 2.7679951190948486,
+      "log_sha256": "078f11024e2e1cda583e96c6bff5efb14e8e6811dca9757336d5fd921cb98e27",
+      "interpretation": "Genuine public RED: exact independent research verifier Episode refused without production candidate after valid current captured input; wrong-role401 is a positive control.",
+      "raw_results": [
+        {
+          "raw_line": 23,
+          "text": "test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 25 filtered out; finished in 0.29s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 11,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_verifier_uses_exact_contract_without_production_candidate' (2043093) panicked at tests/support/outcome_lifecycle.rs:129:5:"
+        },
+        {
+          "raw_line": 25,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "red-research-verifier.start.json"
+    },
+    {
+      "name": "green-complete-lifecycle",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 5,
+      "prior_seconds": 145.01327896118164,
+      "start": 1791070106.45438,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 163.07888436317444,
+      "log_sha256": "7d47b58f408d088b8d4a4bb817891d6f7d0cc8bc5563eb20b1340a76e9083fd4",
+      "interpretation": "24 passed / 2 fixture setup failures: Ready workspace Release attempted without effect Cancel. Full measured two-generation research lifecycle passed. These setup failures are not RED proof. Fixed fixture uses existing Owner Cancel then Release; no terminal semantics change.",
+      "raw_results": [
+        {
+          "raw_line": 548,
+          "text": "test result: FAILED. 24 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 146.22s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 25,
+          "text": "thread 'admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt' (2070386) panicked at tests/intent_contracts.rs:904:65:"
+        },
+        {
+          "raw_line": 460,
+          "text": "thread 'prior_episode_start_receipt_retains_inspection_and_reconciliation_after_supersession' (2081717) panicked at tests/intent_contracts.rs:904:65:"
+        },
+        {
+          "raw_line": 550,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "green-complete-lifecycle.start.json"
+    },
+    {
+      "name": "red-owner-operation-target",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "lifecycle_owner_cached",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 6,
+      "prior_seconds": 308.0921633243561,
+      "start": 1791070416.4582253,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 10.879582166671753,
+      "log_sha256": "bd09bc13f840d746a94c9c5383d9a01c3c3ac8c72e6965d917a6b6f2340284a0",
+      "interpretation": "Counterfactual RED: current candidate with ONLY operation-target terminal fence removed. Actual preaccept native runtime/binding/delivery positives; accepted cached binding/delivery wrongly200. Exact guard preimage/delta/restoration retained. Native turn completed physically, usage unknown retained. Not original20-source baseline.",
+      "raw_results": [
+        {
+          "raw_line": 34,
+          "text": "test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 26 filtered out; finished in 0.52s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 22,
+          "text": "thread 'outcome_lifecycle::lifecycle_owner_cached_delivery_and_runtime_binding_target_completed_research' (2121187) panicked at tests/support/outcome_lifecycle.rs:277:5:"
+        },
+        {
+          "raw_line": 36,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "red-owner-operation-target.start.json"
+    },
+    {
+      "name": "red-independent-research-verifier",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "lifecycle_research_verifier_must",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 7,
+      "prior_seconds": 318.97174549102783,
+      "start": 1791070544.7729816,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 9.930727481842041,
+      "log_sha256": "38cb30f94308dd3da74c98272597d2eb538fee5d5bd3eeb2bca75f3c9b0a361e",
+      "interpretation": "Genuine public RED on research route before independence guard: selected verifier principal equals exact current Attempt worker, second verifier credential; Episode admitted200 instead of401. Narrow current-Attempt guard added, no historical ever-worker ban.",
+      "raw_results": [
+        {
+          "raw_line": 23,
+          "text": "test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 28 filtered out; finished in 0.39s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 11,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_verifier_must_be_independent_of_attempt_worker' (2170070) panicked at tests/support/outcome_lifecycle.rs:296:5:"
+        },
+        {
+          "raw_line": 25,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "red-independent-research-verifier.start.json"
+    },
+    {
+      "name": "formatting",
+      "kind": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml"
+      ],
+      "test_launch": 7,
+      "prior_seconds": 328.9024729728699,
+      "start": 1791070646.3787816,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 4.074170827865601,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "formatting.start.json"
+    },
+    {
+      "name": "strict-lint",
+      "kind": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "test_launch": 7,
+      "prior_seconds": 332.9766438007355,
+      "start": 1791070650.4952123,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 76.35382437705994,
+      "log_sha256": "71546846061d279f744e6c0e7f92162bfdc86c5af708cf0993dfcd51b344898c",
+      "interpretation": "Failed strict lint: preexisting large command enum/collapsible baseline branches plus one new collapsible condition. Behavior-preserving cleanups and targeted existing enum API lint allowance; later strict lint passed.",
+      "raw_results": [],
+      "raw_failure_locations": [
+        {
+          "raw_line": 235,
+          "text": "error: this `if` can be collapsed into the outer `match`"
+        },
+        {
+          "raw_line": 263,
+          "text": "error: large size difference between variants"
+        },
+        {
+          "raw_line": 294,
+          "text": "error: this `if` statement can be collapsed"
+        },
+        {
+          "raw_line": 316,
+          "text": "error: this `if` statement can be collapsed"
+        },
+        {
+          "raw_line": 335,
+          "text": "error: this `if` statement can be collapsed"
+        },
+        {
+          "raw_line": 355,
+          "text": "error: this `if` statement can be collapsed"
+        },
+        {
+          "raw_line": 377,
+          "text": "error: could not compile `team-control-plane` (lib) due to 6 previous errors"
+        },
+        {
+          "raw_line": 379,
+          "text": "error: could not compile `team-control-plane` (lib test) due to 6 previous errors"
+        }
+      ],
+      "input_manifest": "strict-lint.start.json"
+    },
+    {
+      "name": "formatting-final",
+      "kind": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml"
+      ],
+      "test_launch": 7,
+      "prior_seconds": 409.3304681777954,
+      "start": 1791070785.1515336,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 3.969456434249878,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "formatting-final.start.json"
+    },
+    {
+      "name": "strict-lint-final",
+      "kind": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "test_launch": 7,
+      "prior_seconds": 413.2999246120453,
+      "start": 1791070789.1621907,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 19.546273708343506,
+      "log_sha256": "ab8e8598f0c4cefb2b6ec7af4110cec0f2c1dd3aec79bbe6afd404ead585b4cb",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "strict-lint-final.start.json"
+    },
+    {
+      "name": "green-compatibility",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--test",
+        "artifacts",
+        "--test",
+        "gateway",
+        "--test",
+        "intent_contracts",
+        "--test",
+        "kernel",
+        "--test",
+        "mailbox",
+        "--test",
+        "mailbox_artifacts",
+        "--test",
+        "mailbox_delivery",
+        "--test",
+        "supervisor",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 8,
+      "prior_seconds": 432.8461983203888,
+      "start": 1791071002.217649,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 218.70854568481445,
+      "log_sha256": "b95e47eb3cf20f10521ee4c2daec49b14a882b14f4668630f41e7dd5b72d994f",
+      "interpretation": "Lib9/artifacts11/gateway4 pass; intent28 pass/1 expectation failure. Source-only old input409 and prepared execution refusal correct; test expected DependencyUnmet although Supervisor::start maps dispatch-current=false to StaleGeneration. Test-only correction, failed fixture retained.",
+      "raw_results": [
+        {
+          "raw_line": 16,
+          "text": "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "raw_line": 37,
+          "text": "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.52s"
+        },
+        {
+          "raw_line": 63,
+          "text": "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.97s"
+        },
+        {
+          "raw_line": 692,
+          "text": "test result: FAILED. 28 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 167.67s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 43,
+          "text": "thread 'tokio-rt-worker' (2420776) panicked at tests/support/gateway_fault.rs:86:13:"
+        },
+        {
+          "raw_line": 47,
+          "text": "thread 'tokio-rt-worker' (2420775) panicked at tests/support/gateway_fault.rs:106:13:"
+        },
+        {
+          "raw_line": 50,
+          "text": "thread 'tokio-rt-worker' (2420776) panicked at tests/support/gateway_fault.rs:86:13:"
+        },
+        {
+          "raw_line": 53,
+          "text": "thread 'tokio-rt-worker' (2420776) panicked at tests/support/gateway_fault.rs:106:13:"
+        },
+        {
+          "raw_line": 58,
+          "text": "thread 'fault_runtime_surfaces_unexpected_subprocess_failure' (2421618) panicked at tests/support/gateway_fault.rs:57:9:"
+        },
+        {
+          "raw_line": 453,
+          "text": "thread 'outcome_lifecycle::lifecycle_research_source_amendment_refuses_old_input_and_old_prepared_execution' (2457234) panicked at tests/support/outcome_lifecycle.rs:804:5:"
+        },
+        {
+          "raw_line": 694,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "green-compatibility.start.json"
+    },
+    {
+      "name": "formatting-compatibility",
+      "kind": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml"
+      ],
+      "test_launch": 8,
+      "prior_seconds": 651.5547440052032,
+      "start": 1791071342.4793718,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 6.32974100112915,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "formatting-compatibility.start.json"
+    },
+    {
+      "name": "strict-lint-compatibility",
+      "kind": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "test_launch": 8,
+      "prior_seconds": 657.8844850063324,
+      "start": 1791071348.8567479,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 3.1723382472991943,
+      "log_sha256": "bd3128c28de3032b04f925289c8d06815d6dfa1d37deb39cf9ac6143532fa693",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "strict-lint-compatibility.start.json"
+    },
+    {
+      "name": "green-compatibility-final",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--test",
+        "artifacts",
+        "--test",
+        "gateway",
+        "--test",
+        "intent_contracts",
+        "--test",
+        "kernel",
+        "--test",
+        "mailbox",
+        "--test",
+        "mailbox_artifacts",
+        "--test",
+        "mailbox_delivery",
+        "--test",
+        "supervisor",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 9,
+      "prior_seconds": 661.0568232536316,
+      "start": 1791071368.8190587,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 101,
+      "seconds": 179.02125239372253,
+      "log_sha256": "59b7a0c1d8bd143fdf6d48d569827e725cafa617dbb650f72e51b7b16451dcd9",
+      "interpretation": "Lib9/artifacts11/gateway4 pass; intent29 pass/1 test observation failure. New concurrency test compared changing snapshot_time. Test-only correction excludes snapshot_time while comparing all stored fields; provisional filename retained unchanged. Not final pass.",
+      "raw_results": [
+        {
+          "raw_line": 16,
+          "text": "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "raw_line": 37,
+          "text": "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.96s"
+        },
+        {
+          "raw_line": 63,
+          "text": "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.53s"
+        },
+        {
+          "raw_line": 706,
+          "text": "test result: FAILED. 29 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 158.34s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 43,
+          "text": "thread 'tokio-rt-worker' (2498224) panicked at tests/support/gateway_fault.rs:86:13:"
+        },
+        {
+          "raw_line": 47,
+          "text": "thread 'tokio-rt-worker' (2498224) panicked at tests/support/gateway_fault.rs:106:13:"
+        },
+        {
+          "raw_line": 50,
+          "text": "thread 'tokio-rt-worker' (2498223) panicked at tests/support/gateway_fault.rs:86:13:"
+        },
+        {
+          "raw_line": 53,
+          "text": "thread 'tokio-rt-worker' (2498224) panicked at tests/support/gateway_fault.rs:106:13:"
+        },
+        {
+          "raw_line": 58,
+          "text": "thread 'fault_runtime_surfaces_unexpected_subprocess_failure' (2501488) panicked at tests/support/gateway_fault.rs:57:9:"
+        },
+        {
+          "raw_line": 412,
+          "text": "thread 'outcome_lifecycle::lifecycle_acceptance_and_amendment_serialize_with_public_grants_and_mutations' (2527330) panicked at tests/support/outcome_lifecycle.rs:43:5:"
+        },
+        {
+          "raw_line": 708,
+          "text": "error: test failed, to rerun pass `--test intent_contracts`"
+        }
+      ],
+      "input_manifest": "green-compatibility-final.start.json"
+    },
+    {
+      "name": "formatting-freeze",
+      "kind": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml"
+      ],
+      "test_launch": 9,
+      "prior_seconds": 840.0780756473541,
+      "start": 1791071636.7064795,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 4.020486354827881,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "formatting-freeze.start.json"
+    },
+    {
+      "name": "strict-lint-freeze",
+      "kind": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "test_launch": 9,
+      "prior_seconds": 844.098562002182,
+      "start": 1791071640.768523,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 1.6164190769195557,
+      "log_sha256": "f11dfc89fd8d76ad49766d4f8745fa2ef42c76adb89b119ff28ae4423dc816b7",
+      "interpretation": "Formatting or strict-lint check; see exact exit/output.",
+      "raw_results": [],
+      "raw_failure_locations": [],
+      "input_manifest": "strict-lint-freeze.start.json"
+    },
+    {
+      "name": "green-compatibility-freeze",
+      "kind": "test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/team-control-plane/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--lib",
+        "--test",
+        "artifacts",
+        "--test",
+        "gateway",
+        "--test",
+        "intent_contracts",
+        "--test",
+        "kernel",
+        "--test",
+        "mailbox",
+        "--test",
+        "mailbox_artifacts",
+        "--test",
+        "mailbox_delivery",
+        "--test",
+        "supervisor",
+        "--",
+        "--nocapture"
+      ],
+      "test_launch": 10,
+      "prior_seconds": 845.7149810791016,
+      "start": 1791071724.772439,
+      "env": {
+        "CARGO_TARGET_DIR": "/tmp/corenius-target-intent26-outcome-lifecycle1",
+        "CARGO_BUILD_JOBS": "2",
+        "RUST_TEST_THREADS": "1",
+        "CARGO_NET_OFFLINE": "true"
+      },
+      "exit_code": 0,
+      "seconds": 200.22920513153076,
+      "log_sha256": "893af587956c81bda1db6e28b160601a8f0efdbc71725f0807c4f270b7bce8db",
+      "interpretation": "Final bounded compatibility suite; this record alone supplies the final source-bound pass, if exit0. No further test launches authorized under this allocation.",
+      "raw_results": [
+        {
+          "raw_line": 16,
+          "text": "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "raw_line": 37,
+          "text": "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.44s"
+        },
+        {
+          "raw_line": 63,
+          "text": "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.95s"
+        },
+        {
+          "raw_line": 701,
+          "text": "test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 150.16s"
+        },
+        {
+          "raw_line": 723,
+          "text": "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.48s"
+        },
+        {
+          "raw_line": 730,
+          "text": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s"
+        },
+        {
+          "raw_line": 738,
+          "text": "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s"
+        },
+        {
+          "raw_line": 747,
+          "text": "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.62s"
+        },
+        {
+          "raw_line": 781,
+          "text": "test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.72s"
+        }
+      ],
+      "raw_failure_locations": [
+        {
+          "raw_line": 43,
+          "text": "thread 'tokio-rt-worker' (2560792) panicked at tests/support/gateway_fault.rs:86:13:"
+        },
+        {
+          "raw_line": 47,
+          "text": "thread 'tokio-rt-worker' (2560792) panicked at tests/support/gateway_fault.rs:106:13:"
+        },
+        {
+          "raw_line": 50,
+          "text": "thread 'tokio-rt-worker' (2560791) panicked at tests/support/gateway_fault.rs:86:13:"
+        },
+        {
+          "raw_line": 53,
+          "text": "thread 'tokio-rt-worker' (2560792) panicked at tests/support/gateway_fault.rs:106:13:"
+        },
+        {
+          "raw_line": 58,
+          "text": "thread 'fault_runtime_surfaces_unexpected_subprocess_failure' (2561457) panicked at tests/support/gateway_fault.rs:57:9:"
+        }
+      ],
+      "input_manifest": "green-compatibility-freeze.start.json"
+    }
+  ],
+  "preservation": "All raw bytes and chronological source input snapshots retained. No logs renamed or rewritten. Original repair3 87-pass log remains rejected-baseline author evidence only."
+}

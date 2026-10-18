@@ -1,0 +1,11 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/client.rs (/tmp/sqlite05-repair3-target/debug/deps/client-1ec261db07eb1716)
+
+running 1 test
+test repair3_monitor_corrections_have_bounded_complete_projection ... actual_monitor_max_corrections {"count": 20, "field_bytes": 65536, "context_wire_bytes": 24955, "records_wire_bytes": 12463}
+actual_monitor_bounded_roundtrip {"corrections": 20, "complete_fields": 80, "utf8_sha256": "bfc4253d205dbdee733de322e3e5b24a48b8bacd32c6f50703e31c9399c4bd10", "observer_operator_worker_scope": true, "credit_unchanged": true}
+owned_projection_resources [{"pid": 2237147, "start_stat": "2237147 (corenius-sqlite) R 2237099 2236763 2236763 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 57984146 8114176 1 18446744073709551615 94393649958768 94393655875392 140720776230880 0 0 0 0 0 0 0 0 0 17 14 0 0 0 0 0 94393656126192 94393656150760 94393688322048 140720776232578 140720776232757 140720776232757 140720776232890 0\n", "exit": -15, "executed_binary": {"path": "/tmp/sqlite05-repair3-target/debug/corenius-sqlite-controller", "sha256": "d8115c038621557d4228d960b573746681651a2b621030a01dd868f0bf8451ec"}, "waited": true}]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 4.71s
+

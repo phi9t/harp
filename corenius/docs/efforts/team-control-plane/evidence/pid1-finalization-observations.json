@@ -1,0 +1,118 @@
+{
+  "read_date": "2026-10-01",
+  "corenius_commit_read": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "host_kernel": "5.15.152.bsk.9-amd64",
+  "bubblewrap": "0.8.0",
+  "launch_count": 3,
+  "launches": [
+    {
+      "index": 1,
+      "exit": 1,
+      "result": "mount setup failed: cannot mkdir /fixture on read-only root; no workload success claimed"
+    },
+    {
+      "index": 2,
+      "exit": 0,
+      "observations": {
+        "kernel": "5.15.152.bsk.9-amd64",
+        "controller_return": -9,
+        "original": {
+          "state": "R",
+          "start": "26863001",
+          "nspid": [
+            "NSpid:\t2001988\t1"
+          ]
+        },
+        "namespace": "pid:[4026539641]",
+        "effects_before": 15,
+        "effects_after_exit": 15,
+        "effects_stable_50ms": true,
+        "sequence": [
+          {
+            "state": "S",
+            "start": "26863001",
+            "ns": "pid:[4026539641]",
+            "pidfd_events": []
+          },
+          {
+            "errno": 2,
+            "ns_errno": 2,
+            "pidfd_events": [
+              [
+                3,
+                1
+              ]
+            ]
+          }
+        ],
+        "limitations": "No forced D-state, permission race or asynchronous external effect proof."
+      }
+    },
+    {
+      "index": 3,
+      "exit": 0,
+      "observations": {
+        "kernel": "5.15.152.bsk.9-amd64",
+        "controller_return": -9,
+        "original": {
+          "state": "R",
+          "start": "26865240",
+          "nspid": [
+            "NSpid:\t2004583\t1"
+          ],
+          "gated_effects_absent": true
+        },
+        "namespace": "pid:[4026539632]",
+        "effects_before": 15,
+        "effects_after_exit": 15,
+        "effects_stable_50ms": true,
+        "sequence": [
+          {
+            "state": "S",
+            "start": "26865240",
+            "ns": "pid:[4026539632]",
+            "pidfd_events": []
+          },
+          {
+            "state": "S",
+            "start": "26865240",
+            "ns": "pid:[4026539632]",
+            "pidfd_events": []
+          },
+          {
+            "errno": 2,
+            "ns_errno": 2,
+            "pidfd_events": [
+              [
+                3,
+                1
+              ]
+            ]
+          }
+        ],
+        "limitations": "No forced D-state, permission race or asynchronous external effect proof."
+      }
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.15/kernel/pid_namespace.c",
+      "source_tag": "v5.15",
+      "sha256": "5a3077ab1d26ef39bae05c15503242982ad030565c97cabd2184811bf2f70272"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v5.15/kernel/exit.c",
+      "source_tag": "v5.15",
+      "sha256": "4336ab8298b6ec4d3e10b6bfd59e58e14317d71361fee86c972803a59939db99"
+    }
+  ],
+  "probe_path": "docs/efforts/team-control-plane/research/probes/pid1_finalization_probe.py",
+  "limits": [
+    "No forced D-state",
+    "No multithreaded PID1 experiment",
+    "No permission race",
+    "No external asynchronous I/O completion proof",
+    "Upstream v5.15 source is not exact vendor kernel source"
+  ],
+  "cleanup": "TemporaryDirectory removed owned mount/workspace files; controller killed and waited; original PID1 bound pidfd exit observed; no broker/model/provider/service launched"
+}

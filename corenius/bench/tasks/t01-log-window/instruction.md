@@ -1,0 +1,1 @@
+`metrics.sh FILE START END` must print `errors=N warnings=M` counting the ERROR and WARN lines whose line number is between START and END, both inclusive. Today it counts from line 1 to END instead. Fix `metrics.sh`. Do not change `events.log`.

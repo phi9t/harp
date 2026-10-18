@@ -1,0 +1,11 @@
+test_candidate_bundle_ref_refuses (__main__.ArtifactPortability.test_candidate_bundle_ref_refuses) ... ok
+test_candidate_index_refuses (__main__.ArtifactPortability.test_candidate_index_refuses) ... ok
+test_candidate_recorded_origin_metadata_refuses (__main__.ArtifactPortability.test_candidate_recorded_origin_metadata_refuses) ... ok
+test_contradictory_origin_expectation_refuses (__main__.ArtifactPortability.test_contradictory_origin_expectation_refuses) ... ok
+test_original_archive_remains_byte_exact (__main__.ArtifactPortability.test_original_archive_remains_byte_exact) ... ok
+test_relocated_archive_passes_exact_retained_bindings (__main__.ArtifactPortability.test_relocated_archive_passes_exact_retained_bindings) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.173s
+
+OK

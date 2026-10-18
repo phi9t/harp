@@ -1,0 +1,108 @@
+{
+  "recorded_at": "2026-10-05T01:45:11.292062+00:00",
+  "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/independent-review/repair3/nine-finding-root-matrix.json",
+  "inherited_sha256": "f65b58717a46d8448eb9e64f05c61d225e23ed8b6719bf320d09fe5bf90e8edd",
+  "findings": [
+    {
+      "finding": 1,
+      "topic": "trusted imports",
+      "original_actual_failure": "shadow-red",
+      "declared_hypothesis": "Worker cwd shadows trusted Python imports and forges repository status.",
+      "changed_fixture_rationale": "Worker module writes a positive execution marker; candidate evaluation remains deliberately enabled.",
+      "focused_result": "Actual untracked work retained and shadow module not executed.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 2,
+      "topic": "landing authority",
+      "original_actual_failure": "authority-red",
+      "declared_hypothesis": "Initial request journal does not authorize a later physical-ref admission after lead replacement.",
+      "changed_fixture_rationale": "Declared barriers bracket the actionable admission; before replacement must refuse, after replacement must preserve admitted decision.",
+      "focused_result": "Pre-admission replacement refuses physical effect; post-admission decision lands/reconciles.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 3,
+      "topic": "recovered publication",
+      "original_actual_failure": "publication-red",
+      "declared_hypothesis": "Physical confirmation omitted the shared revision/event/receipt/Kata publication transaction.",
+      "changed_fixture_rationale": "First Kata revision oracle included autonomous acknowledgement revisions; final fixture pauses automatic runtime for domain observation, then calls public Kata reconcile.",
+      "focused_result": "Both ref crash boundaries; replacement, cursor, one landing revision/event/receipt and exactly two confirmed Kata effects. Kata2/2 PASS9.47s.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 4,
+      "topic": "terminal lifecycle",
+      "original_actual_failure": "terminal-capture-red,terminal-accept-red,accepted-capture-red; repair2 composition-red: fresh proof passed, reports1->2/revision9->10, original accepted proof could no longer land",
+      "declared_hypothesis": "Fresh verification on accepted state supersedes the accepted proof; even a late semantic refusal consumes the newest git-verify operation. Validate candidate/task inside the existing journal-admission transaction before operation insertion.",
+      "changed_fixture_rationale": "New public mode uses actual private Git, fixed isolated suite and stable verifier key. Identical RED/GREEN driver; no timing shim, model, journal injection or semantic oracle change.",
+      "focused_result": "composition-green2/2 PASS7.56s (run elapsed9.03s): refused accepted/landed fresh verification without new operation/report/task/revision, stable original proof replayed, original exact accepted proof landed.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 5,
+      "topic": "selected stop retry",
+      "original_actual_failure": "native-final-driver-red",
+      "declared_hypothesis": "Pending unsubscribe retry falls back to immutable old stop instead of the exact qualification used when the operation was admitted.",
+      "changed_fixture_rationale": "Shared first GREEN changed connection due to active peer and correctly refused. Final fixture retires peer before restart; same final driver replayed genuine RED in owned initial-stop source materialization. Disposal failure also retained.",
+      "focused_result": "Matched same-driver RED2/2 FAIL50.94s and GREEN2/2 PASS35.75s; same logical ID/current selected stop, original stop immutable.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 6,
+      "topic": "inventory responsiveness",
+      "original_actual_failure": "inventory-red",
+      "declared_hypothesis": "Untrusted slow Git inspection runs while holding the single SQLite connection mutex.",
+      "changed_fixture_rationale": "Real clean filter sleeps six seconds and records execution; concurrent status/progress/cancel must finish while inventory stays blocked.",
+      "focused_result": "Controls prompt with blocked inspection; snapshot revision/age/drift explicit;2/2 PASS8.30s.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 7,
+      "topic": "final output",
+      "original_actual_failure": "final-output-red",
+      "declared_hypothesis": "Exit-first polling accepts a fast exited oversized producer with a truncated passing log.",
+      "changed_fixture_rationale": "Declared FI waits for owned verifier exit before polling; candidate handles closed pipe and exits zero. First correction recorded limit but ignored it in verdict, retained failure.",
+      "focused_result": "Actual exit zero + output-bound limit refuses verification/acceptance; bounded diagnostics and owned PID/start/wait retained.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 8,
+      "topic": "archive producer",
+      "original_actual_failure": "archive-red",
+      "declared_hypothesis": "Archive storage/diagnostics are bounded only after tar finishes.",
+      "changed_fixture_rationale": "64MiB sparse owned scratch fixture avoids host disk filling; first public failure exposes actual expanded archive size, then owned truncation isolates retry.",
+      "focused_result": "Producer pipe bound32MiB/deadline30s/diagnostics1MiB; owned pidfd termination/wait recorded; root preserved and public retry succeeds.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    },
+    {
+      "finding": 9,
+      "topic": "partial deletion",
+      "original_actual_failure": "partial-red",
+      "declared_hypothesis": "Recovery requires intact .git/owner rather than original journaled root/disposition authority.",
+      "changed_fixture_rationale": "Actual recursive .git deletion and owner removal precede declared crash; later replacement/alias/new-file controls are owned fixture mutations and restored only by fixture.",
+      "focused_result": "Same operation/retention/root/stop resumes after real deletion; replacement/alias/new work remains preserved;2/2 PASS13.50s.",
+      "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+      "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+      "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+    }
+  ],
+  "current_control_qualification": "inherited only; source6f2 root73241 native39PASS + Git normal compound comparison failure retained. No author full native rerun. New five controls and narrow normal fixture adjudication separate.",
+  "caps": "05 repair3/3;02 and04 repair3/3 exhausted; EMPTY diagnostics2/2 exhausted; no renewal."
+}

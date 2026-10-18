@@ -1,0 +1,63 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--lib",
+      "loaded_scan",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 0,
+    "log": "covering-pagination-negatives.log",
+    "seconds": 0.05
+  },
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--check"
+    ],
+    "exit": 0,
+    "log": "pre-freeze-fmt.log",
+    "seconds": 0.22
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--all-targets",
+      "--features",
+      "fault-injection",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "log": "pre-freeze-clippy.log",
+    "seconds": 1.12
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "log": "pre-freeze-diff.log",
+    "seconds": 0.01
+  }
+]

@@ -1,0 +1,1 @@
+`invoice.total_cents(lines)` takes `(amount_string, quantity)` pairs and must return the total in whole cents. Amounts are decimal strings and the result must be exact: `[("0.10", 3), ("0.20", 1)]` is 50, and a total of 1.005 rounds half up to 101. Floating point gives wrong answers today. Fix `invoice.py`; no dependencies.

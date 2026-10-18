@@ -1,0 +1,24 @@
+{
+  "origin": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-cross-thread-exec-vano4exo",
+  "source_read": "a75c520761e5f93f078abdfd1d99f24369499b99",
+  "verified_manifest_records": 98,
+  "declared_external_binary_aliases": [],
+  "readiness_sha256": "4a0aaf60828eebb9ae1f161f04f48c56915b8c4f1bf1660ba0fa63b69c58c523",
+  "recorded_oracles": 10,
+  "observed_owned_pids_absent": [
+    3341076,
+    3339592,
+    3339867,
+    3340366,
+    3334060,
+    3334507,
+    3335304
+  ],
+  "evidence_class": "MODEL_FREE_ACTUAL_PINNED_CROSS_THREAD_SESSION_PRIMITIVE_ONLY",
+  "limitations": [
+    "Not product authorization or private-network qualification",
+    "Not live inference",
+    "First and stronger second cases retained separately; final session46945"
+  ],
+  "retention": "Original raw fixture retained; canonical metadata copied byte-identically. Root hash/oracle/PID check only; no mutation or rerun of frozen fixture."
+}

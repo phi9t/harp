@@ -1,0 +1,40 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.15s
+     Running unittests src/lib.rs (crates/team-control-plane/target/debug/deps/team_control_plane-fef172405ffe7035)
+
+running 2 tests
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (crates/team-control-plane/target/debug/deps/team_control_plane-35c90674df8959bf)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/artifacts.rs (crates/team-control-plane/target/debug/deps/artifacts-c2245f8f83f345ea)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+
+     Running tests/gateway.rs (crates/team-control-plane/target/debug/deps/gateway-fd76c55ace946c12)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/kernel.rs (crates/team-control-plane/target/debug/deps/kernel-fe7045056b2b4f1a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s
+
+     Running tests/supervisor.rs (crates/team-control-plane/target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.00s
+

@@ -1,0 +1,13 @@
+{
+  "changed_at": "2026-10-04T22:27:34.937840+00:00",
+  "root_decision_sha256": "d11494af5ec79471967a8a23298da8d1476dfc6b4c25b01d24243d5f3e30b0de",
+  "before_sha256": "0bfe72fba7d9eefe2293b8fde043f9162ca2f174e4e7f8f9b69c2b6ea0b8e64f",
+  "after_sha256": "8b567d9598eb009c1936ab70103f89e8f2e7644e579f147fb342dea71883c65c",
+  "delta_path": "initial-driver-only.diff",
+  "only_changed_path": "crates/sqlite-controller/tests/support/native_registry.py",
+  "criterion": "exact ORIGINAL turn and clientId predicate",
+  "deadline_seconds": 10,
+  "final_assertion_preserved": true,
+  "runtime_fences_changed": false,
+  "causal_attribution": "measurement correction only; no historical full-gate cause/05 attribution"
+}

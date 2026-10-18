@@ -1,0 +1,69 @@
+{
+  "after": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 2,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "6c08e3e1d63d78bfc6a0488e38357dcd1f0d3401",
+    "git_path": "SPEC.md",
+    "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-c9539daf-92e3-4833-8e22-46b2d5b24631/store",
+    "id": "38666d53-8502-47e6-bb5f-d55d421fc6f1",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 2,
+    "max_episodes": 3,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 1
+  },
+  "cancel": {
+    "attempt_id": "4452fda0-4a1f-4249-8e07-4632c061b321",
+    "disposition": "cancellation_requested",
+    "generation": 1,
+    "operation_id": null,
+    "recovery_epoch": "ba06537b-7694-4321-8d76-2fde86f2a36e",
+    "reservation_id": null,
+    "revision": 4,
+    "schema_version": 1
+  },
+  "done": {
+    "attempt_id": "4452fda0-4a1f-4249-8e07-4632c061b321",
+    "disposition": "cancelled",
+    "generation": 1,
+    "operation_id": null,
+    "recovery_epoch": "ba06537b-7694-4321-8d76-2fde86f2a36e",
+    "reservation_id": null,
+    "revision": 5,
+    "schema_version": 1
+  },
+  "execution": {
+    "id": "c14f9e7f-b9f3-49b4-a6be-313d139b7df5",
+    "path": "/data02/home/philip.yang/devx/tmp/kernel16-c9539daf-92e3-4833-8e22-46b2d5b24631/workspaces/c14f9e7f-b9f3-49b4-a6be-313d139b7df5"
+  },
+  "repeat": {
+    "attempt_id": "4452fda0-4a1f-4249-8e07-4632c061b321",
+    "disposition": "cancelled",
+    "generation": 1,
+    "operation_id": null,
+    "recovery_epoch": "ba06537b-7694-4321-8d76-2fde86f2a36e",
+    "reservation_id": null,
+    "revision": 6,
+    "schema_version": 1
+  },
+  "replacement": {
+    "Ok": {
+      "attempt_id": "585bf600-c525-42c3-a7e1-0f089c833262",
+      "disposition": "applied",
+      "generation": 1,
+      "operation_id": "f36534f5-9e90-48b3-aff9-22697bf079ed",
+      "recovery_epoch": "ba06537b-7694-4321-8d76-2fde86f2a36e",
+      "reservation_id": "222aa8a0-3de3-4d3c-8f1b-562077536f66",
+      "revision": 3,
+      "schema_version": 1
+    }
+  },
+  "third": {
+    "Err": "capacity_exhausted"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "version": "happy-path-3",
+  "observed_at": "2026-10-05T04:07:21.339920+00:00",
+  "coordinator": "/root",
+  "writer": "/root/sqlite06_happy_path_author",
+  "writer_state": "sole writer01a10a2b explicitly released to START actual dedicated disposable team now",
+  "thread": "01a10a2b-1c44-7e11-aed9-11720d14abb0",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "source": "c0346486b683a043d51028e95900ee6b66b2f065",
+  "tickets": {
+    "01": "accepted",
+    "02": "accepted",
+    "03": "accepted",
+    "04": "accepted",
+    "05": "unaccepted; one extra C1/C2 round admitted",
+    "06": "disposable happy-path kickoff authorized; hardening/release pending"
+  },
+  "caps": {
+    "05_prior": 3,
+    "05_extra_authorized": 1,
+    "05_extra_used": 1,
+    "02": 3,
+    "04": 3,
+    "EMPTY_diagnostics": 2
+  },
+  "next": "Observe actualdedicatedteam bootstrap and lead/controller/workercandidate/verify/accept/disposableFF, then two-worker overlap; no additional scaffolding/gates beforelaunch.",
+  "unknowns": [
+    "live provider entitlement/connectivity untested",
+    "retained native isolation outbound profile must be configured for real provider",
+    "happy-path runner not yet present"
+  ],
+  "deferred": [
+    "crash/replay/oversize/history expansion",
+    "root Insula implementation",
+    "baseline/mainline acceptance"
+  ],
+  "ack": "Explicit actor message: sole writer /root/sqlite05_c1c2_happy_author; exact new tree/branch and one extra C1/C2 round; will seal for root review.",
+  "claim": "Existing unexpired logical sqlite-controller-05 claim retained; actual actor admission/ACK bound in this projection.",
+  "mainlead_assignment_notice": {
+    "operation": "104effe4-db63-4b1b-9814-f686bacea4ac",
+    "exit": 0,
+    "state": "queued",
+    "presentation": "unknown",
+    "ack": "unknown",
+    "stdout": "Queued message 01a10a2f-0920-7842-b9bf-e9ba111374c7 for thread 01a10084-dc3a-7743-b0c1-4694d5ecc621.\n"
+  },
+  "focused_results": {
+    "C1": "Independent actual candidate PASS75.146s vs frozen baseline RED49.015s (Spec); both runtime topologies tested.",
+    "C2": "Independent actual candidate PASS6.434s vs baseline RED6.327s; current/history/task operator progress privacy checked (Spec/Standards).",
+    "fixture_issue": "Branch654 + Standards confirm Medium presented-only peer wait timing defect in correction_authority.py:37. OPEN; no repair/reset under06.",
+    "qualification": "Scoped product behavior only; reports sealing, full baseline/release still pending."
+  },
+  "pending_gates": [
+    "frozen independent report/index retention and root disposition",
+    "real provider/runner preflight and disposable lead-controller-worker full path",
+    "two concurrent actual workers and stale-base reintegration",
+    "fixture timing and broader baseline/hardening/release qualification later"
+  ],
+  "context": {
+    "author_latest_observed_input": 111203,
+    "time": "2026-10-05T03:21:18.386Z",
+    "warning": "100k explicitly delivered by coordinator",
+    "compaction_control": "not exposed; actual runtime compaction unobserved in new actor",
+    "next_boundary": "owned C1 RED terminal; preserve jobs/source/repair evidence before any replacement"
+  },
+  "last_writer": {
+    "actor": "/root/sqlite05_c1c2_happy_author",
+    "thread": "01a10a0d-f18a-7641-9ca5-1cb49cb81603",
+    "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite05-c1c2-happy",
+    "state": "completed/quiescent; source/evidence clean"
+  },
+  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "projection_kind": "coordinator-owned manual canonical projection; product controller projection qualification remains pending",
+  "controller_event_cursor": null,
+  "retention": {
+    "audit_sha256": "ac23bf163615b7d95ed78ad7448f0c800eac531b535da35a43d1166e4ae3b76a",
+    "crate_inputs": 50,
+    "archives": 7,
+    "members": 1931,
+    "original_birth_ids": 32,
+    "same_birth_live": 0,
+    "unknown_reads": 0,
+    "historical_red_script_pins": "Final reproducer hash is retrospective; original logs/source binary retained; independent focused checks adjudicate cause."
+  },
+  "trial_authority": "c9 happy-path kickoff; prepare missing links now, actual model input after root scoped disposition",
+  "scoped_disposition": "evidence/05/c1c2-extra1/independent/root-disposition.json",
+  "happy_path_blocker": null,
+  "next_executable_attachment": "Existing native-ui + pinned codex --remote attachment after private bootstrap; complete sqlite_baseline.py start runner under implementation, not yet claimed runnable.",
+  "next_launch": {
+    "cwd": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+    "command": "python3 tools/agents/sqlite_baseline.py start",
+    "state": "root release delivered; actualstartprocess/bindings pending observation"
+  },
+  "relay": {
+    "source": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
+    "test": "c0f22e117fdf40e80c1a00ed885e7be2e46167df2795f6a08fdb7ce3b049d396",
+    "S1": "Resolved: independent3/3 privacy/routing/authority +author2/2 actualexit0; runtimecanaries0/2 retained; exacthashesunchanged.",
+    "S2": "Confirmed deadline-before-read/lateEOF bookkeeping gap; hardeningOPEN/prototype-nonblocking; strict180s wallnotproven.",
+    "actual_live_provider": "HTTP200/response.completed/gpt6-sol/26input11output2.605s, safe receipt929d0023"
+  }
+}

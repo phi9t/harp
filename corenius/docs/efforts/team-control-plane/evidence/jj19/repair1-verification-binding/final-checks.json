@@ -1,0 +1,62 @@
+{
+  "observed_at": "2026-10-03T17:14:12.499536+00:00",
+  "final_fixture_sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+  "baseline_contract_red": {
+    "exit": 1,
+    "failure": "first independent verifier fetch occurs after content rewrite",
+    "path": "final-baseline-contract-red.json"
+  },
+  "repaired_contract_green": {
+    "exit": 0,
+    "path": "final-contract-green.json"
+  },
+  "source_bound_final_outcomes": {
+    "behavioral_controls_exit1": 5,
+    "passing_jj_slices_exit0": 5,
+    "passing_git_baseline_exit0": 1
+  },
+  "all_final_expected_terminals_and_cleanup": true,
+  "retained_artifacts_post_cleanup_reverification": {
+    "candidates": 2,
+    "exit": 0,
+    "path": "retained-artifact-reverification.json"
+  },
+  "existing_tooling_fixtures": [
+    {
+      "argv": [
+        "python3",
+        "/tmp/corenius-jj19-verification-repair/tools/agents/test_wt.py"
+      ],
+      "exit": 0,
+      "tests": 12
+    },
+    {
+      "argv": [
+        "python3",
+        "/tmp/corenius-jj19-verification-repair/tools/agents/test_land.py"
+      ],
+      "exit": 0,
+      "tests": 8
+    },
+    {
+      "argv": [
+        "python3",
+        "/tmp/corenius-jj19-verification-repair/tools/agents/test_evidence.py"
+      ],
+      "exit": 0,
+      "tests": 15
+    }
+  ],
+  "syntax_exit": 0,
+  "tracker_lint_exit": 0,
+  "diff_check_exit": 0,
+  "repair_patch_reverse_check_exit": 0,
+  "original_evidence_files_unchanged": 100,
+  "report_links_exit": 0,
+  "repository_gate": "Not run: root explicitly reserves full check.sh/Cargo/Postgres/Temporal gate; this isolated repair uses bounded disposable evaluation and pure-Python tooling only.",
+  "provider_calls": 0,
+  "shared_checkout_mutations": 0,
+  "commits": 0,
+  "landing": 0,
+  "fresh_independent_review": "Pending root-owned Standards/Spec and independent branch review."
+}

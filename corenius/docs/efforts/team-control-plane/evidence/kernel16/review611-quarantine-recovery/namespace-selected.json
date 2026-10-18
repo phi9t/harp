@@ -1,0 +1,124 @@
+{
+  "observed_unix": 1791010738.5879533,
+  "execution": "ab7bea80-fede-4395-a212-b3797da3c5da",
+  "episode": "46ebcbb6-9b34-465e-8e48-edceae7e42c6",
+  "info": {
+    "path": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255/workspaces/.execution-logs/ab7bea80-fede-4395-a212-b3797da3c5da.info",
+    "sha256": "447da9fcb6b8693340589493cdcb711fa7dbbf55bce1bac3f971e2562b83d2ba",
+    "bytes": 194,
+    "identity": {
+      "child-pid": 4188604,
+      "ipc-namespace": 4026539790,
+      "mnt-namespace": 4026539788,
+      "net-namespace": 4026539792,
+      "pid-namespace": 4026539791,
+      "uts-namespace": 4026539789
+    }
+  },
+  "effect": {
+    "path": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255/unmeasured-native/904c125b-6313-4ce9-894a-ed3f9a0193fe.effect",
+    "sha256": "42a339131f1ed51bfa3c1b17cbf14d7b44fb34ca4988d57d09f7f21dae1de991",
+    "bytes": 839,
+    "binding": {
+      "execution": "ab7bea80-fede-4395-a212-b3797da3c5da",
+      "episode": "46ebcbb6-9b34-465e-8e48-edceae7e42c6",
+      "operation": "0d9767df-0efb-49db-9c1c-1b1f623d247a",
+      "usage": {
+        "cost_microusd": 0,
+        "model_requests": 0,
+        "profile": "inprocess-model-free-v1"
+      }
+    }
+  },
+  "child_current": {
+    "pid": 4188604,
+    "present": false,
+    "errno": 2
+  },
+  "matching_task_namespaces": [],
+  "matching_open_namespace_fds": [],
+  "scan_counts": {
+    "processes": 3053,
+    "threads": 17458,
+    "nsreads": 38356,
+    "fdreads": 4052
+  },
+  "errors_by_kind_errno": {
+    "ns:13": 48930,
+    "fdlist:13": 2860,
+    "tasklist:2": 6,
+    "fd:2": 1,
+    "ns:2": 4
+  },
+  "limitations": [
+    "single non-atomic live proc sweep; no historical boot/startticks or database stop/result records",
+    "no signals/deletion/refund/reuse",
+    "namespace inode lifetime/reuse is not historical process incarnation proof"
+  ],
+  "non_disappearance_error_count": 51790,
+  "non_disappearance_error_samples": [
+    {
+      "kind": "ns",
+      "path": "/proc/1/task/1/ns/ipc",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/1/task/1/ns/mnt",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/1/task/1/ns/net",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/1/task/1/ns/pid",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/1/task/1/ns/uts",
+      "errno": 13
+    },
+    {
+      "kind": "fdlist",
+      "path": "/proc/1",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/2/task/2/ns/ipc",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/2/task/2/ns/mnt",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/2/task/2/ns/net",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/2/task/2/ns/pid",
+      "errno": 13
+    },
+    {
+      "kind": "ns",
+      "path": "/proc/2/task/2/ns/uts",
+      "errno": 13
+    },
+    {
+      "kind": "fdlist",
+      "path": "/proc/2",
+      "errno": 13
+    }
+  ],
+  "complete_scan": false,
+  "conclusion": "No match in accessible task namespace links or namespace fd holders; EACCES prevents whole-host absence proof. Recorded child PID absent at observation; no historical stop certificate.",
+  "full_raw_sha256": "0fb7d5905823f75387e680c947546cc67641ca147c3271afdc27ac6f86819080"
+}

@@ -1,0 +1,62 @@
+{
+  "time": "2026-10-05T03:20:52.445572+00:00",
+  "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "dirty": "",
+  "caps": {
+    "prior05": 3,
+    "extra_C1C2": 1,
+    "prior02_04": 3,
+    "EMPTY": 2
+  },
+  "C2": {
+    "command": [
+      "python3",
+      ".scratch/sqlite-controller/c1c2-happy/fixtures/progress-probe.py"
+    ],
+    "started_utc": "2026-10-05T03:18:59.478194+00:00",
+    "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+    "pid": 115416,
+    "start_ticks": "58591977",
+    "exit": 1,
+    "seconds": 6.414533284958452,
+    "finished_utc": "2026-10-05T03:19:05.892726+00:00",
+    "log_sha256": "96d7477a7428ec2223cd4714352d41215c2698172970b1a5ecb5a84c2d3eadad"
+  },
+  "C1": {
+    "command": [
+      "env",
+      "CORENIUS_TEST_CONTROL_CENTER=1",
+      "CORENIUS_TEST_REPAIR3_UI=1",
+      "CORENIUS_TEST_RETAIN_RAW=1",
+      "CORENIUS_TEST_TOPOLOGY=shared",
+      "python3",
+      ".scratch/sqlite-controller/c1c2-happy/fixtures/correction-driver.py",
+      ".scratch/sqlite-controller/c1c2-happy/target/debug/corenius-sqlite-controller"
+    ],
+    "started_utc": "2026-10-05T03:18:59.478193+00:00",
+    "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+    "pid": 115415,
+    "start_ticks": "58591977",
+    "exit": 1,
+    "seconds": 48.605267296079546,
+    "finished_utc": "2026-10-05T03:19:48.083460+00:00",
+    "log_sha256": "809c84a7c55d167be30138a43a1623a8ed7323b0c770f968cf43caf19ec63888"
+  },
+  "C1_discriminator": {
+    "contract_pass": false,
+    "peer_state": "acknowledged",
+    "current_state": "requested",
+    "stale_state": "requested"
+  },
+  "jobs": "C1 wrapper terminal evidence just collected; fixture cleanup retains namespaces and service exits; no other owned active jobs",
+  "unknown_effects": "none observed; inspect retained own namespace dispositions before fix",
+  "metrics": {
+    "last_input": 103254,
+    "cached": 97792,
+    "uncached": 5462,
+    "output": 356,
+    "window": 258400,
+    "source": "root measured own public token_count at2026-10-05T03:19:44.484Z"
+  },
+  "next": "retain C1 failure; correct fixture stable peer-state discriminator if needed; tracked focused tests then C1/C2 repair"
+}

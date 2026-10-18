@@ -1,0 +1,124 @@
+{
+  "created_at": "2026-10-04T16:56:49.134153+00:00",
+  "source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "author_tree": "/data02/home/philip.yang/workspace/corenius-sqlite04-git",
+  "verification_tree": "/data02/home/philip.yang/workspace/corenius-sqlite02verify-check",
+  "requirements_root": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/requirements",
+  "requirements_manifest_sha256": "14251b6b21eccc1f9d5db8f9e7c4fe967ed67cc2e5cd44673f9d35794389e198",
+  "changed_files": {
+    "crates/sqlite-controller/README.md": {
+      "author_sha256": "2077aaaa5983efcf1421fcd206c4851485b8caf9a3aa4d4886a60ac330d08368",
+      "verification_sha256": "2077aaaa5983efcf1421fcd206c4851485b8caf9a3aa4d4886a60ac330d08368",
+      "commit_sha256": "2077aaaa5983efcf1421fcd206c4851485b8caf9a3aa4d4886a60ac330d08368",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs": {
+      "author_sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+      "verification_sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+      "commit_sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/codex.rs": {
+      "author_sha256": "ac60c181367c695dd9dd9f5af1f467a0c24fbd8bd6592fe3b2ca5654b6d637d5",
+      "verification_sha256": "ac60c181367c695dd9dd9f5af1f467a0c24fbd8bd6592fe3b2ca5654b6d637d5",
+      "commit_sha256": "ac60c181367c695dd9dd9f5af1f467a0c24fbd8bd6592fe3b2ca5654b6d637d5",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/git.rs": {
+      "author_sha256": "aedf6bfecf61fc3430d67608afaaf6a540537782a8ecd562098790db8f018cfb",
+      "verification_sha256": "aedf6bfecf61fc3430d67608afaaf6a540537782a8ecd562098790db8f018cfb",
+      "commit_sha256": "aedf6bfecf61fc3430d67608afaaf6a540537782a8ecd562098790db8f018cfb",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/git_workspace.rs": {
+      "author_sha256": "93386d27eaf84b4fd41f47ef0e86bf1b6a48ab721c5e40becefd8914241022fa",
+      "verification_sha256": "93386d27eaf84b4fd41f47ef0e86bf1b6a48ab721c5e40becefd8914241022fa",
+      "commit_sha256": "93386d27eaf84b4fd41f47ef0e86bf1b6a48ab721c5e40becefd8914241022fa",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/kata.rs": {
+      "author_sha256": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+      "verification_sha256": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+      "commit_sha256": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/lib.rs": {
+      "author_sha256": "efd3c680cc8ce69e7ec32de2f5add97a33721c8f997d98b61953b1048e3e1781",
+      "verification_sha256": "efd3c680cc8ce69e7ec32de2f5add97a33721c8f997d98b61953b1048e3e1781",
+      "commit_sha256": "efd3c680cc8ce69e7ec32de2f5add97a33721c8f997d98b61953b1048e3e1781",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/main.rs": {
+      "author_sha256": "a1caf672f2aee17e07bbd3769dcde41819b1cd97e9891e2493749acb7e0b89de",
+      "verification_sha256": "a1caf672f2aee17e07bbd3769dcde41819b1cd97e9891e2493749acb7e0b89de",
+      "commit_sha256": "a1caf672f2aee17e07bbd3769dcde41819b1cd97e9891e2493749acb7e0b89de",
+      "identical": true
+    },
+    "crates/sqlite-controller/src/service.rs": {
+      "author_sha256": "38bd4fcadf8d8e37de76e48273ad67182c85cbd9b3ddecd36dfc188ccd01065d",
+      "verification_sha256": "38bd4fcadf8d8e37de76e48273ad67182c85cbd9b3ddecd36dfc188ccd01065d",
+      "commit_sha256": "38bd4fcadf8d8e37de76e48273ad67182c85cbd9b3ddecd36dfc188ccd01065d",
+      "identical": true
+    },
+    "crates/sqlite-controller/tests/codex.rs": {
+      "author_sha256": "7d139aa575d6e405ccebaa8d24aadb8b7ebdba6f00f43ecaa8e859e165ab4c53",
+      "verification_sha256": "7d139aa575d6e405ccebaa8d24aadb8b7ebdba6f00f43ecaa8e859e165ab4c53",
+      "commit_sha256": "7d139aa575d6e405ccebaa8d24aadb8b7ebdba6f00f43ecaa8e859e165ab4c53",
+      "identical": true
+    },
+    "crates/sqlite-controller/tests/git.rs": {
+      "author_sha256": "1e66b41627f3529250947768aa94055658c156c571d66d466f6eb86d09d9bae0",
+      "verification_sha256": "1e66b41627f3529250947768aa94055658c156c571d66d466f6eb86d09d9bae0",
+      "commit_sha256": "1e66b41627f3529250947768aa94055658c156c571d66d466f6eb86d09d9bae0",
+      "identical": true
+    },
+    "crates/sqlite-controller/tests/support/git_protocol.py": {
+      "author_sha256": "59e914c07b2043781fa1000ca1e47ac24f3af35029bb05dbc721d4d8b6493e0f",
+      "verification_sha256": "59e914c07b2043781fa1000ca1e47ac24f3af35029bb05dbc721d4d8b6493e0f",
+      "commit_sha256": "59e914c07b2043781fa1000ca1e47ac24f3af35029bb05dbc721d4d8b6493e0f",
+      "identical": true
+    },
+    "crates/sqlite-controller/tests/support/kata_protocol.py": {
+      "author_sha256": "ec4dc356e65fc4b49dfb65db2b89efeca99317a6d878ebcc059f3abf71ed33dc",
+      "verification_sha256": "ec4dc356e65fc4b49dfb65db2b89efeca99317a6d878ebcc059f3abf71ed33dc",
+      "commit_sha256": "ec4dc356e65fc4b49dfb65db2b89efeca99317a6d878ebcc059f3abf71ed33dc",
+      "identical": true
+    },
+    "crates/sqlite-controller/tests/support/native_registry.py": {
+      "author_sha256": "2ae690ff2b5874b5316b5880009f6dd3b3d2b6fbfd33867e9f98805f3fe331ed",
+      "verification_sha256": "2ae690ff2b5874b5316b5880009f6dd3b3d2b6fbfd33867e9f98805f3fe331ed",
+      "commit_sha256": "2ae690ff2b5874b5316b5880009f6dd3b3d2b6fbfd33867e9f98805f3fe331ed",
+      "identical": true
+    },
+    "tools/agents/checks.d/70-sqlite-controller.sh": {
+      "author_sha256": "284edb061d2cf790894aa0559c7f6b8183523e155d7688b983de1b3439dde62c",
+      "verification_sha256": "284edb061d2cf790894aa0559c7f6b8183523e155d7688b983de1b3439dde62c",
+      "commit_sha256": "284edb061d2cf790894aa0559c7f6b8183523e155d7688b983de1b3439dde62c",
+      "identical": true
+    }
+  },
+  "unchanged_contracts": {
+    "AGENTS.md": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+    "CONTEXT.md": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+    "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+    "crates/sqlite-controller/src/supervisor.rs": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+    "crates/sqlite-controller/src/runtime.rs": "6ef2364b8c00edab0550298b23f63ab79ecef341aa3c71e6df36e65b8d0fccf7",
+    "crates/sqlite-controller/src/query.rs": "c2f458ed79e20876cf15e8a303350fd573d55a8269a4073a71e03cc95caf2f0f",
+    "crates/sqlite-controller/src/native_ws.rs": "223e34e3db112d5f24ab29dd2b28f02b51fa2ce976a03d728848161c08f9c42e",
+    "docs/agents/evidence-bound-method.md": "4bcd61bea24b101808694cac00b5ce1bcb0c980ad5938c96c86f20fa49238ef1",
+    "docs/efforts/sqlite-controller/evidence/03/handoff.md": "059604f2207b8819a0b20fea52eac9a28838089b9d00bcdd12a258aea899ff14"
+  },
+  "guidance": {
+    "AGENTS.md": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+    "CONSTITUTION.md": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+    "docs/agents/agentic-engineering.md": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+    "docs/agents/domain.md": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+    "docs/agents/skill-orchestration.md": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+  },
+  "reports": {
+    "standards.md": "dbb7cd3111bbdafae30a9b94606657476647698b5b74752dbc4142e320d6cb51",
+    "standards.json": "2e09ec29f26d4736aa3cddbf478f46693eacee7225fd3f4c46588129b4cafdea"
+  },
+  "review_method": "Static file reads, Git metadata/diff/show reads, hashing. No behavioral checks."
+}

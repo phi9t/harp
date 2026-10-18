@@ -1,0 +1,97 @@
+{
+  "boundary": 11,
+  "later_completed": [
+    {
+      "event_id": 18,
+      "progress": {
+        "cursor": 0,
+        "closed": false,
+        "canonical_revision": 8,
+        "waits": [
+          {
+            "protocol": "admission",
+            "id": "bc719c48-4710-45d3-a923-7942561f4fa4"
+          },
+          {
+            "protocol": "episode",
+            "id": "2588bcf8-72e7-4b09-b693-2c0658494d2e"
+          },
+          {
+            "protocol": "episode",
+            "id": "56ce7355-ad8b-4dca-bd70-cc23451991b2"
+          },
+          {
+            "protocol": "episode",
+            "id": "89c83757-02ec-4dfa-8a7b-f9d7bf406143"
+          },
+          {
+            "protocol": "episode",
+            "id": "9c588e92-2b63-42ce-a21b-be5425fd3f1a"
+          }
+        ],
+        "operations": [
+          {
+            "admission_id": "bc719c48-4710-45d3-a923-7942561f4fa4",
+            "journals": [
+              [
+                "e14a18a4-a4d0-4d0a-8077-a90b4b1a3c25",
+                "confirmed"
+              ],
+              [
+                "12fecf9c-78ba-4352-ba0e-dbe0137ffefc",
+                "confirmed"
+              ]
+            ],
+            "limitation": null
+          },
+          {
+            "episode_id": "2588bcf8-72e7-4b09-b693-2c0658494d2e",
+            "journals": [
+              [
+                "16e99b86-3608-4665-88ff-32e3ee47b6de",
+                "confirmed"
+              ]
+            ],
+            "limitation": null
+          },
+          {
+            "episode_id": "56ce7355-ad8b-4dca-bd70-cc23451991b2",
+            "journals": [
+              [
+                "a042e503-1dda-49a9-bbbd-e46898218311",
+                "confirmed"
+              ]
+            ],
+            "limitation": null
+          },
+          {
+            "episode_id": "89c83757-02ec-4dfa-8a7b-f9d7bf406143",
+            "journals": [
+              [
+                "fe40b6f9-f955-4ec3-8dcc-ac4259d0da26",
+                "confirmed"
+              ]
+            ],
+            "limitation": null
+          },
+          {
+            "episode_id": "9c588e92-2b63-42ce-a21b-be5425fd3f1a",
+            "journals": [
+              [
+                "a2eaf9a8-68ba-429e-ae00-5eddef5f7298",
+                "prepared"
+              ]
+            ],
+            "limitation": "episode_dispatch_fenced"
+          }
+        ],
+        "mailbox_attention": [],
+        "observed": {
+          "run_id": "33669924-d4fd-4c76-8c86-03935fe20229",
+          "incarnation": 2,
+          "lifecycle": "running"
+        }
+      }
+    }
+  ]
+}

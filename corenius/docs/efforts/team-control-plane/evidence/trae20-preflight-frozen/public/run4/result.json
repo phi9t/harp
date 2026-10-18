@@ -1,0 +1,10 @@
+{
+  "provider_requests": 4,
+  "events": [
+    "remoteControl/status/changed",
+    "thread/started",
+    "skills/changed",
+    "warning"
+  ],
+  "verdict": "routing observed; streaming unsupported until measured"
+}

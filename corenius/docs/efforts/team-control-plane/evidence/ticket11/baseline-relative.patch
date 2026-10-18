@@ -1,0 +1,2872 @@
+--- /dev/null
++++ b/crates/team-control-plane/src/artifacts.rs
+@@ -0,0 +1,902 @@
++//! Immutable local artifact publication and exact candidate acceptance.
++use crate::{Broker, ErrorCode, Result, domain::err};
++use serde::{Deserialize, Serialize};
++use sha2::{Digest, Sha256};
++use std::{
++    fs::{self, File, OpenOptions},
++    io::Write,
++    path::{Path, PathBuf},
++};
++use uuid::Uuid;
++
++pub fn sha256(bytes: &[u8]) -> String {
++    format!("{:x}", Sha256::digest(bytes))
++}
++fn valid_digest(s: &str) -> bool {
++    s.len() == 64
++        && s.bytes()
++            .all(|c| c.is_ascii_digit() || (b'a'..=b'f').contains(&c))
++}
++fn io_error(_: std::io::Error) -> crate::Error {
++    err(ErrorCode::TemporarilyUnavailable)
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Manifest {
++    pub digest: String,
++    pub bytes: u64,
++    pub version: u32,
++}
++#[derive(Clone, Copy, Debug, Default)]
++pub enum PublishFault {
++    #[default]
++    None,
++    BeforeFinalize,
++}
++#[derive(Clone, Debug)]
++pub struct ArtifactStore {
++    root: PathBuf,
++}
++impl ArtifactStore {
++    pub fn open(root: &Path) -> Result<Self> {
++        fs::create_dir_all(root).map_err(io_error)?;
++        let root = root.canonicalize().map_err(io_error)?;
++        for dir in ["objects", "manifests", "staging"] {
++            fs::create_dir_all(root.join(dir)).map_err(io_error)?;
++            File::open(root.join(dir))
++                .and_then(|f| f.sync_all())
++                .map_err(io_error)?;
++        }
++        File::open(&root)
++            .and_then(|f| f.sync_all())
++            .map_err(io_error)?;
++        if let Some(parent) = root.parent() {
++            File::open(parent)
++                .and_then(|f| f.sync_all())
++                .map_err(io_error)?;
++        }
++        Ok(Self { root })
++    }
++    fn path(&self, area: &str, digest: &str) -> Result<PathBuf> {
++        if !valid_digest(digest) {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        Ok(self.root.join(area).join(digest))
++    }
++    fn regular_read(path: &Path) -> Result<Vec<u8>> {
++        if !fs::symlink_metadata(path)
++            .map_err(io_error)?
++            .file_type()
++            .is_file()
++        {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        fs::read(path).map_err(io_error)
++    }
++    fn finalize(&self, area: &str, digest: &str, bytes: &[u8]) -> Result<()> {
++        let target = self.path(area, digest)?;
++        if target.exists() {
++            if Self::regular_read(&target)? != bytes {
++                return Err(err(ErrorCode::InvalidArgument));
++            }
++            // A prior interrupted publisher may have linked but not synced its directory.
++            File::open(&target)
++                .and_then(|f| f.sync_all())
++                .map_err(io_error)?;
++            File::open(self.root.join(area))
++                .and_then(|f| f.sync_all())
++                .map_err(io_error)?;
++            return Ok(());
++        }
++        let staging = self.root.join("staging").join(Uuid::new_v4().to_string());
++        let mut file = OpenOptions::new()
++            .write(true)
++            .create_new(true)
++            .open(&staging)
++            .map_err(io_error)?;
++        file.write_all(bytes)
++            .and_then(|_| file.sync_all())
++            .map_err(io_error)?;
++        // Hard-link is atomic and refuses replacement, unlike rename.
++        match fs::hard_link(&staging, &target) {
++            Ok(()) => {}
++            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
++                if Self::regular_read(&target)? != bytes {
++                    return Err(err(ErrorCode::InvalidArgument));
++                }
++            }
++            Err(e) => return Err(io_error(e)),
++        }
++        File::open(self.root.join(area))
++            .and_then(|f| f.sync_all())
++            .map_err(io_error)?;
++        fs::remove_file(staging).map_err(io_error)?;
++        File::open(self.root.join("staging"))
++            .and_then(|f| f.sync_all())
++            .map_err(io_error)?;
++        Ok(())
++    }
++    pub fn publish(&self, bytes: &[u8], digest: &str, fault: PublishFault) -> Result<Manifest> {
++        if !valid_digest(digest) || sha256(bytes) != digest {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        self.finalize("objects", digest, bytes)?;
++        if matches!(fault, PublishFault::BeforeFinalize) {
++            return Err(err(ErrorCode::TemporarilyUnavailable));
++        }
++        let manifest = Manifest {
++            digest: digest.into(),
++            bytes: bytes.len() as u64,
++            version: 1,
++        };
++        let manifest_bytes =
++            serde_json::to_vec(&manifest).map_err(|_| err(ErrorCode::InvalidArgument))?;
++        self.finalize("manifests", digest, &manifest_bytes)?;
++        self.read(digest)?;
++        Ok(manifest)
++    }
++    pub fn read(&self, digest: &str) -> Result<Vec<u8>> {
++        let manifest: Manifest =
++            serde_json::from_slice(&Self::regular_read(&self.path("manifests", digest)?)?)
++                .map_err(|_| err(ErrorCode::InvalidArgument))?;
++        let bytes = Self::regular_read(&self.path("objects", digest)?)?;
++        if manifest.version != 1
++            || manifest.digest != digest
++            || manifest.bytes != bytes.len() as u64
++            || sha256(&bytes) != digest
++        {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        Ok(bytes)
++    }
++}
++
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Candidate {
++    pub commit: String,
++    pub tree: String,
++    pub base: String,
++    pub spec_digest: String,
++    pub spec_revision: i64,
++    pub generation: i64,
++    pub artifact: String,
++    pub deliverables: Vec<String>,
++    pub risks: Vec<String>,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Check {
++    pub command: Vec<String>,
++    pub exit_code: i32,
++    pub logs: String,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(deny_unknown_fields)]
++pub struct Verification {
++    pub candidate: Candidate,
++    pub suite: String,
++    pub environment: String,
++    pub checks: Vec<Check>,
++    pub resolved_decisions: bool,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
++pub enum ArtifactCommand {
++    Configure {
++        verifier: Uuid,
++        lead_acceptance: bool,
++        base: String,
++        suite: String,
++        environment: String,
++        mandatory_commands: Vec<Vec<String>>,
++    },
++    Submit {
++        candidate: Candidate,
++    },
++    Verify {
++        verification: Verification,
++    },
++    Accept {
++        candidate_id: String,
++        report_id: String,
++    },
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++pub struct ArtifactEnvelope {
++    pub key: String,
++    pub task: Uuid,
++    pub expected_revision: i64,
++    pub generation: i64,
++    pub recovery_epoch: Uuid,
++    pub command: ArtifactCommand,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct ArtifactResult {
++    pub revision: i64,
++    pub candidate_id: Option<String>,
++    pub report_id: Option<String>,
++    pub accepted: bool,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++pub struct ArtifactSnapshot {
++    pub revision: i64,
++    pub status: String,
++    pub candidate: Option<Candidate>,
++    pub candidate_id: Option<String>,
++    pub reports: Vec<Verification>,
++}
++#[derive(Clone, Copy, Debug, Default)]
++pub enum ReferenceFault {
++    #[default]
++    None,
++    BeforeReference,
++}
++#[derive(Clone, Debug)]
++pub struct ArtifactService {
++    broker: Broker,
++    store: ArtifactStore,
++}
++/// Install the additive artifact/credential schema after core migration.
++/// Repeated application checks its independent version marker under the same lock.
++pub async fn migrate(dsn: &str) -> Result<()> {
++    let mut client = crate::storage::client(dsn).await?;
++    let tx = client.transaction().await?;
++    crate::storage::lock(&tx).await?;
++    if tx
++        .query_one(
++            "SELECT to_regclass('artifact_schema_version') IS NOT NULL",
++            &[],
++        )
++        .await?
++        .get::<_, bool>(0)
++    {
++        let rows = tx
++            .query("SELECT version FROM artifact_schema_version", &[])
++            .await?;
++        if rows.len() != 1 || rows[0].get::<_, i32>(0) != 1 {
++            return Err(err(ErrorCode::IncompatibleSchema));
++        }
++    } else {
++        tx.batch_execute(include_str!("../migrations/0002.sql"))
++            .await?;
++    }
++    tx.commit().await?;
++    Ok(())
++}
++impl ArtifactService {
++    pub async fn open(broker: Broker, root: &Path) -> Result<Self> {
++        migrate(&broker.dsn).await?;
++        Ok(Self {
++            broker,
++            store: ArtifactStore::open(root)?,
++        })
++    }
++    pub fn store(&self) -> &ArtifactStore {
++        &self.store
++    }
++    /// Scoped evidence access; publishing an object does not grant a task permission.
++    pub async fn read_evidence(
++        &self,
++        bearer: &str,
++        task_id: Uuid,
++        digest: &str,
++    ) -> Result<Vec<u8>> {
++        if !valid_digest(digest) {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        let mut client = crate::storage::client(&self.broker.dsn).await?;
++        let tx = client.transaction().await?;
++        crate::storage::lock(&tx).await?;
++        crate::storage::active(&tx, self.broker.epoch).await?;
++        let actor = crate::auth::authenticate(&tx, bearer, self.broker.epoch).await?;
++        crate::storage::validate_actor_generation(&tx, &actor).await?;
++        let task = load_task(&tx, task_id).await?;
++        actor.scope(task.mission, Some(task_id))?;
++        let exists=tx.query_one("SELECT EXISTS(SELECT 1 FROM artifact_candidates c WHERE c.task_id=$1 AND c.artifact=$2 UNION ALL SELECT 1 FROM artifact_report_logs l JOIN artifact_reports r ON l.report_id=r.id JOIN artifact_candidates c ON r.candidate_id=c.id WHERE c.task_id=$1 AND l.digest=$2)",&[&task_id,&digest]).await?.get::<_,bool>(0);
++        if !exists {
++            return Err(err(ErrorCode::Unauthorized));
++        }
++        let bytes = self.store.read(digest)?;
++        tx.commit().await?;
++        Ok(bytes)
++    }
++    pub async fn execute(
++        &self,
++        bearer: &str,
++        envelope: ArtifactEnvelope,
++        fault: ReferenceFault,
++    ) -> Result<ArtifactResult> {
++        if envelope.key.is_empty() || envelope.key.len() > 256 {
++            return Err(err(ErrorCode::InvalidArgument));
++        }
++        if envelope.recovery_epoch != self.broker.epoch {
++            return Err(err(ErrorCode::Unauthorized));
++        }
++        let mut client = crate::storage::client(&self.broker.dsn).await?;
++        let tx = client.transaction().await?;
++        crate::storage::lock(&tx).await?;
++        crate::storage::active(&tx, self.broker.epoch).await?;
++        let actor = crate::auth::authenticate(&tx, bearer, self.broker.epoch).await?;
++        crate::storage::validate_actor_generation(&tx, &actor).await?;
++        let task = load_task(&tx, envelope.task).await?;
++        actor.scope(task.mission, Some(envelope.task))?;
++        authorize(&tx, &actor, &envelope.command, &task, envelope.task).await?;
++        let family = envelope.command.family();
++        // Bind scope and concurrency preconditions, not only command payload.
++        let digest = crate::validation::digest(&envelope)?;
++        if let Some(row)=tx.query_opt("SELECT argument_digest, disposition, result, scope_kind, scope_mission, scope_task FROM commands WHERE principal_id=$1 AND family=$2 AND key=$3",&[&actor.principal,&family,&envelope.key]).await? {
++   crate::auth::RecordScope::from_columns(row.get("scope_kind"),row.get("scope_mission"),row.get("scope_task"))?.authorize(&actor)?;
++   if row.get::<_,String>(0)!=digest {return Err(err(ErrorCode::IdempotencyConflict));}
++   let value:serde_json::Value=row.get(2);
++   if row.get::<_,String>(1)=="rejected" {return Err(serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?);}
++   let result:ArtifactResult=serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?;
++   if result.accepted { self.verify_evidence(&tx,result.candidate_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?,result.report_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?).await?; }
++   tx.commit().await?; return Ok(result);
++  }
++        tx.batch_execute("SAVEPOINT artifact_mutation").await?;
++        let outcome = if envelope.expected_revision != task.revision {
++            Err(err(ErrorCode::StaleRevision))
++        } else if envelope.generation != task.generation {
++            Err(err(ErrorCode::StaleGeneration))
++        } else {
++            self.apply(&tx, &actor, &envelope, &task, fault).await
++        };
++        let (disposition, value, result) = match outcome {
++            Ok(result) => (
++                "applied",
++                serde_json::to_value(&result).map_err(|_| err(ErrorCode::InvalidArgument))?,
++                Ok(result),
++            ),
++            Err(error) => {
++                if matches!(
++                    error.code,
++                    ErrorCode::Unauthorized
++                        | ErrorCode::TemporarilyUnavailable
++                        | ErrorCode::IncompatibleSchema
++                ) {
++                    return Err(error);
++                }
++                tx.batch_execute("ROLLBACK TO SAVEPOINT artifact_mutation")
++                    .await?;
++                (
++                    "rejected",
++                    serde_json::to_value(&error).map_err(|_| err(ErrorCode::InvalidArgument))?,
++                    Err(error),
++                )
++            }
++        };
++        tx.execute("INSERT INTO commands(principal_id,family,key,argument_digest,aggregate_id,scope_kind,scope_mission,scope_task,disposition,result) VALUES($1,$2,$3,$4,$5,'task',$6,$5,$7,$8)",&[&actor.principal,&family,&envelope.key,&digest,&envelope.task,&task.mission,&disposition,&value]).await?;
++        tx.commit().await?;
++        result
++    }
++    async fn reference(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        digest: &str,
++        fault: ReferenceFault,
++    ) -> Result<()> {
++        let bytes = self.store.read(digest)?;
++        if matches!(fault, ReferenceFault::BeforeReference) {
++            return Err(err(ErrorCode::TemporarilyUnavailable));
++        }
++        let manifest = Manifest {
++            digest: digest.into(),
++            bytes: bytes.len() as u64,
++            version: 1,
++        };
++        let value = serde_json::to_value(manifest).map_err(|_| err(ErrorCode::InvalidArgument))?;
++        tx.execute(
++            "INSERT INTO artifact_objects(digest,manifest) VALUES($1,$2) ON CONFLICT DO NOTHING",
++            &[&digest, &value],
++        )
++        .await?;
++        Ok(())
++    }
++    async fn verify_evidence(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        candidate_id: &str,
++        report_id: &str,
++    ) -> Result<(Candidate, Verification, Uuid)> {
++        let row=tx.query_opt("SELECT c.candidate,r.verification,r.verifier FROM artifact_candidates c JOIN artifact_reports r ON r.candidate_id=c.id WHERE c.id=$1 AND r.id=$2",&[&candidate_id,&report_id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
++        let candidate: Candidate = decode(row.get(0))?;
++        let report: Verification = decode(row.get(1))?;
++        if candidate != report.candidate {
++            return Err(err(ErrorCode::StaleRevision));
++        }
++        self.store.read(&candidate.artifact)?;
++        for check in &report.checks {
++            self.store.read(&check.logs)?;
++        }
++        Ok((candidate, report, row.get(2)))
++    }
++    async fn apply(
++        &self,
++        tx: &tokio_postgres::Transaction<'_>,
++        actor: &crate::auth::Actor,
++        envelope: &ArtifactEnvelope,
++        task: &TaskBinding,
++        fault: ReferenceFault,
++    ) -> Result<ArtifactResult> {
++        if task.status == "accepted" {
++            return Err(err(ErrorCode::StaleRevision));
++        }
++        let mut result = ArtifactResult {
++            revision: task.revision + 1,
++            candidate_id: None,
++            report_id: None,
++            accepted: false,
++        };
++        let status = match &envelope.command {
++            ArtifactCommand::Configure {
++                verifier,
++                lead_acceptance,
++                base,
++                suite,
++                environment,
++                mandatory_commands,
++            } => {
++                if !git_id(base)
++                    || !valid_digest(suite)
++                    || !valid_digest(environment)
++                    || mandatory_commands.is_empty()
++                    || mandatory_commands
++                        .iter()
++                        .any(|v| v.is_empty() || v.iter().any(|s| s.is_empty() || s.contains('\0')))
++                {
++                    return Err(err(ErrorCode::InvalidArgument));
++                }
++                let commands = serde_json::to_value(mandatory_commands)
++                    .map_err(|_| err(ErrorCode::InvalidArgument))?;
++                tx.execute("INSERT INTO artifact_policies(task_id,verifier,lead_acceptance,base,suite,environment,mandatory_commands) VALUES($1,$2,$3,$4,$5,$6,$7) ON CONFLICT(task_id) DO UPDATE SET verifier=$2,lead_acceptance=$3,base=$4,suite=$5,environment=$6,mandatory_commands=$7",&[&envelope.task,verifier,lead_acceptance,base,suite,environment,&commands]).await?;
++                task.status.as_str()
++            }
++            ArtifactCommand::Submit { candidate } => {
++                if !["running", "submitted", "verifying"].contains(&task.status.as_str()) {
++                    return Err(err(ErrorCode::DependencyUnmet));
++                }
++                let policy = load_policy(tx, envelope.task).await?;
++                validate_candidate(candidate, task, &policy)?;
++                let admitted=tx.query_opt("SELECT sequence FROM events WHERE aggregate_kind='task' AND aggregate_id=$1 AND kind='task.admit' AND payload->>'spec_digest'=$2 ORDER BY sequence DESC LIMIT 1",&[&envelope.task,&task.spec]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++                if candidate.spec_revision != admitted.get::<_, i64>(0) {
++                    return Err(err(ErrorCode::StaleRevision));
++                }
++                let spec = tx
++                    .query_one(
++                        "SELECT deliverables FROM task_specs WHERE task_id=$1 AND digest=$2",
++                        &[&envelope.task, &task.spec],
++                    )
++                    .await?;
++                let required: Vec<String> = decode(spec.get(0))?;
++                if required.iter().any(|d| !candidate.deliverables.contains(d)) {
++                    return Err(err(ErrorCode::DependencyUnmet));
++                }
++                self.reference(tx, &candidate.artifact, fault).await?;
++                let id = crate::validation::digest(&(envelope.task, candidate))?;
++                let value =
++                    serde_json::to_value(candidate).map_err(|_| err(ErrorCode::InvalidArgument))?;
++                tx.execute("INSERT INTO artifact_candidates(id,task_id,implementer,candidate,artifact) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING",&[&id,&envelope.task,&actor.principal,&value,&candidate.artifact]).await?;
++                tx.execute("INSERT INTO artifact_current(task_id,candidate_id) VALUES($1,$2) ON CONFLICT(task_id) DO UPDATE SET candidate_id=$2,accepted_report=NULL",&[&envelope.task,&id]).await?;
++                result.candidate_id = Some(id);
++                "submitted"
++            }
++            ArtifactCommand::Verify { verification } => {
++                if !["submitted", "verifying"].contains(&task.status.as_str()) {
++                    return Err(err(ErrorCode::DependencyUnmet));
++                }
++                let policy = load_policy(tx, envelope.task).await?;
++                let (id, candidate, implementer) = current(tx, envelope.task).await?;
++                if actor.principal == implementer || actor.principal != policy.verifier {
++                    return Err(err(ErrorCode::Unauthorized));
++                }
++                validate_candidate(&verification.candidate, task, &policy)?;
++                if verification.candidate != candidate {
++                    return Err(err(ErrorCode::StaleRevision));
++                }
++                validate_report(verification, &policy)?;
++                self.store.read(&candidate.artifact)?;
++                for check in &verification.checks {
++                    self.reference(tx, &check.logs, fault).await?;
++                }
++                let report_id =
++                    crate::validation::digest(&(envelope.task, &actor.principal, verification))?;
++                let value = serde_json::to_value(verification)
++                    .map_err(|_| err(ErrorCode::InvalidArgument))?;
++                tx.execute("INSERT INTO artifact_reports(id,candidate_id,verifier,verification) VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING",&[&report_id,&id,&actor.principal,&value]).await?;
++                for check in &verification.checks {
++                    tx.execute("INSERT INTO artifact_report_logs(report_id,digest) VALUES($1,$2) ON CONFLICT DO NOTHING",&[&report_id,&check.logs]).await?;
++                }
++                result.candidate_id = Some(id);
++                result.report_id = Some(report_id);
++                "verifying"
++            }
++            ArtifactCommand::Accept {
++                candidate_id,
++                report_id,
++            } => {
++                if task.status != "verifying" {
++                    return Err(err(ErrorCode::DependencyUnmet));
++                }
++                let policy = load_policy(tx, envelope.task).await?;
++                let (id, current_candidate, implementer) = current(tx, envelope.task).await?;
++                if id != *candidate_id {
++                    return Err(err(ErrorCode::StaleRevision));
++                }
++                let (candidate, report, verifier) =
++                    self.verify_evidence(tx, candidate_id, report_id).await?;
++                if candidate != current_candidate
++                    || verifier != policy.verifier
++                    || verifier == implementer
++                {
++                    return Err(err(ErrorCode::StaleRevision));
++                }
++                validate_candidate(&candidate, task, &policy)?;
++                validate_report(&report, &policy)?;
++                if !report.resolved_decisions
++                    || !candidate.risks.is_empty()
++                    || report.checks.iter().any(|c| c.exit_code != 0)
++                {
++                    return Err(err(ErrorCode::DependencyUnmet));
++                }
++                tx.execute(
++                    "UPDATE artifact_current SET accepted_report=$2 WHERE task_id=$1",
++                    &[&envelope.task, report_id],
++                )
++                .await?;
++                result.candidate_id = Some(id);
++                result.report_id = Some(report_id.clone());
++                result.accepted = true;
++                "accepted"
++            }
++        };
++        tx.execute(
++            "UPDATE tasks SET revision=$2,status=$3 WHERE id=$1",
++            &[&envelope.task, &result.revision, &status],
++        )
++        .await?;
++        let payload =
++            serde_json::json!({"result":result,"command":envelope.command,"spec_digest":task.spec});
++        tx.execute("INSERT INTO events(id,aggregate_kind,aggregate_id,sequence,version,principal_id,transaction_id,kind,payload) VALUES($1,'task',$2,$3,1,$4,txid_current(),$5,$6)",&[&Uuid::new_v4(),&envelope.task,&result.revision,&actor.principal,&envelope.command.family(),&payload]).await?;
++        Ok(result)
++    }
++    pub async fn snapshot(&self, bearer: &str, task_id: Uuid) -> Result<ArtifactSnapshot> {
++        let mut client = crate::storage::client(&self.broker.dsn).await?;
++        let tx = client.transaction().await?;
++        crate::storage::lock(&tx).await?;
++        crate::storage::active(&tx, self.broker.epoch).await?;
++        let actor = crate::auth::authenticate(&tx, bearer, self.broker.epoch).await?;
++        crate::storage::validate_actor_generation(&tx, &actor).await?;
++        let task = load_task(&tx, task_id).await?;
++        actor.scope(task.mission, Some(task_id))?;
++        let row=tx.query_opt("SELECT c.id,c.candidate FROM artifact_current a JOIN artifact_candidates c ON a.candidate_id=c.id WHERE a.task_id=$1",&[&task_id]).await?;
++        let (candidate_id, candidate) = match row {
++            Some(r) => (Some(r.get(0)), Some(decode(r.get(1))?)),
++            None => (None, None),
++        };
++        let rows=tx.query("SELECT r.verification FROM artifact_reports r JOIN artifact_candidates c ON r.candidate_id=c.id WHERE c.task_id=$1 ORDER BY r.id",&[&task_id]).await?;
++        let reports = rows
++            .into_iter()
++            .map(|r| decode(r.get(0)))
++            .collect::<Result<Vec<_>>>()?;
++        tx.commit().await?;
++        Ok(ArtifactSnapshot {
++            revision: task.revision,
++            status: task.status,
++            candidate,
++            candidate_id,
++            reports,
++        })
++    }
++    /// Owner-only collection. The same global database lock excludes new references.
++    pub async fn collect(&self, bearer: &str, grace: std::time::Duration) -> Result<Vec<String>> {
++        let mut client = crate::storage::client(&self.broker.dsn).await?;
++        let tx = client.transaction().await?;
++        crate::storage::lock(&tx).await?;
++        crate::storage::active(&tx, self.broker.epoch).await?;
++        crate::auth::authenticate(&tx, bearer, self.broker.epoch)
++            .await?
++            .owner()?;
++        let mut removed = vec![];
++        for area in ["objects", "manifests", "staging"] {
++            for entry in fs::read_dir(self.store.root.join(area)).map_err(io_error)? {
++                let entry = entry.map_err(io_error)?;
++                let name = entry.file_name().to_string_lossy().into_owned();
++                let meta = fs::symlink_metadata(entry.path()).map_err(io_error)?;
++                if !meta.file_type().is_file() {
++                    continue;
++                }
++                let age = meta
++                    .modified()
++                    .map_err(io_error)?
++                    .elapsed()
++                    .unwrap_or_default();
++                if age < grace {
++                    continue;
++                }
++                if area != "staging"
++                    && tx
++                        .query_opt(
++                            "SELECT digest FROM artifact_objects WHERE digest=$1",
++                            &[&name],
++                        )
++                        .await?
++                        .is_some()
++                {
++                    continue;
++                }
++                fs::remove_file(entry.path()).map_err(io_error)?;
++                removed.push(format!("{area}/{name}"));
++            }
++            File::open(self.store.root.join(area))
++                .and_then(|f| f.sync_all())
++                .map_err(io_error)?;
++        }
++        tx.commit().await?;
++        Ok(removed)
++    }
++}
++fn decode<T: serde::de::DeserializeOwned>(value: serde_json::Value) -> Result<T> {
++    serde_json::from_value(value).map_err(|_| err(ErrorCode::InvalidArgument))
++}
++fn git_id(value: &str) -> bool {
++    (value.len() == 40 || value.len() == 64)
++        && value
++            .bytes()
++            .all(|c| c.is_ascii_digit() || (b'a'..=b'f').contains(&c))
++}
++struct TaskBinding {
++    mission: Uuid,
++    revision: i64,
++    generation: i64,
++    spec: String,
++    status: String,
++}
++async fn load_task(tx: &tokio_postgres::Transaction<'_>, id: Uuid) -> Result<TaskBinding> {
++    let r = tx
++        .query_opt(
++            "SELECT mission_id,revision,generation,spec_digest,status FROM tasks WHERE id=$1",
++            &[&id],
++        )
++        .await?
++        .ok_or_else(|| err(ErrorCode::NotFound))?;
++    Ok(TaskBinding {
++        mission: r.get(0),
++        revision: r.get(1),
++        generation: r.get(2),
++        spec: r.get(3),
++        status: r.get(4),
++    })
++}
++struct AcceptancePolicy {
++    verifier: Uuid,
++    lead: bool,
++    base: String,
++    suite: String,
++    environment: String,
++    commands: Vec<Vec<String>>,
++}
++async fn load_policy(tx: &tokio_postgres::Transaction<'_>, task: Uuid) -> Result<AcceptancePolicy> {
++    let r=tx.query_opt("SELECT verifier,lead_acceptance,base,suite,environment,mandatory_commands FROM artifact_policies WHERE task_id=$1",&[&task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++    Ok(AcceptancePolicy {
++        verifier: r.get(0),
++        lead: r.get(1),
++        base: r.get(2),
++        suite: r.get(3),
++        environment: r.get(4),
++        commands: decode(r.get(5))?,
++    })
++}
++async fn authorize(
++    tx: &tokio_postgres::Transaction<'_>,
++    actor: &crate::auth::Actor,
++    command: &ArtifactCommand,
++    task: &TaskBinding,
++    id: Uuid,
++) -> Result<()> {
++    match command {
++        ArtifactCommand::Configure { .. } => actor.owner(),
++        ArtifactCommand::Submit { .. } => {
++            if actor.role != crate::Role::Worker || actor.generation != Some(task.generation) {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++            let r=tx.query_opt("SELECT worker_id FROM attempts WHERE task_id=$1 AND generation=$2 AND recovery_epoch=(SELECT active_epoch FROM deployment)",&[&id,&task.generation]).await?.ok_or_else(||err(ErrorCode::StaleGeneration))?;
++            if r.get::<_, Uuid>(0) != actor.principal {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++            Ok(())
++        }
++        ArtifactCommand::Verify { .. } => {
++            let policy = load_policy(tx, id).await?;
++            if actor.role != crate::Role::Verifier || actor.principal != policy.verifier {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++            Ok(())
++        }
++        ArtifactCommand::Accept { .. } => {
++            if actor.role == crate::Role::Owner {
++                return Ok(());
++            }
++            let policy = load_policy(tx, id).await?;
++            if actor.role != crate::Role::Lead || !policy.lead || actor.principal == policy.verifier
++            {
++                return Err(err(ErrorCode::Unauthorized));
++            }
++            Ok(())
++        }
++    }
++}
++async fn current(
++    tx: &tokio_postgres::Transaction<'_>,
++    task: Uuid,
++) -> Result<(String, Candidate, Uuid)> {
++    let r=tx.query_opt("SELECT c.id,c.candidate,c.implementer FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id WHERE a.task_id=$1",&[&task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
++    Ok((r.get(0), decode(r.get(1))?, r.get(2)))
++}
++fn validate_candidate(
++    candidate: &Candidate,
++    task: &TaskBinding,
++    policy: &AcceptancePolicy,
++) -> Result<()> {
++    if !git_id(&candidate.commit)
++        || !git_id(&candidate.tree)
++        || !git_id(&candidate.base)
++        || !valid_digest(&candidate.artifact)
++        || !valid_digest(&candidate.spec_digest)
++        || candidate.spec_revision <= 0
++        || candidate.deliverables.is_empty()
++        || candidate.deliverables.iter().any(|s| s.is_empty())
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    if candidate.spec_digest != task.spec || candidate.base != policy.base {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    if candidate.generation != task.generation {
++        return Err(err(ErrorCode::StaleGeneration));
++    }
++    Ok(())
++}
++fn validate_report(report: &Verification, policy: &AcceptancePolicy) -> Result<()> {
++    if report.suite != policy.suite || report.environment != policy.environment {
++        return Err(err(ErrorCode::StaleRevision));
++    }
++    if report.checks.is_empty()
++        || report
++            .checks
++            .iter()
++            .any(|c| c.command.is_empty() || !valid_digest(&c.logs))
++        || policy
++            .commands
++            .iter()
++            .any(|c| !report.checks.iter().any(|check| &check.command == c))
++    {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    Ok(())
++}
++impl ArtifactCommand {
++    fn family(&self) -> &'static str {
++        match self {
++            Self::Configure { .. } => "artifact.configure",
++            Self::Submit { .. } => "result.submit",
++            Self::Verify { .. } => "verification.submit",
++            Self::Accept { .. } => "task.accept",
++        }
++    }
++}
++
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct IntegrationCandidate {
++    pub commit: String,
++    pub tree: String,
++    pub base: String,
++    pub source: String,
++    pub checks: Vec<IntegrationCheck>,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct IntegrationCheck {
++    pub command: Vec<String>,
++    pub exit_code: i32,
++    pub logs: Vec<u8>,
++}
++/// Local fixture-only preparation; no push, ref update, or mainline merge.
++pub fn prepare_integration(
++    repo: &Path,
++    source: &str,
++    base: &str,
++    commands: &[Vec<String>],
++) -> Result<IntegrationCandidate> {
++    if !git_id(source)
++        || !git_id(base)
++        || commands.is_empty()
++        || commands.iter().any(|c| c.is_empty() || c[0].is_empty())
++    {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    let tree = git_output(repo, &["merge-tree", "--write-tree", base, source])?;
++    let tree = tree
++        .lines()
++        .next()
++        .ok_or_else(|| err(ErrorCode::InvalidArgument))?
++        .to_string();
++    if !git_id(&tree) {
++        return Err(err(ErrorCode::InvalidArgument));
++    }
++    let commit_output = std::process::Command::new("git")
++        .arg("-C")
++        .arg(repo)
++        .args([
++            "commit-tree",
++            &tree,
++            "-p",
++            base,
++            "-p",
++            source,
++            "-m",
++            "Fixture integration candidate",
++        ])
++        .env("GIT_AUTHOR_NAME", "Artifact fixture")
++        .env("GIT_AUTHOR_EMAIL", "fixture@example.invalid")
++        .env("GIT_COMMITTER_NAME", "Artifact fixture")
++        .env("GIT_COMMITTER_EMAIL", "fixture@example.invalid")
++        .env("GIT_AUTHOR_DATE", "2000-01-01T00:00:00Z")
++        .env("GIT_COMMITTER_DATE", "2000-01-01T00:00:00Z")
++        .output()
++        .map_err(io_error)?;
++    if !commit_output.status.success() {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    let commit = String::from_utf8(commit_output.stdout)
++        .map_err(|_| err(ErrorCode::InvalidArgument))?
++        .trim()
++        .to_string();
++    let path = std::env::temp_dir().join(format!("artifact-check-{}", Uuid::new_v4()));
++    let path_str = path
++        .to_str()
++        .ok_or_else(|| err(ErrorCode::InvalidArgument))?;
++    git_output(repo, &["worktree", "add", "--detach", path_str, &commit])?;
++    let check_result = (|| {
++        let mut checks = vec![];
++        for command in commands {
++            let output = std::process::Command::new(&command[0])
++                .args(&command[1..])
++                .current_dir(&path)
++                .output()
++                .map_err(io_error)?;
++            let mut logs = output.stdout;
++            logs.extend_from_slice(b"\n--- stderr ---\n");
++            logs.extend_from_slice(&output.stderr);
++            checks.push(IntegrationCheck {
++                command: command.clone(),
++                exit_code: output.status.code().unwrap_or(-1),
++                logs,
++            });
++        }
++        Ok(IntegrationCandidate {
++            commit,
++            tree,
++            base: base.into(),
++            source: source.into(),
++            checks,
++        })
++    })();
++    let cleanup = git_output(repo, &["worktree", "remove", "--force", path_str]);
++    cleanup?;
++    check_result
++}
++fn git_output(repo: &Path, args: &[&str]) -> Result<String> {
++    let output = std::process::Command::new("git")
++        .arg("-C")
++        .arg(repo)
++        .args(args)
++        .output()
++        .map_err(io_error)?;
++    if !output.status.success() {
++        return Err(err(ErrorCode::DependencyUnmet));
++    }
++    String::from_utf8(output.stdout)
++        .map(|s| s.trim().to_string())
++        .map_err(|_| err(ErrorCode::InvalidArgument))
++}
+--- /dev/null
++++ b/crates/team-control-plane/migrations/0002.sql
+@@ -0,0 +1,22 @@
++CREATE TABLE artifact_schema_version(version integer PRIMARY KEY CHECK(version=1));
++INSERT INTO artifact_schema_version VALUES(1);
++ALTER TABLE credentials DROP CONSTRAINT credentials_role_check;
++ALTER TABLE credentials ADD CONSTRAINT credentials_role_check CHECK(role IN ('owner','lead','worker','verifier'));
++ALTER TABLE credentials DROP CONSTRAINT credentials_check;
++ALTER TABLE credentials ADD CONSTRAINT credentials_check CHECK(
++ (role='owner' AND mission_id IS NULL AND task_id IS NULL AND generation IS NULL)
++ OR (role='lead' AND mission_id IS NOT NULL AND generation IS NULL)
++ OR (role IN ('worker','verifier') AND mission_id IS NOT NULL AND task_id IS NOT NULL AND generation>0)
++);
++ALTER TABLE tasks DROP CONSTRAINT tasks_status_check;
++ALTER TABLE tasks ADD CONSTRAINT tasks_status_check CHECK(status IN ('proposed','ready','running','submitted','verifying','accepted'));
++CREATE TABLE artifact_policies(task_id uuid PRIMARY KEY REFERENCES tasks, verifier uuid NOT NULL, lead_acceptance boolean NOT NULL, base text NOT NULL, suite text NOT NULL, environment text NOT NULL, mandatory_commands jsonb NOT NULL);
++CREATE TABLE artifact_objects(digest text PRIMARY KEY CHECK(digest ~ '^[0-9a-f]{64}$'), manifest jsonb NOT NULL);
++CREATE TABLE artifact_candidates(id text PRIMARY KEY, task_id uuid NOT NULL REFERENCES tasks, implementer uuid NOT NULL, candidate jsonb NOT NULL, artifact text NOT NULL REFERENCES artifact_objects);
++CREATE TABLE artifact_reports(id text PRIMARY KEY, candidate_id text NOT NULL REFERENCES artifact_candidates, verifier uuid NOT NULL, verification jsonb NOT NULL);
++CREATE TABLE artifact_current(task_id uuid PRIMARY KEY REFERENCES tasks, candidate_id text NOT NULL REFERENCES artifact_candidates, accepted_report text REFERENCES artifact_reports);
++CREATE TABLE artifact_report_logs(report_id text NOT NULL REFERENCES artifact_reports, digest text NOT NULL REFERENCES artifact_objects, PRIMARY KEY(report_id,digest));
++CREATE TRIGGER immutable_artifact_objects BEFORE UPDATE OR DELETE ON artifact_objects FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_artifact_candidates BEFORE UPDATE OR DELETE ON artifact_candidates FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_artifact_reports BEFORE UPDATE OR DELETE ON artifact_reports FOR EACH ROW EXECUTE FUNCTION immutable_record();
++CREATE TRIGGER immutable_artifact_logs BEFORE UPDATE OR DELETE ON artifact_report_logs FOR EACH ROW EXECUTE FUNCTION immutable_record();
+--- /dev/null
++++ b/crates/team-control-plane/tests/artifacts.rs
+@@ -0,0 +1,1825 @@
++use team_control_plane::artifacts::*;
++use team_control_plane::migrate;
++use uuid::Uuid;
++#[test]
++fn publication_is_verified_and_faults_leave_no_eligible_manifest() {
++    let root = std::env::temp_dir().join(format!("artifact-fixture-{}", uuid::Uuid::new_v4()));
++    let store = ArtifactStore::open(&root).unwrap();
++    let bytes = b"candidate evidence";
++    let digest = "2d2816069bc9e3c2d9d59a54d79d4c58b8d9f7fce7dde46591e760598de1f866";
++    assert!(
++        store.publish(bytes, digest, PublishFault::None).is_err(),
++        "incorrect digest must fail"
++    );
++    let digest = sha256(bytes);
++    assert!(
++        store
++            .publish(bytes, &digest, PublishFault::BeforeFinalize)
++            .is_err()
++    );
++    assert!(
++        store.read(&digest).is_err(),
++        "unfinalized bytes must not be eligible"
++    );
++    let manifest = store.publish(bytes, &digest, PublishFault::None).unwrap();
++    assert_eq!(manifest.bytes, 18);
++    assert_eq!(store.read(&digest).unwrap(), bytes);
++    std::fs::write(root.join("objects").join(&digest), b"corrupt").unwrap();
++    assert!(store.read(&digest).is_err());
++    assert!(
++        store.publish(bytes, &digest, PublishFault::None).is_err(),
++        "immutable existing object cannot be overwritten"
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++
++use team_control_plane::*;
++fn envelope(epoch: Uuid, key: &str, rev: i64, command: Command) -> CommandEnvelope {
++    CommandEnvelope {
++        schema_version: 1,
++        key: key.into(),
++        expected_revision: rev,
++        expected_generation: None,
++        recovery_epoch: epoch,
++        command,
++    }
++}
++async fn fixture() -> (
++    ArtifactService,
++    Broker,
++    String,
++    String,
++    String,
++    Uuid,
++    Uuid,
++    Candidate,
++    std::path::PathBuf,
++) {
++    let dsn = std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap();
++    // Every test gets a disposable schema on the real fixture server.
++    let schema = format!("artifacts_{}", Uuid::new_v4().simple());
++    let (client, conn) = tokio_postgres::connect(&dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move {
++        conn.await.unwrap();
++    });
++    client
++        .batch_execute(&format!("CREATE SCHEMA {schema}"))
++        .await
++        .unwrap();
++    let dsn = format!("{dsn} options='-c search_path={schema}'");
++    migrate(&dsn).await.unwrap();
++    let epoch = Uuid::new_v4();
++    let broker = Broker::connect(&dsn, epoch).await.unwrap();
++    let owner = broker.bootstrap_owner().await.unwrap();
++    let mission = Uuid::new_v4();
++    let task = Uuid::new_v4();
++    let worker = Uuid::new_v4();
++    let verifier = Uuid::new_v4();
++    let input = GitInput {
++        repository: "fixture".into(),
++        commit: "a".repeat(40),
++        path: "SPEC.md".into(),
++        digest: "b".repeat(64),
++    };
++    broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "mission",
++                0,
++                Command::CreateMission {
++                    id: mission,
++                    objective: "fixture".into(),
++                    input: input.clone(),
++                    policy: Policy {
++                        capacity: 2,
++                        max_attempts: 8,
++                        max_episodes: 8,
++                        max_repairs: 3,
++                        episode_deadline_seconds: 30,
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "task",
++                0,
++                Command::CreateTask {
++                    id: task,
++                    mission_id: mission,
++                    spec: TaskSpec {
++                        dependencies: vec![],
++                        objective: "fixture".into(),
++                        input,
++                        acceptance: vec!["check".into()],
++                        deliverables: vec!["result".into()],
++                        write_scope: vec!["src".into()],
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let digest = broker
++        .snapshot(&owner, SnapshotQuery::Task(task))
++        .await
++        .unwrap()
++        .data["spec_digest"]
++        .as_str()
++        .unwrap()
++        .to_string();
++    broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "admit",
++                1,
++                Command::AdmitTask {
++                    task_id: task,
++                    spec_digest: digest.clone(),
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let root = std::env::temp_dir().join(format!("artifact-fixture-{}", Uuid::new_v4()));
++    let service = ArtifactService::open(broker.clone(), &root).await.unwrap();
++    for (key, principal, role, token, generation) in [
++        ("worker", worker, Role::Worker, "worker", Some(1)),
++        ("verifier", verifier, Role::Verifier, "verifier", Some(1)),
++    ] {
++        broker
++            .execute(
++                &owner,
++                envelope(
++                    epoch,
++                    key,
++                    0,
++                    Command::GrantCredential {
++                        credential_id: Uuid::new_v4(),
++                        principal_id: principal,
++                        role,
++                        mission_id: Some(mission),
++                        task_id: Some(task),
++                        generation,
++                        token_hash: token_hash(token),
++                        expires_in_seconds: 600,
++                    },
++                ),
++            )
++            .await
++            .unwrap();
++    }
++    broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "assign",
++                2,
++                Command::AssignAttempt {
++                    task_id: task,
++                    worker_id: worker,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let bytes = b"frozen Git bundle";
++    let artifact = sha256(bytes);
++    service
++        .store()
++        .publish(bytes, &artifact, PublishFault::None)
++        .unwrap();
++    let candidate = Candidate {
++        commit: "c".repeat(40),
++        tree: "d".repeat(40),
++        base: "a".repeat(40),
++        spec_digest: digest,
++        spec_revision: 2,
++        generation: 1,
++        artifact,
++        deliverables: vec!["result".into()],
++        risks: vec![],
++    };
++    (
++        service,
++        broker,
++        owner,
++        "worker".into(),
++        "verifier".into(),
++        task,
++        verifier,
++        candidate,
++        root,
++    )
++}
++fn cmd(
++    epoch: Uuid,
++    task: Uuid,
++    key: &str,
++    revision: i64,
++    command: ArtifactCommand,
++) -> ArtifactEnvelope {
++    ArtifactEnvelope {
++        key: key.into(),
++        task,
++        expected_revision: revision,
++        generation: 1,
++        recovery_epoch: epoch,
++        command,
++    }
++}
++#[tokio::test]
++async fn exact_independent_verification_and_explicit_acceptance() {
++    let (service, broker, owner, worker, verifier, task, verifier_id, candidate, root) =
++        fixture().await;
++    let epoch = broker
++        .snapshot(&owner, SnapshotQuery::Task(task))
++        .await
++        .unwrap()
++        .data["attempts"][0]["recovery_epoch"]
++        .as_str()
++        .unwrap()
++        .parse()
++        .unwrap();
++    let configure = ArtifactCommand::Configure {
++        verifier: verifier_id,
++        lead_acceptance: false,
++        base: candidate.base.clone(),
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        mandatory_commands: vec![vec!["check".into()]],
++    };
++    let configured = service
++        .execute(
++            &owner,
++            cmd(epoch, task, "policy", 3, configure),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert_eq!(
++        configured.revision, 4,
++        "configuration must be a durable task revision"
++    );
++
++    let submit = cmd(
++        epoch,
++        task,
++        "submit",
++        4,
++        ArtifactCommand::Submit {
++            candidate: candidate.clone(),
++        },
++    );
++    assert!(
++        service
++            .execute(&verifier, submit.clone(), ReferenceFault::None)
++            .await
++            .is_err()
++    );
++    assert!(
++        service
++            .execute(&worker, submit.clone(), ReferenceFault::BeforeReference)
++            .await
++            .is_err()
++    );
++    let submitted = service
++        .execute(&worker, submit.clone(), ReferenceFault::None)
++        .await
++        .unwrap();
++    assert_eq!(
++        submitted,
++        service
++            .execute(&worker, submit, ReferenceFault::None)
++            .await
++            .unwrap()
++    );
++    let candidate_id = submitted.candidate_id.unwrap();
++    println!(
++        "ticket11 task={task} epoch={epoch} candidate={candidate_id} artifact={}",
++        candidate.artifact
++    );
++    let logs = sha256(b"check passed");
++    service
++        .store()
++        .publish(b"check passed", &logs, PublishFault::None)
++        .unwrap();
++    let report = Verification {
++        candidate: candidate.clone(),
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        checks: vec![Check {
++            command: vec!["check".into()],
++            exit_code: 0,
++            logs: logs.clone(),
++        }],
++        resolved_decisions: true,
++    };
++    let verify = cmd(
++        epoch,
++        task,
++        "verify",
++        5,
++        ArtifactCommand::Verify {
++            verification: report.clone(),
++        },
++    );
++    assert!(
++        service
++            .execute(&worker, verify.clone(), ReferenceFault::None)
++            .await
++            .is_err()
++    );
++    let mut stale = report.clone();
++    stale.candidate.tree = "0".repeat(40);
++    assert!(
++        service
++            .execute(
++                &verifier,
++                cmd(
++                    epoch,
++                    task,
++                    "stale",
++                    5,
++                    ArtifactCommand::Verify {
++                        verification: stale
++                    }
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    let verified = service
++        .execute(&verifier, verify, ReferenceFault::None)
++        .await
++        .unwrap();
++    println!(
++        "ticket11 verification={}",
++        verified.report_id.as_ref().unwrap()
++    );
++    let accept = cmd(
++        epoch,
++        task,
++        "accept",
++        6,
++        ArtifactCommand::Accept {
++            candidate_id,
++            report_id: verified.report_id.unwrap(),
++        },
++    );
++    assert!(
++        service
++            .execute(&worker, accept.clone(), ReferenceFault::None)
++            .await
++            .is_err()
++    );
++    assert!(
++        service
++            .execute(&verifier, accept.clone(), ReferenceFault::None)
++            .await
++            .is_err()
++    );
++    assert!(
++        service
++            .collect(&owner, std::time::Duration::ZERO)
++            .await
++            .unwrap()
++            .is_empty(),
++        "referenced candidates/logs cannot be collected"
++    );
++    std::fs::remove_file(root.join("objects").join(&logs)).unwrap();
++    assert!(
++        service
++            .execute(&owner, accept.clone(), ReferenceFault::None)
++            .await
++            .is_err(),
++        "missing referenced evidence blocks acceptance"
++    );
++    service
++        .store()
++        .publish(b"check passed", &logs, PublishFault::None)
++        .unwrap();
++    // Failed acceptance is retryable only with a new idempotency key if semantic rejection was recorded.
++    let mut accept = accept;
++    accept.key = "accept-restored".into();
++    assert!(
++        service
++            .execute(&owner, accept, ReferenceFault::None)
++            .await
++            .unwrap()
++            .accepted
++    );
++    assert_eq!(
++        service.snapshot(&owner, task).await.unwrap().status,
++        "accepted"
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++
++fn git(repo: &std::path::Path, args: &[&str]) -> String {
++    let result = std::process::Command::new("git")
++        .arg("-C")
++        .arg(repo)
++        .args(args)
++        .output()
++        .unwrap();
++    assert!(
++        result.status.success(),
++        "git {:?}: {}",
++        args,
++        String::from_utf8_lossy(&result.stderr)
++    );
++    String::from_utf8(result.stdout).unwrap().trim().to_string()
++}
++#[test]
++fn changed_base_prepares_and_checks_actual_git_integration_candidate() {
++    let repo = std::env::temp_dir().join(format!("integration-fixture-{}", Uuid::new_v4()));
++    std::fs::create_dir_all(&repo).unwrap();
++    git(&repo, &["init", "-b", "fixture"]);
++    git(&repo, &["config", "user.name", "Fixture"]);
++    git(&repo, &["config", "user.email", "fixture@example.invalid"]);
++    std::fs::write(repo.join("base"), "base").unwrap();
++    git(&repo, &["add", "base"]);
++    git(&repo, &["commit", "-m", "base"]);
++    let base = git(&repo, &["rev-parse", "HEAD"]);
++    std::fs::write(repo.join("feature"), "feature").unwrap();
++    git(&repo, &["add", "feature"]);
++    git(&repo, &["commit", "-m", "feature"]);
++    let source = git(&repo, &["rev-parse", "HEAD"]);
++    let commands = vec![vec![
++        "sh".into(),
++        "-c".into(),
++        "test -f feature && test -f base".into(),
++    ]];
++    let first = prepare_integration(&repo, &source, &base, &commands)
++        .expect("construct and check actual integration candidate");
++    assert_eq!(first.base, base);
++    assert_eq!(first.checks[0].exit_code, 0);
++    assert_eq!(
++        first.tree,
++        git(&repo, &["rev-parse", &format!("{}^{{tree}}", first.commit)])
++    );
++    git(&repo, &["checkout", "--detach", &base]);
++    std::fs::write(repo.join("new-base"), "new base").unwrap();
++    git(&repo, &["add", "new-base"]);
++    git(&repo, &["commit", "-m", "new base"]);
++    let new_base = git(&repo, &["rev-parse", "HEAD"]);
++    let checks = vec![vec![
++        "sh".into(),
++        "-c".into(),
++        "test -f feature && test -f new-base".into(),
++    ]];
++    let second = prepare_integration(&repo, &source, &new_base, &checks).unwrap();
++    println!(
++        "ticket11 integration first={} tree={} base={} changed={} tree={} base={}",
++        first.commit, first.tree, first.base, second.commit, second.tree, second.base
++    );
++    assert_ne!(first.commit, second.commit);
++    assert_ne!(first.tree, second.tree);
++    assert_eq!(second.base, new_base);
++    assert_eq!(second.checks[0].exit_code, 0);
++    assert_eq!(
++        git(&repo, &["rev-parse", "HEAD"]),
++        new_base,
++        "preparation cannot move mainline"
++    );
++    assert_eq!(
++        git(&repo, &["worktree", "list", "--porcelain"])
++            .matches("worktree ")
++            .count(),
++        1,
++        "temporary verifier worktree released"
++    );
++    let failing = prepare_integration(
++        &repo,
++        &source,
++        &new_base,
++        &[vec!["sh".into(), "-c".into(), "exit 7".into()]],
++    )
++    .unwrap();
++    assert_eq!(
++        failing.checks[0].exit_code, 7,
++        "gate result is retained, never replaced with source proof"
++    );
++    std::fs::remove_dir_all(repo).unwrap();
++}
++
++async fn epoch(broker: &Broker, owner: &str, task: Uuid) -> Uuid {
++    broker
++        .snapshot(owner, SnapshotQuery::Task(task))
++        .await
++        .unwrap()
++        .data["attempts"][0]["recovery_epoch"]
++        .as_str()
++        .unwrap()
++        .parse()
++        .unwrap()
++}
++fn policy_command(verifier: Uuid, base: String) -> ArtifactCommand {
++    ArtifactCommand::Configure {
++        verifier,
++        lead_acceptance: false,
++        base,
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        mandatory_commands: vec![vec!["check".into()]],
++    }
++}
++fn verification(candidate: Candidate, logs: String) -> Verification {
++    Verification {
++        candidate,
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        checks: vec![Check {
++            command: vec!["check".into()],
++            exit_code: 0,
++            logs,
++        }],
++        resolved_decisions: true,
++    }
++}
++#[tokio::test]
++async fn evidence_reads_are_scoped_and_revalidate_parent_authority() {
++    let (service, broker, owner, worker, verifier, task, verifier_id, candidate, root) =
++        fixture().await;
++    let epoch = epoch(&broker, &owner, task).await;
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure",
++                3,
++                policy_command(verifier_id, candidate.base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "submit",
++                4,
++                ArtifactCommand::Submit {
++                    candidate: candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert_eq!(
++        service
++            .read_evidence(&verifier, task, &candidate.artifact)
++            .await
++            .unwrap(),
++        b"frozen Git bundle",
++        "verifier reads the retained bytes rather than implementer summary"
++    );
++    let orphan = sha256(b"unrelated secret");
++    service
++        .store()
++        .publish(b"unrelated secret", &orphan, PublishFault::None)
++        .unwrap();
++    assert!(
++        service
++            .read_evidence(&verifier, task, &orphan)
++            .await
++            .is_err(),
++        "publication alone does not grant task access"
++    );
++    assert!(
++        service
++            .read_evidence("unknown", task, &candidate.artifact)
++            .await
++            .is_err()
++    );
++    assert!(service.snapshot(&verifier, Uuid::new_v4()).await.is_err());
++    broker.rotate_epoch(&owner, Uuid::new_v4()).await.unwrap();
++    assert!(
++        service
++            .read_evidence(&verifier, task, &candidate.artifact)
++            .await
++            .is_err()
++    );
++    assert!(service.snapshot(&owner, task).await.is_err());
++    assert!(
++        service
++            .execute(
++                &worker,
++                cmd(
++                    epoch,
++                    task,
++                    "stale",
++                    5,
++                    ArtifactCommand::Submit { candidate }
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++#[tokio::test]
++async fn old_base_spec_candidate_and_report_never_accept_current_candidate() {
++    let (service, broker, owner, worker, verifier, task, verifier_id, candidate, root) =
++        fixture().await;
++    let epoch = epoch(&broker, &owner, task).await;
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure",
++                3,
++                policy_command(verifier_id, candidate.base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    for (key, mut bad) in [
++        ("generation", candidate.clone()),
++        ("spec", candidate.clone()),
++        ("spec-revision", candidate.clone()),
++    ] {
++        match key {
++            "generation" => bad.generation = 2,
++            "spec" => bad.spec_digest = "0".repeat(64),
++            _ => bad.spec_revision = 1,
++        };
++        assert!(
++            service
++                .execute(
++                    &worker,
++                    cmd(
++                        epoch,
++                        task,
++                        key,
++                        4,
++                        ArtifactCommand::Submit { candidate: bad }
++                    ),
++                    ReferenceFault::None
++                )
++                .await
++                .is_err()
++        );
++    }
++    let first = service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "submit",
++                4,
++                ArtifactCommand::Submit {
++                    candidate: candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let logs = sha256(b"pass");
++    service
++        .store()
++        .publish(b"pass", &logs, PublishFault::None)
++        .unwrap();
++    let report = verification(candidate.clone(), logs.clone());
++    for (key, mut bad) in [
++        ("suite", report.clone()),
++        ("environment", report.clone()),
++        ("base", report.clone()),
++        ("commit", report.clone()),
++    ] {
++        match key {
++            "suite" => bad.suite = "0".repeat(64),
++            "environment" => bad.environment = "0".repeat(64),
++            "base" => bad.candidate.base = "0".repeat(40),
++            _ => bad.candidate.commit = "0".repeat(40),
++        };
++        assert!(
++            service
++                .execute(
++                    &verifier,
++                    cmd(
++                        epoch,
++                        task,
++                        key,
++                        5,
++                        ArtifactCommand::Verify { verification: bad }
++                    ),
++                    ReferenceFault::None
++                )
++                .await
++                .is_err()
++        );
++    }
++    let verified = service
++        .execute(
++            &verifier,
++            cmd(
++                epoch,
++                task,
++                "verify",
++                5,
++                ArtifactCommand::Verify {
++                    verification: report,
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "base-changed",
++                6,
++                policy_command(verifier_id, "0".repeat(40)),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let old = ArtifactCommand::Accept {
++        candidate_id: first.candidate_id.clone().unwrap(),
++        report_id: verified.report_id.clone().unwrap(),
++    };
++    assert!(
++        service
++            .execute(
++                &owner,
++                cmd(epoch, task, "old-base", 7, old.clone()),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    let mut second = candidate;
++    second.base = "0".repeat(40);
++    second.commit = "1".repeat(40);
++    second.tree = "2".repeat(40);
++    let current = service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "new-candidate",
++                7,
++                ArtifactCommand::Submit {
++                    candidate: second.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let new_report = service
++        .execute(
++            &verifier,
++            cmd(
++                epoch,
++                task,
++                "new-verify",
++                8,
++                ArtifactCommand::Verify {
++                    verification: verification(second, logs),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert!(
++        service
++            .execute(
++                &owner,
++                cmd(epoch, task, "old-candidate", 9, old),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    assert!(
++        service
++            .execute(
++                &owner,
++                cmd(
++                    epoch,
++                    task,
++                    "old-report",
++                    9,
++                    ArtifactCommand::Accept {
++                        candidate_id: current.candidate_id.clone().unwrap(),
++                        report_id: verified.report_id.unwrap()
++                    }
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    let accept = cmd(
++        epoch,
++        task,
++        "current",
++        9,
++        ArtifactCommand::Accept {
++            candidate_id: current.candidate_id.unwrap(),
++            report_id: new_report.report_id.unwrap(),
++        },
++    );
++    assert!(
++        service
++            .execute(&owner, accept.clone(), ReferenceFault::None)
++            .await
++            .unwrap()
++            .accepted
++    );
++    let mut changed = accept;
++    changed.task = Uuid::new_v4();
++    assert!(
++        service
++            .execute(&owner, changed, ReferenceFault::None)
++            .await
++            .is_err(),
++        "cached results cannot cross task scope"
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++#[tokio::test]
++async fn grace_collection_removes_unreferenced_fault_orphans_only() {
++    let (service, broker, owner, worker, _, task, verifier, candidate, root) = fixture().await;
++    let epoch = epoch(&broker, &owner, task).await;
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure",
++                3,
++                policy_command(verifier, candidate.base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let unfinalized = sha256(b"unfinalized");
++    assert!(
++        service
++            .store()
++            .publish(b"unfinalized", &unfinalized, PublishFault::BeforeFinalize)
++            .is_err()
++    );
++    assert!(
++        service
++            .execute(
++                &worker,
++                cmd(
++                    epoch,
++                    task,
++                    "orphan",
++                    4,
++                    ArtifactCommand::Submit {
++                        candidate: candidate.clone()
++                    }
++                ),
++                ReferenceFault::BeforeReference
++            )
++            .await
++            .is_err()
++    );
++    assert!(
++        service
++            .snapshot(&owner, task)
++            .await
++            .unwrap()
++            .candidate
++            .is_none()
++    );
++    assert!(
++        service
++            .collect(&owner, std::time::Duration::from_secs(3600))
++            .await
++            .unwrap()
++            .is_empty()
++    );
++    assert!(
++        service
++            .collect(&worker, std::time::Duration::ZERO)
++            .await
++            .is_err()
++    );
++    let removed = service
++        .collect(&owner, std::time::Duration::ZERO)
++        .await
++        .unwrap();
++    assert!(removed.contains(&format!("objects/{unfinalized}")));
++    assert!(removed.contains(&format!("objects/{}", candidate.artifact)));
++    assert!(removed.contains(&format!("manifests/{}", candidate.artifact)));
++    assert!(
++        service
++            .execute(
++                &worker,
++                cmd(
++                    epoch,
++                    task,
++                    "missing",
++                    4,
++                    ArtifactCommand::Submit {
++                        candidate: candidate.clone()
++                    }
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    service
++        .store()
++        .publish(
++            b"frozen Git bundle",
++            &candidate.artifact,
++            PublishFault::None,
++        )
++        .unwrap();
++    service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "referenced",
++                4,
++                ArtifactCommand::Submit {
++                    candidate: candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert!(
++        service
++            .collect(&owner, std::time::Duration::ZERO)
++            .await
++            .unwrap()
++            .is_empty()
++    );
++    assert_eq!(
++        service.store().read(&candidate.artifact).unwrap(),
++        b"frozen Git bundle"
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++
++#[tokio::test]
++async fn verifier_credential_has_no_lead_execution_authority() {
++    let (service, broker, owner, worker, verifier, task, verifier_id, candidate, root) =
++        fixture().await;
++    let epoch = epoch(&broker, &owner, task).await;
++    let forbidden = broker
++        .execute(
++            &verifier,
++            envelope(
++                epoch,
++                "verifier-cannot-assign",
++                3,
++                Command::AssignAttempt {
++                    task_id: task,
++                    worker_id: Uuid::new_v4(),
++                },
++            ),
++        )
++        .await
++        .unwrap_err();
++    assert_eq!(
++        forbidden.code,
++        ErrorCode::Unauthorized,
++        "a verifier credential must never enter execution admission as a lead"
++    );
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure",
++                3,
++                policy_command(verifier_id, candidate.base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "submit",
++                4,
++                ArtifactCommand::Submit {
++                    candidate: candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert_eq!(
++        service
++            .read_evidence(&verifier, task, &candidate.artifact)
++            .await
++            .unwrap(),
++        b"frozen Git bundle"
++    );
++    let logs = sha256(b"verifier check");
++    service
++        .store()
++        .publish(b"verifier check", &logs, PublishFault::None)
++        .unwrap();
++    let report = service
++        .execute(
++            &verifier,
++            cmd(
++                epoch,
++                task,
++                "verify",
++                5,
++                ArtifactCommand::Verify {
++                    verification: verification(candidate.clone(), logs),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert!(report.report_id.is_some());
++    assert!(
++        service
++            .execute(
++                &verifier,
++                cmd(
++                    epoch,
++                    task,
++                    "cannot-configure",
++                    6,
++                    policy_command(verifier_id, candidate.base)
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    assert!(
++        service
++            .execute(
++                &verifier,
++                cmd(
++                    epoch,
++                    task,
++                    "cannot-accept",
++                    6,
++                    ArtifactCommand::Accept {
++                        candidate_id: report.candidate_id.unwrap(),
++                        report_id: report.report_id.unwrap()
++                    }
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++
++fn git_bundle(repo: &std::path::Path, commit: &str, base: &str) -> Vec<u8> {
++    let bundle = repo.join(format!("candidate-{}.bundle", Uuid::new_v4()));
++    // git bundle requires a named tip. This reference exists only in the
++    // disposable fixture repository and does not move its source/mainline.
++    let reference = format!("refs/fixture-candidates/{}", Uuid::new_v4());
++    git(repo, &["update-ref", &reference, commit]);
++    assert_eq!(git(repo, &["cat-file", "-t", base]), "commit");
++    git(
++        repo,
++        &["bundle", "create", bundle.to_str().unwrap(), &reference],
++    );
++    git(repo, &["update-ref", "-d", &reference]);
++    let bytes = std::fs::read(&bundle).unwrap();
++    std::fs::remove_file(bundle).unwrap();
++    bytes
++}
++fn independent_git_check(
++    bytes: &[u8],
++    commit: &str,
++    base: &str,
++    commands: &[Vec<String>],
++) -> (String, String, String, Vec<IntegrationCheck>) {
++    let repo =
++        std::env::temp_dir().join(format!("independent-artifact-verifier-{}", Uuid::new_v4()));
++    std::fs::create_dir_all(&repo).unwrap();
++    git(&repo, &["init", "-b", "verifier"]);
++    let bundle = repo.join("candidate.bundle");
++    std::fs::write(&bundle, bytes).unwrap();
++    git(&repo, &["fetch", bundle.to_str().unwrap(), commit]);
++    git(&repo, &["checkout", "--detach", "FETCH_HEAD"]);
++    let measured_commit = git(&repo, &["rev-parse", "HEAD"]);
++    let measured_tree = git(&repo, &["rev-parse", "HEAD^{tree}"]);
++    let measured_base = git(&repo, &["rev-parse", "HEAD^1"]);
++    assert_eq!(
++        measured_base, base,
++        "base is derived from retained integration commit ancestry"
++    );
++    let checks = commands
++        .iter()
++        .map(|command| {
++            let result = std::process::Command::new(&command[0])
++                .args(&command[1..])
++                .current_dir(&repo)
++                .output()
++                .unwrap();
++            let mut logs = result.stdout;
++            logs.extend_from_slice(b"\n--- stderr ---\n");
++            logs.extend_from_slice(&result.stderr);
++            IntegrationCheck {
++                command: command.clone(),
++                exit_code: result.status.code().unwrap_or(-1),
++                logs,
++            }
++        })
++        .collect();
++    std::fs::remove_dir_all(repo).unwrap();
++    (measured_commit, measured_tree, measured_base, checks)
++}
++#[tokio::test]
++async fn actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance() {
++    let (service, broker, owner, worker, verifier, task, verifier_id, template, root) =
++        fixture().await;
++    let epoch = epoch(&broker, &owner, task).await;
++    assert_eq!(
++        broker
++            .execute(
++                &verifier,
++                envelope(
++                    epoch,
++                    "verifier-no-execution",
++                    3,
++                    Command::AssignAttempt {
++                        task_id: task,
++                        worker_id: Uuid::new_v4()
++                    }
++                )
++            )
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    let repo = root.join("git-fixture");
++    std::fs::create_dir_all(&repo).unwrap();
++    git(&repo, &["init", "-b", "source"]);
++    git(&repo, &["config", "user.name", "Fixture"]);
++    git(&repo, &["config", "user.email", "fixture@example.invalid"]);
++    std::fs::write(repo.join("base"), "initial-base\n").unwrap();
++    git(&repo, &["add", "base"]);
++    git(&repo, &["commit", "-m", "base"]);
++    let base = git(&repo, &["rev-parse", "HEAD"]);
++    std::fs::write(repo.join("feature"), "candidate\n").unwrap();
++    git(&repo, &["add", "feature"]);
++    git(&repo, &["commit", "-m", "feature"]);
++    let source = git(&repo, &["rev-parse", "HEAD"]);
++    let commands=vec![vec!["sh".into(),"-c".into(),"test -f feature && cat feature && cat base && if test -f base-change; then cat base-change; else printf old-base; fi".into()]];
++    let first = prepare_integration(&repo, &source, &base, &commands).unwrap();
++    assert_eq!(first.checks[0].exit_code, 0);
++    let configure = |base: String| ArtifactCommand::Configure {
++        verifier: verifier_id,
++        lead_acceptance: false,
++        base,
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        mandatory_commands: commands.clone(),
++    };
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure-real-base",
++                3,
++                configure(base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let first_bytes = git_bundle(&repo, &first.commit, &first.base);
++    let first_digest = sha256(&first_bytes);
++    service
++        .store()
++        .publish(&first_bytes, &first_digest, PublishFault::None)
++        .unwrap();
++    let first_candidate = Candidate {
++        commit: first.commit.clone(),
++        tree: first.tree.clone(),
++        base: first.base.clone(),
++        artifact: first_digest.clone(),
++        ..template.clone()
++    };
++    let first_submitted = service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "submit-real-first",
++                4,
++                ArtifactCommand::Submit {
++                    candidate: first_candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let retained = service
++        .read_evidence(&verifier, task, &first_digest)
++        .await
++        .unwrap();
++    assert_eq!(retained, first_bytes);
++    let (measured_commit, measured_tree, measured_base, executed) =
++        independent_git_check(&retained, &first.commit, &first.base, &commands);
++    assert_eq!(measured_commit, first_candidate.commit);
++    assert_eq!(measured_tree, first_candidate.tree);
++    assert_eq!(measured_base, first_candidate.base);
++    let first_logs = sha256(&executed[0].logs);
++    service
++        .store()
++        .publish(&executed[0].logs, &first_logs, PublishFault::None)
++        .unwrap();
++    let first_report = Verification {
++        candidate: first_candidate,
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        checks: vec![Check {
++            command: executed[0].command.clone(),
++            exit_code: executed[0].exit_code,
++            logs: first_logs.clone(),
++        }],
++        resolved_decisions: true,
++    };
++    let first_verified = service
++        .execute(
++            &verifier,
++            cmd(
++                epoch,
++                task,
++                "verify-measured-first",
++                5,
++                ArtifactCommand::Verify {
++                    verification: first_report.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    git(&repo, &["checkout", "--detach", &base]);
++    std::fs::write(repo.join("base-change"), "changed-real-base\n").unwrap();
++    git(&repo, &["add", "base-change"]);
++    git(&repo, &["commit", "-m", "changed base"]);
++    let changed_base = git(&repo, &["rev-parse", "HEAD"]);
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure-changed-real-base",
++                6,
++                configure(changed_base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let old_accept = ArtifactCommand::Accept {
++        candidate_id: first_submitted.candidate_id.unwrap(),
++        report_id: first_verified.report_id.unwrap(),
++    };
++    assert!(
++        service
++            .execute(
++                &owner,
++                cmd(epoch, task, "old-real-proof", 7, old_accept.clone()),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    let second = prepare_integration(&repo, &source, &changed_base, &commands).unwrap();
++    assert_ne!(first.commit, second.commit);
++    assert_ne!(first.tree, second.tree);
++    let second_bytes = git_bundle(&repo, &second.commit, &second.base);
++    let second_digest = sha256(&second_bytes);
++    assert_ne!(first_digest, second_digest);
++    service
++        .store()
++        .publish(&second_bytes, &second_digest, PublishFault::None)
++        .unwrap();
++    let second_candidate = Candidate {
++        commit: second.commit.clone(),
++        tree: second.tree.clone(),
++        base: second.base.clone(),
++        artifact: second_digest.clone(),
++        ..template
++    };
++    let second_submitted = service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "submit-real-second",
++                7,
++                ArtifactCommand::Submit {
++                    candidate: second_candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert!(
++        service
++            .execute(
++                &verifier,
++                cmd(
++                    epoch,
++                    task,
++                    "old-report-new-real-candidate",
++                    8,
++                    ArtifactCommand::Verify {
++                        verification: first_report
++                    }
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    let retained = service
++        .read_evidence(&verifier, task, &second_digest)
++        .await
++        .unwrap();
++    assert_eq!(retained, second_bytes);
++    let (measured_commit, measured_tree, measured_base, executed) =
++        independent_git_check(&retained, &second.commit, &second.base, &commands);
++    assert_eq!(measured_commit, second_candidate.commit);
++    assert_eq!(measured_tree, second_candidate.tree);
++    assert_eq!(measured_base, second_candidate.base);
++    assert_eq!(executed[0].exit_code, 0);
++    assert!(String::from_utf8_lossy(&executed[0].logs).contains("changed-real-base"));
++    let second_logs = sha256(&executed[0].logs);
++    assert_ne!(first_logs, second_logs);
++    service
++        .store()
++        .publish(&executed[0].logs, &second_logs, PublishFault::None)
++        .unwrap();
++    let second_report = Verification {
++        candidate: second_candidate.clone(),
++        suite: "e".repeat(64),
++        environment: "f".repeat(64),
++        checks: vec![Check {
++            command: executed[0].command.clone(),
++            exit_code: executed[0].exit_code,
++            logs: second_logs.clone(),
++        }],
++        resolved_decisions: true,
++    };
++    let second_verified = service
++        .execute(
++            &verifier,
++            cmd(
++                epoch,
++                task,
++                "verify-measured-second",
++                8,
++                ArtifactCommand::Verify {
++                    verification: second_report,
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert!(
++        service
++            .execute(
++                &owner,
++                cmd(
++                    epoch,
++                    task,
++                    "old-proof-after-new-real-verification",
++                    9,
++                    old_accept
++                ),
++                ReferenceFault::None
++            )
++            .await
++            .is_err()
++    );
++    let accepted = service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "accept-measured-second",
++                9,
++                ArtifactCommand::Accept {
++                    candidate_id: second_submitted.candidate_id.unwrap(),
++                    report_id: second_verified.report_id.unwrap(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    assert!(accepted.accepted);
++    let snapshot = service.snapshot(&owner, task).await.unwrap();
++    assert_eq!(snapshot.candidate.unwrap(), second_candidate);
++    assert_eq!(
++        git(&repo, &["rev-parse", "HEAD"]),
++        changed_base,
++        "protected branch is unchanged"
++    );
++    println!(
++        "ticket11 real_git_pg task={task} first_commit={} first_tree={} first_base={} first_artifact={first_digest} first_logs={first_logs} new_commit={} new_tree={} new_base={} new_artifact={second_digest} new_logs={second_logs} accepted_candidate={} accepted_report={}",
++        first.commit,
++        first.tree,
++        first.base,
++        second.commit,
++        second.tree,
++        second.base,
++        accepted.candidate_id.unwrap(),
++        accepted.report_id.unwrap()
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++
++#[tokio::test]
++async fn verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations() {
++    let (service, broker, owner, worker, verifier, task, verifier_id, candidate, root) =
++        fixture().await;
++    let epoch = epoch(&broker, &owner, task).await;
++    let mission: Uuid = broker
++        .snapshot(&owner, SnapshotQuery::Task(task))
++        .await
++        .unwrap()
++        .data["mission_id"]
++        .as_str()
++        .unwrap()
++        .parse()
++        .unwrap();
++    let grant = |key: &str,
++                 token: &str,
++                 task_scope: Option<Uuid>,
++                 generation: Option<i64>,
++                 expires: i64| {
++        envelope(
++            epoch,
++            key,
++            0,
++            Command::GrantCredential {
++                credential_id: Uuid::new_v4(),
++                principal_id: verifier_id,
++                role: Role::Verifier,
++                mission_id: Some(mission),
++                task_id: task_scope,
++                generation,
++                token_hash: token_hash(token),
++                expires_in_seconds: expires,
++            },
++        )
++    };
++    for (key, task_scope, generation) in [
++        ("no-task", None, Some(1)),
++        ("no-generation", Some(task), None),
++        ("zero-generation", Some(task), Some(0)),
++    ] {
++        assert_eq!(
++            broker
++                .execute(&owner, grant(key, key, task_scope, generation, 600))
++                .await
++                .unwrap_err()
++                .code,
++            ErrorCode::InvalidArgument
++        );
++    }
++    service
++        .execute(
++            &owner,
++            cmd(
++                epoch,
++                task,
++                "configure",
++                3,
++                policy_command(verifier_id, candidate.base.clone()),
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    service
++        .execute(
++            &worker,
++            cmd(
++                epoch,
++                task,
++                "submit",
++                4,
++                ArtifactCommand::Submit {
++                    candidate: candidate.clone(),
++                },
++            ),
++            ReferenceFault::None,
++        )
++        .await
++        .unwrap();
++    let logs = sha256(b"narrow verifier proof");
++    service
++        .store()
++        .publish(b"narrow verifier proof", &logs, PublishFault::None)
++        .unwrap();
++    let verify = cmd(
++        epoch,
++        task,
++        "verify-cached",
++        5,
++        ArtifactCommand::Verify {
++            verification: verification(candidate.clone(), logs),
++        },
++    );
++    let result = service
++        .execute(&verifier, verify.clone(), ReferenceFault::None)
++        .await
++        .unwrap();
++    assert_eq!(
++        service
++            .execute(&verifier, verify.clone(), ReferenceFault::None)
++            .await
++            .unwrap(),
++        result
++    );
++    broker
++        .execute(
++            &owner,
++            grant(
++                "future-generation",
++                "future-verifier",
++                Some(task),
++                Some(2),
++                600,
++            ),
++        )
++        .await
++        .unwrap();
++    assert_eq!(
++        service
++            .read_evidence("future-verifier", task, &candidate.artifact)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    assert_eq!(
++        service
++            .snapshot("future-verifier", task)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    assert_eq!(
++        service
++            .execute("future-verifier", verify.clone(), ReferenceFault::None)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    assert_eq!(
++        broker
++            .snapshot("future-verifier", SnapshotQuery::Task(task))
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    broker
++        .execute(
++            &owner,
++            grant("short-verifier", "short-verifier", Some(task), Some(1), 1),
++        )
++        .await
++        .unwrap();
++    tokio::time::sleep(std::time::Duration::from_millis(1200)).await;
++    assert_eq!(
++        service
++            .read_evidence("short-verifier", task, &candidate.artifact)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    assert_eq!(
++        service
++            .snapshot("short-verifier", task)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    assert_eq!(
++        service
++            .execute("short-verifier", verify, ReferenceFault::None)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    assert_eq!(
++        broker
++            .snapshot("short-verifier", SnapshotQuery::Task(task))
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    let forbidden_commands = vec![
++        Command::SetDependencies {
++            task_id: task,
++            dependencies: vec![],
++        },
++        Command::AdmitTask {
++            task_id: task,
++            spec_digest: candidate.spec_digest.clone(),
++        },
++        grant("nested-grant", "nested-grant", Some(task), Some(1), 600).command,
++    ];
++    for (index, command) in forbidden_commands.into_iter().enumerate() {
++        assert_eq!(
++            broker
++                .execute(
++                    &verifier,
++                    envelope(epoch, &format!("forbidden-{index}"), 6, command)
++                )
++                .await
++                .unwrap_err()
++                .code,
++            ErrorCode::Unauthorized
++        );
++    }
++    assert_eq!(
++        broker
++            .snapshot(&verifier, SnapshotQuery::Mission(mission))
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized,
++        "task verifier grant cannot read mission-wide state"
++    );
++    std::fs::remove_dir_all(root).unwrap();
++}
++
++#[tokio::test]
++async fn core_migrate_installs_verifier_grants_without_artifact_constructor() {
++    let dsn = std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap();
++    let schema = format!("core_verifier_{}", Uuid::new_v4().simple());
++    let (client, connection) = tokio_postgres::connect(&dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move {
++        connection.await.unwrap();
++    });
++    client
++        .batch_execute(&format!("CREATE SCHEMA {schema}"))
++        .await
++        .unwrap();
++    let dsn = format!("{dsn} options='-c search_path={schema}'");
++    migrate(&dsn).await.unwrap();
++    // No ArtifactService/ArtifactStore constructor is involved in this test.
++    let epoch = Uuid::new_v4();
++    let broker = Broker::connect(&dsn, epoch).await.unwrap();
++    let owner = broker.bootstrap_owner().await.unwrap();
++    let mission = Uuid::new_v4();
++    let task = Uuid::new_v4();
++    let input = GitInput {
++        repository: "fixture".into(),
++        commit: "a".repeat(40),
++        path: "SPEC.md".into(),
++        digest: "b".repeat(64),
++    };
++    broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "mission",
++                0,
++                Command::CreateMission {
++                    id: mission,
++                    objective: "fixture".into(),
++                    input: input.clone(),
++                    policy: Policy {
++                        capacity: 2,
++                        max_attempts: 8,
++                        max_episodes: 8,
++                        max_repairs: 3,
++                        episode_deadline_seconds: 30,
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "task",
++                0,
++                Command::CreateTask {
++                    id: task,
++                    mission_id: mission,
++                    spec: TaskSpec {
++                        dependencies: vec![],
++                        objective: "fixture".into(),
++                        input,
++                        acceptance: vec!["verified".into()],
++                        deliverables: vec!["result".into()],
++                        write_scope: vec!["src".into()],
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let grant = broker
++        .execute(
++            &owner,
++            envelope(
++                epoch,
++                "verifier",
++                0,
++                Command::GrantCredential {
++                    credential_id: Uuid::new_v4(),
++                    principal_id: Uuid::new_v4(),
++                    role: Role::Verifier,
++                    mission_id: Some(mission),
++                    task_id: Some(task),
++                    generation: Some(1),
++                    token_hash: token_hash("verifier"),
++                    expires_in_seconds: 60,
++                },
++            ),
++        )
++        .await;
++    assert!(
++        grant.is_ok(),
++        "public core migrate must install every schema constraint required by public core verifier grants: {grant:?}"
++    );
++    // Migration is repeatable through the same authoritative public entrypoint.
++    migrate(&dsn).await.unwrap();
++}
+--- a/crates/team-control-plane/src/lib.rs
++++ b/crates/team-control-plane/src/lib.rs
+@@ -7,3 +7,5 @@
+ pub use auth::token_hash;
+ pub use domain::*;
+ pub use storage::{Broker, migrate};
++
++pub mod artifacts;
+--- a/crates/team-control-plane/src/storage.rs
++++ b/crates/team-control-plane/src/storage.rs
+@@ -8,7 +8,7 @@
+ /// PostgreSQL broker. Debug deliberately excludes DSN and all bearer material.
+ #[derive(Clone)]
+ pub struct Broker {
+-    dsn: String,
++    pub(crate) dsn: String,
+     pub(crate) epoch: Uuid,
+ }
+ impl std::fmt::Debug for Broker {
+@@ -59,6 +59,7 @@
+             .await?;
+     }
+     tx.commit().await?;
++    crate::artifacts::migrate(dsn).await?;
+     Ok(())
+ }
+ async fn schema(tx: &Transaction<'_>) -> Result<()> {
+@@ -79,7 +80,7 @@
+     tx.batch_execute("SET LOCAL lock_timeout='5s'; SET LOCAL statement_timeout='10s'; SELECT pg_advisory_xact_lock(784092110)").await?;
+     Ok(())
+ }
+-async fn active(tx: &Transaction<'_>, epoch: Uuid) -> Result<()> {
++pub(crate) async fn active(tx: &Transaction<'_>, epoch: Uuid) -> Result<()> {
+     let row = tx
+         .query_opt(
+             "SELECT active_epoch FROM deployment WHERE singleton=true",
+@@ -298,13 +299,15 @@
+     tx.execute("INSERT INTO credentials(id,principal_id,role,recovery_epoch,token_hash,expires_at) VALUES($1,$2,'owner',$3,$4,clock_timestamp()+interval '24 hours')",&[&Uuid::new_v4(),&Uuid::new_v4(),&epoch,&hash]).await?;
+     Ok(token)
+ }
+-async fn validate_actor_generation(tx: &Transaction<'_>, actor: &Actor) -> Result<()> {
++pub(crate) async fn validate_actor_generation(tx: &Transaction<'_>, actor: &Actor) -> Result<()> {
+     if let Some(task) = actor.task {
+         let row = tx
+             .query_opt("SELECT generation FROM tasks WHERE id=$1", &[&task])
+             .await?
+             .ok_or_else(|| err(ErrorCode::Unauthorized))?;
+-        if actor.role == Role::Worker && actor.generation != Some(row.get::<_, i64>(0)) {
++        if matches!(actor.role, Role::Worker | Role::Verifier)
++            && actor.generation != Some(row.get::<_, i64>(0))
++        {
+             return Err(err(ErrorCode::StaleGeneration));
+         }
+     }
+--- a/crates/team-control-plane/src/auth.rs
++++ b/crates/team-control-plane/src/auth.rs
+@@ -18,7 +18,9 @@
+     let role = match role.as_str() {
+         "owner" => Role::Owner,
+         "lead" => Role::Lead,
+-        _ => Role::Worker,
++        "worker" => Role::Worker,
++        "verifier" => Role::Verifier,
++        _ => return Err(err(ErrorCode::Unauthorized)),
+     };
+     Ok(Actor {
+         principal: row.get(0),
+@@ -87,7 +89,7 @@
+ ) -> Result<RecordScope> {
+     let task_id = match command {
+         Command::AssignAttempt { task_id, .. } => {
+-            if actor.role == Role::Worker {
++            if !matches!(actor.role, Role::Owner | Role::Lead) {
+                 return Err(err(ErrorCode::Unauthorized));
+             }
+             Some(*task_id)
+--- a/crates/team-control-plane/src/admission.rs
++++ b/crates/team-control-plane/src/admission.rs
+@@ -89,7 +89,7 @@
+                         return Err(err(ErrorCode::InvalidArgument));
+                     }
+                 }
+-                Role::Worker => {
++                Role::Worker | Role::Verifier => {
+                     if mission_id.is_none()
+                         || task_id.is_none()
+                         || generation.is_none_or(|g| g <= 0)
+@@ -135,6 +135,7 @@
+                 Role::Owner => "owner",
+                 Role::Lead => "lead",
+                 Role::Worker => "worker",
++                Role::Verifier => "verifier",
+             };
+             tx.execute("INSERT INTO credentials(id,principal_id,role,mission_id,task_id,generation,recovery_epoch,token_hash,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,clock_timestamp()+($9::bigint * interval '1 second'))",&[credential_id,principal_id,&role,mission_id,task_id,generation,&envelope.recovery_epoch,token_hash,expires_in_seconds]).await?;
+             *mission_id
+@@ -189,7 +190,7 @@
+         Command::AssignAttempt { task_id, worker_id } => {
+             let task = load_task(tx, *task_id).await?;
+             actor.scope(task.mission, Some(*task_id))?;
+-            if actor.role == Role::Worker {
++            if !matches!(actor.role, Role::Owner | Role::Lead) {
+                 return Err(err(ErrorCode::Unauthorized));
+             }
+             revision(envelope, task.revision)?;
+--- a/crates/team-control-plane/src/domain.rs
++++ b/crates/team-control-plane/src/domain.rs
+@@ -61,6 +61,7 @@
+     Owner,
+     Lead,
+     Worker,
++    Verifier,
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+ #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]

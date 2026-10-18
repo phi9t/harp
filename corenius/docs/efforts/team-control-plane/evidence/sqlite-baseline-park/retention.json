@@ -1,0 +1,35 @@
+{
+  "time": "2026-10-04T03:55:29Z",
+  "frozen_dirty_worktree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2",
+  "branch": "codex-intent26/candidate-import2",
+  "head": "29bd30a38c6253c3144756323eee6b78fca89699",
+  "disposition": "parked; not accepted or imported",
+  "resource_effects": "24 unresolved rows retained unresolved",
+  "retained_at_origin": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/docs/efforts/team-control-plane/evidence/intent26/candidate-import2/handoff.md",
+      "sha256": "900846fb288b15f25f792d34510e9a1909fc9328f8c8d3b72987af7c8bc558ee",
+      "bytes": 941
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/docs/efforts/team-control-plane/evidence/intent26/candidate-import2/resources/disposition.json",
+      "sha256": "abdab2ccb0279a3294506d4f1e47ec99d022c94c2f1ba975e1f34a2888203982",
+      "bytes": 9362
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/docs/efforts/team-control-plane/evidence/intent26/candidate-import2/seal.json",
+      "sha256": "4b7d6aa201596d81dfa9d80918be83182886d163c595035a4d96b857fb79c3b1",
+      "bytes": 107224
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/docs/efforts/team-control-plane/evidence/intent26/candidate-import2/index.json",
+      "sha256": "43233297a9bd3982a7e475b721979f97c27e0b48d0589a8b84fcf475b6c862f1",
+      "bytes": 795
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/docs/efforts/team-control-plane/evidence/intent26/candidate-import2/source-manifest.json",
+      "sha256": "491cbc0e6b36c3c605cb47e2d22a38208022eb29dec29713ec37a47769f15611",
+      "bytes": 31731
+    }
+  ]
+}

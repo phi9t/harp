@@ -1,0 +1,14 @@
+#!/bin/sh
+# Run real blade with no network. Pre-seed the pip-check markers so blade does not try the internal PyPI mirror,
+# and select the gcc 8.3 toolchain without bundling (gcc 4.9, blade's default, lacks C++11 defaults).
+set -e
+mkdir -p "$HOME/.blade/blade_status"
+size=$(stat --printf='%s' /opt/tiger/typhoon-blade/executor)
+: > "$HOME/.blade/blade_status/pip_checking.$size"
+: > "$HOME/.blade/blade_status/pip3_checking.$size"
+cmd=$1
+[ $# -gt 0 ] && shift
+case "$cmd" in
+  build|test|run) exec /opt/tiger/ss_bin/blade "$cmd" --toolchain=x86_64-gcc830 --skip-bundle "$@" ;;
+  *) exec /opt/tiger/ss_bin/blade "$cmd" "$@" ;;
+esac

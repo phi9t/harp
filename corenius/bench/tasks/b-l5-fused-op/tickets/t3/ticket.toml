@@ -1,0 +1,2 @@
+allow = ["python/ops.py", "BUILD"]
+depends = ["t1", "t2"]

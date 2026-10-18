@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-10-02T23:12:58.496181+00:00",
+  "checks": [
+    {
+      "pid": 4106378,
+      "retained_start_ticks": "39823366",
+      "proc_absent": true
+    },
+    {
+      "pid": 4106379,
+      "retained_start_ticks": "39823366",
+      "proc_absent": true
+    }
+  ],
+  "scope": "exact former process PIDs absent; author root-reference scan retained separately"
+}

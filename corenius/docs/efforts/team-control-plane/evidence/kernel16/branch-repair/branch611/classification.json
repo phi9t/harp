@@ -1,0 +1,12 @@
+{
+  "job": 611,
+  "session": 86801,
+  "terminal_exit": 1,
+  "range": "1f16415..e6676bf",
+  "verdict": "CHANGES REQUIRED",
+  "findings": [
+    "High: execution-backed verification omits immutable suite/environment policy digests",
+    "Medium: released deadline-stopped lead episode remains live and prevents successor admission"
+  ],
+  "authority": "owner full-goal execution authorization"
+}

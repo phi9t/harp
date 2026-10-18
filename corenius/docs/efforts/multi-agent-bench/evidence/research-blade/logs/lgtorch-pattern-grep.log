@@ -1,0 +1,1001 @@
+COMMAND: git -C /data02/home/philip.yang/devx/tmp/claude-1018/-data02-home-philip-yang-workspace-milano/240d396c-ea8c-4f8b-95db-b5049321f46b/scratchpad/lgtorch grep -n -E 'global_settler|library_settler|load\(|include\(|cu_library|cu_binary|cu_test|proto_library|thrift_library|gen_rule|cc_plugin|custom_deps|prefer_dynamic|prefer_static|prebuilt|os\.environ|getenv|glob\(|enable_if|extra_cuflags|package\(|cc_test|py_library|py_binary|py_test|link_all_symbols|allow_undefined|dynamic_link|build_dynamic|cpp3rdlib|BUILD.share' 7ec5497 -- '*BUILD*'
+7ec5497:bytedance/csmoke/BUILD:8:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/csmoke/BUILD:9:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/csmoke/BUILD:14:cc_test(
+7ec5497:bytedance/csmoke/BUILD:23:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/csmoke/BUILD:25:    # custom_deps=NODUS_CUSTOM_DEPS,
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:3:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:4:load("//torch/bytedance/lagrange_torch/csrc/increment_service/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:7:os.environ["DBG_LINE_ONLY"] = "0"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:8:_prefer_dynamic, _prefer_deps = get_torch_root_settler_config()
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:9:library_settler(prefer_dynamic=_prefer_dynamic)
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:10:global_settler(prefer_deps=_prefer_deps)
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:21:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:29:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:81:cc_plugin(
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:92:        if os.getenv("COMPUTE_PLATFORM") == "MLU"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:97:        if os.getenv("COMPUTE_PLATFORM") == "ASCEND"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:105:        if os.getenv("COMPUTE_PLATFORM") == "CUDA"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:109:        ["cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest"]
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:110:        if os.getenv("COVERAGE", "") == "1"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:119:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:124:        "cpp3rdlib/googlemock:1.10.0@//cpp3rdlib/googlemock:gmock",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:125:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:126:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD:127:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:4:# CUDA-specific build logic, split out of BUILD.share.
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:6:# Blade injects load() only into the top-level BUILD namespace, not into loaded
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:7:# files, so BUILD.share cannot load() this file. Each top-level BUILD that needs
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:8:# CUDA symbols loads BOTH BUILD.share and BUILD.cuda (this file), e.g.:
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:9:#     load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:10:#     load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:12:# Because each load() runs in its own namespace, this file is self-contained:
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:13:# it re-reads the environment it needs rather than relying on BUILD.share.
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:15:# This file also materializes the local CUDA/NCCL prebuilt symlinks that
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:16:# local_prebuilt/BUILD's `prebuilt=True` targets consume (see the
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:18:# separate local_prebuilt/prepare.py invoked from blade.sh; folding it here
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:23:# Environment contract — read once, here. Blade isolates each load() in its
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:26:# BUILD.share's copies of GCC_VERSION / COMPUTE_PLATFORM and must read the
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:33:# uses it — BUILD.share reads it for the toolchain-specific cppflags.
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:34:CUDA_VERSION = os.environ.get("CUDA_VERSION")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:35:COMPUTE_PLATFORM = os.environ.get("COMPUTE_PLATFORM")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:36:LOCAL_CUDA_HOME = os.environ.get("CUDA_HOME", "/usr/local/cuda")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:37:LOCAL_NCCL_HOME = os.environ.get("NCCL_HOME", "/usr/local")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:67:_LOCAL_PREBUILT_PACKAGE = "//torch/bytedance/lagrange_torch/csrc/local_prebuilt:"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:160:    env_dir = os.environ.get("CUDA_STUBS_DIR")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:205:    dynamic prebuilt targets) and its values are the resolved realpaths (used to
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:206:    materialize the unversioned symlinks the prebuilt targets consume).
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:240:def _prebuilt_deps(libs):
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:244:# CUDA and NCCL prebuilt targets live in the same package, so both helpers just
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:246:local_cuda_deps = _prebuilt_deps
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:247:local_nccl_deps = _prebuilt_deps
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:267:# the prebuilt targets declared in local_prebuilt/BUILD, and the values are the
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:298:# Local CUDA/NCCL prebuilt symlink materialization.
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:300:# blade's `cc_library(prebuilt=True)` targets in local_prebuilt/BUILD locate
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:301:# their DSO / archive by looking for lib<name>.{so,a} under local_prebuilt/lib64
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:302:# (blade's default prebuilt_libpath_pattern is ``lib${bits}``; this repo only
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:308:# This used to be done by local_prebuilt/prepare.py, invoked from blade.sh
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:311:# sync) while producing the exact same on-disk result the prebuilt targets
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:312:# consume. local_prebuilt/BUILD load()s this file, so the symlinks are created
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:313:# before its prebuilt targets are declared.
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:316:# local_prebuilt/lib64 symlink tree. TORCH_ROOT (exported by blade.sh as an
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:329:    torch_root = os.environ.get("TORCH_ROOT")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:338:        "CUDA/NCCL prebuilt symlinks; tried: " + ", ".join(candidates) +
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:343:def _prebuilt_output_dirs():
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:344:    # blade resolves a prebuilt cc_library's .so/.a as
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:345:    # ``<package_dir>/<prebuilt_libpath_pattern>/lib<name>.<ext>`` with the
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:350:    base = _lagrange_csrc_dir() + "/local_prebuilt"
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:388:def _materialize_local_prebuilt(shared_libs, static_libs):
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:389:    for directory in _prebuilt_output_dirs():
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:402:        _materialize_local_prebuilt(_LOCAL_SHARED_LIB_MAP, _LOCAL_STATIC_LIB_MAP)
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:405:            "failed to materialize local CUDA/NCCL prebuilt symlinks under " +
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:406:            ", ".join(_prebuilt_output_dirs()) + ": " + str(exc)
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:410:# external-prebuilt replacement.  Targets that need additional discovered CUDA
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:416:# CUDA compile-flag surface. These mirror BUILD.share's general CPPFLAGS but are
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:418:# baked in; CUDA targets pull these in via extra_cppflags/extra_cuflags.
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:431:# general TORCH_DEFAULT_EXTRA_CPPFLAGS. Previously BUILD.share injected these
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.cuda:505:# (discovered as the local prebuilt `:nvToolsExt`, whose export_incs supply the
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:5:# load() another .share (it raises NameError: name 'load' is not defined).
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:10:# Environment contract — read once, here. Blade isolates each load() in its
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:18:ENABLE_AVX2 = os.environ.get("ENABLE_AVX2", "true").lower() in ["true", "1", "yes"]
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:19:GCC_VERSION = os.environ.get("GCC")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:20:CUSTOM_TORCH_ENABLE_CPP_MF16C = bool(os.environ.get("CUSTOM_TORCH_ENABLE_CPP_MF16C") == "1")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:21:COMPUTE_PLATFORM = os.environ.get("COMPUTE_PLATFORM")
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:61:# CUDA/NCCL discovery, compile flags, link flags, local prebuilt deps
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:97:# Returns a tuple (prefer_dynamic, prefer_deps):
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:98:#   - prefer_dynamic: list[str], to be passed into library_settler(...)
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:99:#   - prefer_deps:    list[str], to be passed into global_settler(...)
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:101:    BUILD_REGION = os.environ.get("BUILD_REGION", "cn").lower()
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:103:    prefer_dynamic = [
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:104:        "cpp3rdlib/lz4",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:105:        "cpp3rdlib/openssl",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:106:        "cpp3rdlib/libevent",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:107:        "cpp3rdlib/protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:108:        "cpp3rdlib/libaio",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:109:        "cpp3rdlib/snappy",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:110:        "cpp3rdlib/gtest",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:111:        "cpp3rdlib/isa-l",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:112:        "cpp3rdlib/numa",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:113:        "cpp3rdlib/c-ares",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:114:        "cpp3rdlib/expat",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:119:            "cpp3rdlib/libevent:2.1.8",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:120:            "cpp3rdlib/numa:2.0.12_dynamic",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:123:            "cpp3rdlib/folly:v2018.08.20.00.avx2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:133:            "cpp3rdlib/fbthrift:v2018.08.20.00",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:134:            "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:141:                "cpp3rdlib/fbthrift:v2018.08.20.00.avx2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:142:                "cpp3rdlib/wangle:v2018.08.20.00.avx2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:143:                "cpp3rdlib/openssl:1.1.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:146:            "cpp3rdlib/log4cxx:0.10.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:147:            "cpp3rdlib/hiredis:f5f855c",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:148:            "cpp3rdlib/google-snappy:sys-1.1.10.bm.1",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:149:            "cpp3rdlib/snappy:sys-1.1.10.bm.1",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:150:            "cpp3rdlib/bzip2:1.0.8",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:151:            "cpp3rdlib/concurrentqueue:master",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:152:            "cpp3rdlib/restclient-cpp:master",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:153:            "cpp3rdlib/tbb:2020_U2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:154:            "cpp3rdlib/abseil-cpp:lts_2023_08_02-stesrc",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:155:            "cpp3rdlib/protobuf:sys-4.26.0-bm.0-absl-src",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:156:            "cpp3rdlib/spdlog:1.10.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:157:            "cpp3rdlib/leveldb:v1.17",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:158:            "cpp3rdlib/murmurhash3:master",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:159:            "cpp3rdlib/nlohmann_json:v3.9.1",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:160:            "cpp3rdlib/zlib:1.2.11",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:161:            "cpp3rdlib/parallel-hashmap:master",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:162:            "cpp3rdlib/flatbuffers:1.12.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:163:            "cpp3rdlib/cityhash:8af9b8c2b",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:164:            "cpp3rdlib/keyutils:1.6.1",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:165:            "cpp3rdlib/gflags:2.2.2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:166:            "cpp3rdlib/zstd:1.4.4",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:167:            "cpp3rdlib/sparsehash:2.0.2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:168:            "cpp3rdlib/numa:2.0.12_dynamic",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:169:            "cpp3rdlib/curl:7.69.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:170:            "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:171:            "cpp3rdlib/opentracing-cpp:1.5.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:172:            "cpp3rdlib/libevent:2.1.8",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:173:            "cpp3rdlib/fmt:9.0.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:174:            "cpp3rdlib/zookeeper:3.5.7",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:175:            "cpp3rdlib/glog:0.4.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:176:            "cpp3rdlib/libaio:0.3.110",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:177:            "cpp3rdlib/Eigen:tf2.15-jaguar",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:178:            "cpp3rdlib/double-conversion:3.1.5",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:179:            "cpp3rdlib/rdma-utils:empty",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:180:            "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:181:            "cpp3rdlib/jemalloc:empty",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:187:            "cpp3rdlib/unwind:1.2.1-10",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:188:            "cpp3rdlib/krb5:1.17-3",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:190:            "cpp3rdlib/libxml2:2.10.3",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:192:            "cpp3rdlib/folly:v2018.08.20.00.avx2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:195:            "cpp3rdlib/lz4:1.9.2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:200:            "cpp3rdlib/libevent:2.1.8-fPIC",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:201:            "cpp3rdlib/abseil-cpp:lts_2023_08_02-stesrc",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:202:            "cpp3rdlib/protobuf:sys-4.26.0-bm.0-absl-src",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:203:            "cpp3rdlib/jemalloc:empty",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:204:            "cpp3rdlib/Eigen:tf2.15-jaguar",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:207:            "cpp3rdlib/rdma-utils:empty",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:208:            "cpp3rdlib/glog:0.4.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:209:            "cpp3rdlib/gflags:2.2.2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:211:            "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:215:            "cpp3rdlib/unwind:1.2.1-10",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:216:            "cpp3rdlib/krb5:1.17-3",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:217:            "cpp3rdlib/spdlog:1.10.0",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:218:            "cpp3rdlib/folly:v2018.08.20.00.avx2",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:221:            "cpp3rdlib/zlib:1.2.11",
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:226:    return prefer_dynamic, prefer_deps
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:231:#   prefer_dynamic, prefer_deps = get_torch_root_settler_config()
+7ec5497:bytedance/lagrange_torch/csrc/BUILD.share:232:#   override_prefer_dep(prefer_deps, "cpp3rdlib/nlohmann_json", "v3.11.2")
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:6:    or os.environ.get("ARCH", "") in ["aarch64", "arm64"]
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:7:    or os.environ.get("TARGET_ARCH", "") in ["aarch64", "arm64"]
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:11:    os.environ.get("BUILD_REPO_NAME", "") == "aml/lagrange/lgtorch_llm"
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:14:# Same region set BUILD.share and build_scm.sh use for the TTP branches.
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:15:_is_ttp_build = os.environ.get("BUILD_REGION", "cn").lower() in [
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:50:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:51:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:76:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:86:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:90:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/cache_engine/BUILD:93:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:25:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:28:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:38:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:46:      "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:47:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/common/BUILD:50:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:13:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:26:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:43:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:56:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:59:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:69:    link_all_symbols = True,
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:81:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/dataloader/BUILD:84:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:3:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:11:      "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:12:      "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:13:      "cpp3rdlib/rapidjson:1.1.1@//cpp3rdlib/rapidjson:rapidjson",
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:14:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:20:    extra_cppflags=TORCH_DEFAULT_EXTRA_CPPFLAGS + (["-fprofile-dir={}/..".format(os.getenv('TORCH_ROOT'))] if os.getenv("COVERAGE") else []),
+7ec5497:bytedance/lagrange_torch/csrc/device/api/sparse/BUILD:21:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/ascend/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/ascend/BUILD:7:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/ascend/sparse/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/ascend/sparse/BUILD:9:      "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/device/ascend/sparse/BUILD:11:      "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/ascend/sparse/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/BUILD:3:load("//torch/bytedance/lagrange_torch/csrc/device/cuda/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/BUILD:24:        "//torch/bytedance/lagrange_torch/csrc/device/cuda/common:common_cu_test",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/BUILD:30:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:12:      "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:13:      "cpp3rdlib/Eigen:tf2.15-jaguar@//cpp3rdlib/Eigen:Eigen",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:20:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:30:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:39:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:42:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:45:cu_library(
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:46:    name="common_cu_test",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:50:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:51:        "cpp3rdlib/Eigen:tf2.15-jaguar@//cpp3rdlib/Eigen:Eigen",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:56:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/common/BUILD:57:    extra_cuflags=TORCH_CU_LIBRARY_EXTRA_CUFLAGS,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/model/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/model/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/model/BUILD:19:    "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/model/BUILD:21:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/model/BUILD:30:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/model/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:4:cu_library(
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:14:    extra_cuflags=TORCH_CU_LIBRARY_EXTRA_CUFLAGS,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:26:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:31:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:39:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:44:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/ops/BUILD:47:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:3:load("//torch/bytedance/lagrange_torch/csrc/device/cuda/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:6:cu_library(
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:11:      "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:23:      "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:31:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:32:    extra_cuflags=TORCH_CU_LIBRARY_EXTRA_CUFLAGS,
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:39:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/device/cuda/sparse/BUILD:46:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/BUILD:11:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/common/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/common/BUILD:15:    "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/common/BUILD:17:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/model/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/model/BUILD:19:    "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/model/BUILD:21:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/model/BUILD:30:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/model/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/sparse/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/sparse/BUILD:18:      "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/sparse/BUILD:19:      "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/device/mlu/sparse/BUILD:26:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/distributed/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/distributed/BUILD:9:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/distributed/BUILD:14:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/distributed/BUILD:22:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/distributed/BUILD:25:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/erdos_compact/framework/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/erdos_compact/framework/BUILD:11:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/erdos_compact/framework/BUILD:19:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/erdos_compact/framework/BUILD:27:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/erdos_compact/framework/BUILD:30:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "FOUNTAIN_BRANCH")
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:15:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:16:      # "cpp3rdlib/fmt:9.0.0@//cpp3rdlib/fmt:fmt",
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:17:      "cpp3rdlib/abseil-cpp:20240722.0@//cpp3rdlib/abseil-cpp:absl",
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:19:      "cpp3rdlib/rapidjson:1.1.1@//cpp3rdlib/rapidjson:rapidjson",
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:23:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:31:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:32:      "cpp3rdlib/fmt:9.0.0@//cpp3rdlib/fmt:fmt",
+7ec5497:bytedance/lagrange_torch/csrc/ext/BUILD:35:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/increment_service/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/increment_service/BUILD:10:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/increment_service/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/increment_service/BUILD:25:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/increment_service/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:3:_prefer_dynamic, _prefer_deps = get_torch_root_settler_config()
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:5:    _prefer_deps, "cpp3rdlib/nlohmann_json", "v3.10.4"
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:8:    _prefer_deps, "cpp3rdlib/jemalloc", "sys-5.4.0.bm.3"
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:10:library_settler(prefer_dynamic=_prefer_dynamic)
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:11:global_settler(prefer_deps=_prefer_deps)
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:21:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:27:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:44:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:54:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/BUILD:61:        "cpp3rdlib/jemalloc:sys-5.4.0.bm.3@//cpp3rdlib/jemalloc:jemalloc",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:12:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:13:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:24:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:27:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/BUILD:30:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:8:        "cpp3rdlib/nsync:v1.22.0@//cpp3rdlib/nsync:nsync_cpp",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:9:        "cpp3rdlib/abseil-cpp:20240722.0@//cpp3rdlib/abseil-cpp:absl",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:12:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:20:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:23:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/batch/utils/BUILD:26:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:11:      "cpp3rdlib/abseil-cpp:20240722.0@//cpp3rdlib/abseil-cpp:absl",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:31:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:46:      "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:47:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:51:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:61:      "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:62:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:67:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:79:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:89:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:93:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:105:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:115:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:119:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:137:      "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:141:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:161:    "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:168:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:175:      "cpp3rdlib/sparsehash:2.0.2@//cpp3rdlib/sparsehash:sparsehash",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:179:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:186:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/BUILD:190:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/debug_utils/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/debug_utils/BUILD:12:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/debug_utils/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/debug_utils/BUILD:26:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/debug_utils/BUILD:30:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:24:        "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:47:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:62:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:69:      "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:70:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:73:      "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:77:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:88:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:92:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:100:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:105:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:114:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:118:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:126:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/dump/BUILD:130:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/tensor_utils/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/tensor_utils/BUILD:14:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/tensor_utils/BUILD:19:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/tensor_utils/BUILD:29:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/common/tensor_utils/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/BUILD:23:        if os.getenv("COMPUTE_PLATFORM") == "MLU"
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/BUILD:30:        if os.getenv("COMPUTE_PLATFORM") == "CUDA"
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/BUILD:35:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/BUILD:48:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/BUILD:24:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/event/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/event/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/event/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/event/BUILD:27:    "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/event/BUILD:31:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:10:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:11:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:12:        "cpp3rdlib/boost:1.74.0@//cpp3rdlib/boost:boost",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:23:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/ipc/BUILD:26:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/memory/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/memory/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/memory/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/memory/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/memory/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/stream/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/stream/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/stream/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/stream/BUILD:24:    "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/stream/BUILD:28:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/utils/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/utils/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/utils/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/utils/BUILD:26:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/cuda/utils/BUILD:30:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/mlu/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/mlu/BUILD:7:      "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/mlu/BUILD:8:      "cpp3rdlib/Eigen:tf2.15-jaguar@//cpp3rdlib/Eigen:Eigen",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/mlu/BUILD:9:      "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/inference/device/mlu/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/emb_cache/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/emb_cache/BUILD:11:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/emb_cache/BUILD:29:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/emb_cache/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/emb_cache/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:9:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:30:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:49:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:65:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:82:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:107:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:125:        "cpp3rdlib/googlemock:1.10.0@//cpp3rdlib/googlemock:gmock",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:130:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:133:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:141:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/BUILD:146:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest,gtest_main",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/preprocessor/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/preprocessor/BUILD:29:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/preprocessor/BUILD:80:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/preprocessor/BUILD:83:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/preprocessor/BUILD:91:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/example/preprocessor/BUILD:94:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/ipc/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/ipc/BUILD:9:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/ipc/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/ipc/BUILD:26:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/ipc/BUILD:30:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/BUILD:4:_prefer_dynamic, _prefer_deps = get_torch_root_settler_config()
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/BUILD:5:override_prefer_dep(_prefer_deps, "cpp3rdlib/yaml-cpp", "0.7.0")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/BUILD:6:library_settler(prefer_dynamic=_prefer_dynamic)
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/BUILD:7:global_settler(prefer_deps=_prefer_deps)
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/BUILD:22:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/BUILD:24:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:13:        "cpp3rdlib/magic_enum:0.9.3@//cpp3rdlib/magic_enum:magic_enum",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:14:        "cpp3rdlib/folly:v2018.08.20.00.avx2@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:15:        "cpp3rdlib/rapidjson:1.0.2@//cpp3rdlib/rapidjson:rapidjson",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:16:        "cpp3rdlib/yaml-cpp:0.7.0@//cpp3rdlib/yaml-cpp:yaml-cpp",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:20:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/common/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/context/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/context/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/context/BUILD:23:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/context/BUILD:27:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/context/BUILD:30:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/executor/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/executor/BUILD:14:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:27:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/BUILD:56:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/client/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/client/BUILD:10:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/client/BUILD:12:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/client/BUILD:13:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc++",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/client/BUILD:16:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/client/BUILD:22:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:7:        "cpp3rdlib/flatbuffers:1.12.0@//cpp3rdlib/flatbuffers:flatbuffers",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:12:proto_library(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:16:        "cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:17:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:18:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc++",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/idl/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/server/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/server/BUILD:10:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/server/BUILD:12:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/server/BUILD:13:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc++",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/server/BUILD:15:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/server/BUILD:24:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/utils/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/utils/BUILD:16:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/utils/BUILD:20:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/utils/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/utils/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/ipc/utils/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/memory/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/memory/BUILD:13:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/memory/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/memory/BUILD:25:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/memory/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/memory/BUILD:32:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/pipeline/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/pipeline/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/pipeline/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/pipeline/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/pipeline/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/plugin/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/plugin/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/plugin/BUILD:27:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/plugin/BUILD:31:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/plugin/BUILD:34:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/runtime/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/runtime/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/tensor/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/tensor/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/tensor/BUILD:24:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/tensor/BUILD:28:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/tensor/BUILD:31:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/worker_quota/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/framework/worker_quota/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/BUILD:7:    return os.getenv("MANHATTAN_PLUGIN_BRANCH", "master")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/BUILD:23:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/batch/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/batch/BUILD:19:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/batch/BUILD:29:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/batch/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/batch/BUILD:36:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/laplace2llm/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/laplace2llm/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/laplace2llm/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/laplace2llm/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/laplace2llm/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/split_batch_by_item/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/split_batch_by_item/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/split_batch_by_item/BUILD:28:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/split_batch_by_item/BUILD:32:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/official_plugins/split_batch_by_item/BUILD:35:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/plugin_api/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/plugin_api/BUILD:12:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/rpc_server/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/rpc_server/BUILD:10:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/rpc_server/BUILD:18:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/rpc_server/BUILD:26:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/side_car/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/side_car/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/side_car/BUILD:25:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/side_car/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/side_car/BUILD:32:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:12:        "cpp3rdlib/tokenizers-cpp:hf_0.21.0_with_thread_safe_c_interface@//cpp3rdlib/tokenizers-cpp:tokenizers_c",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:13:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:25:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/manhattan_llm/tokenizer/BUILD:32:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:12:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:19:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:31:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:38:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:49:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:54:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:66:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_manager/BUILD:70:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_meta/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_meta/BUILD:11:        "cpp3rdlib/folly:2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_meta/BUILD:22:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_meta/BUILD:30:      "cpp3rdlib/googlemock:1.10.0@//cpp3rdlib/googlemock:gmock",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_meta/BUILD:31:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/model_meta/BUILD:35:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:11:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:12:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:31:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:40:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/BUILD:43:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/cpu_pooling/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/cpu_pooling/BUILD:11:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/BUILD:11:        if os.getenv("COMPUTE_PLATFORM") == "MLU"
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/BUILD:17:        if os.getenv("COMPUTE_PLATFORM") == "CUDA"
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/BUILD:24:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/cuda/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/cuda/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/cuda/BUILD:4:cu_library(
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/cuda/BUILD:12:    extra_cuflags=TORCH_CU_LIBRARY_EXTRA_CUFLAGS,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/cuda/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/mlu/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/pooling/gpu_pooling/mlu/BUILD:8:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/ps_fetcher/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/ps_fetcher/BUILD:14:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/ps_fetcher/BUILD:22:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/ps_fetcher/BUILD:25:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/ps_fetcher/BUILD:28:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/BUILD:11:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/BUILD:22:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/BUILD:26:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/client/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/client/BUILD:10:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/client/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/idl/BUILD:7:        "cpp3rdlib/fbthrift:v2018.08.20.00@//cpp3rdlib/fbthrift:thriftcpp2,thrift,transport,security,thriftprotocol,thriftfrozen2"
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/server/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/server/BUILD:9:        "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/server/BUILD:16:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib//boost:boost_filesystem",
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/server/BUILD:20:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/server/BUILD:29:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/runner_proxy/server/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:4:global_settler(prefer_deps=[
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:6:    "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:8:    "cpp3rdlib/hiredis:f5f855c",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:9:    "cpp3rdlib/gflags:2.2.2",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:24:    "cpp3rdlib/gflags:2.2.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:55:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:66:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:101:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:108:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:136:        "cpp3rdlib/hiredis:f5f855c@//cpp3rdlib/hiredis:hiredis",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:139:        "cpp3rdlib/Eigen:tf2.15-jaguar@//cpp3rdlib/Eigen:Eigen",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:140:        "cpp3rdlib/folly:v2018.08.20.00.avx2@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:141:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:142:        "cpp3rdlib/krb5:1.17-3@//cpp3rdlib/krb5:krb5",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:143:        "cpp3rdlib/openssl:1.0.2u@//cpp3rdlib/openssl:ssl",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:144:        "cpp3rdlib/abseil-cpp:lts_2023_08_02-stesrc@//cpp3rdlib/abseil-cpp:absl",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:145:        "cpp3rdlib/protobuf:sys-4.26.0-bm.0-absl-src@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:146:        "cpp3rdlib/tbb:2020_U2@//cpp3rdlib/tbb:tbb",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:147:        "cpp3rdlib/libevent:2.1.8@//cpp3rdlib/libevent:event",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:150:        "cpp3rdlib/bzip2:1.0.8@//cpp3rdlib/bzip2:bz2",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:151:        "cpp3rdlib/double-conversion:3.1.5@//cpp3rdlib/double-conversion:double-conversion",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:152:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:155:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/inference/service/BUILD:158:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:4:# This is the blade *package* that owns the local CUDA/NCCL prebuilt targets
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:6:# It is pulled in implicitly through those dep labels -- nothing ``load()``s it by
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:7:# path -- so a grep for "local_prebuilt/BUILD" finds no caller.
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:9:# It must stay a standalone package BUILD file (not a ``load()``ed library like
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:11:#   1. blade resolves a prebuilt cc_library's .so/.a as
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:12:#      ``<dir of the BUILD file declaring it>/<prebuilt_libpath_pattern>/lib<name>.{so,a}``
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:14:#      repo builds). The symlinks live in ``local_prebuilt/lib64/``, so the
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:15:#      declaring BUILD file must sit right here in ``local_prebuilt/``.
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:16:#   2. ``load()`` only imports symbols; ``cc_library(...)`` calls inside a loaded
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:17:#      file do not register targets in the loading package. The prebuilt targets
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:21:# ``_materialize_local_prebuilt`` block), which this file load()s first.
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:22:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:23:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:25:# Inter-library dependencies among discovered prebuilt DSOs.  Only direct
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:27:# dependent library is part of this package, not an :prebuilt_dep) belong here.
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:41:def _local_prebuilt_deps(lib):
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:45:def _local_prebuilt_library(lib, build_dynamic=None):
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:47:    if build_dynamic is not None:
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:48:        kwargs["build_dynamic"] = build_dynamic
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:49:    # LOCAL_NCCL_INCS is used for every prebuilt (not just NCCL) for simplicity:
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:57:        deps=_local_prebuilt_deps(lib),
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:58:        prebuilt=True,
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:64:    _local_prebuilt_library(lib, build_dynamic=True)
+7ec5497:bytedance/lagrange_torch/csrc/local_prebuilt/BUILD:67:    _local_prebuilt_library(lib, build_dynamic=False)
+7ec5497:bytedance/lagrange_torch/csrc/model_context/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/model_context/BUILD:16:    "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/model_context/BUILD:18:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/nova/magnus/service/BUILD:4:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/nova/magnus/service/BUILD:15:    "cpp3rdlib/python3:3.11.10@//cpp3rdlib/python3:python3.11",
+7ec5497:bytedance/lagrange_torch/csrc/nova/magnus/service/BUILD:16:    "cpp3rdlib/pybind11:v2.9.2-python3.11.9@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/lagrange_torch/csrc/nova/magnus/service/BUILD:33:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/numeric/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/numeric/BUILD:14:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/numeric/BUILD:22:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/numeric/BUILD:25:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:4:cu_library(
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:10:      "cpp3rdlib/gflags:2.1.2@//cpp3rdlib/gflags:gflags",
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:11:      "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:16:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:24:    "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:28:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/optimizer/BUILD:31:cc_test(
+7ec5497:bytedance/lagrange_torch/csrc/producer/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/producer/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/producer/BUILD:23:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/producer/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.cuda", "*")
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:7:cu_library(
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:12:      "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:15:      "cpp3rdlib/glog:0.3.3@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:21:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:22:    extra_cuflags=TORCH_CU_LIBRARY_EXTRA_CUFLAGS,
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:30:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/sparse/BUILD:34:    link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/sparse/parameter_service/client/BUILD:2:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lagrange_torch/csrc/sparse/parameter_service/client/BUILD:3:os.environ["DBG_LINE_ONLY"]="0"
+7ec5497:bytedance/lagrange_torch/csrc/sparse/parameter_service/client/BUILD:18:  link_all_symbols=True,
+7ec5497:bytedance/lagrange_torch/csrc/sparse/parameter_service/client/BUILD:25:      "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest",
+7ec5497:bytedance/lagrange_torch/csrc/sparse/parameter_service/client/BUILD:29:    link_all_symbols=True,
+7ec5497:bytedance/lgtorch_idl/proto/BUILD:1:load("//torch/bytedance/lagrange_torch/csrc/BUILD.share", "*")
+7ec5497:bytedance/lgtorch_idl/proto/BUILD:3:proto_library(
+7ec5497:bytedance/lgtorch_idl/proto/BUILD:6:    deps=["cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf"],
+7ec5497:bytedance/lgtorch_idl/thrift/BUILD:1:thrift_library(
+7ec5497:bytedance/lgtorch_idl/thrift/BUILD:5:        "cpp3rdlib/thrift:0.9.1@//cpp3rdlib/thrift:thrift",
+7ec5497:bytedance/lgtorch_idl/thrift/BUILD:7:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lgtorch_idl/thrift/BUILD:16:        "cpp3rdlib/fbthrift:v2016.11.28.00@//cpp3rdlib/fbthrift:thriftprotocol,thrift",
+7ec5497:bytedance/lgtorch_idl/thrift/BUILD:27:        "cpp3rdlib/fbthrift:v2016.11.28.00@//cpp3rdlib/fbthrift:thriftprotocol,thriftcpp2,thrift",
+7ec5497:bytedance/lgtorch_idl/thrift/BUILD:39:        "cpp3rdlib/fbthrift:v2018.08.20.00@//cpp3rdlib/fbthrift:thriftcpp2,thrift,transport,security,thriftprotocol,thriftfrozen2"
+7ec5497:bytedance/lgtorch_idl/thrift/distributed/BUILD:1:thrift_library(
+7ec5497:bytedance/lgtorch_idl/thrift/distributed/BUILD:5:        "cpp3rdlib/thrift:0.9.1@//cpp3rdlib/thrift:thrift",
+7ec5497:bytedance/lgtorch_idl/thrift/distributed/BUILD:7:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/lgtorch_idl/thrift/distributed/BUILD:16:        "cpp3rdlib/fbthrift:v2016.11.28.00@//cpp3rdlib/fbthrift:thriftprotocol,thrift",
+7ec5497:bytedance/lgtorch_idl/thrift/distributed/BUILD:27:        "cpp3rdlib/fbthrift:v2016.11.28.00@//cpp3rdlib/fbthrift:thriftprotocol,thriftcpp2,thrift",
+7ec5497:bytedance/lgtorch_idl/thrift/distributed/BUILD:40:        "cpp3rdlib/fbthrift:v2018.08.20.00@//cpp3rdlib/fbthrift:thriftcpp2,thrift,transport,security,thriftprotocol,thriftfrozen2"
+7ec5497:bytedance/nodus/_experimental/csrc/common/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/common/BUILD:9:        "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/BUILD:15:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/BUILD:16:        "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/BUILD:19:    link_all_symbols=True,
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/dataset_run_manager/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/dataset_run_manager/BUILD:14:        "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/load_balancer/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/load_balancer/BUILD:13:    link_all_symbols=True,
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/python_runtime/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/python_runtime/BUILD:12:        "cpp3rdlib/boost:1.72.0@//cpp3rdlib/boost:boost_filesystem",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/python_runtime/BUILD:13:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/python_runtime/BUILD:14:        "cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/python_runtime/BUILD:15:        "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/tests/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/tests/BUILD:4:cc_test(
+7ec5497:bytedance/nodus/_experimental/csrc/distributed/coordinator/tests/BUILD:12:        "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/csrc/external/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/_experimental/csrc/external/BUILD:9:        "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:1:global_settler(
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:3:        "cpp3rdlib/grpc:1.22.0_pb3.8.0",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:4:        "cpp3rdlib/protobuf:3.8.0",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:5:        "cpp3rdlib/snappy:1.1.8",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:6:        "cpp3rdlib/sqlite:3.37.0",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:24:    "cpp3rdlib/pybind11:v2.9.2-python3.11.10-full@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:25:    "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/primus/native/BUILD:34:cc_plugin(
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:9:        "cpp3rdlib/spdlog:1.10.0@//cpp3rdlib/spdlog:spdlog",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:10:        "cpp3rdlib/fmt:9.0.0@//cpp3rdlib/fmt:fmt",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:14:    custom_deps={
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:16:            "cpp3rdlib/grpc:1.22.0_pb3.8.0-gcc8@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:17:            "cpp3rdlib/protobuf:3.8.0-gcc8@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:18:            "cpp3rdlib/snappy:1.1.8-gcc8@//cpp3rdlib/snappy:snappy",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:21:            "cpp3rdlib/grpc:1.22.0_pb3.21.12@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:22:            "cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/common/BUILD:23:            "cpp3rdlib/snappy:1.1.10@//cpp3rdlib/snappy:snappy",
+7ec5497:bytedance/nodus/_experimental/primus/native/core/master/BUILD:13:        "cpp3rdlib/sqlite:3.37.0@//cpp3rdlib/sqlite:sqlite3",
+7ec5497:bytedance/nodus/_experimental/primus/native/core/master/task/agent/rpc/BUILD:9:        "cpp3rdlib/grpc:grpc++@//cpp3rdlib/grpc:grpc++",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:1:proto_library(
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:9:        "cpp3rdlib/grpc:1.22.0_pb3.8.0-gcc8@//cpp3rdlib/grpc:grpc",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:10:        "cpp3rdlib/protobuf:3.8.0-gcc8@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:12:    custom_deps={
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:14:            "cpp3rdlib/grpc:1.22.0_pb3.8.0-gcc8@//cpp3rdlib/grpc:grpc",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:15:            "cpp3rdlib/protobuf:3.8.0-gcc8@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:16:            "cpp3rdlib/snappy:1.1.8-gcc8@//cpp3rdlib/snappy:snappy",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:19:            "cpp3rdlib/grpc:1.22.0_pb3.21.12@//cpp3rdlib/grpc:grpc",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:20:            "cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/proto/BUILD:21:            "cpp3rdlib/snappy:1.1.10@//cpp3rdlib/snappy:snappy",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:9:        "cpp3rdlib/grpc:1.22.0_pb3.8.0-gcc8@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:10:        "cpp3rdlib/protobuf:3.8.0-gcc8@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:12:    custom_deps={
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:14:            "cpp3rdlib/grpc:1.22.0_pb3.8.0-gcc8@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:15:            "cpp3rdlib/protobuf:3.8.0-gcc8@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:16:            "cpp3rdlib/snappy:1.1.8-gcc8@//cpp3rdlib/snappy:snappy",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:19:            "cpp3rdlib/grpc:1.22.0_pb3.21.12@//cpp3rdlib/grpc:grpc,grpc++",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:20:            "cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/_experimental/primus/native/rpc/BUILD:21:            "cpp3rdlib/snappy:1.1.10@//cpp3rdlib/snappy:snappy",
+7ec5497:bytedance/nodus/_experimental/primus/native/tests/BUILD:1:global_settler(
+7ec5497:bytedance/nodus/_experimental/primus/native/tests/BUILD:4:        "cpp3rdlib/grpc:1.22.0_pb3.8.0",
+7ec5497:bytedance/nodus/_experimental/primus/native/tests/BUILD:5:        "cpp3rdlib/protobuf:3.8.0",
+7ec5497:bytedance/nodus/_experimental/primus/native/tests/BUILD:6:        "cpp3rdlib/sqlite:3.37.0",
+7ec5497:bytedance/nodus/_experimental/primus/native/tests/BUILD:18:        "cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest,gtest_main",
+7ec5497:bytedance/nodus/csrc/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/BUILD:7:library_settler(
+7ec5497:bytedance/nodus/csrc/BUILD:8:    prefer_static=["data/trustlog"],
+7ec5497:bytedance/nodus/csrc/BUILD:11:if os.environ.get("CUSTOM_USE_LLVM20", "").lower() in ["", "0", "false", "no"]:
+7ec5497:bytedance/nodus/csrc/BUILD:13:    global_settler(
+7ec5497:bytedance/nodus/csrc/BUILD:15:            "cpp3rdlib/jemalloc:sys-5.2.1.bm.2",
+7ec5497:bytedance/nodus/csrc/BUILD:17:            "cpp3rdlib/tensorflow:2.9.2-cpu-cxx17",
+7ec5497:bytedance/nodus/csrc/BUILD:18:            "cpp3rdlib/Eigen:tf2.9.2",
+7ec5497:bytedance/nodus/csrc/BUILD:20:            "cpp3rdlib/abseil-cpp:lts_2023_08_02",
+7ec5497:bytedance/nodus/csrc/BUILD:21:            "cpp3rdlib/libevent:2.1.8-fPIC",
+7ec5497:bytedance/nodus/csrc/BUILD:23:            "cpp3rdlib/grpc:1.27-dev",
+7ec5497:bytedance/nodus/csrc/BUILD:24:            "cpp3rdlib/data-arch-valhalla-native:empty",
+7ec5497:bytedance/nodus/csrc/BUILD:25:            "cpp3rdlib/folly:v2018.08.20.00",
+7ec5497:bytedance/nodus/csrc/BUILD:26:            "cpp3rdlib/gflags:2.2.2",
+7ec5497:bytedance/nodus/csrc/BUILD:27:            "cpp3rdlib/librdkafka:multidc_1.0.6",
+7ec5497:bytedance/nodus/csrc/BUILD:35:    global_settler(
+7ec5497:bytedance/nodus/csrc/BUILD:37:            "cpp3rdlib/jemalloc:empty",
+7ec5497:bytedance/nodus/csrc/BUILD:39:            "cpp3rdlib/Eigen:tf2.9.2",
+7ec5497:bytedance/nodus/csrc/BUILD:40:            "cpp3rdlib/abseil-cpp:lts_2023_08_02",
+7ec5497:bytedance/nodus/csrc/BUILD:41:            # "cpp3rdlib/libevent:2.1.8-fPIC",
+7ec5497:bytedance/nodus/csrc/BUILD:42:            "cpp3rdlib/lz4:1.9.2",
+7ec5497:bytedance/nodus/csrc/BUILD:43:            "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/BUILD:44:            "cpp3rdlib/double-conversion:3.1.5",
+7ec5497:bytedance/nodus/csrc/BUILD:45:            "cpp3rdlib/tbb:2020_U2",
+7ec5497:bytedance/nodus/csrc/BUILD:46:            "cpp3rdlib/libxml2:2.10.3",
+7ec5497:bytedance/nodus/csrc/BUILD:47:            "cpp3rdlib/tensorflow:2.9.2-cpu-cxx17-llvm20",
+7ec5497:bytedance/nodus/csrc/BUILD:48:            "cpp3rdlib/librdkafka:multidc_1.0.9",
+7ec5497:bytedance/nodus/csrc/BUILD:49:            "cpp3rdlib/bzip2:1.0.8",
+7ec5497:bytedance/nodus/csrc/BUILD:50:            "cpp3rdlib/gflags:2.2.2",
+7ec5497:bytedance/nodus/csrc/BUILD:56:            "cpp3rdlib/rdma-utils:empty",
+7ec5497:bytedance/nodus/csrc/BUILD:57:            "cpp3rdlib/glog:0.4.0",
+7ec5497:bytedance/nodus/csrc/BUILD:59:            "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/BUILD:62:            "cpp3rdlib/unwind:1.2.1-10",
+7ec5497:bytedance/nodus/csrc/BUILD:63:            "cpp3rdlib/krb5:1.17-3",
+7ec5497:bytedance/nodus/csrc/BUILD:64:            "cpp3rdlib/spdlog:1.10.0",
+7ec5497:bytedance/nodus/csrc/BUILD:65:            "cpp3rdlib/folly:v2018.08.20.00",
+7ec5497:bytedance/nodus/csrc/BUILD:68:            "cpp3rdlib/zlib:1.2.11",
+7ec5497:bytedance/nodus/csrc/BUILD:71:            "cpp3rdlib/libevent:2.1.8",
+7ec5497:bytedance/nodus/csrc/BUILD:72:            "cpp3rdlib/curl:7.46.0",
+7ec5497:bytedance/nodus/csrc/BUILD:73:            "cpp3rdlib/snappy:1.1.8",
+7ec5497:bytedance/nodus/csrc/BUILD:74:            "cpp3rdlib/data-arch-valhalla-native:empty",
+7ec5497:bytedance/nodus/csrc/BUILD:79:library_settler(
+7ec5497:bytedance/nodus/csrc/BUILD:80:    prefer_dynamic=[
+7ec5497:bytedance/nodus/csrc/BUILD:81:        "cpp3rdlib/libevent",
+7ec5497:bytedance/nodus/csrc/BUILD:82:        "cpp3rdlib/lz4",
+7ec5497:bytedance/nodus/csrc/BUILD:83:        "cpp3rdlib/openssl",
+7ec5497:bytedance/nodus/csrc/BUILD:84:        "cpp3rdlib/isa-l",
+7ec5497:bytedance/nodus/csrc/BUILD:85:        "cpp3rdlib/fmt",
+7ec5497:bytedance/nodus/csrc/BUILD:86:        "cpp3rdlib/boost",
+7ec5497:bytedance/nodus/csrc/BUILD:87:        "cpp3rdlib/bzip2",
+7ec5497:bytedance/nodus/csrc/BUILD:88:        "cpp3rdlib/icu",
+7ec5497:bytedance/nodus/csrc/BUILD:89:        "cpp3rdlib/lzma",
+7ec5497:bytedance/nodus/csrc/BUILD:90:        "cpp3rdlib/libaio",
+7ec5497:bytedance/nodus/csrc/BUILD:97:    "cpp3rdlib/nlohmann_json:v3.9.1@//cpp3rdlib/nlohmann_json:json",
+7ec5497:bytedance/nodus/csrc/BUILD:98:    "cpp3rdlib/rapidjson:1.1.1@//cpp3rdlib/rapidjson:rapidjson",
+7ec5497:bytedance/nodus/csrc/BUILD:99:    "cpp3rdlib/fmt:9.0.0@//cpp3rdlib/fmt:fmt",
+7ec5497:bytedance/nodus/csrc/BUILD:100:    "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/csrc/BUILD:101:    "cpp3rdlib/krb5:1.17-3@//cpp3rdlib/krb5:gssrpc,k5crypto,kadm5clnt,kadm5srv,kdb5,krb5,krb5support",
+7ec5497:bytedance/nodus/csrc/BUILD:102:    "cpp3rdlib/unwind:1.2.1-10@//cpp3rdlib/unwind:unwind,unwind-coredump,unwind-generic,unwind-ptrace",
+7ec5497:bytedance/nodus/csrc/BUILD:105:    "cpp3rdlib/boost:1.72.0@//cpp3rdlib/boost:boost_chrono,boost_system,boost_regex,boost_thread,boost_date_time,boost_atomic,boost_filesystem",
+7ec5497:bytedance/nodus/csrc/BUILD:106:    "cpp3rdlib/Eigen:tf2.9.2@//cpp3rdlib/Eigen:Eigen",
+7ec5497:bytedance/nodus/csrc/BUILD:113:            "cpp3rdlib/jemalloc:empty@//cpp3rdlib/jemalloc:jemalloc",
+7ec5497:bytedance/nodus/csrc/BUILD:114:            "cpp3rdlib/krb5:1.17-3@//cpp3rdlib/krb5:gssrpc,k5crypto,kadm5clnt,kadm5srv,kdb5,krb5,krb5support",
+7ec5497:bytedance/nodus/csrc/BUILD:115:            "cpp3rdlib/unwind:1.2.1-10@//cpp3rdlib/unwind:unwind,unwind-coredump,unwind-generic,unwind-ptrace",
+7ec5497:bytedance/nodus/csrc/BUILD:116:            "cpp3rdlib/rapidjson:1.1.0@//cpp3rdlib/rapidjson:rapidjson",
+7ec5497:bytedance/nodus/csrc/BUILD:136:        if os.environ.get("ARCH", "") == "x86_64"
+7ec5497:bytedance/nodus/csrc/BUILD:139:    custom_deps=CUSTOM_DEPS,
+7ec5497:bytedance/nodus/csrc/BUILD:141:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/BUILD:153:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/BUILD:164:        if os.environ.get("CUSTOM_NO_FOUNTAIN_KERNEL", "0") != "1"
+7ec5497:bytedance/nodus/csrc/BUILD:167:    custom_deps=CUSTOM_DEPS,
+7ec5497:bytedance/nodus/csrc/BUILD:169:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/BUILD:172:cc_plugin(
+7ec5497:bytedance/nodus/csrc/BUILD:189:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/BUILD:190:        "cpp3rdlib/pybind11:v2.9.2-python3.11.10-full@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/nodus/csrc/BUILD:191:        "cpp3rdlib/python3:3.11.10@//cpp3rdlib/python3:python3.11",
+7ec5497:bytedance/nodus/csrc/BUILD:193:    custom_deps=CUSTOM_DEPS,
+7ec5497:bytedance/nodus/csrc/BUILD:199:cc_test(
+7ec5497:bytedance/nodus/csrc/BUILD:205:    custom_deps=CUSTOM_DEPS,
+7ec5497:bytedance/nodus/csrc/BUILD:210:cc_test(
+7ec5497:bytedance/nodus/csrc/BUILD:211:    name="tensor_numpy_test.bin",
+7ec5497:bytedance/nodus/csrc/BUILD:212:    srcs=["tensor_numpy_test.cc", "tensor_numpy.cc"],
+7ec5497:bytedance/nodus/csrc/BUILD:216:        "cpp3rdlib/pybind11:v2.9.2-python3.11.10-full@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/nodus/csrc/BUILD:217:        "cpp3rdlib/python3:3.11.10@//cpp3rdlib/python3:python3.11",
+7ec5497:bytedance/nodus/csrc/BUILD.share:6:    os.environ.get("CUSTOM_FOUNTAIN_BRANCH")
+7ec5497:bytedance/nodus/csrc/BUILD.share:7:    or os.environ.get("CUSTOM_LOCAL_FOUNTAIN_BRANCH")
+7ec5497:bytedance/nodus/csrc/BUILD.share:11:nodus_common_test_deps = ["cpp3rdlib/gtest:1.10.0@//cpp3rdlib/gtest:gtest"]
+7ec5497:bytedance/nodus/csrc/BUILD.share:28:USE_PRIMUS_TORCH_IO = os.environ.get("CUSTOM_USE_PRIMUS_TORCH_IO", "0") == "1"
+7ec5497:bytedance/nodus/csrc/BUILD.share:35:    virtual_env = os.environ.get("VIRTUAL_ENV")
+7ec5497:bytedance/nodus/csrc/BUILD.share:42:        for entry in os.environ.get("PATH", "").split(os.pathsep)
+7ec5497:bytedance/nodus/csrc/BUILD.share:49:    os.environ.get("CUSTOM_USE_TORCH_TENSOR_INSTANCE", "0") == "1"
+7ec5497:bytedance/nodus/csrc/distributed/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/BUILD:14:        "cpp3rdlib/pybind11:v2.9.2-python3.11.10-full@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/nodus/csrc/distributed/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:4:library_settler(
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:5:    prefer_dynamic=["cpp3rdlib/lz4", "cpp3rdlib/openssl"],
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:8:global_settler(
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:10:        "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:11:        "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:13:        "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:21:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:27:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/comm_executor/BUILD:30:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/common/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/common/BUILD:9:        "cpp3rdlib/zstd:1.4.4@//cpp3rdlib/zstd:zstd",
+7ec5497:bytedance/nodus/csrc/distributed/common/BUILD:10:        "cpp3rdlib/nlohmann_json:v3.9.1@//cpp3rdlib/nlohmann_json:json",
+7ec5497:bytedance/nodus/csrc/distributed/common/BUILD:11:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/distributed/common/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/common/BUILD:18:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:4:library_settler(
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:5:    prefer_dynamic=["cpp3rdlib/lz4", "cpp3rdlib/openssl"],
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:8:global_settler(
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:10:        "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:11:        "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:13:        "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:27:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/communicator/BUILD:30:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/communicator/base/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/communicator/base/BUILD:12:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/communicator/base/BUILD:15:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/communicator/mock/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/communicator/mock/BUILD:12:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/communicator/mock/BUILD:15:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/communicator/push/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/communicator/push/BUILD:15:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/communicator/push/BUILD:18:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:4:library_settler(
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:5:    prefer_dynamic=["cpp3rdlib/lz4", "cpp3rdlib/openssl"],
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:8:global_settler(
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:10:        "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:11:        "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:13:        "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:21:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:22:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:28:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/metrics/BUILD:31:cc_test(
+7ec5497:bytedance/nodus/csrc/distributed/receiver_service/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/receiver_service/BUILD:12:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/nodus/csrc/distributed/receiver_service/BUILD:13:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/distributed/receiver_service/BUILD:17:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:1:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:3:library_settler(
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:4:    prefer_dynamic=["cpp3rdlib/lz4", "cpp3rdlib/openssl"],
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:7:global_settler(
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:9:        "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:10:        "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:12:        "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:13:        "cpp3rdlib/gflags:2.2.2",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:14:        "cpp3rdlib/bzip2:1.0.8",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:15:        "cpp3rdlib/Eigen:tf1.15.3",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:16:        "cpp3rdlib/double-conversion:3.1.5",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:20:thrift_library(
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:24:        "cpp3rdlib/thrift:0.9.1@//cpp3rdlib/thrift:thrift",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:26:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:35:        "cpp3rdlib/fbthrift:v2016.11.28.00@//cpp3rdlib/fbthrift:thriftprotocol,thrift",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:46:        "cpp3rdlib/fbthrift:v2016.11.28.00@//cpp3rdlib/fbthrift:thriftprotocol,thriftcpp2,thrift",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:58:        "cpp3rdlib/fbthrift:v2018.08.20.00@//cpp3rdlib/fbthrift:thriftcpp2,thrift,transport,security,thriftprotocol,thriftfrozen2",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:71:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:72:        "cpp3rdlib/nlohmann_json:v3.9.1@//cpp3rdlib/nlohmann_json:json",
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:76:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/distributed/rpc/BUILD:79:cc_test(
+7ec5497:bytedance/nodus/csrc/instance/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/instance/BUILD:10:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/instance/BUILD:11:        "cpp3rdlib/protobuf:3.9.0@//cpp3rdlib/protobuf:protobuf",
+7ec5497:bytedance/nodus/csrc/instance/BUILD:18:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/instance/BUILD:28:        "cpp3rdlib/pybind11:v2.9.2-python3.11.10-full@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/nodus/csrc/instance/BUILD:31:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/instance/BUILD:34:cc_test(
+7ec5497:bytedance/nodus/csrc/instance/BUILD:40:        "cpp3rdlib/python3:3.11.10@//cpp3rdlib/python3:python3.11",
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:5:library_settler(
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:6:    prefer_dynamic=["cpp3rdlib/lz4", "cpp3rdlib/openssl"],
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:9:global_settler(
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:11:        "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:12:        "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:14:        "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:54:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:62:    prefer_dynamic=True,
+7ec5497:bytedance/nodus/csrc/kernel/BUILD:65:cc_test(
+7ec5497:bytedance/nodus/csrc/kernel/deepinsight/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/kernel/deepinsight/BUILD:21:    prefer_dynamic=True,
+7ec5497:bytedance/nodus/csrc/kernel/distributed/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/kernel/distributed/BUILD:14:    prefer_dynamic=True,
+7ec5497:bytedance/nodus/csrc/kernel/distributed/BUILD:17:cc_test(
+7ec5497:bytedance/nodus/csrc/kernel/producer/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/kernel/producer/BUILD:14:    prefer_dynamic=True,
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:4:library_settler(
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:5:    prefer_dynamic=["cpp3rdlib/lz4", "cpp3rdlib/openssl"],
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:8:global_settler(
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:10:        "cpp3rdlib/openssl:1.0.2u",
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:11:        "cpp3rdlib/boost:1.72.0",
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:13:        "cpp3rdlib/rapidjson:1.1.1",
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:22:        "cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog",
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:26:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/metrics/BUILD:29:cc_test(
+7ec5497:bytedance/nodus/csrc/service/BUILD:1:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/service/BUILD:4:library_settler(
+7ec5497:bytedance/nodus/csrc/service/BUILD:5:    prefer_dynamic=[
+7ec5497:bytedance/nodus/csrc/service/BUILD:6:        "cpp3rdlib/openssl",
+7ec5497:bytedance/nodus/csrc/service/BUILD:7:        "cpp3rdlib/lz4",
+7ec5497:bytedance/nodus/csrc/service/BUILD:13:if bool(os.environ.get("CUSTOM_STRIP_SYMBOL_TABLE", 0)):
+7ec5497:bytedance/nodus/csrc/service/BUILD:24:        "cpp3rdlib/folly:v2018.08.20.00@//cpp3rdlib/folly:folly",
+7ec5497:bytedance/nodus/csrc/service/BUILD:25:        "cpp3rdlib/fbthrift:v2018.08.20.00@//cpp3rdlib/fbthrift:thriftcpp2,thrift,transport,security,thriftprotocol,thriftfrozen2",
+7ec5497:bytedance/nodus/csrc/service/BUILD:46:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/service/BUILD:77:        "cpp3rdlib/python3:3.11.10@//cpp3rdlib/python3:python3.11",
+7ec5497:bytedance/nodus/csrc/service/BUILD:78:        "cpp3rdlib/pybind11:v2.9.2-python3.11.9@//cpp3rdlib/pybind11:pybind11",
+7ec5497:bytedance/nodus/csrc/service/BUILD:82:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/utils/BUILD:2:load("//torch/bytedance/nodus/csrc/BUILD.share", "*")
+7ec5497:bytedance/nodus/csrc/utils/BUILD:7:    deps=["cpp3rdlib/glog:0.4.0@//cpp3rdlib/glog:glog"],
+7ec5497:bytedance/nodus/csrc/utils/BUILD:9:    link_all_symbols=True,
+7ec5497:bytedance/nodus/csrc/utils/BUILD:12:cc_test(
+7ec5497:bytedance/nodus/idl/BUILD:1:PROTOBUF_DEP = "cpp3rdlib/protobuf:3.8.0@//cpp3rdlib/protobuf:protobuf"
+7ec5497:bytedance/nodus/idl/BUILD:2:GRPC_DEP = "cpp3rdlib/grpc:1.22.0_pb3.8.0@//cpp3rdlib/grpc:grpc"
+7ec5497:bytedance/nodus/idl/BUILD:4:proto_library(
+7ec5497:bytedance/nodus/idl/BUILD:10:proto_library(
+7ec5497:bytedance/nodus/idl/BUILD:16:proto_library(
+7ec5497:bytedance/nodus/idl/BUILD:27:proto_library(

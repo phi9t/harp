@@ -48,6 +48,10 @@ Workstreams view is an offline reference snapshot, not a live job monitor.
 
 ## Build the CLI
 
+The Corenius terminal agent, SQLite controller and collaboration tools live in
+[`corenius/`](corenius/README.md). See [engineering subsystem usage and scope](docs/corenius-integration.md)
+for its pinned toolchain, imported work and current qualification limits.
+
 With Mise and Python 3.9 or newer installed, run these commands from the
 repository root after reviewing `mise.toml`:
 

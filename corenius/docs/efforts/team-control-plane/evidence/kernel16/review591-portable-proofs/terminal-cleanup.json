@@ -1,0 +1,71 @@
+{
+  "base": "3e2622ecdb860e656e80f3023da8738e90fe4ac4",
+  "branch": "codex/kernel16-review591-author",
+  "scope": "one approved591 role isolation repair round; earlier3/3 preserved",
+  "commands": {
+    "focused_red": "tests/run-temporal.sh --offline --test assembled_operator same_principal -- --nocapture",
+    "boundary_red": "tests/run-temporal.sh --offline --test assembled_operator same_principal_role_filter_precedes_thirty_two_row_bounds -- --exact --nocapture",
+    "focused_green": "tests/run-temporal.sh --offline --test assembled_operator same_principal -- --nocapture",
+    "full": "tests/run-temporal.sh --offline --all-targets",
+    "strict": "cargo clippy --manifest-path crates/team-control-plane/Cargo.toml --locked --offline --all-targets -- -D warnings"
+  },
+  "service_handles": [
+    {
+      "session": 13306,
+      "run": "red",
+      "terminal": 101
+    },
+    {
+      "session": 47009,
+      "run": "red-both",
+      "terminal": 101
+    },
+    {
+      "session": 39656,
+      "run": "pagination-probe",
+      "terminal": 101,
+      "selected_proof": false,
+      "reason": "fixture setup failure; not behavioralred"
+    },
+    {
+      "session": 90003,
+      "run": "red-boundary",
+      "terminal": 101,
+      "selected_proof": false,
+      "reason": "fixture setup failure; not behavioralred"
+    },
+    {
+      "session": 45778,
+      "run": "red-boundary2",
+      "terminal": 101
+    },
+    {
+      "session": 4616,
+      "run": "green",
+      "terminal": 0
+    },
+    {
+      "session": 93426,
+      "run": "full",
+      "terminal": 0
+    }
+  ],
+  "restrictions": [
+    "no commits, landing, remotes or provider calls",
+    "one writer",
+    "exclusive Cargo/PG/Temporal slot",
+    "service/private configuration logs excluded from selected proof"
+  ],
+  "additional_handles": [
+    {
+      "session": 72354,
+      "run": "strict",
+      "terminal": 0
+    }
+  ],
+  "freeze_at": "2026-10-03T05:30:05.254005+00:00",
+  "source_writes_stopped": true,
+  "slot_released": true,
+  "actual_dispatches_in_new_fixtures": 0,
+  "provider_calls": 0
+}

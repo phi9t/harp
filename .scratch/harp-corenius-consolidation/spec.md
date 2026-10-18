@@ -26,8 +26,9 @@ runtime contract before removing research prose that currently documents it.
 
 The owner explicitly narrowed removal to RSI-related material. Preserve math,
 proof work (especially the Crouzeix proof), SICP as inspiration for agentic
-engineering, and other educational material. Preserve the Atlas for retained
-content; retire RSI-specific presentation and tooling only. Shared corpus,
+engineering, and other educational material. The owner subsequently explicitly requested deleting the Atlas rather than
+installing its missing frontend dependencies. Preserve retained content through
+Markdown, proof and publication tools. Shared corpus,
 source, search and publication machinery must retain its educational/proof
 consumers. The existing primary-checkout changes remain preserved.
 Article deletions apply to the isolated candidate; no history rewrite or removal
@@ -87,7 +88,7 @@ of the original checkout is authorized.
 
 - Harp retains only a brief article survey from its retired RSI research material.
 - Crouzeix and other math/proof work, SICP and other education remain functional;
-  their Atlas views, publication, source/evidence and validation contracts survive.
+  their publication, source/evidence and validation contracts survive; the Atlas is retired.
 - Harp contains the selected runtime, controller, tools and maintained practice;
   normal operation has no source/build/test/documentation dependency on another
   checkout.
@@ -112,3 +113,18 @@ do not silently skip the check.
 
 See [preservation inventory](issues/01-preservation-inventory.md) and
 [operational migration](issues/02-operational-migration.md).
+
+## Candidate integration checkpoint
+
+All 29 Corenius branch tips and all 12 dirty-worktree source snapshots are in the
+combined source ancestry at 64f55c72a6b7a5489cad22a33a923eb10a2228b9. The clean
+main worktree is the thirteenth inventory entry. The candidate contains 8,149
+source files under corenius, with source objects and explicit adaptation records.
+
+This checkpoint is a candidate commit, not a verified landing on Harp master.
+Required remaining repairs: delete the owner-retired Atlas and update its
+consumers; fix nine forbidden temporary-path occurrences introduced by the
+benchmark worktrees. Linux verification has passed 22 of 23 selected Python
+suites, the native parser checks, terminal-agent tests and controller unit tests.
+The benchmark suite is still running. The sole failed Python suite is the real
+no-host-tmp source policy, not an infrastructure prerequisite.

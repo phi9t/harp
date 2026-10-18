@@ -1,0 +1,37 @@
+{
+  "read_date": "2026-10-01",
+  "commit_read": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "binary": "/data02/home/philip.yang/.local/bin/traecli",
+  "binary_sha256": "9f5531a1599cd7d81df35a9b6a7568f6652fbf58141d33da9853a62046caf8c2",
+  "version": "traecli 0.207.1(internal edition)",
+  "sources": [
+    {
+      "url": "https://docs.trae.cn/cli_config-file",
+      "edition": "CLI2.0",
+      "version_match": "unverified"
+    },
+    {
+      "url": "https://docs.trae.cn/cli_environment-variables",
+      "edition": "CLI2.0",
+      "version_match": "unverified"
+    },
+    {
+      "url": "https://docs.trae.cn/cli_command-line-parameters",
+      "edition": "CLI2.0",
+      "version_match": "unverified"
+    },
+    {
+      "url": "https://docs.trae.cn/cli_model",
+      "edition": "legacy YAML enterprise",
+      "version_match": "unverified"
+    }
+  ],
+  "documentation_checks": [
+    "public first-party search/open",
+    "scoped installed nonsecret documentation filename discovery"
+  ],
+  "service_provider_model_launches": 0,
+  "credential_effective_config_reads": 0,
+  "observed_runtime_provider_behavior": false,
+  "report_sha256": "fa0ed4ca457e4b0ecd6b85df9fa809a80210037f7efafc7e58580ae21c14ab66"
+}

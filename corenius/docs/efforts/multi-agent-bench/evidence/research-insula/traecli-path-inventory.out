@@ -1,0 +1,9 @@
+command: stat TraeCLI config/state paths without file contents
+-rw------- 600 3989 /data02/home/philip.yang/.trae/traecli.toml
+-rw------- 600 628 /data02/home/philip.yang/.trae/cli/auth.json
+drwxr-xr-x 755 4096 /data02/home/philip.yang/.trae/cli/sessions
+drwxr-xr-x 755 4096 /data02/home/philip.yang/.trae/cli/memories
+drwxr-xr-x 755 4096 /data02/home/philip.yang/.trae/log
+drwxr-xr-x 755 4096 /data02/home/philip.yang/.trae/skills
+drwxr-xr-x 755 4096 /data02/home/philip.yang/.agents/skills
+drwxr-xr-x 755 4096 /data02/home/philip.yang/.trae/plugins/cache

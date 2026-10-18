@@ -1,0 +1,118 @@
+{
+  "baseline": "ticket12-accepted-manifest.json",
+  "SDK": "1.0.0",
+  "core": "0.9.0",
+  "focused_exit": 0,
+  "fmt_exit": 0,
+  "clippy_exit": 0,
+  "gate_exit": 0,
+  "paid_models": 0,
+  "runs": [
+    {
+      "file": "task-first.json",
+      "workflow_id": "corenius-8c40866c-0a26-4393-a02f-725765139eb6-task-6f962087-2068-4c4d-946e-a3c36ca46729-g1",
+      "run_id": "01a0f6e5-e143-77db-a350-071be2c59e85",
+      "events": 55,
+      "terminal_event_type": 28,
+      "input": {
+        "reference": {
+          "kind": "task",
+          "aggregate_id": "6f962087-2068-4c4d-946e-a3c36ca46729",
+          "generation": 1,
+          "recovery_epoch": "8c40866c-0a26-4393-a02f-725765139eb6",
+          "workflow_id": "corenius-8c40866c-0a26-4393-a02f-725765139eb6-task-6f962087-2068-4c4d-946e-a3c36ca46729-g1"
+        },
+        "cursor": 0,
+        "waits": []
+      }
+    },
+    {
+      "file": "task-terminal.json",
+      "workflow_id": "corenius-8c40866c-0a26-4393-a02f-725765139eb6-task-6f962087-2068-4c4d-946e-a3c36ca46729-g1",
+      "run_id": "faa3dbf2-8d23-41d6-92c6-bf209dd4676e",
+      "events": 33,
+      "terminal_event_type": 2,
+      "input": {
+        "reference": {
+          "kind": "task",
+          "aggregate_id": "6f962087-2068-4c4d-946e-a3c36ca46729",
+          "generation": 1,
+          "recovery_epoch": "8c40866c-0a26-4393-a02f-725765139eb6",
+          "workflow_id": "corenius-8c40866c-0a26-4393-a02f-725765139eb6-task-6f962087-2068-4c4d-946e-a3c36ca46729-g1"
+        },
+        "cursor": 3,
+        "waits": [
+          "b7e29c92-678d-449b-862f-96455c23ca5e"
+        ]
+      }
+    },
+    {
+      "file": "mission.json",
+      "workflow_id": "corenius-8c40866c-0a26-4393-a02f-725765139eb6-mission-8abdddab-33b3-48d4-974a-384b28753b7f-g1",
+      "run_id": "01a0f6e6-05f3-746e-9f43-c77b72865daa",
+      "events": 15,
+      "terminal_event_type": 2,
+      "input": {
+        "reference": {
+          "kind": "mission",
+          "aggregate_id": "8abdddab-33b3-48d4-974a-384b28753b7f",
+          "generation": 1,
+          "recovery_epoch": "8c40866c-0a26-4393-a02f-725765139eb6",
+          "workflow_id": "corenius-8c40866c-0a26-4393-a02f-725765139eb6-mission-8abdddab-33b3-48d4-974a-384b28753b7f-g1"
+        },
+        "cursor": 0,
+        "waits": []
+      }
+    }
+  ],
+  "cleanup": {
+    "temporal_listener_closed": true
+  },
+  "source": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "8bbb0d678d4dee3ce38984d4ec451e5379f353854c7785ab1f6c70077c925132",
+      "bytes": 85448
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "935dd52405bc8dce3cb7bdbefc37c46eaa19ac73e61c47d271d0b53889164014",
+      "bytes": 857
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "f3ae92ee08ec7b0b9970ee8cd367742e417297604180e19ba34baf02c513fd91",
+      "bytes": 217
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "738a3bd601161c2ef6187ecccfb2f4493ca18416a6bb9ff10401ec144b6a5d2f",
+      "bytes": 15646
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "sha256": "47517f6535860ac5fe979ef3febdf1c73e1ad003f4674d25fff0df1a3d6c102c",
+      "bytes": 34117
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "sha256": "b38eb62cb9001c1cb89f925b09132a86c25e668f65b8524102733886f333e90e",
+      "bytes": 2069
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "sha256": "9d307a380955e85c7ec04b5f1d7083cfb657996bc294d3afa4c6b472d9b4bbcb",
+      "bytes": 30400
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335
+    },
+    {
+      "path": "tools/agents/checks.d/70-team-control-plane.sh",
+      "sha256": "57bea007e3d9052eda637e955e5708cc1e21cc3813e453032cbfead21647315a",
+      "bytes": 202
+    }
+  ]
+}

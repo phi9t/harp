@@ -1,0 +1,23 @@
+{
+  "method": "Independent before-command complete source archive and identical native public-driver SHA verification; RED post-source equals pre-source. GREEN still running, no outcome credited here. Binary record hashes retained, prior binaries not rechecked after rebuild.",
+  "rows": [
+    {
+      "phase": "red",
+      "manifest_sha256": "5210b4100c9f741285b99b3dd0d0076be9fc0b1d2997ab77e207a5735904706c",
+      "archive_sha256": "3f070b5841f5218bc62ae24e1b2705e573c985557589ceb39b22f9d926a22313",
+      "files_verified": 29,
+      "native_driver_sha256": "e0c809d371fc40a62e13c51f0d1eaf286207566b18851afe8e5b9bca87a8cffa",
+      "binary_manifest_sha256": "fbe1c0653fa3a9427a30420f5be6c468a28bb0b9a52bdf690640c9cf4b884f97",
+      "binary_manifest_file_count": 4
+    },
+    {
+      "phase": "green",
+      "manifest_sha256": "4880e3ddc8cb369acea455fa13318e706b998b2422d3593e0141760e56d0c274",
+      "archive_sha256": "15815a0ee870663e6552aa73c38a6a89cdf7104d7ade5b24f14c0a5f1610f436",
+      "files_verified": 29,
+      "native_driver_sha256": "e0c809d371fc40a62e13c51f0d1eaf286207566b18851afe8e5b9bca87a8cffa",
+      "binary_manifest_sha256": "7e0d029451bc10cd55e259f9b887a38851081b1a6fe9b1cd690098400ed3e6ad",
+      "binary_manifest_file_count": 4
+    }
+  ]
+}

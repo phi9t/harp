@@ -1,0 +1,25 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/p03-cli-subcommand"
+description = "Respect JSON output for a CLI subcommand"
+
+[metadata]
+track = "P"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "uv run --offline python -m unittest discover -s tests"
+timeout_sec = 300
+
+[verifier.env]
+UV_CACHE_DIR = "/workspace/.uvcache"
+
+[agent]
+timeout_sec = 900

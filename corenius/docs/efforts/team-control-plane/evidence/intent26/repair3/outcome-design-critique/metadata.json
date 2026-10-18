@@ -1,0 +1,465 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "assessment": "Independent adversarial design critique, not implementation approval or allocation",
+  "completed_utc": "2026-10-03T23:00:34.669983+00:00",
+  "initial_head_supplied": "b2051cfd737ac5fd9fa359985b683bb55f96295f",
+  "final_head_read": "bccb4aaa3c798c6e1d58f9bb7f518bc23e256f41",
+  "canonical_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "bytes": 2045
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "51a85bd516cf809444f6e1b001748955940bcdc60408a21a5ab60b4326306bf2",
+      "bytes": 6451
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "bytes": 33123
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c",
+      "bytes": 21340
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a",
+      "bytes": 2321
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f",
+      "bytes": 1876
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-owner-authorizes-full-goal-execution.md",
+      "sha256": "ef466fbab46183da3033ff76bdf332dceb85445a2f0d4502b4ae5d69976a184c",
+      "bytes": 1103
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e",
+      "bytes": 6546
+    }
+  ],
+  "requested_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-proposal.md",
+      "sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e",
+      "bytes": 6546,
+      "expected_sha256": "ed3c1db9a5b8a2b2e2cbfed1a58e9814ccdd836f2f2f321b2f2a994904826d4e",
+      "matches_requested_pin": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/author-freeze.json",
+      "sha256": "00a20c878225c296d2cb1dc96c2cf710d12eeb20c30eed779533a5f0428ec980",
+      "bytes": 230464,
+      "expected_sha256": "00a20c878225c296d2cb1dc96c2cf710d12eeb20c30eed779533a5f0428ec980",
+      "matches_requested_pin": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/reviews/spec/report.md",
+      "sha256": "f357f4eef0fd37cf5e72438497f9f465dd876390204976e2c41112a98679a4b7",
+      "bytes": 2670,
+      "expected_sha256": "f357f4eef0fd37cf5e72438497f9f465dd876390204976e2c41112a98679a4b7",
+      "matches_requested_pin": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/report.md",
+      "sha256": "610e6eb213c269e5fdbe09cdec841f75d5eca43e00fac6ac100165120e3cbd3f",
+      "bytes": 4577,
+      "expected_sha256": "610e6eb213c269e5fdbe09cdec841f75d5eca43e00fac6ac100165120e3cbd3f",
+      "matches_requested_pin": true
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/outcome-architecture/metadata.json",
+      "sha256": "de53ba36a7911fe7e3c658247c1a69526eaa0f92b7437aa3131155f4aade5c58",
+      "bytes": 32635,
+      "expected_sha256": "de53ba36a7911fe7e3c658247c1a69526eaa0f92b7437aa3131155f4aade5c58",
+      "matches_requested_pin": true
+    }
+  ],
+  "source_manifest": {
+    "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-manifest.json",
+    "sha256": "8d8ed8761b19d8a3f3b424033303deaf2ec39174ab98f634ad65688f08a8d2cd",
+    "bytes": 31403
+  },
+  "source_pins": [
+    {
+      "logical_source": "crates/team-control-plane/README.md",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/README.md",
+        "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+        "bytes": 20872
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/README.md",
+        "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+        "bytes": 20872
+      },
+      "matches_manifest": true,
+      "inspection": "hash comparison only"
+    },
+    {
+      "logical_source": "crates/team-control-plane/migrations/0008.sql",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/migrations/0008.sql",
+        "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+        "bytes": 7639
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/migrations/0008.sql",
+        "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54",
+        "bytes": 7639
+      },
+      "matches_manifest": true,
+      "inspection": "hash comparison only"
+    },
+    {
+      "logical_source": "crates/team-control-plane/migrations/0009.sql",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/migrations/0009.sql",
+        "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+        "bytes": 458
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/migrations/0009.sql",
+        "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+        "bytes": 458
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/admission.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/admission.rs",
+        "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+        "bytes": 19683
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/admission.rs",
+        "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12",
+        "bytes": 19683
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/artifacts.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/artifacts.rs",
+        "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+        "bytes": 54339
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/artifacts.rs",
+        "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b",
+        "bytes": 54339
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/contracts.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/contracts.rs",
+        "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+        "bytes": 23071
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts.rs",
+        "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+        "bytes": 23071
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/contracts/authority.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/contracts/authority.rs",
+        "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+        "bytes": 8307
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/authority.rs",
+        "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b",
+        "bytes": 8307
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/contracts/dependencies.rs",
+        "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+        "bytes": 6863
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/dependencies.rs",
+        "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f",
+        "bytes": 6863
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/contracts/lifecycle.rs",
+        "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+        "bytes": 3892
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/lifecycle.rs",
+        "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+        "bytes": 3892
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/contracts/outcomes.rs",
+        "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+        "bytes": 19829
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/outcomes.rs",
+        "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7",
+        "bytes": 19829
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/contracts/strategy.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/contracts/strategy.rs",
+        "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+        "bytes": 6943
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs",
+        "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+        "bytes": 6943
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/domain.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/domain.rs",
+        "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+        "bytes": 3781
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/domain.rs",
+        "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8",
+        "bytes": 3781
+      },
+      "matches_manifest": true,
+      "inspection": "hash comparison only"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/episode_runtime.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/episode_runtime.rs",
+        "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+        "bytes": 42809
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/episode_runtime.rs",
+        "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675",
+        "bytes": 42809
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/gateway.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/gateway.rs",
+        "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+        "bytes": 37187
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/gateway.rs",
+        "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845",
+        "bytes": 37187
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/http.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/http.rs",
+        "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+        "bytes": 10472
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/http.rs",
+        "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d",
+        "bytes": 10472
+      },
+      "matches_manifest": true,
+      "inspection": "hash comparison only"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/lib.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/lib.rs",
+        "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+        "bytes": 386
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/lib.rs",
+        "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2",
+        "bytes": 386
+      },
+      "matches_manifest": true,
+      "inspection": "hash comparison only"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/mailbox.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/mailbox.rs",
+        "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+        "bytes": 104271
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/mailbox.rs",
+        "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce",
+        "bytes": 104271
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/storage.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/storage.rs",
+        "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+        "bytes": 16160
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/storage.rs",
+        "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c",
+        "bytes": 16160
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/src/supervisor.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/supervisor.rs",
+        "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+        "bytes": 127057
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/supervisor.rs",
+        "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+        "bytes": 127057
+      },
+      "matches_manifest": true,
+      "inspection": "targeted source excerpts"
+    },
+    {
+      "logical_source": "crates/team-control-plane/tests/intent_contracts.rs",
+      "live": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/tests/intent_contracts.rs",
+        "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+        "bytes": 117514
+      },
+      "frozen": {
+        "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs",
+        "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+        "bytes": 117514
+      },
+      "matches_manifest": true,
+      "inspection": "hash comparison only"
+    }
+  ],
+  "additional_source_excerpt_pins": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/kernel.rs",
+      "sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6",
+      "bytes": 21853
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane/src/temporal.rs",
+      "sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "bytes": 50413
+    }
+  ],
+  "skill_read": {
+    "path": "/data02/home/philip.yang/.codex/plugins/cache/openai-curated-remote/superpowers/6.4.2/skills/using-superpowers/SKILL.md",
+    "sha256": "82c5c8866ad7f5dd4440ce66bd7806ba48a2f13771beae5cf112e53f08fe36ba",
+    "bytes": 3192
+  },
+  "skill_disposition": "using-superpowers explicitly exempts dispatched subagents; no skill workflow added",
+  "architecture_matrix": {
+    "consumer_entries": 16,
+    "proof_cases": 7
+  },
+  "nonblocking_implementation_risks": [
+    "exact acceptance replay versus terminal guard placement",
+    "authorized amendment versus shared dispatch guard",
+    "operation/target authority versus raw immutable evidence retention",
+    "current-authority historical effect cleanup and retirement"
+  ],
+  "limits": [
+    "Read-only/static; no tests or service/provider/runtime execution",
+    "No repository or Git mutation; only two permitted /tmp files written",
+    "No subagents",
+    "No full freeze reconstruction or 865-file evidence reaudit",
+    "Initial root HEAD supplied by assignment; final HEAD directly read",
+    "Canonical ticket already contained critique-pending append when read; no content change inferred from HEAD advancement"
+  ],
+  "report": {
+    "path": "/tmp/corenius-intent26-lifecycle-design-critique-20261003/report.md",
+    "sha256": "8ab5e89878cb5a4031a736fbaff36c10830f39f07d5e1129e779e1755dc6bbd2",
+    "bytes": 6443
+  },
+  "reported_proposal_commit": "bb4dab562988682d0932676ca8e089ec4719c25d",
+  "final_static_pin_validation": {
+    "requested_pins_stable": true,
+    "canonical_pins_stable": true
+  }
+}

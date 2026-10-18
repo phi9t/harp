@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review611-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.61s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 2 tests
+
+thread 'review611_environment_change_cannot_relabel_old_success' (2876814) panicked at tests/assembled_vertical.rs:8423:34:
+called `Result::unwrap_err()` on an `Ok` value: ArtifactResult { revision: 7, candidate_id: Some("77e221e078fa74f284742c515a827dbd4f4338a8efac1391e0e85af5127bfcc1"), report_id: Some("dd505ef6e9db52c1cecf98ae885f41b9c7dca561941477343222b5dbe093f9ac"), accepted: false }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'review611_suite_change_cannot_relabel_old_success' (2876815) panicked at tests/assembled_vertical.rs:8423:34:
+called `Result::unwrap_err()` on an `Ok` value: ArtifactResult { revision: 7, candidate_id: Some("5c3a2d60a075a5ecf032f9f7394773df8e9863a75799e9782b6b066f303d4bcb"), report_id: Some("330e06af5283f2c803a7edd9b97726821be88078d66bffe9967a9488300b9ffd"), accepted: false }
+test review611_environment_change_cannot_relabel_old_success ... FAILED
+test review611_suite_change_cannot_relabel_old_success ... FAILED
+
+failures:
+
+failures:
+    review611_environment_change_cannot_relabel_old_success
+    review611_suite_change_cannot_relabel_old_success
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 57 filtered out; finished in 1.07s
+
+error: test failed, to rerun pass `--test assembled_vertical`

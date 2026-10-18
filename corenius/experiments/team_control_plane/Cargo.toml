@@ -1,0 +1,27 @@
+[package]
+name = "team-control-plane"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+
+[dependencies]
+libc = "=0.2.189"
+axum = "=0.8.8"
+tokio = { version = "=1.52.3", features = ["macros", "rt-multi-thread", "net", "time"] }
+tokio-postgres = { version = "=0.7.18", features = ["with-uuid-1", "with-serde_json-1"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4", "serde"] }
+sha2 = "0.10"
+temporalio-sdk = { version = "=1.0.0", default-features = false, features = ["envconfig"] }
+temporalio-client = { version = "=1.0.0", default-features = false, features = ["envconfig"] }
+temporalio-macros = "=1.0.0"
+temporalio-workflow = "=1.0.0"
+
+temporalio-common = "=1.0.0"
+futures = "0.3"
+
+base64 = "0.22"
+
+[dev-dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json"] }

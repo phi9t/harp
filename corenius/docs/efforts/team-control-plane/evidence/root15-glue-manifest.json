@@ -1,0 +1,30 @@
+{
+  "baseline": "ticket13-accepted-manifest.json",
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "3b114c81a24205d347988fa1afa00631c50a845ea9e34fc07e6772e97638515e",
+      "bytes": 875
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "bytes": 85457
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "ec06891f130a3bc450df82f670f7c00b1dc78df49e41533d1d5e18028c3dbd19",
+      "bytes": 238
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "c19fd8284e2804a36f10efb09df5f010989665856024acdd78ebc7205f3ea902",
+      "bytes": 3045
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "d83c3e3e0b2aa8eb541102f79916d407c9da4fa335644889bee2075b6613589d",
+      "bytes": 15690
+    }
+  ]
+}

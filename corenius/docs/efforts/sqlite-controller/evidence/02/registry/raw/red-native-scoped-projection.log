@@ -1,0 +1,53 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-5ccbdc162d59f0df)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 3432084, "start_stat": "3432084 (corenius-attemp) R 3432077 3431986 3431986 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 52093448 2072576 1 18446744073709551615 94738017696864 94738018858272 140722722208064 0 0 0 0 0 0 0 0 0 17 163 0 0 0 0 0 94738018928256 94738018930792 94738052251648 140722722209400 140722722209589 140722722209589 140722722209657 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-1fs1d5vo/workers.json", "/tmp/cnr-1fs1d5vo/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 3433164, "start_stat": "3433164 (corenius-attemp) R 3432077 3431986 3431986 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 52094258 2072576 1 18446744073709551615 94146066734176 94146067895584 140735383004432 0 0 0 0 0 0 0 0 0 17 71 0 0 0 0 0 94146067965568 94146067968104 94146095570944 140735383006824 140735383007025 140735383007025 140735383007097 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-1fs1d5vo/controlplanes.json", "/tmp/cnr-1fs1d5vo/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 3433412, "start_stat": "3433412 (corenius-sqlite) R 3432077 3431986 3431986 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 52095051 4632576 1 18446744073709551615 94414255507136 94414258721776 140728622103296 0 0 0 0 0 0 0 0 0 17 162 0 0 0 0 0 94414258846040 94414258870528 94414284201984 140728622103786 140728622103973 140728622103973 140728622104442 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-1fs1d5vo/state.db", "/tmp/cnr-1fs1d5vo/controller.sock"], "exit": -9}]
+owned_log controller.stderr native reconcile 5efada34-e7ed-4935-9b82-8ba76d91a0dc: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 2382d398-6b34-4b97-a59f-aa394cdbfd13: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 5efada34-e7ed-4935-9b82-8ba76d91a0dc: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 2382d398-6b34-4b97-a59f-aa394cdbfd13: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 5efada34-e7ed-4935-9b82-8ba76d91a0dc: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 2382d398-6b34-4b97-a59f-aa394cdbfd13: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 5efada34-e7ed-4935-9b82-8ba76d91a0dc: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 2382d398-6b34-4b97-a59f-aa394cdbfd13: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 5efada34-e7ed-4935-9b82-8ba76d91a0dc: remote executor not ready: {"status":"pending"}
+native reconcile 2382d398-6b34-4b97-a59f-aa394cdbfd13: remote executor not ready: {"status":"pending"}
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "52095162", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52095109", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "52095109", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+
+thread 'native_registry_projects_capabilities_and_scoped_typed_turns' (3432076) panicked at tests/codex.rs:175:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 261, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 118, in run
+    document=binding['document'];assert document.get('current_turn',{}).get('id')==document['turn_id'] and document['current_turn']['state'] in ['active','terminal','unknown'],'typed current native turn projection required'
+                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: typed current native turn projection required
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test native_registry_projects_capabilities_and_scoped_typed_turns ... FAILED
+
+failures:
+
+failures:
+    native_registry_projects_capabilities_and_scoped_typed_turns
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 28.94s
+
+error: test failed, to rerun pass `--test codex`

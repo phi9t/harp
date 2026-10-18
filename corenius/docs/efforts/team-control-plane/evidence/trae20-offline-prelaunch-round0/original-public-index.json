@@ -1,0 +1,131 @@
+{
+  "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "files": [
+    {
+      "path": "tools/probes/test_trae_candidate.py",
+      "bytes": 1360,
+      "sha256": "3daddf2b65885eece36d81dd2a04430c9447d951a6fd2ae631bd61fcf1c10db3"
+    },
+    {
+      "path": "tools/probes/test_trae_inventory.py",
+      "bytes": 4133,
+      "sha256": "4da0304f43b0c183e7ac72d71fcb83ab6341f73eb750eca082e13d01724d1838"
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 2767,
+      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+    },
+    {
+      "path": "tools/probes/test_trae_round.py",
+      "bytes": 6219,
+      "sha256": "0c3402b6e5400ef8ee0ea88fb76f01adc6e998022dc58a46ae295cd6eaeaeaaf"
+    },
+    {
+      "path": "tools/probes/test_trae_synthetic_guard.py",
+      "bytes": 6150,
+      "sha256": "7884adc86cb888c14679597249f164fa5b10413b1cb575388fb4febd723b8657"
+    },
+    {
+      "path": "tools/probes/test_trae_transport.py",
+      "bytes": 7117,
+      "sha256": "0edca413d7ab7e019210be31194f3ff61e4f2e892259fe8f431a7feaa566df6a"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.py",
+      "bytes": 1948,
+      "sha256": "55b399fc2e2ebc05a8e1448756eeb28ec9acf8374da7b09c0a7ac918466b7c9b"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.toml",
+      "bytes": 580,
+      "sha256": "62472f9c00526067c118ed3345c3bea60e36ecf79ecfaebef94e4e3c42fcbf26"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_guard.py",
+      "bytes": 25293,
+      "sha256": "99ef23a101efa15214497d886ae36da7b3e23dacafdfb028a6f1d4a59a973556"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/20261003-trae-budget-inventory-repair.json",
+      "bytes": 3442,
+      "sha256": "b596c29a653a7b82559f7ff8a77acc8aae33f54a6ca9fa65426920aea2393548"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-green.log",
+      "bytes": 98,
+      "sha256": "c6d92f0d84f2b03647abdbdcfc8bed8b68bc6e4c52fb3bb4eea49eabfc5c4cb4"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-red.log",
+      "bytes": 917,
+      "sha256": "e0b6588322e800e89036886a22cac6f5992ddf300cac1eb580a18f1b319a1c14"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/case.json",
+      "bytes": 1199,
+      "sha256": "6b90f061182e3684632ad45c4594448c4e99a5fb350e527a0f51ae56dd738b30"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stderr.log",
+      "bytes": 106,
+      "sha256": "a3368a96609729e1369d057dfefa6cbe072afa751335d84019542cf280c86090"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-terminal.json",
+      "bytes": 324,
+      "sha256": "1891ba812db6727b129686cc941ef484a9efcddc22f83aea2d1c3fcdd62fc0b3"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/profile-fences-green.log",
+      "bytes": 106,
+      "sha256": "d679fc3ad8e7eab020d24d55774886d0d611584cafd122a5cfd169337c6f9cbb"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/red-source.json",
+      "bytes": 162,
+      "sha256": "8f2a3dd547df321e373385661c22ec6634190911246dd4f10ce984b5cc796152"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/status.md",
+      "bytes": 3993,
+      "sha256": "fd6851a8119502988d0d9761ef131f5a837401104adbd308f314575ea844594d"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/namespace-failures-scoped-inventory.json",
+      "bytes": 224,
+      "sha256": "38a4dceba348c39f82ac7851e566bd0aadf97c1f472260ef7fb6c023ba7c56c6"
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/namespace-membership-inspection-gap.json",
+      "bytes": 294,
+      "sha256": "86dd812a375eef5a216bbb73455469bbb40fc6417ab3b2ea50b02848ec0e9b8e"
+    },
+    {
+      "path": "candidate.patch",
+      "bytes": 82742,
+      "sha256": "f3ca88feca76a9526fbe38d8aac85150e85fe6058c489079789bb41825723d91"
+    },
+    {
+      "path": "physical-case.patch",
+      "bytes": 18966,
+      "sha256": "13dd66f4004c40da59f31c314d4838bf222523b3751d487f6b06161441e2b2a2"
+    }
+  ],
+  "physical_admission": "withheld"
+}

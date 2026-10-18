@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review575-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.38s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 1 test
+test legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only ... FAILED
+
+failures:
+
+---- legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only stdout ----
+
+thread 'legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only' (3045032) panicked at tests/assembled_operator.rs:842:13:
+assertion `left == right` failed: legacy Attempt-owned workload cannot disappear from bounded operator view
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.43s
+
+error: test failed, to rerun pass `--test assembled_operator`

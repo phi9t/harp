@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/t01-log-window"
+description = "Count log levels in an inclusive line window"
+
+[metadata]
+track = "T"
+level = "S"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "bash tests/test.sh"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

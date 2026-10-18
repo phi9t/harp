@@ -1,0 +1,35 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_blade_build.sh failure-bad-dep //:bad_dep
+(22:37:39)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f6df66496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:39)Blade(warning): Read Tcc config from buildcloud failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f6df66496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:39)Blade(warning): can't find available distribution cache and execute service from remote
+(22:37:39)Blade(warning): 当前环境下无法使用CAS分布式构建集群: not found remote service
+(22:37:39)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f6df6289a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:39)Blade(warning): Request build id failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f6df6289a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:39)Blade(warning): Failed to fetch idc meta data with api
+(22:37:39)Blade(error): .:bad_dep: Invalid not_a_label.
+(22:37:39)Blade(error): failed to run blade
+(22:37:39)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f6df4ff6710>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:39)Blade(error): Report data server error: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f6df4ff6710>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:37:39)Blade(info): get tcc basic_conf from online failed
+(22:37:39)Blade(info): percent=0, num=7
+No required grpc dependencies, buildboard is disabled
+(22:37:39)Blade(info): InvocationID: b8291a1d-dc8f-4cb9-873e-0ebd4d51a513
+(22:37:39)Blade(info): TOOLCHAIN MODE: INSIDE
+(22:37:39)Blade(info): Get toolchain env file /opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/env.sh success
+(22:37:39)Blade(info): load toolchain env file done
+(22:37:39)Blade(info): get real toolchain name=x86_64-gcc494
+(22:37:39)Blade(info): get rule toolchain name=x86_64-x86_64-gcc-494
+(22:37:39)Blade(info): strategy-build-compile-priority: 
+(22:37:39)Blade(info): User Building Command: /bin/bash -lc set +e base=docs/efforts/multi-agent-bench/evidence/research-blade for spec in \   "failure-bad-dep //:bad_dep" \   "failure-duplicate-source //:dup" \   "failure-invalid-source-path //:bad_src" \   "failure-missing-versioned-dep //:missing_dep" \   "failure-missing-versioned-dep-fixed //:fixed_dep"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/probe-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done
+(22:37:39)Blade(info): Blade version: blade-1.2.2.1469
+(22:37:39)Blade(info): Language version: 2.7.13
+(22:37:39)Blade(info): loading BUILD files...
+error: .:bad_dep: Invalid not_a_label., source dir: .
+(22:37:39)Blade(info): pull cost time is 0.124752044678s
+(22:37:39)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/dfea800499a34f005be5a9348fd6885d84dab85c/cache_manager/build_file_env.cache
+(22:37:39)Blade(info): basics: {"BPT-platform": "x86_64-gcc494", "build_command": "/opt/tiger/typhoon-blade/src/blade/bootstrap.py build //:bad_dep", "env": "devbox", "ip": "invalid", "region": "us", "dc": "maliva", "device_type": "devbox", "build_toolchain_version": "gcc494", "os_version": "debian-12", "toolchain_name(GCC)": "x86_64-gcc494", "git_branch": "worker/research-blade", "build_tool_version": "blade-1.2.2.1469", "git_repo": "unknow", "user": "philip.yang"}, build_path: /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/failure-bad-dep
+(22:37:39)Blade(help): You have entered the ninja build phase. Next time run blade fast-build instead of /bin/bash -lc set +e base=docs/efforts/multi-agent-bench/evidence/research-blade for spec in \   "failure-bad-dep //:bad_dep" \   "failure-duplicate-source //:dup" \   "failure-invalid-source-path //:bad_src" \   "failure-missing-versioned-dep //:missing_dep" \   "failure-missing-versioned-dep-fixed //:fixed_dep"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/probe-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done for faster iteration
+real	0m0.646s
+user	0m0.376s
+sys	0m0.287s
+EXIT: 1

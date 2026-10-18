@@ -1,0 +1,62 @@
+{
+  "commit_read": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+  "reviewer": "kernel16_acceptance_audit",
+  "mode": "independent read-only, no fixtures rerun",
+  "verdict": "behavioral kernel coverage present; final branch review and administrative acceptance/landing pending",
+  "requirement_mapping": {
+    "vertical": "real_temporal_assembled_vertical",
+    "authenticated_operator_cli": [
+      "authenticated_operator_status_is_a_public_cli_view_without_execution_ownership",
+      "operator_cli_inspects_cancels_reconciles_and_releases_independently_owned_execution"
+    ],
+    "pause_cancel": [
+      "lost_pause_response_fresh_status_exposes_control_revision_and_db_time",
+      "real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel",
+      "public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch"
+    ],
+    "exclusive_takeover": [
+      "public_takeover_transfers_only_to_registered_live_sdk_transport",
+      "public_takeover_reconciles_actual_sdk_crash_after_effect_without_second_start"
+    ],
+    "views_restart": [
+      "broker_process_restart_preserves_owned_work_and_bounded_operator_exact_lookup",
+      "real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint",
+      "actual_legacy_gateway_restart_safely_quarantines_without_another_start"
+    ],
+    "idempotency": "admission_is_durable_atomic_and_idempotent",
+    "gateway_uncertainty": "durable_gateway_contract",
+    "replay": "real_temporal_recovers_lost_hints_rollover_and_retained_replay",
+    "mailbox_race": "delivery_uses_durable_exact_episode_and_physical_conditional_turn",
+    "physical_survivors": "supervisor namespace/cancellation and assembled capacity suites",
+    "stale_attempt": "stale_generation_fences_dispatch_and_cancels_existing_namespace",
+    "publication_integrity": [
+      "publication_is_verified_and_faults_leave_no_eligible_manifest",
+      "actual_candidate_and_measured_report_integrity_blocks_acceptance"
+    ],
+    "changed_base": [
+      "actual_changed_git_base_requires_new_candidate_and_independent_sdk_gate",
+      "postallocation_base_change_preserves_snapshot_but_requires_fresh_current_gate"
+    ],
+    "budgets": [
+      "public_all_episode_roles_exhaust_the_approved_finite_budget_without_double_charge",
+      "public_failed_verification_repairs_are_authorized_idempotent_and_bounded",
+      "unbound_refund_allows_capacity_one_replacement_without_budget_refund"
+    ],
+    "unknown_usage": [
+      "unknown_episode_blocks_preallocated_verifier_launch",
+      "unknown_episode_blocks_monitor_after_controller_claim",
+      "task_free_lead_registered_original_unknown_before_monitor_launches_once"
+    ]
+  },
+  "evidence": "kernel16/branch-repair/root-gate6 and review11-full-matrix3, freeze, replay-green",
+  "limits": [
+    "actual retained v1 replay proven; colliding-v2 rollover only payload roundtrip",
+    "legacy gateway restart safely quarantines; successful legacy takeover not proven",
+    "model-free kernel does not establish live Trae, Codex/Claude or rollback restore"
+  ],
+  "pending": [
+    "branch571 verdict",
+    "final evidence manifest and ticket handoff",
+    "acceptance and exact-tip landing"
+  ]
+}

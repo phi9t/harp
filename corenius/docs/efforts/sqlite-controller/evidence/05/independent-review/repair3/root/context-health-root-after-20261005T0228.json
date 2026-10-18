@@ -1,0 +1,41 @@
+{
+  "measured_at": "2026-10-05T02:28:49.389559+00:00",
+  "source": "/data02/home/philip.yang/.codex/sessions/2026/10/01/rollout-2026-10-01T01-39-09-01a0f51d-8b62-7930-862f-c4b44d7d0bb7.jsonl",
+  "source_size": 165285085,
+  "latest_request": {
+    "kind": "request",
+    "at": "2026-10-05T02:28:11.948Z",
+    "byte_offset": 165273984,
+    "input": 46848,
+    "cached": 46080,
+    "output": 375,
+    "window": 258400
+  },
+  "scope": "Public token_count and compaction envelope metadata only. Zero/reset counts not requests; no private reasoning/prompt/compaction bodies analyzed.",
+  "actual_compaction": {
+    "event": {
+      "kind": "compaction",
+      "at": "2026-10-05T02:27:30.713Z",
+      "byte_offset": 164564722
+    },
+    "last_positive_request_before": {
+      "kind": "request",
+      "at": "2026-10-05T02:23:07.393Z",
+      "byte_offset": 164562968,
+      "input": 216258,
+      "cached": 215680,
+      "output": 743,
+      "window": 258400
+    },
+    "first_positive_request_after": {
+      "kind": "request",
+      "at": "2026-10-05T02:27:38.092Z",
+      "byte_offset": 164768315,
+      "input": 36042,
+      "cached": 12288,
+      "output": 150,
+      "window": 258400
+    },
+    "reduction_measured": true
+  }
+}

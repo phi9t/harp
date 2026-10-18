@@ -1,0 +1,11 @@
+{
+  "negative": "task-free Ready own Unknown refused; no physical result",
+  "positive": "task-free original admitted launch completed; Unknown usage retained; capacity2 held",
+  "limitation": "Dedicated deferred-launch replay refusal not exercised here; broader existing replay control citation required for independent review.",
+  "acceptance": false,
+  "exact_output_integrity": {
+    "bytes": "once",
+    "sha256": "200651a8b2d5912f692db89468a7d47d86a3ed6844f48f1b15f2be1d9c9a7e5e",
+    "matches_actual_result_log": true
+  }
+}

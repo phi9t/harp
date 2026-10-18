@@ -1,0 +1,614 @@
+{
+  "base": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "branch": "codex-intent26/contracts",
+  "canonical_inputs": [
+    {
+      "archive": {
+        "bytes": 3080,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9.txt",
+        "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "AGENTS.md"
+    },
+    {
+      "archive": {
+        "bytes": 3484,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097.txt",
+        "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "CONSTITUTION.md"
+    },
+    {
+      "archive": {
+        "bytes": 2816,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173.txt",
+        "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "CONTEXT.md"
+    },
+    {
+      "archive": {
+        "bytes": 9722,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926.txt",
+        "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/agentic-engineering.md"
+    },
+    {
+      "archive": {
+        "bytes": 2045,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99.txt",
+        "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/domain.md"
+    },
+    {
+      "archive": {
+        "bytes": 9818,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0.txt",
+        "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/agents/skill-orchestration.md"
+    },
+    {
+      "archive": {
+        "bytes": 33123,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c.txt",
+        "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/SPEC.md"
+    },
+    {
+      "archive": {
+        "bytes": 17345,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924.txt",
+        "sha256": "93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/PLAN.md"
+    },
+    {
+      "archive": {
+        "bytes": 21340,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c.txt",
+        "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/v02-reconciliation.md"
+    },
+    {
+      "archive": {
+        "bytes": 3534,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513.txt",
+        "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513"
+      },
+      "authority": "canonical_repository_input",
+      "origin": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md"
+    },
+    {
+      "archive": {
+        "bytes": 6970,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4.txt",
+        "sha256": "b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4"
+      },
+      "authority": "session_micro_plan",
+      "origin": ".scratch/team-control-plane/ticket26/micro-plan.md"
+    },
+    {
+      "archive": {
+        "bytes": 1912,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989.txt",
+        "sha256": "70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/conformance.json"
+    },
+    {
+      "archive": {
+        "bytes": 2302,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655.txt",
+        "sha256": "37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/final-contract-inputs.json"
+    },
+    {
+      "archive": {
+        "bytes": 2660,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d.txt",
+        "sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/architecture/revised-report.md"
+    },
+    {
+      "archive": {
+        "bytes": 2253,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349.txt",
+        "sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349"
+      },
+      "authority": "prior_design_gate",
+      "origin": "docs/efforts/team-control-plane/evidence/v02-adoption/spec/report.md"
+    }
+  ],
+  "consumer_audit": {
+    "bytes": 1753,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/attempt-consumer-audit.md",
+    "sha256": "03c4b086d34fcb617e6431b435f7bb1844d0d26177ff4dbfe3b5fe18badbf409"
+  },
+  "final_passing_run": "green-final-repair3-compatibility",
+  "final_run_sources_match_worktree": true,
+  "implementation_committed": false,
+  "older_source_proof": "all round0/repair1/repair2/repair3 runs bound and compared in run-source-deltas.json; provisional Owner exception is superseded history",
+  "repair2_archive_map": {
+    "bytes": 154080,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/repair2-archive-map.json",
+    "sha256": "3d70a6507d608114da586dc167c9b7adcda54d4def7f8b2b88362b6440a1418d"
+  },
+  "repair2_delta": [
+    {
+      "final_sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba",
+      "path": "crates/team-control-plane/README.md",
+      "repair2_archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/README.md",
+      "repair2_sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5"
+    },
+    {
+      "final_sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d",
+      "path": "crates/team-control-plane/migrations/0009.sql",
+      "repair2_archive": null,
+      "repair2_sha256": null
+    },
+    {
+      "final_sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955",
+      "path": "crates/team-control-plane/src/contracts.rs",
+      "repair2_archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts.rs",
+      "repair2_sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+    },
+    {
+      "final_sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2",
+      "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "repair2_archive": null,
+      "repair2_sha256": null
+    },
+    {
+      "final_sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48",
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "repair2_archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts/strategy.rs",
+      "repair2_sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+    },
+    {
+      "final_sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a",
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "repair2_archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/supervisor.rs",
+      "repair2_sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+    },
+    {
+      "final_sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9",
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "repair2_archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/tests/intent_contracts.rs",
+      "repair2_sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264"
+    }
+  ],
+  "repair_inputs": [
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5.txt",
+      "bytes": 3465,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-branch632-final-repair.md",
+      "sha256": "5695b08d3ce08f3781c81830da879f4e02d115e0164e9ac1cd7d7894a8b33ff5"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/c3e5d40d0843252c9a16db0c3b522819bf45e472c884c0d6e6bfc726fc4ad5d9.txt",
+      "bytes": 1949,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair2/branch632/review.log.txt",
+      "sha256": "c3e5d40d0843252c9a16db0c3b522819bf45e472c884c0d6e6bfc726fc4ad5d9"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/a1dcc31c7a29cf7d4a4f6fc4767de786881fc2293948818f617850503791f75f.txt",
+      "bytes": 1026,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair2/branch632/result.json",
+      "sha256": "a1dcc31c7a29cf7d4a4f6fc4767de786881fc2293948818f617850503791f75f"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a.txt",
+      "bytes": 2321,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-amendment-retirement.md",
+      "sha256": "b15793d3013045e545c65189c56c053e7a3657f0b89965a5273175222212bd1a"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f.txt",
+      "bytes": 1876,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-intent26-plan-ceilings-clarification.md",
+      "sha256": "b85177ca6cf81ee3674411542d387fa2091e404a98aa3b303d6262d12c0dc82f"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/a18edc8f15a985b512adb020674e92d43d2e56b48380baac6d25131f783eaaad.txt",
+      "bytes": 7588,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/independent-plan-architecture/metadata.json",
+      "sha256": "a18edc8f15a985b512adb020674e92d43d2e56b48380baac6d25131f783eaaad"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/1f38120bc2a7dea45b7cc45b206111e05883cd796e0383e453f483be7cd9e739.txt",
+      "bytes": 3791,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/independent-plan-architecture/report.md",
+      "sha256": "1f38120bc2a7dea45b7cc45b206111e05883cd796e0383e453f483be7cd9e739"
+    },
+    {
+      "archive": "docs/efforts/team-control-plane/evidence/intent26/repair3/inputs/ca0fb5f5422f3e50f5f1f4b57cdb12af44a43be59418e4909f71ae82da0a3815.txt",
+      "bytes": 753,
+      "original": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/evidence/intent26/repair3/independent-plan-architecture/root-retention.json",
+      "sha256": "ca0fb5f5422f3e50f5f1f4b57cdb12af44a43be59418e4909f71ae82da0a3815"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "ticket26 FINAL repair iteration3 explicit later work, generation Attempt identity, event-bound historical retirement, all-caller immutable Plan ceilings",
+  "session_authority": {
+    "bytes": 1899,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/session-authority.json",
+    "sha256": "eeac321a45687bb8a4a8031a966b3c53fd00d1dc5f265d8330f677be7489bac6"
+  },
+  "source_changes": [
+    {
+      "base_preimage": {
+        "bytes": 15041,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109.txt",
+        "sha256": "eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109"
+      },
+      "bytes": 20872,
+      "final_snapshot": {
+        "bytes": 20872,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/README.md",
+        "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba"
+      },
+      "path": "crates/team-control-plane/README.md",
+      "repair2_preimage": {
+        "bytes": 19706,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/README.md",
+        "sha256": "e6898cd132ac9e94cef637849f1a4ad533b9cbb70db0a7566b35b8439bde75a5"
+      },
+      "sha256": "7528e81eb9439708cb6a1638416e726ccd4e635def834a0a362e0e932a0497ba"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 7639,
+      "final_snapshot": {
+        "bytes": 7639,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/migrations/0008.sql",
+        "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+      },
+      "path": "crates/team-control-plane/migrations/0008.sql",
+      "repair2_preimage": {
+        "bytes": 7639,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/migrations/0008.sql",
+        "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+      },
+      "sha256": "6ad4454ea6bef4e56954084573beee04fd639f14e4b3d673569e69ef9d4a0d54"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 458,
+      "final_snapshot": {
+        "bytes": 458,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/migrations/0009.sql",
+        "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d"
+      },
+      "path": "crates/team-control-plane/migrations/0009.sql",
+      "repair2_preimage": null,
+      "sha256": "bb3d4b7ffc693eb4238490337356f44b7e7f9d2f60e156e5490f8bfa9d11a78d"
+    },
+    {
+      "base_preimage": {
+        "bytes": 19619,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c.txt",
+        "sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+      },
+      "bytes": 19683,
+      "final_snapshot": {
+        "bytes": 19683,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/admission.rs",
+        "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+      },
+      "path": "crates/team-control-plane/src/admission.rs",
+      "repair2_preimage": {
+        "bytes": 19683,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/admission.rs",
+        "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+      },
+      "sha256": "ce967746a87e3864149ed93622e290fb07ca34c3b2a56400a500a87bfaf6dc12"
+    },
+    {
+      "base_preimage": {
+        "bytes": 52941,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57.txt",
+        "sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+      },
+      "bytes": 54339,
+      "final_snapshot": {
+        "bytes": 54339,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/artifacts.rs",
+        "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b"
+      },
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "repair2_preimage": {
+        "bytes": 54339,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/artifacts.rs",
+        "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b"
+      },
+      "sha256": "c77f7cf65d0ab2ad0ca3170f2c64a83cb77bc10b7f597324ab047cb1a4724e0b"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 23071,
+      "final_snapshot": {
+        "bytes": 23071,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts.rs",
+        "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955"
+      },
+      "path": "crates/team-control-plane/src/contracts.rs",
+      "repair2_preimage": {
+        "bytes": 22933,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts.rs",
+        "sha256": "703314b787c5f3da8889442445ac986e1619a302d4e2b8664b9c827e06927fbf"
+      },
+      "sha256": "6f4d0e1b886dc924495ab3f03cb26a030aaa07e019d8d3c0bfd172a4d8c04955"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 8307,
+      "final_snapshot": {
+        "bytes": 8307,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/authority.rs",
+        "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b"
+      },
+      "path": "crates/team-control-plane/src/contracts/authority.rs",
+      "repair2_preimage": {
+        "bytes": 8307,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts/authority.rs",
+        "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b"
+      },
+      "sha256": "69d6cf99a47a3325d5846d843845428e207404386a8a3ce80c7466a79294d10b"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 6863,
+      "final_snapshot": {
+        "bytes": 6863,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/dependencies.rs",
+        "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f"
+      },
+      "path": "crates/team-control-plane/src/contracts/dependencies.rs",
+      "repair2_preimage": {
+        "bytes": 6863,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts/dependencies.rs",
+        "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f"
+      },
+      "sha256": "f53658d037b4b7896d6002495ba8374d64a183f6aaeb06d266aae1fe62ceb60f"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 3892,
+      "final_snapshot": {
+        "bytes": 3892,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/lifecycle.rs",
+        "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2"
+      },
+      "path": "crates/team-control-plane/src/contracts/lifecycle.rs",
+      "repair2_preimage": null,
+      "sha256": "d7d87b166eee2a4572c38d81596cc937aaa49aa67be2ff9130f79bc5bee074e2"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 19829,
+      "final_snapshot": {
+        "bytes": 19829,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/outcomes.rs",
+        "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7"
+      },
+      "path": "crates/team-control-plane/src/contracts/outcomes.rs",
+      "repair2_preimage": {
+        "bytes": 19829,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts/outcomes.rs",
+        "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7"
+      },
+      "sha256": "bd2b4a2ea2b6653d98c00c6ca5f4a280a18c1c2bed9deaa18acf4e4dfda2b7d7"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 6943,
+      "final_snapshot": {
+        "bytes": 6943,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/contracts/strategy.rs",
+        "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48"
+      },
+      "path": "crates/team-control-plane/src/contracts/strategy.rs",
+      "repair2_preimage": {
+        "bytes": 6716,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/contracts/strategy.rs",
+        "sha256": "e12426626c6726c0df08eb7d179822ab0be5135eded1bc98e1bb227e26b649eb"
+      },
+      "sha256": "15664f9aa56323e4afc65f21ba1db32ecfee8f29fe502c16ba1c07e0b1420f48"
+    },
+    {
+      "base_preimage": {
+        "bytes": 3760,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966.txt",
+        "sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+      },
+      "bytes": 3781,
+      "final_snapshot": {
+        "bytes": 3781,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/domain.rs",
+        "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+      },
+      "path": "crates/team-control-plane/src/domain.rs",
+      "repair2_preimage": {
+        "bytes": 3781,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/domain.rs",
+        "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+      },
+      "sha256": "0f8007a220a816ea3c85e9f0bdd64e1aa8e6b3b1df52e0fe4c0a3f9f7f9b13c8"
+    },
+    {
+      "base_preimage": {
+        "bytes": 42667,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a.txt",
+        "sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+      },
+      "bytes": 42809,
+      "final_snapshot": {
+        "bytes": 42809,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/episode_runtime.rs",
+        "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+      },
+      "path": "crates/team-control-plane/src/episode_runtime.rs",
+      "repair2_preimage": {
+        "bytes": 42809,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/episode_runtime.rs",
+        "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+      },
+      "sha256": "3ad6154ef46b732ed7e855b06c90e9e66d8671525cde4ceaf6925d722a94b675"
+    },
+    {
+      "base_preimage": {
+        "bytes": 36901,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1.txt",
+        "sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+      },
+      "bytes": 37187,
+      "final_snapshot": {
+        "bytes": 37187,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/gateway.rs",
+        "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+      },
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "repair2_preimage": {
+        "bytes": 37187,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/gateway.rs",
+        "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+      },
+      "sha256": "a03e31c96c567907cbba0c56275146da398787465034dc6c252f1a9047809845"
+    },
+    {
+      "base_preimage": {
+        "bytes": 9410,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92.txt",
+        "sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92"
+      },
+      "bytes": 10472,
+      "final_snapshot": {
+        "bytes": 10472,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/http.rs",
+        "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+      },
+      "path": "crates/team-control-plane/src/http.rs",
+      "repair2_preimage": {
+        "bytes": 10472,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/http.rs",
+        "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+      },
+      "sha256": "7b8b20f56eb655964688a8bcd039985c0f5718c07e9101df4d0f8e037094da7d"
+    },
+    {
+      "base_preimage": {
+        "bytes": 367,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa.txt",
+        "sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa"
+      },
+      "bytes": 386,
+      "final_snapshot": {
+        "bytes": 386,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/lib.rs",
+        "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+      },
+      "path": "crates/team-control-plane/src/lib.rs",
+      "repair2_preimage": {
+        "bytes": 386,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/lib.rs",
+        "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+      },
+      "sha256": "ecb9ca659475119eead4b558aa7e481e911c44ced75c0924e7bd36fe414561c2"
+    },
+    {
+      "base_preimage": {
+        "bytes": 104201,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a.txt",
+        "sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+      },
+      "bytes": 104271,
+      "final_snapshot": {
+        "bytes": 104271,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/mailbox.rs",
+        "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+      },
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "repair2_preimage": {
+        "bytes": 104271,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/mailbox.rs",
+        "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+      },
+      "sha256": "5345024b86f762b56448126bf61d9644e92057bbb4df50ef46128b58ba9dc8ce"
+    },
+    {
+      "base_preimage": {
+        "bytes": 16071,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68.txt",
+        "sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68"
+      },
+      "bytes": 16160,
+      "final_snapshot": {
+        "bytes": 16160,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/storage.rs",
+        "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+      },
+      "path": "crates/team-control-plane/src/storage.rs",
+      "repair2_preimage": {
+        "bytes": 16160,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/storage.rs",
+        "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+      },
+      "sha256": "de558f220e8d2d5b5643d0921239524355cebe0684a2428c1bf5ebec1a94fc4c"
+    },
+    {
+      "base_preimage": {
+        "bytes": 125877,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair1/snapshots/6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3.txt",
+        "sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+      },
+      "bytes": 127057,
+      "final_snapshot": {
+        "bytes": 127057,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/src/supervisor.rs",
+        "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a"
+      },
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "repair2_preimage": {
+        "bytes": 126040,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/src/supervisor.rs",
+        "sha256": "37c339d747e945b0320455bab759706f610cdcf458729ecd8ab6b7d514defac2"
+      },
+      "sha256": "d97399ae113abadf1b515b2a7c73f4fcd421130a56df960c967a60fec175248a"
+    },
+    {
+      "base_preimage": null,
+      "bytes": 117514,
+      "final_snapshot": {
+        "bytes": 117514,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/source-snapshots/crates/team-control-plane/tests/intent_contracts.rs",
+        "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9"
+      },
+      "path": "crates/team-control-plane/tests/intent_contracts.rs",
+      "repair2_preimage": {
+        "bytes": 77584,
+        "path": "docs/efforts/team-control-plane/evidence/intent26/repair3/preimages/crates/team-control-plane/tests/intent_contracts.rs",
+        "sha256": "3fb5bd873080586875108802997cad2ebc998ce7e77f209b9f6b6b9254675264"
+      },
+      "sha256": "78efa585e3f07636d38c548fc93bf31a8086ea912f561758eb9001546efc04a9"
+    }
+  ]
+}

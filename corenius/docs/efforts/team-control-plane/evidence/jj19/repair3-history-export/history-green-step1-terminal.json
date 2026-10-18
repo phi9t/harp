@@ -1,0 +1,23 @@
+{
+  "label": "history-green-step1",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/history-green-step1.json"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:16:57.947583+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "7c58414110650c199ffc2420f6ce92720caec176eb5042da4d51daf369bb07a8",
+  "command_source_sha256": "cc895e6f72e246ceeb305acbf9bfe9594f2c90abc646b9c63e986c3c5c741230",
+  "expected_exit": 0,
+  "exit": 0,
+  "stdout": "{\n  \"outcome\": \"passed\",\n  \"fixture_sha256\": \"7c58414110650c199ffc2420f6ce92720caec176eb5042da4d51daf369bb07a8\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:16:58.438599+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/history-green-step1.json",
+  "output_sha256": "425c93ab7b672fa8899644f2d7573eafc0f70e59a933d36ac588a4ed786901bd"
+}

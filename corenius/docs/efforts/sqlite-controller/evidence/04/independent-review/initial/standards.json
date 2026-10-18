@@ -1,0 +1,67 @@
+{
+  "axis": "Standards",
+  "verdict": "FAIL",
+  "base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "source": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "diff_command": "git diff d121795f7c15c02a2c2cec685f5bc30fb570a363...2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "commit_list": [
+    "2b1887b8c8c6e0ea806487271ae77fc3b743f63d Implement private Git candidates, isolated verification and journaled landing"
+  ],
+  "requirements_manifest_sha256": "14251b6b21eccc1f9d5db8f9e7c4fe967ed67cc2e5cd44673f9d35794389e198",
+  "source_author_archive_sha256": "1ac746e19232d36ccaf13eb2b00c8cb308e0843fd185165f1d866c9ffb0755e2",
+  "findings": [
+    {
+      "id": "S1",
+      "severity": "P1 / Important",
+      "classification": "documented execution-budget contract violation",
+      "file": "crates/sqlite-controller/src/git.rs",
+      "line": 1196,
+      "range": [
+        1195,
+        1211
+      ],
+      "title": "Bound the cleanup archive producer before writing the full archive",
+      "standard": {
+        "file": "crates/sqlite-controller/README.md",
+        "lines": [
+          24,
+          25
+        ],
+        "quote": "Controller effects use their own bounded execution budget."
+      },
+      "evidence": {
+        "basis": "static source inspection; no runtime reproduction",
+        "producer": "Command::new(\"/usr/bin/tar\").args([\"--format=posix\", \"-cf\"]).arg(&archive)...output()",
+        "time_limit": "none",
+        "archive_limit": "read_regular(...,32 * 1024 * 1024) runs only after tar exits",
+        "gate": "dispatch holds git_effect_gate throughout retire_workspace (lines291\u2013294,596\u2013597)",
+        "scenario": "A stopped worker leaves a huge sparse regular file under its private home/scratch while the Git worktree stays clean. Host tar has no --sparse and writes the full logical file into controller capture storage before the size guard. Large or slow traversal can exceed any budget, consume controller disk, and retain the serialized Git gate indefinitely."
+      },
+      "focused_repair": "Enforce an owned-child deadline and archive write/stream cap during production, bound diagnostics, stop/reap only that child on limit, preserve the workspace and retain a retryable failure. A post-completion read cap is insufficient.",
+      "recommended_future_validation": "Root/author-owned bounded behavioral fixture with a large sparse scratch file and a slow archive source: limits refuse cleanup before full expansion; workspace remains; other control requests remain usable. Reviewer did not run this."
+    }
+  ],
+  "finding_count": 1,
+  "blocking_findings": 1,
+  "baseline_smells": [],
+  "review_notes": [
+    {
+      "topic": "inventory lock duration",
+      "classification": "qualification concern, not counted as documented-standard violation",
+      "location": "git.rs298\u2013326,1247\u20131288",
+      "description": "workspace_inventory retains the controller connection mutex while inspecting each untrusted workspace with a30s budget. A slow clean filter can delay cancellation/authentication and autonomous draining. The explicit canonical prohibition names transactions; the unchanged README outside-lock rule names HTTP, so this review does not turn that adjacent architecture concern into a hard Standards finding."
+    },
+    {
+      "topic": "aligned standards",
+      "description": "Conditional fast-forward protected-ref update; no shared rebase/deletion; separate immutable candidates, proof and acceptance; cleanup requires stopped identity and retained evidence; native fresh stop applies only before the first unsubscribe operation, with pending connection/store/incarnation fences unchanged."
+    }
+  ],
+  "qualification_limits": [
+    "Read-only Standards-axis inspection of all15 changed files plus relevant unchanged contracts; no Spec-axis adjudication.",
+    "No tests, compilation, runtime execution, model calls, process signals, subagents, source edits or user-session interactions.",
+    "Repository gate is owned by root and was in progress at dispatch; no passing-gate or acceptance claim is made.",
+    "Requirements manifest is the explicit filesystem snapshot, including retained uncommitted root status amendments; it is not asserted to equal root HEAD.",
+    "Optional jj/PostgreSQL/Temporal/live05/06 remain excluded; no live-model or power-loss qualification inferred.",
+    "Hostile fixture replaces final candidate.bundle leaf and creates /scratch/ancestor, which is not the capture parent; no ancestor-replacement behavioral proof credited."
+  ]
+}

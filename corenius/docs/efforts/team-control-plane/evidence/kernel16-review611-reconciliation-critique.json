@@ -1,0 +1,21 @@
+{
+  "reviewer": "/root/kernel16_review584_author",
+  "mode": "read-only focused designcritique, not conformancePASS",
+  "seam": "lazy AdmitEpisode reconciliation under existing broker transaction lock",
+  "invariants": [
+    "only expired admitted/active; preserve predeadline yield/checkpoints/waits",
+    "current principal/role/mission/epoch/task and lead generation",
+    "exact registered execution with proof-backed known released effects/usage, not released flag or expiry alone",
+    "recheck current native/legacy uncertainty incl attempt siblings",
+    "no capacity or cumulative budget refund by retirement",
+    "normal admission frontier/auth/waits/control/budget checks retained"
+  ],
+  "proof": [
+    "bothdeadline/release orders",
+    "predeadline release\u2192yield",
+    "staleauthority",
+    "absent/unreleased execution",
+    "unknown native usage/effects"
+  ],
+  "author_notified": true
+}

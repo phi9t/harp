@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.57s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'cancelled_attempt_retains_historical_gateway_progress_without_pending_effects' (3049226) panicked at tests/assembled_cancellation.rs:1247:10:
+terminal cancellation must not fail retained workflow journal observation: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... FAILED
+
+failures:
+
+failures:
+    cancelled_attempt_retains_historical_gateway_progress_without_pending_effects
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.33s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

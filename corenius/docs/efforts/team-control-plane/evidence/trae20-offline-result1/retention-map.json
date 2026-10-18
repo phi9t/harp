@@ -1,0 +1,89 @@
+{
+  "operation_id": "corenius-offline-namespace-20261003-oracle1",
+  "source_directory": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze",
+  "public_index_sha256": "f95d1dfa7dce996d2eb9a199cf5c87cb425afe6abb88b26a71d0e0ba7baf8ee6",
+  "author_disposition": "candidate_positive_pending_root_independent_adjudication",
+  "root_disposition": "retained; independent physical outcome adjudication pending",
+  "files": [
+    {
+      "path": "started.json",
+      "bytes": 1295,
+      "sha256": "70886701467b502e24eaab9caae6788bb1a8c414e124aba7750d3fa1d027cf57",
+      "retained_path": "started.json"
+    },
+    {
+      "path": "terminal.json",
+      "bytes": 745,
+      "sha256": "6817c400d5bf62ce62dc0faf0029014f19027cc4392ddab912dc1a383626e8e9",
+      "retained_path": "terminal.json"
+    },
+    {
+      "path": "author-adjudication.json",
+      "bytes": 894,
+      "sha256": "34c88ad3d5b4727554f5f02fc185bef513c8674e7adb4196239bc8fc54f4fef3",
+      "retained_path": "author-adjudication.json"
+    },
+    {
+      "path": "physical-stdout.log.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_path": "physical-stdout.log.txt"
+    },
+    {
+      "path": "physical-stderr.log.txt",
+      "bytes": 98,
+      "sha256": "854504245d6014ff548d7e6ee458e3a5bc59a346ac1125215dfebb71e4098498",
+      "retained_path": "physical-stderr.log.txt"
+    },
+    {
+      "path": "physical-noise-proof.json",
+      "bytes": 1324,
+      "sha256": "f8dcb5a5233b3c02bb7bc8fb5aba05fdf47ef90084e4bee5417dde4aba3f5fff",
+      "retained_path": "physical-noise-proof.json"
+    },
+    {
+      "path": "physical-noise-proof.owned.jsonl",
+      "bytes": 2274,
+      "sha256": "ed85c12eb96e8bfdf2806535b5737b11bce809ad22f463c9baaf2f9ed6a85f15",
+      "retained_path": "physical-noise-proof.owned.jsonl"
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "retained_path": "tools/probes/trae_namespace_supervisor.py"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "retained_path": "tools/probes/trae_namespace_fixture.py"
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 4336,
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2",
+      "retained_path": "tools/probes/test_trae_namespace.py"
+    },
+    {
+      "path": "admitted-case.json",
+      "bytes": 1693,
+      "sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+      "retained_path": "admitted-case.json"
+    },
+    {
+      "path": "admitted-public-index.json",
+      "bytes": 1369,
+      "sha256": "2d87eb20ec4418c59f800bc1a238175acd8837b2dcbca4eeee769c9c582fdfd0",
+      "retained_path": "admitted-public-index.json"
+    },
+    {
+      "path": "public-index.json",
+      "bytes": 2081,
+      "sha256": "f95d1dfa7dce996d2eb9a199cf5c87cb425afe6abb88b26a71d0e0ba7baf8ee6",
+      "retained_path": "public-index.json"
+    }
+  ],
+  "scope": "one fixed offline setup-noise cleanup; no Trae/provider admission",
+  "historical_quarantines": "1749400/1793051 unchanged"
+}

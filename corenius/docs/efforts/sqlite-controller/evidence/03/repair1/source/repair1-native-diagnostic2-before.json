@@ -1,0 +1,10 @@
+{
+  "product_head": "40d4805",
+  "diagnostic_only_changes": "state prints + post-cleanup archive; Path import typo corrected; unchanged deadlines/assertions/controller bytes",
+  "files": {
+    ".scratch/sqlite-controller/03/native-diagnostic/crates/sqlite-controller/support/codex_insula.py": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+    ".scratch/sqlite-controller/03/native-diagnostic/crates/sqlite-controller/tests/support/wsutil.py": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f",
+    ".scratch/sqlite-controller/03/native-diagnostic/crates/sqlite-controller/tests/support/native_registry.py": "0586fb56fc9db3a8c1f5bf675cb653400a475da5580d00d890312a7f8648c673"
+  },
+  "controller_binary_sha256": "5e19ca00e14df6eee41d5f727bc4e783faba950c1b3030a2bcbd5b12dcaa4935"
+}

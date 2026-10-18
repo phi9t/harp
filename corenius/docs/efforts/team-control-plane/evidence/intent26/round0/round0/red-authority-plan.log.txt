@@ -1,0 +1,35 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.02s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 4 tests
+test current_lead_requires_explicit_bounded_delegation_even_on_replay ... FAILED
+test exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload ... ok
+test plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning ... FAILED
+test source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias ... ok
+
+failures:
+
+---- current_lead_requires_explicit_bounded_delegation_even_on_replay stdout ----
+
+thread 'current_lead_requires_explicit_bounded_delegation_even_on_replay' (3468749) panicked at tests/intent_contracts.rs:102:5:
+assertion `left == right` failed: explicit delegation must be admitted: {"code":"invalid_argument"}
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning stdout ----
+
+thread 'plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning' (3468813) panicked at tests/intent_contracts.rs:120:5:
+assertion `left == right` failed: valid strategy admission: {"code":"invalid_argument"}
+  left: 400
+ right: 200
+
+
+failures:
+    current_lead_requires_explicit_bounded_delegation_even_on_replay
+    plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning
+
+test result: FAILED. 2 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.29s
+
+error: test failed, to rerun pass `--test intent_contracts`

@@ -1,0 +1,54 @@
+command: check NVIDIA device paths
+missing /dev/nvidiactl
+missing /dev/nvidia-uvm
+missing /dev/nvidia-uvm-tools
+missing /dev/nvidia-modeset
+missing /dev/nvidia0
+missing /dev/nvidia-caps
+missing /dev/infiniband
+
+command: host /proc/driver/nvidia
+d /proc/driver/nvidia
+d /proc/driver/nvidia/gpus
+d /proc/driver/nvidia/gpus/0000:8f:00.0
+d /proc/driver/nvidia/gpus/0000:90:00.0
+d /proc/driver/nvidia/gpus/0000:96:00.0
+d /proc/driver/nvidia/gpus/0000:97:00.0
+d /proc/driver/nvidia/gpus/0000:c4:00.0
+d /proc/driver/nvidia/gpus/0000:c5:00.0
+d /proc/driver/nvidia/gpus/0000:cb:00.0
+d /proc/driver/nvidia/gpus/0000:cc:00.0
+f /proc/driver/nvidia/params
+d /proc/driver/nvidia/patches
+f /proc/driver/nvidia/patches/README
+f /proc/driver/nvidia/suspend
+f /proc/driver/nvidia/version
+f /proc/driver/nvidia/registry
+d /proc/driver/nvidia/warnings
+f /proc/driver/nvidia/warnings/README
+d /proc/driver/nvidia/capabilities
+d /proc/driver/nvidia/capabilities/mig
+d /proc/driver/nvidia/capabilities/gpu0
+d /proc/driver/nvidia/capabilities/gpu1
+d /proc/driver/nvidia/capabilities/gpu2
+d /proc/driver/nvidia/capabilities/gpu3
+d /proc/driver/nvidia/capabilities/gpu4
+d /proc/driver/nvidia/capabilities/gpu5
+d /proc/driver/nvidia/capabilities/gpu6
+d /proc/driver/nvidia/capabilities/gpu7
+f /proc/driver/nvidia/capabilities/fabric-imex-mgmt
+f /proc/driver/nvidia/suspend_depth
+
+command: bwrap private proc /proc/driver/nvidia
+d /proc/driver/nvidia
+d /proc/driver/nvidia/gpus
+d /proc/driver/nvidia/gpus/0000:8f:00.0
+d /proc/driver/nvidia/gpus/0000:90:00.0
+d /proc/driver/nvidia/gpus/0000:96:00.0
+d /proc/driver/nvidia/gpus/0000:97:00.0
+d /proc/driver/nvidia/gpus/0000:c4:00.0
+d /proc/driver/nvidia/gpus/0000:c5:00.0
+d /proc/driver/nvidia/gpus/0000:cb:00.0
+d /proc/driver/nvidia/gpus/0000:cc:00.0
+f /proc/driver/nvidia/params
+d /proc/driver/nvidia/patches

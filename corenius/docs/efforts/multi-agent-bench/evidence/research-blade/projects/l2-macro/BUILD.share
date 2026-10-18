@@ -1,0 +1,15 @@
+import os
+def mini_app(name):
+    user = os.environ.get("USER", "unknown")
+    value = "BENCH_USER_%s" % user.upper()
+    native["cc_library"](
+        name=name + "_lib",
+        srcs=[name + ".cc"],
+        defs=[value],
+        export_incs=["."],
+    )
+    native["cc_binary"](
+        name=name,
+        srcs=[name + "_main.cc"],
+        deps=[":" + name + "_lib"],
+    )

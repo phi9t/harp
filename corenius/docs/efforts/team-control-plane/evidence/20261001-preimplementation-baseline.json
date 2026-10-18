@@ -1,0 +1,18 @@
+{
+  "kind": "preimplementation-baseline",
+  "recorded_at": "2026-10-01T06:46:01.472820+00:00",
+  "source_commit": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "command": "tools/agents/check.sh",
+  "execution_session": 68780,
+  "exit_code": 0,
+  "observed_result": "check: all green",
+  "rust_tests_passed": 71,
+  "python_tests_passed": 114,
+  "limitations": [
+    "Existing worker tests emitted subprocess ResourceWarning diagnostics.",
+    "Baseline checks do not test a control plane, PostgreSQL or Temporal implementation.",
+    "CHECK_BENCH and CHECK_SYNC optional integrations were not enabled."
+  ],
+  "product_code_changed": false
+}

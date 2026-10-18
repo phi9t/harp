@@ -1,0 +1,483 @@
+{
+  "run": "repair2-72-empty-original-diagnostic",
+  "record_sha256": "6563810c8458cea9dd2c0dfed36324a0a469279b059d3f14f7596b90db70ef8d",
+  "log_sha256": "e26d5975bc8b6cc26cd81594b995c500ff8a9fbf933480d1108e6a8ea8a25f95",
+  "exit": 101,
+  "source_unchanged": true,
+  "diagnostic_launches_used": 1,
+  "results": [
+    {
+      "topology": "shared",
+      "metadata": {
+        "original_receipt": {
+          "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+          "thread_id": "01a1093b-2c1f-7870-8605-a2ef8b67cadc"
+        },
+        "binding": "worker:0fd60172-10ab-4df4-943f-210911f3f524:1",
+        "deadline_seconds": 2,
+        "original_assertions_preserved": true,
+        "samples": [
+          {
+            "elapsed": 0.010646497015841305,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.08112949598580599,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.15165595698636025,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.22268880007322878,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.29283520206809044,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.3632945070276037,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.4337245860369876,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.5042790879961103,
+            "state": "reconciling",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "ff69a7dcbe6a98084bb2c3dd47556652627e51234507bf34902a03795da4e11b",
+            "server_store": "75568e93-4dba-4bf7-9753-7f44fc1f39f8",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0
+          }
+        ],
+        "qualification": "test-only allowed tuple metadata; no changed runtime branch or timeout"
+      }
+    },
+    {
+      "topology": "separate",
+      "metadata": {
+        "original_receipt": {
+          "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+          "thread_id": "01a1093b-8d51-7312-914e-8e11695dd596"
+        },
+        "binding": "worker:6149da8e-511f-48e6-b654-6517e1091a08:1",
+        "deadline_seconds": 2,
+        "original_assertions_preserved": true,
+        "samples": [
+          {
+            "elapsed": 0.010830681072548032,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.08141715405508876,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.15192196308635175,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.22235279507003725,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.2928803430404514,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.3634101339848712,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.43378999806009233,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.5043109140824527,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.5770152220502496,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.6473996370332316,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.7179000170435756,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.7883777529932559,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.8588772650109604,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.9294020150555298,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 0.9999739980557933,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.0704316430492327,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.1408766839886084,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.2114367909962311,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.281845888006501,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.352459516027011,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.4229891890427098,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.4935127270873636,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.5640353040071204,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.634508862043731,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.7050711479969323,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.7756074860226363,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.846251902054064,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.9166353630134836,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          },
+          {
+            "elapsed": 1.9871110970852897,
+            "state": "unknown",
+            "turn_id": null,
+            "ui_input_ready": false,
+            "server_incarnation": "f0ed0d5eabd72b14b86c995175c7da5b619ed2c9ed822eb6f924cb2d336427c9",
+            "server_store": "cd6fe5c1-9df2-4f13-9eab-cf8e76a06420",
+            "recovery_state": "qualification_unknown",
+            "thread_starts": 1,
+            "turn_starts": 0,
+            "occupied_slots": 2
+          }
+        ],
+        "qualification": "test-only allowed tuple metadata; no changed runtime branch or timeout"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+allow = ["src/rules.cpp", "include/rules_engine.hpp"]
+depends = ["t2-expression"]

@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review580-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.33s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 1 test
+
+thread 'review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result' (3725436) panicked at tests/assembled_operator.rs:1166:5:
+replacement Owner must release real stopped crash without guessing exit: Err(Error { code: DependencyUnmet })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result ... FAILED
+
+failures:
+
+failures:
+    review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 1.53s
+
+error: test failed, to rerun pass `--test assembled_operator`

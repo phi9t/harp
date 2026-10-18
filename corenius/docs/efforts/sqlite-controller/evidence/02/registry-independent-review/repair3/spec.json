@@ -1,0 +1,87 @@
+{
+  "axis": "Spec",
+  "verdict": "PASS",
+  "scope": {
+    "base": "cc774921be6e8e00b8de54942b56fa0fee01d56d",
+    "tip": "8d05117a5d7be0793e37667bd0a245073305e757",
+    "crate_tree": "9ecb1686cfa424fd1f6e31a4c38ce1e25e8924b4"
+  },
+  "findings": [],
+  "original_findings": [
+    {
+      "id": "branch641-1 / R2-S1",
+      "verdict": "ADDRESSED",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:1567",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:1574"
+      ],
+      "requirements": [
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:76",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:78",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:80"
+      ],
+      "analysis": "The confirmed exact creation receipt is adopted under existing actor/store/incarnation qualification and its identity is allowed before any recovered first-turn RPC. Existing provisional creation and bounded peer filtering remain unchanged. Actual first-turn status active/idle frames are retained exactly once for the adopted thread, with peer creation positive control and single thread/turn/client identity.",
+      "evidence": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/red-adoption-status.log:85",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:12",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:77"
+      ]
+    },
+    {
+      "id": "branch641-2 / R2-S2",
+      "verdict": "ADDRESSED",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:291",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:319",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:453",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:489",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:524",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:540",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:721"
+      ],
+      "requirements": [
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:46",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:48",
+        "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:54"
+      ],
+      "analysis": "Confirmed terminal receipt stays immutable; later observation and uncertainty are separate, including after later success. The sole logical cleanup operation is retained and matching thread/server/store plus freshly looked-up app/incarnation and connection UUID qualify retries. Missing/mismatched pending identities return errors and remain revoking; no duplicate cleanup, turn or interrupt is inferred. Changed connection/incarnation negatives remain explicitly unresolved.",
+      "evidence": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/red-cleanup.log:81",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/red-cleanup-retained-error.log:81",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:42",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:43",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:116",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:117",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:156",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:187",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:226",
+        "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/.scratch/sqlite-controller/02/registry/repair3/green-combined.log:267"
+      ]
+    }
+  ],
+  "evidence_integrity": {
+    "archives_verified": 13,
+    "files_per_archive": 25,
+    "gate_manifest_matches_frozen_tip": true,
+    "combined_green": {
+      "tests": 4,
+      "modes": [
+        "shared",
+        "separate"
+      ],
+      "command_seconds": 124.16,
+      "exit": 0
+    },
+    "final_source_change": "Only codex.rs differs after combined GREEN: caches the identical serialized intent for comparison and insertion. Behavioral equivalence source reviewed; final-byte full gates remain pending.",
+    "chronology": "Two initial adoption setup/oracle failures are uncredited. Genuine status-attribution and terminal-receipt REDs precede fixes. Separate retained-error RED precedes durable uncertainty preservation. Supplemental changed-identity negatives are not claimed as retrospective RED."
+  },
+  "limits": [
+    "Read-only source/evidence review; no tests launched or new runtime reproduction.",
+    "Full frozen68 author/root gates, final evidence handoff/resource audit and root acceptance remain pending; this is code conformance only.",
+    "MODEL_FREE_ACTUAL_PROTOCOL: deterministic local Responses input; no upstream/model inference. History-failure scenario records a real native history reply then discards it under declared FI, not an actual upstream history error.",
+    "New connection/incarnation pending cleanup remains unresolved by design, not automatically migrated. No separate new-store replacement fixture is claimed; store mismatch checked in source.",
+    "Released A slot follows qualified executor termination; B occupancy and unknown native cleanup are separate facts.",
+    "No item/userMessage notification delivery claimed; retained history proves client identity. Prior unchanged isolation/qualification is retained, not rerun. Downstream03-06 and live qualification remain unproven.",
+    "No checkout mutation, native/test process creation or cleanup, credentials/upstream access, tmux or helpers. Only new external review artifacts written."
+  ]
+}

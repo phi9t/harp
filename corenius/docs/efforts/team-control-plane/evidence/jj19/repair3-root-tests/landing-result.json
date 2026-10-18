@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T19:33:27.147081+00:00",
+  "operation": "gated local fast-forward",
+  "landed_tip": "a21316f74672f55f3c22eff94f93ce1511b51822",
+  "previous_main": "264756edd550225449202b6f20ac4b560808d14e",
+  "tool_session_id": 92802,
+  "terminal_exit_code": 0,
+  "raw_log": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-root-tests/landing.log.txt",
+    "bytes": 37648,
+    "sha256": "39839967135194e5bd3c91cbcf8143c673451dcb065852baff28b1fc24d45487"
+  },
+  "gate_marker": "check: all green",
+  "main_equals_root_head": true,
+  "remote_configured": false,
+  "user_checkout_preserved": "original untracked Claude session transcript retained; no user source mutation",
+  "scope": "accepted jj19 evaluation; not backend25 adoption, runtime admission or v2 assembly",
+  "source_binding_reference": "accepted-evaluation.json",
+  "detached_gate_path": "/data02/home/philip.yang/workspace/.land-gate-h6k09_jz",
+  "verified_landed_sources": [
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "bytes": 24591,
+      "sha256": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+      "git_blob": "bc06dfe57b9c62a88e078341ae637e8182435d42"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "bytes": 40541,
+      "sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "git_blob": "c642c221a323eece0d74d4bfe04a53f9a32a05cf"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+      "bytes": 8468,
+      "sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+      "git_blob": "2c6219487a957398b69ab0676336b91e94e750d5"
+    }
+  ],
+  "local_branch_count_after_landing": 64
+}

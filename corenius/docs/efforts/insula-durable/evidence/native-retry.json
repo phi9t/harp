@@ -1,0 +1,17 @@
+{
+  "short_tmp_root": "/data02/home/philip.yang/.cdt",
+  "passed_test_cases_before_stop": 39,
+  "native_cases_passed": [
+    "actual_native_peer_tool_interleaving_routes_current_owner_in_both_topologies",
+    "actual_native_control_races_and_authenticated_correction",
+    "actual_native_product_lead_question_transport_and_explicit_tools",
+    "actual_native_scoped_tui_attachment_and_literal_input",
+    "actual_native_turn_ack_loss_reconciles_without_replay",
+    "actual_native_ui_drain_preserves_current_binding_under_interleaving",
+    "actual_native_visible_worker_ingestion_is_advisory_and_retained",
+    "configured_native_daemon_refuses_missing_runtime_configuration",
+    "disconnected_native_executor_refuses_fallback_and_rebinds_owned_realm",
+    "configured_native_topologies_are_isolated_and_controller_owned"
+  ],
+  "outcome": "partial retry ended after representative path-limit recovery checks; active Python fixture helpers received SIGINT and completed cleanup before harness interruption"
+}

@@ -1,0 +1,32 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.33s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-6c9795750c2ac521)
+
+running 2 tests
+decoy_kernel_stat=1459586 (python3) S 1459570 1459586 1459586 0 -1 1077936384 1757 0 5 0 2 2 0 0 20 0 1 0 51118170 19406848 2976 18446744073709551615 4321280 7158201 140736608696432 0 0 0 0 16781312 2 1 0 0 17 178 0 0 0 0 0 9731528 11035224 25415680 140736608700770 140736608702387 140736608702387 140736608702439 0
+
+owned_namespace_decoy={"binding":{"attempt":"550c6cc9-8ea3-4786-b320-16dc7acefcfa","base":"0123456789abcdef0123456789abcdef01234567","brief":"9afac652-1648-4387-bd6b-1d8c62eab261","operation":"50ca70c8-983c-4721-abee-e7f36f1dd6c2","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"953e98fb-830b-4067-8c4f-ed3000a33176","incarnation":"172b9a82-4479-4396-8d08-5a9a4488c7fa","init_start_ticks":"51118170","namespace_init":1459586,"outcome":null,"pid":1459570,"pid_namespace":4026539692,"start_ticks":"51118169","state":"running"}
+decoy_kernel_stat=1459589 (python3) S 1459572 1459589 1459589 0 -1 1077936384 1763 0 2 0 2 3 0 0 20 0 1 0 51118170 20455424 3014 18446744073709551615 4321280 7158201 140734625396928 0 0 0 0 16781312 2 1 0 0 17 76 0 0 0 0 0 9731528 11035224 21946368 140734625401186 140734625402803 140734625402803 140734625402855 0
+
+owned_descriptor_decoy={"binding":{"attempt":"5e8c3e39-1951-4a65-a3c9-4de536ef6c26","base":"0123456789abcdef0123456789abcdef01234567","brief":"cfcb848d-5c1a-4d41-acb5-6f2bf9744377","operation":"5cd72c68-31e1-4051-b0a8-c5cbb197f99f","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"12bbb442-706b-4367-8ef9-0dd8d523d624","incarnation":"e5ae0e94-72dc-42bc-8758-1fff20fb8af2","init_start_ticks":"51118170","namespace_init":1459589,"outcome":null,"pid":1459572,"pid_namespace":4026539728,"start_ticks":"51118169","state":"running"}
+qualification_reply={"ok":{"binding":{"attempt":"bbfa7092-0a0a-4d2f-8497-a54c53f29435","base":"0123456789abcdef0123456789abcdef01234567","brief":"683006b4-eb13-413f-bf86-fc39666f8e0d","operation":"afba5b28-ebff-4a33-8cfa-1ff03b610434","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"739866c6-866c-4b78-82b5-5e3391be5f34","incarnation":"9713e689-b7a5-4865-ac0a-1d2e34fb3e37","init_start_ticks":"51118170","namespace_init":1459586,"outcome":null,"pid":1459680,"pid_namespace":4026539692,"start_ticks":"51118188","state":"running"}}; real_decoy_pidfd_ready=false
+
+thread 'repair2_another_namespace_init_cannot_qualify_as_owned_child' (1459505) panicked at tests/runtime.rs:864:5:
+unqualified init must be refused before installing signal authority: {"ok":{"binding":{"attempt":"bbfa7092-0a0a-4d2f-8497-a54c53f29435","base":"0123456789abcdef0123456789abcdef01234567","brief":"683006b4-eb13-413f-bf86-fc39666f8e0d","operation":"afba5b28-ebff-4a33-8cfa-1ff03b610434","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"739866c6-866c-4b78-82b5-5e3391be5f34","incarnation":"9713e689-b7a5-4865-ac0a-1d2e34fb3e37","init_start_ticks":"51118170","namespace_init":1459586,"outcome":null,"pid":1459680,"pid_namespace":4026539692,"start_ticks":"51118188","state":"running"}}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+qualification_reply={"ok":{"binding":{"attempt":"58c33a53-c547-47ce-b0a5-44f4cb93f66b","base":"0123456789abcdef0123456789abcdef01234567","brief":"85dca406-1f80-4765-b92a-972d80d35077","operation":"8f5a2c0d-473f-4bc7-8a4c-9509fb94cf1d","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"50507fa9-fe90-4c49-899a-b1dd8bfe4b4e","incarnation":"96f0dda0-d105-4a53-a152-d1efb260c4db","init_start_ticks":"51118188","namespace_init":1459689,"outcome":null,"pid":1459681,"pid_namespace":4026539919,"start_ticks":"51118188","state":"running"}}; real_decoy_pidfd_ready=false
+
+thread 'repair2_descriptor_target_mismatch_is_never_signal_authority' (1459506) panicked at tests/runtime.rs:864:5:
+unqualified init must be refused before installing signal authority: {"ok":{"binding":{"attempt":"58c33a53-c547-47ce-b0a5-44f4cb93f66b","base":"0123456789abcdef0123456789abcdef01234567","brief":"85dca406-1f80-4765-b92a-972d80d35077","operation":"8f5a2c0d-473f-4bc7-8a4c-9509fb94cf1d","project":"p","scope_epoch":1},"boot_id":"6f48f645-3b26-40c9-93fb-db4190c7629b","handle":"50507fa9-fe90-4c49-899a-b1dd8bfe4b4e","incarnation":"96f0dda0-d105-4a53-a152-d1efb260c4db","init_start_ticks":"51118188","namespace_init":1459689,"outcome":null,"pid":1459681,"pid_namespace":4026539919,"start_ticks":"51118188","state":"running"}}
+test repair2_another_namespace_init_cannot_qualify_as_owned_child ... FAILED
+test repair2_descriptor_target_mismatch_is_never_signal_authority ... FAILED
+
+failures:
+
+failures:
+    repair2_another_namespace_init_cannot_qualify_as_owned_child
+    repair2_descriptor_target_mismatch_is_never_signal_authority
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.32s
+
+error: test failed, to rerun pass `--test runtime`

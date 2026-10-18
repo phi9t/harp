@@ -1,0 +1,112 @@
+{
+  "time": "2026-10-04T01:02:20.834188+00:00",
+  "cargo_test_launches": 5,
+  "cumulative_compile_test_format_lint_seconds": 574.6106485149357,
+  "test_process_terminal": true,
+  "lint_terminal": true,
+  "dedicated_container_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-04T00:44:34.105170995Z",
+    "FinishedAt": "2026-10-04T01:02:18.58036952Z"
+  },
+  "container_retained": "corenius-intent26-candidate-import2-pg",
+  "volume_retained": [
+    {
+      "Type": "volume",
+      "Name": "4cb8a2aeaf31a73cf85fc8c44bfb06822737f5eedb2a090f34fde1b996ea6085",
+      "Source": "/data00/docker/volumes/4cb8a2aeaf31a73cf85fc8c44bfb06822737f5eedb2a090f34fde1b996ea6085/_data",
+      "Destination": "/var/lib/postgresql/data",
+      "Driver": "local",
+      "Mode": "",
+      "RW": true,
+      "Propagation": ""
+    }
+  ],
+  "target_retained": "/tmp/corenius-target-intent26-candidate-import2",
+  "matching_workload_processes": [],
+  "scanner_before_stop_match_was_own_parent_shell": 222636,
+  "retained_fixture_roots": [
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-7cae911e-36ba-41b3-a97f-9c837d170e62",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-baa11d7c-37b8-4703-9b4b-1db6315ea517",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-04661edd-8224-4f93-b986-f23da455d505",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-a56b6be9-c0ad-4245-be81-2af5921b72ed",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-946b81c5-e5bc-44d6-a058-a81c2fc9b1b0",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-c084f92d-ce72-4292-b7d8-cd8f65ab1b3d",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-beb51fba-b71e-41c0-91de-721ae047cef1",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-9a551782-c8f0-42dc-b361-ae8a0efb32b8",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-a7ba6ce8-de3f-4ae8-b016-e4a940ba96a3",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-85b0b294-269d-4ca1-ab59-0a7aca2739bb",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-d4357132-dcd2-4c78-8d5f-d9b702423eb8",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-c6a83e82-4763-4a75-b059-17357cbc759e",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-5dd44cba-dc6e-480c-96a0-f73f7d94a59b",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-90e026e8-30f3-4dab-9c19-147296495417",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-374268f5-2448-4d35-82c1-92902782eb17",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-bb281efe-bba2-48c3-805f-2133c92dceda",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-01d0530b-31b5-414e-829a-36ab51d23d21",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-ee23f539-7d33-40f3-9462-5cfe7947da81",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-563212f6-162d-45b6-ae91-cec273aa9937",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-5e618252-1c8c-420b-8a63-32c93e519656",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-a2ebb5ab-23de-4442-970e-64bb9628ad6f",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-07ba659d-5c27-4363-a1ff-7ae6cb1fcb16",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-c5bb6cb7-3ab1-4276-80dc-540c5543114b",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-7f94a2bc-9a99-45d5-b5a4-9fbf78d7721b",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-21cf011d-94fe-46d8-ac83-d9a08b040089",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-1d507ab1-81b3-4798-9424-98a36d16ed21",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-90176d88-5f11-4e77-babb-2d51be9e2980",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-e83f6f34-0161-4699-b2b7-3920974450f1",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-70efc9f8-fc2a-4c9e-9a63-4329c94f9092",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-58a42911-6f07-4262-a837-22f4e0f0d9e5",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-d6373326-1624-4e75-ac6c-cc7dc565b724",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-cbd59df8-7bd7-4109-b92a-58583e04b2d1",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-ee542dc0-09cc-4aca-9ca2-2f3279f50578",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-40662eb3-38f3-4d75-9699-49a970f006cd",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-f1984ce4-6496-4104-8294-8470d06ddd80",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-8e7c4864-4fa9-46fa-af32-2ecbc362ac53",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-0448cf9d-d20a-4a30-bdd4-b719ae59fb2e",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-bf0e07ef-f92a-4983-88bf-92890127f310",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-59072af3-7f8c-460a-b9a8-54c887e14f26",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-378d9c79-5330-415d-9ad2-c5f313401d43",
+    "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2/.scratch/team-control-plane/candidate-import2/tmp/kernel16-1a68fad8-317d-4151-8470-86cbd775c080"
+  ],
+  "workspace_states": {
+    "released": 106,
+    "quarantined": 8,
+    "starting": 5
+  },
+  "unknown_runtime_rows_count": 24,
+  "unresolved_rows_and_reservations_preserved": true,
+  "no_stop_or_reconciliation_inferred_from_pg_shutdown_or_pid_absence": true,
+  "cargo_pg_slot_released": true,
+  "commands": [
+    {
+      "label": "stop",
+      "argv": [
+        "docker",
+        "stop",
+        "--time",
+        "15",
+        "corenius-intent26-candidate-import2-pg"
+      ],
+      "time": "2026-10-04T01:02:18.334530+00:00",
+      "exit_code": 0
+    },
+    {
+      "label": "container-after-stop",
+      "argv": [
+        "docker",
+        "inspect",
+        "corenius-intent26-candidate-import2-pg"
+      ],
+      "time": "2026-10-04T01:02:20.757893+00:00",
+      "exit_code": 0
+    }
+  ]
+}

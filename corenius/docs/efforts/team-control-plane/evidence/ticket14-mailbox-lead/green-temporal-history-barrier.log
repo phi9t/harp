@@ -1,0 +1,9 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.39s
+     Running tests/temporal.rs (target/debug/deps/temporal-52e3bfdabb04d5e2)
+
+running 1 test
+test real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 6.81s
+

@@ -1,0 +1,509 @@
+{
+  "source_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "pin": "af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "binary_sha256": "15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4",
+  "unsafe_control": false,
+  "events": [
+    {
+      "argv": [
+        "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+        "--version"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "init",
+        "-q",
+        "-b",
+        "main"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "add",
+        "artifact.txt"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "commit",
+        "-qm",
+        "base"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "checkout",
+        "-qb",
+        "attempt"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": " M artifact.txt\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "add",
+        "artifact.txt"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "commit",
+        "-qm",
+        "checkpoint"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "cabc43051e0e699fae78a6c71ad13f7b485be134\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "af3732e7ad58e86bbbd53aa2cf103f1da1caa069\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "update-ref",
+        "refs/fixture/verified",
+        "cabc43051e0e699fae78a6c71ad13f7b485be134"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "bundle",
+        "create",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline.bundle",
+        "refs/fixture/verified"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "add",
+        "artifact.txt"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "write-tree"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "f87eef25a5f7961514b935496d4ab4af95c6c74d\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "commit-tree",
+        "f87eef25a5f7961514b935496d4ab4af95c6c74d",
+        "-p",
+        "b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0",
+        "-m",
+        "replacement candidate"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "69ddd9d5cba1612e386b5f213da4c23faf57f041\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "update-ref",
+        "refs/heads/attempt",
+        "69ddd9d5cba1612e386b5f213da4c23faf57f041",
+        "cabc43051e0e699fae78a6c71ad13f7b485be134"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "69ddd9d5cba1612e386b5f213da4c23faf57f041\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "show",
+        "cabc43051e0e699fae78a6c71ad13f7b485be134:artifact.txt"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "git-checkpoint\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "reset",
+        "--hard",
+        "cabc43051e0e699fae78a6c71ad13f7b485be134"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "HEAD is now at cabc430 checkpoint\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "update-ref",
+        "refs/heads/attempt",
+        "69ddd9d5cba1612e386b5f213da4c23faf57f041",
+        "cabc43051e0e699fae78a6c71ad13f7b485be134"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "69ddd9d5cba1612e386b5f213da4c23faf57f041\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "M  artifact.txt\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline",
+        "reset",
+        "--hard",
+        "69ddd9d5cba1612e386b5f213da4c23faf57f041"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "HEAD is now at 69ddd9d replacement candidate\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier",
+        "init",
+        "-q"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier",
+        "fetch",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline.bundle",
+        "refs/fixture/verified"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "From /data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline.bundle\n * branch            refs/fixture/verified -> FETCH_HEAD\n"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier",
+        "rev-parse",
+        "FETCH_HEAD"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "cabc43051e0e699fae78a6c71ad13f7b485be134\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier",
+        "rev-parse",
+        "FETCH_HEAD^{tree}"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "af3732e7ad58e86bbbd53aa2cf103f1da1caa069\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "-C",
+        "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier",
+        "show",
+        "FETCH_HEAD:artifact.txt"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v",
+      "exit": 0,
+      "stdout": "git-checkpoint\n",
+      "stderr": ""
+    }
+  ],
+  "observations": {
+    "git_baseline": {
+      "base": "b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0",
+      "checkpoint_commit": "cabc43051e0e699fae78a6c71ad13f7b485be134",
+      "checkpoint_tree": "af3732e7ad58e86bbbd53aa2cf103f1da1caa069",
+      "rewritten_commit": "69ddd9d5cba1612e386b5f213da4c23faf57f041",
+      "rewritten_tree": "f87eef25a5f7961514b935496d4ab4af95c6c74d",
+      "bundle_sha256": "7e94a5cc85a221d0bb3604664756befac0d9ef91eede35cb6f2e5a05b7eabd00",
+      "status_does_not_snapshot": true,
+      "repository_vs_working_copy": {
+        "repository_commit": "69ddd9d5cba1612e386b5f213da4c23faf57f041",
+        "working_copy_content": "git-checkpoint\n",
+        "status": "M  artifact.txt"
+      },
+      "explicit_reconciliation_exact": true,
+      "fault_scope": "public update-ref/reset separation only; no Git crash injection claimed"
+    }
+  },
+  "version": "jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "outcome": "passed",
+  "durable_preexecution_journal": "{\"argv\": [\"/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj\", \"--version\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"init\", \"-q\", \"-b\", \"main\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"add\", \"artifact.txt\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"commit\", \"-qm\", \"base\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"checkout\", \"-qb\", \"attempt\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"status\", \"--porcelain\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"add\", \"artifact.txt\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"commit\", \"-qm\", \"checkpoint\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD^{tree}\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"update-ref\", \"refs/fixture/verified\", \"cabc43051e0e699fae78a6c71ad13f7b485be134\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"bundle\", \"create\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline.bundle\", \"refs/fixture/verified\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"add\", \"artifact.txt\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"write-tree\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"commit-tree\", \"f87eef25a5f7961514b935496d4ab4af95c6c74d\", \"-p\", \"b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0\", \"-m\", \"replacement candidate\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"update-ref\", \"refs/heads/attempt\", \"69ddd9d5cba1612e386b5f213da4c23faf57f041\", \"cabc43051e0e699fae78a6c71ad13f7b485be134\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"show\", \"cabc43051e0e699fae78a6c71ad13f7b485be134:artifact.txt\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"reset\", \"--hard\", \"cabc43051e0e699fae78a6c71ad13f7b485be134\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"base\": \"b15ab40cf4ebe47f0a1c5c47b6aa0c1ef72c86f0\", \"old_commit\": \"cabc43051e0e699fae78a6c71ad13f7b485be134\", \"phase\": \"prepared Git repository-only transition\", \"target_commit\": \"69ddd9d5cba1612e386b5f213da4c23faf57f041\", \"target_tree\": \"f87eef25a5f7961514b935496d4ab4af95c6c74d\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"update-ref\", \"refs/heads/attempt\", \"69ddd9d5cba1612e386b5f213da4c23faf57f041\", \"cabc43051e0e699fae78a6c71ad13f7b485be134\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"rev-parse\", \"HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"status\", \"--porcelain\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline\", \"reset\", \"--hard\", \"69ddd9d5cba1612e386b5f213da4c23faf57f041\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier\", \"init\", \"-q\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier\", \"fetch\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline.bundle\", \"refs/fixture/verified\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier\", \"rev-parse\", \"FETCH_HEAD\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier\", \"rev-parse\", \"FETCH_HEAD^{tree}\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n{\"argv\": [\"git\", \"-c\", \"core.hooksPath=/dev/null\", \"-C\", \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v/git-baseline-verifier\", \"show\", \"FETCH_HEAD:artifact.txt\"], \"cwd\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pcmajy7v\", \"phase\": \"prepared\"}\n",
+  "slice": "git_baseline",
+  "fixture_removed": true
+}

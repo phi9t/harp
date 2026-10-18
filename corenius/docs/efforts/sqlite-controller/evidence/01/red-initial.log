@@ -1,0 +1,22 @@
+    Updating crates.io index
+     Locking 62 packages to latest Rust 1.95 compatible versions
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding rusqlite v0.38.0 (available: v0.40.2)
+      Adding sha2 v0.10.9 (available: v0.11.0)
+ Downloading crates ...
+  Downloaded hashlink v0.11.1
+  Downloaded pkg-config v0.3.34
+  Downloaded fallible-streaming-iterator v0.1.9
+  Downloaded libc v0.2.190
+  Downloaded fallible-iterator v0.3.0
+  Downloaded rusqlite v0.38.0
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (download of `libsqlite3-sys v0.36.0` failed to transfer more than 10 bytes in 30s)
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (failed to download any data for `cc v1.6.0` within 30s)
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (download of `vcpkg v0.2.15` failed to transfer more than 10 bytes in 30s)
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (failed to download any data for `uuid v1.27.0` within 30s)
+warning: spurious network error (2 tries remaining): [28] Timeout was reached (download of `cc v1.6.0` failed to transfer more than 10 bytes in 30s)
+warning: spurious network error (2 tries remaining): [28] Timeout was reached (failed to download any data for `libsqlite3-sys v0.36.0` within 30s)
+warning: spurious network error (2 tries remaining): [28] Timeout was reached (download of `vcpkg v0.2.15` failed to transfer more than 10 bytes in 30s)
+warning: spurious network error (2 tries remaining): [28] Timeout was reached (failed to download any data for `uuid v1.27.0` within 30s)
+
+# Recorded command exit status: 143

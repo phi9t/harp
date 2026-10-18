@@ -1,0 +1,87 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "repair_round": 2,
+  "files": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-kata-broker-proof.md",
+      "sha256": "498e7f1109c3df645f8d8e3b91433158166fd8c99dc2735bf6e9467003616115",
+      "bytes": 4371
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-kata-broker-results.json",
+      "sha256": "a5044c39a36ee08cdaebc266b62c70d30baac899772dd9ef25a8adec1477fddc",
+      "bytes": 31123
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-kata-postgres-results.json",
+      "sha256": "a829feab587ee88abfe76eb116922cfd34e449eb1818a4d7f68865e6cee4d9ff",
+      "bytes": 1272
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-kata-probe-manifest.json",
+      "sha256": "64641cf78415b714b2e282b97885c39f7212c74cededa39ae359e26dfa3888a2",
+      "bytes": 2881
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-kata-remote-results.json",
+      "sha256": "e31da9a1f3cd2cf84205ff6f6ac6fda2df5536da3b4518bbe957d2126ed48158",
+      "bytes": 1267
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-kata-upgrade-results.json",
+      "sha256": "4b925b58b47aab98bf272525c6e734d8fec975beab206264bd52756ac2ac719d",
+      "bytes": 992
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/kata-broker-mapping.md",
+      "sha256": "85ea0f5735e96d45ac397eac86b606cfd59270dd9bd2f9057f71a1cc67e8ad4e",
+      "bytes": 6464
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/kata-executable-evaluation.md",
+      "sha256": "1e29b31440aa179fef6de09f5e870344da561703829a0c8053b20acaa95d4e2a",
+      "bytes": 11946
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/kata_broker_probe.py",
+      "sha256": "036c9b86d47a7353304cc02c4c96978c4fdaf6742cfb89dc770545cd2992862c",
+      "bytes": 27801
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/kata_postgres_probe.sh",
+      "sha256": "b117d40f27a2489f554804664e2208ba468e2819a8cdfbc557469154c5444b19",
+      "bytes": 982
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/kata_remote_probe.py",
+      "sha256": "3db308efc24b076fc7cf84575c97fc0db6f2ba740a763f08339481a0c2dd88a8",
+      "bytes": 11487
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/kata_upgrade_probe.py",
+      "sha256": "17ab8a631e32944797512eb6971a83b17c54b3172eda7fb98e4b1447234f7bc2",
+      "bytes": 5542
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-target-guard-repair.md",
+      "sha256": "361a471d7782f51c0646077ed647f488ccd318f77222e5a71dca2c687161452c",
+      "bytes": 2693
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket17-target-guard-results.json",
+      "sha256": "73f3479e93940bccc43ea3ca465d0453a85ec5f15f3f3f775583b7676822b7de",
+      "bytes": 823
+    }
+  ],
+  "acceptance": {
+    "standards": "pass repair2 separate context",
+    "spec": "pass repair2 separate context",
+    "repair_rounds": 2,
+    "disposition": "defer for first kernel",
+    "production_adapter": false,
+    "live_models": 0,
+    "fixture_probe_exit": 0,
+    "guard_regression_exit": 0,
+    "scope": "Pinned Kata evaluation; accepted10 broker seam; no Temporal/runtime/production guarantees"
+  }
+}

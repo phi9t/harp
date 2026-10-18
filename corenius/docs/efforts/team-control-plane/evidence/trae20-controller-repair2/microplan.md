@@ -1,0 +1,1 @@
+Repair2: actual existing-terminal/no-start public regression RED on exact repair1 source; available exclusive uncertainty fallback without overwrite or retry; stdout/stderr/terminal collision and post-dispatch fault controls; separate freeze and immutable history. No physical launches.

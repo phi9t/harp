@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-04T19:08:03Z",
+  "status": "ACCEPTED scoped ticket04 and linked full02 registry",
+  "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+  "helper_commit": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+  "evidence_tip": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+  "standards": "PASS scoped finalhelper",
+  "spec": "PASS scoped finalhelper",
+  "branch649": "PASS exact0b97408..f439e9a; closes branch648 sole Low",
+  "root_real_helper": "PASS89archives59records/oldfailure/newsuccess/actualFileExistsError/unchanged output and inputs",
+  "committed_retention": {
+    "captured_at": "2026-10-04T19:04:44.817656+00:00",
+    "helper_commit": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+    "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+    "evidence_tip": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+    "retention_records_verified": 11,
+    "raw_logs_verified": 3,
+    "source_archives_verified": 9,
+    "archived_source_files_verified": 330,
+    "relocated_fixture_input_files_verified": 92,
+    "historical_files_unchanged": 578,
+    "product_files_unchanged": 34,
+    "matched_driver_input_old_failure_corrected_success": true,
+    "actual_FileExistsError_and_unchanged_output": true,
+    "duplicate_digest_controls": "actual refusals, output absent",
+    "explicit_waited_process_identities_checked": 9,
+    "matching_live": [],
+    "unknown_reads": [],
+    "scope": "Immutable committed evidence plus root real relocated helper; no model/runtime or new Rust gate claim.",
+    "verdict": "PASS"
+  },
+  "product_gates": "R2root49affected+4native/defaultGitKata/fmt/strictClippy/build PASS34unchanged; unchanged native/components inherit R1full82/native29; no fresh complete e31 claim",
+  "linked02": "actual642 firstcleanup plus lostack composition both topologies and inherited pending mismatches passed with independent review; unknown records retain occupied/uncertain authority",
+  "caps": {
+    "02": "registry3of3 preserved; explicit linked04 cleanup complete",
+    "04": "final3of3 consumed, no reset"
+  },
+  "rulings": [
+    "decisions/01-registry-cleanup-cap-routing.md",
+    "decisions/02-git-journal-qualification.md"
+  ],
+  "monitoring": "manual reviewed1471..2451/156visible/12receipts, ingested2455; history122..1262unreviewed; no unattended claim; one mid-turn proof correction authenticated/acknowledged/resolved",
+  "limitations": "Exact current qualified build/config only, no promised rejected-initial journal migration or old binary downgrade. No live Codex qualification or final baseline release yet.",
+  "next": "05 isolated writer/shared lead-dashboard/gateway/cursor monitor;06 real assembled and dedicated live/retained baseline; final whole-baseline gates before mainline FF"
+}

@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "normal export retains exact raw bytes and proof",
+    "finally export runs on assertion failure",
+    "existing export refused without overwrite",
+    "missing raw file remains explicit empty bytes without fabricated stages"
+  ],
+  "exit": 0,
+  "fixture_starts": 0,
+  "trae_starts": 0
+}

@@ -1,0 +1,1 @@
+Repair1 offline only: preserve round0 inputs; actual post-reservation mutation RED; retain hash-bound refusal/unknown; semantic negative controls for prior slices labelled post-review; fault coverage; freeze exact sources/preimages/evidence. No launches or Git mutation.

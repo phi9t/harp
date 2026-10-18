@@ -1,0 +1,25 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.40s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 7 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.11s
+
+     Running tests/assembled_capacity.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_capacity-4bca225ae55533d0)
+
+running 4 tests
+test capacity_episode_sdk_worker ... ignored, owned episode SDK subprocess; parent fixture controls lifetime
+test stopped_capsule_unknown_effect_retains_physical_capacity ... ok
+test stopped_capsule_unknown_usage_retains_physical_capacity ... ok
+test two_running_capsules_refuse_third_and_cancel_deadline_refund_once ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 32.39s
+

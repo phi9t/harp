@@ -1,0 +1,36 @@
+[
+  {
+    "name": "app-server",
+    "pid": 2284158,
+    "argv": [
+      "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "app-server",
+      "--listen",
+      "ws://127.0.0.1:58435",
+      "--ws-auth",
+      "capability-token",
+      "--ws-token-file",
+      "/data02/home/philip.yang/devx/tmp/corenius-sqlite-lead-routing-lt5kx2vz/native-token"
+    ],
+    "start_stat": "2284158 (codex) R 2284156 2284158 2284158 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51389667 287592448 1 18446744073709551615 139788722147328 139788946360422 140720597342224 0 0 0 0 0 0 0 0 0 17 98 0 0 0 0 0 139788996080024 139789001714960 93824993886208 140720597347698 140720597347972 140720597347972 140720597348239 0\n",
+    "exit_code": 0,
+    "terminated": true
+  },
+  {
+    "name": "tui",
+    "pid": 2284443,
+    "argv": [
+      "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+      "--remote",
+      "ws://127.0.0.1:12535",
+      "--remote-auth-token-env",
+      "FIXTURE_NATIVE_TOKEN",
+      "resume",
+      "01a105c7-66ca-78a3-bdf9-85881306883c",
+      "--no-alt-screen"
+    ],
+    "start_stat": "2284443 (codex) R 2284156 2284443 2284443 0 -1 4194304 16 0 0 0 0 0 0 0 20 0 1 0 51389695 287592448 1 18446744073709551615 139662372765696 139662596978790 140727668245392 0 0 0 0 0 0 0 0 0 17 176 0 0 0 0 0 139662646698392 139662652333328 93825008287744 140727668252052 140727668252292 140727668252292 140727668252559 0\n",
+    "exit_code": -15,
+    "terminated": true
+  }
+]

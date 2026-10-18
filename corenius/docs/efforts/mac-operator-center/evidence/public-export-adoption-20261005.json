@@ -1,0 +1,117 @@
+{
+  "deployment": {
+    "observed_at": "2026-10-05T04:47:25.425472+00:00",
+    "source": "815ba89dc18eeb349aedb6e457577ce5e4292399",
+    "config_public_exports": {
+      "controller_snapshot_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/controller-snapshot.json",
+      "kata_snapshot_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/kata-snapshot.json",
+      "runtime_bindings_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/runtime-bindings.json"
+    },
+    "replaced_only_owned_view_processes": [
+      "view-manager",
+      "controller",
+      "workspaces"
+    ],
+    "preserved_trial_windows_observed_before": [
+      "@114|trial-r2-relay",
+      "@115|trial-r2-relay2",
+      "@116|trial-r2-workers",
+      "@117|trial-r2-controlplanes",
+      "@118|trial-r2-controller"
+    ],
+    "verification": {
+      "operator_tests": 49,
+      "seconds": 27.039,
+      "result": "PASS",
+      "py_compile": "PASS",
+      "diff_check": "PASS",
+      "scoped_spec_standards_branch": "PASS"
+    },
+    "installed_hashes": {
+      "mac_tmux.py": "52e25b82f1c58c0d50e8e147a9928c7ae01a1c2fd0a9d843acfc8a7ce980445c",
+      "mac_state_view.py": "f6363e9c7ce0156cc4bf972d178f6ebe569636f6440a4f3b2180d86a7bc552e7"
+    },
+    "db_api_auth_reads_by_state_feed": false,
+    "core_effects_authority": "implementation coordinator"
+  },
+  "verified": {
+    "observed_at": "2026-10-05T04:48:01.436399+00:00",
+    "manifest": {
+      "observed_at": "2026-10-05T04:47:59.152200+00:00",
+      "health": "degraded",
+      "errors": [
+        "runtime bindings unavailable; prior published clients retained with unknown state"
+      ],
+      "runtime_bindings_source": {
+        "status": "unavailable",
+        "observed_at": "2026-10-05T04:32:24.807885+00:00",
+        "digest": "e5883b0a3334d02f9ab02c4df981da93e5fa4fce823f47efdfaf152dff13c9f8",
+        "declared_status": "unavailable"
+      }
+    },
+    "public_status": {
+      "observed_at": "2026-10-05T04:47:58.694718+00:00",
+      "mode": "public files only; live services not queried",
+      "exports": [
+        {
+          "source": "controller_snapshot_path",
+          "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/controller-snapshot.json",
+          "source_observed_at": "2026-10-05T04:32:24.807885+00:00",
+          "age_seconds": 934,
+          "sha256": "df08aaa9aaa44c8eb51419872ae35ddc0efde7d77e31ab6a0ff4e36649ec8c99",
+          "publication_status": "unavailable",
+          "freshness": "stale",
+          "bytes": 726
+        },
+        {
+          "source": "kata_snapshot_path",
+          "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/kata-snapshot.json",
+          "source_observed_at": "2026-10-05T04:32:24.807885+00:00",
+          "age_seconds": 934,
+          "sha256": "46e0d051c0e729bf9873662664fdc3708f04fa8e800c67e15d2aa35b05e936c6",
+          "publication_status": "observed",
+          "freshness": "stale",
+          "bytes": 4074,
+          "items_count": 3
+        },
+        {
+          "source": "runtime_bindings_path",
+          "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/runtime-bindings.json",
+          "source_observed_at": "2026-10-05T04:32:24.807885+00:00",
+          "age_seconds": 934,
+          "sha256": "e5883b0a3334d02f9ab02c4df981da93e5fa4fce823f47efdfaf152dff13c9f8",
+          "publication_status": "unavailable",
+          "freshness": "stale",
+          "bytes": 221,
+          "bindings_count": 0
+        }
+      ]
+    },
+    "panes": [
+      "@104|overview|%114|985345|0",
+      "@105|implementation-coordinator|%115|985350|0",
+      "@106|main-lead|%116|985577|0",
+      "@107|worker-1 [historical]|%117|985810|0",
+      "@108|controller|%118|1125945|0",
+      "@109|workspaces|%119|1125949|0",
+      "@110|kata|%120|989127|0",
+      "@111|state-feed|%121|1064352|0",
+      "@112|view-manager|%122|1125941|0",
+      "@113|worker-1|%123|1064791|0",
+      "@114|trial-r2-relay|%124|1092834|1",
+      "@115|trial-r2-relay2|%125|1096628|0",
+      "@116|trial-r2-workers|%126|1096638|0",
+      "@117|trial-r2-controlplanes|%127|1099116|0",
+      "@118|trial-r2-controller|%128|1099734|0"
+    ]
+  },
+  "independent_review": {
+    "base": "15ba811",
+    "candidate": "815ba89dc18eeb349aedb6e457577ce5e4292399",
+    "standards": "PASS",
+    "spec": "PASS",
+    "branch_equivalent": "scoped PASS",
+    "findings": []
+  },
+  "scope": "Operator public export format compatibility and installed views only; no core qualification"
+}

@@ -1,0 +1,108 @@
+    Checking team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:3180:9
+     |
+3180 |         (&f.owner).to_owned(),
+     |         ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+     = note: `-D clippy::needless-borrow` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::needless_borrow)]`
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:3574:13
+     |
+3574 |             (&f.owner).to_owned(),
+     |             ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:3698:13
+     |
+3698 |             (&f.owner).to_owned(),
+     |             ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:3849:17
+     |
+3849 |                 (&f.owner).to_owned(),
+     |                 ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:3930:25
+     |
+3930 |                         (&f.owner).to_owned(),
+     |                         ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:3950:17
+     |
+3950 |                 (&f.owner).to_owned(),
+     |                 ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4041:13
+     |
+4041 |             (&f.owner).to_owned(),
+     |             ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4061:17
+     |
+4061 |                 (&f.owner).to_owned(),
+     |                 ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4123:17
+     |
+4123 |                 (&f.owner).to_owned(),
+     |                 ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4235:13
+     |
+4235 |             (&f.owner).to_owned(),
+     |             ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4377:17
+     |
+4377 |                 (&f.owner).to_owned(),
+     |                 ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4411:13
+     |
+4411 |             (&f.owner).to_owned(),
+     |             ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: this expression borrows a value the compiler would automatically borrow
+    --> tests/assembled_vertical.rs:4702:13
+     |
+4702 |             (&f.owner).to_owned(),
+     |             ^^^^^^^^^^ help: change this to: `f.owner`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#needless_borrow
+
+error: could not compile `team-control-plane` (test "assembled_vertical") due to 13 previous errors

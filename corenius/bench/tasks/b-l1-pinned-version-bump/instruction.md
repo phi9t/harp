@@ -1,0 +1,1 @@
+The app source already uses the intended formatter API, but the Blade target is still pinned to an older vendored package. Two original local versions are under `cpp3rdlib/`. Update the pinned dependency so `blade-offline build //app:main` succeeds and the binary prints `BLADE_L1_PIN bumped=v2 score=42`.

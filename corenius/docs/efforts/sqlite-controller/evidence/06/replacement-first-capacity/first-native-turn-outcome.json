@@ -1,0 +1,23 @@
+{
+  "observed_at": 1791176696.584039,
+  "source": "lead-authenticated native_ui thread/read",
+  "thread": "01a10a6f-b309-7a92-854d-25092fc7a92b",
+  "turns": [
+    {
+      "id": "01a10a6f-c6a3-77d2-8115-398fab1e4138",
+      "status": "completed",
+      "error": null
+    },
+    {
+      "id": "01a10a70-24c4-7703-9729-86c40cb540b4",
+      "status": "failed",
+      "error": {
+        "additionalDetails": null,
+        "codexErrorInfo": "serverOverloaded",
+        "message": "Selected model is at capacity. Please try a different model.",
+        "misalignment": null
+      }
+    }
+  ],
+  "envelope_error": null
+}

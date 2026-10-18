@@ -1,0 +1,33 @@
+diff --git a/crates/sqlite-controller/tests/support/native_registry.py b/crates/sqlite-controller/tests/support/native_registry.py
+index 7a7df1b..44b991f 100644
+--- a/crates/sqlite-controller/tests/support/native_registry.py
++++ b/crates/sqlite-controller/tests/support/native_registry.py
+@@ -504,9 +504,16 @@ def run(topology):
+    if os.environ.get('CORENIUS_TEST_EMPTY_RESTART')=='1':
+     observation=json.loads((r/'crash-boundary.observed').read_text());empty=next(b for b in registry['bindings'] if b['document']['thread_id']==observation['thread_id']);assert empty['document'].get('turn_id') is None and not empty['document']['ui_input_ready']
+     end=time.monotonic()+2
+-    while time.monotonic()<end:
+-     current=query('codex_registry');row=next(b for b in current['bindings'] if b['id']==empty['id']);assert row['state']=='unknown' and row['document'].get('turn_id') is None and not row['document']['ui_input_ready']
+-     assert len([o for o in current['operations'] if o['binding']==empty['id'] and o['kind']=='thread/start'])==1 and not any(o['binding']==empty['id'] and o['kind']=='turn/start' for o in current['operations']);assert query('snapshot')['occupied_slots']==2;time.sleep(.05)
++    samples=[]
++    try:
++     while time.monotonic()<end:
++      current=query('codex_registry');row=next(b for b in current['bindings'] if b['id']==empty['id'])
++      samples.append({'elapsed':time.monotonic()-(end-2),'state':row['state'],'turn_id':row['document'].get('turn_id'),'ui_input_ready':row['document']['ui_input_ready'],'server_incarnation':row['document'].get('server_incarnation'),'server_store':row['document'].get('server_store'),'recovery_state':row['document'].get('recovery_state'),'thread_starts':len([o for o in current['operations'] if o['binding']==empty['id'] and o['kind']=='thread/start']),'turn_starts':len([o for o in current['operations'] if o['binding']==empty['id'] and o['kind']=='turn/start'])})
++      assert row['state']=='unknown' and row['document'].get('turn_id') is None and not row['document']['ui_input_ready']
++      assert len([o for o in current['operations'] if o['binding']==empty['id'] and o['kind']=='thread/start'])==1 and not any(o['binding']==empty['id'] and o['kind']=='turn/start' for o in current['operations']);occupied=query('snapshot')['occupied_slots'];samples[-1]['occupied_slots']=occupied;assert occupied==2;time.sleep(.05)
++    finally:
++     metadata={'original_receipt':observation,'binding':empty['id'],'deadline_seconds':2,'original_assertions_preserved':True,'samples':samples,'qualification':'test-only allowed tuple metadata; no changed runtime branch or timeout'}
++     (r/'empty-restart-diagnostic.json').write_text(json.dumps(metadata,indent=2));print('actual_empty_restart_original_hold_diagnostic',topology,json.dumps(metadata),flush=True)
+     print('actual_empty_changed_incarnation_unknown_no_replay',topology,json.dumps(observation),flush=True);release.set()
+     for grant in grants:command('cancel_attempt',{'attempt':grant['attempt']})
+     wait(lambda:query('snapshot')['occupied_slots']==0);return
+@@ -785,7 +792,7 @@ def run(topology):
+    print('controller_owned_cancellation_confirmed',topology,flush=True)
+   finally:
+    release.set();event_b_release.set();cancel_hold.set();owned.stop();provider.shutdown();provider.server_close();guard.close()
+-   if os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1' or os.environ.get('CORENIUS_TEST_PRE_UNSUBSCRIBE_FIXTURE')=='1' or os.environ.get('CORENIUS_TEST_CONTROL_CENTER')=='1' or os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1':
++   if os.environ.get('CORENIUS_TEST_RETAIN_RAW')=='1' or os.environ.get('CORENIUS_TEST_EMPTY_RESTART')=='1' or os.environ.get('CORENIUS_TEST_ADOPT_EVENT_FIXTURE')=='1' or os.environ.get('CORENIUS_TEST_PRE_UNSUBSCRIBE_FIXTURE')=='1' or os.environ.get('CORENIUS_TEST_CONTROL_CENTER')=='1' or os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM')=='1':
+     import tarfile
+     destination=HERE.parents[1]/'.scratch/sqlite-controller/native';destination.mkdir(parents=True,exist_ok=True)
+     with tarfile.open(destination/(topology+'-'+r.name+'.tar.gz'),'w:gz') as archive:archive.add(r,arcname=r.name)

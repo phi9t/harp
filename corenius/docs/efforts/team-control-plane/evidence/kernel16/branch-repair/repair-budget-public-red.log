@@ -1,0 +1,22 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.33s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+
+thread 'tokio-rt-worker' (3018118) panicked at tests/assembled_vertical.rs:6462:9:
+failed verification must fence uncharged Worker continuation and same-candidate resubmit: capture=Ok(Receipt { id: 0e3ffe99-276d-43aa-a8f3-20385eca2d4f, disposition: "input_captured" }), submit=HTTP200 OK {"revision":9,"candidate_id":"f0e6ca945e316ecb3a26cb060e978cde7725e45ec60d9a9aaae3f8ca091c1dc3","report_id":null,"accepted":false}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'public_failed_verification_repairs_are_authorized_idempotent_and_bounded' (3018117) panicked at tests/assembled_vertical.rs:4481:10:
+uncharged repair boundary task failed: JoinError::Panic(Id(257), "failed verification must fence uncharged Worker continuation and same-candidate resubmit: capture=Ok(Receipt { id: 0e3ffe99-276d-43aa-a8f3-20385eca2d4f, disposition: \"input_captured\" }), submit=HTTP200 OK {\"revision\":9,\"candidate_id\":\"f0e6ca945e316ecb3a26cb060e978cde7725e45ec60d9a9aaae3f8ca091c1dc3\",\"report_id\":null,\"accepted\":false}", ...)
+test public_failed_verification_repairs_are_authorized_idempotent_and_bounded ... FAILED
+
+failures:
+
+failures:
+    public_failed_verification_repairs_are_authorized_idempotent_and_bounded
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 41 filtered out; finished in 6.19s
+
+error: test failed, to rerun pass `--test assembled_vertical`

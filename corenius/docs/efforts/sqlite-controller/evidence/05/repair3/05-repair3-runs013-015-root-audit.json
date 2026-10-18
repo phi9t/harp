@@ -1,0 +1,47 @@
+{
+  "checked_at": "2026-10-05T01:56:31.364029+00:00",
+  "runs": [
+    {
+      "name": "013-format",
+      "exit": 0,
+      "seconds": 0.41641900001559407,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_after_equal": false,
+      "matrix_after49_equal": true,
+      "purpose": "intentional formatting mutation",
+      "test_results": []
+    },
+    {
+      "name": "014-clippy",
+      "exit": 0,
+      "seconds": 7.876713783014566,
+      "log_sha256": "306b1ecfea1c03ead7caed8160aca520221777f50cb9827adfd1ed3e98e1f65c",
+      "before_after_equal": true,
+      "matrix_after49_equal": true,
+      "purpose": "source-specific terminal qualification",
+      "test_results": []
+    },
+    {
+      "name": "015-final-controller-git-kata",
+      "exit": 0,
+      "seconds": 184.12656556698494,
+      "log_sha256": "93f1ba3f34d19df53739b434763c97ec1be06974c73bd20dcba1ae62ba648f91",
+      "before_after_equal": true,
+      "matrix_after49_equal": true,
+      "purpose": "source-specific terminal qualification",
+      "test_results": [
+        "test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.95s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 152.28s",
+        "test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.36s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s",
+        "test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s",
+        "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.68s"
+      ]
+    }
+  ],
+  "acceptance": false,
+  "source_freeze": "pending",
+  "native_final016": "positively owned ongoing"
+}

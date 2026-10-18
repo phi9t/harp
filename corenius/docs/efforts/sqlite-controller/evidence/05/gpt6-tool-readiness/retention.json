@@ -1,0 +1,27 @@
+{
+  "verified_at": "2026-10-04T07:35:30Z",
+  "origin": "/data02/home/philip.yang/devx/tmp/corenius-sqlite-gpt6-lead-tools-m4ns0y2v",
+  "all_origin_files_verified": 78,
+  "external_aliases_to_pinned_binary": [],
+  "metadata_sha256": {
+    "readiness.md": "779757085120ad3a573d9ec3e04264d8686235c6f02f01a237b61dfbdada1d16",
+    "tool-pins.json": "54630edff9f15c5ebfebd43c604c4a78f4c668ed7b426189d622ca2453edab58",
+    "manifest.json": "3a779a407ec8b8efb582d70bca092347e475664961b13fd35e7cfe1b8fd3c631",
+    "oracle-results.json": "3f9a3b3b42deeaba4142f4aa92edaad46d7071b1b8abb2434943224b18e85527",
+    "resources.json": "5e6324059346339b7d232a3f7599c6fec511505d2567f53395e7ea79a0a569cc",
+    "owned-descendants.json": "3a0b04d158f25d45697076d41e32b497264bcdec6bbe3e8e0f3b411cf24e1989",
+    "verify.py": "26034a21c465fd0677205ba97eb6b4184e32d1b830522f56d726183e9223ac2b"
+  },
+  "retained_oracles": 13,
+  "classification": "MODEL_FREE_ACTUAL_GPT6_CODE_MODE_DYNAMIC_TOOL_PRIMITIVES_ONLY",
+  "qualified_primitive": "Actual pinned companion forwards three nested controller tools using native item/tool/call with distinct inner/outer call IDs.",
+  "not_qualified": [
+    "product gateway authorization",
+    "private network/credential handling",
+    "concurrent nested calls",
+    "live model/account qualification"
+  ],
+  "root_observed_companion_pids_absent": [
+    2349509
+  ]
+}

@@ -1,0 +1,21 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.80s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'confirmed_legacy_start_without_bound_physical_stop_remains_quarantined' (3385060) panicked at tests/assembled_cancellation.rs:783:5:
+assertion `left == right` failed: Confirmed legacy RPC with absent environment binding cannot prove stopped effects
+  left: "cancelled"
+ right: "quarantined"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... FAILED
+
+failures:
+
+failures:
+    confirmed_legacy_start_without_bound_physical_stop_remains_quarantined
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.37s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

@@ -1,0 +1,13 @@
+{
+  "phase": "ticket04 final repair3/3; ticket02 remains capped3/3; no ticket/cap reset",
+  "finding": "branch648 LOW retained helper portability; F4 evidence provenance",
+  "original_failure": "old helper absolute author paths attempt nonexistent owned sentinel and FileNotFoundError, actual first and final RED exit1",
+  "declared_hypothesis": "absolute retained archive paths select outside/original checkout rather than current copied inputs",
+  "fixture_rationale": "all retained fixtures and historical observations copied into a unique owned local root; both original/retained path fields replaced with nonexistent owned sentinel paths without changing archive filenames/digests; original checkout remains untouched",
+  "source_paired_result": "Final identical driver/input old-helper RED1 -> corrected-helper GREEN0 with59 historical-content records and original paths as provenance only; actual FileExistsError overwrite refusal, duplicate filename and digest mismatch refusal",
+  "proof_scope": "author real helper invocations only; R2 product gates and root audits inherited; no product/native change or Rust gate repeat",
+  "unresolved_controls": "Root own relocated helper/overwrite/unchanged product34 PASS and exact helper branch649 PASS reported; scoped Standards/Spec and final committed retention pending before acceptance.",
+  "next_discriminating_test": "Root scoped Standards/Spec and committed retained source/history/artifact audit on final evidence tip; no repeated Rust gates.",
+  "coordinator_inherited": "Root R2 retention audit PASS47 records/8 logs/17 archives578members/340 explicit PID-start identities0live0unknown; R2 independent scoped gates/Standards/Spec PASS; final06 whole-baseline gate still required",
+  "harness_correction": "Root caught unlink before overwrite invocation during source inspection. No GREEN/overwrite had run. Restored exact pinned helper before invocation, asserted FileExistsError and same output. First genuine RED preserved; final identical driver matched RED/GREEN re-established."
+}

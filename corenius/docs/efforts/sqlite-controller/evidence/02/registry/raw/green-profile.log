@@ -1,0 +1,24 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.50s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-2ed9953211d69908)
+
+running 1 test
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+native_connect_failure ConnectionResetError [Errno 104] Connection reset by peer
+actual_private_native_initialize {'id': 1, 'result': {'userAgent': 'corenius_private_profile/0.159.3 (Debian 12.0.0; x86_64) unknown (corenius_private_profile; 0.1)', 'codexHome': '/home/worker/.codex', 'platformFamily': 'unix', 'platformOs': 'linux'}}
+native_profile_cancel_identity {'ok': {'binding': {'attempt': 'daf426da-3315-4896-8b6b-102d74da201e', 'base': '0123456789abcdef0123456789abcdef01234567', 'brief': '58010407-9ebf-4f51-9ebb-8df0a6ea4d8a', 'operation': 'eb3a1408-aef1-4826-9be0-81e0f2b31b3e', 'project': 'native', 'scope_epoch': 1}, 'boot_id': '6f48f645-3b26-40c9-93fb-db4190c7629b', 'handle': '2c153539-b067-4dc0-8854-ef94dcdaba96', 'incarnation': '8be9188e-e36c-45bd-bf2c-0c270e74db89', 'init_start_ticks': '51501533', 'namespace_init': 2399259, 'native_store': '533a6a2c-6dcf-404e-9915-c73cb7333bec', 'outcome': 'owned namespace process pidfd confirmed termination: signal: 9 (SIGKILL)', 'pid': 2399257, 'pid_namespace': 4026539641, 'start_ticks': '51501532', 'state': 'exited'}}
+native_owned_output {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51501564", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+
+test pinned_native_services_use_supervised_private_network_profiles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 9.28s
+

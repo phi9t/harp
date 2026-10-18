@@ -1,0 +1,289 @@
+{
+  "candidate": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+  "review_job": 580,
+  "review_session": 36530,
+  "terminal_exit": 1,
+  "status": "bounded recovery repair assigned; public reds and fixes pending",
+  "author_assessment": {
+    "reviewer": "/root/kernel16_review575_author",
+    "valid_findings": 3,
+    "execution": "static only; no mutations/builds/services"
+  },
+  "independent_spec_assessment": {
+    "reviewer": "/root/review575_spec",
+    "verdict": "all three valid existing-contract gaps",
+    "execution": "read-only static assessment",
+    "requirements": [
+      "current epoch/authenticated authority",
+      "PID reuse safe monitor/launcher stop",
+      "fresh complete namespace evidence",
+      "immutable explicit recovery provenance",
+      "conditional insert preserves existing results",
+      "unknownexit never passing verification",
+      "secure rawlog vs bounded receipt distinction"
+    ]
+  },
+  "findings": [
+    {
+      "contract": "original unbound Attempt reservation vs independently owned episode capacity",
+      "problem": "retained continuation execution rows permanently forbid original reservation refund",
+      "public_red": "unallocated imported Worker Yield; allocate continuation; cancel/release; original held slot prevents replacement; duplicate and unknownusage controls",
+      "boundary": "prove original claim has no physical binding; preserve known-stop/usage/checkpoint and cumulative-budget requirements"
+    },
+    {
+      "contract": "recoverable physical completion distinct from successful verifier evidence",
+      "problem": "dead monitor cannot persist missing result and restart rejects retained state",
+      "public_red": "actual monitor death after stop before result persistence; replacement Owner reconcile/release; repeated recovery; successful Verify/Accept refused",
+      "boundary": "fresh exact monitor/launcher termination and complete stopped namespace, immutable result preservation, unknown exit never successful, usage/evidence uncertainty retains capacity"
+    },
+    {
+      "contract": "unbounded raw logs distinct from bounded native JSON receipts",
+      "problem": "1MiB native_file limit applied to retained logs prevents takeover even released",
+      "public_red": "actual >1MiB output, stopped/released execution, old transport stopped, replacement registered; takeover must succeed",
+      "boundary": "preserve pinned openat/no-follow/nonblocking regularfile uid/link/mode checks; no receipt-size coupling; FIFO/symlink/foreign/writable/unknown/live controls"
+    }
+  ],
+  "authority": "existing approved kernel recovery and evidence contracts; no new stack/provider/schema authority inferred",
+  "acceptance": "ticket16 and landing unproven",
+  "decision": "../decisions/20261002-kernel-recovery-repair580.md",
+  "repair_iteration": 2,
+  "round_iteration_limit": 3,
+  "author": {
+    "agent": "/root/kernel16_review580_author",
+    "tree": "/tmp/corenius-kernel16-review580-author",
+    "branch": "codex/kernel16-review580-author",
+    "base": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+    "exclusive_build_slot": true
+  },
+  "chosen_contract_critique": {
+    "reviewer": "/root/review575_spec",
+    "verdict": "no blocking ambiguity",
+    "clarification": "../decisions/20261002-kernel-recovery580-proof-clarifications.md",
+    "requirements": [
+      "original epoch separate from finalization epoch",
+      "complete exact-namespace stop proof not state/disappearance alone",
+      "secure descriptor-bound stable raw log bytes",
+      "both CAS paths reread immutable stored winner"
+    ]
+  },
+  "first_regression": {
+    "session": 46335,
+    "status": "meaningful red terminal101",
+    "test": "review580_allocated_continuation_history_does_not_hold_original_unbound_claim",
+    "file": "crates/team-control-plane/tests/assembled_cancellation.rs",
+    "product_changes": false,
+    "oracle": "after owned cleanup, used_capacity must equal0; repeat reconciliation and cumulative-budget controls",
+    "root_review": "read current testdiff; intended public sequence matches contract",
+    "evidence": "kernel16/branch-repair/review580-capacity-red/",
+    "observed_used_capacity": 1,
+    "required_used_capacity": 0
+  },
+  "first_green": {
+    "session": 35284,
+    "terminal_exit": 0,
+    "passed": 1,
+    "evidence": "kernel16/branch-repair/review580-capacity-green/",
+    "pending": "same-sequence uncertainty/refund controls and full validation"
+  },
+  "recovery_red_plan": "Real monitor result INSERT blocked by fixture-owned BEFORE INSERT trigger/advisory lock; committed Stop observed, exact monitor killed, uncommitted result rolled back; replacement Owner recovery/release must finalize unknown exit. No synthetic successful result.",
+  "monitor_crash_red": {
+    "terminal_exit": 101,
+    "classification": "meaningful behavioral red",
+    "evidence": "kernel16/branch-repair/review580-monitor-crash-red/",
+    "observed": "replacementOwnerrelease DependencyUnmet after actual monitor crash at precommit boundary",
+    "pending": [
+      "recovered provenance/digest/stopcertificate green",
+      "legitimate Verifier unknownresult refusal controls",
+      "newbranch authority/uncertainty/CAS controls"
+    ],
+    "session": 78990
+  },
+  "stop_certificate_source_assessment": {
+    "commit_read": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+    "files": [
+      "crates/team-control-plane/src/supervisor.rs:1631",
+      "crates/team-control-plane/src/supervisor.rs:1390"
+    ],
+    "finding": "existing decide_namespace provides complete pinned inventory or certified original PID1 whole-group finalization; observe_finalized fences namespace PID1, boot and start ticks plus process-group pidfd readiness",
+    "interpretation": "recovery may combine retained exact stopped observation and init identity with fresh certified finalization and dead monitor/launcher; generic namespace disappearance or state alone remains insufficient",
+    "status": "source-based reusable seam assessment; not runtime recovery proof"
+  },
+  "recovery_green": {
+    "session": 60011,
+    "status": "terminal0; focused physical recovery proof",
+    "root_source_review": "typed defaultMonitorWait/RecoveredStop, preserved originalepoch, finalizer/stopobservation/init, fresh exacttermination, secure streaming stablebytes and CASreread; focused refusal/guard proof remains pending",
+    "terminal_exit": 0,
+    "passed": 1,
+    "evidence": "kernel16/branch-repair/review580-monitor-crash-green/",
+    "remaining": "legitimate Verifier unknownresult refusal and guard/CAS/compatibility controls"
+  },
+  "takeover_attempt": {
+    "session": 7306,
+    "terminal_exit": 101,
+    "classification": "fixture oracle error not accepted red",
+    "evidence": "kernel16/branch-repair/review580-takeover-fixture-error/",
+    "next": "correct large-logsuccess path and cleanup-before-oracle then rerun distinctlabel without inventory productfix"
+  },
+  "takeover_red": {
+    "session": 83141,
+    "terminal_exit": 101,
+    "classification": "meaningful public red aftercleanup",
+    "evidence": "kernel16/branch-repair/review580-takeover-red/",
+    "bytes": 2097153,
+    "observed": "dependency_unmet",
+    "product": "inventory unchanged at red"
+  },
+  "takeover_fix": {
+    "status": "applied after meaningful corrected red; green pending",
+    "root_refinement": "unbounded secure_file only .log; preserve bounded .info/native receipts"
+  },
+  "verifier_fixture_failure": {
+    "session": 65776,
+    "terminal_exit": 101,
+    "classification": "SIGABRT setupfailure not behavioral green",
+    "evidence": "kernel16/branch-repair/review580-verifier-stack-error/",
+    "cleanup": "Author records identity-bound SIGKILL, exact2SDK incarnations absent, zero endpoint/cwd/fd references; fixture roots preserved. Root independently confirms both proc identities absent.",
+    "next": "box new branch and rerun distinctlabel after cleanup"
+  },
+  "boxed_fixture_compile": {
+    "session": 95378,
+    "terminal_exit": 101,
+    "classification": "compile E0505 setupfailure; no runtime launch",
+    "correction": "capture copied task/epoch values instead of borrowing shared fixture"
+  },
+  "corrected_takeover_verifier_run": {
+    "session": 24939,
+    "status": "partialpass, one takeoverpassed and legitimateVerifier recoverytimeout",
+    "receipt_bound": ".info/native JSON stays bounded; only .log unboundedsecureclassification",
+    "terminal_exit": 101,
+    "passing": "review580_actual_large_retained_log_allows_authenticated_takeover",
+    "failure": "no durable recoveredresult for fast Verifier; sourcecause identified above",
+    "pending": "isolated takeoverterminal0 and genuine fastVerifier red/green aftercleanup"
+  },
+  "fast_verifier_recovery_gap": {
+    "status": "genuine fast-crash red terminal101; initial launchobservation fix in progress under settled contract",
+    "finding": "initial gatedlaunch commits init/members/running but no supervised_observations running row; fastfinish can lack predecessor required by recoverycertificate",
+    "boundary": "append immutable running observation with exactPID1 in same launchtransaction before unblocking workload",
+    "scope": "existing stopprovenance correction within iteration2; no schema/protocol expansion",
+    "guards": "retain completepredecessor requirement and knownusage guard; do not use mutable stoppedstring alone",
+    "session": 25683,
+    "evidence": "kernel16/branch-repair/review580-fast-crash-red/",
+    "independence": "direct public supervisor start; no gatewayoperation/usage ambiguity"
+  },
+  "unknown_usage_control_attempt": {
+    "run": "focused580",
+    "terminal_exit": 101,
+    "classification": "fixture setupfailure before registration; no unknownusage assertion reached",
+    "observed": "register_runtime DependencyUnmet",
+    "source_hypothesis": "exclusive transport requires isolated processgroup; new test runs registration in cargo test process unlike existing owned worker subprocess",
+    "next": "author verifies guard and uses real isolated transport, preserving auth/isolation guard",
+    "session": 77125,
+    "confirmed_causes": "fixture legacy-kind identity mismatched inprocess contract and registration not using owned singleton transport boundary",
+    "correction": "existing owned singleton subprocess pattern, cleared env and correct inprocess-native identity; no product guard change"
+  },
+  "focused_controls_rerun": {
+    "session": 98900,
+    "status": "running; three test binaries; terminal result pending",
+    "new_controls_reported": [
+      "independent rawlog digest",
+      "symlink/FIFO/unsafe-mode/directory refusals before genuine-log finalization",
+      "legitimateVerifier public stop history/operation inspect/receipt resolution",
+      "same-sequence original+continuation unknown usage"
+    ],
+    "scope": "coverage planned/implemented; not yet passing evidence"
+  },
+  "latest_recovery580": {
+    "focused_session": 98900,
+    "focused_exit": 0,
+    "retained": "evidence/kernel16/branch-repair/review580-focused-green",
+    "thread_group_red_session": 77895,
+    "thread_group_red_exit": 101,
+    "thread_group_red_retained": "evidence/kernel16/branch-repair/review580-thread-group-red",
+    "final_focused_session": 96409,
+    "final_focused_status": "terminal101; cancellation2/operator3 pass, vertical SIGABRT stack overflow; no full-suite green",
+    "remaining": [
+      "final focused controls",
+      "full matrix and strict validation",
+      "immutable freeze",
+      "independent Standards and Spec reviews",
+      "root integration and gate",
+      "fresh whole-branch review",
+      "gated fast-forward landing"
+    ],
+    "acceptance": "not accepted",
+    "final_focused_retained": "evidence/kernel16/branch-repair/review580-final-focused-abort",
+    "boxed_focused": {
+      "session": 42143,
+      "exit": 0,
+      "parent_tests_passed": 9,
+      "retained": "evidence/kernel16/branch-repair/review580-final-focused-green"
+    },
+    "matrix": {
+      "session": 20645,
+      "status": "vertical process SIGABRT stack overflow in historical verifier case; full suite not green",
+      "retained": "evidence/kernel16/branch-repair/review580-matrix-abort"
+    },
+    "corrected_matrix": {
+      "session": 25437,
+      "log": "matrix-corrected-heap.log",
+      "status": "terminal0",
+      "fixture": "consistent boxed entry for all scenarios",
+      "mislaunch_cleanup": "author zero-reference record plus root verified Cargo94856/test113383 absent",
+      "confirmed_completed_groups": {
+        "operator": {
+          "passed": 10,
+          "failed": 0
+        },
+        "vertical": {
+          "passed": 54,
+          "failed": 0,
+          "ignored": 3,
+          "includes": "historical two-scenario producer expiry plus all new580 cases"
+        }
+      },
+      "summary_count": 16,
+      "passed_including_children": 172,
+      "failed": 0,
+      "ignored": 8,
+      "retained": "evidence/kernel16/branch-repair/review580-matrix-green"
+    },
+    "strict_freeze": {
+      "session": 39389,
+      "exit": 0,
+      "strict": 0,
+      "fmt": 0,
+      "diff": 0,
+      "manifest_sha256": "3cea8def696d1a4f43e3ec54f79472da7624edb2cc8fbef7f6911f065fca4c6a",
+      "patch_sha256": "f83dbd296ce221d58da0d4f35630e11cf77267e396ae3298f90b226d8979fe93",
+      "root_verified": "48 current/frozen source hashes and seven Git dd8 base preimages",
+      "reviews": "independent review580_standards and review580_spec active"
+    },
+    "conformance": {
+      "Standards": "PASS /root/review580_standards",
+      "Spec": "PASS /root/review580_spec",
+      "scope": "bounded seven-file recovery repair, not ticket16/fullgoal acceptance"
+    },
+    "root_integration": {
+      "base": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+      "48_git_preimages_verified": true,
+      "48_postimages_match_freeze": true,
+      "root_gate9": {
+        "session": 3092,
+        "exit": 0,
+        "retained": "evidence/kernel16/branch-repair/review580-root-gate9",
+        "cleanup_json_count": 14
+      }
+    },
+    "source_commit": "480d7c22bdfd926e1534c4680988d63d50618d2e",
+    "all48_committed_git_blobs_match_freeze": true,
+    "whole_branch_review": {
+      "session": 94656,
+      "job": 584,
+      "range": "1f16415..480d7c2",
+      "status": "terminal1 CHANGES REQUIRED",
+      "findings": 2,
+      "retained": "evidence/kernel16/branch-repair/branch584",
+      "assessment": "independent author and Spec read-only assessment requested"
+    }
+  }
+}

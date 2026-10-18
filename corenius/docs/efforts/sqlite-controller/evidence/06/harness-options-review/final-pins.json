@@ -1,0 +1,59 @@
+{
+  "at": 1791176195.851417,
+  "source_base": "e1a398ced81fc682672d2177f88c5b04fa51e448",
+  "source_base_resolved": "e1a398ced81fc682672d2177f88c5b04fa51e448",
+  "source_files": [
+    {
+      "path": "tools/agents/sqlite_baseline.py",
+      "expected": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570",
+      "snapshot": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570",
+      "snapshot_matches": true,
+      "current_source": "823fe1c013ddd029eb187961eabe89523870b9075a2d78aca65894891daa0570",
+      "current_source_drift": false
+    },
+    {
+      "path": "tools/agents/test_sqlite_baseline.py",
+      "expected": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98",
+      "snapshot": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98",
+      "snapshot_matches": true,
+      "current_source": "540ab4de84622df1f840e487d24a8afbab694ed88c5f31d9019b535c06628a98",
+      "current_source_drift": false
+    }
+  ],
+  "guidance": [
+    {
+      "path": "CONSTITUTION.md",
+      "mainline_read": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "source_worktree": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "same": true
+    },
+    {
+      "path": "docs/agents/agentic-engineering.md",
+      "mainline_read": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "source_worktree": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "same": true
+    },
+    {
+      "path": "docs/agents/domain.md",
+      "mainline_read": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "source_worktree": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "same": true
+    },
+    {
+      "path": "docs/agents/skill-orchestration.md",
+      "mainline_read": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "source_worktree": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "same": true
+    }
+  ],
+  "owner_receipt": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/evidence/owner-amendments/20261005T031128Z/happy-path-authorized.md",
+      "sha256": "449496d6f81b0f42df995f8343c6d5733d588fbfea4786e894b8410ad2971ea9"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/evidence/owner-amendments/20261005T031128Z/receipt.json",
+      "sha256": "f9d5d8ed52e589bd9f40e76091a3dfafd24d9f6c0d3fc4333830750c3f3a72ce"
+    }
+  ]
+}

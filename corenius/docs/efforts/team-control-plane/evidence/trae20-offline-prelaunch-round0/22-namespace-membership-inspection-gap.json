@@ -1,0 +1,10 @@
+{
+  "pid": 32161,
+  "scope": "read-only public kernel metadata for blocked namespace inventory",
+  "namespace_readable": false,
+  "error": "PermissionError /proc/32161/ns/pid",
+  "old_historical_namespaces": "still quarantined",
+  "owner_uid": 1018,
+  "our_uid": 1018,
+  "start_ticks": 10769
+}

@@ -1,0 +1,21 @@
+{
+  "candidate": "review10",
+  "manifest_sha256": "30ecb9442b43c9e62556a9fae39e28d3967f59d84d70911be58837ca30bd0bc3",
+  "Standards": {
+    "verdict": "CHANGES REQUIRED",
+    "blocking": "Certificate-specific public Start/monitor replay after Unknown continuation lacks behavioral proof; no demonstrated product safety defect.",
+    "source": "assembled_vertical.rs7746-7782",
+    "rule": "agentic-engineering.md4.6 and CONSTITUTION.md5",
+    "nonblocking": [
+      "physical_usage_known naming/Option parameter mode clarity",
+      "duplicate pinned-directory validation"
+    ]
+  },
+  "Spec": {
+    "verdict": "PASS bounded repair conformance",
+    "blocking_findings": 0,
+    "coverage_limitation": "Dedicated certificate replay untested, existing Ready and persisted-controller guards support inference only.",
+    "full_goal_complete": false
+  },
+  "reconciliation": "Test-only replay control assigned to isolated author for Worker and task-free Lead. No production/refactor/schema expansion; review10 preserved, fresh freeze/review required."
+}

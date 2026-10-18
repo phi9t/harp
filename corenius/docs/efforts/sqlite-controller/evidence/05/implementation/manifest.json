@@ -1,0 +1,266 @@
+{
+  "acceptance": "pending root exact-commit full regression, independent Standards/Spec and branch review",
+  "author_owner": "sqlite-controller-05",
+  "author_task": "/root/sqlite05_control_center_author",
+  "canonical_state_dehydration": "root-owned per explicit coordination boundary",
+  "files": {
+    "final-owned-process-dispositions.json": {
+      "bytes": 63168,
+      "sha256": "d0b4f71787ce79b10aaea54b29fb5d58fdb9cc2bbcae64aee3d61913a6a9a991"
+    },
+    "handoff.md": {
+      "bytes": 15157,
+      "sha256": "a7f12660982c1d0e43fb4ac3ac012b3dc9176e0e418b7d410f6626e50fb71d56"
+    },
+    "raw-retention.json": {
+      "bytes": 17667,
+      "sha256": "a24decbabe3f8fcaf05f45425cea3c7cac5b1ece26842701c6a7dff63ba385bf"
+    },
+    "run-index.json": {
+      "bytes": 74003,
+      "sha256": "a2d117c154e05f8bac3b461d5ffe4bac6bd02c2c6bcc58823a585b61cb6ff425"
+    },
+    "run-record-driver.py": {
+      "bytes": 1335,
+      "sha256": "cc2e68bcbab15392327944db16a953092079183d95ee15821893314a2894c053"
+    },
+    "runs/authority-37-observer-red.json": {
+      "bytes": 10913,
+      "sha256": "fd7665f3085b99d841cfb67ff691e2f1847d774f3680ba162ee19c09e2aba47c"
+    },
+    "runs/authority-38-observer-green.json": {
+      "bytes": 10911,
+      "sha256": "61597ae6cdd0579e0a289b690db08e1802e902afe861ce23148ab8983177423d"
+    },
+    "runs/client-07-red.json": {
+      "bytes": 355,
+      "sha256": "b1d84ac8bf3a0f5f14c8289c35135d5741d9efcc43f08e7655824d2b2bc3d4fa"
+    },
+    "runs/clients-25-socket-green.json": {
+      "bytes": 10815,
+      "sha256": "7ce5f72c58addeb376b34ccb18872e290ef851b5a55cc6c8efe05e41c4ecf125"
+    },
+    "runs/control-02.json": {
+      "bytes": 2380,
+      "sha256": "a19ff10620379b7471e42b7cdf5d431875640472e281b951102717b5475bc7bb"
+    },
+    "runs/control-client-11-green.json": {
+      "bytes": 2683,
+      "sha256": "ac4bedf3b342f5263c39e6addff23addc9c68e6cfc24bb7a44433ceae2d0773c"
+    },
+    "runs/diagnostic-52-initial-persistence.json": {
+      "bytes": 11011,
+      "sha256": "a06289c5e86c123095bd0b8b199466f61b696ad6d2ebedb833c0dbf6fdf3ba0c"
+    },
+    "runs/durability-48-atomic-delivery.json": {
+      "bytes": 10894,
+      "sha256": "1a5d4a53ed83fb3d43d17ec36dd0cbe9314b34990c6cb73866eee20c5503f5e1"
+    },
+    "runs/durability-49-atomic-delivery.json": {
+      "bytes": 10892,
+      "sha256": "544b54bd2789567edad408b0ae2e7237bf4801fa49a41ecadbfff27512b7e3a5"
+    },
+    "runs/final-32-focused.json": {
+      "bytes": 10891,
+      "sha256": "865277216b576e3b0b401ea90cdc09034ddb6e744b170805b39c4363aa9c3b54"
+    },
+    "runs/final-33-protocol.json": {
+      "bytes": 10889,
+      "sha256": "2cdd104e92a0abc50d3b5dac6fc42feecc933d4b137f05623f84ff3eed28d0e6"
+    },
+    "runs/final-34-clippy.json": {
+      "bytes": 10838,
+      "sha256": "280062550565153a3fd30e064ffc4cf92c9186f1deb7eaa30ec52f0dbf0b1f58"
+    },
+    "runs/final-35-clippy.json": {
+      "bytes": 10836,
+      "sha256": "62e21d1af8518e5c600f4fc0a6076ac5eadd8106d78b4c52177e56bd95c354ac"
+    },
+    "runs/final-36-repository-gate.json": {
+      "bytes": 10670,
+      "sha256": "75746aba953b82482219c4c695c3c2d6f1250bfbb168d0bf328182622b00f0c8"
+    },
+    "runs/gateway-03-red.json": {
+      "bytes": 2340,
+      "sha256": "dce7504eaa946abb02408ed7d1d37fa5cd1a2c0785c4f9a0181230f01ce27a65"
+    },
+    "runs/gateway-04-green.json": {
+      "bytes": 2453,
+      "sha256": "7d7954e0c00e3ce2af56e290237bdad66b02cd7be67cafc0c9786701c33b4692"
+    },
+    "runs/gateway-39-pending-turn-red.json": {
+      "bytes": 10886,
+      "sha256": "aa4c7aa73527a70b25212ce304c696f5bf426f9cdb1904d6ad765bc800fc0484"
+    },
+    "runs/gateway-42-correlated-turn-green.json": {
+      "bytes": 10864,
+      "sha256": "a70082534382f501094a8ade1af49409360861681be699d2874ed8c4978e6fc0"
+    },
+    "runs/gateway-43-correlated-turn-green.json": {
+      "bytes": 10862,
+      "sha256": "1a883acb8a72541892234a1c618e68d60ffb31415764a2f68706ec70a8fc91b7"
+    },
+    "runs/gateway-50-early-routing.json": {
+      "bytes": 10862,
+      "sha256": "2bdc2bff89d2ea2eb3710addaf8f57a67ef2059267ddb4ef53364e8a93dba9ba"
+    },
+    "runs/monitor-18-rerun-red.json": {
+      "bytes": 10787,
+      "sha256": "baecf3f36e329be875a928805a4c449e9c4ad242a8d8ffae9cfcb01adc9ac6a4"
+    },
+    "runs/monitor-20-rerun-green.json": {
+      "bytes": 10758,
+      "sha256": "b968a2d61fc41a0cdc277657ec3bdf23a775e65e739c67b30afcf1c5b8feabe5"
+    },
+    "runs/monitor-22-native-red.json": {
+      "bytes": 10892,
+      "sha256": "9c7d47961bb36a3e69a1c74f9997a38b0e0151e2237b70b476d0001813a7f0b5"
+    },
+    "runs/monitor-23-native-green.json": {
+      "bytes": 10890,
+      "sha256": "382559ee4a5a4761440566f251645dba1fe46a2688024afb161bf94e88e1c932"
+    },
+    "runs/monitor-27-bounded-green.json": {
+      "bytes": 10815,
+      "sha256": "0b41fc4a91f1c33dd78693ab3111cc5c9fc2c5725ab4f36151a72667f30bc0f8"
+    },
+    "runs/monitor-46-retained-input-red.json": {
+      "bytes": 10892,
+      "sha256": "290ec8752e733b3bfb7d6d348bef5b9ea3c26b3c7be67fa5d4b2cdf3ec657b5a"
+    },
+    "runs/monitor-47-retained-input-green.json": {
+      "bytes": 10890,
+      "sha256": "08f04ea2433f55c9786ce7ad69ba093463f150d6043ccf881e14c3f239151f1f"
+    },
+    "runs/native-05-red.json": {
+      "bytes": 3364,
+      "sha256": "953cfb6748d26759175edb19c9fae2022a0324ac97af9c676e7e184476d77fb0"
+    },
+    "runs/native-06-red.json": {
+      "bytes": 3364,
+      "sha256": "eeefa81b9ab8033682d22b6d6dfb0fb0e38fa0cb9b307ac3cffb8a7900b96dc1"
+    },
+    "runs/native-08-green.json": {
+      "bytes": 3478,
+      "sha256": "c77642b8f00f144b912e567668905f75ea6bcb42771768d9a5eaf2ff9f7a0c16"
+    },
+    "runs/native-09-green.json": {
+      "bytes": 3699,
+      "sha256": "176751b1fb9d32b3cd0b2a48437e3f9c4fb041be59c109b293180f62425f3a63"
+    },
+    "runs/native-44-ui-drain-red.json": {
+      "bytes": 10918,
+      "sha256": "2772655f39221d7f7ab8526bdd7f8cbfd15a049fff29306d9c7c1114a2e5c6e1"
+    },
+    "runs/native-45-ui-drain-green.json": {
+      "bytes": 10916,
+      "sha256": "2fd9d8e3480e243df2119d5cc32618772e861b13dd91de1fa7fcce9ff85c41f9"
+    },
+    "runs/native-51-peer-interleaving.json": {
+      "bytes": 10920,
+      "sha256": "20aa4fa7b952d866fed578470f8ce211f045d02c3ca3c64612b01f67b8b47c38"
+    },
+    "runs/native-56-combined-final.json": {
+      "bytes": 11063,
+      "sha256": "09800aab0a4cb9971b51baef87dee9d0269fcf7efb4c9a70a51352b9a68cf569"
+    },
+    "runs/observer-10-red.json": {
+      "bytes": 2569,
+      "sha256": "c6d3db3ce51476f678a823882a211c0813b5811d635694d7828b8a9fc5f6e226"
+    },
+    "runs/races-24-early-red.json": {
+      "bytes": 10885,
+      "sha256": "8d3cd1f3705251208702d1723433bd7c2781c5c499276b43cbe7592de53a1296"
+    },
+    "runs/races-26-early-correction-green.json": {
+      "bytes": 10885,
+      "sha256": "4893366ec8dcb3f8fe492d9e9a98595459c66e94c0b96a2cc63876f38e6a2d01"
+    },
+    "runs/races-28-pinned-early.json": {
+      "bytes": 10885,
+      "sha256": "3977fe3755e38fc7d7a7a069e733976d0bdf24be5df605e9080dbda13f0f3191"
+    },
+    "runs/races-29-responsive-green.json": {
+      "bytes": 10883,
+      "sha256": "8402eb89391d7f480e4a2c147a82604d5e10a58575f3382b6781733fa2fbdd8d"
+    },
+    "runs/races-30-active-and-tool-reply.json": {
+      "bytes": 10885,
+      "sha256": "994b5135ed709a2c56cbc1d499c59ac190380a751a32dd40ca7a65297fe6568c"
+    },
+    "runs/races-31-delivered-routing.json": {
+      "bytes": 10883,
+      "sha256": "a796d62dceb9f58215fa4930df403c6cde7c1148adc2bc72e751ffd5b2269059"
+    },
+    "runs/red-control-center-pins.json": {
+      "bytes": 978,
+      "sha256": "808d03b9ded0cb004b479176366755ff9f123796372dc7d19e6418eb498c7036"
+    },
+    "runs/red-control-center-retrospective.json": {
+      "bytes": 1112,
+      "sha256": "75588ec11fed71db4ed96e16360333318fe03ed7b6ba13de75671caa8a35676a"
+    },
+    "runs/routing-40-peer-red.json": {
+      "bytes": 10906,
+      "sha256": "afbc4483c1287e0aa44b389923e6ee3fca753de52f773e585d0a30df94f52f8d"
+    },
+    "runs/routing-41-owned-peer-red.json": {
+      "bytes": 10906,
+      "sha256": "4ad5eee0fe4d246662aa8ed66fc0509bf73ef0f0375607385908144c6ea72c9c"
+    },
+    "runs/source-53-focused-review.json": {
+      "bytes": 10926,
+      "sha256": "e1c58bb01ec1aeae646ec6085fe0d608218e90fb3e68f4fce61cd38ffb4b24d1"
+    },
+    "runs/source-54-strict-clippy.json": {
+      "bytes": 10857,
+      "sha256": "91186b59bf7c381e4396ec8fe74285b37041d4e89b7f6add4e9d407f6658422c"
+    },
+    "runs/source-55-strict-clippy.json": {
+      "bytes": 10855,
+      "sha256": "c7ddb22a4589325fed4159ad4f0014e5cce960d89f950ee7e9f90d15db01977d"
+    },
+    "runs/tui-17-shared.json": {
+      "bytes": 10882,
+      "sha256": "01fa6573ed7ea8fd45fdc4414cb99f87769dfb92f1c3ce3354a0a4fb7aae9e2a"
+    },
+    "runs/tui-19-shared.json": {
+      "bytes": 10882,
+      "sha256": "a805090cb11f1cd4ba848c8ebc426061ab6a033510de26b7b90e2c4251833434"
+    },
+    "runs/tui-21-shared.json": {
+      "bytes": 10880,
+      "sha256": "6d2b3c65cb4caf4c9a7307237be82d5a7fbd6eaacdcb568d62744f50fe27980e"
+    },
+    "runs/ui-12-red.json": {
+      "bytes": 3478,
+      "sha256": "97ebac0fb6ff3c6f9f44f8e6bc27226611b0c601201054a242fa0e9bce0cd7a5"
+    },
+    "runs/ui-13-build.json": {
+      "bytes": 10591,
+      "sha256": "069b979462094ef7aac383136b2b3da26d21b29d738dd39a41b0668e2207216c"
+    },
+    "runs/ui-14-shared.json": {
+      "bytes": 10657,
+      "sha256": "e286408c973f68b66a0266c80d3fb02a41b01fabad7be35f1ea31cb91cbbad70"
+    },
+    "runs/ui-15-build.json": {
+      "bytes": 10764,
+      "sha256": "12b6b1188b380627ee0662c538320dd71f46273a4be037b4f059593888e4bea3"
+    },
+    "runs/ui-16-shared.json": {
+      "bytes": 10891,
+      "sha256": "bd947a61144c5cf8c7e7ce08ad3af007db680b16d0187dd90128a9101feda340"
+    },
+    "source-files.json": {
+      "bytes": 9048,
+      "sha256": "0480c1ec4d6cad1845b831ae420287cde9b7a1fabb16c3c27c6a9f95c676d207"
+    }
+  },
+  "retained_at": "2026-10-04T21:50:09.254371+00:00",
+  "retention_driver_pin_timing": "current unchanged retained driver bytes; no retrospective before-launch archive claim for the driver itself",
+  "source_base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+  "source_commit": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+  "source_frozen": true,
+  "source_tree": "917018ee0d6fe5cd35847ea569cf37894454e229"
+}

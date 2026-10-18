@@ -1,0 +1,75 @@
+{
+  "baseline": "ticket13-accepted-manifest.json",
+  "focused": {
+    "command": "./tests/run-postgres.sh --test mailbox --test mailbox_artifacts --test mailbox_delivery",
+    "handle": 45591,
+    "exit": 0,
+    "tests": 6
+  },
+  "fmt": {
+    "command": "cargo fmt --check",
+    "exit": 0
+  },
+  "clippy": {
+    "command": "cargo clippy --locked --all-targets -- -D warnings",
+    "exit": 0
+  },
+  "full_gate": {
+    "command": "RUST_TEST_THREADS=1 TEMPORAL_FIXTURE_EVIDENCE=<owned temporal-final-barrier> tools/agents/check.sh",
+    "handle": 5815,
+    "exit": 0,
+    "rust_tests_passed": 114,
+    "rust_suite_counts": [
+      0,
+      0,
+      10,
+      4,
+      16,
+      1,
+      2,
+      3,
+      7,
+      0,
+      20,
+      0,
+      26,
+      5,
+      3,
+      3,
+      5,
+      3,
+      3,
+      3,
+      0
+    ]
+  },
+  "actual_temporal_focused": {
+    "command": "TEMPORAL_FIXTURE_EVIDENCE=<owned temporal-history-barrier> ./tests/run-temporal.sh --test temporal real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint -- --test-threads=1",
+    "handle": 52434,
+    "exit": 0
+  },
+  "retained_failed_gates": [
+    {
+      "log": "fullgate-final.log",
+      "exit": 1,
+      "cause": "new mailbox fixture reused shared initialized default PG schema; fixture isolated"
+    },
+    {
+      "log": "fullgate-final-isolated.log",
+      "exit": 1,
+      "cause": "retained artifact evidence addition borrowed moved fixture values; fixture compile repaired"
+    },
+    {
+      "log": "fullgate-final-verified.log",
+      "exit": 1,
+      "cause": "new-run observed registry identity preceded Activity history completion; bounded actual-history barrier added"
+    }
+  ],
+  "cleanup": {
+    "temporal_listener_closed": true
+  },
+  "physical_scenarios": 14,
+  "paid_or_model_calls": 0,
+  "acceptance_claim": false,
+  "independent_review": "pending"
+}

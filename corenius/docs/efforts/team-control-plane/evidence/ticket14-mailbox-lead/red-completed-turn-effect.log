@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.63s
+     Running tests/mailbox_delivery.rs (target/debug/deps/mailbox_delivery-6e61f3c526abdfc4)
+
+running 1 test
+test delivery_uses_durable_exact_episode_and_physical_conditional_turn ... FAILED
+
+failures:
+
+---- delivery_uses_durable_exact_episode_and_physical_conditional_turn stdout ----
+
+thread 'delivery_uses_durable_exact_episode_and_physical_conditional_turn' (3149334) panicked at tests/mailbox_delivery.rs:71:5:
+assertion `left == right` failed: a completed expected turn cannot receive a physical steering effect
+  left: Confirmed
+ right: FailedKnown
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    delivery_uses_durable_exact_episode_and_physical_conditional_turn
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+error: test failed, to rerun pass `--test mailbox_delivery`

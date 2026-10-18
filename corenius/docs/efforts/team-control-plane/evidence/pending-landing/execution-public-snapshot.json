@@ -1,0 +1,431 @@
+{
+  "observed_at": "2026-10-05T05:56:03.618140+00:00",
+  "entries": [
+    {
+      "path": "docs/efforts/sqlite-controller/CURRENT.json",
+      "sha256": "ec99c8de9728437bcd027d849b38598aa3e718d9c874db8c047c6aa93c23cff2",
+      "bytes": 12486
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/STATE.md",
+      "sha256": "61e274dcd2d43b01a7e46e9200f2ac999b93c76d57054dc60bfe1354315292ec",
+      "bytes": 2766
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/branch653-public.json",
+      "sha256": "661279bacbea95c997b37271169e1ab29582d10f0db31a849a2d13e7e033dc58",
+      "bytes": 1811
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/retention-index.json",
+      "sha256": "b814054c52e81d912cc48a92cf4e58d4ab4d478a499f2aaf966891e3a7c2cc96",
+      "bytes": 13968
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/review-result.json",
+      "sha256": "3f2a37e5e3148475bf19cd42e6bcf44f6410a0d729908325a93bceb2e0687ec8",
+      "bytes": 4282
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/review-result.md",
+      "sha256": "4ae83c2a16195c68ca6f49c6c8b7f3ddb16784fad64b9b9612e1cc0aa30bb824",
+      "bytes": 2428
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/05-evid43d5-root-retention.json",
+      "sha256": "6ac5176fdce649c129b0bb7214f8b67de32f361378d763bf0e2daf7ee7388a80",
+      "bytes": 42844
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/05-repair3-pre-source-root-matrix.json",
+      "sha256": "9df34387bf21c32d7953c494d29632c02a97d671e619bc55bb2251a0311d4139",
+      "bytes": 26152
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/05-source7b20-review-admission.json",
+      "sha256": "bfa9cad5dee5ac3e6533fccac98eecf6171e9e8d8df4c1b094bf58751c3f0dd0",
+      "bytes": 13561
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/05-source7b20-root-gate-retention.json",
+      "sha256": "d4c2db471d71be81dd1ebe11e1d2e44e4225da8e2f943a37795986c29229dae8",
+      "bytes": 116810
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/05-source7b20-spec-retention.json",
+      "sha256": "3a4519f7f37a1cb64ddfa5f56bc25537270b4f5ec676204a24ffd2c5a357a872",
+      "bytes": 10551
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/05-source7b20-standards-retention.json",
+      "sha256": "15ed6797b0685119acb74b8bf7d1b3522ef5994a7610ae50aba03a926925fc8f",
+      "bytes": 15856
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/context-health-20261005T0221-v2.json",
+      "sha256": "6f60079622b2940bbe577b5d35ea9f798493b845299cd53efc9614c9cd62be94",
+      "bytes": 2205
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/context-health-20261005T0221.json",
+      "sha256": "9631e7dca16c86117ba8ca4731c7ee7e6a09e4f0daabc6881566e7709f670bff",
+      "bytes": 1706
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/context-health-root-after-20261005T0228.json",
+      "sha256": "49e85e2bcb7afc7c49f387baa9a3d1b4d3117a419695682e2925dc9d03efe064",
+      "bytes": 1227
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/gate-before.json",
+      "sha256": "e26003910bd71af00b2d9b22bcb90fcec51b772f8d47a2d1df68de82b83ae570",
+      "bytes": 8574
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/gate.json",
+      "sha256": "32f89316dd656b1b7532edd7833abd838f468d07a3a0f0b1cd1b5d4149d98185",
+      "bytes": 17955
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/logs/root-build.log.gz",
+      "sha256": "f389247b7126f0a7c82cc4dd153510d9e549b112115c81b112b61e47deec466d",
+      "bytes": 173
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/logs/root-clippy.log.gz",
+      "sha256": "3f73304babdadaef16833bff1b0b1dd6ede111431014c26e2cc796f228539bab",
+      "bytes": 173
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/logs/root-complete-fi.log.gz",
+      "sha256": "62f89bf4253a921d6e5d7a841f428763919c6797c0983eed07833cf05860b312",
+      "bytes": 571281
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/logs/root-default-control-client-git-kata.log.gz",
+      "sha256": "687e04824357bd9ba5689b58c5d812993094794609fc760e657e707c2dbf19e4",
+      "bytes": 2152
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/logs/root-fmt.log.gz",
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "bytes": 20
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/run-ticket05-gate.py",
+      "sha256": "c5e743d37b160822cdd644bdd986a6d9333703f18a7a04bfd72993dbd8023899",
+      "bytes": 4663
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/root/source-before.tar.gz",
+      "sha256": "d7bd0141a177af575fe3222af0eadfa9ad6c46a2c1502706482b16214c476f0a",
+      "bytes": 247229
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-final-addendum/addendum.json",
+      "sha256": "f657870a912e180dad4091ba837e2d628ae8d787fe160cf7c1ee995381fa43d8",
+      "bytes": 8787
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-final-addendum/addendum.md",
+      "sha256": "7d76ed8cfcdef658bbb16014ae375c42c7a7fd3dafbd23f13ecd2ba6b7b07d10",
+      "bytes": 2354
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-final-addendum/cleanup.json",
+      "sha256": "bc5c132ede3d979a5c5aaf766816362322715542445cdee0446652344402d020",
+      "bytes": 22018
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-final-addendum/evidence-index.json",
+      "sha256": "aa04c5ade673e96f8ccb8cb8db10943fcba6314f129958660a6bde0a2eeb5874",
+      "bytes": 9373
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-final-addendum/handoff.json",
+      "sha256": "6e6463a6f8f33ed5aec6218926d8c76b2d2cf7d1d783f98fdfe981913f6502ef",
+      "bytes": 873
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-final-addendum/source-after.json",
+      "sha256": "ade3074e8cda32c3dfa14857676e7b4277b116b3fec9f4f1e40b3a7387ee45cf",
+      "bytes": 6289
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-five-controls/cleanup.json",
+      "sha256": "91a7f8d9f0577114190842466279c8be10740616f94b1cc0eff6f98fc37bf584",
+      "bytes": 46505
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-five-controls/evidence-index.json",
+      "sha256": "63c9ca3dbabf95b044a97189ce6c251ba0de2250adb21c920f4fcfa925cef947",
+      "bytes": 63795
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-five-controls/report.json",
+      "sha256": "c6d2b48910353d0c426f0ccf572bb545e14d9c4479c68b89e80cc4cbfd8b5b51",
+      "bytes": 16446
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-five-controls/report.md",
+      "sha256": "475da55924cffb11e14eefc9723e56df605102158f4aa9cccf5203662a469a89",
+      "bytes": 2193
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-five-controls/source-after.json",
+      "sha256": "b4adb05c44d7bbe012733292ba1f0f41ef55ac7dda907d61943725668406605d",
+      "bytes": 5969
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/spec-five-controls/source-pins.json",
+      "sha256": "224d8538bd25e1523444836efc18619a914a9cf52214b021a6032aa58973f2c5",
+      "bytes": 5825
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/addendum-branch653.json",
+      "sha256": "a6b3ef3126dc5d2c932f6d2c4650a26970792cda4c004da966f760febc18a543",
+      "bytes": 9283
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/addendum-branch653.md",
+      "sha256": "3b65445e7f7ffc962c3aed42d91422feaed9947b30ac43a1f700cd4ef5f0c40b",
+      "bytes": 2667
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/evidence-index.json",
+      "sha256": "1ad48c9361d721427f59b8b5543e24b05e13d72ff5bfb7b0ed047629f25871e5",
+      "bytes": 141324
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/final-delivery-digests.json",
+      "sha256": "7fdfe1ad46ae4dc92d46228321847dd611876206122cba9d9f0c24153971a7f3",
+      "bytes": 2859
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/five-control-report.json",
+      "sha256": "1be40faf4e0ebaac9eb17dabd422b47f92c0812b7c96e806b0a778fe633ccb71",
+      "bytes": 14450
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/five-control-report.md",
+      "sha256": "b92a8b10ba9d2e1f59cfd25aeceedec41a119a0d08e9110c5917a87cadba46e4",
+      "bytes": 2542
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/owned-process-final-dispositions.json",
+      "sha256": "67a74f85fd403ef3dd7b476337163972c480e830f90c07c4de4530b29de6b675",
+      "bytes": 472625
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/report.json",
+      "sha256": "d6f4792ecb978a2186c19c889cf71e0c0d656679f75206e674ff50ff5599544d",
+      "bytes": 59089
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/report.md",
+      "sha256": "70f5685410317c6fd60008c42003fa8afa86b05e0963d1dfbec65e3cf1951b23",
+      "bytes": 3117
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/source-after-final.json",
+      "sha256": "399df50e86a473d7c71df925275369e2f8391ac352ce668190c9dfbde6495bcb",
+      "bytes": 22959
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/standards-final/source-before.json",
+      "sha256": "5b3022742296dc6c9ccfca93642ac3f1b15390f220a79323396a20fe697fe3e6",
+      "bytes": 13069
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/04-scoped-checkpoint/04-r1-live01.json",
+      "sha256": "97c9642e3fc7d687404613380ccc638619dc94b5e5f43b905aad0cf9fcd14b72",
+      "bytes": 10055
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/04-scoped-checkpoint/04-r1-live02.json",
+      "sha256": "16c6e35470f9c8ebf668ef649c176fe9586bd3442f1eeed87db17e58e93387d3",
+      "bytes": 12332
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/04-scoped-checkpoint/04-r3-supplement-2388.json",
+      "sha256": "c8ebdccbb0bf6fb68b547e2f680363806c4d567f90d1a56e0a7bc381c8d51a78",
+      "bytes": 3398
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/04-scoped-checkpoint/adoption-refresh.json",
+      "sha256": "7cd209d3fa27144a931bb1e5d21aaad75dad4e3663c9c884f0d2a1608d3333f3",
+      "bytes": 2466
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/04-scoped-checkpoint/verification.json",
+      "sha256": "6f020b63e894b76f9f3334ec3a02bb6cda4541c29238fc6a47b0ef4fd2e9e378",
+      "bytes": 574
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/context-efficiency-owner/SPEC.md",
+      "sha256": "56e88c6610cc9bca331e2a554e5cc3d55dd0ecb4ebd4a8299f314d964c6a27e4",
+      "bytes": 26207
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/context-efficiency-owner/adoption.json",
+      "sha256": "f6c2a04014484c197f747f751a48156aa439d792b54f3f44aee7032c24e314bf",
+      "bytes": 1972
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/context-efficiency-owner/context-efficiency-0001.md",
+      "sha256": "185035e4a5c47679be528011118b79257fc07dca26fe67b46bea37737d2be6c1",
+      "bytes": 3463
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/context-efficiency-owner/current-boundary-20261005T0258.json",
+      "sha256": "54cb816455c1d10f92b62a13fa351c5634eb6a3cdc0582e00dddbb305c8960a8",
+      "bytes": 7485
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/EFFORT.md",
+      "sha256": "5fd17ae9f379e30c15a90b2c5fff561971ba46a2ba71ac05143f24b98b0af9d0",
+      "bytes": 936
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/OPERATIONS.md",
+      "sha256": "398a8970a58515ddb6b031d5a39ccf2c3857d1eab1ac79e46eb32f6dbfa15fd7",
+      "bytes": 6133
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/SPEC.md",
+      "sha256": "f773a906844361521ba88b2a87d2dd46ab2765c67028d5d08d66d493b900778a",
+      "bytes": 21239
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/adoption.json",
+      "sha256": "49e4ebf8886388fc4da0a386034352231bdda95ec05ca90ec6daa8c2aaee9f04",
+      "bytes": 4252
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/assignment-update/intent.json",
+      "sha256": "17731c02b16378833c33ee5a4fd8ed949213bcaeb0230623edc8bce67f78561b",
+      "bytes": 837
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/assignment-update/message.txt",
+      "sha256": "d88f1316aef715855a8bddf393c31107909e6b8fb4016ce17b1ad0fd512a4f08",
+      "bytes": 3036
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/assignment-update/result.json",
+      "sha256": "317967aaffe93484e0c759852c405945b86cdffe19430edb27edfe9b619ba2da",
+      "bytes": 1375
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/assignment-update/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/assignment-update/stdout.log",
+      "sha256": "5d8c0c05990e38af100ad720a5becfb5041e0e5f92b0c9fde8f445d8fca77acf",
+      "bytes": 101
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/evidence/live-review-0002.md",
+      "sha256": "a85c70d1d5b502c2b27b88171fce4d28a2362b02748a3dedbd40545febf27493",
+      "bytes": 4235
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/evidence/wakeup-qualification.md",
+      "sha256": "e994a950bb6afa93ace9f77d2e9df60ee06ce53fe56feca555bf0880323e8476",
+      "bytes": 2785
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/tickets/01-lead-wakeup.md",
+      "sha256": "0717eb04fef2e33c22fcd493fb53e6d6ed9b00d626944058093482ac1eb19417",
+      "bytes": 3469
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/timer-observation.json",
+      "sha256": "f12b3615bc9cc6c8181ed7696cccb62ae647ad682d9aa6017dd9476a4e551b67",
+      "bytes": 523
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/author-freeze.json",
+      "sha256": "ee4732cd738924e87c7be99d63c33f8de33284462a134d94d49d67c8e3bd0a4e",
+      "bytes": 9275
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/candidate-fixed-base.diff",
+      "sha256": "f60c730b56022ad2d108a78432dbcfcd09f42782b3b804d627ad273ab75a8a45",
+      "bytes": 30210
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/fixture-corrections.diff",
+      "sha256": "2fc8b3edd8345aaa9ae11fb9f7b2037b45ba6df2391d44a47e66b48235b0dba4",
+      "bytes": 24131
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/fixture-corrections.json",
+      "sha256": "17bd9c60b12ac962580bbbbdf47a785f9007c68629ce7b1cf1288d4f537b76b9",
+      "bytes": 1154
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/index.json",
+      "sha256": "740834acc12952d53095e270cd5988c7489776be6e829937c4d01d3ab5194be0",
+      "bytes": 3254
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-adjacent-controller.log",
+      "sha256": "c0336e3a10fbffb81038ed3b033e7b8fe2b0f424bdd0fe3374856ac2e70e6c7b",
+      "bytes": 3864
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-check-actual_native_scoped_tui_attachment_and_literal_input.log",
+      "sha256": "bfc7252a9cc911425a3716170818941cf0cbd34e2c65d58b9234c62917e891ee",
+      "bytes": 106916
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-check-durable_native_configuration_refuses_retargeted_topology.log",
+      "sha256": "5398a333052c1d9ed30bffd4909c3f1f821f83150da2a60be67577685f0baafc",
+      "bytes": 77982
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-check-focused-final.log",
+      "sha256": "211fb425a8ba4874a6c77405a14b98f983ca9935b4b7cd179b198c3853dcf01b",
+      "bytes": 802
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-check-unknown_native_start_refuses_new_turn_until_reconciled.log",
+      "sha256": "46365b0eae9068df7a73f09ba9d036b52d4873e5abf4065277bc6fe3c8db74aa",
+      "bytes": 99864
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-green-fixture-complete.log",
+      "sha256": "3846ec6e3ac485612e4e0828ac4528968d0006ec6871213f98fdb91cdb54db34",
+      "bytes": 1329
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-green.log",
+      "sha256": "b5324d650ea4afbf21afbd3d53fb8a885a8e002c16a9434d85f0c3c363f0604f",
+      "bytes": 1621
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-harness-green.log",
+      "sha256": "6af2389aec9ed4c00af610b47658f749b17b26da36f2d8e3dfb87b12d81dc0d0",
+      "bytes": 123
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/author-red.log",
+      "sha256": "fecddadce8c1d62a0e68d569448e291f6d29b236e689cb2ea0a62bd776051392",
+      "bytes": 2021
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/06/model-selection-candidate/logs/harness-unsupported-model.log",
+      "sha256": "7581a3c6d351c7c1fbcb15885703d70fdc29fb75ec75bb60f11989c1157e9308",
+      "bytes": 521
+    },
+    {
+      "path": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/root-manual-20261004T195600Z.json",
+      "sha256": "55a111956e4ec2b31d9c3e3a5046127256cf5db704ed30a6a81fe4b47657a9c5",
+      "bytes": 4022
+    }
+  ],
+  "kind": "point-in-time public execution evidence; not live authority"
+}

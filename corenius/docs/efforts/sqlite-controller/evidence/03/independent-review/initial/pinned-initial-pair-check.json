@@ -1,0 +1,21 @@
+{
+  "red_base": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+  "archive_checks": [
+    {
+      "kind": "red_base",
+      "files": 25,
+      "matches_exact_commit": true
+    },
+    {
+      "kind": "green_precommand",
+      "files": 29,
+      "matches_manifest": true
+    }
+  ],
+  "driver_equal": true,
+  "product_acceptance": false,
+  "red_executable_sha256": "0fe12634dddab50732d2213a7813904594dddde6af30b80183284bb0f440133a",
+  "public_driver_sha256": "5ab9468644594e690ced0c1517b4c670fe6777fb49d4b5a3d319803341eef6b8",
+  "verdict": "PINS_MATCH",
+  "limits": "Archive/executable/driver provenance check only; final fixture-parent correction and frozen-source gate/reviews pending."
+}

@@ -1,0 +1,35 @@
+command: du -sh selected toolchain paths
+du: cannot read directory '/usr/local/tao/agent/.unix_socket': Permission denied
+du: cannot read directory '/usr/local/tao/agent/.bvc': Permission denied
+du: cannot read directory '/usr/local/tao/agent/crontab_metas': Permission denied
+du: cannot read directory '/usr/local/tao/agent/run': Permission denied
+du: cannot read directory '/usr/local/tao/agent/svc': Permission denied
+du: cannot read directory '/usr/local/tao/salt/cache/files': Permission denied
+du: cannot read directory '/usr/local/talos': Permission denied
+du: cannot read directory '/usr/share/polkit-1/rules.d': Permission denied
+16G	/usr
+287M	/data02/home/philip.yang/.cargo
+18G	/data02/home/philip.yang/.rustup
+48M	/data02/home/philip.yang/.local/bin/uv
+11G	/data02/home/philip.yang/.cache/uv
+367M	/data02/home/philip.yang/.local/share/uv
+4.6G	/opt/tiger/typhoon-blade
+614M	/opt/tiger/ss_bin
+
+command: readlink -f /usr/local/cuda && du -shL /usr/local/cuda
+/data00/home/zfc/cuda_13_2
+7.1G	/usr/local/cuda
+
+command: command -v gcc && readlink -f $(command -v gcc)
+/data02/home/philip.yang/devx/spack-v1.2.2/opt/spack/linux-icelake/gcc-13.4.0-lxsj2ofeq3zfis76q3onmwinqh4kxwsq/bin/gcc
+/data02/home/philip.yang/devx/spack-v1.2.2/opt/spack/linux-icelake/gcc-13.4.0-lxsj2ofeq3zfis76q3onmwinqh4kxwsq/bin/gcc
+command: du -sh python2.7 paths
+3.7M	/usr/bin/python2.7
+107M	/usr/lib/python2.7
+29M	/usr/local/lib/python2.7
+
+command: du -sh cargo subdirs and selected spack gcc root
+56M	/data02/home/philip.yang/.cargo/bin
+231M	/data02/home/philip.yang/.cargo/registry
+spack_gcc_root=/data02/home/philip.yang/devx/spack-v1.2.2/opt/spack/linux-icelake/gcc-13.4.0-lxsj2ofeq3zfis76q3onmwinqh4kxwsq
+888M	/data02/home/philip.yang/devx/spack-v1.2.2/opt/spack/linux-icelake/gcc-13.4.0-lxsj2ofeq3zfis76q3onmwinqh4kxwsq

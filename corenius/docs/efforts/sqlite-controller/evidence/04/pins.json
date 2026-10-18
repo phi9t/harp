@@ -1,0 +1,36 @@
+{
+  "git": {
+    "path": "/usr/bin/git",
+    "sha256": "00c84136d8294294580daa32f25b3e83ddb8341e9b5b70722e4c9a973ba5f749"
+  },
+  "python": {
+    "path": "/usr/bin/python3",
+    "sha256": "44e5a74ce34ac8837cfbaa6273a9a2cb7542d7d5495781cc4bf48e7de7abe8ed"
+  },
+  "bubblewrap": {
+    "path": "/usr/bin/bwrap",
+    "sha256": "85580dd52ed366ece8844e90fa75ac7c4de8802963071344e123221fb9f6f11e"
+  },
+  "codex": {
+    "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex",
+    "sha256": "8bf204b36a2f6dd0dab73aa2f639892e67ef9ac8befccb4a05b1496ebf25c479"
+  },
+  "companion": {
+    "path": "/data02/home/philip.yang/.codex/packages/standalone/releases/0.159.3-x86_64-unknown-linux-musl/bin/codex-code-mode-host",
+    "sha256": "fe64bd08c7844ca1fca91d8cb825e62012a03a05ae8040c635bbb61e5be0b4c5"
+  },
+  "kata": {
+    "path": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned",
+    "sha256": "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6"
+  },
+  "source_commit": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "source_base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "cargo_lock_sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "cargo": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+  "codex_version": "0.159.3",
+  "native_schema_digest": "e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455",
+  "kata_source_commit": "b70a4306464e319701df30a3b92860289613b15a",
+  "kata_api_schema_version": "0.24.0",
+  "environment": "Read-only host /usr toolchain; pinned executables and fixed boundary/environment configuration, not a hermetic dependency image."
+}

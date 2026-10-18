@@ -1,0 +1,30 @@
+[
+  {
+    "topology": "shared",
+    "RED_prerequisites": true,
+    "A_thread_start_count": 1,
+    "A_turn_start_count": 1,
+    "exact_client_history": true,
+    "hold": true,
+    "B_retry_after_disarm": false,
+    "disarmed": true,
+    "delivered_types": [
+      "active",
+      "idle"
+    ]
+  },
+  {
+    "topology": "separate",
+    "RED_prerequisites": true,
+    "A_thread_start_count": 1,
+    "A_turn_start_count": 1,
+    "exact_client_history": true,
+    "hold": true,
+    "B_retry_after_disarm": false,
+    "disarmed": true,
+    "delivered_types": [
+      "active",
+      "idle"
+    ]
+  }
+]

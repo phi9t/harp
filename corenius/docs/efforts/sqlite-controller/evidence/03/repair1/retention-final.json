@@ -1,0 +1,53 @@
+{
+  "captured_at": "2026-10-04T15:19:40.990713+00:00",
+  "source_commit": "4d5fbff0323f27c6dcb30aec5cf3df7a839511e0",
+  "base": "40d4805ce34d74521f3473b7f8ad2b9f7451d0c2",
+  "29_file_frozen_manifest": "source/repair1-frozen-source.json",
+  "frozen_archive_sha256": "c9ce8227d838291b2207ab578c99fa44addc14213b40356e7c4997b7486a6727",
+  "author_composition": {
+    "Kata_public_process_runtime_units": 49,
+    "source": "source/repair1-final-covering-before.json + repair1-final-checks-before.json",
+    "post_FI_changed_files": [
+      "crates/sqlite-controller/src/codex.rs",
+      "crates/sqlite-controller/tests/support/native_registry.py"
+    ],
+    "scoped_native_inherited_case": "1 Rust test, BOTH shared/separate; PASS61.20s; source pins match final29",
+    "after_FI_default_fmt_strictClippy_normalbuild": "all exit0"
+  },
+  "native_archives": [
+    {
+      "archive": "fixtures/native-separate-cnr-qu2ez9l7.tar.gz",
+      "sha256": "764c23a5c9fe101b55cd29a112c50f15d964926dc58e00a59cf765d39341fab4"
+    },
+    {
+      "archive": "fixtures/native-shared-cnr-56vvwqp7.tar.gz",
+      "sha256": "bc866038c9d039ebde789ed3ba2185569284a36b0d89661d4772f75288bd6ccc"
+    },
+    {
+      "archive": "fixtures/separate-cnr-mpa2rpht.tar.gz",
+      "sha256": "d9cd54ebdde75a9622c1c4c7fb5a588fa771e5dbde600eebf7acd4d74b4ff126"
+    },
+    {
+      "archive": "fixtures/separate-cnr-wonh_a64.tar.gz",
+      "sha256": "99116a80b95c3dedfd51933b9dc2093800db847051e740169bf1f3595e998894"
+    },
+    {
+      "archive": "fixtures/shared-cnr-6db18kgq.tar.gz",
+      "sha256": "8eadaf6cbc1a13ae74f5068d6dab12daec25afd3bca3613f0f0a3124554bf694"
+    },
+    {
+      "archive": "fixtures/shared-cnr-ecjma1zb.tar.gz",
+      "sha256": "9dbfd12eb226314b22b47888f5c2e3336102ec88ee7093ff1dd42064b9d1c09d"
+    }
+  ],
+  "Kata_retention": "kata-retention.json;22 new unique fixtures; private token/configfiles excluded and scanned; modes600;0matching live start identities",
+  "root_independent_gate_reviews": {
+    "scoped50_default_fmt_strictClippy_normalbuild": "PASS reported by root;30trackedsource/check files unchanged",
+    "resources": "31identities0matchinglive/7terminaldisposalreceipts reported by root",
+    "Standards": "active",
+    "branch644": "active",
+    "Spec": "pending this author seat handoff",
+    "acceptance": "not claimed"
+  },
+  "initial_evidence_inventory": "all initial indexed bytes checked unchanged before appending the requested handoff repair section"
+}

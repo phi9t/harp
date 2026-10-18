@@ -1,0 +1,13 @@
+{
+  "reviewer": "/root/sqlite02_repair2_spec",
+  "verdict": "PASS",
+  "findings": {
+    "pidfd_acquisition": "ADDRESSED: provisional descriptor target/namespace/PID1/start/ownedmonitor lineage and final readiness qualified before signalling authority; failed provisional descriptor dropped without signal",
+    "syscall_portability": "ADDRESSED: compiled target libc::SYS_exit supplied to Python"
+  },
+  "new_important_breakage": [],
+  "head": "77c41689e988a49d564ce28e6063f748b61261b4",
+  "base": "d0bbb86269428d298ecd63ba89783b9295e22242",
+  "scope": "CORE repair2 only; amended runtime registry/topology and lead delivery pending",
+  "actions": "Read-only source/evidence inspection; no rerun tests/builds/services/product edits"
+}

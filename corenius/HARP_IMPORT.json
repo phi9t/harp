@@ -1,0 +1,1818 @@
+{
+  "schema": "harp-corenius-import/v1",
+  "source_commit": "64f55c72a6b7a5489cad22a33a923eb10a2228b9",
+  "source_main": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+  "destination": "corenius",
+  "license_status": "No repository-wide license identified in Corenius; retained source-specific terms and status records apply.",
+  "postgresql_temporal": "parked source retained; adoption and service execution excluded",
+  "branches": [
+    {
+      "name": "codex/collab-lite",
+      "commit": "f6ba6c87d3271ffc7070766c8575bc42d2294ffb"
+    },
+    {
+      "name": "codex/collab-ops-22",
+      "commit": "c552cffb2f08bbbbeda6ae417d7b0e304a2967fd"
+    },
+    {
+      "name": "codex/collab-ops-25",
+      "commit": "1acdc3d33c717d074a4587a213a870af2d211c2a"
+    },
+    {
+      "name": "codex/collab-ops-atomic-refresh",
+      "commit": "f102ea3a8bb98d102ff7d3dfb9d3dbdc3b9f7167"
+    },
+    {
+      "name": "codex/collab-ops-cleanup",
+      "commit": "f62e0b2e0cce4b291d0013c8c55c96259641244b"
+    },
+    {
+      "name": "codex/collab-ops-complete",
+      "commit": "3502d54b39a1255a9cf715659eb922726143d42e"
+    },
+    {
+      "name": "codex/collab-ops-core-repair",
+      "commit": "063eae7e814cfa5a49356725633badcb775fcd9f"
+    },
+    {
+      "name": "codex/collab-ops-execution-repair",
+      "commit": "7fa4b6b3d71637c8a18ea0151b8b919f44b358ef"
+    },
+    {
+      "name": "codex/collab-ops-interrupt-repair",
+      "commit": "2341979182405241177d2826162464c66eeb346a"
+    },
+    {
+      "name": "codex/collab-ops-legacy",
+      "commit": "3d8f82ffe62cffdcb337a0b92649405efe51bc41"
+    },
+    {
+      "name": "codex/collab-ops-legacy-repair",
+      "commit": "fa0e5217bdece707ff0b6f93c385fc9c94c857f2"
+    },
+    {
+      "name": "codex/collab-ops-mutation-recovery",
+      "commit": "00037ad7aa50b6e8088d1d4d621e6468a8b77296"
+    },
+    {
+      "name": "codex/collab-ops-operation-repair",
+      "commit": "595819e10a39568e9c030328a0a1344f4b718c5c"
+    },
+    {
+      "name": "codex/collab-ops-push-repair",
+      "commit": "182c4fb4e8d2e7df6bfd6b94b5baa7c1fe7d9829"
+    },
+    {
+      "name": "codex/collab-ops-refresh",
+      "commit": "531cfe673bc2b53e26e3e48ecc066ddfdeba41c3"
+    },
+    {
+      "name": "codex/collab-ops-sweep-repair",
+      "commit": "c2b9bd1b2cfe0c2575d2c213d7eee5357dc54408"
+    },
+    {
+      "name": "codex/insula-durable",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "codex/insula-durable-cgroup",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "codex/insula-durable-runtime",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "codex/retro-fixes",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "codex/retro-gate",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "codex/retro-handoff",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "codex/retro-review",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "main",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "worktree-benchmark-exemplars",
+      "commit": "de806765f3e141a2fa4622b8a4f4b91f5983afc8"
+    },
+    {
+      "name": "worktree-benchmark_exemplars_main",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "worktree-semantic_grouping_refactor",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "worktree-underlying-session-transcript-audit",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    },
+    {
+      "name": "worktree-underlying-trace-research",
+      "commit": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad"
+    }
+  ],
+  "worktrees": [
+    {
+      "id": "00",
+      "source_path": "/data02/home/philip.yang/workspace/corenius",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/main",
+      "snapshot_commit": null,
+      "files": []
+    },
+    {
+      "id": "01",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-durable",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/insula-durable",
+      "snapshot_commit": "6549c09c673c40de8f8b319f1c7ea3527c87f1aa",
+      "files": [
+        {
+          "path": "README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8098dec60a4a2d8c697efb38e9d8061aab34e362b41e24ebfd39030db2087b84"
+        },
+        {
+          "path": "controller/durable/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e7d3138b27c108c1bd874dbfae51be4f17f0bd9c6598302f18fda8d6df808c07"
+        },
+        {
+          "path": "controller/durable/__init__.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ccd9b337c1a0953089f13ff120a5ce983bf35f788d07db57f3a0e74c0b02a0d8"
+        },
+        {
+          "path": "controller/durable/__main__.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4"
+        },
+        {
+          "path": "controller/durable/cgroup.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5289a73e2c75944d0d734d4be89e349870bb18dafe17f48309901ad8f7acf462"
+        },
+        {
+          "path": "controller/durable/cgroup_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e146c509ab7c9d4d13294e1260bf0476e758cf348fd217111122e87d5bdb8d2f"
+        },
+        {
+          "path": "controller/durable/cli.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "25b2f5b8ab103c42fdfa00b9876a01a8b0314c1dd7096d4ffcde814b3c2a9b9e"
+        },
+        {
+          "path": "controller/durable/common.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "239965342ccff1ee23a9538ad042fa28f633643d76a4bbb5d35b7e32d3c2b032"
+        },
+        {
+          "path": "controller/durable/demo_activity.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "be93a536437fa0437dd0bf255345e7559c5c0aa3f844eb519c2ce814c7b83003"
+        },
+        {
+          "path": "controller/durable/engine.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c49ebc4c7bedd12b1ed450c1bdb71d8a8d95acd7ee8b3557973a5387cf0456b9"
+        },
+        {
+          "path": "controller/durable/guard.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bb7b22dc392a26afa2a8e2b8e6afbf014ec3c7a7385e815c15094277c5607d9c"
+        },
+        {
+          "path": "controller/durable/insula.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bdd7b8d9b083d20644dba086b32bf7888db72a48c5706d7e4679a8db524ffec1"
+        },
+        {
+          "path": "controller/durable/insula_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0b373eb314c8ead08ae80df89d8b91cf316d39082e67812c2699e7d60c09c5e4"
+        },
+        {
+          "path": "controller/durable/runtime_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c8a8e27f3e5aeb7cd02b3c76f1669a57ee2033975458142069cb44cb62489cde"
+        },
+        {
+          "path": "controller/durable/workflows.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4060440f621cd7bfac3edc7c26e7f502c775c963f0942b404a929dc69822f270"
+        },
+        {
+          "path": "docs/adr/0003-insula-durable-execution.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "42daecccab962e131fc0af11dfe139ee50a4c5a72545a9f2f09aa81ba426272b"
+        },
+        {
+          "path": "docs/efforts/insula-durable/EFFORT.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4223fd3662a6106769044f61dd920849d086f6af1d612b72dfcc9139041abefc"
+        },
+        {
+          "path": "docs/efforts/insula-durable/SPEC.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2511f2435933c63ca804795894ac9af4b2b4efca949de1f8a04f593b6c740a86"
+        },
+        {
+          "path": "docs/efforts/insula-durable/STATE.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a89f0c4c4da60e9c1fe460a5b4d09a5c270e7374ff9dff5e4de22dbdfc18fd15"
+        },
+        {
+          "path": "docs/efforts/insula-durable/VALIDATION.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "fd7a0ccca4326aa423f8aba3eb07e347f6499fc53e9641265da607d5bd839b05"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/baseline.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "97ab47f8d20c92978d2f9008f76ff658c2c334ce1043c2e9406b3beecb8fc12a"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/cgroup-implementation.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "48479155b8bae7d6e913e5cbecfbe0fa131420c042ec9b8f933d6af9474d2d80"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/design-critique.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "3babbf447c1c872b73e3de612710a81edc3a5276254a1bdffaf0d02513001bcf"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/log-digests.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "78e46bae47130a72eaee57a8874a2a107281d3b3f364df852e33a6b6bda1d40b"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/native-retry.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "7645330534af768d4b9fc2bf38eba5d8a80c497251932098a0f7301c23c56fca"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/runtime-implementation.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c17c0402c3a986310371f43fb3abc9202c749be30d64e972a4bf54435ca6cf22"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/smoke.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "21e4cf2e8824498ec118e5622120c1980fb0a25c1259b95df2fc0a5ac76cea31"
+        },
+        {
+          "path": "docs/efforts/insula-durable/tickets/01-runtime.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "13fa2c5e11c6461e35842bb768f1a81385ce87db11a4d9b74c28e4a871ce34ad"
+        },
+        {
+          "path": "docs/efforts/insula-durable/tickets/02-integration.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f151826e2be80916c5481df765c96153f59ea3ffb3829a999dfbf3f7ea69e949"
+        },
+        {
+          "path": "tools/agents/checks.d/72-durable-execution.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0b2036dc33302d811541de693b1fa493be53ecae298c72debfaf94fefe8f5ee6"
+        },
+        {
+          "path": "tools/insula/durable.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "aae72555caaa08829adec4c0f3ed136f4ff22d1a8dbd2a77e1daae79d16cd2fe"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-durable-cgroup",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/insula-durable-cgroup",
+      "snapshot_commit": "eb54b1b3a1dd87d45df966a696d01fe83cb0bba8",
+      "files": [
+        {
+          "path": "controller/durable/cgroup.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5289a73e2c75944d0d734d4be89e349870bb18dafe17f48309901ad8f7acf462"
+        },
+        {
+          "path": "controller/durable/cgroup_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e146c509ab7c9d4d13294e1260bf0476e758cf348fd217111122e87d5bdb8d2f"
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-durable-runtime",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/insula-durable-runtime",
+      "snapshot_commit": "798e0a091cc5a80a853b58f5eaffe57343619520",
+      "files": [
+        {
+          "path": "controller/durable/__init__.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ccd9b337c1a0953089f13ff120a5ce983bf35f788d07db57f3a0e74c0b02a0d8"
+        },
+        {
+          "path": "controller/durable/__main__.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4"
+        },
+        {
+          "path": "controller/durable/cli.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "355ef8fae6551730d6ad3ec285d448e351ab8e13287b111155cdeac709e5cb72"
+        },
+        {
+          "path": "controller/durable/common.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "1c262d039c121fb6729040c8160f755ec0351734b042e67021b18e4d7b3380a7"
+        },
+        {
+          "path": "controller/durable/demo_activity.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "be93a536437fa0437dd0bf255345e7559c5c0aa3f844eb519c2ce814c7b83003"
+        },
+        {
+          "path": "controller/durable/engine.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "3c9f7aaac3cc0275f6e63bc465b068c86faf58333943d93786f42e7c53466bda"
+        },
+        {
+          "path": "controller/durable/guard.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f4e8fc5a39167630603839e46d044133bf4ea47a6247696d43bc51583f0eb325"
+        },
+        {
+          "path": "controller/durable/runtime_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c8a8e27f3e5aeb7cd02b3c76f1669a57ee2033975458142069cb44cb62489cde"
+        },
+        {
+          "path": "controller/durable/workflows.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4060440f621cd7bfac3edc7c26e7f502c775c963f0942b404a929dc69822f270"
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-retro-fixes",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/retro-fixes",
+      "snapshot_commit": "9cb7d8b9924a168adce22d51b2e6dba246aa340c",
+      "files": [
+        {
+          "path": ".github/actionlint.yaml",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a5845e2842e13c97d895ede97f4ecf69f1420b723a0f754b70ba475498f9261b"
+        },
+        {
+          "path": ".github/workflows/check.yml",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "269eacac1b7f99e6411d70d40c9bb62e9105b5101bb425fa7891ec16d12726d5"
+        },
+        {
+          "path": ".github/workflows/durable-qualification.yml",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ea28e276f7d49f4622c61d224790089daf94d6f14f08545b85a940bddf32e6a7"
+        },
+        {
+          "path": "AGENTS.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f6cacd1bdba647369f0f5eb28907ee99602e27511f04399df64d2ea3ca77c619"
+        },
+        {
+          "path": "README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "7b5ccbfabdba8395115bf69c4f8b9295bbd96ec4578450dac8b6d29aad7734a1"
+        },
+        {
+          "path": "bench/harness/lead_driven.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a29874e1746f0e079a107d6d1857d6dfd1cbedc9a20578cf7cffd48aa5bc60f6"
+        },
+        {
+          "path": "bench/harness/test_lead_driven.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2ee10ea47f7ffdbb21249460a92fbe05b7479bfd7b95434d96cd838f0ca34831"
+        },
+        {
+          "path": "controller/durable/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b00b89e3fc8e7bed71f10facedc2a0426046286d8761abf50a0870290c2256f1"
+        },
+        {
+          "path": "controller/durable/__init__.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ccd9b337c1a0953089f13ff120a5ce983bf35f788d07db57f3a0e74c0b02a0d8"
+        },
+        {
+          "path": "controller/durable/__main__.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4"
+        },
+        {
+          "path": "controller/durable/cgroup.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5289a73e2c75944d0d734d4be89e349870bb18dafe17f48309901ad8f7acf462"
+        },
+        {
+          "path": "controller/durable/cgroup_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e146c509ab7c9d4d13294e1260bf0476e758cf348fd217111122e87d5bdb8d2f"
+        },
+        {
+          "path": "controller/durable/cli.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "25b2f5b8ab103c42fdfa00b9876a01a8b0314c1dd7096d4ffcde814b3c2a9b9e"
+        },
+        {
+          "path": "controller/durable/common.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "239965342ccff1ee23a9538ad042fa28f633643d76a4bbb5d35b7e32d3c2b032"
+        },
+        {
+          "path": "controller/durable/demo_activity.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "be93a536437fa0437dd0bf255345e7559c5c0aa3f844eb519c2ce814c7b83003"
+        },
+        {
+          "path": "controller/durable/engine.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c49ebc4c7bedd12b1ed450c1bdb71d8a8d95acd7ee8b3557973a5387cf0456b9"
+        },
+        {
+          "path": "controller/durable/guard.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bb7b22dc392a26afa2a8e2b8e6afbf014ec3c7a7385e815c15094277c5607d9c"
+        },
+        {
+          "path": "controller/durable/insula.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bdd7b8d9b083d20644dba086b32bf7888db72a48c5706d7e4679a8db524ffec1"
+        },
+        {
+          "path": "controller/durable/insula_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0b373eb314c8ead08ae80df89d8b91cf316d39082e67812c2699e7d60c09c5e4"
+        },
+        {
+          "path": "controller/durable/qualify.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "50ce345c468a29bed898af42b0c2df850ca5277bd0dfa8152d0bce189d7e95a5"
+        },
+        {
+          "path": "controller/durable/qualify_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f31c981be0dc32a16919e46ed3856f1f4721f44ec0c193d7671583fde5c80a3f"
+        },
+        {
+          "path": "controller/durable/runtime_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c8a8e27f3e5aeb7cd02b3c76f1669a57ee2033975458142069cb44cb62489cde"
+        },
+        {
+          "path": "controller/durable/workflows.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4060440f621cd7bfac3edc7c26e7f502c775c963f0942b404a929dc69822f270"
+        },
+        {
+          "path": "docs/adr/0003-insula-durable-execution.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "42daecccab962e131fc0af11dfe139ee50a4c5a72545a9f2f09aa81ba426272b"
+        },
+        {
+          "path": "docs/agents/agentic-engineering.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e9cfc99fb7ef8105f4d9abdb2b1bcf6bc11e55213d35de6cf77059383dcf1b17"
+        },
+        {
+          "path": "docs/agents/agentic-workflow-repos.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "1852a85e2315ec5fbc69792b9a4e20cbd0fb4ae8a1f8a5c8230ab78bdd2b357f"
+        },
+        {
+          "path": "docs/agents/issue-tracker.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4b5420ad7ccae7facc0617f919778d14480257a9208ef57071acb871833b0e4e"
+        },
+        {
+          "path": "docs/efforts/insula-durable/EFFORT.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4223fd3662a6106769044f61dd920849d086f6af1d612b72dfcc9139041abefc"
+        },
+        {
+          "path": "docs/efforts/insula-durable/SPEC.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2511f2435933c63ca804795894ac9af4b2b4efca949de1f8a04f593b6c740a86"
+        },
+        {
+          "path": "docs/efforts/insula-durable/STATE.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a89f0c4c4da60e9c1fe460a5b4d09a5c270e7374ff9dff5e4de22dbdfc18fd15"
+        },
+        {
+          "path": "docs/efforts/insula-durable/VALIDATION.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e22e53565e636e9da03624f67abbd644e28945346ed4faab552c8f4b56d88e75"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/baseline.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "97ab47f8d20c92978d2f9008f76ff658c2c334ce1043c2e9406b3beecb8fc12a"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/cgroup-implementation.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "48479155b8bae7d6e913e5cbecfbe0fa131420c042ec9b8f933d6af9474d2d80"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/design-critique.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "3babbf447c1c872b73e3de612710a81edc3a5276254a1bdffaf0d02513001bcf"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/log-digests.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "78e46bae47130a72eaee57a8874a2a107281d3b3f364df852e33a6b6bda1d40b"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/native-retry.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "7645330534af768d4b9fc2bf38eba5d8a80c497251932098a0f7301c23c56fca"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/runtime-implementation.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c17c0402c3a986310371f43fb3abc9202c749be30d64e972a4bf54435ca6cf22"
+        },
+        {
+          "path": "docs/efforts/insula-durable/evidence/smoke.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "21e4cf2e8824498ec118e5622120c1980fb0a25c1259b95df2fc0a5ac76cea31"
+        },
+        {
+          "path": "docs/efforts/insula-durable/tickets/01-runtime.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "13fa2c5e11c6461e35842bb768f1a81385ce87db11a4d9b74c28e4a871ce34ad"
+        },
+        {
+          "path": "docs/efforts/insula-durable/tickets/02-integration.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f151826e2be80916c5481df765c96153f59ea3ffb3829a999dfbf3f7ea69e949"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/EFFORT.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2df2944fc4b025b7fc8f05712c56d327d81efc0df6a2d4c28237d545fa04609a"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/SPEC.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4c6af9f8d2f5820214bc8d0d9494e07860632a89a3f40c492e4e75b5901ab2ad"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/STATE.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "289d8312897631e95a256f98763afe0cc8fc4b58fdc1b4021d639d608dac5c89"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/VALIDATION.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5150ab51bd57fdd752ebc232d0be8ad1ce553348a58f2766da1f91b5ff48a851"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/carried-forward.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "964400d270fcbc2f1df8d5761066ac8bd8f8b9054d798039b78f0967d59b98af"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/controller-retry.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9fb7eac3fcaf3a2307b06132523e84427ade926f02386ae2ae313637f8cded90"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/final-focused.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "1518d4e1982f048f624a0e6a1e8276c3d8f1a7dd2fed1a4d10305461436a5bf5"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/gate.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5b8003b594687e0c4e991842d97ba9b1023e0f9e02644eec3b4053e138d303ba"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/logs.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "162c0746b74429f24f646fc59de2d2dcb2c9cd4b8bc1e8ccb6198d766a04b813"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/qualification-provenance.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "7715b7b0dd0d2df8aaa041c121371ba66bd35d822432cc0e6540325f27ba095d"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/qualification.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9ab9d2962307bb5a41cf283ff826e5513a89bc41fc047bbc78d776b87b7760f7"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/reviews.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "064663cc2d976c1082778a12bb65ebe00149a249f294aec1bde9cde06cd617fa"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/evidence/skill-change.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e0795b7ce767be557e886b6219f0f4a7fe6c82f248325510f3aa4922882763cc"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/tickets/01-gate.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ff0713851b6071304cd695451ca80c3f3f86ccadadd9aa79b89c701af48c3c64"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/tickets/02-wip-review.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "536e2bae4ba8bcedfa173ddefe69beafb2100d1dadbc3302efd8d7f875fe9e1f"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/tickets/03-handoff.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "07403a794be5fc2724b662be3126cf3c747ed6f11e6adf04798661eb0ecd9b7a"
+        },
+        {
+          "path": "docs/efforts/retro-fixes/tickets/04-qualification.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "fc3d3ea1a4fa9697164d3a0da7f22ce2d46f7633732911d7b2c1ea01815267e5"
+        },
+        {
+          "path": "tools/agents/VALIDATION.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9ba123b38034183fb3eaf4efeb9d8de0fac26de892ef80a27d57a25f87d71454"
+        },
+        {
+          "path": "tools/agents/check.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f66799acd30f67e187a4eb6a9e61976cf9c2161907cb916663e7fdcd020797ab"
+        },
+        {
+          "path": "tools/agents/check.sh",
+          "kind": "file",
+          "mode": 493,
+          "sha256": "0d8e3bd108abe9f8ae6140b258eeb7d7202d2eaec3c4c3abd7d254da0128086f"
+        },
+        {
+          "path": "tools/agents/check_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ed63711b18a37d795ebb0767de0bc50619f8d8361b820481907892424080d4e0"
+        },
+        {
+          "path": "tools/agents/checks.d/05-gate-dispatch.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f61f97aff557858a19d68eb12b70100f42c70467086f04814e4af23f27603349"
+        },
+        {
+          "path": "tools/agents/checks.d/27-review-snapshot.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "65152c8e66794571b33bf56ce4531009015a6631c5ceb7a86c7f5aa91b8c5825"
+        },
+        {
+          "path": "tools/agents/checks.d/70-sqlite-controller.sh",
+          "kind": "file",
+          "mode": 493,
+          "sha256": "533f3fb44de51838afd3c806efffdc9c1f65e6b3be5df61f110fc1c0114364d5"
+        },
+        {
+          "path": "tools/agents/checks.d/72-durable-execution.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0b2036dc33302d811541de693b1fa493be53ecae298c72debfaf94fefe8f5ee6"
+        },
+        {
+          "path": "tools/agents/checks.d/73-durable-qualification.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8e0a2ee2ac5b3005333b44de5e1f822b28812df411a5f4b922218c2a10ebd285"
+        },
+        {
+          "path": "tools/agents/checks.d/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "92ebecae6958f6df27c94d1e8a33cb47b9417643f4d19239c2ec716cad6ff2a1"
+        },
+        {
+          "path": "tools/agents/effort.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2dce4aff33f22a91d308717c374201c3401ea3eb8db352e99d29e50f7eecb422"
+        },
+        {
+          "path": "tools/agents/review_snapshot.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "44519e12651b529e0dbd8f92fa4c2b0838fa4ecd07f627c047f8a9a153719760"
+        },
+        {
+          "path": "tools/agents/review_snapshot.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "3dc3b529b16908c472caa54a9846d5adf0c8538cef1c972a96effd46c29c0991"
+        },
+        {
+          "path": "tools/agents/review_snapshot_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4a2e02f7ae9d58b57a68365c320396fd00b1213443ed3da9c65f51dc38a4bf25"
+        },
+        {
+          "path": "tools/agents/test_check.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c0f2cea598de828bcbda97d05b51118bf62efbb04336736ef01b8acf9427ab96"
+        },
+        {
+          "path": "tools/agents/test_effort.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "be516607b3752e01bec898d5ff3c3ee038a181f052e70121cc5fc674913bc9f8"
+        },
+        {
+          "path": "tools/agents/test_tracker.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9109ac3b755bd53671e97d2536e41975dcd9664014e21b0aa88bc01bd79c2b0a"
+        },
+        {
+          "path": "tools/agents/tracker.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "55f46f4ee3da4ec10c67adf2e9be322ebe86924ce65d0124f91f944449c2ac40"
+        },
+        {
+          "path": "tools/insula/durable.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "aae72555caaa08829adec4c0f3ed136f4ff22d1a8dbd2a77e1daae79d16cd2fe"
+        },
+        {
+          "path": "tools/temp_root.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0b4a9d7fcb8b741ac97e098d3f8e1b62debfcac8a92a30a0151279c9760d0887"
+        },
+        {
+          "path": "tools/test_temp_root.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bc0c4a14399536e6f79951fd26619d98d4ed8c3b8de52f491d10f8181e5e3d96"
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-retro-gate",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/retro-gate",
+      "snapshot_commit": "57ae413553fa952ca3d68826f44b95d6a0e348ab",
+      "files": [
+        {
+          "path": "bench/harness/lead_driven.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a29874e1746f0e079a107d6d1857d6dfd1cbedc9a20578cf7cffd48aa5bc60f6"
+        },
+        {
+          "path": "bench/harness/test_lead_driven.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2ee10ea47f7ffdbb21249460a92fbe05b7479bfd7b95434d96cd838f0ca34831"
+        },
+        {
+          "path": "tools/agents/check.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e770f371d68cec0e1b402b5c0b736dc022e9a636cb09c72941dba50f96c8cf09"
+        },
+        {
+          "path": "tools/agents/check.sh",
+          "kind": "file",
+          "mode": 493,
+          "sha256": "0d8e3bd108abe9f8ae6140b258eeb7d7202d2eaec3c4c3abd7d254da0128086f"
+        },
+        {
+          "path": "tools/agents/check_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ed63711b18a37d795ebb0767de0bc50619f8d8361b820481907892424080d4e0"
+        },
+        {
+          "path": "tools/agents/checks.d/05-gate-dispatch.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f61f97aff557858a19d68eb12b70100f42c70467086f04814e4af23f27603349"
+        },
+        {
+          "path": "tools/agents/checks.d/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "25bddfc3b8bf2efcebd86636d65c6c0d2465e18b70370efc8e2330d120d53eaf"
+        },
+        {
+          "path": "tools/agents/test_check.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e207d53c8594cb3025712f0518d962ce955ec6745e8f8984174e5a8a7bc575ce"
+        },
+        {
+          "path": "tools/temp_root.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0b4a9d7fcb8b741ac97e098d3f8e1b62debfcac8a92a30a0151279c9760d0887"
+        },
+        {
+          "path": "tools/test_temp_root.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bc0c4a14399536e6f79951fd26619d98d4ed8c3b8de52f491d10f8181e5e3d96"
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-retro-handoff",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/retro-handoff",
+      "snapshot_commit": "0bc24511c5dcd13db47c2cef8cfca15f6ad95590",
+      "files": [
+        {
+          "path": "tools/agents/effort.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2dce4aff33f22a91d308717c374201c3401ea3eb8db352e99d29e50f7eecb422"
+        },
+        {
+          "path": "tools/agents/test_effort.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "be516607b3752e01bec898d5ff3c3ee038a181f052e70121cc5fc674913bc9f8"
+        },
+        {
+          "path": "tools/agents/test_tracker.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9109ac3b755bd53671e97d2536e41975dcd9664014e21b0aa88bc01bd79c2b0a"
+        },
+        {
+          "path": "tools/agents/tracker.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "55f46f4ee3da4ec10c67adf2e9be322ebe86924ce65d0124f91f944449c2ac40"
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-retro-review",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/codex/retro-review",
+      "snapshot_commit": "b8e346a2889d3dc2783f6c4162bbe311bd08dc24",
+      "files": [
+        {
+          "path": "tools/agents/checks.d/27-review-snapshot.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "65152c8e66794571b33bf56ce4531009015a6631c5ceb7a86c7f5aa91b8c5825"
+        },
+        {
+          "path": "tools/agents/review_snapshot.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "44519e12651b529e0dbd8f92fa4c2b0838fa4ecd07f627c047f8a9a153719760"
+        },
+        {
+          "path": "tools/agents/review_snapshot.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "aa97c24a5878b7dd7300ddae1ec35577a87ae0f5090bb6937170f2ca4daa7396"
+        },
+        {
+          "path": "tools/agents/review_snapshot_test.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b950ae0339deb90f5624eb7ba532bdfbb083452188582ce399c79269da359ada"
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "source_path": "/data02/home/philip.yang/workspace/corenius-session-failure-audit-20261013",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": null,
+      "snapshot_commit": "ce6abbf92abdc64793c6a413c4ddb18e2d5f75dc",
+      "files": [
+        {
+          "path": "docs/practice/session-failure-audit-2026-10-12.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9bd909eb66d294b41d818aa84cad6f674c6e4c4dd2da899b2f838bab05c950ff"
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "source_path": "/data02/home/philip.yang/workspace/corenius/.trae/worktrees/benchmark-exemplars",
+      "head": "de806765f3e141a2fa4622b8a4f4b91f5983afc8",
+      "branch": "refs/heads/worktree-benchmark-exemplars",
+      "snapshot_commit": "49af6d5b8739455428d613cf0d5d8e2310c64d07",
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "334c9b80695b3915c15b589dd41b3ecb2fc012056460d329cf70e61a818d6a63"
+        },
+        {
+          "path": "bench/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a806253e3a56ec856c2fd9a5891f0df9877f4e24453c80d3648f0cbf3c616612"
+        },
+        {
+          "path": "bench/harness/fleet.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9f78a5299b33467280ac5c052d5123e2ba6e54a0bc946bec7b7d780d8b5320e2"
+        },
+        {
+          "path": "bench/harness/materialize_public_tasks.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "250e993d2f38e4c0d95d2d0ecf08efae2e95362577dc48cedeb3996c98ca038f"
+        },
+        {
+          "path": "bench/harness/run.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5419153e74ffdd36895bde6cd4da1be1f6a61013d5579e9b26cf7199ac33266f"
+        },
+        {
+          "path": "bench/harness/tasklib.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5e392a38706ed0fef6a9f2703df9060d0bc9ecbfa0a8baa0da2763e86f5059ac"
+        },
+        {
+          "path": "bench/harness/test_materialize_public_tasks.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "00641d824914ef0eb1b287966ac24a95f825acd36ad1a27ce567ffbdbbdc7751"
+        },
+        {
+          "path": "bench/harness/test_run.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "69038317b367e85f3eab1a207ceb761c4f38fbcc9607dd127d75ad4d01c398a6"
+        },
+        {
+          "path": "bench/harness/test_validate.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b8f359a665fe9372109a94d57d96913a877a60a1ceb3853cb87f1e8c7c3c2e26"
+        },
+        {
+          "path": "bench/harness/validate.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "95f570fecb9532160208dfb7fee20116169e2d885e0d45cfc61181a682eaba3e"
+        },
+        {
+          "path": "bench/insula/requests/deep_swe.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2bc4b9c2061b3532d074dd76ea161a6756de5517db6906b96103c5721c6e1ed9"
+        },
+        {
+          "path": "bench/insula/requests/swe_bench.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "113119b04ee4be4f3b66dd82f7419492d8aba8019bdbdbab5d425ca337704b9d"
+        },
+        {
+          "path": "bench/insula/requests/terminal_bench.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "046e9d1a9fded7eed94ddf4a715b0a932a0d31ee58aefd4dc866c7707896bfef"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "d0c6515d83c1b48d299e81cea5dcc80e7d0b0d5f69cf6dbb6e07af30f568fca7"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5678d8c382ca04ad1f03853bf1a680028e60288c9909732101a39db0fe6df960"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/counts.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "651784654a2d5896ea74dc80d96b7a8c020591ac69104a63431f0cfe7b2fdf95"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/deepswe_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "31f7bc54b3b5ae234ba3757285565c5e5b0d8ad12a38f8c249209051fad552bb"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/deepswe_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a103202af63b2e265433911bfacf39fad5b7d2199a0b39852fe9f62633dcdf0f"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/programbench_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "80c1a8a870fd9d6e5c05557f31c108b6ce80426d1dcb2fdcef8ee4bdfc5d3c3e"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/programbench_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "51cef17c0433ec4fef176676894f46a3da3d278f4faba2c5748f11c3cb95d2ec"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_dev.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0666b913f130a76b202dfda06b9e8da2707c0d88469007498561e8763bf3009d"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_dev.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "69a42ab0e302d10a99eb5b8ea3d07a4355150f17c05e279bb2716f42aaf370e2"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_test.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b913975194535ec35fa856ae7a8b052235c5e8b6e793d09482888c40f56329b2"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_test.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b12421d428efcd4b1b555ce7dba959278d15fe5ff7dc7149d5dcb2b8ec38a6dd"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_dev.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4cc42b76431de680ef1c69c45b6691ee22587f64d5992428e179068268683dce"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_dev.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "90dc77bea604852af5bfc07628c5931dd969bb192ae8b6d1763a750183348608"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_test.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8b5c7b9741f1e48c0d28c73e5174e87f15218ebdffbb03b0685ea9c1584993b8"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_test.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4b75eb558ac8c0a290f24e24f8d093c24719890b48d9d0c1b142ba91ebaa1e18"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_verified_test.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ad172125df35792cbe40b743f0ba3dabd9718ac3e6d65c3dbac66c6b2b4c4b81"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_verified_test.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5c67beaab1f60dc71c0fe51377759a9f28ad754866c325a05322955029ec4ae1"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/terminal_bench_original_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8536214a38db69020fcb8d55d74d93ece242813a3b62ce07fad1b083da873e44"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/terminal_bench_original_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "fef97e1b6b216a56e271b27d862e37cdaac46cd508f6b1dc2c55341d0a0ba5b9"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "818a7f20cbf5658a7518830975fd5b652992aded55c8650d7243ccd701adea65"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/counts.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "92a344b17e66df0279577558c50636d364cf610ba4f47a0f7d76c3df07be33b2"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/finance_agent_v2_public_questions.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "06866c436389a0edbbc60e9b1d5e9338687c6d22c53c454233bd791c8acf85c3"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/finance_agent_v2_public_questions.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "161fa76b66d221e8a12899104ca16136fbaddd807ea639aaa680ee2baaa9664e"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_artificial_analysis_examples.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "23cddb629bd99aa5245ae0dce3347a10c2690d30139145d193731c0acd704b04"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_artificial_analysis_examples.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2c839d0060192f171a6ab7784254a3f3974c5c60180706f002681b3f4b134bf8"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_official_public_samples.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "3343edb278e00dbfa82f9a644fda734c0d4e951dc3fc2d95bc23bb33f28e34a9"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_official_public_samples.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "dabe36218437dcc331c25ea692bd69de2740ce1e5903426cbabd5b98ab75c70b"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_public_mirror_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bf58c00c04c19d29aa3f73420c1a67bf26f2ce2a416e68fc3fa83e8570e3eee5"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_public_mirror_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0d3c80fa188d765f4e6c6b7a7dd229a68fa1f349a83de2051ce48e9c832b676e"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/harvey_lab_public_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "1eb658a7397359884669d6fff783c561723e4607137abf1ab7b2ff4356b6bba8"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/harvey_lab_public_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "62cd0496503aadef30c9a549e8b21bfcd61497a6b1671c736ebc1dc26eb08f64"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/scripts/build_coding_inventory.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "abf0874adfb334795f7afaba67cf9049ca5d28bdc368a8fb2a3e2c8e2c958b41"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/scripts/build_retrieval_inventory.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b5c115c4ea890dd15e9fba7e766935a8fa67dcf2d40141bafe33e3b141840aea"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/scripts/validate_inventory.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "900b78d862e96e290976914c4c7d118da26604c090a1f6ac46cfd2ba58862d35"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/sources_lock.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ee818b5b00459b0e0a518ff673c16006e5b28fe43512d45413bea81ec4176b01"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/environment/access_log",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5ea8e59da0c170821199d40f02df47bfd53d6ee04479cafc92a05405620b3679"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/environment/tests/test_outputs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9e7ae3893ebfd4c2edf5ae79727a303cf3301b63e591c4cf1f968988b78e599e"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/instruction.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8756eef022e3c1ab897e7662d0ac5df9010aefba865d81d17d7bee6642bad937"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/solution/solve.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9394d6e039264c04e19624f08b5d0eb2a88b3ea1e13bf38c773a5aea1dd61ee3"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/task.toml",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "da8d42f1a7bb4779871bc899505e0c5c1873ceef8a42dc517dcbe5455c8b5e19"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/tests/test_outputs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9e7ae3893ebfd4c2edf5ae79727a303cf3301b63e591c4cf1f968988b78e599e"
+        },
+        {
+          "path": "tools/insula/capsule.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "6fd098056e4b6e8f7c0822f11a98f0359d6483f969f5a5d56be925e820e7c51e"
+        },
+        {
+          "path": "tools/insula/docker_image_rootfs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e4947b23acbdb2ccf697dfddc6dff7be4e84a2a511876d4efb7d20e3f5b42454"
+        },
+        {
+          "path": "tools/insula/test_capsule.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "6d5c109d326dae3164cf291cb8c08b2f5862c47c3d2b5ac266acedc476df91cb"
+        },
+        {
+          "path": "tools/insula/test_docker_image_rootfs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "58cc575db5d4973e6f80f5256573cc026e65dbafac7af56790e43913709bb2d6"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "source_path": "/data02/home/philip.yang/workspace/corenius/.trae/worktrees/benchmark_exemplars_main",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/worktree-benchmark_exemplars_main",
+      "snapshot_commit": "59f2d41ad2f1384896ca973f5a8fde1911751f72",
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "334c9b80695b3915c15b589dd41b3ecb2fc012056460d329cf70e61a818d6a63"
+        },
+        {
+          "path": "bench/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8d647901341c773309bb61e04df0702611e253c2c9a5a3969ced9eb3e9b2cb29"
+        },
+        {
+          "path": "bench/harness/fleet.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9f78a5299b33467280ac5c052d5123e2ba6e54a0bc946bec7b7d780d8b5320e2"
+        },
+        {
+          "path": "bench/harness/materialize_public_tasks.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "250e993d2f38e4c0d95d2d0ecf08efae2e95362577dc48cedeb3996c98ca038f"
+        },
+        {
+          "path": "bench/harness/run.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5419153e74ffdd36895bde6cd4da1be1f6a61013d5579e9b26cf7199ac33266f"
+        },
+        {
+          "path": "bench/harness/tasklib.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5e392a38706ed0fef6a9f2703df9060d0bc9ecbfa0a8baa0da2763e86f5059ac"
+        },
+        {
+          "path": "bench/harness/test_materialize_public_tasks.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "00641d824914ef0eb1b287966ac24a95f825acd36ad1a27ce567ffbdbbdc7751"
+        },
+        {
+          "path": "bench/harness/test_run.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "69038317b367e85f3eab1a207ceb761c4f38fbcc9607dd127d75ad4d01c398a6"
+        },
+        {
+          "path": "bench/harness/test_validate.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b8f359a665fe9372109a94d57d96913a877a60a1ceb3853cb87f1e8c7c3c2e26"
+        },
+        {
+          "path": "bench/harness/validate.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "95f570fecb9532160208dfb7fee20116169e2d885e0d45cfc61181a682eaba3e"
+        },
+        {
+          "path": "bench/insula/requests/deep_swe.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2bc4b9c2061b3532d074dd76ea161a6756de5517db6906b96103c5721c6e1ed9"
+        },
+        {
+          "path": "bench/insula/requests/swe_bench.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "113119b04ee4be4f3b66dd82f7419492d8aba8019bdbdbab5d425ca337704b9d"
+        },
+        {
+          "path": "bench/insula/requests/terminal_bench.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "046e9d1a9fded7eed94ddf4a715b0a932a0d31ee58aefd4dc866c7707896bfef"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "d0c6515d83c1b48d299e81cea5dcc80e7d0b0d5f69cf6dbb6e07af30f568fca7"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5678d8c382ca04ad1f03853bf1a680028e60288c9909732101a39db0fe6df960"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/counts.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "651784654a2d5896ea74dc80d96b7a8c020591ac69104a63431f0cfe7b2fdf95"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/deepswe_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "31f7bc54b3b5ae234ba3757285565c5e5b0d8ad12a38f8c249209051fad552bb"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/deepswe_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "a103202af63b2e265433911bfacf39fad5b7d2199a0b39852fe9f62633dcdf0f"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/programbench_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "80c1a8a870fd9d6e5c05557f31c108b6ce80426d1dcb2fdcef8ee4bdfc5d3c3e"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/programbench_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "51cef17c0433ec4fef176676894f46a3da3d278f4faba2c5748f11c3cb95d2ec"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_dev.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0666b913f130a76b202dfda06b9e8da2707c0d88469007498561e8763bf3009d"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_dev.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "69a42ab0e302d10a99eb5b8ea3d07a4355150f17c05e279bb2716f42aaf370e2"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_test.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b913975194535ec35fa856ae7a8b052235c5e8b6e793d09482888c40f56329b2"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_full_test.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b12421d428efcd4b1b555ce7dba959278d15fe5ff7dc7149d5dcb2b8ec38a6dd"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_dev.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4cc42b76431de680ef1c69c45b6691ee22587f64d5992428e179068268683dce"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_dev.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "90dc77bea604852af5bfc07628c5931dd969bb192ae8b6d1763a750183348608"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_test.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8b5c7b9741f1e48c0d28c73e5174e87f15218ebdffbb03b0685ea9c1584993b8"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_lite_test.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "4b75eb558ac8c0a290f24e24f8d093c24719890b48d9d0c1b142ba91ebaa1e18"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_verified_test.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ad172125df35792cbe40b743f0ba3dabd9718ac3e6d65c3dbac66c6b2b4c4b81"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/swe_bench_verified_test.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5c67beaab1f60dc71c0fe51377759a9f28ad754866c325a05322955029ec4ae1"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/terminal_bench_original_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8536214a38db69020fcb8d55d74d93ece242813a3b62ce07fad1b083da873e44"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/coding_terminal_swe_program/terminal_bench_original_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "fef97e1b6b216a56e271b27d862e37cdaac46cd508f6b1dc2c55341d0a0ba5b9"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/README.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "818a7f20cbf5658a7518830975fd5b652992aded55c8650d7243ccd701adea65"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/counts.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "92a344b17e66df0279577558c50636d364cf610ba4f47a0f7d76c3df07be33b2"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/finance_agent_v2_public_questions.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "06866c436389a0edbbc60e9b1d5e9338687c6d22c53c454233bd791c8acf85c3"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/finance_agent_v2_public_questions.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "161fa76b66d221e8a12899104ca16136fbaddd807ea639aaa680ee2baaa9664e"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_artificial_analysis_examples.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "23cddb629bd99aa5245ae0dce3347a10c2690d30139145d193731c0acd704b04"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_artificial_analysis_examples.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2c839d0060192f171a6ab7784254a3f3974c5c60180706f002681b3f4b134bf8"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_official_public_samples.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "3343edb278e00dbfa82f9a644fda734c0d4e951dc3fc2d95bc23bb33f28e34a9"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_official_public_samples.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "dabe36218437dcc331c25ea692bd69de2740ce1e5903426cbabd5b98ab75c70b"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_public_mirror_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "bf58c00c04c19d29aa3f73420c1a67bf26f2ce2a416e68fc3fa83e8570e3eee5"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/gdp_pdf_public_mirror_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "0d3c80fa188d765f4e6c6b7a7dd229a68fa1f349a83de2051ce48e9c832b676e"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/harvey_lab_public_tasks.csv",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "1eb658a7397359884669d6fff783c561723e4607137abf1ab7b2ff4356b6bba8"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/retrieval_professional/harvey_lab_public_tasks.jsonl",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "62cd0496503aadef30c9a549e8b21bfcd61497a6b1671c736ebc1dc26eb08f64"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/scripts/build_coding_inventory.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "abf0874adfb334795f7afaba67cf9049ca5d28bdc368a8fb2a3e2c8e2c958b41"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/scripts/build_retrieval_inventory.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b5c115c4ea890dd15e9fba7e766935a8fa67dcf2d40141bafe33e3b141840aea"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/scripts/validate_inventory.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "900b78d862e96e290976914c4c7d118da26604c090a1f6ac46cfd2ba58862d35"
+        },
+        {
+          "path": "bench/inventories/public_agent_benchmarks/sources_lock.json",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "ee818b5b00459b0e0a518ff673c16006e5b28fe43512d45413bea81ec4176b01"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/environment/access_log",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "5ea8e59da0c170821199d40f02df47bfd53d6ee04479cafc92a05405620b3679"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/environment/tests/test_outputs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9e7ae3893ebfd4c2edf5ae79727a303cf3301b63e591c4cf1f968988b78e599e"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/instruction.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "8756eef022e3c1ab897e7662d0ac5df9010aefba865d81d17d7bee6642bad937"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/solution/solve.sh",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9394d6e039264c04e19624f08b5d0eb2a88b3ea1e13bf38c773a5aea1dd61ee3"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/task.toml",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "da8d42f1a7bb4779871bc899505e0c5c1873ceef8a42dc517dcbe5455c8b5e19"
+        },
+        {
+          "path": "bench/tasks/real_terminal_bench_analyze_access_logs/tests/test_outputs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "9e7ae3893ebfd4c2edf5ae79727a303cf3301b63e591c4cf1f968988b78e599e"
+        },
+        {
+          "path": "tools/insula/capsule.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "6fd098056e4b6e8f7c0822f11a98f0359d6483f969f5a5d56be925e820e7c51e"
+        },
+        {
+          "path": "tools/insula/docker_image_rootfs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "e4947b23acbdb2ccf697dfddc6dff7be4e84a2a511876d4efb7d20e3f5b42454"
+        },
+        {
+          "path": "tools/insula/test_capsule.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "6d5c109d326dae3164cf291cb8c08b2f5862c47c3d2b5ac266acedc476df91cb"
+        },
+        {
+          "path": "tools/insula/test_docker_image_rootfs.py",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "58cc575db5d4973e6f80f5256573cc026e65dbafac7af56790e43913709bb2d6"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "source_path": "/data02/home/philip.yang/workspace/corenius/.trae/worktrees/underlying-session-transcript-audit",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/worktree-underlying-session-transcript-audit",
+      "snapshot_commit": "32482a0a6c7e25fb359ac8d465c5472f062e9217",
+      "files": [
+        {
+          "path": "docs/practice/session-tool-failure-scientific-report-2026-10-14.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f63ec047f1b13a9ab53baa7487c49385ba4de6c38cd94328de4011e88a14077a"
+        },
+        {
+          "path": "docs/practice/session-transcript-corpus-review-2026-10-13.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "f4c8b60bc04fd8542ed7c5477a5e82fc9f6615a5228c44e2402ae607304a1d1c"
+        },
+        {
+          "path": "docs/practice/tool-exchange-failure-corpus-research-2026-10-14.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "b2cba33f825bf113e6adb0c2bba18cf9eb09f256254dba16cdfacff045734e0a"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "source_path": "/data02/home/philip.yang/workspace/corenius/.trae/worktrees/underlying-trace-research",
+      "head": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
+      "branch": "refs/heads/worktree-underlying-trace-research",
+      "snapshot_commit": "a2a8933ab86ef4181c4ec56ad3a9b20bc9ed7a12",
+      "files": [
+        {
+          "path": "docs/practice/tool-exchange-failure-corpus-research-2026-10-14.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "2c522d7c7c02b15243eec76a517ada15d2de61bf2c10ddd92a57733beaf17cb9"
+        },
+        {
+          "path": "docs/practice/underlying-session-corpus-audit-correction-2026-10-13.md",
+          "kind": "file",
+          "mode": 420,
+          "sha256": "c3f42f4e9a60a9c05101db187396823f686d093bb31249eaf1051b76f8094165"
+        }
+      ]
+    }
+  ],
+  "adaptations": {
+    "AGENTS.md": {
+      "reason": "Make current Harp policy ownership explicit while retaining inherited policy text.",
+      "sha256": "202c682709d70480187be6965a8c4647a3b7f88dfbc4ff705213b3fb6f6a5838"
+    },
+    "docs/reference/ultron.md": {
+      "reason": "Retain exact historical bytes in Git ancestry; keep legacy import-source names out of active payload.",
+      "sha256": "9a0cd0f0e8d1c13b426d57011bd50a8d3e7296e060617b64783a2318daabb4b3"
+    },
+    "docs/reference/agentic-inventory/policy-and-efforts.md": {
+      "reason": "Retain exact historical bytes in Git ancestry; keep legacy import-source names out of active payload.",
+      "sha256": "669b7dfb2d7477df2500d958003204e3838e1a1f6efd6554ca0ec4b653db0edb"
+    }
+  }
+}

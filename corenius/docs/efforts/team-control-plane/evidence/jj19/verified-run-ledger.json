@@ -1,0 +1,205 @@
+[
+  {
+    "run": "verified-identity-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "identity",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-identity-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "mutable change identity accepted rewritten candidate",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-identity-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "identity",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-identity-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-authority-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "authority",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-authority-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-authority-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "authority",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-authority-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-crash-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "crash",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-crash-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "SIGKILL did not roll back durable repository operation",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-crash-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "crash",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-crash-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-exclusions-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "exclusions",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-exclusions-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-exclusions-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "exclusions",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-exclusions-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-integration-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "integration",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-integration-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "failed gate did not authorize landing",
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-integration-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "integration",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-integration-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  },
+  {
+    "run": "verified-git_baseline-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "git_baseline",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/verified-git_baseline-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true,
+    "fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+  }
+]

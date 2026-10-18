@@ -1,0 +1,8 @@
+{
+  "classification": "counterfactual RED, not original frozen20 baseline",
+  "run": "red-owner-operation-target",
+  "removed_source_sha256": "9f077340d5ffe168a02843193aef37f1b44cb764f52eaae3163fa23d06d51d3e",
+  "restored_preimage_sha256": "33c6dea2dd6c99c91fdbdf2053deb1260bf6221b37b6f260e7fad702f61b7ac3",
+  "initial_missing_id_probes": "not counted as behavioral proof",
+  "restoration": "exact preimage restored before subsequent independent-verifier change"
+}

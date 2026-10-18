@@ -1,0 +1,79 @@
+{
+  "all_ledger_logs": [
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-admission.log.txt",
+      "sha256": "fbc0ba671b8508a712921d565868af0f7e7f1e4d19e486f122562c10342d14c3"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-admission.log.txt",
+      "sha256": "8f5ef447eb027b3fa735bf6f7ff30ee8d6e1e1c1d0e1154a69953600212f947d"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-admission-2.log.txt",
+      "sha256": "966b420efe02349e9ce988003899c29f7cc4c06ebdbbe178bfa34d15cb400e8a"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-authority-plan.log.txt",
+      "sha256": "f7aafe4040e437addebc864dc00cc16e6ff4e9ec1a3193e5ce308040db53c2f7"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-authority-plan.log.txt",
+      "sha256": "a2846cf529057a7c28611e0d693099a80fd4cc811535693a31fa0c8b97ac6aa7"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-authority-plan-2.log.txt",
+      "sha256": "85c2afa03272f0b150fea9b7631641b0e31490ae61cbcc3098684720e8094e33"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-dependency-outcomes.log.txt",
+      "sha256": "3335d5e30ef6b01c4680529e97a9a0c1c7b64322fd288049ffbcf655a176f286"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-outcomes-red-dependencies.log.txt",
+      "sha256": "364d63db1c3d8cb90519bb8a6cfa43aec282a55e556058d8efb2f77ffdc66890"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-outcomes-red-dependencies-2.log.txt",
+      "sha256": "cf37766e0352b3ea0a568f4f737e5d3dea38609f501f8085dc834934aa5ffa4f"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-dependencies.log.txt",
+      "sha256": "2f12337134a13f66f29119a5d6ff08e8925b33e60666acd77fcf8b95260dbc47"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-retention-grants-ceilings.log.txt",
+      "sha256": "4406142fec681a325b447b985b8a804d51dd8be86a01b9997fc1f97217ee66d5"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-retention-grants-ceilings.log.txt",
+      "sha256": "495ffec9e89d7df6a75cf3828876d15e35290d7a4a9584ff6ca0de9fff252ad1"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-replay-ceiling-compatibility.log.txt",
+      "sha256": "09759637aa6f04f4addd3a86359b467826aa56d8655074cd54d9bccd5a59e4f5"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-final-public.log.txt",
+      "sha256": "378187a94f782f4dc7449c6663053c1f21a7f5b5a5300675eb51e6d6927ca267"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-api-compatibility.log.txt",
+      "sha256": "1eaddcc073954cce65691e5112f5a3d09d7f92084edad0e3248a08bd21186e9b"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-dependency-disposition-revision.log.txt",
+      "sha256": "f4ee8ada9c3211f7fe396d374bf3c743adde8af6beb95410225d064b62727e41"
+    },
+    {
+      "archive_path": "docs/efforts/team-control-plane/evidence/intent26/green-final-contract-revisions.log.txt",
+      "sha256": "8d4774e08a9fe8a0b400d24cf0317abf5447cb8799a171714e9dfa4e2bdcde1e"
+    }
+  ],
+  "byte_preservation": "Every archive SHA256 equals its source-bound run ledger hash. Later runs wrote .log.txt directly.",
+  "confirmed_rename": {
+    "archive_path": "docs/efforts/team-control-plane/evidence/intent26/red-admission.log.txt",
+    "archive_sha256": "fbc0ba671b8508a712921d565868af0f7e7f1e4d19e486f122562c10342d14c3",
+    "original_path": "docs/efforts/team-control-plane/evidence/intent26/red-admission.log"
+  },
+  "reason": "Repository ignores *.log; retained diagnostic bytes use nonignored .log.txt."
+}

@@ -1,0 +1,69 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_blade_build.sh l1-vendored //app:use_math1
+(22:36:20)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f0a669496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:20)Blade(warning): Read Tcc config from buildcloud failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f0a669496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:20)Blade(warning): can't find available distribution cache and execute service from remote
+(22:36:20)Blade(warning): 当前环境下无法使用CAS分布式构建集群: not found remote service
+(22:36:20)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f0a66f49a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:20)Blade(warning): Request build id failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f0a66f49a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:20)Blade(warning): Failed to fetch idc meta data with api
+(22:36:20)Blade(info): get tcc basic_conf from online failed
+(22:36:20)Blade(info): percent=0, num=71
+No required grpc dependencies, buildboard is disabled
+(22:36:20)Blade(info): InvocationID: 40640ec8-3f77-49fa-9898-8b87f1afec33
+(22:36:20)Blade(info): TOOLCHAIN MODE: INSIDE
+(22:36:20)Blade(info): Get toolchain env file /opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/env.sh success
+(22:36:20)Blade(info): load toolchain env file done
+(22:36:20)Blade(info): get real toolchain name=x86_64-gcc494
+(22:36:20)Blade(info): get rule toolchain name=x86_64-x86_64-gcc-494
+(22:36:20)Blade(info): strategy-build-compile-priority: 
+(22:36:20)Blade(info): User Building Command: /bin/bash -lc base=docs/efforts/multi-agent-bench/evidence/research-blade if [ -f "$base/logs/build-l0-flat.log" ]; then cp "$base/logs/build-l0-flat.log" "$base/logs/bootstrap-pip-attempt.log"; fi set +e for spec in "l0-flat //:hello" "l1-vendored //app:use_math1" "l2-macro //:demo" "l3-settler //:app"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/build-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done
+(22:36:20)Blade(info): Blade version: blade-1.2.2.1469
+(22:36:20)Blade(info): Language version: 2.7.13
+(22:36:20)Blade(info): loading BUILD files...
+(22:36:20)Blade(info): loading done.
+(22:36:20)Blade(info): pull cost time is 0.127785921097s
+(22:36:20)Blade(info): depinfo cache loaded (1 entries)
+(22:36:20)Blade(info): analyzing dependency graph...
+(22:36:20)Blade(info): Deps Graph Analyze ...
+(22:36:20)Blade(info): DepGraph depinfo cache preloaded (1 entries)
+(22:36:20)Blade(info): DepGraph BuildEnv cost time is 0:00:00s
+(22:36:20)Blade(info): analyzing done.
+(22:36:20)Blade(info): analyze cost time is 0.0233271121979s
+(22:36:20)Blade(info): generating build rules...
+(22:36:20)Blade(info): CC=/opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/bin/gcc
+(22:36:20)Blade(info): CXX=/opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/bin/g++
+(22:36:20)Blade(info): Build With Cas, Configure Recc-Output: 
+(22:36:20)Blade(info): Build With Cas, Configure Recc-Output: 
+(22:36:20)Blade(info): genereating rule start
+(22:36:20)Blade(info): genereating rule done
+(22:36:20)Blade(info): generating done.
+(22:36:20)Blade(info): generate cost time is 0.10014796257s
+(22:36:20)Blade(info): generate compile commands at: build64_release/compile_commands.json
+(22:36:20)Blade(info): fully compile action number: 5
+(22:36:20)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/ce95a95565c1f2c3d1a5f8322349d3c09356287d/cache_manager/build_file_env.cache
+(22:36:20)Blade(info): building...
+(22:36:20)Blade(info): tunes the parallel jobs number(-j N) to be 216, accelerating tags: (none)
+(22:36:20)Blade(info): start build with ninja: (.blade_tools/tools/ninja -j216 -k1 -f build.ninja --cost -dkeepdepfile)
+[1/6] STAMP build64_release/__global_thrift_stamp__
+[2/6] CXX build64_release/version.cpp
+[3/6] CXX cpp3rdlib/math1/math1.cc
+[4/6] CXX app/main.cc
+[5/6] AR build64_release/cpp3rdlib/math1/libmath1.a
+[6/6] LINK build64_release/app/use_math1
+(22:36:21)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f0a6513c1d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(error): Report data server error: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f0a6513c1d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(info): building done.
+(22:36:21)Blade(info): collecting dependency version
+(22:36:21)Blade(info): finished collecting dependency version.
+(22:36:21)Blade(info): overflow_check cost time is 0.000478982925415s
+(22:36:21)Blade(info): build cost time is 0.243840932846s
+(22:36:21)Blade(info): success
+(22:36:21)Blade(info): blade total cost time is 0:00:00.771883s
+(22:36:21)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/ce95a95565c1f2c3d1a5f8322349d3c09356287d/cache_manager/build_file_env.cache
+(22:36:21)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/ce95a95565c1f2c3d1a5f8322349d3c09356287d/cache_manager/build_file_env.cache
+(22:36:21)Blade(info): basics: {"BPT-platform": "x86_64-gcc494", "build_command": "/opt/tiger/typhoon-blade/src/blade/bootstrap.py build //app:use_math1", "env": "devbox", "ip": "invalid", "region": "us", "dc": "maliva", "device_type": "devbox", "build_toolchain_version": "gcc494", "os_version": "debian-12", "toolchain_name(GCC)": "x86_64-gcc494", "git_branch": "worker/research-blade", "build_tool_version": "blade-1.2.2.1469", "git_repo": "unknow", "user": "philip.yang"}, build_path: /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/l1-vendored
+(22:36:21)Blade(help): Great, Now you successfully built your project. Next time run blade fast-build instead of /bin/bash -lc base=docs/efforts/multi-agent-bench/evidence/research-blade if [ -f "$base/logs/build-l0-flat.log" ]; then cp "$base/logs/build-l0-flat.log" "$base/logs/bootstrap-pip-attempt.log"; fi set +e for spec in "l0-flat //:hello" "l1-vendored //app:use_math1" "l2-macro //:demo" "l3-settler //:app"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/build-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done for faster iteration
+real	0m1.030s
+user	0m0.607s
+sys	0m0.496s
+EXIT: 0

@@ -1,0 +1,31 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-2ed9953211d69908)
+
+running 1 test
+
+
+thread 'pinned_native_services_use_supervised_private_network_profiles' (2288244) panicked at tests/codex.rs:57:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_profile.py", line 29, in <module>
+    wait(ready)
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_profile.py", line 13, in wait
+    result=predicate()
+           ^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_profile.py", line 27, in ready
+    assert p.poll() is None, 'trusted pinned native profile must start: '+p.stderr.read()
+           ^^^^^^^^^^^^^^^^
+AssertionError: trusted pinned native profile must start: unknown field `codex`, expected `executable` or `args` at line 1 column 179
+
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test pinned_native_services_use_supervised_private_network_profiles ... FAILED
+
+failures:
+
+failures:
+    pinned_native_services_use_supervised_private_network_profiles
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.57s
+
+error: test failed, to rerun pass `--test codex`

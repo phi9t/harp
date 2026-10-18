@@ -1,0 +1,9 @@
+# Kernel16 authorized additional review
+
+Source base read: `1f164156261a3aa927c823919bf73d6e6d11a771`. Candidate manifest: `0007f56d687897e10601ce277084127e5bc1d1dbb5994efde4d5944a7806da7a`. All 48 source hashes independently validated by root and both reviewers. Owner approved this additional round on 2026-10-02.
+
+Standards reviewer kernel16_standards_round2: PASS, no blocking findings. Spec reviewer kernel16_spec_round3: PASS, no blocking findings. Only kernel.rs, assembled_operator.rs and assembled_vertical.rs changed since prior review. Legacy status now combines both journals with explicit provenance, authorized scope, stored uncertainty/holds and one combined 32-row bound plus overflow flag; colliding IDs are distinguished by protocol. No identities or usage measurements are invented. The prior P2 status omission is resolved.
+
+Actual public red reproduced both genuine legacy cases through CLI/HTTP; subsequent green covers uncertain Start, confirmed/failed-known unknown usage, lost Create with no ID, identity collision, combined pagination, foreign-principal exclusions and registered measured-zero exclusion. Final author full gate: 126 passed, 4 ignored subprocess fixtures, zero filtered/failures; exit 0. SHA256 `d52b965d01b774280689570b580e186d0d83e444da54de1ae8e3b10d0a2ac559`. Strict/fmt/diff passed. Both independent reviews were read-only source and retained-evidence reviews, not fresh dynamic reruns.
+
+Root integrated exactly the 29 changed manifest files and verified all 48 destination hashes. Root repository gate is running; branch defect gate, acceptance and landing remain pending. Historical EACCES safe-quarantine availability limitation remains unresolved. Later live-provider, lead demonstrations, optional integrations and restore requirements remain separate; these model-free results do not complete the full goal.

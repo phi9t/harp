@@ -1,0 +1,58 @@
+{
+  "kind": "Scoped architecture/cap adjudication, not a new code repair/review loop",
+  "finding": "branch642",
+  "cause_verdict": "CONFIRMED",
+  "classification": "Fail-closed liveness/recoverable-cleanup limitation; no safety-boundary violation established by this finding",
+  "prior_r3_review": "Prior scoped Spec PASS and its artifacts retained unchanged; this new branch finding prevents inferring unqualified registry acceptance.",
+  "source": "8d05117a5d7be0793e37667bd0a245073305e757",
+  "cause": [
+    {
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:291",
+      "fact": "A confirmed terminal receipt remains immutable; subsequent successful terminal observation is written to cleanup_stop_observation."
+    },
+    {
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:657",
+      "fact": "shutdown_turn validates retained store, connects to current incarnation, reads exact retained thread/current turn, and can return a newly qualified terminal observation at718."
+    },
+    {
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:532",
+      "fact": "retire_subscription compares current connection against old immutable terminal incarnation even when retained unsubscribe is absent. New operation insertion at569 is never reached."
+    },
+    {
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/src/codex.rs:319",
+      "fact": "Error records unknown subscription_retirement and revoking then continues, skipping lead executor cancellation at329 and separate app cancellation at346; retries repeat the same mismatch."
+    }
+  ],
+  "safety_assessment": {
+    "retained": "UI input false, actor authority revoked, exact store/turn checks, original terminal evidence, no new unsubscribe dispatch and no false revoked/retired disposition. Local retired-thread receive scope is withdrawn.",
+    "not_inferred": "Turn terminal does not prove executor/app/descendants stopped. Residual lead executor or dedicated app may stay alive; no cleanup/reuse or capacity release is justified by this receipt alone. Existing independently observed worker-executor termination remains a separate capacity fact.",
+    "requirement_gap": [
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:46",
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:54",
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:76",
+      "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:86"
+    ],
+    "limitation": "Unresolved is honest but does not fulfill recoverable cleanup once safe current qualification is available. Permanently blocked means no automatic progress under this code with the differing incarnation retained, not an assertion that no external corrective action is possible."
+  },
+  "load_bearing_capabilities": [
+    "Native cancellation/retirement completion after app restart, including dedicated app stop and superseded lead executor stop.",
+    "Reliable workspace/process inventory linking unresolved runtime resources to retained evidence and cleanup disposition.",
+    "Ticket04 destructive cleanup/reuse that depends on stopped owned processes; ticket05 complete replace-lead/cancellation dispositions; ticket06 assembled recovery, cleanup and live release."
+  ],
+  "downstream_routing": {
+    "03": "Independent supported Kata API, source/revision admission, journaled synchronization, scoped command authorization and durable context work may proceed under SPEC70/ticket03 dependency01. Propagate separate unknown cleanup/process state; never map task closure to native retirement or infer runtime lead replacement completion. Native execution-dependent claims still depend on qualified02.",
+    "04": "Inventory, drift diagnosis, retention and non-destructive Git/artifact work can proceed under SPEC70/86 with an explicit linked obligation. Keep unresolved owned realms/resources retained; do not delete/reuse them from task/turn terminal alone. Executor/process-dependent cleanup acceptance and this native recovery capability stay blocked. Ticket04 currently lists01,02; root must record any bounded routing decision rather than treating this report as dependency removal.",
+    "release": "Linked correction obligation remains within the baseline and is load-bearing before assembled/live release. This is not a waiver or permission for automatic source acceptance. Root alone records attention-needed and determines routing under exhausted registry3/3 cap; no additional repair loop or cap reset authorized."
+  },
+  "minimal_conceptual_correction": [
+    "Separate immutable historical stop evidence from current cleanup authorization.",
+    "Only if no unsubscribe operation exists, allow a fresh terminal native observation for the exact retained server/store/thread/turn, qualified against current supervisor runtime/incarnation and current connection, to authorize first cleanup intent. Keep original receipt and uncertainty history unchanged; do not restore actor execution authority.",
+    "Journal that first unsubscribe against the current qualified connection before dispatch. If an operation already exists, retain its logical ID and original connection/store/incarnation fencing; never substitute a new operation or rebind a pending effect. Confirmed historical cleanup remains historical evidence.",
+    "Absent, contradictory or mismatched current qualification remains explicit unresolved."
+  ],
+  "limits": [
+    "Source-only causal adjudication; no new probe, test, runtime or safety qualification. No probes proposed.",
+    "No checkout writes, credentials, upstream calls, tmux, resource mutation/cleanup or helpers. Only this external report directory was created.",
+    "Root owns final architecture/cap decision and any acceptance; this report does not accept02, unblock entire04, or claim assembled/live readiness."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-11T22:29:55.148614+00:00",
+  "candidate": "240ca4817970fda7caec23f77b35afa7764b34f6",
+  "base": "be9de21f3f5287bc7c8ab3cb01e581328eb20b1a",
+  "source_commit": "f6ba6c87d3271ffc7070766c8575bc42d2294ffb",
+  "product_matches_review_hashes": true,
+  "checks": {
+    "collab-cli48": "passed",
+    "gate-dispatch": "passed",
+    "state-consistency": "passed",
+    "temp-paths": "passed",
+    "global-tracker-lint": "passed",
+    "whitespace": "passed"
+  },
+  "log_sha256": "355f3cdd75f452ed16b6c8e2fa82b285893c1c8c14ee8b7e371f35b34ed4d3b2",
+  "remote": null,
+  "peer_health_repair": "landed before this candidate",
+  "authority": "user: land on corenius repo mainline"
+}

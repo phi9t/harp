@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/inputs/artifact-observations.py",
+    "--output",
+    "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/red.json"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/inputs/artifact-observations.py\", line 10, in <module>\n    with tarfile.open(a) as archive:\n         ^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/tarfile.py\", line 1662, in open\n    return func(name, \"r\", fileobj, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/tarfile.py\", line 1728, in gzopen\n    fileobj = GzipFile(name, mode + \"b\", compresslevel, fileobj)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/gzip.py\", line 174, in __init__\n    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/reviews/04/repair3/root-relocated-n8i2xx8j/nonexistent-origin/retained/accepted-capture-g4-qfzpjpuv.tar.gz'\n",
+  "process": {
+    "pid": 944756,
+    "start_ticks": "55590179",
+    "waited": true,
+    "exit": 1
+  },
+  "helper_sha256": "89041ef208162bf4380e3a8fd939601298aa31f5a5edb5900040a30fce58a4e2"
+}

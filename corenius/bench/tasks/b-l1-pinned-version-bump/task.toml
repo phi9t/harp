@@ -1,0 +1,25 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l1-pinned-version-bump"
+description = "Move a pinned local cpp3rdlib dependency to the version with the needed API"
+
+[metadata]
+track = "B"
+level = "M"
+tags = ["single", "blade-L1"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "bash tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "app/main.cc", "cpp3rdlib/pinmsg_v1/include/pinmsg.h", "cpp3rdlib/pinmsg_v1/pinmsg.cc", "cpp3rdlib/pinmsg_v2/include/pinmsg.h", "cpp3rdlib/pinmsg_v2/pinmsg.cc"]
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

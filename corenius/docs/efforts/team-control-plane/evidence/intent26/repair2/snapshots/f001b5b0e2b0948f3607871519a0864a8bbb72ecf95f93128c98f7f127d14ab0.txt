@@ -1,0 +1,95 @@
+from pathlib import Path
+import subprocess,json,hashlib,re,datetime
+root=Path.cwd();top=Path('docs/efforts/team-control-plane/evidence/intent26');prefix=top/'repair2';base='720ab7783e1b36e9e8a675f497f9c66ef2b1d87b'
+def sha(b):return hashlib.sha256(b).hexdigest()
+def git(*args):return subprocess.check_output(['git',*args])
+def ref(p):return {'path':str(p),'sha256':sha(p.read_bytes()),'bytes':p.stat().st_size}
+def write(name,data):
+ p=prefix/name;p.write_text(json.dumps(data,indent=2,sort_keys=True)+'\n');return ref(p)
+def snapshot(b):
+ p=prefix/'snapshots'/(sha(b)+'.txt');p.parent.mkdir(exist_ok=True)
+ if p.exists():assert p.read_bytes()==b
+ else:p.write_bytes(b)
+ return ref(p)
+def selection():return set(git('diff','--name-only','HEAD').decode().splitlines())|set(git('ls-files','--others','--exclude-standard').decode().splitlines())
+assert git('rev-parse','HEAD').decode().strip()==base
+assert not git('diff','--cached','--name-only').strip()
+sources=sorted(p for p in selection() if p.startswith('crates/team-control-plane/'));assert len(sources)==18
+old=json.loads((top/'repair1/source-manifest.json').read_text());old_sources={e['path']:e for e in old['source_changes']};archive_map=json.loads((prefix/'repair1-archive-map.json').read_text())
+for e in archive_map['entries']:assert sha(Path(e['archive']).read_bytes())==e['sha256']
+changes=[];deltas=[]
+for p in sources:
+ prior=prefix/'preimages'/p;b=Path(p).read_bytes();assert sha(prior.read_bytes())==old_sources[p]['sha256']
+ frozen=prefix/'source-snapshots'/p;frozen.parent.mkdir(parents=True,exist_ok=True);frozen.write_bytes(b)
+ before=old_sources[p]['base_preimage']
+ if before:assert git('show',base+':'+p)==Path(before['path']).read_bytes()
+ entry=dict(path=p,sha256=sha(b),bytes=len(b),base_preimage=before,repair1_preimage=ref(prior),final_snapshot=ref(frozen));changes.append(entry)
+ if sha(prior.read_bytes())!=sha(b):deltas.append(dict(path=p,repair1_sha256=sha(prior.read_bytes()),final_sha256=sha(b),repair1_archive=str(prior)))
+assert len(deltas)==5
+ledger=list(map(json.loads,(prefix/'runs.jsonl').read_text().splitlines()));assert len(ledger)==5
+final=ledger[-1];assert final['name']=='green-final-repair2-compatibility' and final['exit_code']==0
+assert all(sha(Path(p).read_bytes())==h for p,h in final['sources'].items())
+manifest=write('source-manifest.json',dict(schema_version=1,base=base,branch='codex-intent26/contracts',scope='ticket26 repair iteration2 current production gate and historical receipt replay',source_changes=changes,repair1_delta=deltas,canonical_inputs=old['canonical_inputs'],repair_inputs=archive_map['entries'][269:],repair1_archive_map=ref(prefix/'repair1-archive-map.json'),final_passing_run=final['name'],final_run_sources_match_worktree=True,older_source_proof='all round0/repair1/repair2 runs explicitly bound and compared in run-source-deltas.json',implementation_committed=False))
+patch=git('diff','--binary',base,'--',*[e['path']for e in changes if e['base_preimage']])
+for e in changes:
+ if not e['base_preimage']:
+  r=subprocess.run(['git','diff','--no-index','--binary','--','/dev/null',e['path']],stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert r.returncode==1 and not r.stderr;patch+=r.stdout
+(prefix/'source.patch').write_bytes(patch)
+repair=b''
+for d in deltas:
+ r=subprocess.run(['git','diff','--no-index','--binary','--',d['repair1_archive'],d['path']],stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert r.returncode==1 and not r.stderr
+ for line in r.stdout.splitlines(keepends=True):
+  if line.startswith((b'diff --git ',b'--- ')):line=line.replace(('a/'+d['repair1_archive']).encode(),('a/'+d['path']).encode())
+  repair+=line
+(prefix/'repair.patch').write_bytes(repair)
+run_deltas=[];run_index=[];records=[];measured=[];cleanup=[]
+markers=['public_contract_response','public_artifact_response','public_episode_operation','public_dependency_after_lead_amendment','public_dependency_grant','public_cancellation','public_cancelled_outcome_read','independent_measured_subject','migration_original_provenance','measured_fixture','measured_gate_bytes','public_current_gate','measured_fixture_cleanup','public_episode_expiry']
+for kind,area in [('round0',top/'round0'),('repair1',top/'repair1'),('repair2',prefix)]:
+ runs=list(map(json.loads,(area/'runs.jsonl').read_text().splitlines()))
+ for n,r in enumerate(runs,1):
+  delta=[dict(path=p,run_sha256=r['sources'].get(p),final_sha256=final['sources'].get(p))for p in sorted(set(r['sources'])|set(final['sources']))if r['sources'].get(p)!=final['sources'].get(p)]
+  run_deltas.append(dict(round=kind,run=r['name'],changes_from_final=delta,final_source_match=not delta))
+  if kind!='repair2':continue
+  log=area/r['log'];assert sha(log.read_bytes())==r['log_sha256'];summaries=[dict(result=a,passed=int(b),failed=int(c))for a,b,c in re.findall(r'test result: (\w+)\. (\d+) passed; (\d+) failed',log.read_text())]
+  classification={'red-current-gate':'behavioral_red_200_vs409','green-postfailure-controls':'fixture_setup_no_workflow_for_yield'}.get(r['name'],'green')
+  run_index.append(dict(name=r['name'],archive=ref(log),exit_code=r['exit_code'],classification=classification,test_summaries=summaries,ledger_line=n,argv=r['argv'],env=r['env'],bounded_timeout_seconds=1800))
+  for line_number,line in enumerate(log.read_bytes().splitlines(keepends=True),1):
+   for marker in markers:
+    needle=(marker+' ').encode();at=line.find(needle)
+    if at==-1:continue
+    payload=line[at+len(needle):].decode().strip();value=json.loads(payload)
+    entry=dict(run=r['name'],marker=marker,source_log=str(log),source_line=line_number,source_line_sha256=sha(line),payload_sha256=sha(payload.encode()),value=value);records.append(entry)
+    if marker=='measured_gate_bytes':
+     b=bytes(value['artifact_bytes']);assert sha(b)==value['logs'];body=json.loads(b);monitor=body['trusted_monitor_result'];assert monitor['execution']==value['execution'];assert sha(body['output'].encode())==monitor['logs'];assert monitor['namespace_stopped'] and monitor['exit_code']==0
+     measured.append(dict(run=r['name'],source_log=str(log),source_line=line_number,source_line_sha256=sha(line),evidence_digest=value['logs'],evidence_bytes=snapshot(b),execution=value['execution'],monitor_result=monitor,output_bytes=snapshot(body['output'].encode()),claim='exact uploaded ArtifactService evidence bytes, verified against independently measured monitor result; no fabricated physical failure'))
+    if marker in ['measured_fixture','measured_fixture_cleanup','public_episode_expiry']:cleanup.append(entry)
+assert sum(e['passed']for e in run_index[-1]['test_summaries'])==82 and all(e['failed']==0 for e in run_index[-1]['test_summaries'])
+write('run-source-deltas.json',dict(final_run=final['name'],runs=run_deltas,README='README is separately frozen; runner hashes executable/test/migration/package inputs. Older runs are history, not proof of unexecuted final bytes.'))
+(prefix/'public-records.jsonl').write_text(''.join(json.dumps(r,sort_keys=True)+'\n'for r in records))
+write('measured-evidence-index.json',dict(schema_version=1,entries=measured))
+write('cleanup-records.json',dict(schema_version=1,observations=cleanup,retained_setup_fixture=ref(prefix/'retained-setup-fixture.json'),postgres='Each run completes through existing run-postgres.sh EXIT trap; final separate Docker prefix inventory records no retained fixture container. This is distinct from measured namespace stop, Supervisor release, or Fixture.finish.',original_repair1_fixtures='Original59/72 file maps and owned paths remain retained and unchanged; checked separately.'))
+checks=json.loads(Path('.scratch/team-control-plane/ticket26/repair2-checks-initial.json').read_text())
+for name,field in [('source.patch','base_preimage'),('repair.patch','repair1_preimage')]:
+ baseline=root/'.scratch/team-control-plane/ticket26'/('repair2-patch-check-'+name.replace('.','-'));baseline.mkdir(exist_ok=False)
+ for e in changes:
+  if e[field]:
+   p=baseline/e['path'];p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(Path(e[field]['path']).read_bytes())
+ for flags in [['--check'],[]]:
+  argv=['git','apply',*flags,'--unsafe-paths','--directory='+str(baseline),str(prefix/name)];r=subprocess.run(argv,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);checks.append(dict(argv=argv,exit_code=r.returncode,output=r.stdout));assert r.returncode==0
+ assert all(sha((baseline/e['path']).read_bytes())==e['sha256']for e in changes);checks.append(dict(check=name+' reconstructs all18 final source bytes',passed=True))
+for p in [top/'repair1/retained-red1-fixture.json',top/'repair1/retained-red2-fixture.json',prefix/'retained-setup-fixture.json']:
+ j=json.loads(p.read_text());count=0
+ for e in j['files']:
+  assert sha(Path(e['origin']).read_bytes())==e['sha256'];assert sha(Path(e['archive']).read_bytes())==e['sha256'];count+=1
+ checks.append(dict(check='original owned fixture and durable archives retain exact bytes',map=str(p),files=count,passed=True))
+checks.extend([dict(check='all269 repair1 selected/seal bytes resolved through immutable archive map',passed=True),dict(check='all final54 run input hashes match worktree',inputs=len(final['sources']),passed=True),dict(check='all5 repair2 raw log hashes match source-bound ledger',passed=True)])
+index=write('public-proof-index.json',dict(schema_version=1,scope='repair2 public HTTP/PostgreSQL measured ArtifactService current-gate evidence; independent root review pending',source_manifest=manifest,source_patch=ref(prefix/'source.patch'),repair_patch=ref(prefix/'repair.patch'),ledger=ref(prefix/'runs.jsonl'),run_harness_snapshot=snapshot(Path('.scratch/team-control-plane/ticket26/run-repair2.py').read_bytes()),freeze_harness_snapshot=snapshot(Path('.scratch/team-control-plane/ticket26/freeze-repair2.py').read_bytes()),run_source_deltas=ref(prefix/'run-source-deltas.json'),public_records=ref(prefix/'public-records.jsonl'),public_record_count=len(records),runs=run_index,measured_evidence=ref(prefix/'measured-evidence-index.json'),cleanup_records=ref(prefix/'cleanup-records.json'),repair1_archive_map=ref(prefix/'repair1-archive-map.json'),retained_setup_fixture=ref(prefix/'retained-setup-fixture.json'),report=ref(prefix/'report.md'),checks={'path':str(prefix/'checks.json')},authority='root review2 current-gate decision retained as input; full-goal bounded repair authorization; no reset',excluded_proof_paths=['ignored scratch/build/cache/targets','physical temporary origins are provenance with durable byte archives'],pending=['fresh independent Standards/Spec axes','root independent verification and fixed-range branch gate'],resource_slot='released after final terminal82/82; no subsequent Cargo/PG invocation'))
+normal=selection();planned={str(prefix/'checks.json'),str(prefix/'author-freeze.json')}
+assert all(p.startswith('crates/team-control-plane/')or p.startswith(str(top)+'/')for p in normal)
+ignore=subprocess.run(['git','check-ignore','--no-index','--',*sorted(normal|planned)],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert ignore.returncode==1 and not ignore.stdout and not ignore.stderr
+checks.append(dict(check='normal Git selection includes all referenced durable source/proof/index/archived inputs',passed=True,selected_paths=sorted(normal),planned_seals=sorted(planned)))
+checks.append(dict(check='git check-ignore --no-index all selected and planned durable paths',exit_code=ignore.returncode,stdout=ignore.stdout,stderr=ignore.stderr,passed=True))
+write('checks.json',dict(schema_version=1,utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),checks=checks,resource_slot_released=True))
+normal=selection();seal=write('author-freeze.json',dict(schema_version=1,frozen_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),base=base,branch='codex-intent26/contracts',writer='/root/corenius_jj19_verification_repair/intent26_implementer',repair_iteration=2,source_file_count=18,repair1_delta_files=5,source_manifest=ref(prefix/'source-manifest.json'),source_patch=ref(prefix/'source.patch'),repair_patch=ref(prefix/'repair.patch'),public_proof_index=ref(prefix/'public-proof-index.json'),report=ref(prefix/'report.md'),checks=ref(prefix/'checks.json'),selected_changes=[ref(Path(p))for p in sorted(normal)],self_exclusion=str(prefix/'author-freeze.json'),self_hash_location='root handoff',resource_slot_released=True,commits_created=False,scope='bounded repair2 implementation candidate; previous rounds and seals immutable via archive map; ticket remains claimed pending root gates'))
+assert selection()==normal|{str(prefix/'author-freeze.json')};assert not git('diff','--cached','--name-only').strip()
+print(json.dumps(dict(author_freeze=seal,source_manifest=ref(prefix/'source-manifest.json'),source_patch=ref(prefix/'source.patch'),repair_patch=ref(prefix/'repair.patch'),public_proof_index=ref(prefix/'public-proof-index.json'),report=ref(prefix/'report.md'),public_records=len(records),measured_evidence_blobs=len(measured),selected_changes=len(selection()),source_files=len(sources),repair1_delta_files=len(deltas)),indent=2))

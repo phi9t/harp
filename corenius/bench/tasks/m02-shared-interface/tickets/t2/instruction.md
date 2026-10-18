@@ -1,0 +1,1 @@
+Change report.py so each line is `<name>: <human size>` using `sizes.format_size(parse_size(text))` (format_size is being added by ticket t1: it takes int bytes and returns e.g. `1.5 KiB`). Do not edit sizes.py.

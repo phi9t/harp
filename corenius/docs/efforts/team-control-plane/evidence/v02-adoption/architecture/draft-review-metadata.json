@@ -1,0 +1,74 @@
+{
+  "verdict": "CHANGES REQUIRED",
+  "reviewer": "/root/corenius_v02_adoption_critique",
+  "commit_read": "942f037800102f3d786ac547e72f11ab928b50ae",
+  "source_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "mutations": false,
+  "tests_or_runtimes": false,
+  "prior_material_requirements_addressed": 6,
+  "remaining_contract_clarifications": [
+    "dependency invalidation trigger",
+    "dimensioned cumulative/concurrent conservation",
+    "legacy null Attempt provenance",
+    "new command caller authorization"
+  ],
+  "traceability_correction": "exact existing evidence anchors",
+  "sources": [
+    {
+      "path": "CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "5a51834ef6d96e1c91705f6fa2b35450204fc664f34b03a76e16dc57dffe21ea",
+      "bytes": 16951
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "048f985576c54267a9a0377b4fc84141ab0bc4c0bbe20c89156ef5960e0bb4f1",
+      "bytes": 33105
+    },
+    {
+      "path": "docs/efforts/team-control-plane/PLAN.md",
+      "sha256": "cbb88a13597df9ff4c870c366bea8e7528e1135607ac052e7d4af9b49ee5130e",
+      "bytes": 17327
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "f78616b6e145756cf9cedbf8a55ed37b728f880e9299a1eaae2e657ca01d266a",
+      "bytes": 3159
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/27-durable-scopes.md",
+      "sha256": "7726e1f73ac3ef19dd517b7fbe1dee9b2794b7d639c99129c9fed84203a71e9d",
+      "bytes": 3345
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/28-kata-work-ledger.md",
+      "sha256": "64cab600c839090d7776b6e143444df9fdc46b435f92b25e72492ebbd6b7c968",
+      "bytes": 2892
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/29-scope-plan-interpreter.md",
+      "sha256": "79b18255808c8a70251e064c7388bcf16d10cb0f1741d5cbb2e8b7a7b344a6aa",
+      "bytes": 2804
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/30-protected-integration.md",
+      "sha256": "3d8f925056d542abe51b93853f053d7385c024cd0ff0111900ce7b9bb8d2443f",
+      "bytes": 2771
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/31-independent-execution.md",
+      "sha256": "52dc90583dcbd5fe1fe42f8c3794168a7946e8a7160eed51db866c6aff81f928",
+      "bytes": 2973
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/32-v02-assembled-proof.md",
+      "sha256": "3f7cee3f29a36e052a9d68caf944c41d011bc299c46f52cc0cead90df9e4f1dd",
+      "bytes": 2542
+    }
+  ],
+  "report_sha256": "ffbe707cfdd0967761880aa94ffc984cb627c96a1f9beae16bdff3b6cc97cf70"
+}

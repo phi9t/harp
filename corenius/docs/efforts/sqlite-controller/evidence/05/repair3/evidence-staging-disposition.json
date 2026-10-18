@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-10-05T02:11:26.648166+00:00",
+  "original_command_exit": 1,
+  "original_result": "Precommit staged-path count assertion failed:113 staged vs131 expected; no commit executed",
+  "cause": "Repository ignore rule omitted18 raw.log files on ordinary git add. All original log bytes remained present and hash-verified.",
+  "correction": "Explicit git add -f of only those18 exact evidence raw.log paths; original source/manifests/seal unchanged. Additional outer final-seal indexes original seal plus this disposition.",
+  "source_unchanged": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "qualification": "Evidence staging failure, not a product test; no extra Cargo run or acceptance credit"
+}

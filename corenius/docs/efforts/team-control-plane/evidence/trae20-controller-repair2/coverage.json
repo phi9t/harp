@@ -1,0 +1,14 @@
+{
+  "iteration": 2,
+  "baseline_red": "prior-terminal-red.log.txt",
+  "baseline_source": "preimages/trae_case_control.py",
+  "final_green_tests": 20,
+  "collision_states": {
+    "prior_terminal_no_start": "reserved/spent + retained separate refusal; prior bytes unchanged; executor0",
+    "prior_stdout_or_stderr": "reserved/spent + retained terminal refusal; prior bytes unchanged; executor0",
+    "prior_uncertainty": "incompatible output refused before reservation; all bytes unchanged; executor0",
+    "postdispatch_partial_terminal_write": "executed once + unknown retained separately; partial bytes preserved; reservation spent"
+  },
+  "historical_tdd_chronology_gap": "unchanged; repair1 later semantic negatives are not original chronological RED evidence",
+  "physical_launches": 0
+}

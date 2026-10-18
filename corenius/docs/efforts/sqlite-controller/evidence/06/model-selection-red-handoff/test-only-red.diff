@@ -1,0 +1,118 @@
+diff --git a/crates/sqlite-controller/src/codex.rs b/crates/sqlite-controller/src/codex.rs
+index 3d5a5c5..d1591b9 100644
+--- a/crates/sqlite-controller/src/codex.rs
++++ b/crates/sqlite-controller/src/codex.rs
+@@ -2257,3 +2257,84 @@ mod repair1_dispatcher_tests {
+         );
+     }
+ }
++
++#[cfg(test)]
++mod selected_model_tests {
++    use super::*;
++    use std::io::Read;
++    const TOKEN: &str = "selected-model-fixture-secret";
++    fn command(c: &Controller, auth: Value, kind: &str, key: &str, args: Value) -> Result<Value, String> {
++        let revision = c.handle(json!({"auth":{"principal":"operator","token":TOKEN},"project":"p","query":{"kind":"snapshot","args":{}}}))?["revision"].clone();
++        c.handle(json!({"auth":auth,"project":"p","command":{"kind":kind,"idempotency_key":key,"expected_revision":revision,"args":args}}))
++    }
++    pub(super) fn fixture() -> (tempfile::TempDir, Controller, Value, Value, Value, Binding, CodexRuntime) {
++        let root = tempfile::tempdir().unwrap();
++        let c = Controller::open(root.path().join("state.db"), TOKEN).unwrap();
++        let auth = json!({"principal":"operator","token":TOKEN});
++        c.handle(json!({"auth":auth,"project":"p","command":{"kind":"create_project","idempotency_key":"project","expected_revision":0,"args":{"name":"p","base":"0123456789abcdef0123456789abcdef01234567"}}})).unwrap();
++        command(&c, auth.clone(), "create_task", "task", json!({"task":"task","brief":"intent","work_ref":{"deployment":"fixture","project":"p","item":"task"},"source_revision":"r1"})).unwrap();
++        let worker = command(&c, auth.clone(), "admit", "admit", json!({"task":"task"})).unwrap()["result"].clone();
++        let lead = command(&c, auth.clone(), "replace_lead", "lead", json!({})).unwrap()["result"].clone();
++        let doc = json!({"thread_id":"lead-thread","server_store":"store","server_incarnation":"incarnation","environment_id":"env","turn_id":"old","current_turn":{"state":"terminal"},"ui_input_ready":true});
++        {
++            let db = c.connection.lock().unwrap();
++            db.execute_batch(include_str!("codex_schema.sql")).unwrap();
++            db.execute("INSERT INTO codex_bindings VALUES('lead-binding','p','lead',NULL,1,?1,'bound')",[doc.to_string()]).unwrap();
++        }
++        let binding = Binding { project:"p".into(), attempt:worker["attempt"].as_str().unwrap().into(), operation:"fixture".into(), scope_epoch:1, base:worker["base"].as_str().unwrap().into(), brief:worker["brief"].as_str().unwrap().into() };
++        let runtime = CodexRuntime { config:serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[]})).unwrap(), connections:Mutex::new(HashMap::new()), lifecycle:Mutex::new(()) };
++        (root, c, lead, worker, doc, binding, runtime)
++    }
++    pub(super) fn native_peer(mut peer: UnixStream) -> std::thread::JoinHandle<Value> {
++        std::thread::spawn(move || {
++            let mut head=[0u8;2];peer.read_exact(&mut head).unwrap();
++            let mut length=(head[1]&127) as usize;
++            if length==126 {let mut bytes=[0u8;2];peer.read_exact(&mut bytes).unwrap();length=u16::from_be_bytes(bytes) as usize;}
++            if length==127 {let mut bytes=[0u8;8];peer.read_exact(&mut bytes).unwrap();length=u64::from_be_bytes(bytes) as usize;}
++            let mut mask=[0u8;4];peer.read_exact(&mut mask).unwrap();let mut body=vec![0;length];peer.read_exact(&mut body).unwrap();
++            for (i,b) in body.iter_mut().enumerate(){*b^=mask[i%4];}
++            let request:Value=serde_json::from_slice(&body).unwrap();
++            let body=json!({"id":request["id"],"result":{"turn":{"id":"model-turn","status":"completed","items":[]}}}).to_string().into_bytes();
++            let mut frame=vec![0x81];if body.len()<126 {frame.push(body.len() as u8);} else {frame.push(126);frame.extend((body.len() as u16).to_be_bytes());}frame.extend(body);peer.write_all(&frame).unwrap();request
++        })
++    }
++    #[test]
++    fn selected_model_core_command_preserves_role_and_idempotency_fences() {
++        let (_root,c,lead,worker,_,_,_) = fixture();
++        let args=json!({"role":"lead","text":"selected","model":"gpt-6.1-sol","expected_binding":{"thread_id":"lead-thread"}});
++        let auth=json!({"principal":lead["principal"],"token":lead["token"]});
++        let receipt=command(&c,auth.clone(),"codex_turn","selected-core",args.clone()).unwrap();
++        assert_eq!(command(&c,auth.clone(),"codex_turn","selected-core",args.clone()).unwrap(),receipt);
++        let mut changed=args.clone();changed["model"]=json!("gpt-6-sol");assert!(command(&c,auth.clone(),"codex_turn","selected-core",changed).is_err());
++        let mut foreign=args.clone();foreign["expected_binding"]["thread_id"]=json!("foreign");assert!(command(&c,auth.clone(),"codex_turn","foreign",foreign).unwrap_err().contains("binding guard"));
++        let worker_auth=json!({"principal":worker["principal"],"token":worker["token"]});
++        assert!(command(&c,worker_auth,"codex_turn","worker-forbidden",args).unwrap_err().contains("authority"));
++        assert!(command(&c,auth,"codex_turn","unsupported",json!({"role":"lead","text":"selected","model":"not-installed"})).is_err());
++    }
++    #[test]
++    fn selected_model_worker_initial_turn_and_thread_intents_match_configuration() {
++        let (_root,c,_,worker,_,binding,mut runtime)=fixture();
++        runtime.config=serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"})).unwrap();
++        let mut doc=json!({"server_incarnation":"incarnation","environment_id":"env","executor":{"incarnation":"executor"}});
++        {let db=c.connection.lock().unwrap();db.execute("INSERT INTO codex_bindings VALUES('worker-binding','p','attempt',?1,1,?2,'bound')",params![worker["attempt"].as_str(),doc.to_string()]).unwrap();}
++        let (mut ws,mut peer)=NativeWs::owned_test_pair();
++        let capture=std::thread::spawn(move || {
++            let mut calls=vec![];
++            for expected in ["environment/status","thread/start","turn/start","thread/read"] {
++                let mut head=[0u8;2];peer.read_exact(&mut head).unwrap();let mut n=(head[1]&127) as usize;
++                if n==126{let mut bytes=[0u8;2];peer.read_exact(&mut bytes).unwrap();n=u16::from_be_bytes(bytes) as usize;}
++                if n==127{let mut bytes=[0u8;8];peer.read_exact(&mut bytes).unwrap();n=u64::from_be_bytes(bytes) as usize;}
++                let mut mask=[0u8;4];peer.read_exact(&mut mask).unwrap();let mut body=vec![0;n];peer.read_exact(&mut body).unwrap();for(i,b)in body.iter_mut().enumerate(){*b^=mask[i%4];}
++                let call:Value=serde_json::from_slice(&body).unwrap();assert_eq!(call["method"],expected);
++                let result=match expected {"environment/status"=>json!({"status":"ready"}),"thread/start"=>json!({"thread":{"id":"worker-thread"}}),"turn/start"=>json!({"turn":{"id":"worker-turn","status":"completed","items":[]}}),_=>json!({"thread":{"id":"worker-thread","environments":[{"environmentId":"env","cwd":"/workspace","runtimeWorkspaceRoots":["/workspace"]}],"turns":[{"id":"worker-turn","status":"completed","items":[]}]}})};
++                let body=json!({"id":call["id"],"result":result}).to_string().into_bytes();let mut frame=vec![0x81];if body.len()<126{frame.push(body.len() as u8);}else{frame.push(126);frame.extend((body.len() as u16).to_be_bytes());}frame.extend(body);peer.write_all(&frame).unwrap();calls.push(call);
++            }
++            calls
++        });
++        let app=json!({"runtime":{"incarnation":"incarnation"},"capability":"fixture-app-secret"});let executor=json!({"runtime":{"incarnation":"executor"},"capability":"fixture-worker-secret"});
++        runtime.configure_thread(&c,"worker-binding",&mut doc,&mut ws,NativeInputs{app:&app,executor:&executor,worker:&binding,body:"useful worker intent"}).unwrap();
++        let sent=capture.join().unwrap();for call in sent.iter().filter(|c|matches!(c["method"].as_str(),Some("thread/start"|"turn/start"))){assert_eq!(call["params"]["model"],"gpt-6.1-sol");}
++        let db=c.connection.lock().unwrap();let mut statement=db.prepare("SELECT intent FROM codex_operations WHERE binding='worker-binding' AND kind IN ('thread/start','turn/start')").unwrap();let intents=statement.query_map([],|r|r.get::<_,String>(0)).unwrap().map(|r|serde_json::from_str::<Value>(&r.unwrap()).unwrap()).collect::<Vec<_>>();assert_eq!(intents.len(),2);assert!(intents.iter().all(|i|i["model"]=="gpt-6.1-sol"));
++    }
++
++}
+diff --git a/crates/sqlite-controller/src/native_ui.rs b/crates/sqlite-controller/src/native_ui.rs
+index 6ea63af..dc91476 100644
+--- a/crates/sqlite-controller/src/native_ui.rs
++++ b/crates/sqlite-controller/src/native_ui.rs
+@@ -485,3 +485,24 @@ impl CodexRuntime {
+         }
+     }
+ }
++
++#[cfg(test)]
++mod selected_model_ui_tests {
++    use super::*;
++    use super::super::selected_model_tests::{fixture, native_peer};
++    #[test]
++    fn selected_model_native_ui_records_identity_and_reaches_actual_adapter() {
++        let (_root, c, lead, _, mut doc, binding, runtime) = fixture();
++        let request = json!({"auth":{"principal":lead["principal"],"token":lead["token"]},"project":"p","native_ui":{"method":"turn/start","params":{"threadId":"lead-thread","clientUserMessageId":"selected-model-ui","model":"gpt-6.1-sol","input":[{"type":"text","text":"selected model","text_elements":[]}]}}});
++        let error = runtime.ui_input(&c, &serde_json::from_value(request.clone()).unwrap(), "lead-binding", &doc, 1).unwrap_err();
++        assert!(error.contains("is prepared"), "{error}");
++        let intent:Value = {let db=c.connection.lock().unwrap();serde_json::from_str(&db.query_row("SELECT intent FROM codex_operations WHERE kind='codex_turn'",[],|r|r.get::<_,String>(0)).unwrap()).unwrap()};
++        assert_eq!(intent["model"],"gpt-6.1-sol");
++        let mut changed=request.clone();changed["native_ui"]["params"]["model"]=json!("gpt-6-sol");
++        assert!(runtime.ui_input(&c,&serde_json::from_value(changed).unwrap(),"lead-binding",&doc,1).unwrap_err().contains("stable input arguments changed"));
++        let (mut ws,peer)=NativeWs::owned_test_pair();ws.allow_thread("lead-thread").unwrap();let capture=native_peer(peer);
++        runtime.dispatch_prepared(&c,"lead-binding",&mut doc,&mut ws,&binding).unwrap();let sent=capture.join().unwrap();
++        assert_eq!(sent["method"],"turn/start");assert_eq!(sent["params"]["model"],"gpt-6.1-sol");
++        assert_eq!(sent["params"]["clientUserMessageId"].as_str().unwrap().len(),36);
++    }
++}

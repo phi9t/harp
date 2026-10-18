@@ -1,0 +1,1345 @@
+{
+  "observations": [
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/accepted-capture-g4-47tyypuz.tar.gz",
+      "database_member": "g4-47tyypuz/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/accepted-capture-g4-47tyypuz/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 4,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/accepted-verification-g4-vz_6lse7.tar.gz",
+      "database_member": "g4-vz_6lse7/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/accepted-verification-g4-vz_6lse7/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/after_land_admission-g4-7s0xcg2g.tar.gz",
+      "database_member": "g4-7s0xcg2g/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/after_land_admission-g4-7s0xcg2g/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/after_ref_update-g4-wqjdlxdf.tar.gz",
+      "database_member": "g4-wqjdlxdf/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/after_ref_update-g4-wqjdlxdf/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/after_workspace_cleanup-g4-bcb6jl8e.tar.gz",
+      "database_member": "g4-bcb6jl8e/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/after_workspace_cleanup-g4-bcb6jl8e/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 3
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/before_land_admission-g4-ao38ix58.tar.gz",
+      "database_member": "g4-ao38ix58/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/before_land_admission-g4-ao38ix58/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 4,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/before_ref_update-divergence-g4-9qr54r6q.tar.gz",
+      "database_member": "g4-9qr54r6q/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/before_ref_update-divergence-g4-9qr54r6q/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 4,
+          "unknown": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/before_ref_update-g4-bvar4y8e.tar.gz",
+      "database_member": "g4-bvar4y8e/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/before_ref_update-g4-bvar4y8e/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/before_workspace_cleanup-g4-h3n3u4b4.tar.gz",
+      "database_member": "g4-h3n3u4b4/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/before_workspace_cleanup-g4-h3n3u4b4/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 3
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/bounded-archive-g4-02ey1vh2.tar.gz",
+      "database_member": "g4-02ey1vh2/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/bounded-archive-g4-02ey1vh2/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 3,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/bounded-inventory-g4-6j0x6qov.tar.gz",
+      "database_member": "g4-6j0x6qov/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/bounded-inventory-g4-6j0x6qov/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 26
+        },
+        "operations": {
+          "confirmed": 2,
+          "failed": 25
+        },
+        "git_workspaces": {
+          "rows": 0,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/bounded-output-g4-cdydn6f6.tar.gz",
+      "database_member": "g4-cdydn6f6/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/bounded-output-g4-cdydn6f6/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 3,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/capture-cancel-race-g4-b0ezmjtt.tar.gz",
+      "database_member": "g4-b0ezmjtt/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/capture-cancel-race-g4-b0ezmjtt/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 2,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 0,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/final-output-g4-uodiu98n.tar.gz",
+      "database_member": "g4-uodiu98n/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/final-output-g4-uodiu98n/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 3,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/git-publication-after_ref_update-g4-rcojhr0p.tar.gz",
+      "database_member": "g4-rcojhr0p/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/git-publication-after_ref_update-g4-rcojhr0p/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 6
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "kata_effects": {
+          "confirmed": 12
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/git-publication-before_ref_update-g4-5rpoxirq.tar.gz",
+      "database_member": "g4-5rpoxirq/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/git-publication-before_ref_update-g4-5rpoxirq/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 6
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "kata_effects": {
+          "confirmed": 12
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/hostile-scratch-g4-vuriter1.tar.gz",
+      "database_member": "g4-vuriter1/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/hostile-scratch-g4-vuriter1/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 1,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 0,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/normal-g4-potf4xlc.tar.gz",
+      "database_member": "g4-potf4xlc/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/normal-g4-potf4xlc/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 3
+        },
+        "operations": {
+          "confirmed": 15,
+          "failed": 4
+        },
+        "git_workspaces": {
+          "rows": 3,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/partial_workspace_cleanup-g4-ravp7pjm.tar.gz",
+      "database_member": "g4-ravp7pjm/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/partial_workspace_cleanup-g4-ravp7pjm/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 3
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/publication-after_ref_update-g4-hjdfxn8y.tar.gz",
+      "database_member": "g4-hjdfxn8y/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/publication-after_ref_update-g4-hjdfxn8y/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 6
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/publication-before_ref_update-g4-v1n_zeq7.tar.gz",
+      "database_member": "g4-v1n_zeq7/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/publication-before_ref_update-g4-v1n_zeq7/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 6
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/repair3-applying-g4-790hw4co.tar.gz",
+      "database_member": "g4-790hw4co/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/repair3-applying-g4-790hw4co/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/repair3-applying-g4-egkat6rf.tar.gz",
+      "database_member": "g4-egkat6rf/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/repair3-applying-g4-egkat6rf/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 10,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 2,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/repair3-applying-g4-ztvikeai.tar.gz",
+      "database_member": "g4-ztvikeai/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/repair3-applying-g4-ztvikeai/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 10,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 2,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/repair3-unknown-g4-53jr7cma.tar.gz",
+      "database_member": "g4-53jr7cma/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/repair3-unknown-g4-53jr7cma/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 4,
+          "unknown": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/repair3-unknown-g4-hnz5p1jb.tar.gz",
+      "database_member": "g4-hnz5p1jb/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/repair3-unknown-g4-hnz5p1jb/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 10,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 2,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/repair3-unknown-g4-u6jm7ibm.tar.gz",
+      "database_member": "g4-u6jm7ibm/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/repair3-unknown-g4-u6jm7ibm/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 10,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 2,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/shadow-imports-g4-akk_wj_o.tar.gz",
+      "database_member": "g4-akk_wj_o/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/shadow-imports-g4-akk_wj_o/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 2
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/slow-inventory-g4-c8h84mco.tar.gz",
+      "database_member": "g4-c8h84mco/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/slow-inventory-g4-c8h84mco/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 2
+        },
+        "git_workspaces": {
+          "rows": 0,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/slow-inventory-g4-qh5ce8xd.tar.gz",
+      "database_member": "g4-qh5ce8xd/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/slow-inventory-g4-qh5ce8xd/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 2
+        },
+        "git_workspaces": {
+          "rows": 0,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/terminal-accept-g4-e52iujhg.tar.gz",
+      "database_member": "g4-e52iujhg/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/terminal-accept-g4-e52iujhg/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/terminal-capture-g4-fj1uksa3.tar.gz",
+      "database_member": "g4-fj1uksa3/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/terminal-capture-g4-fj1uksa3/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/04/fixtures/terminal-land-g4-cewq9zqy.tar.gz",
+      "database_member": "g4-cewq9zqy/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/terminal-land-g4-cewq9zqy/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 5,
+          "failed": 1
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05/git-fixtures/observer-authority-g4-sn32nsqw.tar.gz",
+      "database_member": "g4-sn32nsqw/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/observer-authority-g4-sn32nsqw/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 1
+        },
+        "operations": {
+          "confirmed": 6
+        },
+        "git_workspaces": {
+          "rows": 1,
+          "state_column": "not present; no inferred state"
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05/projection-fixtures/cnr-projection-mb1jjadq.tar.gz",
+      "database_member": "cnr-projection-mb1jjadq/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/cnr-projection-mb1jjadq/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 2
+        },
+        "operations": {
+          "prepared": 2
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/monitor05-3aahd0wj.tar.gz",
+      "database_member": "monitor05-3aahd0wj/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/monitor05-3aahd0wj/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 2
+        },
+        "operations": {
+          "prepared": 2
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/monitor05-ewhehxp_.tar.gz",
+      "database_member": "monitor05-ewhehxp_/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/monitor05-ewhehxp_/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 2
+        },
+        "operations": {
+          "prepared": 2
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/monitor05-r8yvnvi8.tar.gz",
+      "database_member": "monitor05-r8yvnvi8/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/monitor05-r8yvnvi8/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 2
+        },
+        "operations": {
+          "prepared": 2
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/monitor05-v298268t.tar.gz",
+      "database_member": "monitor05-v298268t/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/monitor05-v298268t/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 2
+        },
+        "operations": {
+          "prepared": 2
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/ws05-h_2tlkmd.tar.gz",
+      "database_member": "ws05-h_2tlkmd/db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/ws05-h_2tlkmd/db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/ws05-mz2b_vbd.tar.gz",
+      "database_member": "ws05-mz2b_vbd/db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/ws05-mz2b_vbd/db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/fixtures/ws05-w0lhk7p6.tar.gz",
+      "database_member": "ws05-w0lhk7p6/db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/ws05-w0lhk7p6/db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-1_plozue.tar.gz",
+      "database_member": "k3-1_plozue/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-1_plozue/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-1g1cmaj7.tar.gz",
+      "database_member": "k3-1g1cmaj7/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-1g1cmaj7/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-3r457qlm.tar.gz",
+      "database_member": "k3-3r457qlm/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-3r457qlm/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-5vm6mwqg.tar.gz",
+      "database_member": "k3-5vm6mwqg/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-5vm6mwqg/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 1
+        },
+        "operations": {
+          "prepared": 1
+        },
+        "kata_effects": {
+          "confirmed": 6
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-6b7bihqh.tar.gz",
+      "database_member": "k3-6b7bihqh/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-6b7bihqh/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-c05sq39v.tar.gz",
+      "database_member": "k3-c05sq39v/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-c05sq39v/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 1
+        },
+        "operations": {
+          "prepared": 1
+        },
+        "kata_effects": {
+          "confirmed": 6
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-gv41crd_.tar.gz",
+      "database_member": "k3-gv41crd_/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-gv41crd_/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 1
+        },
+        "operations": {
+          "prepared": 1
+        },
+        "kata_effects": {
+          "confirmed": 6
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-p602i90e.tar.gz",
+      "database_member": "k3-p602i90e/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-p602i90e/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {
+          "confirmed": 2,
+          "prepared": 3,
+          "unknown": 1
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-p6it6_up.tar.gz",
+      "database_member": "k3-p6it6_up/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-p6it6_up/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-qk4q4l0x.tar.gz",
+      "database_member": "k3-qk4q4l0x/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-qk4q4l0x/state.db",
+      "state_counts": {
+        "attempts": {
+          "running": 1,
+          "starting": 1
+        },
+        "operations": {
+          "prepared": 2
+        },
+        "kata_effects": {
+          "confirmed": 18,
+          "prepared": 1,
+          "unknown": 1
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-w2znedoy.tar.gz",
+      "database_member": "k3-w2znedoy/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-w2znedoy/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 1
+        },
+        "operations": {
+          "prepared": 1
+        },
+        "kata_effects": {
+          "confirmed": 6
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-wahdm546.tar.gz",
+      "database_member": "k3-wahdm546/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-wahdm546/state.db",
+      "state_counts": {
+        "attempts": {},
+        "operations": {},
+        "kata_effects": {},
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/05-repair3/kata-fixtures/k3-yx_g_u6s.tar.gz",
+      "database_member": "k3-yx_g_u6s/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/k3-yx_g_u6s/state.db",
+      "state_counts": {
+        "attempts": {
+          "starting": 1
+        },
+        "operations": {
+          "prepared": 1
+        },
+        "kata_effects": {
+          "confirmed": 6
+        },
+        "control_ui_commands": {
+          "saved": 0,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/separate-cnr-6kg_vcng.tar.gz",
+      "database_member": "cnr-6kg_vcng/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/separate-cnr-6kg_vcng/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 4
+        },
+        "codex_operations": {
+          "confirmed": 28
+        },
+        "codex_bindings": {
+          "revoked": 3,
+          "unknown": 1
+        },
+        "control_ui_commands": {
+          "saved": 5,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/separate-cnr-83315x8v.tar.gz",
+      "database_member": "cnr-83315x8v/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/separate-cnr-83315x8v/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 4
+        },
+        "codex_operations": {
+          "confirmed": 23
+        },
+        "codex_bindings": {
+          "revoked": 3,
+          "unknown": 1
+        },
+        "control_ui_commands": {
+          "saved": 1,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/separate-cnr-ii5eai2s.tar.gz",
+      "database_member": "cnr-ii5eai2s/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/separate-cnr-ii5eai2s/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 4
+        },
+        "codex_operations": {
+          "confirmed": 23
+        },
+        "codex_bindings": {
+          "revoked": 3,
+          "unknown": 1
+        },
+        "control_ui_commands": {
+          "saved": 1,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/separate-cnr-xpex_rub.tar.gz",
+      "database_member": "cnr-xpex_rub/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/separate-cnr-xpex_rub/state.db",
+      "state_counts": {
+        "attempts": {
+          "running": 2
+        },
+        "operations": {
+          "confirmed": 2
+        },
+        "codex_operations": {
+          "confirmed": 16
+        },
+        "codex_bindings": {
+          "bound": 3
+        },
+        "control_ui_commands": {
+          "saved": 1,
+          "receipt_null": 1
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/shared-cnr-029x70p4.tar.gz",
+      "database_member": "cnr-029x70p4/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/shared-cnr-029x70p4/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 4
+        },
+        "codex_operations": {
+          "confirmed": 31
+        },
+        "codex_bindings": {
+          "bound": 1,
+          "revoked": 3
+        },
+        "control_ui_commands": {
+          "saved": 1,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/shared-cnr-5iu2az7r.tar.gz",
+      "database_member": "cnr-5iu2az7r/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/shared-cnr-5iu2az7r/state.db",
+      "state_counts": {
+        "attempts": {
+          "running": 2
+        },
+        "operations": {
+          "confirmed": 2
+        },
+        "codex_operations": {
+          "confirmed": 20
+        },
+        "codex_bindings": {
+          "bound": 3
+        },
+        "control_ui_commands": {
+          "saved": 1,
+          "receipt_null": 1
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/shared-cnr-cru2culx.tar.gz",
+      "database_member": "cnr-cru2culx/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/shared-cnr-cru2culx/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 4
+        },
+        "codex_operations": {
+          "confirmed": 38
+        },
+        "codex_bindings": {
+          "bound": 1,
+          "revoked": 3
+        },
+        "control_ui_commands": {
+          "saved": 5,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    },
+    {
+      "archive": ".scratch/sqlite-controller/native/shared-cnr-n7sy_95d.tar.gz",
+      "database_member": "cnr-n7sy_95d/state.db",
+      "derived_read_copy": ".scratch/sqlite-controller/05-repair3/database-observations/shared-cnr-n7sy_95d/state.db",
+      "state_counts": {
+        "attempts": {
+          "exited": 2
+        },
+        "operations": {
+          "confirmed": 4
+        },
+        "codex_operations": {
+          "confirmed": 31
+        },
+        "codex_bindings": {
+          "bound": 1,
+          "revoked": 3
+        },
+        "control_ui_commands": {
+          "saved": 1,
+          "receipt_null": 0
+        }
+      },
+      "disposition": "retained fixture observation only; no effects/reconciliation performed by evidence export"
+    }
+  ],
+  "qualification": "Controller state observed from retained archived DB+WAL copies, opened mode=ro. Failed/unknown fixtures are historical observations, not repaired or automatically adopted; physical absence gives no credit or release of domain reservations."
+}

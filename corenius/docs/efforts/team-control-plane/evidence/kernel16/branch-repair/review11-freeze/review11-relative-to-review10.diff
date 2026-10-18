@@ -1,0 +1,55 @@
+--- a/crates/team-control-plane/tests/assembled_vertical.rs
++++ b/crates/team-control-plane/tests/assembled_vertical.rs
+@@ -7775,6 +7775,52 @@
+         execution.path.join("src/result")
+     })
+     .unwrap_or_default();
++    if matches!(mode, "original" | "lead-original") {
++        retain_bytes(&out.join("original-output.bin"), &bytes);
++        let replay_start = supervisor
++            .start(token, execution.id, journal.prepared.start.argv.clone(), 30)
++            .await;
++        let replay_monitor = supervisor::run_monitor(f.broker.clone(), execution.id).await;
++        let replay_mission = f
++            .broker
++            .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
++            .await
++            .unwrap();
++        let replay_journal = gateway.inspect(&f.owner, operation).await.unwrap();
++        let replay_result = supervisor.result(&f.owner, execution.id).await.unwrap();
++        let replay_view = supervisor.inspect(&f.owner, execution.id).await.unwrap();
++        let replay_cert_count: i64 = db.query_one("SELECT count(*) FROM episode_runtime_evidence WHERE operation_id=$1 AND evidence->>'kind'='original_launch_admitted'", &[&operation]).await.unwrap().get(0);
++        let replay_bytes = std::fs::read(if lead {
++            before.manifest.log_path.clone()
++        } else {
++            execution.path.join("src/result")
++        })
++        .unwrap();
++        let replay_release = supervisor.release(&f.owner, execution.id).await;
++        retain_bytes(&out.join("replay-proof.json"), &serde_json::to_vec(&serde_json::json!({"start":replay_start.as_ref().map_err(|e|&e.code),"monitor":replay_monitor.as_ref().map_err(|e|&e.code),"before_mission":after,"after_mission":replay_mission,"certificate_count_before":cert_count,"certificate_count_after":replay_cert_count,"journal":replay_journal,"original_result":result,"after_result":replay_result,"view":replay_view,"output_sha256":artifacts::sha256(&replay_bytes),"release":replay_release.as_ref().map_err(|e|&e.code)})).unwrap());
++        assert_eq!(replay_start.unwrap_err().code, ErrorCode::DependencyUnmet);
++        assert_eq!(replay_monitor.unwrap_err().code, ErrorCode::DependencyUnmet);
++        assert_eq!(cert_count, 1);
++        assert_eq!(replay_cert_count, 1);
++        assert_eq!(
++            after.data, replay_mission.data,
++            "rejected replays cannot change any Mission admission or physical budget"
++        );
++        assert_eq!(
++            replay_journal.operation.usage,
++            episode_runtime::UsageObservation::Unknown
++        );
++        assert_eq!(replay_view.state, supervisor::ExecutionState::Stopped);
++        assert_eq!(
++            replay_result.as_ref().unwrap().logs,
++            result.as_ref().unwrap().logs
++        );
++        assert_eq!(
++            replay_bytes, bytes,
++            "replay creates no second workload effect"
++        );
++        assert_eq!(replay_release.unwrap_err().code, ErrorCode::DependencyUnmet);
++    }
+     f.finish().await;
+     if matches!(mode, "original" | "lead-original") {
+         assert!(monitored.unwrap().is_ok());

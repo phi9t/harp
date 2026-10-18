@@ -1,0 +1,41 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.68s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 9 tests
+test additive_upgrade_preserves_exact_legacy_specs_and_nullable_original_provenance ... ok
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... ok
+test current_lead_requires_explicit_bounded_delegation_even_on_replay ... FAILED
+test exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload ... ok
+test negative_research_is_independent_exact_evidence_and_evaluator_proposals_remain_inert ... ok
+test plan_amendment_cannot_expand_its_previously_admitted_resource_ceiling ... ok
+test plan_validation_preserves_outcome_effect_limits_and_completed_step_meaning ... ok
+test production_requires_fresh_explicit_intent_binding_and_real_independent_artifact_measurement ... ok
+test source_proposals_are_inert_missing_evidence_refuses_and_namespaces_do_not_alias ... ok
+
+failures:
+
+---- current_lead_requires_explicit_bounded_delegation_even_on_replay stdout ----
+postgres_fixture {"dsn":"host=127.0.0.1 port=10708 user=probe dbname=probe","epoch":"faa6c029-2b36-4307-a583-27eb410fb9c3"}
+public_contract_response {"family":"intent.admit","key":"owner-intent","result":{"acceptance":"254a5fc736b950507642e18214825783bdb92b2931b5a40d45c4eeeac525452e","admitted_version":1,"disposition":"applied","intent":"6fbd6ed837c6156d0e8b23d8aa8fe33d7af9953d065e3c99a9d5da74d1abf7fb","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"code":"unauthorized"},"status":401,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"code":"unauthorized"},"status":401,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"delegation.admit","key":"delegate","result":{"delegation":"f0af2f00-56a0-4c29-b955-a173e609ca70","disposition":"applied","revision":2,"schema_version":2},"status":200,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"acceptance":"254a5fc736b950507642e18214825783bdb92b2931b5a40d45c4eeeac525452e","admitted_version":2,"disposition":"applied","intent":"e02d391472de30c14c721550f1a2dda4507ad078d9b0fdf580ac1fac6f745d29","revision":3,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"acceptance":"254a5fc736b950507642e18214825783bdb92b2931b5a40d45c4eeeac525452e","admitted_version":2,"disposition":"applied","intent":"e02d391472de30c14c721550f1a2dda4507ad078d9b0fdf580ac1fac6f745d29","revision":3,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"intent.admit","key":"owner-third-intent","result":{"acceptance":"254a5fc736b950507642e18214825783bdb92b2931b5a40d45c4eeeac525452e","admitted_version":3,"disposition":"applied","intent":"c5ad4fbabc1ba9de5bd94dfd8e8c1aeabf65ab4aec8d8af97d9ab30f89672394","revision":4,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+public_contract_response {"family":"intent.admit","key":"lead-amend","result":{"acceptance":"254a5fc736b950507642e18214825783bdb92b2931b5a40d45c4eeeac525452e","admitted_version":2,"disposition":"applied","intent":"e02d391472de30c14c721550f1a2dda4507ad078d9b0fdf580ac1fac6f745d29","revision":3,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"bdd8a822-05d6-4628-a69e-154739a4d045"}
+
+thread 'current_lead_requires_explicit_bounded_delegation_even_on_replay' (3965961) panicked at tests/intent_contracts.rs:763:5:
+assertion `left == right` failed: cached result must recheck delegation cumulative intent ceiling after Owner amendment
+  left: 200
+ right: 401
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    current_lead_requires_explicit_bounded_delegation_even_on_replay
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.82s
+
+error: test failed, to rerun pass `--test intent_contracts`

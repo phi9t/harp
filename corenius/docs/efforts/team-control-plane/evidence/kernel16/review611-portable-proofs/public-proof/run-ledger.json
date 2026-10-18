@@ -1,0 +1,135 @@
+{
+  "base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
+  "branch": "codex/kernel16-review611-author",
+  "service_handles": [
+    {
+      "session": 16685,
+      "run": "policy-red",
+      "terminal": 101,
+      "classification": "fixture setup: capture limit32 exceeds16, not behavioral red"
+    },
+    {
+      "session": 51275,
+      "run": "policy-red2",
+      "terminal": 101,
+      "classification": "meaningful suite-only and environment-only relabel reds"
+    },
+    {
+      "session": 69225,
+      "run": "lifecycle-red",
+      "terminal": 101,
+      "classification": "meaningful deadline successor red; yielded control green; uncertain test oracle expected admitted but real dispatch active"
+    },
+    {
+      "session": 91648,
+      "run": "uncertainty-baseline",
+      "terminal": 0,
+      "classification": "unchanged-production active-state preservation/unknown usage negative control"
+    },
+    {
+      "session": 10605,
+      "run": "focused-green",
+      "terminal": 0,
+      "classification": "initial5cases, before cachedVerify test/fix"
+    },
+    {
+      "session": 1772,
+      "run": "cached-red",
+      "terminal": 101,
+      "classification": "meaningful cachedVerify changed-policy replay red; unchanged-policy replay positive"
+    },
+    {
+      "session": 83199,
+      "run": "final-focused",
+      "terminal": 0,
+      "classification": "final6cases including cached replay"
+    },
+    {
+      "session": 28026,
+      "run": "full",
+      "terminal": 101,
+      "classification": "full failed: two current-policy StaleRevision precedence regressions and predeadline release/checkpoint regression; retained and repaired"
+    },
+    {
+      "session": 76288,
+      "run": "ordering-red",
+      "terminal": 101,
+      "classification": "premature retirement meaningful red; yielded fixture duplicate-registration setup failure"
+    },
+    {
+      "session": 60492,
+      "run": "lazy-red",
+      "terminal": 101,
+      "classification": "release before expiry then successor denial meaningful red; five preservation/uncertainty controls passed"
+    },
+    {
+      "session": 34565,
+      "run": "reconciled-focused",
+      "terminal": 0,
+      "classification": "final seven lifecycle and three policy cases passed"
+    },
+    {
+      "session": 1813,
+      "run": "full-final",
+      "terminal": 101,
+      "classification": "three former regressions passed; owned physical usage child failed namespace_stopped before verifier fence assertion; not reproduced unchanged focused diagnostic"
+    },
+    {
+      "session": 56376,
+      "run": "physical-diagnostic",
+      "terminal": 0,
+      "classification": "exact unchanged real physical usage test passed; failure not reproduced, not proven flake"
+    },
+    {
+      "session": 27825,
+      "run": "full-final2",
+      "terminal": 0,
+      "classification": "unchanged final source full real PostgreSQL/Temporal all-target matrix passed"
+    },
+    {
+      "session": 46984,
+      "run": "final-lint-focused",
+      "terminal": 0,
+      "classification": "final equivalent lint-only test edits: seven lifecycle and three policy real cases passed"
+    }
+  ],
+  "source_changes": [
+    "src/artifacts.rs",
+    "src/mailbox.rs",
+    "src/supervisor.rs",
+    "tests/assembled_cancellation.rs",
+    "tests/assembled_vertical.rs"
+  ],
+  "provider_calls": 0,
+  "new_source_files": 0,
+  "historical_manifest": "serde default absent policy binding remains readable/cleanable; assembled verification fails closed",
+  "full_final_counts": {
+    "passed": 184,
+    "ignored_owned_children": 8,
+    "suites": 15
+  },
+  "verification_handles": [
+    {
+      "session": 60401,
+      "run": "clippy",
+      "terminal": 101,
+      "classification": "two new test collapsible_if lint diagnostics; equivalent suggested let chains applied"
+    },
+    {
+      "session": 99330,
+      "run": "clippy-final",
+      "terminal": 0,
+      "classification": "strict locked offline all-target -D warnings passed"
+    },
+    {
+      "run": "fmt",
+      "terminal": 0
+    },
+    {
+      "run": "diff-check",
+      "terminal": 0
+    }
+  ],
+  "full_final_source_limit": "Full matrix passed before equivalent two collapsible-if let-chain simplifications in tests; production unchanged. Final ten focused real cases rerun after lint changes.",
+  "slot_release": "All Cargo and real service handles terminal; no source writes after freeze"
+}

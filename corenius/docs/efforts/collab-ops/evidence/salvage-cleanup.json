@@ -1,0 +1,510 @@
+{
+  "schema": "corenius.salvage_cleanup.v1",
+  "source_candidate": {
+    "branch": "worker/collab-salvage-20261012",
+    "head": "8cbdf2838eb6937e9377a42da290b10f09c9a528",
+    "head_tree": "0d06c4d7deac66161edcdb44a89b0c0b4e11e22f",
+    "relations": {
+      "commit": "8cbdf2838eb6937e9377a42da290b10f09c9a528",
+      "known_in_primary": true,
+      "per_ref": {
+        "candidate_head": {
+          "diff_name_status_after_ref": [
+            "A\tdocs/efforts/collab-ops/EFFORT.md",
+            "A\tdocs/efforts/collab-ops/SPEC.md",
+            "A\tdocs/efforts/collab-ops/evidence/01-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/02-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/03-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/04-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/08-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-01.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-02.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-03.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-04.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-08.jsonl",
+            "A\tdocs/efforts/collab-ops/tickets/01-modular-core.md",
+            "A\tdocs/efforts/collab-ops/tickets/02-gate-scope.md",
+            "A\tdocs/efforts/collab-ops/tickets/03-open-attempt.md",
+            "A\tdocs/efforts/collab-ops/tickets/04-check-runner.md",
+            "A\tdocs/efforts/collab-ops/tickets/05-landing-v2.md",
+            "A\tdocs/efforts/collab-ops/tickets/06-override-policy.md",
+            "A\tdocs/efforts/collab-ops/tickets/07-ticket-resolution.md",
+            "A\tdocs/efforts/collab-ops/tickets/08-protected-paths.md",
+            "A\tdocs/efforts/collab-ops/tickets/09-liveness-inspect.md",
+            "A\tdocs/efforts/collab-ops/tickets/10-refresh.md",
+            "A\tdocs/efforts/collab-ops/tickets/11-sweep-safe.md",
+            "A\tdocs/efforts/collab-ops/tickets/12-sweep-deep.md",
+            "A\tdocs/efforts/collab-ops/tickets/13-sweep-skill.md",
+            "A\tdocs/efforts/collab-ops/tickets/14-worktree-shim.md",
+            "A\tdocs/efforts/collab-ops/tickets/15-record-branch-module.md",
+            "A\tdocs/efforts/collab-ops/tickets/16-landing-shim.md",
+            "A\tdocs/efforts/collab-ops/tickets/17-standalone-source.md",
+            "A\tdocs/efforts/collab-ops/tickets/18-docs-retire.md",
+            "M\ttools/agents/checks.d/65-collab.sh",
+            "M\ttools/agents/test_check.py",
+            "M\ttools/collab/README.md",
+            "A\ttools/collab/check_runner.py",
+            "A\ttools/collab/cli.py",
+            "M\ttools/collab/collab.py",
+            "A\ttools/collab/common.py",
+            "A\ttools/collab/core.py",
+            "A\ttools/collab/landing.py",
+            "A\ttools/collab/policy.py",
+            "A\ttools/collab/state_store.py",
+            "M\ttools/collab/tests/test_collab.py",
+            "A\ttools/collab/ticket_source.py",
+            "A\ttools/collab/workspace.py"
+          ],
+          "diff_name_status_count_after_ref": 44,
+          "ref": "HEAD",
+          "ref_commit": "c0a2fc0370f18ff28009dbe9b62a59916de0e582",
+          "ref_is_ancestor_of_source": true,
+          "source_is_ancestor_of_ref": false,
+          "unique_patch_commit_count_after_ref": 29,
+          "unique_patch_commits_after_ref_sample": [
+            "8cbdf28 Claim tickets 05, 09, 11 for workers",
+            "64780f4 Accept and resolve ticket 03",
+            "58ecccc ticket 03: ready for review",
+            "c452f40 Accept and resolve ticket 04",
+            "450efed ticket 04: report format for later tickets",
+            "0889c7b ticket 04: ready for review",
+            "d1e8246 implement collab check receipt v2",
+            "0b5568e Accept and resolve ticket 08",
+            "35f2396 ticket 08: report format for later tickets",
+            "4d1faa5 ticket 08: protected paths survive renames",
+            "b1ef287 ticket 08: ready for review",
+            "f9cbc39 ticket 08: configure protected paths",
+            "05bb2bb Claim tickets 03, 04, 08 for workers",
+            "3269f5c Accept and resolve ticket 01",
+            "559efd8 ticket 01: report format for later tickets",
+            "f0b9b3f ticket 01: drop duplicated entry block",
+            "62ad64e ticket 01: ready for review",
+            "a0d19a6 Resolve ticket 02 against the named integration branch",
+            "21633b4 Accept and resolve ticket 02",
+            "29aaeec Resolve ticket 02"
+          ]
+        },
+        "collab_glossary": {
+          "diff_name_status_after_ref": [
+            "M\tCONTEXT.md",
+            "A\tdocs/efforts/collab-ops/EFFORT.md",
+            "A\tdocs/efforts/collab-ops/SPEC.md",
+            "A\tdocs/efforts/collab-ops/evidence/01-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/02-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/03-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/04-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/08-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-01.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-02.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-03.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-04.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-08.jsonl",
+            "A\tdocs/efforts/collab-ops/tickets/01-modular-core.md",
+            "A\tdocs/efforts/collab-ops/tickets/02-gate-scope.md",
+            "A\tdocs/efforts/collab-ops/tickets/03-open-attempt.md",
+            "A\tdocs/efforts/collab-ops/tickets/04-check-runner.md",
+            "A\tdocs/efforts/collab-ops/tickets/05-landing-v2.md",
+            "A\tdocs/efforts/collab-ops/tickets/06-override-policy.md",
+            "A\tdocs/efforts/collab-ops/tickets/07-ticket-resolution.md",
+            "A\tdocs/efforts/collab-ops/tickets/08-protected-paths.md",
+            "A\tdocs/efforts/collab-ops/tickets/09-liveness-inspect.md",
+            "A\tdocs/efforts/collab-ops/tickets/10-refresh.md",
+            "A\tdocs/efforts/collab-ops/tickets/11-sweep-safe.md",
+            "A\tdocs/efforts/collab-ops/tickets/12-sweep-deep.md",
+            "A\tdocs/efforts/collab-ops/tickets/13-sweep-skill.md",
+            "A\tdocs/efforts/collab-ops/tickets/14-worktree-shim.md",
+            "A\tdocs/efforts/collab-ops/tickets/15-record-branch-module.md",
+            "A\tdocs/efforts/collab-ops/tickets/16-landing-shim.md",
+            "A\tdocs/efforts/collab-ops/tickets/17-standalone-source.md",
+            "A\tdocs/efforts/collab-ops/tickets/18-docs-retire.md",
+            "M\ttools/agents/checks.d/65-collab.sh",
+            "M\ttools/agents/test_check.py",
+            "M\ttools/collab/README.md",
+            "A\ttools/collab/check_runner.py",
+            "A\ttools/collab/cli.py",
+            "M\ttools/collab/collab.py",
+            "A\ttools/collab/common.py",
+            "A\ttools/collab/core.py",
+            "A\ttools/collab/landing.py",
+            "A\ttools/collab/policy.py",
+            "A\ttools/collab/state_store.py",
+            "M\ttools/collab/tests/test_collab.py",
+            "A\ttools/collab/ticket_source.py",
+            "A\ttools/collab/workspace.py"
+          ],
+          "diff_name_status_count_after_ref": 45,
+          "ref": "claude/collab-glossary",
+          "ref_commit": "34878edbe44eec749c6e948b27c37d8e0701f915",
+          "ref_is_ancestor_of_source": false,
+          "source_is_ancestor_of_ref": false,
+          "unique_patch_commit_count_after_ref": 29,
+          "unique_patch_commits_after_ref_sample": [
+            "8cbdf28 Claim tickets 05, 09, 11 for workers",
+            "64780f4 Accept and resolve ticket 03",
+            "58ecccc ticket 03: ready for review",
+            "c452f40 Accept and resolve ticket 04",
+            "450efed ticket 04: report format for later tickets",
+            "0889c7b ticket 04: ready for review",
+            "d1e8246 implement collab check receipt v2",
+            "0b5568e Accept and resolve ticket 08",
+            "35f2396 ticket 08: report format for later tickets",
+            "4d1faa5 ticket 08: protected paths survive renames",
+            "b1ef287 ticket 08: ready for review",
+            "f9cbc39 ticket 08: configure protected paths",
+            "05bb2bb Claim tickets 03, 04, 08 for workers",
+            "3269f5c Accept and resolve ticket 01",
+            "559efd8 ticket 01: report format for later tickets",
+            "f0b9b3f ticket 01: drop duplicated entry block",
+            "62ad64e ticket 01: ready for review",
+            "a0d19a6 Resolve ticket 02 against the named integration branch",
+            "21633b4 Accept and resolve ticket 02",
+            "29aaeec Resolve ticket 02"
+          ]
+        },
+        "collab_ops_spec": {
+          "diff_name_status_after_ref": [],
+          "diff_name_status_count_after_ref": 0,
+          "ref": "claude/collab-ops-spec",
+          "ref_commit": "8cbdf2838eb6937e9377a42da290b10f09c9a528",
+          "ref_is_ancestor_of_source": true,
+          "source_is_ancestor_of_ref": true,
+          "unique_patch_commit_count_after_ref": 0,
+          "unique_patch_commits_after_ref_sample": []
+        },
+        "main": {
+          "diff_name_status_after_ref": [
+            "A\tdocs/efforts/collab-ops/EFFORT.md",
+            "A\tdocs/efforts/collab-ops/SPEC.md",
+            "A\tdocs/efforts/collab-ops/evidence/01-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/02-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/03-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/04-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/08-report.md",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-01.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-02.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-03.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-04.jsonl",
+            "A\tdocs/efforts/collab-ops/evidence/acceptance-08.jsonl",
+            "A\tdocs/efforts/collab-ops/tickets/01-modular-core.md",
+            "A\tdocs/efforts/collab-ops/tickets/02-gate-scope.md",
+            "A\tdocs/efforts/collab-ops/tickets/03-open-attempt.md",
+            "A\tdocs/efforts/collab-ops/tickets/04-check-runner.md",
+            "A\tdocs/efforts/collab-ops/tickets/05-landing-v2.md",
+            "A\tdocs/efforts/collab-ops/tickets/06-override-policy.md",
+            "A\tdocs/efforts/collab-ops/tickets/07-ticket-resolution.md",
+            "A\tdocs/efforts/collab-ops/tickets/08-protected-paths.md",
+            "A\tdocs/efforts/collab-ops/tickets/09-liveness-inspect.md",
+            "A\tdocs/efforts/collab-ops/tickets/10-refresh.md",
+            "A\tdocs/efforts/collab-ops/tickets/11-sweep-safe.md",
+            "A\tdocs/efforts/collab-ops/tickets/12-sweep-deep.md",
+            "A\tdocs/efforts/collab-ops/tickets/13-sweep-skill.md",
+            "A\tdocs/efforts/collab-ops/tickets/14-worktree-shim.md",
+            "A\tdocs/efforts/collab-ops/tickets/15-record-branch-module.md",
+            "A\tdocs/efforts/collab-ops/tickets/16-landing-shim.md",
+            "A\tdocs/efforts/collab-ops/tickets/17-standalone-source.md",
+            "A\tdocs/efforts/collab-ops/tickets/18-docs-retire.md",
+            "M\ttools/agents/checks.d/65-collab.sh",
+            "M\ttools/agents/test_check.py",
+            "M\ttools/collab/README.md",
+            "A\ttools/collab/check_runner.py",
+            "A\ttools/collab/cli.py",
+            "M\ttools/collab/collab.py",
+            "A\ttools/collab/common.py",
+            "A\ttools/collab/core.py",
+            "A\ttools/collab/landing.py",
+            "A\ttools/collab/policy.py",
+            "A\ttools/collab/state_store.py",
+            "M\ttools/collab/tests/test_collab.py",
+            "A\ttools/collab/ticket_source.py",
+            "A\ttools/collab/workspace.py"
+          ],
+          "diff_name_status_count_after_ref": 44,
+          "ref": "main",
+          "ref_commit": "c0a2fc0370f18ff28009dbe9b62a59916de0e582",
+          "ref_is_ancestor_of_source": true,
+          "source_is_ancestor_of_ref": false,
+          "unique_patch_commit_count_after_ref": 29,
+          "unique_patch_commits_after_ref_sample": [
+            "8cbdf28 Claim tickets 05, 09, 11 for workers",
+            "64780f4 Accept and resolve ticket 03",
+            "58ecccc ticket 03: ready for review",
+            "c452f40 Accept and resolve ticket 04",
+            "450efed ticket 04: report format for later tickets",
+            "0889c7b ticket 04: ready for review",
+            "d1e8246 implement collab check receipt v2",
+            "0b5568e Accept and resolve ticket 08",
+            "35f2396 ticket 08: report format for later tickets",
+            "4d1faa5 ticket 08: protected paths survive renames",
+            "b1ef287 ticket 08: ready for review",
+            "f9cbc39 ticket 08: configure protected paths",
+            "05bb2bb Claim tickets 03, 04, 08 for workers",
+            "3269f5c Accept and resolve ticket 01",
+            "559efd8 ticket 01: report format for later tickets",
+            "f0b9b3f ticket 01: drop duplicated entry block",
+            "62ad64e ticket 01: ready for review",
+            "a0d19a6 Resolve ticket 02 against the named integration branch",
+            "21633b4 Accept and resolve ticket 02",
+            "29aaeec Resolve ticket 02"
+          ]
+        }
+      },
+      "tree": "0d06c4d7deac66161edcdb44a89b0c0b4e11e22f"
+    },
+    "status": {
+      "ignored_count": 33,
+      "ignored_sample": [
+        ".scratch/collab-salvage/archive/collab-ops-01-modular-core-first-launch.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-01-modular-core-first-launch.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-01-modular-core-first-launch.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-01-modular-core.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-01-modular-core.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-01-modular-core.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-02-gate-scope-first-launch.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-02-gate-scope-first-launch.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-02-gate-scope-first-launch.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-02-gate-scope.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-02-gate-scope.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-02-gate-scope.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-03-open-attempt.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-03-open-attempt.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-03-open-attempt.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-04-check-runner.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-04-check-runner.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-04-check-runner.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-08-protected-paths.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-08-protected-paths.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-08-protected-paths.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-09-liveness-inspect.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-09-liveness-inspect.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-09-liveness-inspect.files.tar",
+        ".scratch/collab-salvage/archive/collab-ops-11-sweep-safe.bundle",
+        ".scratch/collab-salvage/archive/collab-ops-11-sweep-safe.files.json",
+        ".scratch/collab-salvage/archive/collab-ops-11-sweep-safe.files.tar",
+        ".scratch/collab-salvage/archive/shared-collab-refs.bundle",
+        ".scratch/collab-salvage/archive_sources.py",
+        ".scratch/collab-salvage/collect_inventory.py",
+        ".scratch/collab-salvage/inventory-snapshot.json",
+        "tools/agents/__pycache__/land.cpython-311.pyc",
+        "tools/agents/__pycache__/worker.cpython-311.pyc"
+      ],
+      "porcelain": [
+        " M CONTEXT.md",
+        "?? docs/efforts/collab-salvage/EFFORT.md",
+        "?? docs/efforts/collab-salvage/SPEC.md",
+        "?? docs/efforts/collab-salvage/evidence/archive-manifest.json",
+        "?? docs/efforts/collab-salvage/evidence/inventory.json",
+        "?? docs/efforts/collab-salvage/tickets/01-salvage-consolidation.md"
+      ],
+      "porcelain_count": 6,
+      "tracked_modified_count": 1,
+      "tracked_modified_sample": [
+        " M CONTEXT.md"
+      ],
+      "untracked_count": 5,
+      "untracked_sample": [
+        "docs/efforts/collab-salvage/EFFORT.md",
+        "docs/efforts/collab-salvage/SPEC.md",
+        "docs/efforts/collab-salvage/evidence/archive-manifest.json",
+        "docs/efforts/collab-salvage/evidence/inventory.json",
+        "docs/efforts/collab-salvage/tickets/01-salvage-consolidation.md"
+      ]
+    }
+  },
+  "plan_sha256": "0918174e0993aabca733158962212cd13900dc5d7d230fb26c15cec5dc56b86c",
+  "verified": [
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-01-modular-core",
+      "head": "f3a8254de93e8df6e82b66ba5c45d251c0fbddc8",
+      "tree": "e0ebd46ead10631d26e6b8e28a6962bf5f00dcb8",
+      "retained_git_dir": "/data02/home/philip.yang/.cache/corenius/workers/collab-ops-01-modular-core-20261011T234555Z/git",
+      "recovery": {
+        "available": true,
+        "file_archive": {
+          "listing_count": 12422,
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-01-modular-core.files.tar",
+          "sha256": "84adea691f9a061055b1314b8ccf0c3f0f4c2bddb774b567d0b4c123ae73588f"
+        },
+        "file_manifest": {
+          "counts": {
+            "dirs": 2935,
+            "entries": 12422,
+            "files": 9487,
+            "special": 0,
+            "symlinks": 0
+          },
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-01-modular-core.files.json",
+          "sha256": "f76c67b0ba1bedc62fc0dfa84190dec26ca3d2a3eab19e910fc4599a1e5c6e0f"
+        },
+        "git_bundle": {
+          "head": "f3a8254de93e8df6e82b66ba5c45d251c0fbddc8",
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-01-modular-core.bundle",
+          "reconstruction_matches": true,
+          "sha256": "bc2bc94928d69a94e7554b4eebf0f5651f7d0ee6ee75bf1c405f89a9e12a790a",
+          "tree": "e0ebd46ead10631d26e6b8e28a6962bf5f00dcb8"
+        }
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-02-gate-scope",
+      "head": "7d072e88fa256f6b93c734c9cb64df128e5dad16",
+      "tree": "01d826f362c9644cdbf4904d687975feeb2094fd",
+      "retained_git_dir": "/data02/home/philip.yang/.cache/corenius/workers/collab-ops-02-gate-scope-20261011T234556Z/git",
+      "recovery": {
+        "available": true,
+        "file_archive": {
+          "listing_count": 11322,
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-02-gate-scope.files.tar",
+          "sha256": "6534e003308ca98322cf8e776c2a7249141583b9bc24a7188718d2e5b03e1752"
+        },
+        "file_manifest": {
+          "counts": {
+            "dirs": 2520,
+            "entries": 11322,
+            "files": 8802,
+            "special": 0,
+            "symlinks": 0
+          },
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-02-gate-scope.files.json",
+          "sha256": "20054388e47f87809b4d2da6d38049a1358e16e92145e35e0047db073ba3f8b2"
+        },
+        "git_bundle": {
+          "head": "7d072e88fa256f6b93c734c9cb64df128e5dad16",
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-02-gate-scope.bundle",
+          "reconstruction_matches": true,
+          "sha256": "d7d8a39c8e1651bad8ccb84650b729f97ed35f590be1b034518c8e73b5408ca0",
+          "tree": "01d826f362c9644cdbf4904d687975feeb2094fd"
+        }
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-03-open-attempt",
+      "head": "6ce364ad84655934e752d856ec09bfc86700c349",
+      "tree": "d557bff0fda5cfe91fe95e079d5658dfee15efd3",
+      "retained_git_dir": "/data02/home/philip.yang/.cache/corenius/workers/collab-ops-03-open-attempt-20261012T003905Z/git",
+      "recovery": {
+        "available": true,
+        "file_archive": {
+          "listing_count": 11464,
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-03-open-attempt.files.tar",
+          "sha256": "814b18801c67b296c746de9f11903d52c184a0b20c1dfcea5d1e52ce8fe39106"
+        },
+        "file_manifest": {
+          "counts": {
+            "dirs": 2529,
+            "entries": 11464,
+            "files": 8935,
+            "special": 0,
+            "symlinks": 0
+          },
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-03-open-attempt.files.json",
+          "sha256": "0b50758d84929837135fb01d1b2640ef147d89598bead225ae62046519c18d48"
+        },
+        "git_bundle": {
+          "head": "6ce364ad84655934e752d856ec09bfc86700c349",
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-03-open-attempt.bundle",
+          "reconstruction_matches": true,
+          "sha256": "22a903ff7f87580eeb058130447276975c9433d7fc6c6b8f14dc4944b3550162",
+          "tree": "d557bff0fda5cfe91fe95e079d5658dfee15efd3"
+        }
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-04-check-runner",
+      "head": "7708a30dd05ee21de17d24402dd547c93cb328c0",
+      "tree": "e76cf906ebab5577152229658de1c9a6d4bcd96b",
+      "retained_git_dir": "/data02/home/philip.yang/.cache/corenius/workers/collab-ops-04-check-runner-20261012T003906Z/git",
+      "recovery": {
+        "available": true,
+        "file_archive": {
+          "listing_count": 11469,
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-04-check-runner.files.tar",
+          "sha256": "2761fed91a3f682a1662e8188ade9c6096fd398240bff95d86ebcb1814634d3d"
+        },
+        "file_manifest": {
+          "counts": {
+            "dirs": 2531,
+            "entries": 11469,
+            "files": 8938,
+            "special": 0,
+            "symlinks": 0
+          },
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-04-check-runner.files.json",
+          "sha256": "1dc9f431b0c3325402f08116f03eae15266472e60f8b7b01059048c5f6ee62bb"
+        },
+        "git_bundle": {
+          "head": "7708a30dd05ee21de17d24402dd547c93cb328c0",
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-04-check-runner.bundle",
+          "reconstruction_matches": true,
+          "sha256": "821d9d2b13633917751e07b4f4321e4215fd7a5f58973a7b130bd724d868a53f",
+          "tree": "e76cf906ebab5577152229658de1c9a6d4bcd96b"
+        }
+      }
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-08-protected-paths",
+      "head": "41594f521ca91713550c647c3124c958b8688b77",
+      "tree": "3021620568225ef9e076f73fb033bfca45c03383",
+      "retained_git_dir": "/data02/home/philip.yang/.cache/corenius/workers/collab-ops-08-protected-paths-20261012T003907Z/git",
+      "recovery": {
+        "available": true,
+        "file_archive": {
+          "listing_count": 11474,
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-08-protected-paths.files.tar",
+          "sha256": "c73a3a6857e5f03fcc617b679aeae66ecb3655b3aae232cc255e24f103b824ef"
+        },
+        "file_manifest": {
+          "counts": {
+            "dirs": 2538,
+            "entries": 11474,
+            "files": 8936,
+            "special": 0,
+            "symlinks": 0
+          },
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-08-protected-paths.files.json",
+          "sha256": "cfffdb892a97286ba82e906b16478eed93d4fa94194147626bc99b5bea42e4f1"
+        },
+        "git_bundle": {
+          "head": "41594f521ca91713550c647c3124c958b8688b77",
+          "path": "/data02/home/philip.yang/workspace/corenius-worker-collab-salvage-20261012/.scratch/collab-salvage/archive/collab-ops-08-protected-paths.bundle",
+          "reconstruction_matches": true,
+          "sha256": "a481011a2d8f3e6218fd62c3afb43f69515bea8d96bb9bda67fb755052832559",
+          "tree": "3021620568225ef9e076f73fb033bfca45c03383"
+        }
+      }
+    }
+  ],
+  "removed": [
+    "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-01-modular-core",
+    "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-02-gate-scope",
+    "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-03-open-attempt",
+    "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-04-check-runner",
+    "/data02/home/philip.yang/workspace/corenius-worker-collab-ops-08-protected-paths"
+  ],
+  "policy": "Remove only the five stopped, unchanged private checkout directories. Preserve private Git metadata, worker runs, recovery archives, registered worktrees and shared refs.",
+  "completed_at": "2026-10-12T03:15:53.401742+00:00",
+  "independent_audit": {
+    "reviewer_context": "/root/refresh_source",
+    "artifact_hashes_verified": 28,
+    "bundles_verified": 10,
+    "archived_regular_files_verified": 64907,
+    "current_unchanged_source_trees": 7,
+    "scope": "Read-only archive and source comparison; no restoration or deletion by reviewer."
+  },
+  "lead_verification": {
+    "artifact_hashes_verified": 15,
+    "bundles_verified": 5,
+    "source_manifests_revalidated": 5,
+    "worker_processes_groups_and_checkout_users_absent": true,
+    "private_git_metadata_retained": true
+  },
+  "retained": [
+    "All shared refs and registered worktrees",
+    "Private checkouts05/09/11 pending current archives or owner review",
+    "Salvage checkout, archives and all worker run directories"
+  ],
+  "worker_qualification": {
+    "supervisor_ready_for_review": false,
+    "full_gate_passed": false,
+    "notes": "Recorded boundary flag matched read-only merge-base; private glossary git apply also matched launcher prohibition despite task-authorized exact delta copying. Cleanup relies on fresh independent archive/source verification, without changing the worker qualification."
+  }
+}

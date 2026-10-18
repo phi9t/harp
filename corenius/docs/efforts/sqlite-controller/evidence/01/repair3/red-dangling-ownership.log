@@ -1,0 +1,24 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.43s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-71954cf30dfe09a5)
+
+running 1 test
+test dangling_database_symlink_cannot_create_two_controller_owners ... FAILED
+
+failures:
+
+---- dangling_database_symlink_cannot_create_two_controller_owners stdout ----
+
+thread 'dangling_database_symlink_cannot_create_two_controller_owners' (2297747) panicked at tests/public.rs:890:13:
+dangling alias permits competing owners: alias=true, target=true
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    dangling_database_symlink_cannot_create_two_controller_owners
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--test public`
+
+# Recorded command exit status: 101

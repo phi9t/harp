@@ -1,0 +1,14 @@
+test_short_writes_complete_and_fsync_precedes_executor (test_trae_case_control.DurableControllerBehavior.test_short_writes_complete_and_fsync_precedes_executor) ... FAIL
+
+======================================================================
+FAIL: test_short_writes_complete_and_fsync_precedes_executor (test_trae_case_control.DurableControllerBehavior.test_short_writes_complete_and_fsync_precedes_executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py", line 105, in test_short_writes_complete_and_fsync_precedes_executor
+    self.assertEqual(self.run_controller(execute).get('exit_code'), 0)
+AssertionError: None != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

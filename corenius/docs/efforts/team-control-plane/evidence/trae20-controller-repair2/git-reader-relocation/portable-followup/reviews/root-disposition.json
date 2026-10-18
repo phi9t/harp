@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T20:52:39.420019+00:00",
+  "accepted": false,
+  "axes": {
+    "spec": "no blocking findings, static/hash review",
+    "standards": "one Important chronological evidence gap; four new refusal controls skipped in RED"
+  },
+  "root_verification": "moved-archive audit exit0 + contradictory expected origin exit1; all181 original hashes unchanged",
+  "interpretation": "Behavior and preservation are verified within their exact frozen scope. Full test-first conformance is partial; no historical RED is invented or relabeled. The helper stays evidence, not an accepted runtime control.",
+  "action": "retain exact candidate/reviews, suspend further equivalent portability audits; ticket26 and other independent Corenius work continue",
+  "old_auditor": "original moved-archive failure remains exit1",
+  "physical_admission": false,
+  "controller_source_review": "separate original repair2 Standards/Spec remain with no new blocker; this helper review does not qualify physical execution",
+  "records": [
+    {
+      "origin": "/tmp/corenius-portable-audit-standards-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader-relocation/portable-followup/reviews/standards/report.md",
+      "sha256": "812f838ccc4fda4d207e9f636961d65f620f071b7166713efa425a400fcab2d9",
+      "bytes": 2486
+    },
+    {
+      "origin": "/tmp/corenius-portable-audit-standards-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader-relocation/portable-followup/reviews/standards/metadata.json",
+      "sha256": "5cb1f58263b5058f0f1d23d7bd4418f9eb0981f0cc00ab0524bd8f276547cdb2",
+      "bytes": 73223
+    },
+    {
+      "origin": "/tmp/corenius-portable-audit-spec-review-20261003/report.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader-relocation/portable-followup/reviews/spec/report.md",
+      "sha256": "c6e4c5a178ac21ff73318c878b326e38b4e4817b5d44b89b8ff37bcf5c11b3cc",
+      "bytes": 2331
+    },
+    {
+      "origin": "/tmp/corenius-portable-audit-spec-review-20261003/metadata.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-controller-repair2/git-reader-relocation/portable-followup/reviews/spec/metadata.json",
+      "sha256": "05aca3b010e65076f73dfbf251be634084578a153b9b50d987884c3b175fe224",
+      "bytes": 64495
+    }
+  ]
+}

@@ -1,0 +1,396 @@
+{
+  "source": "ae4e6fed22d08eab45cdbcddf6e472579a6899a8",
+  "scope": "exact review source43 plus owned drivers/results/raw archives/binaries/authority snapshots; generated __pycache__ excluded; index files self-excluded",
+  "files": [
+    {
+      "path": "addendum.json",
+      "bytes": 8565,
+      "sha256": "0b5f6ca3727102e593a18519e987f738068bca96b8e8ee7e2e61b99028aca5c2"
+    },
+    {
+      "path": "addendum.md",
+      "bytes": 2415,
+      "sha256": "223c2951617b18f201f64f3656f8800ac83d9bc281d4153ff8632062e32b3917"
+    },
+    {
+      "path": "authority/.scratch/sqlite-controller/monitoring05/05-branch651-result.json",
+      "bytes": 8055,
+      "sha256": "f9aae558d805dc6928d75e982937f5b0acb9adfd35cdd039b38952c3fc5b826a"
+    },
+    {
+      "path": "authority/docs/efforts/sqlite-controller/SPEC.md",
+      "bytes": 19565,
+      "sha256": "959ca8540ffe9cd958c45a8a2f289c3d8808cc88996b482bb3db686a1e331479"
+    },
+    {
+      "path": "authority/docs/efforts/sqlite-controller/tickets/05-lead-control-center.md",
+      "bytes": 4010,
+      "sha256": "3b707fedeb1b8ce7d88e651c94084e336b3503db916e8f24e857e581f73cfd7e"
+    },
+    {
+      "path": "bin/corenius-attempt-gate",
+      "bytes": 4734296,
+      "sha256": "8867a61b6c32f8bfb6fca00be9a7b5550b784ac140247ecba8d42215f12121ec"
+    },
+    {
+      "path": "bin/corenius-attempt-supervisor",
+      "bytes": 22257040,
+      "sha256": "7738caefdb675769fe6129e16a79b81d4ec8d486f1fc5e335eef0913ea42e5cd"
+    },
+    {
+      "path": "bin/corenius-sqlite-controller",
+      "bytes": 29510560,
+      "sha256": "901e72a4bb9e1b8592710b2614f29004bf0504bb2a4063e8973a8f1ac923de88"
+    },
+    {
+      "path": "binary-pins.json",
+      "bytes": 298,
+      "sha256": "7d8934202a27d449c07d911023d191c6d36a737611bfb4aab502e359778e14ce"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 21825,
+      "sha256": "b13a04c0d1e3cac643854fed89aa4657afff4b931feb7367480d7b21ad234457"
+    },
+    {
+      "path": "empty-restart-derivation.json",
+      "bytes": 422,
+      "sha256": "71191e372de81c3009ed03f4d9e09b774ccffce07390d95f9381370879f5f85a"
+    },
+    {
+      "path": "empty-restart-diagnostic-fixture.py",
+      "bytes": 85488,
+      "sha256": "b9a37aaa6af53ca30825bb400f066f723feef02e2c8726e12ce878258631ba34"
+    },
+    {
+      "path": "empty-restart-driver.py",
+      "bytes": 517,
+      "sha256": "dbb2d22be78f8c66aa22a96a7234a5e34c29eeea36b6831214761a2fbd559303"
+    },
+    {
+      "path": "empty-restart-fixture.diff",
+      "bytes": 2898,
+      "sha256": "60693fee40816127c9d9d734b837452e3fe6077a1955a97a0fd2dfdd3949b46d"
+    },
+    {
+      "path": "empty-restart-result.json",
+      "bytes": 30524,
+      "sha256": "3d8c949415fa21a0967dc0afcf20efa255de72c7a7a93dc1a38da6e4d0b7b303"
+    },
+    {
+      "path": "empty-restart.log",
+      "bytes": 48619,
+      "sha256": "b5e1ab467e35f0f8f1d12213ae5577d06bf5ad7833ede6fb30df9e614cca0064"
+    },
+    {
+      "path": "finalize-addendum.py",
+      "bytes": 10957,
+      "sha256": "ced44f65ca10fb10a87699bc6e4b9228957485b9fb22f54260a88c4a95322e2e"
+    },
+    {
+      "path": "native-addendum-result.json",
+      "bytes": 7838,
+      "sha256": "900bdbc83225f43e1f2b8f90c1bc437d2c5208fdd40848e4ed23a802ebdc7724"
+    },
+    {
+      "path": "native-addendum.log",
+      "bytes": 91995,
+      "sha256": "722271f661a30cd9f0db533044c7584fd49c731ff61289b0428332ea806137e3"
+    },
+    {
+      "path": "native-addendum.py",
+      "bytes": 4524,
+      "sha256": "8dbe5102a71b175cd2a52152035caeeab4374052d8bd5c36e96a07b07fea57df"
+    },
+    {
+      "path": "projection-probe.log",
+      "bytes": 952,
+      "sha256": "8ee80eb6a12ed3651e8f156ac37d16d0ed8e65419ab4f376229358c1f6b9d8ae"
+    },
+    {
+      "path": "projection-probe.py",
+      "bytes": 3159,
+      "sha256": "7a970d94303e99e8df321906f8c9ce9684dc817eb1580bbdf4e8c00859f44ec6"
+    },
+    {
+      "path": "projection-process.json",
+      "bytes": 115,
+      "sha256": "eef0580e5bfcfbf7db9d4dc7269137ac73ec354175c5db4a27da8cb613adc308"
+    },
+    {
+      "path": "projection-result.json",
+      "bytes": 951,
+      "sha256": "2d0e2bcd06b83908019bb734916e530874a2b6f4d4dbd9cc42eaf592984addcb"
+    },
+    {
+      "path": "r/service.err",
+      "bytes": 76,
+      "sha256": "4416ab2d8c46b3795b7792c0bdd8f050034eb2f7f68ef00d2e4d9c5ef91738e1"
+    },
+    {
+      "path": "r/service.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "r/state.db",
+      "bytes": 14004224,
+      "sha256": "388b437904ad214144b60cbcfc486e2889dd1ea7685a4c76c308e6bc51adf695"
+    },
+    {
+      "path": "r/state.db-shm",
+      "bytes": 32768,
+      "sha256": "e64a99046be08258f6cf2930d98b15575190d5b520f4ee06e7d8eb3b1ad48266"
+    },
+    {
+      "path": "r/state.db-wal",
+      "bytes": 4334272,
+      "sha256": "4ae8b073fc0c71f59bb5f995ef88d8a2627f7a74bd1348e709e6d1ae7034b515"
+    },
+    {
+      "path": "r/state.db.controller-lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/separate-cnr-3xbzmtaa.tar.gz",
+      "bytes": 1556992,
+      "sha256": "1e33da15354954660320491164ce85c65b17901e9bc9ea2a4e08de58c114a75c"
+    },
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/shared-cnr-2fmiqmez.tar.gz",
+      "bytes": 346520,
+      "sha256": "f0b0816414038b72790a5fc6b78f4b51ddf6d936ff076f729c2fdca1b4d4fd59"
+    },
+    {
+      "path": "snapshot/.scratch/sqlite-controller/native/shared-cnr-p5ci30y_.tar.gz",
+      "bytes": 900073,
+      "sha256": "998f0b5f485c8f4874ce7adff87984681da03b568b13ce73529c7f003d4973c7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/README.md",
+      "bytes": 40505,
+      "sha256": "f00f8d86baa78803dbd06cfd8cea5d8ea8210ccd4818e121595b8d6cd1b5e6a7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/client.rs",
+      "bytes": 7846,
+      "sha256": "e795347e48d1197e413ecd9e6ca814a6a777d1c425efa6605085e4dfcd12aa1b"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/codex.rs",
+      "bytes": 100639,
+      "sha256": "6040fadd62df4a0a0fa0bb47bfb684adfddb330f371b3b273191d265f2581a9c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/control.rs",
+      "bytes": 32733,
+      "sha256": "f80891e7bf2d3bf7f7bccb2d82b2c017a405a45a74fe245831a430bb04dfcac9"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/control_schema.sql",
+      "bytes": 5900,
+      "sha256": "1d2ff2c13f80ead53642c3af8c5fff1514ac56c44fc534f342809de5f762a273"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/gateway.rs",
+      "bytes": 20285,
+      "sha256": "0617b5e4410a405a046a023439afd9c39205296e714953a457adfa54b7a0aa74"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/git.rs",
+      "bytes": 63525,
+      "sha256": "6b341a7a0be5fa97e38e34777d1e888789eab8679e487f61c691724e70c52895"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/kata.rs",
+      "bytes": 56995,
+      "sha256": "c17a73a069353c18d88adc8fde354ec175d23f2aa50f78ab0c4675e12808ca5a"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/lib.rs",
+      "bytes": 31426,
+      "sha256": "0d19178f97af5baf3f9f72cfb13235fe75062880a057d6ec4205e8acb2218266"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/monitor.rs",
+      "bytes": 73140,
+      "sha256": "8a0b424dd073f7135acc024a6bb01b89ccbda06844a0aa5e752b37f4203e768a"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/native_ui.rs",
+      "bytes": 17977,
+      "sha256": "d052a781b33d4de2acd9380de2dad8f965340e8c0f66068cd01e90e19724dc0c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/query.rs",
+      "bytes": 11957,
+      "sha256": "6f95c3f91403f888c42ed1279f7ae08b0f3331f574f12b19eae5d8469eb0310b"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/runtime.rs",
+      "bytes": 16056,
+      "sha256": "6ef2364b8c00edab0550298b23f63ab79ecef341aa3c71e6df36e65b8d0fccf7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/service.rs",
+      "bytes": 9170,
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/ui_gateway.rs",
+      "bytes": 9549,
+      "sha256": "acd4df77a9f17b200907ec4e520c6f88c40765283f86c45a44e4c6e4be4c10c9"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/client.rs",
+      "bytes": 5578,
+      "sha256": "b5e384b985100ed1c498507dab284dab5fcfdf6b0b5b3c1965da6dc6a9465bcd"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/codex.rs",
+      "bytes": 17146,
+      "sha256": "e8961f3f088700beac4cb698ef3b129a4d89cb9a7326dcd35f9b1164fd171491"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/control_center.rs",
+      "bytes": 19173,
+      "sha256": "35074cc958f97a205bfd79a6683c05fecb2a1de5b8c50d27ccf7fb0541ff40d2"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/git.rs",
+      "bytes": 1806,
+      "sha256": "418324acb121f4a946a5467db96af6b10a565010b02892565710625abb60900a"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/kata.rs",
+      "bytes": 1646,
+      "sha256": "05fe7a43b0b42797d63bc5154bd5bf745d364825d1bbd1ea51c65a1c01c62500"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/runtime.rs",
+      "bytes": 35266,
+      "sha256": "7bdcd64e6fd71c276b923167492819770fc32968bf74d7521f079be164d90fa5"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/control_center_native.py",
+      "bytes": 31792,
+      "sha256": "3598d6ee29c3cb889d7af7624e075777e13bbd21964ae1dfb914d5a9c287035d"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/git_protocol.py",
+      "bytes": 46532,
+      "sha256": "1949538f4376fa44f8e930cae3268fe717c2cd828840a772ca062c0978035261"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "bytes": 36053,
+      "sha256": "caad56e4847dc1b470e621974962b4d999d96ef2700238bf4d10724e568975aa"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/native_registry.py",
+      "bytes": 85068,
+      "sha256": "8b567d9598eb009c1936ab70103f89e8f2e7644e579f147fb342dea71883c65c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "source-after.json",
+      "bytes": 5175,
+      "sha256": "8ca8764cb401dbff404aa6c703f07f6958b1daaa174f77e25c880575359b5809"
+    },
+    {
+      "path": "source-pins.json",
+      "bytes": 5494,
+      "sha256": "8485db3fdc027ab60a3878fce073cb34be7f6f42a580bae4aef053c068e6a184"
+    }
+  ]
+}

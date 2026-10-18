@@ -1,0 +1,75 @@
+   Compiling version_check v0.9.5
+   Compiling typenum v1.20.1
+   Compiling generic-array v0.14.7
+   Compiling proc-macro2 v1.0.107
+   Compiling cfg-if v1.0.5
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.14
+   Compiling libc v0.2.190
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling cc v1.6.0
+   Compiling vcpkg v0.2.15
+   Compiling pkg-config v0.3.34
+   Compiling serde_core v1.0.229
+   Compiling getrandom v0.4.3
+   Compiling libsqlite3-sys v0.36.0
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling bitflags v2.13.2
+   Compiling zmij v1.0.23
+   Compiling foldhash v0.2.0
+   Compiling hashbrown v0.16.1
+   Compiling digest v0.10.7
+   Compiling syn v3.0.6
+   Compiling cpufeatures v0.2.17
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling serde_derive v1.0.229
+   Compiling hashlink v0.11.1
+   Compiling fallible-iterator v0.3.0
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling smallvec v1.16.2
+   Compiling rusqlite v0.38.0
+   Compiling sha2 v0.10.9
+   Compiling sha1 v0.10.6
+   Compiling uuid v1.27.0
+   Compiling base64 v0.22.1
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller)
+   Compiling rustix v1.1.5
+   Compiling linux-raw-sys v0.12.1
+   Compiling once_cell v1.21.4
+   Compiling fastrand v2.5.0
+   Compiling tempfile v3.27.0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.95s
+     Running tests/client.rs (/tmp/sqlite05-repair3-target/debug/deps/client-1ec261db07eb1716)
+
+running 1 test
+test repair3_authenticated_websocket_control_frames ... retained_websocket_fixture {"root": "/data02/home/philip.yang/devx/tmp/ws05-mz2b_vbd", "archive": "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/.scratch/sqlite-controller/05-repair3/fixtures/ws05-mz2b_vbd.tar.gz", "sha256": "d2a5592734217b4c7725199ae6af10e59ae71422d68337f87806ecb232d98013", "resources": [{"pid": 1853062, "start_stat": "1853062 (corenius-sqlite) R 1853032 1842944 1842944 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 57954374 8118272 1 18446744073709551615 93842355653344 93842361575008 140730474626992 0 0 0 0 0 0 0 0 0 17 66 0 0 0 0 0 93842361825816 93842361850376 93842376908800 140730474634863 140730474635001 140730474635001 140730474635194 0\n", "argv": ["--native-ui", "/data02/home/philip.yang/devx/tmp/ws05-mz2b_vbd/s", "p", "127.0.0.1:0"], "exit": -15, "waited": true}, {"pid": 1853047, "start_stat": "1853047 (corenius-sqlite) R 1853032 1842944 1842944 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 57954370 8118272 1 18446744073709551615 94052125358816 94052131280480 140725831076208 0 0 0 0 0 0 0 0 0 17 65 0 0 0 0 0 94052131531288 94052131555848 94052157169664 140725831081558 140725831081721 140725831081721 140725831081914 0\n", "argv": ["/data02/home/philip.yang/devx/tmp/ws05-mz2b_vbd/db", "/data02/home/philip.yang/devx/tmp/ws05-mz2b_vbd/s"], "exit": -15, "waited": true}]}
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller/tests/support/websocket_controls.py", line 38, in <module>
+    payload=b'exact\x00ping\xff';send(s,9,payload);reply=receive(s)
+                                                         ^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller/tests/support/websocket_controls.py", line 26, in receive
+    first,second=exact(s,2);assert second<128;n=second
+                 ^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller/tests/support/websocket_controls.py", line 13, in exact
+    part=s.recv(n-len(b));assert part,'gateway disconnected before response';b+=part
+         ^^^^^^^^^^^^^^^^
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+thread 'repair3_authenticated_websocket_control_frames' (1853031) panicked at tests/client.rs:172:5:
+authenticated WebSocket controls failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    repair3_authenticated_websocket_control_frames
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.11s
+
+error: test failed, to rerun pass `--test client`

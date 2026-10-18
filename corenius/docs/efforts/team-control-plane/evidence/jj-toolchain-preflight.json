@@ -1,0 +1,20 @@
+{
+  "repository_base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "selected_release": "v0.44.0",
+  "source_commit": "af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "source_clean_at_build": true,
+  "rustc": "1.95.0 (59807616e 2026-04-14)",
+  "declared_msrv": "1.89",
+  "build_command": "cargo build --locked --release -p jj-cli --bin jj",
+  "build_exit": 0,
+  "build_elapsed_reported": "3m 28s",
+  "binary_version": "jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "binary_sha256": "15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4",
+  "cargo_lock_sha256": "6d16a8dc745e68a5a6fa3ca678179921930f35c1f9e7aaeeed10fe910e62037a",
+  "build_log_sha256": "3b1fb32fe978ea2b3a5ce17491aec1a5fa4ad86f7c108bc949189969233cd419",
+  "prior_static_assessment_commit": "030ecf22c56b98bf6507067dca0df3dffa6de498",
+  "prior_pin_declared_msrv": "1.97.1",
+  "path_collision": "/opt/tiger/ss_bin/jj is an unrelated SSH helper, not Jujutsu",
+  "scope": "Model-free toolchain preflight; not ticket19 backend acceptance",
+  "model_calls": 0
+}

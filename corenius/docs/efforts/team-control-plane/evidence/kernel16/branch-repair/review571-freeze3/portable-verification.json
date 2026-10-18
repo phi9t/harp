@@ -1,0 +1,264 @@
+{
+  "source_manifest": "source-manifest.json",
+  "references": [
+    {
+      "kind": "case",
+      "name": "capacity_red",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-red/run2.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-continuation-red/run2.log",
+      "sha256": "d1dad3b2b3a3c6a9f2fb564510b596049890ab61130b331f82d23a2447169e29",
+      "terminal_exit": 101
+    },
+    {
+      "kind": "case",
+      "name": "native_cancel_red",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-native-red3/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-native-cancel-red/run.log",
+      "sha256": "6ac66da787333075bf6767644d39fcdbaaf3d1a9615ef156264962ad5e6fc8de",
+      "terminal_exit": 101
+    },
+    {
+      "kind": "case",
+      "name": "producer_expiry_red",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-expiry-red/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-expiry-red/run.log",
+      "sha256": "d6551603d7bd1c791821915b68c5e92bb8290d8dcc4ef1d3c0beddb8c1a01b6d",
+      "terminal_exit": 101
+    },
+    {
+      "kind": "case",
+      "name": "checkpoint_red",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-checkpoint-red/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-checkpoint-red/run.log",
+      "sha256": "5b959c4d237718f16765a5b9eea0cbfe544a4e72fc91d60d14e0cb8486b9c787",
+      "terminal_exit": 101
+    },
+    {
+      "kind": "case",
+      "name": "imported_checkpoint_red",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-red/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-imported-red/run.log",
+      "sha256": "6b9b7421c6db012d3c1582c3488b102b0518e865ab41f1e957149f3e9b920b1c",
+      "terminal_exit": 101
+    },
+    {
+      "kind": "case",
+      "name": "producer_expiry_green",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-expiry-green/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-expiry-green/run.log",
+      "sha256": "fc7384a279faa9b650a479aaee7295429172da3656765fc4d8f42a6e29fdf113",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "final_accounting_controls",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/focused/run.log",
+      "sha256": "6d7e31804c5915d5b4385bf3eeb9fdcea2e4562219e9f690484090dd3bb722b7",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "historical_row_compatibility",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-old-binary-final2/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/old-binary-final/run.log",
+      "sha256": "6b713b92abbb3287ae2b09acb4af1ad37dc763d9877c2f1cc5d9440aa9fc220d",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "full_matrix_freeze2",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-final-matrix2/run.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/final-matrix/run.log",
+      "sha256": "01550344b1f4891912d8914077fbfdaa8bd232f4e8f774cd8872ae3110cfae36",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "strict_final_freeze3",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-strict2/clippy.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-strict2/clippy.log",
+      "sha256": "eac31f98acdc1a00510ebfe032a076d172ceb4a76eeb7616fd1b44ccfa17f38b",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "format_final_freeze3",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-strict2/fmt.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/author/review2-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "diff_final_freeze3",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-strict2/diff.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/author/review2-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "case",
+      "name": "affected_native_final_freeze3",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-strict2/focused.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-strict2/focused.log",
+      "sha256": "a000f8ee8ed52086342c9284a21c647ba6b8ee637908a3350bb9d1f12ec5c58c",
+      "terminal_exit": 0
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-old-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-red/review571-old-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/017082861310c3ab6476828d5bc4649dd65da458f4db2dccc74499dbe3cceafe.json",
+      "sha256": "017082861310c3ab6476828d5bc4649dd65da458f4db2dccc74499dbe3cceafe"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-unallocated-continuation.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-red/review571-unallocated-continuation.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-continuation-red/review571-unallocated-continuation.json",
+      "sha256": "3656144cc0c94da2f477f9fba55a2ddba26db640f4aef816019013d529cf1c06"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-native-cancel-true.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-native-red3/review571-native-cancel-true.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-native-cancel-red/review571-native-cancel-true.json",
+      "sha256": "25fd870ab9d67ff576ba2c83a6d1b9daa00d8ae98d78333db8029275a361ef2e"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "accept-expiry.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-expiry-red/kernel16-review571-expired-producer-accept-1005b4e3-836b-4173-850c-0994cbdc455d/accept-expiry.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-expiry-red/kernel16-review571-expired-producer-accept-1005b4e3-836b-4173-850c-0994cbdc455d/accept-expiry.json",
+      "sha256": "2b6f1514997cd0ac9992b8de114f90bfde62dac46b46cd620b36b11620a7f1fa"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "accept-expiry.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-expiry-green/kernel16-review571-expired-producer-replay-cd9e89e7-fcc1-4a1e-b194-26c0f090cc1f/accept-expiry.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-expiry-green/kernel16-review571-expired-producer-replay-cd9e89e7-fcc1-4a1e-b194-26c0f090cc1f/accept-expiry.json",
+      "sha256": "45f6256dd0f0e4423ae7240843d38900acea107f0fb23d61c1174af605f603c6"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "accept-expiry.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-expiry-green/kernel16-review571-expired-producer-accept-3642f017-67ad-44fc-bbc7-b57850bc119d/accept-expiry.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-expiry-green/kernel16-review571-expired-producer-accept-3642f017-67ad-44fc-bbc7-b57850bc119d/accept-expiry.json",
+      "sha256": "6704a52a0ddf9f2b80548fcaed951b328ce0943a918a54f145856ddac1e71f1d"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-unresolved-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-checkpoint-red/review571-unresolved-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-checkpoint-red/review571-unresolved-yield.json",
+      "sha256": "b77b780bd62a40bb532869bcbffb868c0b9a49d367868ced1802af3f2610a04a"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-imported-unresolved-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-red/review571-imported-unresolved-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-imported-red/review571-imported-unresolved-yield.json",
+      "sha256": "58a04c7debb40794376218701f00fae4741b53b6d601fccc71a98df93bbd5e2f"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-unresolved-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-unresolved-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/focused/review571-unresolved-yield.json",
+      "sha256": "eb1e1b5e8e4d7b787da38d365e6d8f72f77a0c9b93262c02f815db2bb0cdfd9b"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-uncertain-allocation.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-uncertain-allocation.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/62dcb1e8a8ac43e6b5223faeb73601b32a07258a2a089d07261691886e73b7d5.json",
+      "sha256": "62dcb1e8a8ac43e6b5223faeb73601b32a07258a2a089d07261691886e73b7d5"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-uncertain-sibling.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-uncertain-sibling.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/40afc012f9407c82b04e9438174f020bc645088f6b2426317c598a27aeb09d1c.json",
+      "sha256": "40afc012f9407c82b04e9438174f020bc645088f6b2426317c598a27aeb09d1c"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-native-cancel-false.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-native-cancel-false.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/1550ecd78d7aaaaaa33c2633c2f8165127065bf3e17139db5f7122cf8f461ead.json",
+      "sha256": "1550ecd78d7aaaaaa33c2633c2f8165127065bf3e17139db5f7122cf8f461ead"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-old-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-old-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/aa2f7b6eea1052ea0797f5e0875b3d80e1596f0ebe3ecc9dcf5b5f99fcf51d40.json",
+      "sha256": "aa2f7b6eea1052ea0797f5e0875b3d80e1596f0ebe3ecc9dcf5b5f99fcf51d40"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-native-cancel-true.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-native-cancel-true.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/7374924319b90a6567d12eb64112b7934646d925b4f6ca4f8df82c4ae9eedc38.json",
+      "sha256": "7374924319b90a6567d12eb64112b7934646d925b4f6ca4f8df82c4ae9eedc38"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-imported-unresolved-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-imported-unresolved-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/focused/review571-imported-unresolved-yield.json",
+      "sha256": "27bba9391b16671b8ddb75586073e5687d574573d514ae0faf01acb4d13c755e"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-unallocated-continuation.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-unallocated-continuation.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/beaa9a9e28494dce733c833a3ccdeae1e3b997e419d7fba1000af0e34166050d.json",
+      "sha256": "beaa9a9e28494dce733c833a3ccdeae1e3b997e419d7fba1000af0e34166050d"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-no-allocation.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-no-allocation.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-checkpoint-green2/review571-no-allocation.json",
+      "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-unallocated-verifier.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-imported-green/review571-unallocated-verifier.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze3/objects/27fe8059f8ded6c29807a8959591368dde7b9acf93e1f9deb98cf2497a7d1297.json",
+      "sha256": "27fe8059f8ded6c29807a8959591368dde7b9acf93e1f9deb98cf2497a7d1297"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-persisted-old-yield.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-old-binary-final2/review571-persisted-old-yield.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/old-binary-final/review571-persisted-old-yield.json",
+      "sha256": "8e3e14d339d6368d2ed0bf000aa2640d9eee135e4e52193f0ad3b1c31c36c4df"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "old-binary-yield-response.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-old-binary-final2/old-binary-yield-response.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-freeze2/old-binary-final/old-binary-yield-response.json",
+      "sha256": "80263f90b701e8a49d1a9c8081a94efe737d11f706524ba8df635f38c3989d63"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-native-cancel-false.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-strict2/review571-native-cancel-false.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-strict2/review571-native-cancel-false.json",
+      "sha256": "5f76926f824746c9c2b74956c9817f612be55be97db06da8d7a0991188e065e2"
+    },
+    {
+      "kind": "public_artifact",
+      "name": "review571-native-cancel-true.json",
+      "original_path": "/tmp/corenius-kernel16-review571-author/.scratch/team-control-plane/review571-strict2/review571-native-cancel-true.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/kernel16/branch-repair/review571-strict2/review571-native-cancel-true.json",
+      "sha256": "8429335c910c49b20b6cb9a2abb640fbb549dc0c21ab565825db4ef159b13142"
+    }
+  ],
+  "acceptance": "pending rootgate/branchreview"
+}

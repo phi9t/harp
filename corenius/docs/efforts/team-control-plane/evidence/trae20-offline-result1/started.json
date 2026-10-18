@@ -1,0 +1,28 @@
+{
+  "operation_id": "corenius-offline-namespace-20261003-oracle1",
+  "admission_commit": "75b9830",
+  "status": "started_before_launch",
+  "started_at": "2026-10-03T18:18:47.537895+00:00",
+  "case_sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+  "index_sha256": "2d87eb20ec4418c59f800bc1a238175acd8837b2dcbca4eeee769c9c582fdfd0",
+  "sources": [
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 4336,
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2"
+    }
+  ],
+  "command": "TRAE_OFFLINE_NAMESPACE_PROOF=.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.json PYTHONPATH=tools/probes timeout --signal=TERM --kill-after=2s 28s python3 -m unittest test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants",
+  "maximum_namespace_starts": 1,
+  "automatic_retry": false
+}

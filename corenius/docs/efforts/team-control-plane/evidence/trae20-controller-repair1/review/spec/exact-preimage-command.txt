@@ -1,0 +1,1 @@
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/tmp/corenius-trae-controller-repair1-spec-review-20261003/round0-fixture/tools/probes python3 -m unittest test_trae_case_control.DurableControllerBehavior.test_post_reservation_input_change_retains_hash_bound_refusal

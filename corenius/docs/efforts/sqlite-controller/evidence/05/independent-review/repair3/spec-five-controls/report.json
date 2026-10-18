@@ -1,0 +1,346 @@
+{
+  "axis": "Spec",
+  "verdict": "SCOPED PASS",
+  "global_conclusion": "pending branch653 separate addendum and root gates",
+  "source": {
+    "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+    "tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+    "archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+    "pins_count": 49
+  },
+  "full_range_review": {
+    "full_range": "291f04a5abd9274e4fd0034fd36927b0a4c4d236...7b20a886576c125c634913edadc4bb6f8c115352",
+    "prior_reviewed_source": "6f2c41556a50b3ab0b74da9a7b499e458d445156",
+    "unchanged_from_prior_review": [
+      "crates/sqlite-controller/Cargo.toml",
+      "crates/sqlite-controller/Cargo.lock",
+      "crates/sqlite-controller/README.md",
+      "crates/sqlite-controller/support/codex_insula.py",
+      "crates/sqlite-controller/src/gateway.rs",
+      "crates/sqlite-controller/src/view.rs",
+      "crates/sqlite-controller/src/codex_schema.sql",
+      "crates/sqlite-controller/src/runtime.rs",
+      "crates/sqlite-controller/src/lib.rs",
+      "crates/sqlite-controller/src/native_profile.rs",
+      "crates/sqlite-controller/src/native_ws.rs",
+      "crates/sqlite-controller/src/git_workspace.rs",
+      "crates/sqlite-controller/src/client.rs",
+      "crates/sqlite-controller/src/service.rs",
+      "crates/sqlite-controller/src/main.rs",
+      "crates/sqlite-controller/src/supervisor.rs",
+      "crates/sqlite-controller/src/control_schema.sql",
+      "crates/sqlite-controller/src/schema.sql",
+      "crates/sqlite-controller/src/git.rs",
+      "crates/sqlite-controller/src/codex.rs",
+      "crates/sqlite-controller/src/kata_schema.sql",
+      "crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "crates/sqlite-controller/tests/control_center.rs",
+      "crates/sqlite-controller/tests/process.rs",
+      "crates/sqlite-controller/tests/runtime.rs",
+      "crates/sqlite-controller/tests/public.rs",
+      "crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "crates/sqlite-controller/tests/support/native_init.py",
+      "crates/sqlite-controller/tests/support/native_profile.py",
+      "crates/sqlite-controller/tests/support/control_center_native.py",
+      "crates/sqlite-controller/tests/support/wsutil.py",
+      "crates/sqlite-controller/tests/support/client_projection.py"
+    ],
+    "changed_or_new_reviewed_current": [
+      "crates/sqlite-controller/src/monitor.rs",
+      "crates/sqlite-controller/src/native_ui.rs",
+      "crates/sqlite-controller/src/query.rs",
+      "crates/sqlite-controller/src/control.rs",
+      "crates/sqlite-controller/src/ui_gateway.rs",
+      "crates/sqlite-controller/src/kata.rs",
+      "crates/sqlite-controller/tests/client.rs",
+      "crates/sqlite-controller/tests/git.rs",
+      "crates/sqlite-controller/tests/codex.rs",
+      "crates/sqlite-controller/tests/kata.rs",
+      "crates/sqlite-controller/tests/support/git_protocol.py",
+      "crates/sqlite-controller/tests/support/websocket_controls.py",
+      "crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "crates/sqlite-controller/tests/support/monitor_projection.py",
+      "crates/sqlite-controller/tests/support/kata_protocol.py",
+      "crates/sqlite-controller/tests/support/native_registry.py"
+    ],
+    "prior_report": "/data02/home/philip.yang/devx/tmp/sqlite05-r2-final-spec-kctk84mn/report.json",
+    "prior_blockers": "/data02/home/philip.yang/devx/tmp/sqlite05-6f2-spec-addendum-m3i90l55/addendum.json",
+    "full_delta_review_method": "Inherited full-range Spec review plus exact unchanged-file comparison, reread changed/current authority, projection, runtime and journal paths; current independent focused proof. No blanket inherited execution success attributed to current source."
+  },
+  "findings": [],
+  "five_control_dispositions": [
+    {
+      "id": "S05-B1",
+      "status": "resolved in focused proof",
+      "code": "control.rs:122",
+      "evidence": [
+        "git.log",
+        "independent-git.log",
+        "landing-repair-result.json"
+      ],
+      "actual": "Applying and actual barrier deadline unknown both refuse repair with unchanged state/events/receipts; recovery moves real ref once despite lead replacement. Independent prior race driver verifies stable original receipt and one land event. Before-admission repair positive."
+    },
+    {
+      "id": "S05-B2",
+      "status": "resolved in focused proof",
+      "code": "native_ui.rs:407",
+      "evidence": [
+        "native.log"
+      ],
+      "actual": "Shared/separate real pinned runtime: public progress after saved intent produces pre-admission conflict, second public revision precedes exact retry, then one core receipt/native operation. Further progress does not alter exact admitted replay. Changed/foreign/revoked input refused; current binding fences preserved."
+    },
+    {
+      "id": "S05-B3",
+      "status": "resolved in focused proof",
+      "code": "kata.rs:793,control.rs:108",
+      "evidence": [
+        "kata-v2.log",
+        "kata-review-k3-b2w_c7o7.tar.gz"
+      ],
+      "actual": "Real pinned Kata and physical Git capture. Independent intervening remote change+refresh rejects stale proposed approval atomically; fresh captured selection advances admitted version and task brief, new admission and real metadata sync succeed. Invented/foreign/digest/revision/body/active/closed negatives retained."
+    },
+    {
+      "id": "S05-B4",
+      "status": "resolved in focused proof",
+      "code": "monitor.rs:970,query.rs:34",
+      "evidence": [
+        "monitor.log"
+      ],
+      "actual": "20 actual authorized corrections x4 fields x65536 UTF8 bytes; context24955/records12463 wire bytes; all80 fields exact digest round-trip via socket/dashboard/MCP, forced3-item pages, peer/invaliddigest/bytes/UTF8/collection/cursor/revokedworker refused; observer remains read-only and coverage unchanged."
+    },
+    {
+      "id": "S05-B5",
+      "status": "resolved in focused proof",
+      "code": "ui_gateway.rs:82",
+      "evidence": [
+        "websocket.log",
+        "native.log"
+      ],
+      "actual": "Authenticated TCP masked ping exact pong, unsolicited pong followed by RPC, close echo and six malformed refusals. Separate actual bound native read after ping/pong in both topologies creates no operation. Unconfigured wire fixture labeled native_configured=false."
+    }
+  ],
+  "inherited_controls": [
+    {
+      "control": "Original observer/no Git authority",
+      "evidence": "observer-git.log; focused control observer test",
+      "status": "fresh public actual Git denial/authorized positive PASS"
+    },
+    {
+      "control": "Original current/inflight native tool, shared-peer routing, pending NULL exact args/cached replay",
+      "evidence": "focused.log; source gateway/native_ws unchanged from6f2",
+      "status": "fresh focused tests PASS; prior broader native controls inherited, not repeated"
+    },
+    {
+      "control": "Six repair1 controls: dispatcher atomic fail/reopen; all sealed inputs; interrupt shape; saved start kind; question fairness; atomic full private retention",
+      "evidence": "focused.log plus unchanged production source bindings/range-coverage.json",
+      "status": "fresh applicable21lib+8control tests PASS; interrupt/lostACK native-specific prior proofs inherited, not all freshly repeated"
+    },
+    {
+      "control": "repair2 A1 lostACK response,A2 retained A steer,A3 bounded questions/history; runtime-context,lead-history and inventory",
+      "evidence": "range-coverage.json; focused.log; native_ui changed only unadmitted retry branch",
+      "status": "source reviewed consistent;29test subset fresh. Prior actual6f2 proofs remain source-specific; no repeated healthyfullnative"
+    },
+    {
+      "control": "Original02/04nine obligations",
+      "evidence": "05-repair3-pre-source-root-matrix.json and immutable prior reports",
+      "status": "inherited, exact manifest inspected; no new02/04scope or allowance. Current B1 physical admitted landing/recovery complements inheritance."
+    }
+  ],
+  "actual_runs": {
+    "build": {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target",
+        "--features",
+        "fault-injection",
+        "--bins"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:05:13.957570+00:00",
+      "pid": 3088185,
+      "start_ticks": "58149425",
+      "exit": 0,
+      "seconds": 13.04328024003189,
+      "log_sha256": "297690837fc46b595af4e82eeaaab508646cdf7765938ac5829393f5e7760f30",
+      "finished_utc": "2026-10-05T02:05:27.000547+00:00"
+    },
+    "kata-v2": {
+      "command": [
+        "env",
+        "CORENIUS_KATA_REPAIR_CASE=brief-amendment",
+        "CONTROLLER_BINARY=/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/kata-driver-v2.py"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:09:22.298981+00:00",
+      "pid": 3158389,
+      "start_ticks": "58174259",
+      "exit": 0,
+      "seconds": 1.5116657349281013,
+      "log_sha256": "9d2811ebcd08ac03bfdb930b4b0b608add57beebe8c396459c098180ae56640a",
+      "finished_utc": "2026-10-05T02:09:23.810245+00:00"
+    },
+    "native": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/native-driver.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:06:54.414417+00:00",
+      "pid": 3121181,
+      "start_ticks": "58159471",
+      "exit": 0,
+      "seconds": 87.89818817400374,
+      "log_sha256": "55a10f3b6575112d76e727896614058de8bcb902dc8d2d647cb73ef12a4eb170",
+      "finished_utc": "2026-10-05T02:08:22.312396+00:00"
+    },
+    "monitor": {
+      "command": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/monitor-driver.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:07:18.452408+00:00",
+      "pid": 3128623,
+      "start_ticks": "58161875",
+      "exit": 0,
+      "seconds": 4.805199251975864,
+      "log_sha256": "2d816051d7b20d503e3c3d0f7fe7564f797877cb48a859f65fc343f02fba3780",
+      "finished_utc": "2026-10-05T02:07:23.257231+00:00"
+    },
+    "git": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_GIT_MODES=repair3-applying,repair3-unknown",
+        "python3",
+        "crates/sqlite-controller/tests/support/git_protocol.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:07:18.452426+00:00",
+      "pid": 3128624,
+      "start_ticks": "58161875",
+      "exit": 0,
+      "seconds": 32.11247678298969,
+      "log_sha256": "eae8710fa8c83fc64a96187c0d27ea303a4263dbbe0e8609d83c42ce67c68b56",
+      "finished_utc": "2026-10-05T02:07:50.564603+00:00"
+    },
+    "focused": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "--test",
+        "control_center",
+        "--",
+        "--nocapture"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:06:55.555260+00:00",
+      "pid": 3121714,
+      "start_ticks": "58159585",
+      "exit": 0,
+      "seconds": 6.5995339879300445,
+      "log_sha256": "f7828efdb32c7e5734d98e12248a24d0d9182da6a8e587c4b910df61b9af1cd5",
+      "finished_utc": "2026-10-05T02:07:02.154522+00:00"
+    },
+    "observer-git": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_GIT_MODES=observer-authority",
+        "python3",
+        "crates/sqlite-controller/tests/support/git_protocol.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:09:44.176498+00:00",
+      "pid": 3166433,
+      "start_ticks": "58176447",
+      "exit": 0,
+      "seconds": 6.588233352988027,
+      "log_sha256": "6a5d7a2dbe260c0f6d13c5101ad19a91ccf1c65d1ddd17f96bddaa305baf15d4",
+      "finished_utc": "2026-10-05T02:09:50.764410+00:00"
+    },
+    "websocket": {
+      "command": [
+        "python3",
+        "crates/sqlite-controller/tests/support/websocket_controls.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:07:18.452381+00:00",
+      "pid": 3128622,
+      "start_ticks": "58161875",
+      "exit": 0,
+      "seconds": 0.15030429093167186,
+      "log_sha256": "983ccd2e0d80737ff85d511d10fd35df4682b72d2c8865cda26673856a8b1489",
+      "finished_utc": "2026-10-05T02:07:18.602273+00:00"
+    },
+    "kata": {
+      "command": [
+        "env",
+        "CORENIUS_KATA_REPAIR_CASE=brief-amendment",
+        "CONTROLLER_BINARY=/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/target/debug/corenius-sqlite-controller",
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/kata-driver.py"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:08:07.944509+00:00",
+      "pid": 3143903,
+      "start_ticks": "58166824",
+      "exit": 1,
+      "seconds": 0.6827494170283899,
+      "log_sha256": "08c55b4601de00892cf992d2f06f26aa35c0a6030527540b38888bee1cf7bfc0",
+      "finished_utc": "2026-10-05T02:08:08.626894+00:00"
+    },
+    "independent-git": {
+      "command": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-r3-final-spec-0d9odb1i/independent-git.py"
+      ],
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "started_utc": "2026-10-05T02:09:23.443111+00:00",
+      "pid": 3159023,
+      "start_ticks": "58174374",
+      "exit": 0,
+      "seconds": 6.705007610959001,
+      "log_sha256": "a09ea190ff9fa2bfaa0587627aee7e483a33f50a217f31b1fc94b9a00d7cb0b5",
+      "finished_utc": "2026-10-05T02:09:30.147776+00:00"
+    }
+  },
+  "limits": [
+    "SCOPED PASS covers five known repair3 controls and inherited original scope only. Newly supplied branch653 correction starvation and stale task-progress provenance are EXCLUDED pending separate fixed-source addendum; no global Spec acceptance conclusion.",
+    "Root complete suite, branch gate and final committed EVID retention are independent pending gates; authored14-18 summaries are not credited as own execution.",
+    "Native fixtures use real pinned Codex with deterministic local provider, not live model qualification.06 owns recurring runner/live assembled harness/final baseline/FF.",
+    "Historical gate36 failures; initial-confirm archive gap;80070 unknown historical cause;6f2 fullgateFAIL101 and root04history122\u20131262 unreviewed remain unchanged.",
+    "Final05repair3/3;02/04repair3/3;EMPTY2/2 exhausted. No fourth repair or cap reset.",
+    "One Kata setup failure SUN_LEN retained; v2 short runtime temp path only. No failed setup credited as target RED. Read-only git stat cwd error retained separately."
+  ],
+  "process_cleanup": "cleanup.json",
+  "requirements": "requirements/",
+  "final_source_unchanged": true,
+  "root_acceptance": false
+}

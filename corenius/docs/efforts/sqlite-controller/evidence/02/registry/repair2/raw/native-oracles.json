@@ -1,0 +1,476 @@
+[
+  {
+    "log": "red-initial.log",
+    "oracle": "actual_initial_confirmation_before_adoption",
+    "topology": "shared",
+    "receipt": {
+      "client_user_message_id": "144094b4-c1d6-4129-ab7b-d37145b0cc6e",
+      "operation": "d5580228-9028-40bc-a45d-bfc94bca8989",
+      "thread_id": "01a106a1-a07e-76f0-9e26-58801c54c00e",
+      "turn_id": "01a106a1-b418-7213-933e-b3fc8864091a",
+      "server_incarnation": "d309bfd98ba26cc4176747e1ba376a89a6b84973a38d2bfab353f072b3f39b34"
+    },
+    "binding_id": "worker:0d4a02b8-8a47-4068-8c67-a3cc05cc3ea2:1"
+  },
+  {
+    "log": "red-initial.log",
+    "oracle": "actual_initial_confirmation_before_adoption",
+    "topology": "separate",
+    "receipt": {
+      "client_user_message_id": "bbd589a6-7fea-4d69-a1da-83e2278f1415",
+      "operation": "592a69db-4a01-4d76-83aa-3ab5b903263a",
+      "thread_id": "01a106a2-59f3-7a21-a119-13c1fa5e9466",
+      "turn_id": "01a106a2-6d8d-7bf1-93f4-77ec48f1f485",
+      "server_incarnation": "3bfc277dd6e75173879120b424338dd961b2bd3b1ad03b6aee4abe0fe3c37f6a"
+    },
+    "binding_id": "worker:4ab08801-faef-4353-b1f8-5ec4af6e0417:1"
+  },
+  {
+    "log": "green-initial-corrected.log",
+    "oracle": "actual_initial_confirmation_before_adoption",
+    "topology": "shared",
+    "receipt": {
+      "client_user_message_id": "6004fe86-def1-48e7-b0d3-0f814fb34c92",
+      "operation": "bec358cf-c003-44a0-92a1-91d304c5f67d",
+      "thread_id": "01a106ae-f330-7c41-a663-24c56c7c7f7e",
+      "turn_id": "01a106af-06c9-7cd3-8254-d214b53a15b1",
+      "server_incarnation": "da3c07e6b427f79239a0ef55e72df45b1b3be59ab34fab06b15cef5bd3268765"
+    },
+    "binding_id": "worker:9cc684cb-6938-4d1f-91ae-024cf33f3397:1"
+  },
+  {
+    "log": "green-initial-corrected.log",
+    "oracle": "actual_initial_turn_recovered_after_app_restart",
+    "topology": "shared",
+    "receipt": {
+      "client_user_message_id": "6004fe86-def1-48e7-b0d3-0f814fb34c92",
+      "operation": "bec358cf-c003-44a0-92a1-91d304c5f67d",
+      "thread_id": "01a106ae-f330-7c41-a663-24c56c7c7f7e",
+      "turn_id": "01a106af-06c9-7cd3-8254-d214b53a15b1"
+    },
+    "binding_id": "worker:9cc684cb-6938-4d1f-91ae-024cf33f3397:1"
+  },
+  {
+    "log": "green-initial-corrected.log",
+    "oracle": "actual_initial_confirmation_before_adoption",
+    "topology": "separate",
+    "receipt": {
+      "client_user_message_id": "f835a0b2-117e-46d5-9962-487d91d72404",
+      "operation": "e8145807-5b7a-443e-99fa-1bd5868a46b4",
+      "thread_id": "01a106af-6a54-7253-a818-ea9cfa967c5a",
+      "turn_id": "01a106af-7dee-7fa2-9211-b3996b5c72e0",
+      "server_incarnation": "ecea6e846d3ec22ce24868717191f8b165d32aea5eaacde38144cf1ce92521d4"
+    },
+    "binding_id": "worker:c3276647-61d5-4e4d-9da5-f6ae28728ede:1"
+  },
+  {
+    "log": "green-initial-corrected.log",
+    "oracle": "actual_initial_turn_recovered_after_app_restart",
+    "topology": "separate",
+    "receipt": {
+      "client_user_message_id": "f835a0b2-117e-46d5-9962-487d91d72404",
+      "operation": "e8145807-5b7a-443e-99fa-1bd5868a46b4",
+      "thread_id": "01a106af-6a54-7253-a818-ea9cfa967c5a",
+      "turn_id": "01a106af-7dee-7fa2-9211-b3996b5c72e0"
+    },
+    "binding_id": "worker:c3276647-61d5-4e4d-9da5-f6ae28728ede:1"
+  },
+  {
+    "log": "red-pagination-remote-setup.log",
+    "oracle": "actual_native_empty_target_after_first_page",
+    "topology": "shared",
+    "target": {
+      "server_incarnation": "0ce9c8e72d28c36847af1c89d21008719198b6f9d1cc72e17cd44adefb4969d2",
+      "thread_id": "01a106b7-6cc6-7be3-8cbd-cfb2904fd8a0"
+    },
+    "page_sizes": [
+      100,
+      100,
+      3
+    ],
+    "target_pages": [
+      2
+    ],
+    "padding_count": 202,
+    "cursors": [
+      "01a106b7-6c8e-7cb1-9a58-bc5aa2df3a60",
+      "01a106b7-760f-7471-9a8a-835258717740",
+      null
+    ]
+  },
+  {
+    "log": "red-pagination-remote-setup.log",
+    "oracle": "actual_native_empty_target_after_first_page",
+    "topology": "separate",
+    "target": {
+      "server_incarnation": "a170ae56ec40b3bb3c31c4f12494b7e277ff9fbed659df4b4cd0db0c2ad2c9dc",
+      "thread_id": "01a106b8-25bd-76a3-87d6-c748e53cd882"
+    },
+    "page_sizes": [
+      100,
+      100,
+      3
+    ],
+    "target_pages": [
+      2
+    ],
+    "padding_count": 202,
+    "cursors": [
+      "01a106b8-2588-7d91-b8ad-cdbf0a4b1fdd",
+      "01a106b8-2efe-7b52-a7fc-03bb5f5f078d",
+      null
+    ]
+  },
+  {
+    "log": "green-pagination.log",
+    "oracle": "actual_native_empty_target_after_first_page",
+    "topology": "shared",
+    "target": {
+      "server_incarnation": "11a72e503425770663ac5792fef00dab4f2095989346404a4fc3533f026d8bdc",
+      "thread_id": "01a106bb-7cfd-7513-96a2-759e8500830a"
+    },
+    "page_sizes": [
+      100,
+      100,
+      3
+    ],
+    "target_pages": [
+      2
+    ],
+    "padding_count": 202,
+    "cursors": [
+      "01a106bb-7cc7-7cf1-bb49-f3cae3c7885e",
+      "01a106bb-8631-7590-adb0-2f6dc4cc6ff1",
+      null
+    ]
+  },
+  {
+    "log": "green-pagination.log",
+    "oracle": "actual_native_empty_target_after_first_page",
+    "topology": "separate",
+    "target": {
+      "server_incarnation": "b66fe01992a61f53a5124a8a69a36d97780798f61868eeec200f6ac882a4affc",
+      "thread_id": "01a106bc-02d8-7550-a5a3-ebe697da8a2a"
+    },
+    "page_sizes": [
+      100,
+      100,
+      3
+    ],
+    "target_pages": [
+      2
+    ],
+    "padding_count": 202,
+    "cursors": [
+      "01a106bc-029c-7a51-b118-383a633f4cb3",
+      "01a106bc-0c1a-70b0-89db-7119b43af868",
+      null
+    ]
+  },
+  {
+    "log": "red-retired-events-batched.log",
+    "oracle": "actual_retired_native_notification_setup",
+    "topology": "shared",
+    "native_metadata_acknowledgements": 1033,
+    "actual_retired_notifications": 1030,
+    "setup_seconds": 1.123,
+    "turn_shutdown": {
+      "interrupt_receipt": true,
+      "source": "typed_native_reply_and_history",
+      "state": "interrupted",
+      "terminal_receipt": true,
+      "turn_id": "01a106c0-28b9-76e0-869a-9b8df54e83a7"
+    }
+  },
+  {
+    "log": "red-retired-events-batched.log",
+    "oracle": "actual_retired_native_notification_failure",
+    "topology": "shared",
+    "actual_production_received_name_frames": 1011,
+    "actual_received_thread_ids": [
+      "01a106c0-151e-7940-97c1-957d272496e9"
+    ]
+  },
+  {
+    "log": "green-retired-events.log",
+    "oracle": "actual_retired_native_notification_setup",
+    "topology": "shared",
+    "native_metadata_acknowledgements": 1033,
+    "actual_retired_notifications": 1030,
+    "setup_seconds": 1.187,
+    "turn_shutdown": {
+      "source": "typed_native_history",
+      "state": "interrupted",
+      "terminal_receipt": true,
+      "turn_id": "01a106c3-ffa6-7cc2-9954-4d1f358942b1"
+    }
+  },
+  {
+    "log": "green-retired-events.log",
+    "oracle": "actual_native_unsubscribe_lost_ack_reconciled",
+    "topology": "shared",
+    "lost_actual_reply": {
+      "status": "unsubscribed"
+    },
+    "journal": [
+      {
+        "binding": "worker:3d9422e5-b268-4285-922f-b5aaf6367cee:1",
+        "id": "e99a5acb-ca83-4000-ba92-1a9065ddd95c",
+        "intent": {
+          "connection_id": "542c89db-16d9-4644-a582-c177aac23b88",
+          "server_id": "native",
+          "server_incarnation": "3b34abc32c2ff464f09e42d826babc87ddb54603a3a4a6d1d5092f763ca41143",
+          "server_store": "3bfd7ae7-97cb-496f-b6f4-1381d17ebd7c",
+          "threadId": "01a106c3-ec0e-7342-8b4d-a31c36a970b0"
+        },
+        "kind": "thread/unsubscribe",
+        "observation": {
+          "intent": {
+            "connection_id": "542c89db-16d9-4644-a582-c177aac23b88",
+            "server_id": "native",
+            "server_incarnation": "3b34abc32c2ff464f09e42d826babc87ddb54603a3a4a6d1d5092f763ca41143",
+            "server_store": "3bfd7ae7-97cb-496f-b6f4-1381d17ebd7c",
+            "threadId": "01a106c3-ec0e-7342-8b4d-a31c36a970b0"
+          },
+          "native": {
+            "status": "notSubscribed"
+          },
+          "previous_state": "unknown",
+          "reconciliation": "connection_scoped_idempotent_unsubscribe",
+          "state": "confirmed"
+        },
+        "state": "confirmed"
+      }
+    ]
+  },
+  {
+    "log": "green-retired-events.log",
+    "oracle": "actual_retired_notifications_preserve_active_peer",
+    "topology": "shared",
+    "peer_thread": "01a106c4-000c-7591-8b81-dbf4ebf4fe88",
+    "peer_notifications": [
+      {
+        "emittedAtMs": 1791114877762,
+        "method": "thread/name/updated",
+        "params": {
+          "threadId": "01a106c4-000c-7591-8b81-dbf4ebf4fe88",
+          "threadName": "OWNED_ACTIVE_PEER_0"
+        }
+      },
+      {
+        "emittedAtMs": 1791114877763,
+        "method": "thread/name/updated",
+        "params": {
+          "threadId": "01a106c4-000c-7591-8b81-dbf4ebf4fe88",
+          "threadName": "OWNED_ACTIVE_PEER_1"
+        }
+      },
+      {
+        "emittedAtMs": 1791114877804,
+        "method": "thread/name/updated",
+        "params": {
+          "threadId": "01a106c4-000c-7591-8b81-dbf4ebf4fe88",
+          "threadName": "OWNED_ACTIVE_PEER_2"
+        }
+      }
+    ],
+    "retired_state": "revoked",
+    "retired_turn_shutdown": {
+      "source": "typed_native_history",
+      "state": "interrupted",
+      "terminal_receipt": true,
+      "turn_id": "01a106c3-ffa6-7cc2-9954-4d1f358942b1"
+    }
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_initial_confirmation_before_adoption",
+    "topology": "shared",
+    "receipt": {
+      "client_user_message_id": "240dbd52-54ad-477c-bcc4-ee7b1fc9af7d",
+      "operation": "661f208b-fdb2-4c05-8ffd-7b8cb4e3a714",
+      "thread_id": "01a106c6-86fd-7ff3-b90a-b4b8bbb5f478",
+      "turn_id": "01a106c6-9a96-7db0-97d6-66e57be59b59",
+      "server_incarnation": "9611acd81a7345fad6329474a347b79596f4a81e70cc25035f91dc3aaa6bac45"
+    },
+    "binding_id": "worker:dd0ab819-c24e-4bf2-b02c-3b1e6b89629c:1"
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_initial_turn_recovered_after_app_restart",
+    "topology": "shared",
+    "receipt": {
+      "client_user_message_id": "240dbd52-54ad-477c-bcc4-ee7b1fc9af7d",
+      "operation": "661f208b-fdb2-4c05-8ffd-7b8cb4e3a714",
+      "thread_id": "01a106c6-86fd-7ff3-b90a-b4b8bbb5f478",
+      "turn_id": "01a106c6-9a96-7db0-97d6-66e57be59b59"
+    },
+    "binding_id": "worker:dd0ab819-c24e-4bf2-b02c-3b1e6b89629c:1"
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_native_empty_target_after_first_page",
+    "topology": "shared",
+    "target": {
+      "server_incarnation": "4604aab0bf473a80761780ab56325b6f121fc45f405168b578207c3aff25642c",
+      "thread_id": "01a106c6-a484-7063-9cdb-99ca6a5fdfc1"
+    },
+    "page_sizes": [
+      100,
+      100,
+      3
+    ],
+    "target_pages": [
+      2
+    ],
+    "padding_count": 202,
+    "cursors": [
+      "01a106c6-a44b-71c2-982c-edcccb77590d",
+      "01a106c6-adbd-7da2-a26f-20c80bdb595e",
+      null
+    ]
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_initial_confirmation_before_adoption",
+    "topology": "separate",
+    "receipt": {
+      "client_user_message_id": "11049e9f-7995-4d0e-b593-fcf81f4eb2db",
+      "operation": "c6084bca-c19d-4f9e-985f-7f79450bebdd",
+      "thread_id": "01a106c6-fc6b-7010-85c5-e90546d8a6bb",
+      "turn_id": "01a106c7-1004-7182-b16e-30048370eb9c",
+      "server_incarnation": "1d8ffdbb6f35e5db0390b0c74c4aa5619c10b41cf012a33fb4b32555469cd07b"
+    },
+    "binding_id": "worker:73cf7f19-c554-4c51-8ec7-f6dac553598f:1"
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_initial_turn_recovered_after_app_restart",
+    "topology": "separate",
+    "receipt": {
+      "client_user_message_id": "11049e9f-7995-4d0e-b593-fcf81f4eb2db",
+      "operation": "c6084bca-c19d-4f9e-985f-7f79450bebdd",
+      "thread_id": "01a106c6-fc6b-7010-85c5-e90546d8a6bb",
+      "turn_id": "01a106c7-1004-7182-b16e-30048370eb9c"
+    },
+    "binding_id": "worker:73cf7f19-c554-4c51-8ec7-f6dac553598f:1"
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_native_empty_target_after_first_page",
+    "topology": "separate",
+    "target": {
+      "server_incarnation": "59a32ad8759595ffcc4928823dc9c01c3b8b5dffa195749f3faff21b535f20b7",
+      "thread_id": "01a106c7-2932-7a12-abce-ddd049666e42"
+    },
+    "page_sizes": [
+      100,
+      100,
+      3
+    ],
+    "target_pages": [
+      2
+    ],
+    "padding_count": 202,
+    "cursors": [
+      "01a106c7-28fc-7240-b8b2-6f97e8bfef0f",
+      "01a106c7-326d-7b90-94b5-b15524c1a22e",
+      null
+    ]
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_retired_native_notification_setup",
+    "topology": "shared",
+    "native_metadata_acknowledgements": 1033,
+    "actual_retired_notifications": 1030,
+    "setup_seconds": 1.182,
+    "turn_shutdown": {
+      "server_incarnation": "33cf7be11f6442084f419bcec6a7499866148ede63b07c304b91a5e6e68a4355",
+      "server_store": "7b422b40-c509-455f-9f8c-83a65f90bb9c",
+      "source": "typed_native_history",
+      "state": "interrupted",
+      "terminal_receipt": true,
+      "turn_id": "01a106c7-8657-71f2-95fb-a6f498547922"
+    }
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_native_unsubscribe_lost_ack_reconciled",
+    "topology": "shared",
+    "lost_actual_reply": {
+      "status": "unsubscribed"
+    },
+    "journal": [
+      {
+        "binding": "worker:4e968e0a-af6d-403e-8abb-d7360f411e88:1",
+        "id": "c5b28043-14ac-47b5-9c64-45f2133a98b8",
+        "intent": {
+          "connection_id": "fd697c5c-cdda-4079-971a-776063c9e42f",
+          "server_id": "native",
+          "server_incarnation": "33cf7be11f6442084f419bcec6a7499866148ede63b07c304b91a5e6e68a4355",
+          "server_store": "7b422b40-c509-455f-9f8c-83a65f90bb9c",
+          "threadId": "01a106c7-72c0-73e0-8d3d-0f074517af59"
+        },
+        "kind": "thread/unsubscribe",
+        "observation": {
+          "intent": {
+            "connection_id": "fd697c5c-cdda-4079-971a-776063c9e42f",
+            "server_id": "native",
+            "server_incarnation": "33cf7be11f6442084f419bcec6a7499866148ede63b07c304b91a5e6e68a4355",
+            "server_store": "7b422b40-c509-455f-9f8c-83a65f90bb9c",
+            "threadId": "01a106c7-72c0-73e0-8d3d-0f074517af59"
+          },
+          "native": {
+            "status": "notSubscribed"
+          },
+          "previous_state": "unknown",
+          "reconciliation": "connection_scoped_idempotent_unsubscribe",
+          "state": "confirmed"
+        },
+        "state": "confirmed"
+      }
+    ]
+  },
+  {
+    "log": "covering.log",
+    "oracle": "actual_retired_notifications_preserve_active_peer",
+    "topology": "shared",
+    "peer_thread": "01a106c7-86bb-7e93-a46b-cfdea904fc1c",
+    "peer_notifications": [
+      {
+        "emittedAtMs": 1791115108844,
+        "method": "thread/name/updated",
+        "params": {
+          "threadId": "01a106c7-86bb-7e93-a46b-cfdea904fc1c",
+          "threadName": "OWNED_ACTIVE_PEER_0"
+        }
+      },
+      {
+        "emittedAtMs": 1791115108845,
+        "method": "thread/name/updated",
+        "params": {
+          "threadId": "01a106c7-86bb-7e93-a46b-cfdea904fc1c",
+          "threadName": "OWNED_ACTIVE_PEER_1"
+        }
+      },
+      {
+        "emittedAtMs": 1791115108886,
+        "method": "thread/name/updated",
+        "params": {
+          "threadId": "01a106c7-86bb-7e93-a46b-cfdea904fc1c",
+          "threadName": "OWNED_ACTIVE_PEER_2"
+        }
+      }
+    ],
+    "retired_state": "revoked",
+    "retired_turn_shutdown": {
+      "server_incarnation": "33cf7be11f6442084f419bcec6a7499866148ede63b07c304b91a5e6e68a4355",
+      "server_store": "7b422b40-c509-455f-9f8c-83a65f90bb9c",
+      "source": "typed_native_history",
+      "state": "interrupted",
+      "terminal_receipt": true,
+      "turn_id": "01a106c7-8657-71f2-95fb-a6f498547922"
+    }
+  }
+]

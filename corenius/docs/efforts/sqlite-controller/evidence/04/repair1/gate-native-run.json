@@ -1,0 +1,26 @@
+{
+  "name": "gate-native",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--manifest-path",
+    "crates/sqlite-controller/Cargo.toml",
+    "--features",
+    "fault-injection",
+    "--test",
+    "codex",
+    "ticket04_",
+    "--",
+    "--nocapture",
+    "--test-threads=2"
+  ],
+  "started": "2026-10-04T17:57:38.379996+00:00",
+  "ended": "2026-10-04T17:58:50.433315+00:00",
+  "elapsed_seconds": 72.0533109799726,
+  "exit": 0,
+  "raw_log": ".scratch/sqlite-controller/04/repair1/gate-native.log",
+  "environment": {}
+}

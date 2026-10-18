@@ -1,0 +1,105 @@
+{
+  "axis": "Spec",
+  "verdict": "FAIL",
+  "base": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+  "source": "d201642b36695dbd0f29a7ac857ee9e8de520728",
+  "evidence_only_tip": "40d4805ce34d74521f3473b7f8ad2b9f7451d0c2",
+  "findings": [
+    {
+      "id": "03-S1",
+      "severity": "P2 / medium",
+      "title": "Clear recovered source unavailability even when source bytes are unchanged",
+      "location": "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:598",
+      "related_locations": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:568",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:574",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:739",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:1153",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:1193"
+      ],
+      "requirements": [
+        {
+          "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/tickets/03-kata-participant-protocol.md:12",
+          "quote": "Prove duplicate delivery, offline recovery, changed task refusal, unauthorized claims/closure and replacement-lead reconstruction."
+        },
+        {
+          "path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/docs/efforts/sqlite-controller/SPEC.md:84",
+          "quote": "retain controller event/revision and acknowledged Kata revision, and show pending synchronization or drift."
+        }
+      ],
+      "trigger": "With current source already retained and no queued publication that would change its revision, temporarily lose Kata/source access and run autonomous or operator reconciliation; then restore access without changing Kata revision/content or selected filesystem bytes.",
+      "source_proof": "record_source_failure stores source observation unavailable in kata_sources.drift. Successful refresh_sources calls record_source_observation, but current == source returns at598 before observe_source can recompute/clear drift. Repeated autonomous or kata:reconcile calls retain the old outage indication despite newly successful reads.",
+      "outcome": "Participant/replacement-lead context falsely continues to report current source unavailability. Explicit refresh_kata_source (which takes the other apply path) or a later content/revision change can clear it; automatic/operator reconciliation of the unchanged healthy source cannot.",
+      "correction": "Reconcile source availability independently of version equality, clearing recovered availability error while preserving genuine projection drift and append-only historical failure evidence.",
+      "evidence_limit": "Read-only source trace, not a newly executed reproducer. Retained offline GREEN at tests/support/kata_protocol.py300-312 queues metadata/comment writes and therefore changes the remote revision during recovery; it does not cover unchanged-source recovery."
+    }
+  ],
+  "coverage": [
+    {
+      "requirement": "Filesystem plus Kata admitted/current/proposed identity",
+      "assessment": "Implemented within explicit selection scope",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:316",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:343",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:634",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:714"
+      ],
+      "detail": "Registered repository/storage, exact commit or explicit dirty/untracked snapshot, selected byte/base64 digests and immutable versions. Operator must select reference closure; no automatic reference discovery or amendment adoption claimed."
+    },
+    {
+      "requirement": "Global actual WorkRef and scoped admission",
+      "assessment": "Implemented",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:264",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:668",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:748",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata_schema.sql:9"
+      ],
+      "detail": "Single immutable deployment/project configuration plus globally unique item enforces actual WorkRef across local aliases; qualified fresh source required and unlinked legacy tasks cannot gain admission authority."
+    },
+    {
+      "requirement": "Scoped participants and durable replacement context",
+      "assessment": "Implemented for ticket03 public protocol; downstream runtime delivery unqualified",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/lib.rs:353",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:1161",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:1212"
+      ],
+      "detail": "Inherited current principal/epoch and own-task controls, authenticated sender, durable questions/messages/followups/decisions, admitted/current/proposals, effect histories. Capped runtime cleanup remains explicitly false with native uncertainty projection. Actual question delivery/ack phases remain05."
+    },
+    {
+      "requirement": "Supported outbox, dedupe/readback, offline and drift",
+      "assessment": "Partial:03-S1",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:833",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:958",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:1041",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:1105"
+      ],
+      "detail": "Separate human-visible comments and guarded metadata journaled before HTTP, stable operation identity, readback and seven-day comment retry refusal. Original admission remains unchanged during external amendments or closure. Current availability recovery is incomplete."
+    },
+    {
+      "requirement": "Configuration/schema and migration boundary",
+      "assessment": "Explicitly limited",
+      "source": [
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/kata.rs:64",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/src/main.rs:53",
+        "/data02/home/philip.yang/workspace/corenius-sqlite03-kata/crates/sqlite-controller/README.md:355"
+      ],
+      "detail": "Additive kata-v1 tables preserve user_version1/2; matching retained config required on this build, no historical source import; older binaries are not fenced by version bump and downgrade is explicitly unsupported. No broader migration compatibility inferred."
+    }
+  ],
+  "scope_creep": "No material unrelated expansion identified; native642 correction unchanged and remains ticket04 obligation.",
+  "evidence_assessment": {
+    "integrity": "Eight29-file archives match manifests; frozen29 match source commit/worktree and final covering/terminal manifests. Sealed RED25-file archive equals base. Evidence-only tip has empty product delta. No inspected integrity mismatch.",
+    "actual_behavior": "Pinned Kata0.24/b70a430 daemon public API traces/fixtures; real metadata/comment effects and intentional actual reply discard. Final public fixture and clean-parent qualification record PASS with retained owned-process terminal records.",
+    "composition": "Historical69 gate (including native25) predates four changed files. Final affected40 plus clean-parent/fmt/strictClippy/normal build is accurately composed, not final-source69. Root final full gate remains running at review closure.",
+    "red_classification": "Historical sealed base/public-driver pair, genuine alias RED, and explicitly declared unlinked regression-source variant retained separately from unsealed earlier source history/setup failures. No unsealed run promoted into exact-source proof."
+  },
+  "limits": [
+    "No tests, native processes, daemons or model calls launched; finding is source-based.",
+    "No credential files read, upstream calls, checkout edits, Git ref changes, tmux/resource cleanup or helpers. Only assigned three external review files written.",
+    "Source projections and context inspected; no independent new linked-task, old-binary migration or composed native/Kata fixture claimed.",
+    "Parent owns acceptance. Prior02/adjudication reports unchanged; no native retirement, runtime lead replacement completion, assembled or live PASS inferred."
+  ]
+}

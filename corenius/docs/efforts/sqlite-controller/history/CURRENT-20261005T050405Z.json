@@ -1,0 +1,200 @@
+{
+  "version": "happy-path-4",
+  "observed_at": "2026-10-05T05:02:13.668722+00:00",
+  "coordinator": "/root",
+  "writer": "/root/sqlite06_replacement_launch",
+  "writer_state": "Sole freshlauncher ACKed; reviewedoptions committed6f074c3; ACTUAL start running exec58284",
+  "thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+  "source": "6f074c3",
+  "tickets": {
+    "01": "accepted",
+    "02": "accepted",
+    "03": "accepted",
+    "04": "accepted",
+    "05": "unaccepted; extra C1/C2 round consumed; scoped product checks pass, fixture timing finding OPEN",
+    "06": "actual disposable live happy-path running; broad qualification pending"
+  },
+  "caps": {
+    "05_prior": 3,
+    "05_extra_authorized": 1,
+    "05_extra_used": 1,
+    "02": 3,
+    "04": 3,
+    "EMPTY_diagnostics": 2
+  },
+  "next": "Execute replacement start in corenius-team with explicit surviving Kata reuse; no more prelaunch scaffold/gates",
+  "unknowns": [
+    "original process/session disappearance cause unestablished",
+    "controller restoration and native binding reconciliation pending",
+    "concurrent useful episode overlap and stale-base reintegration unproven",
+    "baseline/mainline qualification pending"
+  ],
+  "deferred": [
+    "crash/replay/oversize/history expansion",
+    "root Insula implementation",
+    "baseline/mainline acceptance"
+  ],
+  "ack": "Explicit actor/thread/tree admission ACK; oldwriter quiescent/completed",
+  "claim": "Existing unexpired logical sqlite-controller-05 claim retained; actual actor admission/ACK bound in this projection.",
+  "mainlead_assignment_notice": {
+    "operation": "64baaff7-4f42-4611-bcb4-04b50a881494",
+    "exit": 0,
+    "state": "queued",
+    "receipt": "01a10a70-e6d3-7170-90b4-6f9e56356986",
+    "presentation": "unknown",
+    "ack": "unknown"
+  },
+  "focused_results": {
+    "C1": "Independent actual candidate PASS75.146s vs frozen baseline RED49.015s (Spec); both runtime topologies tested.",
+    "C2": "Independent actual candidate PASS6.434s vs baseline RED6.327s; current/history/task operator progress privacy checked (Spec/Standards).",
+    "fixture_issue": "Branch654 + Standards confirm Medium presented-only peer wait timing defect in correction_authority.py:37. OPEN; no repair/reset under06.",
+    "qualification": "Scoped product behavior only; reports sealing, full baseline/release still pending."
+  },
+  "pending_gates": [
+    "fresh ordinary literal reallead/worker exactverificationacceptanceFF path in corenius-team",
+    "source-bound two useful realworker episode overlap/nativeclients/staleintegration",
+    "fullbaseline hardening/sourcefreeze/integration/release later"
+  ],
+  "context": {
+    "action": "Fresh non-inheriting launcher after123724-token safe-boundary handoff",
+    "prior_input": 123724,
+    "prior_cached": 121600,
+    "prior_output": 2684,
+    "window": 258400,
+    "current_first_request": "pending measurement",
+    "cap_reset": false
+  },
+  "last_writer": {
+    "actor": "/root/sqlite06_restore_trial",
+    "thread": "01a10a5b-b86f-7953-a73c-059d7e05de87",
+    "state": "completed/quiescent; all4r2services exited-15; source2dirtyfiles sealed",
+    "handoff_sha256": "f440f4c404fc65afc87b4494439dd263837e45980c31ac4096e4ea4d66f5dfdd"
+  },
+  "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
+  "projection_kind": "coordinator-owned manual canonical projection; product controller projection qualification remains pending",
+  "controller_event_cursor": 114,
+  "retention": {
+    "audit_sha256": "ac23bf163615b7d95ed78ad7448f0c800eac531b535da35a43d1166e4ae3b76a",
+    "crate_inputs": 50,
+    "archives": 7,
+    "members": 1931,
+    "original_birth_ids": 32,
+    "same_birth_live": 0,
+    "unknown_reads": 0,
+    "historical_red_script_pins": "Final reproducer hash is retrospective; original logs/source binary retained; independent focused checks adjudicate cause."
+  },
+  "trial_authority": "c9 happy-path kickoff; prepare missing links now, actual model input after root scoped disposition",
+  "scoped_disposition": "evidence/05/c1c2-extra1/independent/root-disposition.json",
+  "happy_path_blocker": "Old runtime ownership lost; fenced quarantine recorded. Fresh replacement in corenius-team admitted; literal trial not launched yet.",
+  "next_executable_attachment": "tmux attach -t corenius-team",
+  "next_launch": {
+    "cwd": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+    "command": "python3 tools/agents/sqlite_baseline.py start --session corenius-team --reuse-kata /tmp/cb-20261005T040926Z-c8403c/kata.json --target-dir /data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/target",
+    "state": "ACTUALstart executed, processrunning exec58284; manifest/runpending build"
+  },
+  "relay": {
+    "source": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
+    "test": "c0f22e117fdf40e80c1a00ed885e7be2e46167df2795f6a08fdb7ce3b049d396",
+    "S1": "Resolved: independent3/3 privacy/routing/authority +author2/2 actualexit0; runtimecanaries0/2 retained; exacthashesunchanged.",
+    "S2": "Confirmed deadline-before-read/lateEOF bookkeeping gap; hardeningOPEN/prototype-nonblocking; strict180s wallnotproven.",
+    "actual_live_provider": "HTTP200/response.completed/gpt6-sol/26input11output2.605s, safe receipt929d0023"
+  },
+  "trial": {
+    "run": "/tmp/cb-20261005T040926Z-c8403c",
+    "session": "corenius-team",
+    "lead_thread": "01a10a40-f217-75a1-8d26-88b790b84e54",
+    "controller_ref_base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+    "current_observation": {
+      "observed_at": "2026-10-05T04:24:56.630511+00:00",
+      "state": "historical last successful controller RPC; no current liveness claim",
+      "cursor": 114,
+      "occupied_slots": 2,
+      "tasks": {
+        "solo": "landed",
+        "a": "active",
+        "b": "submitted"
+      },
+      "physical_ref": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9"
+    },
+    "initial_failure": {
+      "run": "/tmp/cb-20261005T040718Z-c23b16",
+      "tested_outer_exit": 1,
+      "cause": "Kata fuzzy duplicate-title guard409",
+      "disposition": "Preserved separately; force_new one-variable real API200 fix173053b"
+    },
+    "baseline_qualified": false,
+    "last_observed_phase": "solo actualFF ec49f779; two a/b attempts running from samebase; slots2 atcursor95",
+    "provider_failure": {
+      "attempt": "0a42d7cc-1d6a-4296-8aef-fde18eacdc2f",
+      "thread": "01a10a47-a659-7973-8d84-25d45945c3af",
+      "turn": "01a10a47-ba18-76f3-90c6-42876c28ceb7",
+      "kind": "serverOverloaded",
+      "public_message": "Selected model is at capacity. Please try a different model.",
+      "source": "sole author selected public runtime terminal metadata",
+      "ack": "author identified supported lead-scoped codex_turn; root authorized ONE recovery",
+      "retry_disposition": "same attempt/binding/model; no active/unknown start; lead idle; existing literal input; no duplicate runtime/new attempt or b interruption",
+      "automatic_retry": false,
+      "correction_disposition": "Literal delivered; native lead completed. Gateway command allowlist lacks codex_turn; no new a operation. Root admitted minimal guarded tool exposure with focused causal tests; no recovery credit."
+    },
+    "original_session": "corenius-baseline-20261005T040926Z-c8403c",
+    "session_directive": "Explicit owner says use corenius-team; no competing session",
+    "discontinuity": {
+      "observed_at": "2026-10-05T04:26:49.726656+00:00",
+      "missing_original": [
+        "controller704750",
+        "relay699556",
+        "workers699592",
+        "controlplanes702025",
+        "gateway706499",
+        "lead706553"
+      ],
+      "survivors": [
+        "Kata699450",
+        "dashboard706775"
+      ],
+      "original_namespace_births": "Author verified lead/a/b app/executor namespace init births absent; no source edits",
+      "cause": "unknown; root/author/reviewer issued no stop/move/cleanup",
+      "correction_credit": "literal ingress and lead terminal observed; new a episode/ack/applied NOT established",
+      "state": "Actual supervised native_lookup refused lost ownership; originaldeployment quarantined, no bypass",
+      "baseline_qualified": false
+    },
+    "restoration": {
+      "source": "e1a398ced81fc682672d2177f88c5b04fa51e448",
+      "controller_binary_sha256": "46e0613f2871bf081b2bddea3c73638f09ee93331fc7c7b9cdfa30aba9a8073c",
+      "supervisor_binary_sha256": "5ae38bece6a876633ad6cb60f1073646cc578bdee165927ec2c7f80a5c143b72",
+      "same_deployment": "c8403c",
+      "original_manifest": "173053b/645554ba retained unchanged",
+      "first_service": "trial-r2-relay @114/%124, bind EADDRINUSE exit1 preserved; no live listener prechecked; stale inode retained before corrected launch",
+      "current_runtime": "All4ownedr2services exited-15 afterbirth checks; originalKata survives; olddeployment quarantined",
+      "actual_result": "Controller RPC was restored, but lead ownership lost/qualification_unknown/ui_input_ready=false. Exact supervisor908887a6 unknown, PID reconstruction refused. No new turn.",
+      "disposition": "Root admits fresh isolated replacement inside corenius-team; gracefully stop only positively owned r2services, retain panes/receipts; keep originalKata"
+    },
+    "replacement": {
+      "state": "admitted; source/command/newrunpending",
+      "session": "corenius-team",
+      "Kata": "reuse explicit surviving originalinstance, newproject not oldtaskstate",
+      "old_run": "/tmp/cb-20261005T040926Z-c8403c",
+      "old_ref": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+      "no_new_view_actors": true
+    }
+  },
+  "operator_session": "corenius-team",
+  "public_exports": {
+    "controller_snapshot_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/controller-snapshot.json",
+    "kata_snapshot_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/kata-snapshot.json",
+    "runtime_bindings_path": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/public/runtime-bindings.json",
+    "observed_at": "2026-10-05T04:32:24.807885+00:00",
+    "status": "controller/native unavailable; surviving Kata actual public observation"
+  },
+  "gateway_link": {
+    "base": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+    "source_pin": "ad37c0cfa87d28d484c7928e8311ccbe0bd95caf786a8b0d5df0d7a24a82e869",
+    "test_pin": "6e22c811c40718578e2901f86cb6357fa807cace082edd36b6403b63eed11570",
+    "source_status": "Exact reviewed2files committed e1a398ce; clean",
+    "author_results": "RED101/GREEN0/affected9tests0",
+    "independent_results": "Fresh affected9tests actualexit0; no scopedblockingfinding",
+    "limits": "No restored native runtime/worker application or baselinequalification proof"
+  }
+}

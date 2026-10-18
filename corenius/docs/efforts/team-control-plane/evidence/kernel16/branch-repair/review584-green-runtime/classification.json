@@ -1,0 +1,30 @@
+{
+  "status": "session96963 terminal0 realTemporal cancelledreport/accept refusal",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "f094f48891e28746eb9236c11557cbd881530a495064053faa0b2c1f31079c1d"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "kernel16-cancelled-measured-candidate-43cf9303-a692-4c85-9548-41b2a84b9ad9/cancelled-report-proof.json",
+      "sha256": "e7c75c4829ee859d392f5a35e907ece024b815c994b8b76c656910d40e31a94c"
+    },
+    {
+      "path": "kernel16-cancelled-measured-candidate-43cf9303-a692-4c85-9548-41b2a84b9ad9/cancelled-sdk-fenced-drain-history.json",
+      "sha256": "027b3a846a2a037264e48eec8fe42b5bc88bd270a8ad1e7f865553bbea98dacb"
+    },
+    {
+      "path": "kernel16-assembled-pre-release-usage-a6852241-30e9-43fb-8406-e65bbc9628ee/operation-usage-before-release.json",
+      "sha256": "97118d07c84013f8269155919387c5ad360960ffe30040f63095cbd21cb97c43"
+    }
+  ],
+  "acceptance": "focused only; fullmatrix and reviews pending"
+}

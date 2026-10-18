@@ -1,0 +1,17 @@
+{
+  "qualification": "TEST consumer only: bounded pages/exact scoped digest+byte reference retrieval preserves original65536B text equality/assertions/deadlines;86 original failure retained,87 focused actual0. No product publication/fence changes.",
+  "records": [
+    {
+      "run": "repair2-86-kata-runtime-regression",
+      "original_source_archive_sha256": "2f9d29f875645c3039211a86156eaf83df02b3a44d56fa6fcacd4d77b178f701",
+      "retained_driver": "kata-protocol-driver86.py",
+      "sha256": "caad56e4847dc1b470e621974962b4d999d96ef2700238bf4d10724e568975aa"
+    },
+    {
+      "run": "repair2-87-kata-progress-consumer",
+      "original_source_archive_sha256": "a0646780eb03418ef09d582204f7e7999fd7163f27bf5e78b8952e493080eb44",
+      "retained_driver": "kata-protocol-driver87.py",
+      "sha256": "06e10df931bd62840c12619085b7db2e62a86478837c56144a069967ed8ea7d1"
+    }
+  ]
+}

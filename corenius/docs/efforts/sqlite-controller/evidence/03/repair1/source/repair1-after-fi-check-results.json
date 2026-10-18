@@ -1,0 +1,64 @@
+[
+  {
+    "check": "default-feature",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--test",
+      "kata",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "returncode": 0,
+    "seconds": 1.0684675389202312
+  },
+  {
+    "check": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--check"
+    ],
+    "returncode": 0,
+    "seconds": 0.246765892021358
+  },
+  {
+    "check": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--all-targets",
+      "--features",
+      "fault-injection",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "returncode": 0,
+    "seconds": 1.2745553189888597
+  },
+  {
+    "check": "build",
+    "command": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline"
+    ],
+    "returncode": 0,
+    "seconds": 1.0844697849825025
+  }
+]

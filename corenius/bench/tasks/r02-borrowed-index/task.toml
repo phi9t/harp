@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/r02-borrowed-index"
+description = "Own parsed index entries instead of borrowing a temporary"
+
+[metadata]
+track = "R"
+level = "S"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cargo test --offline"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

@@ -1,0 +1,18 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.17s
+     Running tests/artifacts.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/artifacts-6b4cc15f8fc222e4)
+
+running 1 test
+
+thread 'repeated_failed_report_hash_requires_each_exact_charged_verification_cycle' (1069068) panicked at tests/artifacts.rs:2098:88:
+called `Result::unwrap()` on an `Err` value: NotPresent
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repeated_failed_report_hash_requires_each_exact_charged_verification_cycle ... FAILED
+
+failures:
+
+failures:
+    repeated_failed_report_hash_requires_each_exact_charged_verification_cycle
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.48s
+
+error: test failed, to rerun pass `--test artifacts`

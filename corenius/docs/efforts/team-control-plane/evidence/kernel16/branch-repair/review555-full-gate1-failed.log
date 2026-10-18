@@ -1,0 +1,73 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.60s
+     Running unittests src/lib.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 9 tests
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::foreign_or_unproven_observer_frames_cannot_classify_original_pids ... ok
+test supervisor::observation_tests::membership_errors_retain_structured_provenance_and_disappearance_semantics ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+test supervisor::observation_tests::only_certified_original_whole_group_finalization_proves_exit ... ok
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+test temporal::wait_wire_tests::typed_same_uuid_preserves_both_protocols_through_rollover_payload ... ok
+test temporal::wait_wire_tests::v1_admission_wait_roundtrips_without_changing_wire_shape ... ok
+test supervisor::observation_tests::whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/main.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-3c3505c360800375)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/artifacts.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/artifacts-6b4cc15f8fc222e4)
+
+running 11 tests
+ticket11 integration first=65133bd2fdf6ccee1a49bd3abb9d20c78c564937 tree=b04b15949e427f8f5d1fe00f6897e6ee8583d5c6 base=a484762ae69b1dd6d73a81a12f39b1253ee00d13 changed=566e26a0d4e9b32bb4a6ffe4d0995c01465588b2 tree=9a14d110bfc119b637c9682a9d28d5b2ab9659df base=b08c98bef9836c6a03eaa025e7d1789b3c91335c
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+ticket11 real_git_pg task=59dd8b10-7616-4d01-b3b5-5b51bc9e569d first_commit=9ff2853f2a94124b50653592816ab8daca8cbdc9 first_tree=d6557d9fe1b9a641b4ee252acab136ca97e6ca5d first_base=c4059386b70171e50dab89289a979eff643aec3d first_artifact=45185912a4884c873fea97cc8cc91666a89f69ffd057d2df8b98e2582753ea52 first_logs=3b80ea02be4c24b77b3ee7d4beefbe9ca1f3270279bbde710751025a2e9ac51b new_commit=97249d02800808204ec82e20a8e07a19bd2f3fbf new_tree=9a28de91917846619ccb976493b56a13e5409793 new_base=5be54848be65502c1f147174ce11fa745e687f1a new_artifact=e741b80c0ca4a7b1aa4a012281ed1838ca29a897a6acc6ed50cc67bedb274124 new_logs=66db851ecaa6ba5912340c5bc837b75f824c0b8149be3328e3169a5b862d26ba accepted_candidate=42cd72a8e04b661370b83ba24593f50eda64b46879fe31aa3097ccc8efdac009 accepted_report=fbf8292b2775ae356a921c780100a6ec76c129695e36ed499dd4d5fbe08861a1
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+ticket11 task=e1a9c0da-f0ea-42d8-83a1-d048de12aedf epoch=20b8fbdc-9c6a-4000-b5a8-f26c49fe808a candidate=9bc709bc10eb40587d6eff3eca8bbb7d2e096b68608fb5d009b3744bb0261f06 artifact=387b75ea1990ff5f32d97d80a9d6e90de0cb7012a40b9da0404987c1c9794037
+ticket11 verification=31e7720ce6f835693df0c4ccc83fd59bf51534c6dc5a8edc7c61fa7752bb8512
+test exact_independent_verification_and_explicit_acceptance ... ok
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+test verifier_credential_has_no_lead_execution_authority ... ok
+test repeated_failed_report_hash_requires_each_exact_charged_verification_cycle ... ok
+test verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.13s
+
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 13 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... ok
+test confirmed_episode_effect_cannot_borrow_unused_workspace_stop ... ok
+test colliding_episode_and_admission_waits_drive_both_protocols ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test foreign_task_episode_uuid_cannot_hijack_legacy_admission_wait ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+
+thread 'legacy_and_imported_episode_cannot_share_one_physical_reservation' (782964) panicked at tests/assembled_cancellation.rs:1134:58:
+called `Result::unwrap()` on an `Err` value: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... FAILED
+test paused_prepared_episode_remains_guarded_workflow_progress ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test stopped_launched_episode_retains_workspace_until_monitor_result_is_durable ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+
+failures:
+
+failures:
+    legacy_and_imported_episode_cannot_share_one_physical_reservation
+
+test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.68s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-04T00:38:54.741069+00:00",
+  "ticket": 26,
+  "allocation": "post-architecture candidate-import2; original rounds1-3 and allocation1 exhausted/rejected",
+  "worker": "/root/intent26_candidate_import2_author",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-candidate-import2",
+  "branch": "codex-intent26/candidate-import2",
+  "base": "29bd30a38c6253c3144756323eee6b78fca89699",
+  "canonical_assignment": "docs/efforts/team-control-plane/decisions/20261004-intent26-candidate-import-allocation2.md",
+  "starting_source": "exact22 rejected allocation1 source postimages after all root/base preimage checks",
+  "former_author_trees_remain_frozen": true,
+  "max_top_level_cargo_tests": 6,
+  "per_command_timeout_seconds": 900,
+  "cumulative_compile_test_fmt_lint_seconds": 1800,
+  "exclusive_resource_owner": "new worker; root no overlapping Cargo/PostgreSQL until explicit disposition",
+  "conformance_passes": 1,
+  "automatic_repair_loop": false,
+  "provider_temporal_remote_or_fullgate_runs_authorized": false,
+  "source_integrated": false,
+  "ticket_accepted": false,
+  "landed": false
+}

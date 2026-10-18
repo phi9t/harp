@@ -1,0 +1,103 @@
+{
+  "requested_by": "user: kill the checkpoints",
+  "utc": "2026-10-07T01:18:38.082761+00:00",
+  "files": [
+    {
+      "path": "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint/step-10/.metadata",
+      "bytes": 1342930,
+      "allocated_bytes": 1343488,
+      "sha256": "a0a3c16ebb6c5096117086d0bd144f1a3a01be1c0b353fe576d779407566fb12",
+      "hash_source": "pre-deletion verified-result.json"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint/step-10/__0_0.distcp",
+      "bytes": 10477183354,
+      "allocated_bytes": 10477228032,
+      "sha256": "7841393748628dc33f5187b7d538caeffcc765792370f89c546183ad5fff0437",
+      "hash_source": "pre-deletion verified-result.json"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint/step-10/__1_0.distcp",
+      "bytes": 11421082092,
+      "allocated_bytes": 11421134848,
+      "sha256": "fd8f23269db09eebf9d28238503674fd0463a8773ed38a6bacfc4d56672ca1e9",
+      "hash_source": "pre-deletion verified-result.json"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint/step-20/.metadata",
+      "bytes": 1342930,
+      "allocated_bytes": 1343488,
+      "sha256": "c2acd23dd762c2619669eee4c9519aba5f0f34e7b5c0a0b9f930e61e4cef9d82",
+      "hash_source": "pre-deletion verified-result.json"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint/step-20/__0_0.distcp",
+      "bytes": 10477182714,
+      "allocated_bytes": 10477219840,
+      "sha256": "60fba691600c128861f42d467c8f8c8ebccac4bc958e5f43df46fbeecba8786f",
+      "hash_source": "pre-deletion verified-result.json"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint/step-20/__1_0.distcp",
+      "bytes": 11421084140,
+      "allocated_bytes": 11421122560,
+      "sha256": "c3ccb0f1e3706bb05a338494f1ffe4678e662d0deee0e10f6fc4613650383665",
+      "hash_source": "pre-deletion verified-result.json"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/global_step_2/data.pt",
+      "bytes": 7316,
+      "allocated_bytes": 8192,
+      "sha256": "1c4854ff5932c609d8b2b6ebb8f4030609039ffb2ad142f74f80020439109fd1",
+      "hash_source": "deletion inventory"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/global_step_2/step-2/.metadata",
+      "bytes": 1175607,
+      "allocated_bytes": 1179648,
+      "sha256": "3a035c07423a29f0b65776ef4cefcf3fe5655a19ed81f7e7254bcc571f36ed9b",
+      "hash_source": "deletion inventory"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/global_step_2/step-2/__0_0.distcp",
+      "bytes": 7780468328,
+      "allocated_bytes": 7780478976,
+      "sha256": "00f8b559c4291a3076a228725b9807238f91ea0c0fb6faa3a0aeda229b100087",
+      "hash_source": "deletion inventory"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/global_step_4/data.pt",
+      "bytes": 7316,
+      "allocated_bytes": 8192,
+      "sha256": "2e0ccda3bbdab0254ab0e8d418530d2a30156190fdb925b507daa0eebb552ae9",
+      "hash_source": "deletion inventory"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/global_step_4/step-4/.metadata",
+      "bytes": 1175607,
+      "allocated_bytes": 1179648,
+      "sha256": "9731cc1edfac21bc5d1db7821dd6418e9dd50860917eafeeaeb28172882addf5",
+      "hash_source": "deletion inventory"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/global_step_4/step-4/__0_0.distcp",
+      "bytes": 7780468328,
+      "allocated_bytes": 7780478976,
+      "sha256": "e3d5b777101afb0bd3851f05231b71e09456afa99136e7b466e3b925c5c3cf09",
+      "hash_source": "deletion inventory"
+    },
+    {
+      "path": "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints/latest_checkpointed_iteration.txt",
+      "bytes": 1,
+      "allocated_bytes": 4096,
+      "sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "hash_source": "deletion inventory"
+    }
+  ],
+  "deleted_roots": [
+    "/data02/home/philip.yang/workspace/torchtitan/.worktrees/qwen3-cpt-insula/experiments/qwen3_cpt_insula/results/live/train/checkpoint",
+    "/data02/home/philip.yang/workspace/verl.worktrees/eb6b-qwen3-grpo/.runtime/run/checkpoints"
+  ],
+  "allocated_bytes": 59362729984,
+  "logical_bytes": 59362520663
+}

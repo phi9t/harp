@@ -1,0 +1,167 @@
+{
+  "status": "historical prelaunch round0 CHANGES REQUIRED; never admitted/launched",
+  "records": [
+    {
+      "original_path": "tools/probes/test_trae_candidate.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/00-test_trae_candidate.py",
+      "sha256": "3daddf2b65885eece36d81dd2a04430c9447d951a6fd2ae631bd61fcf1c10db3",
+      "bytes": 1360
+    },
+    {
+      "original_path": "tools/probes/test_trae_inventory.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/01-test_trae_inventory.py",
+      "sha256": "4da0304f43b0c183e7ac72d71fcb83ab6341f73eb750eca082e13d01724d1838",
+      "bytes": 4133
+    },
+    {
+      "original_path": "tools/probes/test_trae_namespace.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/02-test_trae_namespace.py",
+      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a",
+      "bytes": 2767
+    },
+    {
+      "original_path": "tools/probes/test_trae_round.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/03-test_trae_round.py",
+      "sha256": "0c3402b6e5400ef8ee0ea88fb76f01adc6e998022dc58a46ae295cd6eaeaeaaf",
+      "bytes": 6219
+    },
+    {
+      "original_path": "tools/probes/test_trae_synthetic_guard.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/04-test_trae_synthetic_guard.py",
+      "sha256": "7884adc86cb888c14679597249f164fa5b10413b1cb575388fb4febd723b8657",
+      "bytes": 6150
+    },
+    {
+      "original_path": "tools/probes/test_trae_transport.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/05-test_trae_transport.py",
+      "sha256": "0edca413d7ab7e019210be31194f3ff61e4f2e892259fe8f431a7feaa566df6a",
+      "bytes": 7117
+    },
+    {
+      "original_path": "tools/probes/trae_namespace_fixture.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/06-trae_namespace_fixture.py",
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "bytes": 1502
+    },
+    {
+      "original_path": "tools/probes/trae_namespace_supervisor.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/07-trae_namespace_supervisor.py",
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "bytes": 13476
+    },
+    {
+      "original_path": "tools/probes/trae_synthetic_candidate.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/08-trae_synthetic_candidate.py",
+      "sha256": "55b399fc2e2ebc05a8e1448756eeb28ec9acf8374da7b09c0a7ac918466b7c9b",
+      "bytes": 1948
+    },
+    {
+      "original_path": "tools/probes/trae_synthetic_candidate.toml",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/09-trae_synthetic_candidate.toml",
+      "sha256": "62472f9c00526067c118ed3345c3bea60e36ecf79ecfaebef94e4e3c42fcbf26",
+      "bytes": 580
+    },
+    {
+      "original_path": "tools/probes/trae_synthetic_guard.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/10-trae_synthetic_guard.py",
+      "sha256": "99ef23a101efa15214497d886ae36da7b3e23dacafdfb028a6f1d4a59a973556",
+      "bytes": 25293
+    },
+    {
+      "original_path": "docs/efforts/team-control-plane/evidence/20261003-trae-budget-inventory-repair.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/11-20261003-trae-budget-inventory-repair.json",
+      "sha256": "b596c29a653a7b82559f7ff8a77acc8aae33f54a6ca9fa65426920aea2393548",
+      "bytes": 3442
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-green.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/12-actual-host-green.log.txt",
+      "sha256": "c6d92f0d84f2b03647abdbdcfc8bed8b68bc6e4c52fb3bb4eea49eabfc5c4cb4",
+      "bytes": 98,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/12-actual-host-green.log"
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-red.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/13-actual-host-red.log.txt",
+      "sha256": "e0b6588322e800e89036886a22cac6f5992ddf300cac1eb580a18f1b319a1c14",
+      "bytes": 917,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/13-actual-host-red.log"
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/case.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/14-case.json",
+      "sha256": "6b90f061182e3684632ad45c4594448c4e99a5fb350e527a0f51ae56dd738b30",
+      "bytes": 1199
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stderr.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/15-final-pure-stderr.log.txt",
+      "sha256": "a3368a96609729e1369d057dfefa6cbe072afa751335d84019542cf280c86090",
+      "bytes": 106,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/15-final-pure-stderr.log"
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stdout.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/16-final-pure-stdout.log.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/16-final-pure-stdout.log"
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-terminal.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/17-final-pure-terminal.json",
+      "sha256": "1891ba812db6727b129686cc941ef484a9efcddc22f83aea2d1c3fcdd62fc0b3",
+      "bytes": 324
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/profile-fences-green.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/18-profile-fences-green.log.txt",
+      "sha256": "d679fc3ad8e7eab020d24d55774886d0d611584cafd122a5cfd169337c6f9cbb",
+      "bytes": 106,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/18-profile-fences-green.log"
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/red-source.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/19-red-source.json",
+      "sha256": "8f2a3dd547df321e373385661c22ec6634190911246dd4f10ce984b5cc796152",
+      "bytes": 162
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/status.md",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/20-status.md",
+      "sha256": "fd6851a8119502988d0d9761ef131f5a837401104adbd308f314575ea844594d",
+      "bytes": 3993
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/namespace-failures-scoped-inventory.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/21-namespace-failures-scoped-inventory.json",
+      "sha256": "38a4dceba348c39f82ac7851e566bd0aadf97c1f472260ef7fb6c023ba7c56c6",
+      "bytes": 224
+    },
+    {
+      "original_path": ".scratch/team-control-plane/trae20-budget-repair/namespace-membership-inspection-gap.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/22-namespace-membership-inspection-gap.json",
+      "sha256": "86dd812a375eef5a216bbb73455469bbb40fc6417ab3b2ea50b02848ec0e9b8e",
+      "bytes": 294
+    },
+    {
+      "original_path": "candidate.patch",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/23-candidate.patch",
+      "sha256": "f3ca88feca76a9526fbe38d8aac85150e85fe6058c489079789bb41825723d91",
+      "bytes": 82742
+    },
+    {
+      "original_path": "physical-case.patch",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/24-physical-case.patch",
+      "sha256": "13dd66f4004c40da59f31c314d4838bf222523b3751d487f6b06161441e2b2a2",
+      "bytes": 18966
+    }
+  ],
+  "new_physical_launches": 0,
+  "remaining_proof_blockers": [
+    "exact injected JSONDecodeError asserted",
+    "raw owned.jsonl durably exported before temporary cleanup"
+  ],
+  "runtime_admission": "withheld",
+  "retention_correction": "Raw .log bytes archived byte-exact with .log.txt suffix because repository ignore rules exclude .log; all authoritative mapped paths now normally Git-selectable."
+}

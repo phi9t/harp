@@ -1,0 +1,62 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.59s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-09d8e44e34ad1918)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 2749339, "start_stat": "2749339 (corenius-attemp) R 2749331 2748801 2748801 0 -1 4194304 11 0 0 0 0 0 0 0 20 0 1 0 51688620 1998848 1 18446744073709551615 94521716067200 94521717181472 140730590190320 0 0 0 0 0 0 0 0 0 17 89 0 0 0 0 0 94521717249560 94521717252096 94521739100160 140730590191224 140730590191413 140730590191413 140730590191481 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-cnye6cxb/workers.json", "/tmp/cnr-cnye6cxb/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 2749742, "start_stat": "2749742 (corenius-attemp) R 2749331 2748801 2748801 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51689421 1998848 1 18446744073709551615 93839067814784 93839068929056 140728318124080 0 0 0 0 0 0 0 0 0 17 85 0 0 0 0 0 93839068997144 93839068999680 93839089565696 140728318131816 140728318132017 140728318132017 140728318132089 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-cnye6cxb/controlplanes.json", "/tmp/cnr-cnye6cxb/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 2749974, "start_stat": "2749974 (corenius-sqlite) R 2749331 2748801 2748801 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51690227 4268032 1 18446744073709551615 94037208723856 94037211658736 140734089654240 0 0 0 0 0 0 0 0 0 17 87 0 0 0 0 0 94037211768600 94037211793088 94037238362112 140734089661858 140734089662045 140734089662045 140734089662330 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-cnye6cxb/state.db", "/tmp/cnr-cnye6cxb/controller.sock"], "exit": -9}]
+owned_log controller.stderr ":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+native reconcile 036100ab-466d-465a-af9a-58f7589c8435: remote executor not ready: {"status":"pending"}
+native reconcile 7db6ca4d-0dc8-4969-b64f-86971e538b75: remote executor not ready: {"status":"pending"}
+
+
+
+thread 'configured_native_topologies_are_isolated_and_controller_owned' (2749330) panicked at tests/codex.rs:43:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 116, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 100, in run
+    registry=wait(bound,8)
+             ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 21, in wait
+    raise AssertionError('behavior deadline')
+AssertionError: behavior deadline
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test configured_native_topologies_are_isolated_and_controller_owned ... FAILED
+
+failures:
+
+failures:
+    configured_native_topologies_are_isolated_and_controller_owned
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 25.08s
+
+error: test failed, to rerun pass `--test codex`

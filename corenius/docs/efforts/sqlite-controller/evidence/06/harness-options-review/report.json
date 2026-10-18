@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "at": 1791176247.519209,
+  "reviewer": "/root/sqlite06_replacement_harness_review",
+  "source_base": "e1a398ced81fc682672d2177f88c5b04fa51e448",
+  "diff_sha256": "2181170bc5c0d9f2653ffc90ce092ae883b3140254c72d853bb52fc90d485b17",
+  "diff": {
+    "added": 132,
+    "removed": 23,
+    "paths": [
+      "tools/agents/sqlite_baseline.py",
+      "tools/agents/test_sqlite_baseline.py"
+    ]
+  },
+  "review_input": "Exact copied review JSON and diff; source reconstructed from fixed base plus diff and verified against both supplied SHA256 pins. No mixed-version review.",
+  "standards": {
+    "status": "no blocking finding",
+    "findings": [],
+    "checked": [
+      "One writer preserved; all reviewer outputs are under independent /tmp scratch.",
+      "Scope remains disposable demo; no controller state edits, shared refs, mainline actions or policy changes.",
+      "No new model/provider settings, credentials output, broad qualification gates or scheduler expansion."
+    ]
+  },
+  "spec": {
+    "status": "no blocking finding",
+    "findings": [],
+    "checked": [
+      {
+        "requirement": "Existing session with unique trial windows; no unrelated resize/kill",
+        "source": "tools/agents/sqlite_baseline.py:148,409,472,494,500",
+        "evidence": "Exact session precheck; trial-prefixed new windows; remain-on-exit set on returned new pane/window; resize targets new lead pane; no kill or existing-session option mutation in the diff."
+      },
+      {
+        "requirement": "Exact existing private Kata config and authenticated instance; new explicit project",
+        "source": "tools/agents/sqlite_baseline.py:114,369,378,385",
+        "evidence": "Config SHA256 and private mode checked; source grant file path is explicit and private; Authorization GET /api/v1/instance verifies instance UID and actor before grant copy; new root grant set600; reuse skips Kata launch/token mint and creates a new project/items."
+      },
+      {
+        "requirement": "Separate build directory and manifest binary source identity",
+        "source": "tools/agents/sqlite_baseline.py:177,467,477,489",
+        "evidence": "Requested target directory feeds cargo build and controller pin; child controller/gateway/dashboard and sibling supervisors derive paths from manifest controller path. Manifest retains source commit/tree plus runner/relay binary pins and actual launch options."
+      },
+      {
+        "requirement": "Quarantine/privacy/retained authority",
+        "source": "tools/agents/sqlite_baseline.py:295,451 and pinned diff",
+        "evidence": "Fresh root/state/canonical/intent/attempts remain disposable. No old task/candidate/ref recovery or prior-cap reset added. Token copy is limited to explicit config token_file into new private run file; no host auth/token dump added. Provider/model setup is unchanged by this diff. baseline_qualified stays false."
+      }
+    ]
+  },
+  "verification": {
+    "focused_tests": "focused-tests.json",
+    "actual_exit": 0,
+    "actual_tests": 3,
+    "excluded_test": "Existing literal tmux test creates/kills its own session and was skipped under explicit no tmux mutation boundary. Writer receipt claims4 tests and historicalRED; these were not independently rerun as a4-test/RED suite."
+  },
+  "source_drift": "None in either reviewed source file at final-pins.json timestamp; any later drift is outside this snapshot.",
+  "limits": [
+    "This is one bounded source review; no production controller/service/model/tmux mutation.",
+    "Existing Kata process identity and private grant contents were not inspected; root retains live-launch ownership.",
+    "No demonstration,05,baseline or mainline acceptance claim; no broad hardening matrix."
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "axis": "Standards",
+  "verdict": "PASS",
+  "scope": "repair1 delta and original finding boundaries only",
+  "base": "2dcc4ec34bf7bdd74a6759bcd2f743361083e01c",
+  "source": "61855127702745ae66f588b43f441968213dad01",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "severity": "P3",
+      "kind": "heuristic",
+      "smell": "possible Duplicated Code",
+      "path": "crates/sqlite-controller/src/codex.rs",
+      "line": 862,
+      "related_lines": [
+        1020,
+        1326
+      ],
+      "requirement": "code-review smell baseline; judgment call, not a documented-standard breach",
+      "hunk": "match status {Some(\"inProgress\")=>\"active\",Some(\"completed\"|\"interrupted\"|\"failed\")=>\"terminal\",_=>\"unknown\"}",
+      "finding": "Repair repeats the current_turn projection/status mapping in acknowledgement and history adoption. A shared projection helper could prevent later divergence. Nonblocking and parked for final whole-baseline review; no repair expansion requested."
+    }
+  ],
+  "standards": [
+    "CONSTITUTION.md sections1,4,5",
+    "AGENTS.md one-writer/read-only boundaries",
+    "docs/agents/agentic-engineering.md gated steps6-9 and durable evidence",
+    "code-review complete smell baseline"
+  ],
+  "evidence": {
+    "focused_red": "red-frames.log: 0 passed/6 failed; archived product delta is fault-injection hooks and read-only frame observation only",
+    "focused_green": "green-focused-fixture-corrected.log: 6 passed/0 failed, both topology modes",
+    "typed_projection": "red-typed-projection.log 0/2; green-typed-projection.log 2/0; exact read-only persisted cut",
+    "changed_incarnation": "green-empty-incarnation-negative-final.log 1/0, both topology modes",
+    "hash_check": "Five 25-file source inventories match their archives; gate inventory matches frozen source6185512",
+    "resource_check": "Retained namespace counts42/48/14/7 all whole_process_terminated; service counts50/62/20/8 all terminal exit records",
+    "handoff": "Draft retains failed/interrupted attempts and explicitly limits model-free qualification; no retrospective RED credited"
+  },
+  "qualification": {
+    "status": "NOT_QUALIFIED",
+    "author_full_gate": "exit101; native codex suite16passed/1failed: unknown_native_start_refuses_new_turn_until_reconciled; later lead-thread readiness deadline",
+    "independent_full_gate": "pending per coordinator",
+    "final_evidence_tip": "pending",
+    "source_review_vs_qualification": "Standards PASS is a code-review result, not full-gate success or acceptance"
+  },
+  "limits": [
+    "No tests executed by reviewer",
+    "No checkout files changed",
+    "Spec axis separate",
+    "No paid/live Codex, downstream gateway or TUI qualification",
+    "Original parked Primitive Obsession finding not reopened"
+  ]
+}

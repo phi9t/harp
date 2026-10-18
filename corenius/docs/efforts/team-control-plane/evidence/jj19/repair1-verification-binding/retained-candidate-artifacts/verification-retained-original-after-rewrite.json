@@ -1,0 +1,72 @@
+{
+  "candidate": {
+    "backend": "jj-git",
+    "store": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/identity/.jj/repo/store/git",
+    "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/identity",
+    "operation": "19c17c3ae406887bf55bb6a9caaab9331e06544054d75e9d030ab1a4accf2a6792aede6074e40e4e132d74ccea237b1de4a88828b1df8085bece118e3027d2b8",
+    "change": "zmnokunxpmxtynpmtnqzmwvmynslpwmv",
+    "commit": "7d512b08e4ee53ccd42caaf6a7a87d26d72ec0e3",
+    "tree": "12ce35e9b9c1d3e3a2a2034871dfff2e623724de",
+    "conflict": false,
+    "captured_paths": [
+      ".gitignore",
+      "artifact.txt"
+    ],
+    "base_commit": "28d8b5b16b0e33470c4d57b993bcdd07d925d870"
+  },
+  "specification": {
+    "path": "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/SPEC.md",
+    "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040"
+  },
+  "suite": {
+    "path": "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+    "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4"
+  },
+  "environment": {
+    "values": {
+      "PATH": "/usr/bin:/bin",
+      "JJ_CONFIG": "",
+      "HOME": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/verifier-retained-original-after-rewrite/private-home",
+      "XDG_CONFIG_HOME": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/verifier-retained-original-after-rewrite/config",
+      "XDG_CACHE_HOME": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/verifier-retained-original-after-rewrite/cache",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_TERMINAL_PROMPT": "0",
+      "GIT_EDITOR": "/bin/false",
+      "EDITOR": "/bin/false",
+      "GIT_AUTHOR_NAME": "Fixture",
+      "GIT_AUTHOR_EMAIL": "fixture@example.invalid",
+      "GIT_COMMITTER_NAME": "Fixture",
+      "GIT_COMMITTER_EMAIL": "fixture@example.invalid",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "sha256": "0b5054a14fbffb6c35af2773b3175be065ae1887bb1b7c5260df8e8f95216219"
+  },
+  "command": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+    "--expected",
+    "original"
+  ],
+  "command_event": 58,
+  "result": {
+    "argv": [
+      "/usr/bin/python3",
+      "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+      "--expected",
+      "original"
+    ],
+    "cwd": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/verifier-retained-original-after-rewrite",
+    "exit": 0,
+    "stdout": "{\"artifact_sha256\": \"8bd9dac0f8ad6c8cc97e4ea36dd8c239c8ad9ac486cec60f67f05d7beaa76f5e\", \"expected\": \"original\", \"outcome\": \"passed\"}\n",
+    "stderr": ""
+  },
+  "bundle_sha256": "d2cfc151ba65632564338b9779d70334fcb478e10c99fdae964023ccf8b190ce",
+  "verifier": {
+    "principal": "disposable-independent-verifier-process",
+    "workspace": "/data02/home/philip.yang/devx/tmp/corenius-jj19-_tc4o5wn/verifier-retained-original-after-rewrite",
+    "scope": "evaluation process/environment; same host UID, no authenticated role claim"
+  },
+  "proof_id": "sha256:6366f4d770431212f350e4eca145c82d87f19ccf5d76cf75846005e1220c2ac7"
+}

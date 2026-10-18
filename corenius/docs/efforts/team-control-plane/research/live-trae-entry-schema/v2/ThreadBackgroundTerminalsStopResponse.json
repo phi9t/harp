@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ThreadBackgroundTerminalsStopResponse",
+  "description": "Response for `thread/backgroundTerminals/stop`.",
+  "type": "object",
+  "required": [
+    "outcome"
+  ],
+  "properties": {
+    "outcome": {
+      "$ref": "#/definitions/ThreadBackgroundTerminalStopOutcome"
+    }
+  },
+  "definitions": {
+    "ThreadBackgroundTerminalStopOutcome": {
+      "description": "Outcome of a background-terminal stop request.",
+      "oneOf": [
+        {
+          "description": "The process was live and termination was requested.",
+          "type": "string",
+          "enum": [
+            "terminationRequested"
+          ]
+        },
+        {
+          "description": "The process was no longer tracked by core, so the request is already satisfied.",
+          "type": "string",
+          "enum": [
+            "alreadyExited"
+          ]
+        }
+      ]
+    }
+  }
+}

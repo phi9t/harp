@@ -1,0 +1,68 @@
+{
+  "adopted_at": "2026-10-05T02:52:28.698583+00:00",
+  "owner_code_commit": "b034844ef108580ad9ba3b3d05b77bb859a18077",
+  "owner_docs_commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+  "retained_files": [
+    {
+      "source": "docs/efforts/worker-monitoring/EFFORT.md",
+      "commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+      "source_blob": "784bbaee13d6d8c4bbdc2e0f7d811d9712b3136d",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/EFFORT.md",
+      "sha256": "5fd17ae9f379e30c15a90b2c5fff561971ba46a2ba71ac05143f24b98b0af9d0"
+    },
+    {
+      "source": "docs/efforts/worker-monitoring/OPERATIONS.md",
+      "commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+      "source_blob": "0596e6677fbbf0e12a3d921926f103c7219f9b42",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/OPERATIONS.md",
+      "sha256": "398a8970a58515ddb6b031d5a39ccf2c3857d1eab1ac79e46eb32f6dbfa15fd7"
+    },
+    {
+      "source": "docs/efforts/worker-monitoring/SPEC.md",
+      "commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+      "source_blob": "fc12615bc40b843cc211ef8a9ae8d6cd010b9fdc",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/SPEC.md",
+      "sha256": "f773a906844361521ba88b2a87d2dd46ab2765c67028d5d08d66d493b900778a"
+    },
+    {
+      "source": "docs/efforts/worker-monitoring/evidence/live-review-0002.md",
+      "commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+      "source_blob": "f2dad28b7d27c6f7c96dc34a059f018f3e82766c",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/evidence/live-review-0002.md",
+      "sha256": "a85c70d1d5b502c2b27b88171fce4d28a2362b02748a3dedbd40545febf27493"
+    },
+    {
+      "source": "docs/efforts/worker-monitoring/evidence/wakeup-qualification.md",
+      "commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+      "source_blob": "54b88294df863246752dd001bdfd92c543cd5efe",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/evidence/wakeup-qualification.md",
+      "sha256": "e994a950bb6afa93ace9f77d2e9df60ee06ce53fe56feca555bf0880323e8476"
+    },
+    {
+      "source": "docs/efforts/worker-monitoring/tickets/01-lead-wakeup.md",
+      "commit": "d6dc6742f50397692a0840feb2a98960db26edf7",
+      "source_blob": "747d284a6d7a6d9c6b8c807d3327048e6eeae7d0",
+      "retained": "docs/efforts/sqlite-controller/evidence/05/worker-monitoring/main-lead-bootstrap-owner/tickets/01-lead-wakeup.md",
+      "sha256": "0717eb04fef2e33c22fcd493fb53e6d6ed9b00d626944058093482ac1eb19417"
+    }
+  ],
+  "operational_input_only": true,
+  "code_imported": false,
+  "main_lead": {
+    "thread": "01a10084-dc3a-7743-b0c1-4694d5ecc621",
+    "name": "corenius-frontier",
+    "cadence_minutes": 15,
+    "timer": "corenius-lead-monitor-01a10084.timer",
+    "ledger": "/data02/home/philip.yang/.local/state/corenius/worker-monitoring/01a10084-dc3a-7743-b0c1-4694d5ecc621/observations/monitor.sqlite",
+    "coordinator_will_not_write_ledger_or_manage_timer": true
+  },
+  "implementation_coordinator": {
+    "thread": "01a0f51d-8b62-7930-862f-c4b44d7d0bb7",
+    "name": "corenius-impl",
+    "writer_ownership_retained": true
+  },
+  "owner_reported_qualification": "Standards/Spec/branch647 PASS; fresh focused9/agentPython99 PASS. Retained as owner-source report, not duplicate fresh coordinator execution. Queued receipt01a10827-dc93-7881-951e-8ddbfc9e70b1/wake2d80dd33-f95f-4290-a3e0-63970a1cea43 does not establish presentation/completion or production readiness.",
+  "source_adapter": "Codex transcript format first; TraeCLI future; observed/pinned local format, not portable API assurance",
+  "owner_historical_coverage": "Two20-action reviews through1754 are dated historical owner observations; gap122\u20131262 unchanged, not coordinator coverage credit. Follow current coordinator assignments instead of stale04 runtime.",
+  "integration": "Additive docs for05 shared control-center/current assignment and06 retained production adapter/runner qualification; no owner-branch cherry-pick, copied code or acceptance/cap reset."
+}

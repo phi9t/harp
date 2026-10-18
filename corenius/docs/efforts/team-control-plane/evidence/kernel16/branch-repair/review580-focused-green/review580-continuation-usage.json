@@ -1,0 +1,66 @@
+{
+  "after": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 2,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "86413efe7dfcc05374a53f6e390ed9553f6b1659",
+    "git_path": "SPEC.md",
+    "git_repository": "/tmp/kernel16-20f5eed6-09e6-43f4-8804-43f54fdceced/store",
+    "id": "6d933f74-dd8d-4ddd-895d-6a0d311d7d30",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 8,
+    "max_episodes": 8,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 0
+  },
+  "held": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 2,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "86413efe7dfcc05374a53f6e390ed9553f6b1659",
+    "git_path": "SPEC.md",
+    "git_repository": "/tmp/kernel16-20f5eed6-09e6-43f4-8804-43f54fdceced/store",
+    "id": "6d933f74-dd8d-4ddd-895d-6a0d311d7d30",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 8,
+    "max_episodes": 8,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 2
+  },
+  "held_release": {
+    "Err": "dependency_unmet"
+  },
+  "operation": {
+    "effect_id": "effect-7cfe4ae5-9483-4f18-b695-d311a97ea0a9",
+    "episode": "384f8676-cc3a-41f1-b6e8-e6014b2dceb9",
+    "execution": "b243f6bc-e6ee-446d-82b0-1a747d642f68",
+    "id": "49d06ee4-3775-4d83-b4ea-6c6da5752a68",
+    "state": "confirmed",
+    "thread_id": "thread-4f54de55-56ca-4f9a-8ce1-9ff00c6c7051",
+    "turn_id": "turn-f3d9b3b2-1716-4706-96ce-47d1f4e4e958",
+    "usage": {
+      "kind": "unknown"
+    }
+  },
+  "resolved": {
+    "effect_id": "effect-7cfe4ae5-9483-4f18-b695-d311a97ea0a9",
+    "episode": "384f8676-cc3a-41f1-b6e8-e6014b2dceb9",
+    "execution": "b243f6bc-e6ee-446d-82b0-1a747d642f68",
+    "id": "49d06ee4-3775-4d83-b4ea-6c6da5752a68",
+    "state": "confirmed",
+    "thread_id": "thread-4f54de55-56ca-4f9a-8ce1-9ff00c6c7051",
+    "turn_id": "turn-f3d9b3b2-1716-4706-96ce-47d1f4e4e958",
+    "usage": {
+      "kind": "measured_zero",
+      "receipt_digest": "5de7f4ff23083b03a2c67a0265d59006a6d01ad6a9b96969626a647ef94238dc"
+    }
+  }
+}

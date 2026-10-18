@@ -1,0 +1,260 @@
+[
+  {
+    "path": "sources/codex-rs/login/src/auth/access_token.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/access_token.rs",
+    "sha256": "5a037bf4bd13c2f53033055dc36f32b294c520211277efc4a956afaf3580bdc0",
+    "bytes": 507
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/agent_identity.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/agent_identity.rs",
+    "sha256": "4f446f23ccb25f9c160398a51717b0e86bf8643daa09b4c59da6f266823bcc82",
+    "bytes": 22035
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/auth_headers.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/auth_headers.rs",
+    "sha256": "b36cf260abf2929011a7e02c0ac66c321e92e807266c6dfbb774ca982ca5dc32",
+    "bytes": 868
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/bedrock_access_keys.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/bedrock_access_keys.rs",
+    "sha256": "4c5ecf1f3c697865da9bed6aa13ca9476a87a92a3335a6be1692e3138d45b0db",
+    "bytes": 2055
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/bedrock_api_key.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/bedrock_api_key.rs",
+    "sha256": "1909ec98ceed6927a61c0c896c64be4a4f767fce3668b249b8d209dbc27d7e6a",
+    "bytes": 1671
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/change_state.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/change_state.rs",
+    "sha256": "f87d4d87d8b6737a78931cfff9f0c6b62f32cc87c10e73262c0bc7fc04445288",
+    "bytes": 1185
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/default_client.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/default_client.rs",
+    "sha256": "174e02e439013bf75cccdcfd36b9c23e31d9ee84835a0cc0b1f9d7a33391a064",
+    "bytes": 17919
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/error.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/error.rs",
+    "sha256": "12d57015529750d012adcd005ad6d4b68e7857348310d37b37220180728b39cb",
+    "bytes": 111
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/external_bearer.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/external_bearer.rs",
+    "sha256": "042f90f639dd6b4524fa678540a8d2c68667381d2d8082ed5a097513453c5688",
+    "bytes": 5547
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/manager.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/manager.rs",
+    "sha256": "01cb49b1cca566dddc47def60b52848da0717c7de6a33d8b7160b6fc4cafd881",
+    "bytes": 118938
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/manager/workspace_routing.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/manager/workspace_routing.rs",
+    "sha256": "876f029d3d706efbd7889adc3538f548fa676fc01ed4a59297993b137cc526aa",
+    "bytes": 3528
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/mod.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/mod.rs",
+    "sha256": "5d72ae39f74e2ed944b13bab4dbaab03d5e0ae1a5ec908d14cf4513606fe7b83",
+    "bytes": 723
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/personal_access_token.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/personal_access_token.rs",
+    "sha256": "2aa9bbd06082df493ef6ff799c319e4b634934f7acd170a18ff26a4225d55473",
+    "bytes": 3675
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/revoke.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/revoke.rs",
+    "sha256": "db4490daaeb89bf781d05ceeeb53f2291e4729caea2b62a635d61c98e305223e",
+    "bytes": 6216
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/storage.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/storage.rs",
+    "sha256": "2e95a8998687e926675d41b5d941c3c3546a652c03d9680e6c7385e59bf459af",
+    "bytes": 18076
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/util.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/util.rs",
+    "sha256": "46459bf96c9b4d0c3469636669af44cb05fb1df2c44e4437840c22b5f0ad62ca",
+    "bytes": 1379
+  },
+  {
+    "path": "sources/codex-rs/login/src/auth/workload_identity.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/auth/workload_identity.rs",
+    "sha256": "4cfa92781f345aaab3692926dc33094b2a01191d4c7ea8e6c5fbd7f5b9142e28",
+    "bytes": 16445
+  },
+  {
+    "path": "sources/codex-rs/model-provider-info/src/gateway_oauth.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider-info/src/gateway_oauth.rs",
+    "sha256": "86375403789a3bff4060a3b1081309b8a7ffb9cb952149fd3fb303425cf3fddb",
+    "bytes": 5109
+  },
+  {
+    "path": "sources/codex-rs/model-provider-info/src/lib.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider-info/src/lib.rs",
+    "sha256": "05e44e6232eebebb27d487bd8c665f55f9d5ab08b3997519af7a464960e17f3e",
+    "bytes": 31008
+  },
+  {
+    "path": "sources/codex-rs/login/src/token_data.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/token_data.rs",
+    "sha256": "106f67a299e800a4d1c7fac82a090a07ae5072f401494abe43433baf47152c36",
+    "bytes": 6694
+  },
+  {
+    "path": "sources/codex-rs/core/src/client.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/core/src/client.rs",
+    "sha256": "605ced35cd853fcc4e23f6edd724c96f96f74c736a45e6ea95bf5300f3ab814c",
+    "bytes": 118699
+  },
+  {
+    "path": "sources/codex-rs/core/src/client_common.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/core/src/client_common.rs",
+    "sha256": "0125e520f71798e6c31a1d0147934c0d90288ab9cc4bfce6e8374ac587f2b43a",
+    "bytes": 4820
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/auth.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/auth.rs",
+    "sha256": "261a57b4b00489057372e99704bd7e0f6d4a6532e3407343d29cb980ce0d6b05",
+    "bytes": 3672
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/provider.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/provider.rs",
+    "sha256": "d2dc59b0872b40d60eaed12322e14490f582c03ca92347f1b0cbdd1842744154",
+    "bytes": 1942
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/endpoint/responses.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/endpoint/responses.rs",
+    "sha256": "4f2fff3da4ca3ca9fcfa40ada8e98a0229af296094e03febb4d823f32ef932c8",
+    "bytes": 4961
+  },
+  {
+    "path": "sources/codex-rs/core/tests/suite/auth_recovery_policy.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/core/tests/suite/auth_recovery_policy.rs",
+    "sha256": "2922c039144b30fc8f01b1e80f00fd4d4c37089deece2578883124a1bfe2aa42",
+    "bytes": 3482
+  },
+  {
+    "path": "sources/codex-rs/login/tests/suite/auth_refresh.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/tests/suite/auth_refresh.rs",
+    "sha256": "515d88f4b2a5edbbfb1273406c27078fbc00c695ff63876cb0eac477903698c2",
+    "bytes": 52830
+  },
+  {
+    "path": "sources/codex-rs/model-provider/src/auth.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider/src/auth.rs",
+    "sha256": "1c1042b33df733ffb583d19bd3102c8511ab37b9e5e8cd91a673103321f249d8",
+    "bytes": 30476
+  },
+  {
+    "path": "sources/codex-rs/model-provider/src/provider.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider/src/provider.rs",
+    "sha256": "d9a5a99cf67bad1a3f53ea398ed70b1aa5809fc60ce500ba972dfc9345590e13",
+    "bytes": 55409
+  },
+  {
+    "path": "sources/codex-rs/model-provider/src/workspace_routing.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider/src/workspace_routing.rs",
+    "sha256": "655591ae381d4725eb101155c91669cd776d627252972ec987ae18314b33b2ab",
+    "bytes": 3690
+  },
+  {
+    "path": "sources/codex-rs/model-provider/src/combined_auth.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider/src/combined_auth.rs",
+    "sha256": "358c5c706ec5712ea956d1eccd1fa230074bcffeb36b1f66737311aa491539ef",
+    "bytes": 5044
+  },
+  {
+    "path": "sources/codex-rs/model-provider/src/bearer_auth_provider.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/model-provider/src/bearer_auth_provider.rs",
+    "sha256": "8db9f8a849d0fee2c6c349af69f2335ef403b65a54a4e216eb9f5ea284aa4949",
+    "bytes": 3212
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/requests/responses.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/requests/responses.rs",
+    "sha256": "c3591fe04e65fccc5a1dc2a59cb072cc06ac070803ff579daa49ca1e8dac733f",
+    "bytes": 114
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/requests/headers.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/requests/headers.rs",
+    "sha256": "98c9579a8f17327fda1792ffbf22e8d09241fdc79620c37b699d94cd9637cd47",
+    "bytes": 1444
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/endpoint/session.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/endpoint/session.rs",
+    "sha256": "355cc0f030ab32d21b3e6fcce569a15a59958fecdda85423bf05642497bdb1eb",
+    "bytes": 4446
+  },
+  {
+    "path": "sources/codex-rs/protocol/src/models.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/protocol/src/models.rs",
+    "sha256": "916a595e136f4d7e32ce259f50678ffe818af2ea6a92f54d8628f57bfd4d43e7",
+    "bytes": 159721
+  },
+  {
+    "path": "sources/codex-rs/login/src/oauth/client.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/oauth/client.rs",
+    "sha256": "dd68af96c58415d85521debb6136ebf1ed1f86658a903af4144a3dda6d71ccdd",
+    "bytes": 4407
+  },
+  {
+    "path": "sources/codex-rs/codex-api/src/common.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/codex-api/src/common.rs",
+    "sha256": "1b01d4b2d7784c67e302b38d5b44aaa5ff733d8b575fb776cc4e2902ccb3a14c",
+    "bytes": 14017
+  },
+  {
+    "path": "sources/codex-rs/app-server/src/request_processors/account_processor/workspace_routing.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/app-server/src/request_processors/account_processor/workspace_routing.rs",
+    "sha256": "2d2e1badd55ac8805ac344f8b921ac10d7f6bc0b8b9679108ddb3bb288f09c92",
+    "bytes": 21222
+  },
+  {
+    "path": "sources/codex-rs/tools/src/responses_api.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/tools/src/responses_api.rs",
+    "sha256": "9a58a70c4992cedce5c2292e6e6f145b7174b2eeb730c181cb8e84ac8e44c069",
+    "bytes": 5708
+  },
+  {
+    "path": "sources/codex-rs/backend-client/src/client.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/backend-client/src/client.rs",
+    "sha256": "e1d166ceb5f6f9a433907d74dc91eaa9e3900d2a43e588c21c3e2b149bca0643",
+    "bytes": 47838
+  },
+  {
+    "path": "sources/codex-rs/login/src/server.rs",
+    "url": "https://raw.githubusercontent.com/openai/codex/01fc69f4026735edfdf6789820549727a4867b11/codex-rs/login/src/server.rs",
+    "sha256": "17b49a6da8fb54ec6d43efa037fbd867291c804038329035929322e15de830c8",
+    "bytes": 40850
+  },
+  {
+    "path": "sources/codex-x86_64-unknown-linux-musl.sigstore",
+    "url": "https://github.com/openai/codex/releases/download/rust-v0.159.3/codex-x86_64-unknown-linux-musl.sigstore",
+    "sha256": "db0b167444d067a6e277f71cc05820ac14fca40669bd3aa988aadedfb28cff97",
+    "bytes": 8585
+  }
+]

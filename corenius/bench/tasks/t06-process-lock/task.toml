@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/t06-process-lock"
+description = "Make a two-worker lock atomic"
+
+[metadata]
+track = "T"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "bash tests/test_race.sh"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

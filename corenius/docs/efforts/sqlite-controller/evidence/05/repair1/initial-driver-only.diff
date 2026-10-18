@@ -1,0 +1,15 @@
+--- before/native_registry.py
++++ after/native_registry.py
+@@ -257,7 +257,11 @@
+           assert time.monotonic()<deadline,'original10s initial persistence predicate deadline';time.sleep(.03)
+          (r/'initial-confirm-persistence-diagnostic.json').write_text(json.dumps({'receipt':observation,'samples':samples,'deadline_seconds':10,'driver_change':'poll original turn+clientId predicate instead of truthy thread; no runtime fence change'},indent=2))
+          print('actual_initial_same10s_persistence_predicate_diagnostic',topology,json.dumps({'receipt':observation,'samples':samples,'deadline_seconds':10}),flush=True)
+-        else:native=wait(lambda:fixture_rpc(observer,'thread/read',{'threadId':observation['thread_id'],'includeTurns':True})['thread'],10)
++        else:
++         def original_receipt_persisted():
++          value=fixture_rpc(observer,'thread/read',{'threadId':observation['thread_id'],'includeTurns':True})['thread']
++          return value if any(turn['id']==observation['turn_id'] and any(item.get('clientId')==observation['client_user_message_id'] for item in turn['items']) for turn in value['turns']) else False
++         native=wait(original_receipt_persisted,10)
+         if os.environ.get('CORENIUS_TEST_INITIAL_CONFIRM_ORDERING')=='1':
+          def allowed_snapshot(value):
+           return [{'id':turn['id'],'status':turn.get('status'),'items':[{'id':item.get('id'),'type':item.get('type'),'clientId':item.get('clientId')} for item in turn.get('items',[]) if item.get('type')=='userMessage']} for turn in value['turns']]

@@ -1,0 +1,11 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.08s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+completed genuine SDK repair round1: new candidate, Worker0, Verifier1
+completed genuine SDK repair round2: new candidate, Worker0, Verifier1
+test public_failed_verification_repairs_are_authorized_idempotent_and_bounded ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 11.33s
+

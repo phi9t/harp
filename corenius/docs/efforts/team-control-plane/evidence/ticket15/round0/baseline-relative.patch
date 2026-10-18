@@ -1,0 +1,1522 @@
+diff --git a/crates/team-control-plane/Cargo.lock b/crates/team-control-plane/Cargo.lock
+--- a/crates/team-control-plane/Cargo.lock
++++ b/crates/team-control-plane/Cargo.lock
+@@ -1009,6 +1009,7 @@
+ version = "0.1.0"
+ dependencies = [
+  "axum",
++ "libc",
+  "reqwest",
+  "serde",
+  "serde_json",
+diff --git a/crates/team-control-plane/Cargo.toml b/crates/team-control-plane/Cargo.toml
+--- a/crates/team-control-plane/Cargo.toml
++++ b/crates/team-control-plane/Cargo.toml
+@@ -12,5 +12,6 @@
+ serde_json = "1"
+ uuid = { version = "1", features = ["v4", "serde"] }
+ sha2 = "0.10"
++libc = "=0.2.189"
+ [dev-dependencies]
+ reqwest = { version = "0.12", default-features = false, features = ["json"] }
+diff --git a/crates/team-control-plane/src/lib.rs b/crates/team-control-plane/src/lib.rs
+--- a/crates/team-control-plane/src/lib.rs
++++ b/crates/team-control-plane/src/lib.rs
+@@ -10,3 +10,5 @@
+ 
+ pub mod artifacts;
+ pub mod gateway;
++
++pub mod supervisor;
+diff --git a/crates/team-control-plane/src/main.rs b/crates/team-control-plane/src/main.rs
+--- a/crates/team-control-plane/src/main.rs
++++ b/crates/team-control-plane/src/main.rs
+@@ -18,6 +18,15 @@
+     let dsn = std::env::var("TEAM_CONTROL_PLANE_DSN").map_err(|_| invalid())?;
+     match args.get(1).map(String::as_str) {
+         Some("migrate") => migrate(&dsn).await,
++        Some("supervisor-monitor") => {
++            let epoch = Uuid::parse_str(
++                &std::env::var("TEAM_CONTROL_PLANE_RECOVERY_EPOCH").map_err(|_| invalid())?,
++            )
++            .map_err(|_| invalid())?;
++            let id = Uuid::parse_str(args.get(2).ok_or_else(invalid)?).map_err(|_| invalid())?;
++            team_control_plane::supervisor::run_monitor(Broker::connect(&dsn, epoch).await?, id)
++                .await
++        }
+         Some("bootstrap") => {
+             let epoch = Uuid::parse_str(
+                 &std::env::var("TEAM_CONTROL_PLANE_RECOVERY_EPOCH").map_err(|_| invalid())?,
+diff --git a/crates/team-control-plane/src/storage.rs b/crates/team-control-plane/src/storage.rs
+--- a/crates/team-control-plane/src/storage.rs
++++ b/crates/team-control-plane/src/storage.rs
+@@ -63,6 +63,7 @@
+     let tx = client.transaction().await?;
+     lock(&tx).await?;
+     crate::gateway::migrate(&tx).await?;
++    crate::supervisor::migrate(&tx).await?;
+     tx.commit().await?;
+     Ok(())
+ }
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+new file mode 100644
+--- /dev/null
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -0,0 +1,773 @@
++//! Durable local Git workspaces and independently supervised PID namespaces.
++//! No cgroup enforcement is claimed. Unprovable membership holds capacity.
++use crate::{auth, storage, *};
++use serde::{Deserialize, Serialize};
++use std::{
++    fs,
++    path::{Path, PathBuf},
++    process::Command,
++};
++use tokio_postgres::Transaction;
++use uuid::Uuid;
++fn unavailable() -> Error {
++    crate::domain::err(ErrorCode::TemporarilyUnavailable)
++}
++fn invalid() -> Error {
++    crate::domain::err(ErrorCode::InvalidArgument)
++}
++#[derive(Clone, Copy, Debug)]
++pub enum CreateFault {
++    None,
++    AfterRegister,
++    AfterCreate,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(rename_all = "snake_case")]
++pub enum ExecutionState {
++    Registered,
++    Ready,
++    Starting,
++    Running,
++    Cancelling,
++    Stopped,
++    Quarantined,
++    Deleting,
++    Released,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++pub struct ExecutionHandle {
++    pub id: Uuid,
++    pub path: PathBuf,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct ProcessIdentity {
++    pub pid: u32,
++    pub start_ticks: u64,
++    pub boot_id: String,
++    pub namespace: String,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++pub struct WorkspaceManifest {
++    pub store: PathBuf,
++    pub path: PathBuf,
++    pub base: String,
++    pub attempt: Uuid,
++    pub task: Uuid,
++    pub generation: i64,
++    pub recovery_epoch: Uuid,
++    pub spec_digest: String,
++    pub write_scope: Vec<String>,
++    pub log_path: PathBuf,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++pub struct ExecutionView {
++    pub state: ExecutionState,
++    pub members: Vec<ProcessIdentity>,
++    pub controller: Option<ProcessIdentity>,
++    pub launcher: Option<ProcessIdentity>,
++    pub manifest: WorkspaceManifest,
++}
++#[derive(Clone, Debug)]
++pub struct Supervisor {
++    broker: Broker,
++    root: PathBuf,
++    monitor: PathBuf,
++}
++pub(crate) async fn migrate(tx: &Transaction<'_>) -> Result<()> {
++    let exists: bool = tx
++        .query_one(
++            "SELECT to_regclass('supervisor_schema_version') IS NOT NULL",
++            &[],
++        )
++        .await?
++        .get(0);
++    if !exists {
++        tx.batch_execute(include_str!("../migrations/0005.sql"))
++            .await?;
++    }
++    let rows = tx
++        .query("SELECT version FROM supervisor_schema_version", &[])
++        .await?;
++    if rows.len() != 1 || rows[0].get::<_, i32>(0) != 1 {
++        return Err(crate::domain::err(ErrorCode::IncompatibleSchema));
++    }
++    Ok(())
++}
++fn json<T: Serialize>(v: &T) -> Result<serde_json::Value> {
++    serde_json::to_value(v).map_err(|_| unavailable())
++}
++fn decode<T: serde::de::DeserializeOwned>(v: serde_json::Value) -> Result<T> {
++    serde_json::from_value(v).map_err(|_| unavailable())
++}
++async fn authorize(
++    tx: &Transaction<'_>,
++    broker: &Broker,
++    token: &str,
++    id: Uuid,
++    mutation: bool,
++) -> Result<ExecutionView> {
++    storage::active(tx, broker.epoch).await?;
++    let actor = auth::authenticate(tx, token, broker.epoch).await?;
++    storage::validate_actor_generation(tx, &actor).await?;
++    let row=tx.query_opt("SELECT w.state,w.members,w.controller,w.manifest,t.mission_id,a.generation,a.recovery_epoch,t.generation,w.launcher FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
++    let manifest: WorkspaceManifest = decode(row.get(3))?;
++    actor.scope(row.get(4), Some(manifest.task))?;
++    if mutation && actor.role == Role::Verifier {
++        return Err(crate::domain::err(ErrorCode::Unauthorized));
++    }
++    if row.get::<_, i64>(5) != row.get::<_, i64>(7) || row.get::<_, Uuid>(6) != broker.epoch {
++        return Err(crate::domain::err(ErrorCode::StaleGeneration));
++    }
++    Ok(ExecutionView {
++        state: decode(serde_json::Value::String(row.get(0)))?,
++        members: decode(row.get(1))?,
++        launcher: row
++            .get::<_, Option<serde_json::Value>>(8)
++            .map(decode)
++            .transpose()?,
++        controller: row
++            .get::<_, Option<serde_json::Value>>(2)
++            .map(decode)
++            .transpose()?,
++        manifest,
++    })
++}
++impl Supervisor {
++    pub async fn open(broker: Broker, root: &Path, monitor: &str) -> Result<Self> {
++        if !root.is_absolute() || !Path::new(monitor).is_absolute() {
++            return Err(invalid());
++        }
++        fs::create_dir_all(root).map_err(|_| unavailable())?;
++        let root = fs::canonicalize(root).map_err(|_| unavailable())?;
++        fs::create_dir_all(root.join(".execution-logs")).map_err(|_| unavailable())?;
++        let c = storage::client(&broker.dsn).await?;
++        c.query_one("SELECT version FROM supervisor_schema_version", &[])
++            .await?;
++        Ok(Self {
++            broker,
++            root,
++            monitor: PathBuf::from(monitor),
++        })
++    }
++    pub async fn create_attempt(
++        &self,
++        token: &str,
++        attempt: Uuid,
++        fault: CreateFault,
++    ) -> Result<ExecutionHandle> {
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        storage::active(&tx, self.broker.epoch).await?;
++        let actor = auth::authenticate(&tx, token, self.broker.epoch).await?;
++        storage::validate_actor_generation(&tx, &actor).await?;
++        if !matches!(actor.role, Role::Owner | Role::Lead | Role::Worker) {
++            return Err(crate::domain::err(ErrorCode::Unauthorized));
++        }
++        let r=tx.query_opt("SELECT a.task_id,a.generation,a.recovery_epoch,a.spec_digest,t.mission_id,t.generation,s.git_repository,s.git_commit,s.write_scope FROM attempts a JOIN tasks t ON t.id=a.task_id JOIN task_specs s ON s.task_id=a.task_id AND s.digest=a.spec_digest JOIN reservations z ON z.attempt_id=a.id WHERE a.id=$1 AND z.state='reserved'",&[&attempt]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
++        let task = r.get(0);
++        actor.scope(r.get(4), Some(task))?;
++        if r.get::<_, i64>(1) != r.get::<_, i64>(5) || r.get::<_, Uuid>(2) != self.broker.epoch {
++            return Err(crate::domain::err(ErrorCode::StaleGeneration));
++        }
++        if tx
++            .query_opt(
++                "SELECT id FROM supervised_workspaces WHERE attempt_id=$1",
++                &[&attempt],
++            )
++            .await?
++            .is_some()
++        {
++            return Err(crate::domain::err(ErrorCode::IdempotencyConflict));
++        }
++        let id = Uuid::new_v4();
++        let path = self.root.join(id.to_string());
++        let store = fs::canonicalize(r.get::<_, String>(6)).map_err(|_| invalid())?;
++        let write_scope: Vec<String> = decode(r.get(8))?;
++        if write_scope
++            .iter()
++            .any(|p| !safe_relative(p) || p.split('/').any(|c| c == ".git"))
++        {
++            return Err(invalid());
++        }
++        let manifest = WorkspaceManifest {
++            store,
++            path: path.clone(),
++            base: r.get(7),
++            attempt,
++            task,
++            generation: r.get(1),
++            recovery_epoch: self.broker.epoch,
++            spec_digest: r.get(3),
++            write_scope,
++            log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
++        };
++        tx.execute("INSERT INTO supervised_workspaces(id,attempt_id,manifest,state) VALUES($1,$2,$3,'registered')",&[&id,&attempt,&json(&manifest)?]).await?;
++        tx.commit().await?;
++        if matches!(fault, CreateFault::AfterRegister) {
++            return Ok(ExecutionHandle { id, path });
++        }
++        // Serialize filesystem preparation with deletion/launch reservation. A crash keeps registered state.
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        let v = authorize(&tx, &self.broker, token, id, true).await?;
++        if v.state != ExecutionState::Registered {
++            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
++        }
++        if git(&[
++            "clone",
++            "--no-hardlinks",
++            "--no-local",
++            "--quiet",
++            manifest.store.to_str().ok_or_else(invalid)?,
++            path.to_str().ok_or_else(invalid)?,
++        ])
++        .is_err()
++            || git_at(&path, &["checkout", "--quiet", "--detach", &manifest.base]).is_err()
++        {
++            tx.execute(
++                "UPDATE supervised_workspaces SET state='quarantined' WHERE id=$1",
++                &[&id],
++            )
++            .await?;
++            tx.commit().await?;
++            return Err(unavailable());
++        }
++        for scope in &manifest.write_scope {
++            let p = path.join(scope);
++            if !p.exists() {
++                fs::create_dir_all(&p).map_err(|_| unavailable())?;
++            }
++            if fs::canonicalize(&p).map_err(|_| unavailable())? != p || !p.is_dir() {
++                return Err(invalid());
++            }
++        }
++        fs::File::open(&self.root)
++            .and_then(|f| f.sync_all())
++            .map_err(|_| unavailable())?;
++        if matches!(fault, CreateFault::AfterCreate) {
++            tx.commit().await?;
++            return Ok(ExecutionHandle { id, path });
++        }
++        tx.execute(
++            "UPDATE supervised_workspaces SET state='ready' WHERE id=$1",
++            &[&id],
++        )
++        .await?;
++        tx.commit().await?;
++        Ok(ExecutionHandle { id, path })
++    }
++    pub async fn inspect(&self, token: &str, id: Uuid) -> Result<ExecutionView> {
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        let view = authorize(&tx, &self.broker, token, id, false).await?;
++        tx.commit().await?;
++        Ok(view)
++    }
++    pub async fn start(
++        &self,
++        token: &str,
++        id: Uuid,
++        argv: Vec<String>,
++        seconds: u64,
++    ) -> Result<()> {
++        if argv.is_empty()
++            || argv.iter().any(|s| s.contains('\0'))
++            || seconds == 0
++            || seconds > 86400
++        {
++            return Err(invalid());
++        }
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        let v = authorize(&tx, &self.broker, token, id, true).await?;
++        if v.state != ExecutionState::Ready {
++            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
++        }
++        let limit:i64=tx.query_one("SELECT m.deadline_seconds FROM tasks t JOIN missions m ON m.id=t.mission_id WHERE t.id=$1",&[&v.manifest.task]).await?.get(0);
++        let seconds = i64::try_from(seconds).map_err(|_| invalid())?.min(limit);
++        tx.execute("UPDATE supervised_workspaces SET state='starting',argv=$2,deadline=clock_timestamp()+$3::bigint*interval '1 second' WHERE id=$1",&[&id,&json(&argv)?,&seconds]).await?;
++        tx.commit().await?;
++        use std::os::unix::process::CommandExt;
++        let mut command = Command::new(&self.monitor);
++        command
++            .arg("supervisor-monitor")
++            .arg(id.to_string())
++            .env_clear()
++            .env("TEAM_CONTROL_PLANE_DSN", &self.broker.dsn)
++            .env(
++                "TEAM_CONTROL_PLANE_RECOVERY_EPOCH",
++                self.broker.epoch.to_string(),
++            )
++            .env("PATH", "/usr/bin:/bin")
++            .stdin(std::process::Stdio::null())
++            .stdout(std::process::Stdio::null())
++            .stderr(std::process::Stdio::null());
++        command.process_group(0);
++        let mut child = command.spawn().map_err(|_| unavailable())?;
++        std::thread::spawn(move || {
++            let _ = child.wait();
++        });
++        Ok(())
++    }
++    pub async fn cancel(&self, token: &str, id: Uuid) -> Result<()> {
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        let v = authorize(&tx, &self.broker, token, id, true).await?;
++        if matches!(v.state, ExecutionState::Released | ExecutionState::Deleting) {
++            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
++        }
++        tx.execute("UPDATE supervised_workspaces SET desired_cancel=true,state=CASE WHEN state IN ('running','starting') THEN 'cancelling' ELSE state END WHERE id=$1",&[&id]).await?;
++        tx.commit().await?;
++        self.reconcile(token, id).await?;
++        Ok(())
++    }
++    pub async fn reconcile(&self, token: &str, id: Uuid) -> Result<ExecutionView> {
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        authorize(&tx, &self.broker, token, id, true).await?;
++        reconcile_locked(&tx, id).await?;
++        tx.commit().await?;
++        self.inspect(token, id).await
++    }
++    /// Retained independently of workspace release. Authenticate every log read.
++    pub async fn logs(&self, token: &str, id: Uuid) -> Result<Vec<u8>> {
++        let view = self.inspect(token, id).await?;
++        fs::read(view.manifest.log_path).map_err(|_| unavailable())
++    }
++    pub async fn history(&self, token: &str, id: Uuid) -> Result<Vec<ExecutionView>> {
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        let v = authorize(&tx, &self.broker, token, id, false).await?;
++        let rows=tx.query("SELECT state,members FROM supervised_observations WHERE execution_id=$1 ORDER BY observed_at,id",&[&id]).await?;
++        let mut result = vec![];
++        for r in rows {
++            result.push(ExecutionView {
++                state: decode(serde_json::Value::String(r.get(0)))?,
++                members: decode(r.get(1))?,
++                controller: v.controller.clone(),
++                launcher: v.launcher.clone(),
++                manifest: v.manifest.clone(),
++            });
++        }
++        tx.commit().await?;
++        Ok(result)
++    }
++    pub async fn release(&self, token: &str, id: Uuid) -> Result<()> {
++        let mut c = storage::client(&self.broker.dsn).await?;
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        let v = authorize(&tx, &self.broker, token, id, true).await?;
++        if !matches!(v.state, ExecutionState::Stopped | ExecutionState::Deleting) {
++            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
++        }
++        // Deletion reservation commits before filesystem mutation; starting cannot cross it.
++        tx.execute(
++            "UPDATE supervised_workspaces SET state='deleting' WHERE id=$1",
++            &[&id],
++        )
++        .await?;
++        tx.commit().await?;
++        if v.manifest.path.exists() {
++            fs::remove_dir_all(&v.manifest.path).map_err(|_| unavailable())?;
++        }
++        fs::File::open(&self.root)
++            .and_then(|f| f.sync_all())
++            .map_err(|_| unavailable())?;
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        authorize(&tx, &self.broker, token, id, true).await?;
++        tx.execute(
++            "UPDATE supervised_workspaces SET state='released' WHERE id=$1 AND state='deleting'",
++            &[&id],
++        )
++        .await?;
++        // Only physically proven stop plus completed deletion refunds the concurrent slot.
++        // Attempt/episode admission counters remain consumed.
++        tx.execute("WITH released AS (UPDATE reservations SET state='released' WHERE attempt_id=$1 AND state='reserved' RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)",&[&v.manifest.attempt]).await?;
++        tx.commit().await?;
++        Ok(())
++    }
++}
++fn safe_relative(p: &str) -> bool {
++    !p.is_empty()
++        && Path::new(p)
++            .components()
++            .all(|c| matches!(c, std::path::Component::Normal(_)))
++}
++fn git(args: &[&str]) -> Result<String> {
++    let o = Command::new("/usr/bin/git")
++        .env_clear()
++        .env("PATH", "/usr/bin:/bin")
++        .args(args)
++        .output()
++        .map_err(|_| unavailable())?;
++    if !o.status.success() {
++        return Err(unavailable());
++    }
++    String::from_utf8(o.stdout).map_err(|_| unavailable())
++}
++fn git_at(path: &Path, args: &[&str]) -> Result<String> {
++    let mut a = vec!["-C", path.to_str().ok_or_else(invalid)?];
++    a.extend_from_slice(args);
++    git(&a)
++}
++fn identity(pid: u32) -> std::io::Result<ProcessIdentity> {
++    let p = PathBuf::from(format!("/proc/{pid}"));
++    let stat = fs::read_to_string(p.join("stat"))?;
++    let tail = stat
++        .rsplit_once(')')
++        .ok_or_else(|| std::io::Error::other("malformed stat"))?
++        .1;
++    let fields: Vec<_> = tail.split_whitespace().collect();
++    let start_ticks = fields
++        .get(19)
++        .ok_or_else(|| std::io::Error::other("malformed stat"))?
++        .parse()
++        .map_err(|_| std::io::Error::other("malformed ticks"))?;
++    Ok(ProcessIdentity {
++        pid,
++        start_ticks,
++        boot_id: fs::read_to_string("/proc/sys/kernel/random/boot_id")?
++            .trim()
++            .into(),
++        namespace: fs::read_link(p.join("ns/pid"))?.to_string_lossy().into(),
++    })
++}
++fn alive(p: &ProcessIdentity) -> bool {
++    identity(p.pid).is_ok_and(|i| i == *p)
++        && fs::read_to_string(format!("/proc/{}/stat", p.pid))
++            .ok()
++            .and_then(|s| s.rsplit_once(')').map(|(_, t)| t.trim().starts_with('Z')))
++            .is_some_and(|z| !z)
++}
++fn inventory(namespace: &str) -> Result<Vec<ProcessIdentity>> {
++    use std::os::unix::fs::MetadataExt;
++    let mut members = vec![];
++    for entry in fs::read_dir("/proc").map_err(|_| unavailable())? {
++        let entry = entry.map_err(|_| unavailable())?;
++        let Some(pid) = entry
++            .file_name()
++            .to_str()
++            .and_then(|s| s.parse::<u32>().ok())
++        else {
++            continue;
++        };
++        let meta = match entry.metadata() {
++            Ok(m) => m,
++            Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
++            Err(_) => return Err(unavailable()),
++        };
++        // All descendants retain this host uid: user namespace is fixed and caps dropped.
++        if meta.uid() != unsafe { libc::geteuid() } {
++            continue;
++        }
++        // NSpid is scoped to the host /proc mount. A single component proves the
++        // process is outside every child PID namespace, even if ptrace hides ns links.
++        let status = match fs::read_to_string(entry.path().join("status")) {
++            Ok(s) => s,
++            Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
++            Err(_) => return Err(unavailable()),
++        };
++        let nspid = status.lines().find_map(|l| l.strip_prefix("NSpid:"));
++        if nspid.is_some_and(|n| n.split_whitespace().count() == 1) {
++            continue;
++        }
++        if nspid.is_none() {
++            return Err(unavailable());
++        }
++
++        match identity(pid) {
++            Ok(p) if p.namespace == namespace && alive(&p) => members.push(p),
++            Ok(_) => {}
++            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
++            Err(_) => return Err(unavailable()),
++        }
++    }
++    Ok(members)
++}
++fn signal(p: &ProcessIdentity) -> Result<()> {
++    use std::os::fd::{AsRawFd, FromRawFd};
++    if !alive(p) {
++        return Ok(());
++    }
++    // Open then re-check: PID reuse between observation and pidfd_open cannot target a replacement.
++    let raw = unsafe { libc::syscall(libc::SYS_pidfd_open, p.pid, 0) } as i32;
++    if raw < 0 {
++        return if !alive(p) {
++            Ok(())
++        } else {
++            Err(unavailable())
++        };
++    }
++    let fd = unsafe { std::os::fd::OwnedFd::from_raw_fd(raw) };
++    if !alive(p) {
++        return Ok(());
++    }
++    if unsafe {
++        libc::syscall(
++            libc::SYS_pidfd_send_signal,
++            fd.as_raw_fd(),
++            libc::SIGKILL,
++            std::ptr::null::<libc::siginfo_t>(),
++            0,
++        )
++    } < 0
++        && alive(p)
++    {
++        return Err(unavailable());
++    }
++    Ok(())
++}
++async fn reconcile_locked(tx: &Transaction<'_>, id: Uuid) -> Result<()> {
++    let r=tx.query_one("SELECT state,desired_cancel OR deadline<=clock_timestamp(),init_process,members,controller FROM supervised_workspaces WHERE id=$1 FOR UPDATE",&[&id]).await?;
++    let state: String = r.get(0);
++    let cancel=r.get::<_,Option<bool>>(1).unwrap_or(false)||tx.query_one("SELECT a.generation<>t.generation OR a.recovery_epoch<>d.active_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id CROSS JOIN deployment d WHERE w.id=$1",&[&id]).await?.get::<_,bool>(0);
++    if matches!(
++        state.as_str(),
++        "released" | "deleting" | "stopped" | "quarantined"
++    ) {
++        return Ok(());
++    }
++    let init = r
++        .get::<_, Option<serde_json::Value>>(2)
++        .map(decode::<ProcessIdentity>)
++        .transpose()?;
++    let prior: Vec<ProcessIdentity> = decode(r.get(3))?;
++    let controller = r
++        .get::<_, Option<serde_json::Value>>(4)
++        .map(decode::<ProcessIdentity>)
++        .transpose()?;
++    let (next, members) = if let Some(init) = init {
++        let proof = alive(&init)
++            || prior
++                .iter()
++                .any(|p| p.namespace == init.namespace && alive(p));
++        match inventory(&init.namespace) {
++            Ok(members) if members.is_empty() => ("stopped", members),
++            Ok(members) if proof => {
++                let controller_lost = controller.as_ref().is_none_or(|p| !alive(p));
++                if cancel || controller_lost {
++                    if members.iter().any(|p| signal(p).is_err()) {
++                        ("quarantined", members)
++                    } else {
++                        ("cancelling", members)
++                    }
++                } else {
++                    ("running", members)
++                }
++            }
++            _ => ("quarantined", prior),
++        }
++    } else if state == "registered" || state == "ready" {
++        if cancel || state == "registered" {
++            ("stopped", vec![])
++        } else {
++            ("ready", vec![])
++        }
++    } else {
++        ("quarantined", prior)
++    };
++    if next != state || json(&members)? != r.get::<_, serde_json::Value>(3) {
++        tx.execute("INSERT INTO supervised_observations(id,execution_id,state,members) VALUES($1,$2,$3,$4)",&[&Uuid::new_v4(),&id,&next,&json(&members)?]).await?;
++    }
++    tx.execute("UPDATE supervised_workspaces SET state=$2,members=$3,desired_cancel=desired_cancel OR $4 WHERE id=$1",&[&id,&next,&json(&members)?,&cancel]).await?;
++    Ok(())
++}
++/// Trusted local operator entry point. DSN comes from the environment, never argv/logs.
++/// Workload launch is held by a pipe until its complete namespace identity is durable.
++pub async fn run_monitor(broker: Broker, id: Uuid) -> Result<()> {
++    use std::{
++        io::Write,
++        os::fd::AsRawFd,
++        os::unix::{fs::OpenOptionsExt, process::CommandExt},
++        process::Stdio,
++    };
++    let mut c = storage::client(&broker.dsn).await?;
++    let tx = c.transaction().await?;
++    storage::lock(&tx).await?;
++    storage::active(&tx, broker.epoch).await?;
++    let r=tx.query_one("SELECT w.state,w.manifest,w.argv,w.desired_cancel,w.controller,a.generation,t.generation,a.recovery_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
++    if r.get::<_, String>(0) != "starting"
++        || r.get::<_, bool>(3)
++        || r.get::<_, Option<serde_json::Value>>(4).is_some()
++        || r.get::<_, i64>(5) != r.get::<_, i64>(6)
++        || r.get::<_, Uuid>(7) != broker.epoch
++    {
++        return Err(crate::domain::err(ErrorCode::DependencyUnmet));
++    }
++    let manifest: WorkspaceManifest = decode(r.get(1))?;
++    let argv: Vec<String> = decode(r.get(2))?;
++    let controller = identity(std::process::id()).map_err(|_| unavailable())?;
++    tx.execute(
++        "UPDATE supervised_workspaces SET controller=$2 WHERE id=$1",
++        &[&id, &json(&controller)?],
++    )
++    .await?;
++    tx.commit().await?;
++    // Durable controller claim precedes bwrap spawn. A repeated monitor cannot relaunch.
++    let tx = c.transaction().await?;
++    storage::lock(&tx).await?;
++    let row = tx
++        .query_one(
++            "SELECT state,desired_cancel FROM supervised_workspaces WHERE id=$1 FOR UPDATE",
++            &[&id],
++        )
++        .await?;
++    if row.get::<_, String>(0) != "starting" || row.get::<_, bool>(1) {
++        return Err(crate::domain::err(ErrorCode::DependencyUnmet));
++    }
++    let info_path = manifest.log_path.with_extension("info");
++    let info = fs::OpenOptions::new()
++        .read(true)
++        .write(true)
++        .create_new(true)
++        .mode(0o600)
++        .open(&info_path)
++        .map_err(|_| unavailable())?;
++    // Only this descriptor crosses exec. File is outside all admitted writable mounts.
++    if unsafe { libc::fcntl(info.as_raw_fd(), libc::F_SETFD, 0) } < 0 {
++        return Err(unavailable());
++    }
++    let log = fs::OpenOptions::new()
++        .append(true)
++        .create_new(true)
++        .mode(0o600)
++        .open(&manifest.log_path)
++        .map_err(|_| unavailable())?;
++    let mut command = Command::new("/usr/bin/bwrap");
++    command
++        .env_clear()
++        .env("PATH", "/usr/bin:/bin")
++        .args([
++            "--unshare-user",
++            "--unshare-pid",
++            "--unshare-net",
++            "--unshare-ipc",
++            "--unshare-uts",
++            "--disable-userns",
++            "--new-session",
++            "--die-with-parent",
++            "--cap-drop",
++            "ALL",
++            "--ro-bind",
++            "/usr",
++            "/usr",
++            "--symlink",
++            "usr/bin",
++            "/bin",
++            "--symlink",
++            "usr/lib",
++            "/lib",
++            "--ro-bind",
++            "/lib64",
++            "/lib64",
++            "--proc",
++            "/proc",
++            "--dev",
++            "/dev",
++            "--tmpfs",
++            "/tmp",
++            "--ro-bind",
++        ])
++        .arg(&manifest.path)
++        .arg("/workspace");
++    for scope in &manifest.write_scope {
++        let p = manifest.path.join(scope);
++        if fs::canonicalize(&p).map_err(|_| unavailable())? != p || !p.is_dir() {
++            return Err(invalid());
++        }
++        command
++            .arg("--bind")
++            .arg(p)
++            .arg(format!("/workspace/{scope}"));
++    }
++    command
++        .args(["--chdir", "/workspace", "--block-fd", "0", "--info-fd"])
++        .arg(info.as_raw_fd().to_string())
++        .arg("--")
++        .args(&argv)
++        .stdin(Stdio::piped())
++        .stdout(Stdio::from(log.try_clone().map_err(|_| unavailable())?))
++        .stderr(Stdio::from(log));
++    command.process_group(0);
++    let mut child = command.spawn().map_err(|_| unavailable())?;
++    // Close descriptor in the parent; the child inherited its duplicate.
++    drop(info);
++    let mut init = None;
++    for _ in 0..100 {
++        if let Ok(bytes) = fs::read(&info_path)
++            && let Ok(v) = serde_json::from_slice::<serde_json::Value>(&bytes)
++            && let Some(pid) = v["child-pid"].as_u64()
++        {
++            init = Some(identity(pid as u32).map_err(|_| unavailable())?);
++            break;
++        }
++        if child.try_wait().map_err(|_| unavailable())?.is_some() {
++            break;
++        }
++        std::thread::sleep(std::time::Duration::from_millis(10));
++    }
++    let Some(init) = init else {
++        let _ = child.kill();
++        let _ = child.wait();
++        return Err(unavailable());
++    };
++    if init.namespace == controller.namespace {
++        let _ = child.kill();
++        let _ = child.wait();
++        return Err(unavailable());
++    }
++    tx.execute(
++        "UPDATE supervised_workspaces SET init_process=$2,members=$3,launcher=$4,state='running' WHERE id=$1",
++        &[&id, &json(&init)?, &json(&vec![init.clone()])?, &json(&identity(child.id()).map_err(|_|unavailable())?)?],
++    )
++    .await?;
++    tx.commit().await?;
++    // The workload can only start after this commit. Pipe closure/failure cannot declare stop.
++    child
++        .stdin
++        .take()
++        .ok_or_else(unavailable)?
++        .write_all(b"1")
++        .map_err(|_| unavailable())?;
++    loop {
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        // Recovery epoch rotation uses the same cancellation path.
++        if storage::active(&tx, broker.epoch).await.is_err() {
++            tx.execute(
++                "UPDATE supervised_workspaces SET desired_cancel=true WHERE id=$1",
++                &[&id],
++            )
++            .await?;
++        }
++        reconcile_locked(&tx, id).await?;
++        let state: String = tx
++            .query_one(
++                "SELECT state FROM supervised_workspaces WHERE id=$1",
++                &[&id],
++            )
++            .await?
++            .get(0);
++        tx.commit().await?;
++        if state == "stopped" || state == "quarantined" {
++            break;
++        }
++        let _ = child.try_wait();
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    // Reap launcher; kernel PID namespace shutdown handles setsid descendants.
++    let _ = child.kill();
++    let _ = child.wait();
++    fs::File::open(&manifest.log_path)
++        .and_then(|f| f.sync_all())
++        .map_err(|_| unavailable())?;
++    fs::File::open(&manifest.path)
++        .and_then(|f| f.sync_all())
++        .map_err(|_| unavailable())?;
++    Ok(())
++}
+diff --git a/crates/team-control-plane/migrations/0005.sql b/crates/team-control-plane/migrations/0005.sql
+new file mode 100644
+--- /dev/null
++++ b/crates/team-control-plane/migrations/0005.sql
+@@ -0,0 +1,31 @@
++CREATE TABLE supervisor_schema_version(version integer PRIMARY KEY CHECK(version=1));
++INSERT INTO supervisor_schema_version VALUES(1);
++CREATE TABLE supervised_workspaces(
++ id uuid PRIMARY KEY,
++ attempt_id uuid NOT NULL UNIQUE REFERENCES attempts,
++ manifest jsonb NOT NULL,
++ state text NOT NULL CHECK(state IN ('registered','ready','starting','running','cancelling','stopped','quarantined','deleting','released')),
++ desired_cancel boolean NOT NULL DEFAULT false,
++ deadline timestamptz,
++ argv jsonb,
++ controller jsonb,
++ launcher jsonb,
++ init_process jsonb,
++ members jsonb NOT NULL DEFAULT '[]',
++ created_at timestamptz NOT NULL DEFAULT clock_timestamp()
++);
++CREATE FUNCTION immutable_workspace_manifest() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
++ IF NEW.id<>OLD.id OR NEW.attempt_id<>OLD.attempt_id OR NEW.manifest<>OLD.manifest THEN RAISE EXCEPTION 'immutable workspace manifest'; END IF;
++ RETURN NEW;
++END $$;
++CREATE TRIGGER immutable_workspace_manifest BEFORE UPDATE ON supervised_workspaces FOR EACH ROW EXECUTE FUNCTION immutable_workspace_manifest();
++CREATE TABLE supervised_observations(
++ id uuid PRIMARY KEY,
++ execution_id uuid NOT NULL REFERENCES supervised_workspaces,
++ observed_at timestamptz NOT NULL DEFAULT clock_timestamp(),
++ state text NOT NULL,
++ members jsonb NOT NULL
++);
++CREATE TRIGGER immutable_supervised_observations BEFORE UPDATE OR DELETE ON supervised_observations FOR EACH ROW EXECUTE FUNCTION immutable_record();
++ALTER TABLE reservations DROP CONSTRAINT reservations_state_check;
++ALTER TABLE reservations ADD CONSTRAINT reservations_state_check CHECK(state IN ('reserved','released'));
+diff --git a/crates/team-control-plane/tests/supervisor.rs b/crates/team-control-plane/tests/supervisor.rs
+new file mode 100644
+--- /dev/null
++++ b/crates/team-control-plane/tests/supervisor.rs
+@@ -0,0 +1,643 @@
++use std::{path::PathBuf, process::Command as OsCommand};
++use team_control_plane::{supervisor::*, *};
++use uuid::Uuid;
++fn git(root: &std::path::Path, args: &[&str]) -> String {
++    let out = OsCommand::new("git")
++        .arg("-C")
++        .arg(root)
++        .args(args)
++        .output()
++        .unwrap();
++    assert!(
++        out.status.success(),
++        "{}",
++        String::from_utf8_lossy(&out.stderr)
++    );
++    String::from_utf8(out.stdout).unwrap().trim().into()
++}
++struct Fixture {
++    service: Supervisor,
++    owner: String,
++    attempt: Uuid,
++    root: PathBuf,
++    dsn: String,
++    epoch: Uuid,
++}
++async fn fixture() -> Fixture {
++    let dsn =
++        std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").expect("real PostgreSQL runner required");
++    let schema = format!("supervisor_{}", Uuid::new_v4().simple());
++    let (c, conn) = tokio_postgres::connect(&dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    c.batch_execute(&format!("CREATE SCHEMA {schema}"))
++        .await
++        .unwrap();
++    let dsn = format!("{dsn} options='-c search_path={schema}'");
++    migrate(&dsn).await.unwrap();
++    let epoch = Uuid::new_v4();
++    let broker = Broker::connect(&dsn, epoch).await.unwrap();
++    let owner = broker.bootstrap_owner().await.unwrap();
++    let root = std::env::temp_dir().join(format!("supervisor-fixture-{}", Uuid::new_v4()));
++    std::fs::create_dir_all(root.join("store/src")).unwrap();
++    std::fs::write(root.join("store/src/input"), "base").unwrap();
++    git(&root.join("store"), &["init", "-q"]);
++    git(&root.join("store"), &["add", "."]);
++    git(
++        &root.join("store"),
++        &[
++            "-c",
++            "user.name=Fixture",
++            "-c",
++            "user.email=fixture@example.invalid",
++            "commit",
++            "-qm",
++            "base",
++        ],
++    );
++    let base = git(&root.join("store"), &["rev-parse", "HEAD"]);
++    let mission = Uuid::new_v4();
++    let task = Uuid::new_v4();
++    let input = GitInput {
++        repository: root.join("store").to_str().unwrap().into(),
++        commit: base,
++        path: "src/input".into(),
++        digest: team_control_plane::artifacts::sha256(b"base"),
++    };
++    let env = |key: &str, rev, command| CommandEnvelope {
++        schema_version: 1,
++        key: key.into(),
++        expected_revision: rev,
++        expected_generation: None,
++        recovery_epoch: epoch,
++        command,
++    };
++    broker
++        .execute(
++            &owner,
++            env(
++                "mission",
++                0,
++                Command::CreateMission {
++                    id: mission,
++                    objective: "supervise".into(),
++                    input: input.clone(),
++                    policy: Policy {
++                        capacity: 1,
++                        max_attempts: 5,
++                        max_episodes: 5,
++                        max_repairs: 1,
++                        episode_deadline_seconds: 30,
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    broker
++        .execute(
++            &owner,
++            env(
++                "task",
++                0,
++                Command::CreateTask {
++                    id: task,
++                    mission_id: mission,
++                    spec: TaskSpec {
++                        objective: "supervise".into(),
++                        input,
++                        acceptance: vec!["stop descendants".into()],
++                        deliverables: vec!["output".into()],
++                        write_scope: vec!["src".into()],
++                        dependencies: vec![],
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let snap = broker
++        .snapshot(&owner, SnapshotQuery::Task(task))
++        .await
++        .unwrap();
++    let digest = snap.data["spec_digest"].as_str().unwrap().into();
++    broker
++        .execute(
++            &owner,
++            env(
++                "admit",
++                1,
++                Command::AdmitTask {
++                    task_id: task,
++                    spec_digest: digest,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let worker = Uuid::new_v4();
++    broker
++        .execute(
++            &owner,
++            env(
++                "credential",
++                0,
++                Command::GrantCredential {
++                    credential_id: Uuid::new_v4(),
++                    principal_id: worker,
++                    role: Role::Worker,
++                    mission_id: Some(mission),
++                    task_id: Some(task),
++                    generation: Some(1),
++                    token_hash: token_hash("fixture-worker"),
++                    expires_in_seconds: 600,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    broker
++        .execute(
++            &owner,
++            env(
++                "assign",
++                2,
++                Command::AssignAttempt {
++                    task_id: task,
++                    worker_id: worker,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let (c, conn) = tokio_postgres::connect(&dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    let attempt = c
++        .query_one("SELECT id FROM attempts WHERE task_id=$1", &[&task])
++        .await
++        .unwrap()
++        .get(0);
++    let service = Supervisor::open(
++        broker,
++        &root.join("workspaces"),
++        env!("CARGO_BIN_EXE_team-control-plane"),
++    )
++    .await
++    .unwrap();
++    Fixture {
++        service,
++        owner,
++        attempt,
++        root,
++        dsn,
++        epoch,
++    }
++}
++#[tokio::test]
++async fn registered_before_create_and_unknown_gap_is_quarantined() {
++    let f = fixture().await;
++    let handle = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::AfterRegister)
++        .await
++        .unwrap();
++    assert!(!handle.path.exists());
++    let view = f.service.inspect(&f.owner, handle.id).await.unwrap();
++    assert_eq!(view.state, ExecutionState::Registered);
++    f.service.reconcile(&f.owner, handle.id).await.unwrap();
++    assert_eq!(
++        f.service.inspect(&f.owner, handle.id).await.unwrap().state,
++        ExecutionState::Stopped
++    );
++    f.service.release(&f.owner, handle.id).await.unwrap();
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn cancel_stops_nested_setsid_children_and_fences_shared_git() {
++    let f = fixture().await;
++    let handle = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    f.service.start(&f.owner,handle.id,vec!["/bin/sh".into(),"-c".into(),"touch /workspace/.git/FORBIDDEN 2>/dev/null && exit 99; echo fixture-execution >&2; setsid sh -c 'sleep 120 & wait' & echo ready > /workspace/src/ready; wait".into()],30).await.unwrap();
++    for _ in 0..100 {
++        if handle.path.join("src/ready").exists() {
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    assert!(
++        handle.path.join("src/ready").exists(),
++        "real capsule workload did not start"
++    );
++    assert!(!f.root.join("store/.git/FORBIDDEN").exists());
++    for _ in 0..100 {
++        if f.service
++            .inspect(&f.owner, handle.id)
++            .await
++            .unwrap()
++            .members
++            .len()
++            >= 3
++        {
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    let running = f.service.inspect(&f.owner, handle.id).await.unwrap();
++    assert!(
++        running.members.len() >= 3,
++        "nested membership must be inventoried: {running:?}"
++    );
++    f.service.cancel(&f.owner, handle.id).await.unwrap();
++    for _ in 0..100 {
++        if f.service.inspect(&f.owner, handle.id).await.unwrap().state == ExecutionState::Stopped {
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    let stopped = f.service.inspect(&f.owner, handle.id).await.unwrap();
++    assert_eq!(stopped.state, ExecutionState::Stopped);
++    assert!(stopped.members.is_empty());
++    assert!(
++        f.service
++            .start(&f.owner, handle.id, vec!["/bin/true".into()], 5)
++            .await
++            .is_err()
++    );
++    assert!(
++        String::from_utf8(f.service.logs(&f.owner, handle.id).await.unwrap())
++            .unwrap()
++            .contains("fixture-execution")
++    );
++    let history = f.service.history(&f.owner, handle.id).await.unwrap();
++    assert!(history.iter().any(|v| v.members.len() >= 3));
++    f.service.release(&f.owner, handle.id).await.unwrap();
++    assert!(
++        String::from_utf8(f.service.logs(&f.owner, handle.id).await.unwrap())
++            .unwrap()
++            .contains("fixture-execution")
++    );
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++async fn wait_stopped(f: &Fixture, id: Uuid) -> ExecutionView {
++    for _ in 0..150 {
++        let v = f.service.reconcile(&f.owner, id).await.unwrap();
++        if v.state == ExecutionState::Stopped {
++            return v;
++        }
++        assert_ne!(
++            v.state,
++            ExecutionState::Quarantined,
++            "expected complete namespace proof"
++        );
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    panic!("workload did not stop")
++}
++async fn wait_members(f: &Fixture, id: Uuid) -> ExecutionView {
++    for _ in 0..100 {
++        let v = f.service.inspect(&f.owner, id).await.unwrap();
++        if v.members.len() >= 3 {
++            return v;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    panic!("nested workload was not inventoried")
++}
++fn nested() -> Vec<String> {
++    vec![
++        "/bin/sh".into(),
++        "-c".into(),
++        "echo fixture-execution >&2; setsid sh -c 'sleep 120 & wait' & echo ready > /workspace/src/ready; wait".into(),
++    ]
++}
++#[tokio::test]
++async fn deadline_and_controller_sigkill_use_complete_namespace_stop() {
++    for kill in [false, true] {
++        let f = fixture().await;
++        let h = f
++            .service
++            .create_attempt(&f.owner, f.attempt, CreateFault::None)
++            .await
++            .unwrap();
++        f.service
++            .start(&f.owner, h.id, nested(), if kill { 30 } else { 1 })
++            .await
++            .unwrap();
++        let running = wait_members(&f, h.id).await;
++        if kill {
++            let p = running.controller.unwrap();
++            assert!(
++                OsCommand::new("kill")
++                    .args(["-KILL", &p.pid.to_string()])
++                    .status()
++                    .unwrap()
++                    .success()
++            );
++        }
++        let stopped = wait_stopped(&f, h.id).await;
++        assert!(stopped.members.is_empty());
++        for member in running.members {
++            assert!(
++                !std::path::Path::new(&format!("/proc/{}/ns/pid", member.pid)).exists(),
++                "member survived PID namespace shutdown"
++            );
++        }
++        f.service.release(&f.owner, h.id).await.unwrap();
++        std::fs::remove_dir_all(f.root).unwrap();
++    }
++}
++#[tokio::test]
++async fn registered_create_crash_and_gc_launch_race_never_reuse_workspace() {
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::AfterCreate)
++        .await
++        .unwrap();
++    assert!(h.path.exists());
++    assert_eq!(
++        f.service.inspect(&f.owner, h.id).await.unwrap().state,
++        ExecutionState::Registered
++    );
++    assert!(f.service.start(&f.owner, h.id, nested(), 5).await.is_err());
++    f.service.reconcile(&f.owner, h.id).await.unwrap();
++    let (release, start) = tokio::join!(
++        f.service.release(&f.owner, h.id),
++        f.service.start(&f.owner, h.id, nested(), 5)
++    );
++    assert!(release.is_ok());
++    assert!(start.is_err());
++    assert!(!h.path.exists());
++    assert_eq!(
++        f.service.inspect(&f.owner, h.id).await.unwrap().state,
++        ExecutionState::Released
++    );
++    assert!(
++        f.service
++            .create_attempt(&f.owner, f.attempt, CreateFault::None)
++            .await
++            .is_err()
++    );
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[test]
++fn crash_create_helper() {
++    let Ok(mode) = std::env::var("SUPERVISOR_CRASH_MODE") else {
++        return;
++    };
++    let rt = tokio::runtime::Runtime::new().unwrap();
++    rt.block_on(async {
++        let dsn = std::env::var("SUPERVISOR_FIXTURE_DSN").unwrap();
++        let epoch = Uuid::parse_str(&std::env::var("SUPERVISOR_FIXTURE_EPOCH").unwrap()).unwrap();
++        let attempt =
++            Uuid::parse_str(&std::env::var("SUPERVISOR_FIXTURE_ATTEMPT").unwrap()).unwrap();
++        let root = PathBuf::from(std::env::var("SUPERVISOR_FIXTURE_ROOT").unwrap());
++        let owner = std::env::var("SUPERVISOR_FIXTURE_OWNER").unwrap();
++        let service = Supervisor::open(
++            Broker::connect(&dsn, epoch).await.unwrap(),
++            &root.join("workspaces"),
++            env!("CARGO_BIN_EXE_team-control-plane"),
++        )
++        .await
++        .unwrap();
++        let h = service
++            .create_attempt(
++                &owner,
++                attempt,
++                if mode == "register" {
++                    CreateFault::AfterRegister
++                } else if mode == "launch" {
++                    CreateFault::None
++                } else {
++                    CreateFault::AfterCreate
++                },
++            )
++            .await
++            .unwrap();
++        if mode == "launch" {
++            service.start(&owner, h.id, nested(), 30).await.unwrap();
++            for _ in 0..100 {
++                if service.inspect(&owner, h.id).await.unwrap().members.len() >= 3 {
++                    break;
++                }
++                tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++            }
++            assert!(service.inspect(&owner, h.id).await.unwrap().members.len() >= 3);
++        }
++        let file = std::fs::File::create(root.join("crash-handle.json")).unwrap();
++        serde_json::to_writer(&file, &h).unwrap();
++        file.sync_all().unwrap();
++        // Real process death at the boundary, not an in-memory error return.
++        unsafe {
++            libc::kill(libc::getpid(), libc::SIGKILL);
++        }
++    });
++    panic!("SIGKILL did not terminate helper")
++}
++#[tokio::test]
++async fn actual_create_sigkill_boundaries_leave_durable_reconcilable_registration() {
++    use std::os::unix::process::ExitStatusExt;
++    for mode in ["register", "create"] {
++        let f = fixture().await;
++        let status = OsCommand::new(std::env::current_exe().unwrap())
++            .args(["--exact", "crash_create_helper", "--nocapture"])
++            .env("SUPERVISOR_CRASH_MODE", mode)
++            .env("SUPERVISOR_FIXTURE_DSN", &f.dsn)
++            .env("SUPERVISOR_FIXTURE_EPOCH", f.epoch.to_string())
++            .env("SUPERVISOR_FIXTURE_ATTEMPT", f.attempt.to_string())
++            .env("SUPERVISOR_FIXTURE_ROOT", &f.root)
++            .env("SUPERVISOR_FIXTURE_OWNER", &f.owner)
++            .status()
++            .unwrap();
++        assert_eq!(status.signal(), Some(libc::SIGKILL));
++        let h: ExecutionHandle =
++            serde_json::from_slice(&std::fs::read(f.root.join("crash-handle.json")).unwrap())
++                .unwrap();
++        assert_eq!(h.path.exists(), mode == "create");
++        assert_eq!(
++            f.service.inspect(&f.owner, h.id).await.unwrap().state,
++            ExecutionState::Registered
++        );
++        assert!(f.service.start(&f.owner, h.id, nested(), 5).await.is_err());
++        assert_eq!(
++            f.service.reconcile(&f.owner, h.id).await.unwrap().state,
++            ExecutionState::Stopped
++        );
++        f.service.release(&f.owner, h.id).await.unwrap();
++        std::fs::remove_dir_all(f.root).unwrap();
++    }
++}
++#[tokio::test]
++async fn uncertain_namespace_quarantines_capacity_and_current_credentials_are_required() {
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    assert_eq!(
++        f.service
++            .inspect("not-a-credential", h.id)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    // Simulate an interrupted starting reservation before identity was durably captured.
++    c.execute(
++        "UPDATE supervised_workspaces SET state='starting' WHERE id=$1",
++        &[&h.id],
++    )
++    .await
++    .unwrap();
++    assert_eq!(
++        f.service.reconcile(&f.owner, h.id).await.unwrap().state,
++        ExecutionState::Quarantined
++    );
++    assert!(f.service.release(&f.owner, h.id).await.is_err());
++    assert!(f.service.start(&f.owner, h.id, nested(), 1).await.is_err());
++    assert_eq!(
++        c.query_one("SELECT used_capacity FROM missions", &[])
++            .await
++            .unwrap()
++            .get::<_, i64>(0),
++        1
++    );
++    c.execute("UPDATE credentials SET expires_at=clock_timestamp()-interval '1 second' WHERE token_hash=$1",&[&token_hash(&f.owner)]).await.unwrap();
++    assert_eq!(
++        f.service.inspect(&f.owner, h.id).await.unwrap_err().code,
++        ErrorCode::Unauthorized
++    );
++    // Quarantine intentionally retains its workspace. No workload was launched in this negative fixture.
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn stale_generation_fences_dispatch_and_cancels_existing_namespace() {
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    let manifest = f.service.inspect(&f.owner, h.id).await.unwrap().manifest;
++    assert_eq!(git(&h.path, &["rev-parse", "HEAD"]), manifest.base);
++    assert_eq!(manifest.store, f.root.join("store"));
++    assert_eq!(manifest.attempt, f.attempt);
++    assert_eq!(manifest.write_scope, vec!["src"]);
++    f.service
++        .start("fixture-worker", h.id, nested(), 30)
++        .await
++        .unwrap();
++    let running = wait_members(&f, h.id).await;
++    let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    c.execute(
++        "UPDATE tasks SET generation=generation+1 WHERE id=$1",
++        &[&manifest.task],
++    )
++    .await
++    .unwrap();
++    assert_eq!(
++        f.service
++            .inspect("fixture-worker", h.id)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    assert_eq!(
++        f.service
++            .start(&f.owner, h.id, nested(), 5)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    // Independent monitor reads current durable generation even after caller access is fenced.
++    let mut stopped = false;
++    for _ in 0..100 {
++        let state: String = c
++            .query_one(
++                "SELECT state FROM supervised_workspaces WHERE id=$1",
++                &[&h.id],
++            )
++            .await
++            .unwrap()
++            .get(0);
++        if state == "stopped" {
++            stopped = true;
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    assert!(stopped);
++    for p in running.members {
++        assert!(!std::path::Path::new(&format!("/proc/{}/ns/pid", p.pid)).exists());
++    }
++    assert!(!f.root.join("store/src/ready").exists());
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle() {
++    use std::os::unix::process::ExitStatusExt;
++    let f = fixture().await;
++    let status = OsCommand::new(std::env::current_exe().unwrap())
++        .args(["--exact", "crash_create_helper", "--nocapture"])
++        .env("SUPERVISOR_CRASH_MODE", "launch")
++        .env("SUPERVISOR_FIXTURE_DSN", &f.dsn)
++        .env("SUPERVISOR_FIXTURE_EPOCH", f.epoch.to_string())
++        .env("SUPERVISOR_FIXTURE_ATTEMPT", f.attempt.to_string())
++        .env("SUPERVISOR_FIXTURE_ROOT", &f.root)
++        .env("SUPERVISOR_FIXTURE_OWNER", &f.owner)
++        .status()
++        .unwrap();
++    assert_eq!(status.signal(), Some(libc::SIGKILL));
++    let h: ExecutionHandle =
++        serde_json::from_slice(&std::fs::read(f.root.join("crash-handle.json")).unwrap()).unwrap();
++    assert_eq!(
++        f.service.inspect(&f.owner, h.id).await.unwrap().state,
++        ExecutionState::Running
++    );
++    assert!(wait_members(&f, h.id).await.members.len() >= 3);
++    f.service.cancel(&f.owner, h.id).await.unwrap();
++    assert!(wait_stopped(&f, h.id).await.members.is_empty());
++    f.service.release(&f.owner, h.id).await.unwrap();
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn actual_bwrap_launcher_sigkill_stops_all_namespace_members() {
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    f.service.start(&f.owner, h.id, nested(), 30).await.unwrap();
++    let running = wait_members(&f, h.id).await;
++    let launcher = running.launcher.unwrap();
++    assert!(
++        OsCommand::new("kill")
++            .args(["-KILL", &launcher.pid.to_string()])
++            .status()
++            .unwrap()
++            .success()
++    );
++    assert!(wait_stopped(&f, h.id).await.members.is_empty());
++    for p in running.members {
++        assert!(!std::path::Path::new(&format!("/proc/{}/ns/pid", p.pid)).exists());
++    }
++    f.service.release(&f.owner, h.id).await.unwrap();
++    std::fs::remove_dir_all(f.root).unwrap();
++}

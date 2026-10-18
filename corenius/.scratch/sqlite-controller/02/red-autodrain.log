@@ -1,0 +1,19 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.82s
+     Running tests/runtime.rs (crates/sqlite-controller/target/debug/deps/runtime-c767295221052e2c)
+
+running 1 test
+
+thread 'configured_controller_autonomously_drains_admission_and_cancellation' (2578221) panicked at tests/runtime.rs:34:9:
+behavior deadline exceeded
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test configured_controller_autonomously_drains_admission_and_cancellation ... FAILED
+
+failures:
+
+failures:
+    configured_controller_autonomously_drains_admission_and_cancellation
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 8.12s
+
+error: test failed, to rerun pass `--test runtime`

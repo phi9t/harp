@@ -1,0 +1,75 @@
+{
+  "status": "terminal0",
+  "scope": "focused580-rerun",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "c8c662034691f7bf8c4a54e2bf391c65aaa6d4231605c8311b843cc29b89fbd0"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review580-continuation-usage.json",
+      "sha256": "40b498c3311ee92e390f3d41439170aa07eebadd349b9f4bca1da38f70d2fa3b"
+    },
+    {
+      "path": "review580-capacity.json",
+      "sha256": "f42ca9bed66416e56b69222b6864876c7a397316b67e707f10c8a44a5bc64735"
+    },
+    {
+      "path": "kernel16-review580-recovered-verifier-6f953b9b-2023-4e3a-9f1c-e664d368ce68/proof.json",
+      "sha256": "92180606c1718d19d6343cb833462de144f7f348a0d9857d7018866ea6d2604c"
+    },
+    {
+      "path": "kernel16-review580-recovered-verifier-88f24688-00d4-47be-befd-9a2945d24b1a/before-recovery.json",
+      "sha256": "841f325ecdaa5ec60a170debdcf68625a759135352331c2dfd752124e4b48f2c"
+    },
+    {
+      "path": "kernel16-assembled-pre-release-usage-598f201d-514e-4ea6-9506-989a00ede705/operation-usage-before-release.json",
+      "sha256": "4daf49cd298ee7fd0d149e5860b597c98e01d1081d3b4d11d51f0af31491ffbb"
+    },
+    {
+      "path": "kernel16-large-log-25e22fc7-98d1-4738-a0ef-2215dd6e43af/operation-evidence.json",
+      "sha256": "71b7bbd4fce2c47a5ccb37bf72b300d782ea9bdb92f25e16d1fb4f7d11bb32e6"
+    },
+    {
+      "path": "kernel16-large-log-25e22fc7-98d1-4738-a0ef-2215dd6e43af/registered-transports.json",
+      "sha256": "e53ae5e146f028f70bd1c3feee207ff39206dd3a159017815d34f8266a2ac818"
+    },
+    {
+      "path": "kernel16-large-log-25e22fc7-98d1-4738-a0ef-2215dd6e43af/continued-run-history.json",
+      "sha256": "459f64e953980f0cded9a774451e9481e88506134cfe0c5f7096d6d42d0c8dad"
+    },
+    {
+      "path": "kernel16-large-log-25e22fc7-98d1-4738-a0ef-2215dd6e43af/original-run-history.json",
+      "sha256": "9559e85aaac2814e15c3e4b1064f514702d09772165319c61c41ef6a613a38ef"
+    },
+    {
+      "path": "kernel16-large-log-25e22fc7-98d1-4738-a0ef-2215dd6e43af/large-log.json",
+      "sha256": "ec7e10ca06573ea8f1ed63524072e16285af7a6c9b7182dfa94a6f3565f29165"
+    },
+    {
+      "path": "kernel16-large-log-25e22fc7-98d1-4738-a0ef-2215dd6e43af/actual-execution-result.json",
+      "sha256": "4b00144323d0c01f690f9611cab0e924c7e48d33323d07177b0de397175c38b3"
+    },
+    {
+      "path": "review580-fast-crash/crash.json",
+      "sha256": "5fd3aced38199b8f816eaa2720487b70318befaf40446d875b59769a23244dce"
+    },
+    {
+      "path": "review580-crash/crash.json",
+      "sha256": "062af007f7c827b84a097d06ee6079a05cdde90ba762379a01eaf1f3cdcf4073"
+    }
+  ],
+  "note": "Focused proof only; full matrix and independent review remain pending."
+}

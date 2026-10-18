@@ -1,0 +1,63 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-2ed9953211d69908)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 2522939, "start_stat": "2522939 (corenius-attemp) R 2522860 2522840 2522840 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51618021 2027520 1 18446744073709551615 94158108137904 94158109285888 140733576113424 0 0 0 0 0 0 0 0 0 17 99 0 0 0 0 0 94158109355160 94158109357696 94158136713216 140733576121976 140733576122165 140733576122165 140733576122233 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-t5zntunr/workers.json", "/tmp/cnr-t5zntunr/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 2527080, "start_stat": "2527080 (corenius-attemp) R 2522860 2522840 2522840 0 -1 4194304 13 0 0 0 0 0 0 0 20 0 1 0 51618823 2027520 1 18446744073709551615 94427662731696 94427663879680 140725808307904 0 0 0 0 0 0 0 0 0 17 25 0 0 0 0 0 94427663948952 94427663951488 94427667599360 140725808316008 140725808316209 140725808316209 140725808316281 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-t5zntunr/controlplanes.json", "/tmp/cnr-t5zntunr/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 2527453, "start_stat": "2527453 (corenius-sqlite) R 2522860 2522840 2522840 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51619625 3915776 1 18446744073709551615 94341559691072 94341562360576 140724101975264 0 0 0 0 0 0 0 0 0 17 134 0 0 0 0 0 94341562453624 94341562478104 94341573611520 140724101983650 140724101983837 140724101983837 140724101984122 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-t5zntunr/state.db", "/tmp/cnr-t5zntunr/controller.sock"], "exit": -9}]
+owned_log controller.stderr Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+Codex drain: native server registration not yet qualified
+
+
+
+thread 'configured_native_topologies_are_isolated_and_controller_owned' (2522859) panicked at tests/codex.rs:43:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 116, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 100, in run
+    registry=wait(bound,8)
+             ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 21, in wait
+    raise AssertionError('behavior deadline')
+AssertionError: behavior deadline
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test configured_native_topologies_are_isolated_and_controller_owned ... FAILED
+
+failures:
+
+failures:
+    configured_native_topologies_are_isolated_and_controller_owned
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 25.09s
+
+error: test failed, to rerun pass `--test codex`

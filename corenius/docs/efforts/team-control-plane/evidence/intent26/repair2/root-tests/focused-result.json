@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T21:07:46.907489+00:00",
+  "focused_tool_session": 35936,
+  "focused_tool_terminal_exit": 0,
+  "focused_tests_passed": 1,
+  "focused_actual_cleanup": "independently measured namespace_stopped; Fixture.finish true/root_exists false; two released execution IDs retained in raw log",
+  "controller_pure_terminal_exit": 0,
+  "controller_tests_passed": 20,
+  "active_source_binding": "exact18 imported reviewed postimages in ../root-integration.json",
+  "scope": "root focused verification only; repository/branch/landing gates pending",
+  "accepted": false,
+  "logs": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/root-tests/focused.log.txt",
+      "sha256": "86dcca8b319124281e9ccf36df3b7670fdafa2f8885172df3f51afd6dea2fee1",
+      "bytes": 25053
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/intent26/repair2/root-tests/controller-pure.log.txt",
+      "sha256": "7f902a3cb42c2ddc63f12f75e636f21b1760627588666d439f66137d9ae08f39",
+      "bytes": 3480
+    }
+  ]
+}

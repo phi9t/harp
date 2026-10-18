@@ -1,0 +1,20 @@
+    Checking team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+error: items after a test module
+    --> src/supervisor.rs:1906:1
+     |
+1906 |   mod observation_tests {
+     |   ^^^^^^^^^^^^^^^^^^^^^
+...
+2138 | / pub(crate) async fn reconcile_attempt_cancel(
+2139 | |     tx: &Transaction<'_>,
+2140 | |     attempt: Uuid,
+2141 | | ) -> Result<String> {
+     | |___________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#items_after_test_module
+     = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+     = help: move the items to before the test module was defined
+
+error: could not compile `team-control-plane` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

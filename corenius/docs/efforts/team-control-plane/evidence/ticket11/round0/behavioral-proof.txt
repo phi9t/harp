@@ -1,0 +1,110 @@
+## red-publication.log
+running 1 test
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... FAILED
+
+failures:
+
+---- publication_is_verified_and_faults_leave_no_eligible_manifest stdout ----
+
+thread 'publication_is_verified_and_faults_leave_no_eligible_manifest' (3643512) panicked at tests/artifacts.rs:8:5:
+incorrect digest must fail
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    publication_is_verified_and_faults_leave_no_eligible_manifest
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## red-acceptance.log
+running 2 tests
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test exact_independent_verification_and_explicit_acceptance ... FAILED
+
+failures:
+
+---- exact_independent_verification_and_explicit_acceptance stdout ----
+
+thread 'exact_independent_verification_and_explicit_acceptance' (3668201) panicked at tests/artifacts.rs:53:2:
+assertion `left == right` failed: configuration must be a durable task revision
+  left: 0
+ right: 4
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    exact_independent_verification_and_explicit_acceptance
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## red-integration.log
+running 3 tests
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... FAILED
+test exact_independent_verification_and_explicit_acceptance ... ok
+
+failures:
+
+---- changed_base_prepares_and_checks_actual_git_integration_candidate stdout ----
+
+thread 'changed_base_prepares_and_checks_actual_git_integration_candidate' (3782306) panicked at tests/artifacts.rs:94:63:
+construct and check actual integration candidate: Error { code: TemporarilyUnavailable }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    changed_base_prepares_and_checks_actual_git_integration_candidate
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## red-scoped-read.log
+running 6 tests
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... FAILED
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test exact_independent_verification_and_explicit_acceptance ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+
+failures:
+
+---- evidence_reads_are_scoped_and_revalidate_parent_authority stdout ----
+
+thread 'evidence_reads_are_scoped_and_revalidate_parent_authority' (3841658) panicked at tests/artifacts.rs:114:2:
+assertion `left == right` failed: verifier reads the retained bytes rather than implementer summary
+  left: []
+ right: [102, 114, 111, 122, 101, 110, 32, 71, 105, 116, 32, 98, 117, 110, 100, 108, 101]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    evidence_reads_are_scoped_and_revalidate_parent_authority
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## focused-final.log
+running 6 tests
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+ticket11 integration first=bcd2a2837290af5c43091a19762b1f2af21c56eb tree=b04b15949e427f8f5d1fe00f6897e6ee8583d5c6 base=1160dbb32d2766723198f8c587a0db55e98f8b3d changed=fc7366b3da1c3ae62fcac79a920b3a3b9be725e2 tree=9a14d110bfc119b637c9682a9d28d5b2ab9659df base=dd9ae500621ecb8882647bc0706922e5554a379a
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+ticket11 task=cca94853-2e81-45dd-80d2-e32206fec5f7 epoch=5a7a4121-a2d5-4abe-864a-cce01b804060 candidate=64ce833e31a140f71686a502d8ef45d8179b9e78c0e41397daf40de8180270bb artifact=387b75ea1990ff5f32d97d80a9d6e90de0cb7012a40b9da0404987c1c9794037
+ticket11 verification=285e6038046753b3134ec66685d0346dd66ef61d71f8eda270c1e59f03b162fd
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+test exact_independent_verification_and_explicit_acceptance ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+
+## clippy-final.log
+    Checking team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.40s

@@ -1,0 +1,21 @@
+{
+  "candidate": "d4273dce28cd9754342dba0c1df5a46996a08d84",
+  "base": "c0a2fc0370f18ff28009dbe9b62a59916de0e582",
+  "standards": {
+    "verdict": "blocked",
+    "findings": [
+      "P1 GC bypasses recorded worker liveness and external locks",
+      "P1 legacy gates accept hidden-index source mutation"
+    ]
+  },
+  "spec": {
+    "verdict": "blocked",
+    "findings": [
+      "P1 failed push loses unresolved state after remote update",
+      "P1 GC removes live externally locked workspace",
+      "P1 legacy gate certifies different source bytes"
+    ]
+  },
+  "evidence": "Independent public CLI reproductions in disposable real Git repositories; no broad duplicate gate runs",
+  "repair_round": 1
+}

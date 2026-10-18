@@ -1,0 +1,40 @@
+{
+  "reviewer": "/root/kernel16_acceptance580",
+  "commit": "480d7c22bdfd926e1534c4680988d63d50618d2e",
+  "behavioral_blockers": [],
+  "verified": {
+    "source_and_git_blob_count": 48,
+    "public_proof_hash_count": 44,
+    "matrix": {
+      "passed_including_nested_children": 172,
+      "failed": 0,
+      "ignored": 8
+    },
+    "rootgate9_exit": 0,
+    "Standards": "PASS bounded repair",
+    "Spec": "PASS bounded repair"
+  },
+  "requirements_achieved": [
+    "real PG/Temporal assign/start/yield/resume/submit/verify/accept",
+    "authenticated status/inspect/pause/cancel/reconcile/exclusive takeover",
+    "view-independent ownership",
+    "desired/observed state and unresolved budget/evidence views",
+    "dispatch suspension and registered exclusive takeover",
+    "finite concurrency/episode/repair budgets",
+    "meaningful public reds and greens",
+    "kernel-scope public failure matrix"
+  ],
+  "remaining": [
+    "whole-branch job584 verdict",
+    "final evidence packaging and current handoff",
+    "formal ticket acceptance",
+    "gated landing"
+  ],
+  "limits": [
+    "172 includes child summaries, not distinct parent tests",
+    "colliding-v2 rollover payload proof, not forced actual Continue-As-New",
+    "successful legacy takeover unproven; safe quarantine proven",
+    "Kata/jj/liveTrae/independentleads/rollbackrestore outside ticket16 and unproven"
+  ],
+  "documentation_note": "reviewer observed historical handoff state; root refreshed current headers and completion row during audit, formal acceptance still pending"
+}

@@ -1,0 +1,25 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.59s
+     Running tests/kata.rs (/tmp/sqlite05-repair3-target/debug/deps/kata-3acddc8693b488a5)
+
+running 1 test
+test repair3_captured_kata_brief_amendment_advances_exact_admitted_source ... Retained real Kata fixture: /data02/home/philip.yang/workspace/corenius-sqlite05-repair3/.scratch/k3-3r457qlm
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller/tests/support/kata_protocol.py", line 269, in <module>
+    assert accepted['admitted']['digest']==source['digest'],'approved brief must atomically advance exact captured Kata admitted source'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: approved brief must atomically advance exact captured Kata admitted source
+
+thread 'repair3_captured_kata_brief_amendment_advances_exact_admitted_source' (2527434) panicked at tests/kata.rs:65:5:
+real Kata/public controller qualification failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    repair3_captured_kata_brief_amendment_advances_exact_admitted_source
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.93s
+
+error: test failed, to rerun pass `--test kata`

@@ -1,0 +1,129 @@
+{
+  "all_original_failures_preserved": true,
+  "historical_empty_failure": "root80070 tuple/raw unknown; later diagnostic72 shared reconciling is observed only for72; independent29sample PASS does not clear original or establish historical cause",
+  "previous_evidence": "../repair1/handoff.md",
+  "records": [
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/briefs/05-repair2.md",
+      "retained": "repair2-brief.md",
+      "sha256": "3ac4ca527fdd8bc95e5f2bbb19a747946adef49b2d88851617c112784f5aa0cf"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-repair2-sourceae4-admission.json",
+      "retained": "root-admission.json",
+      "sha256": "a5e5c96ba550e19ef92fb5842c2cef5714c5fac9333ceeff7da7f601a244378e"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-repair2-empty-incarnation-guard-adjudication.json",
+      "retained": "root-empty-guard.json",
+      "sha256": "f6d7bee5b09a93e27a69f7f361e9182500840795c2a63822414af5eadf74049d"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-repair2-runtime-context-adjudication.json",
+      "retained": "root-runtime-context.json",
+      "sha256": "263421f959ddf2eaaebe72f396774f2f333689fe87ed7bffdf55df46dd375057"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-repair2-lead-public-history-response-adjudication.json",
+      "retained": "root-lead-history.json",
+      "sha256": "a8f2fd0f2873857c45512f5b8f178cbfef8c1f26d11f7c3679a32b752ba1888f"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-repair2-run96-root-audit.json",
+      "retained": "root-run96-audit.json",
+      "sha256": "35135d6fe963c9f1a262b64219e9de98094f30f55fd1908544c412c52ade0419"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-branch651-result.json",
+      "retained": "original-reviews/branch651.json",
+      "sha256": "f9aae558d805dc6928d75e982937f5b0acb9adfd35cdd039b38952c3fc5b826a"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-sourceae4-branch651-adjudication.json",
+      "retained": "original-reviews/branch651-adjudication.json",
+      "sha256": "1d18ab9a8462b3d4256b90bc1dec64253bbda39c7c0ef0940f0a91f7ab59d697"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/root-repair1-sourceae4-gate/gate.json",
+      "retained": "original-reviews/root-sourceae4-gate.json",
+      "sha256": "c240c941752bd977dd7b159b7615bd4998cb35d76350f55c1cf5175e1c7cd7fa"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-ae4-spec-addendum-kh0_ijxf/addendum.md",
+      "retained": "original-reviews/spec-addendum.md",
+      "sha256": "223c2951617b18f201f64f3656f8800ac83d9bc281d4153ff8632062e32b3917"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-ae4-spec-addendum-kh0_ijxf/addendum.json",
+      "retained": "original-reviews/spec-addendum.json",
+      "sha256": "0b5f6ca3727102e593a18519e987f738068bca96b8e8ee7e2e61b99028aca5c2"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-ae4-spec-addendum-kh0_ijxf/evidence-index.json",
+      "retained": "original-reviews/spec-evidence-index.json",
+      "sha256": "75ced68769e9b584ad14f45ab1a916e00bf8dedbb3cb29ca0758f43d294eb915"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/report.md",
+      "retained": "original-reviews/standards.md",
+      "sha256": "68e3580ade600ad4cf55e41f9f25f79621c9670c01149fad9b4a5ef723e77f08"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/report.json",
+      "retained": "original-reviews/standards.json",
+      "sha256": "f3d8ffc4a9a943d1ca54119f2b68959f6c47104d4df3a7590cf202953962d27a"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/evidence-sha256-final.json",
+      "retained": "original-reviews/standards-evidence-index.json",
+      "sha256": "227c9955378f8f9b061fbd88dc20af1cb1a714e468e5b9830084500df10ea49b"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/report-location-erratum.md",
+      "retained": "original-reviews/standards-location-erratum.md",
+      "sha256": "9a3ce448e967a06b5e6d6e587b529cfb123b70489e7aab630e4c92842fd55cae"
+    },
+    {
+      "bytes": 3699283,
+      "ignored_raw_origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/root-repair1-sourceae4-gate/root-complete-fi.log",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/0-root-complete-fi.log",
+      "sha256": "0247aab6b87367b57f4b4b89d2e48e975966e03b73518e25a044c44d1d99afd2"
+    },
+    {
+      "bytes": 3457,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/independent-edge-probes.log",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/1-independent-edge-probes.log",
+      "sha256": "58e705e82195b77ab6a50e0270e96350e8e445ea0cf8792ed52872d6c717ac69"
+    },
+    {
+      "bytes": 1314,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/independent-edge-probes-receipt.json",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/2-independent-edge-probes-receipt.json",
+      "sha256": "12b31366674d5b50ce70209e6a39b660db396d32b8b17ae1ac698906b51b8062"
+    },
+    {
+      "bytes": 983,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/kernel-short-write.strace",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/3-kernel-short-write.strace",
+      "sha256": "0143f910ee35bc074d6456f76d6e673a921042b40a21f95b9348dccce92c971c"
+    },
+    {
+      "bytes": 126315,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-ae4e6fed-wfohrlnm/initial-confirm-default.log",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/4-initial-confirm-default.log",
+      "sha256": "69f6a6fc3d7bbc454fd378a9603f5111d0eab97d798bd3dbb476a4f9b32513e7"
+    },
+    {
+      "bytes": 91995,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-ae4-spec-addendum-kh0_ijxf/native-addendum.log",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/5-native-addendum.log",
+      "sha256": "722271f661a30cd9f0db533044c7584fd49c731ff61289b0428332ea806137e3"
+    },
+    {
+      "bytes": 952,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-ae4-spec-addendum-kh0_ijxf/projection-probe.log",
+      "retained_ignored": ".scratch/sqlite-controller/05/repair2-original-review-raw/6-projection-probe.log",
+      "sha256": "8ee80eb6a12ed3651e8f156ac37d16d0ed8e65419ab4f376229358c1f6b9d8ae"
+    }
+  ]
+}

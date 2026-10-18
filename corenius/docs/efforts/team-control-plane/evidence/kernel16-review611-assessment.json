@@ -1,0 +1,252 @@
+{
+  "candidate_source": "e6676bf6c6d05ab850ddde17aa71f6932be495f5",
+  "review_job": 611,
+  "status": "confirmed source-level gaps; public reproduction and repair pending",
+  "root_read_only_assessment": {
+    "verification": "supervisor Start checks only policy existence; execution report validates candidate/argv/log/completion but does not compare immutable suite/environment digests",
+    "lifecycle": "Release refunds capacity and marks workspace released without terminal mailbox episode disposition; Yield rejects deadline-expired episode while Admit blocks live admitted/active episodes for same principal"
+  },
+  "assigned_author": "/root/kernel16_review591_author",
+  "author_worktree": "/tmp/corenius-kernel16-review611-author",
+  "author_exact_base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
+  "authority": "20261003-owner-authorizes-full-goal-execution.md",
+  "limits": "source inspection confirms plausibility, not public behavioral reproduction; no root source edits, builds or services",
+  "author_diagnosis": {
+    "status": "public regressions being constructed; no services launched as reported",
+    "policy_hypotheses": [
+      "missing immutable manifest policy",
+      "stale revision as alternative",
+      "candidate/output mismatch as alternative"
+    ],
+    "lifecycle_hypotheses": [
+      "released binding leaves admitted/active episode live",
+      "capacity not refunded as alternative",
+      "unchanged frontier as alternative",
+      "uncertain stop as alternative"
+    ],
+    "proposed_policy_fix": "additive optional serde-default immutable manifest policy; missing historical policy refuses verification while inspection/cleanup remain available",
+    "root_review_constraints": [
+      "capture policy inside serialized preparation transaction",
+      "suite-only and environment-only change negatives",
+      "fresh-policy execution positive",
+      "cached Verify and Accept still revalidate",
+      "terminal reconciliation preserves yielded/completed checkpoints and waits",
+      "uncertainty does not permit premature release"
+    ]
+  },
+  "first_public_policy_probe_observation": {
+    "path": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/policy-red.log",
+    "observed_result": "two tests fail at fixture InvalidArgument unwrap before policy-refusal assertion",
+    "classification": "fixture/setup failure; not meaningful behavioral red",
+    "source_diff_observed": "112 added fixture lines only, production unchanged",
+    "next": "author corrects fixture and repeats unchanged production; retains actual terminal/cleanup records",
+    "session": 16685,
+    "terminal_exit": 101,
+    "cause": "capture_input limit32 exceeded public maximum16; fixture corrected to4, production unchanged"
+  },
+  "policy_red2_observation": {
+    "session": 51275,
+    "terminal_exit": 101,
+    "behavior": "suite-only and environment-only changes both admit relabeled old successful execution report; unwrap_err received Ok ArtifactResult revision7",
+    "classification": "meaningful policy-provenance behavioral red observed in public log",
+    "cleanup": "both fixture and service cleanupJSON observed; terminal records pending",
+    "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-policy-proofs/index.json",
+    "terminal_confirmation": "author polled session51275 terminal101"
+  },
+  "lifecycle_red_observation": {
+    "session": 69225,
+    "terminal_exit": 101,
+    "observed_behavior": "real sleep capsule deadline-stop, recorded result, release/capacity0 still refuses fresh samelead successor with DependencyUnmet",
+    "passing_control_observed": "release preserves yielded checkpoint/wait",
+    "unknown_usage_control": "corrected public control91648 terminal0 1testPASS unchangedproduction",
+    "production_changes": "none observed",
+    "classification": "mixed; deadline regression meaningful, not whole-run behavioral red",
+    "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-lifecycle-proofs/index.json"
+  },
+  "production_repair_observation": {
+    "status": "isolated candidate changed; not integrated",
+    "files": [
+      "src/artifacts.rs",
+      "src/supervisor.rs"
+    ],
+    "policy": "optional immutable suite/environment manifest binding captured under allocation lock; report/current policy comparison; missing binding refuses verification",
+    "lifecycle": "released execution retires only associated admitted/active episode; yielded states and waits preserved",
+    "focused_green": {
+      "session": 10605,
+      "status": "running as reported by author",
+      "observed_test_results": {
+        "cancellation": 3,
+        "policy": 2,
+        "failures": 0
+      },
+      "terminal_exit": 0,
+      "note": "tests subsequently expanded; final-source coverage requires rerun/full matrix"
+    },
+    "schema_changes": false,
+    "cached_verify_followup": {
+      "finding": "cached Verify returns retained receipt without shared execution policy provenance revalidation; cached Accept revalidates",
+      "scope": "same611 policy provenance repair",
+      "next": "public oldpolicy Verify then Configure then cachedVerify red; minimal shared verification recheck",
+      "controls": "unchanged-policy replay remains idempotent without new report/revision/charges",
+      "final_source_verified": false,
+      "red": {
+        "session": 1772,
+        "terminal_exit": 101,
+        "behavior": "unchangedpolicy replay identical receipt/revision passes; afterConfigure cachedreplay incorrectly returns old appliedrevision6"
+      },
+      "fix": "three-line cachedVerify shared execution-report guard",
+      "focused_final": {
+        "session": 83199,
+        "terminal_exit": 0,
+        "passed": 6,
+        "failed": 0
+      }
+    }
+  },
+  "full_matrix": {
+    "session": 28026,
+    "status": "failed; diagnosis pending",
+    "command": "run-temporal.sh --offline --all-targets",
+    "source_writes": "stopped pending checks",
+    "build_service_slot": "author retains exclusive ownership",
+    "observed_failure": "genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch",
+    "observed_failures": {
+      "actual_changed_git_base_requires_new_candidate_and_independent_sdk_gate": "DependencyUnmet vs expected StaleRevision at4438",
+      "postallocation_base_change_preserves_snapshot_but_requires_fresh_current_gate": "DependencyUnmet vs expected StaleRevision at4438",
+      "genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch": "fresh verifier phase unwrap DependencyUnmet at7145"
+    },
+    "assembled_vertical_summary": {
+      "passed": 54,
+      "failed": 3,
+      "ignored": 3
+    },
+    "terminal_exit": 101,
+    "root_source_hypotheses": [
+      "fresh verifier helper unconditionally yields negative episode even if release already terminalized it; inspect actual public state before fixture action",
+      "base-change policy also changes suite, new provenance refusal may precede established candidate-base StaleRevision contract"
+    ],
+    "diagnosis": {
+      "confirmed_by_author": "error precedence and premature predeadline retirement; not observed dispatch/capacity regression",
+      "required_followup": [
+        "preserve predeadline release\u2192yield checkpoints",
+        "recover deadline\u2192release\u2192successor",
+        "recover release\u2192deadline\u2192successor without repeated human Release",
+        "retain unknown-native-usage refusal",
+        "preserve current-policy validation precedence before provenance"
+      ]
+    }
+  },
+  "ordering_regression": {
+    "terminal_exit": 101,
+    "behavior": "released-before-expiry episode prematurely completed; separate yield test failed setup duplicate registration",
+    "classification": "mixed: release-before-expiry meaningful premature-retirement red; predeadline-yield duplicated bridge registration fixture failure",
+    "next": "preserve predeadline checkpoint flow and independently exercise laterexpiry successor admission",
+    "session": 76288,
+    "correction": "author fixed helper ordering/unique paths; fresh lazy-boundary red60492 running"
+  },
+  "lazy_boundary_red": {
+    "session": 60492,
+    "status": "terminal confirmed byauthor",
+    "production_state": "expired-only Release retirement and validation precedence restored; lazy helper absent",
+    "expected": "releasebeforedeadline thenexpiry successor refusal; predeadline checkpoint passes; noexecution expiry refusal",
+    "observed": {
+      "passed_controls": 5,
+      "failed_regression": 1,
+      "regression": "known stopped execution released beforedeadline still blocks samelead admission afterexpiry"
+    },
+    "classification": "meaningful targeted recoveryred; controls pass",
+    "terminal_exit": 101
+  },
+  "reconciliation_candidate": {
+    "source_files_changed": 5,
+    "new_source_files": 0,
+    "seam": "AdmitEpisode calls retire_expired_released_episodes before live-exclusivity check",
+    "observed_checks": [
+      "current principal/role/mission/epoch/task/lead generation",
+      "expired admitted/active only",
+      "registered released empty-members execution and durable stopped/result history",
+      "once-only capacity release evidence",
+      "manifest/result identities, deletedworkspace and retainedlogdigest",
+      "runtime_release_known rechecks sibling operation uncertainty"
+    ],
+    "scope": "read-only candidate observation, not conformancePASS",
+    "focused_test_status": {
+      "observed_passes": 10,
+      "failures": 0,
+      "groups": {
+        "lifecycle": 7,
+        "policy": 3
+      },
+      "coverage": [
+        "bothdeadline/releaseorders",
+        "predeadlineyield",
+        "yieldedwait",
+        "noexecutionexpiry",
+        "unreleasedstop",
+        "unknownnativeusage",
+        "suite/environmentdrift",
+        "cachedVerify"
+      ],
+      "terminal_session": "confirmed byauthor",
+      "session": 34565,
+      "terminal_exit": 0
+    }
+  },
+  "full_final_matrix": {
+    "status": "failed; owned usage child diagnosis pending",
+    "scope": "alltargets realPG/Temporal including prior3regressionfailures",
+    "source_files_changed": 5,
+    "session": 1813,
+    "log": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/full-final.log",
+    "source_writes": "stopped",
+    "prior_regressions": "all3 prior regressioncases passed; this does not make matrix green",
+    "terminal_exit": 101,
+    "assembled_vertical": {
+      "passed": 56,
+      "failed": 1,
+      "ignored": 3
+    },
+    "failed_test": "unknown_episode_blocks_preallocated_verifier_launch",
+    "failure": "owned_episode_usage_worker child failed; parent report omits inner stderr"
+  },
+  "failed_child_diagnostic": {
+    "session": 56376,
+    "terminal_exit": 0,
+    "passed": 1,
+    "source_changes": "none",
+    "classification": "failure not reproduced on exact focused rerun; not provenflake",
+    "cause_observed": "namespace_stopped false from monitor quarantined finalstate; failure before verifier assertion",
+    "next": "fresh unchanged fullmatrix",
+    "preserved": "priorfailedfull childstderr and cleanup",
+    "cleanup_limit": "child panicked before fixturefinish/publicclaim; no childfixturecleanupproof. Root requested exact identity-based physical reconciliation beforefreeze; Temporalcleanup alone insufficient.",
+    "physical_reconciliation": {
+      "root": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255",
+      "episode": "46ebcbb6-9b34-465e-8e48-edceae7e42c6",
+      "execution": "ab7bea80-fede-4395-a212-b3797da3c5da",
+      "retained": "exact effect/invocation identities",
+      "missing": "PID/manifest/result identities were DB-only; failed-run disposablePG removed",
+      "status": "retained unresolved/quarantined; current attributable process audit pending",
+      "restrictions": "no reuse/refund/delete/ambiguous kill; absence of matching proc paths cannot prove historical stop"
+    }
+  },
+  "unchanged_full_matrix_retry": {
+    "session": 27825,
+    "status": "PASS",
+    "log": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/full-final2.log",
+    "source_changes": "none",
+    "terminal_exit": 0,
+    "parent_passed": 184,
+    "nested_child_passed": 1,
+    "failed": 0,
+    "ignored_owned_entrypoints": 8,
+    "parent_summary_groups": 15
+  },
+  "strict_checks": {
+    "session": 60401,
+    "status": "failed; behavior-preserving test lint cleanup applied; rerun pending",
+    "command": "locked offline alltargets Clippy -D warnings",
+    "terminal_exit": 101,
+    "cause": "two collapsible_if warnings in new test polling loops",
+    "source_scope": "test let-chain cleanup/rustfmt only; production unchanged"
+  }
+}

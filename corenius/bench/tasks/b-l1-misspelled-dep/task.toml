@@ -1,0 +1,25 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l1-misspelled-dep"
+description = "Fix a misspelled pinned cpp3rdlib dependency label"
+
+[metadata]
+track = "B"
+level = "S"
+tags = ["single", "blade-L1"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "bash tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "app/main.cc", "cpp3rdlib/textkit/textkit.cc", "cpp3rdlib/textkit/textkit.h"]
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

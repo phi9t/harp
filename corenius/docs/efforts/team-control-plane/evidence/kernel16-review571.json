@@ -1,0 +1,40 @@
+{
+  "candidate_commit": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+  "base_commit": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+  "manifest_sha256": "c96e88974f36bb181bb2f7c35191f4111040c2786a3a09bce9c81bc3c6ab5d48",
+  "patch_sha256": "f5203c5665602d4f87e9b67066e97bada6cd6780b329dec7ac70e54eee1ab854",
+  "reviews": {
+    "Standards": "PASS",
+    "Spec": "PASS"
+  },
+  "full_author_matrix": {
+    "passed": 159,
+    "failed": 0,
+    "ignored": 7,
+    "scope": "freeze2 before final test-only lintcleanup"
+  },
+  "strict_final": {
+    "clippy": 0,
+    "fmt": 0,
+    "diff": 0,
+    "affected_native": 0
+  },
+  "root_gate7": {
+    "terminal_exit": 0,
+    "all_required_suites": true,
+    "source_hashes_verified": 48,
+    "committed_Git_blobs_verified": 48
+  },
+  "committed_branch_review": {
+    "job": 575,
+    "status": "CHANGES REQUIRED",
+    "session": 78410,
+    "range": "1f164156261a3aa927c823919bf73d6e6d11a771..c4599e8be5720ff7da74ce886069ff0da0560b80",
+    "terminal_exit": 1,
+    "findings": 4,
+    "evidence": "kernel16/branch-repair/branch575/review.log"
+  },
+  "acceptance": false,
+  "landing": false,
+  "full_goal_complete": false
+}

@@ -1,0 +1,26 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running tests/client.rs (/tmp/sqlite05-repair3-target/debug/deps/client-1ec261db07eb1716)
+
+running 1 test
+test repair3_monitor_corrections_have_bounded_complete_projection ... actual_monitor_max_corrections {"count": 20, "field_bytes": 65536, "context_wire_bytes": 5264738, "records_wire_bytes": 5253220}
+owned_projection_resources [{"pid": 1922852, "start_stat": "1922852 (corenius-sqlite) R 1922847 1922650 1922650 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 57969217 8122368 1 18446744073709551615 94223541513408 94223547436672 140736713837376 0 0 0 0 0 0 0 0 0 17 3 0 0 0 0 0 94223547687696 94223547712264 94223574781952 140736713838210 140736713838389 140736713838389 140736713838522 0\n", "exit": -15, "executed_binary": {"path": "/tmp/sqlite05-repair3-target/debug/corenius-sqlite-controller", "sha256": "f132800cf3b0739bdeac89f15a658d6ea384d6be2c27481db4aca0b3f2ad5986"}, "waited": true}]
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3/crates/sqlite-controller/tests/support/monitor_projection.py", line 47, in <module>
+    assert context_bytes<=200000 and records_bytes<=32768,'monitor projections must have serialized byte budgets'
+                                     ^^^^^^^^^^^^^^^^^^^^
+AssertionError: monitor projections must have serialized byte budgets
+
+thread 'repair3_monitor_corrections_have_bounded_complete_projection' (1922846) panicked at tests/client.rs:181:5:
+bounded monitoring projection failed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    repair3_monitor_corrections_have_bounded_complete_projection
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 2.27s
+
+error: test failed, to rerun pass `--test client`

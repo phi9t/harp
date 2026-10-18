@@ -1,0 +1,14 @@
+[package]
+name = "report"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[features]
+default = ["json-output"]
+json-output = ["codec/json"]
+
+[dependencies]
+codec = { path = "../codec" }

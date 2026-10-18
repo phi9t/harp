@@ -1,0 +1,29 @@
+{
+  "terminal_exit": 101,
+  "classification": "meaningful public behavioral red",
+  "oracle": "replacement Owner releaseDependencyUnmet after actual monitor killed at blocked resultINSERT, committed Stop retained, cleanup before oracle",
+  "scope": "missing-result recovery; green/provenance/refusal proof pending",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "82e35020ed5dfed43af80ed3f07631625b62199174b1fd18402b56cac83aae40"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review580-crash/crash.json",
+      "sha256": "b69f3a53d947955eb6270867de1b85e2f0ba54d8a38e92542ff2e0ea2af56d46"
+    }
+  ],
+  "session": 78990
+}

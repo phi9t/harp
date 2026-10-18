@@ -1,0 +1,29 @@
+{
+  "status": "proposal-not-admitted",
+  "operation_id": "corenius-offline-namespace-future-controller-repair2",
+  "command": {
+    "argv": [
+      "/usr/bin/timeout",
+      "--signal=TERM",
+      "--kill-after=2s",
+      "28s",
+      "/usr/bin/python3",
+      "-m",
+      "unittest",
+      "test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants"
+    ],
+    "cwd": "/tmp/corenius-trae20-budget-repair-author",
+    "env": {
+      "PYTHONPATH": "tools/probes",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TRAE_OFFLINE_NAMESPACE_PROOF": ".scratch/team-control-plane/trae20-budget-repair/future-controller-repair2/physical-noise-proof.json"
+    }
+  },
+  "sources": {
+    "tools/probes/trae_case_control.py": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+    "tools/probes/test_trae_case_control.py": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "tools/probes/trae_namespace_supervisor.py": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+    "tools/probes/trae_namespace_fixture.py": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+    "tools/probes/test_trae_namespace.py": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2"
+  }
+}

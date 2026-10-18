@@ -1,0 +1,299 @@
+{
+  "status": "failed",
+  "selected_suites": [
+    "policy",
+    "00-temp-paths",
+    "05-gate-dispatch",
+    "10-wt",
+    "15-worker",
+    "18-effort",
+    "20-land",
+    "25-acceptance",
+    "27-review-snapshot",
+    "30-tracker",
+    "35-lead-launch",
+    "40-msg",
+    "45-lead-driven-harness",
+    "50-evidence",
+    "60-claims",
+    "65-collab",
+    "70-sqlite-controller",
+    "70-team-control-plane",
+    "72-durable-execution",
+    "73-durable-qualification",
+    "75-controller-python",
+    "80-monitor-wake",
+    "85-state-consistency",
+    "89-no-host-tmp-tests",
+    "90-no-host-tmp",
+    "cargo"
+  ],
+  "remaining_suites": [],
+  "duration_seconds": 1442.097390764,
+  "timeout_seconds": 900.0,
+  "results": [
+    {
+      "suite": "policy",
+      "command": [
+        "python3",
+        "tools/test_sync_agentic_workflow.py"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.3419360549960402
+    },
+    {
+      "suite": "00-temp-paths",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/00-temp-paths.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.32160485600616084
+    },
+    {
+      "suite": "05-gate-dispatch",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/05-gate-dispatch.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 9.451188521001313
+    },
+    {
+      "suite": "10-wt",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/10-wt.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.6828530059938203
+    },
+    {
+      "suite": "15-worker",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/15-worker.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 69.08743415299978
+    },
+    {
+      "suite": "18-effort",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/18-effort.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 1.3651374170003692
+    },
+    {
+      "suite": "20-land",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/20-land.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 3.7529494839982362
+    },
+    {
+      "suite": "25-acceptance",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/25-acceptance.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.6226992460069596
+    },
+    {
+      "suite": "27-review-snapshot",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/27-review-snapshot.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.9436668859998463
+    },
+    {
+      "suite": "30-tracker",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/30-tracker.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 1.2045001740043517
+    },
+    {
+      "suite": "35-lead-launch",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/35-lead-launch.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 29.699535456005833
+    },
+    {
+      "suite": "40-msg",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/40-msg.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.1611348660007934
+    },
+    {
+      "suite": "45-lead-driven-harness",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/45-lead-driven-harness.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 341.2292427659995
+    },
+    {
+      "suite": "50-evidence",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/50-evidence.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.4420003880004515
+    },
+    {
+      "suite": "60-claims",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/60-claims.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.1409652969960007
+    },
+    {
+      "suite": "65-collab",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/65-collab.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.020515901000180747
+    },
+    {
+      "suite": "70-sqlite-controller",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/70-sqlite-controller.sh"
+      ],
+      "status": "timeout",
+      "returncode": -15,
+      "duration_seconds": 900.061316528001
+    },
+    {
+      "suite": "70-team-control-plane",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/70-team-control-plane.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.02076268299424555
+    },
+    {
+      "suite": "72-durable-execution",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/72-durable-execution.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 21.068793104001088
+    },
+    {
+      "suite": "73-durable-qualification",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/73-durable-qualification.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.28144789100042544
+    },
+    {
+      "suite": "75-controller-python",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/75-controller-python.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 33.09064502300316
+    },
+    {
+      "suite": "80-monitor-wake",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/80-monitor-wake.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 6.507969595004397
+    },
+    {
+      "suite": "85-state-consistency",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/85-state-consistency.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.08080243699805578
+    },
+    {
+      "suite": "89-no-host-tmp-tests",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/89-no-host-tmp-tests.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.16092359900358133
+    },
+    {
+      "suite": "90-no-host-tmp",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/90-no-host-tmp.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.6826987829990685
+    },
+    {
+      "suite": "cargo",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--",
+        "--test-threads=1"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 20.673882096001762
+    }
+  ]
+}

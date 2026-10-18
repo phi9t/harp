@@ -1,0 +1,21 @@
+{
+  "repair_round": 2,
+  "repository_base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "observed_exit_codes": {
+    "red_harness": 1,
+    "original_unlabeled_public_probe": 0,
+    "green_harness": 0,
+    "repaired_unlabeled_public_probe": 1,
+    "real_identity_port_checks": 0,
+    "positive_postgres_restore": 0,
+    "bash_syntax": 0,
+    "python_compile": 0
+  },
+  "logs": {
+    "kata17-target-guard-red.log": "678456f878fc5a2d0fbe1987e59898079337d12b5139942548f9f298095fd818",
+    "kata17-target-guard-green.log": "c905a5fce964bfd78c54567e55d66758a5748261e0e0f8704d63eec8168ace83",
+    "kata17-identity-guard-check.log": "5e292183b7aacc76ea42e5f414874706b3fa7071ae5f3de350eca7a48eb555ca",
+    "kata17-guarded-postgres.log": "0eaa75c77fb0964c460bd506c99cecf8ce2dd31ca6eb908a7de319d2d55897e7"
+  },
+  "model_calls": 0
+}

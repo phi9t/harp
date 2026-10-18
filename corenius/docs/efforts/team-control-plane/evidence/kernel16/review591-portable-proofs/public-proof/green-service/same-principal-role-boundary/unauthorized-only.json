@@ -1,0 +1,27 @@
+{
+  "executions": [],
+  "missions": [
+    {
+      "admitted_attempts": 1,
+      "admitted_episodes": 1,
+      "capacity": 2,
+      "consumed_repairs": 0,
+      "control_revision": 0,
+      "deadline_seconds": 30,
+      "dispatch_paused": false,
+      "id": "4ae6d943-fb04-4b57-ae85-b3224f788a5d",
+      "max_attempts": 8,
+      "max_episodes": 80,
+      "max_repairs": 3,
+      "revision": 3,
+      "used_capacity": 0
+    }
+  ],
+  "more_executions": false,
+  "more_missions": false,
+  "more_operations": false,
+  "recovery_epoch": "49dad179-3dcb-404b-a8c7-66a70663ee66",
+  "schema_version": 1,
+  "snapshot_time": "2026-10-03 05:23:11.255645+00",
+  "unresolved_operations": []
+}

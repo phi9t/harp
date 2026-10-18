@@ -1,0 +1,138 @@
+{
+  "all_original_failures_preserved": true,
+  "original_source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+  "owned_ignored_raw_copies": [
+    {
+      "bytes": 945,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/dispatcher-failure-recovery-probe.log",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/0-dispatcher-failure-recovery-probe.log",
+      "sha256": "d8b4ecb17142bf962b396eb8e300c849fb7d149185fd5425a4e83fa14424d9f2"
+    },
+    {
+      "bytes": 3412,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/missing-input.log",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/1-missing-input.log",
+      "sha256": "d6ce32b49f4619b7b302f85a8649f1b726b914ad7d092f706c243cd88b3dca5a"
+    },
+    {
+      "bytes": 85287,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/initial-confirm-default.log",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/2-initial-confirm-default.log",
+      "sha256": "d58257100c227fc304cd99b5f63124768bd4e4ae28753ab5225656d2d3dd7ce6"
+    },
+    {
+      "bytes": 3339829,
+      "canonical_origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/root-final-source924-gate/root-complete-fi.log",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/3-root-complete-fi.log",
+      "sha256": "8bd63c3d39ff9470bf51fbd452740926c1343bc3f8d49c1c7f1b235e9ebae6b7"
+    },
+    {
+      "bytes": 74578,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/snapshot/.scratch/sqlite-controller/05/git-fixtures/observer-authority-g4-5o7fv2oi.tar.gz",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/4-observer-authority-g4-5o7fv2oi.tar.gz",
+      "sha256": "420b82de7562c709e40118e69366178abd812e88a94bc39abfd0f67149bbd3ce"
+    },
+    {
+      "bytes": 50924,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/probe-retention/.scratch/sqlite-controller/04/fixtures/review-observer-negative-g4-8ed9ocry.tar.gz",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/5-review-observer-negative-g4-8ed9ocry.tar.gz",
+      "sha256": "1987804d31d300dd2bae40cfc11820583e52a52fda7c5cf319029bec262eb87c"
+    },
+    {
+      "bytes": 653565,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/snapshot/.scratch/sqlite-controller/native/separate-cnr-hsh5cmf9.tar.gz",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/6-separate-cnr-hsh5cmf9.tar.gz",
+      "sha256": "3a9cce189d5ccb1289410445f3db95b97e8717e6bf1cd3e0b146a84558e7e292"
+    },
+    {
+      "bytes": 2013040,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/snapshot/.scratch/sqlite-controller/native/separate-cnr-jkty55uw.tar.gz",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/7-separate-cnr-jkty55uw.tar.gz",
+      "sha256": "327ee939e94ff88813165b56186952e32d7064edfdc74dbff9491cd927d06ebc"
+    },
+    {
+      "bytes": 1487942,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/snapshot/.scratch/sqlite-controller/native/shared-cnr-7zrcfsj0.tar.gz",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/8-shared-cnr-7zrcfsj0.tar.gz",
+      "sha256": "d4f409960117e54c9502156a035e545884de83c63dc759241996d7bbd2895ca8"
+    },
+    {
+      "bytes": 302680,
+      "canonical_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/snapshot/.scratch/sqlite-controller/native/shared-cnr-sr47bvg_.tar.gz",
+      "ignored_author_retained": ".scratch/sqlite-controller/05/repair1-original-review-raw/9-shared-cnr-sr47bvg_.tar.gz",
+      "sha256": "6ce9dcce9e3b0bac17475715d64726d6a5b1f8e5bf70dccc6070dae5cdb961af"
+    }
+  ],
+  "records": [
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/briefs/05-repair1.md",
+      "retained": "repair1-brief.md",
+      "sha256": "440121f27468085b5508ed2eb60e33e2777cca859949f5772d986abfdb535b7f"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-repair1-initial-confirm-measurement.json",
+      "retained": "root-initial-confirm-measurement.json",
+      "sha256": "d11494af5ec79471967a8a23298da8d1476dfc6b4c25b01d24243d5f3e30b0de"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/standards-report.md",
+      "retained": "original-reviews/standards.md",
+      "sha256": "fc81e91eb385fb125acb7fd1ed2fc2b47f4532ee313089c352e1aa62b1f7539a"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/standards-report.json",
+      "retained": "original-reviews/standards.json",
+      "sha256": "f8d14a8d463acbf8eefc3323ac6923dc90c8800e4f9002dcbb85ac2db2287a39"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/spec.md",
+      "retained": "original-reviews/spec.md",
+      "sha256": "980754fa86386c3ac76c899ddc31e6c856690418d7034ac282741f575e18d544"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/spec.json",
+      "retained": "original-reviews/spec.json",
+      "sha256": "fa94acb94f0e77b5847da8496985b013eb9165eac0cc0c8896958401ce52df75"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/05-branch650-result.json",
+      "retained": "original-reviews/branch650.json",
+      "sha256": "3330018810af402b7d007455c0ddc067a524a4e0646337c26bf221f0165199d4"
+    },
+    {
+      "origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/root-final-source924-gate/gate.json",
+      "retained": "original-reviews/root-source924-gate.json",
+      "sha256": "994573233144648c6f5ffa45906d1daa08f5aa6aec8641cf46b9938739420dd6"
+    },
+    {
+      "bytes": 945,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-final-92429710-flm0zhez/dispatcher-failure-recovery-probe.log",
+      "sha256": "d8b4ecb17142bf962b396eb8e300c849fb7d149185fd5425a4e83fa14424d9f2"
+    },
+    {
+      "bytes": 3412,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/missing-input.log",
+      "sha256": "d6ce32b49f4619b7b302f85a8649f1b726b914ad7d092f706c243cd88b3dca5a"
+    },
+    {
+      "bytes": 85287,
+      "ignored_raw_origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/initial-confirm-default.log",
+      "sha256": "d58257100c227fc304cd99b5f63124768bd4e4ae28753ab5225656d2d3dd7ce6"
+    },
+    {
+      "bytes": 3339829,
+      "ignored_raw_origin": "/data02/home/philip.yang/workspace/corenius-codex-sqlite-controller-execution/.scratch/sqlite-controller/monitoring05/root-final-source924-gate/root-complete-fi.log",
+      "sha256": "8bd63c3d39ff9470bf51fbd452740926c1343bc3f8d49c1c7f1b235e9ebae6b7"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/initial-confirm-default.json",
+      "retained": "original-reviews/initial-confirm-default.json",
+      "sha256": "0a3d0fc25f8c559d597702e97edf68b975b78364d20f08db8e198257c35e0632"
+    },
+    {
+      "origin": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/retention-audit.json",
+      "retained": "original-reviews/retention-audit.json",
+      "sha256": "09f5a714fa2b9f49c6fbbba6c623a552a39b73484a58dd9e674ba07e520281da"
+    }
+  ]
+}

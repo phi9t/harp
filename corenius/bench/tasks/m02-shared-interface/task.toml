@@ -1,0 +1,26 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/m02-shared-interface"
+description = "A new helper in one module and its caller in another"
+
+[metadata]
+track = "P"
+level = "M"
+tags = ["multi"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[multi]
+expected_conflicts = 0
+expected_landing = "no textual conflict; the caller only works once the helper lands"
+
+[verifier]
+command = "python3 -m unittest discover -s tests"
+timeout_sec = 120
+
+[agent]
+timeout_sec = 900

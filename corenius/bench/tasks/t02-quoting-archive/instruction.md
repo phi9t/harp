@@ -1,0 +1,1 @@
+`safe_pack.sh OUT FILE...` writes each FILE name, one per line, to `manifest.txt` and packs the files into the tar archive OUT. It breaks on file names containing spaces. Fix it so `bash safe_pack.sh out.tar "input/a b.txt" input/c.txt` produces an archive that lists exactly those two files and a manifest with exactly those two lines.

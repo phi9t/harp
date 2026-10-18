@@ -1,0 +1,22 @@
+{
+  "classification": "blocking conformance gap within approved repair571 contract",
+  "reviewer": "/root/kernel16_review10_spec",
+  "publicly_reachable": true,
+  "requirement": "Malformed/conflicting evidence retains capacity and exposes uncertainty",
+  "finding": "Public Yield permits nonempty execution references without episode allocation. Current cancellation retains claim but reports cancelled; aggregate capacity alone does not expose uncertainty.",
+  "locations": [
+    "supervisor.rs:2182",
+    "supervisor.rs:2201",
+    "supervisor.rs:2204",
+    "mailbox.rs:1060"
+  ],
+  "resolution": "After live matrix99634 terminal, genuine public unresolved-reference Yield red, narrow uncertainty predicate, focused green and fresh full matrix/strict. Preserve exact empty checkpoint compatibility guard.",
+  "completion": "unproven",
+  "independent_recheck": {
+    "source_conformance": "narrow gap closed",
+    "public_observation": "first and repeat quarantined, Attempt quarantined, capacity two before and after",
+    "test_oracle": "Attempt state required; Task remaining running is separate lifecycle",
+    "scope": "not final focused terminal or frozen whole review",
+    "reviewer": "/root/kernel16_review10_spec"
+  }
+}

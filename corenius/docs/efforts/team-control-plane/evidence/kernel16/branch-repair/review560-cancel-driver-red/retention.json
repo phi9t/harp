@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-10-02T19:21:16.429014+00:00",
+  "status": "genuine public direct-driver behavioral red; not actual SDK proof or acceptance",
+  "candidate": "58c96816ecfd8224d4e2b6f8f01e59eda1eff249",
+  "exit": 101,
+  "files": [
+    {
+      "path": "run.log",
+      "bytes": 1111,
+      "sha256": "2384ec5efbdf0a48bdaeac9a2dc8a06fc98c1e71bdb3c1bf37d167206f380908"
+    },
+    {
+      "path": "run.exit",
+      "bytes": 4,
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 34,
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "cancelled-episode-driver.json",
+      "bytes": 39,
+      "sha256": "6c6be4c1dde81505fe134cb36d90dfefc35eb01a9f2ed2c5918f47642abf4ce3"
+    }
+  ],
+  "author_session": 93930,
+  "author_terminal_confirmation": "session93930 terminal101 independently reported; root observed finalized run.exit and cleanup"
+}

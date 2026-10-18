@@ -1,0 +1,68 @@
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.52s
+     Running tests/codex.rs (crates/sqlite-controller/target/debug/deps/codex-09d8e44e34ad1918)
+
+running 1 test
+owned_fixture_resources [{"name": "workers", "pid": 2762074, "start_stat": "2762074 (corenius-attemp) R 2762011 2761453 2761453 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51699516 1998848 1 18446744073709551615 94137014430528 94137015544800 140732378426640 0 0 0 0 0 0 0 0 0 17 107 0 0 0 0 0 94137015612888 94137015615424 94137039638528 140732378435192 140732378435381 140732378435381 140732378435449 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-mbegu3fx/workers.json", "/tmp/cnr-mbegu3fx/workers.sock"], "exit": -9}, {"name": "controlplanes", "pid": 2763285, "start_stat": "2763285 (corenius-attemp) R 2762011 2761453 2761453 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51700322 1998848 1 18446744073709551615 94443810036544 94443811150816 140733923422368 0 0 0 0 0 0 0 0 0 17 105 0 0 0 0 0 94443811218904 94443811221440 94443825602560 140733923425896 140733923426097 140733923426097 140733923426169 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-attempt-supervisor", "/tmp/cnr-mbegu3fx/controlplanes.json", "/tmp/cnr-mbegu3fx/controlplanes.sock"], "exit": -9}, {"name": "controller", "pid": 2763723, "start_stat": "2763723 (corenius-sqlite) R 2762011 2761453 2761453 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 51701140 4268032 1 18446744073709551615 94025148858832 94025151793744 140736706098544 0 0 0 0 0 0 0 0 0 17 107 0 0 0 0 0 94025151903672 94025151928160 94025162981376 140736706100642 140736706100829 140736706100829 140736706101114 0\n", "argv": ["/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/target/debug/corenius-sqlite-controller", "/tmp/cnr-mbegu3fx/state.db", "/tmp/cnr-mbegu3fx/controller.sock"], "exit": -9}]
+owned_log controller.stderr native reconcile f2650d68-e8cb-467a-9eb0-c656a72dfb7d: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 22d78b89-1f7d-4cf4-845a-58bee61e48da: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile f2650d68-e8cb-467a-9eb0-c656a72dfb7d: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 22d78b89-1f7d-4cf4-845a-58bee61e48da: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile f2650d68-e8cb-467a-9eb0-c656a72dfb7d: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 22d78b89-1f7d-4cf4-845a-58bee61e48da: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile f2650d68-e8cb-467a-9eb0-c656a72dfb7d: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile 22d78b89-1f7d-4cf4-845a-58bee61e48da: native ownership lookup: "No such file or directory (os error 2)"
+native reconcile f2650d68-e8cb-467a-9eb0-c656a72dfb7d: remote executor not ready: {"status":"pending"}
+native reconcile 22d78b89-1f7d-4cf4-845a-58bee61e48da: remote executor not ready: {"status":"pending"}
+
+owned_log output.log {"native_service": {"kind": "app", "pid": 5, "start_ticks": "51701249", "port": 8788, "capabilities_dropped": true}}
+codex app-server (WebSockets)
+  listening on: ws://127.0.0.1:8788
+  readyz: http://127.0.0.1:8788/readyz
+  healthz: http://127.0.0.1:8788/healthz
+  note: binds localhost only (use SSH port-forwarding for remote access)
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51701198", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+owned_log output.log {"native_service": {"kind": "exec", "pid": 3, "start_ticks": "51701198", "port": 8789, "capabilities_dropped": true}}
+ws://127.0.0.1:8789
+
+
+
+thread 'configured_native_topologies_are_isolated_and_controller_owned' (2762010) panicked at tests/codex.rs:43:5:
+Traceback (most recent call last):
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 116, in <module>
+    for topology in ['shared','separate']:run(topology)
+                                          ^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 100, in run
+    registry=wait(bound,20)
+             ^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 18, in wait
+    result=predicate()
+           ^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 98, in bound
+    registry=query('codex_registry')
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 84, in query
+    value=request(r/'controller.sock',{'auth':auth,'project':'p','query':{'kind':kind,'args':{}}});assert 'ok' in value,value;return value['ok']
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data02/home/philip.yang/workspace/corenius-sqlite02-runtime/crates/sqlite-controller/tests/support/native_registry.py", line 14, in request
+    s.settimeout(8);s.connect(str(path));s.sendall(json.dumps(value).encode()+b'\n');return json.loads(s.makefile('rb').readline())
+                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/socket.py", line 706, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test configured_native_topologies_are_isolated_and_controller_owned ... FAILED
+
+failures:
+
+failures:
+    configured_native_topologies_are_isolated_and_controller_owned
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 26.50s
+
+error: test failed, to rerun pass `--test codex`

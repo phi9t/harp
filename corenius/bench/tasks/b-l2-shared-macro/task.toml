@@ -1,0 +1,25 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l2-shared-macro"
+description = "Use a shared Blade macro correctly from a new package"
+
+[metadata]
+track = "B"
+level = "M"
+tags = ["single", "blade-L2"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "bash tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "alpha/alpha.cc", "alpha/alpha.h", "alpha/alpha_main.cc", "beta/beta.cc", "beta/beta.h", "beta/beta_main.cc", "gamma/gamma.cc", "gamma/gamma.h", "gamma/gamma_main.cc"]
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

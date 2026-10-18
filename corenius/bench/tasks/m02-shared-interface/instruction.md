@@ -1,0 +1,1 @@
+The report must print sizes like `1.5 KiB`. Ticket t1 adds `format_size(n)` to sizes.py (bytes as an int; returns `<value> <unit>` with units B, KiB, MiB, GiB; one decimal place for KiB and above, none for B). Ticket t2 makes report.py use `sizes.format_size` instead of printing raw bytes. t2 depends on the contract of t1 but edits a different file.

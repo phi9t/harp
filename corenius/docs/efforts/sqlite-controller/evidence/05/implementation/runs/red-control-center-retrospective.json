@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-10-04T19:18:42.119195+00:00",
+  "product_base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+  "driver": {
+    "path": "crates/sqlite-controller/tests/control_center.rs",
+    "sha256": "d2256ab23e89c02ed0a2ff6bcc2f8330e5dcc11b09df239a6d69e2ace91c01ff",
+    "bytes": 7034
+  },
+  "valid_red": {
+    "path": ".scratch/sqlite-controller/05/red-control-center.log",
+    "sha256": "56e5be6be30e89b8aa4b03cb87d42476425121d3fe6533a9db081e9f17d39049",
+    "bytes": 2004
+  },
+  "actual_cargo_exit": 101,
+  "behavioral_failures": 3,
+  "intended_failures": [
+    "unknown command: set_mission",
+    "unknown command: register_monitor_stream",
+    "unknown query: control_center"
+  ],
+  "setup_failure": "canonical public action108; raw logfile superseded before retention; not claimed separately retained",
+  "valid_red_public_action": 117,
+  "product_files_at_red": "unchanged admitted BASE; tests only at execution; unconnected additive files written after RED",
+  "pin_timing": "retrospective/reconstructed BASE + unchanged corrected driver, captured after action117; not before-launch archive"
+}

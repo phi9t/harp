@@ -1,0 +1,68 @@
+{
+  "id": "04-r3-supplement-2388",
+  "captured_at": "2026-10-05T02:46:40.529676+00:00",
+  "source_stream": "01a1078b-d944-7c82-a392-50333a175a77",
+  "start": 2388,
+  "end": 2388,
+  "predecessor": 2387,
+  "seal": "supplemental exact previously omitted visible action; not a new live contiguous frontier",
+  "source_prefix_sha256": "e4582e4a7d67cfe80fccf2eaff62b6dd40ee873b97b793dbd8fa76df116600b6",
+  "original_batch": "04-r3-live02",
+  "original_receipt_immutable_sha256": "f1686f514282abcc06e3b71ad0925b39a8584451e9b937c34e0fd83deb7915c7",
+  "steps": [
+    {
+      "sequence": 368,
+      "ordinal": 2388,
+      "turn": "01a1083f-9d8f-7e21-ab41-fa53d75eca2a",
+      "item": "exec-c29cff08-dd87-495f-ac15-9366be6be84e",
+      "input_sha256": "3c6088d667557de4624798e1c8b59636ee3eeaea3ee35ad5d3d2fe154f51f03d",
+      "kind": "CommandExecution",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "related_finding": 4,
+      "public_hypothesis": "Public rationale not stated; command explicitly adds duplicate/digest retained-artifact manifests in final helper repair evidence. Packaging purpose inferred from exact admitted repair3 brief and command, not private reasoning.",
+      "assessment": "Necessary source/evidence packaging; completed command exit0 with empty output. Independently matched both resulting retained artifact hashes against immutable EVID706ca8e retention.json. No test run or product success inferred.",
+      "source_bound_artifacts": [
+        {
+          "artifact": "docs/efforts/sqlite-controller/evidence/04/repair3/duplicate-retention.json",
+          "evidence_commit": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+          "sha256": "ccb1644028ce854edf4c7fd60a3d88a06ff5b741d16967100a64f60e8dbb9f4b"
+        },
+        {
+          "artifact": "docs/efforts/sqlite-controller/evidence/04/repair3/digest-retention.json",
+          "evidence_commit": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+          "sha256": "0a62f09544c3daee6e238035b1a9d9eaf9dcedd10d0b0ffbeb35c71c238fcf11"
+        }
+      ],
+      "unresolved": "Original12-receipt range had156canonical events but155assessed step rows. This append-only supplement supplies the missing raw2388 assessment; original omission and receipt preserved. Historical122\u20131262 remains UNREVIEWED.",
+      "next_discriminating_test": "Existing committed final04 acceptance/matrix covers helper retention controls; no healthy re-execution. For new source, inherited gates and exact evidence still required."
+    }
+  ],
+  "coverage": {
+    "live_ingested_unchanged": 2455,
+    "live_reviewed_frontier_unchanged": 2451,
+    "historical_frontier_unchanged": 0,
+    "old_original_step_rows": 155,
+    "supplemental_step_rows": 1,
+    "unique_assessed_visible_actions_now": 156,
+    "range_receipts_original": 12,
+    "supplemental_receipts": 1
+  },
+  "advisory": {
+    "goal_drift_established": false,
+    "replacement_trigger_established": false,
+    "private_reasoning_analyzed": false,
+    "acceptance_changed": false,
+    "repair_round_changed": false
+  },
+  "retained_gap": "Prior claims156asfullystepped without qualification were inaccurate; preserve and explicitly supersede them with155original +1supplement. Initial schemafield KeyError in receipt-refresh audit occurred before any write and is setup-only, not product failure."
+}

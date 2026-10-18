@@ -1,0 +1,23 @@
+{
+  "label": "retained-artifact-reverification",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/retained-reverification-command.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/retained-artifact-reverification.json"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:23:27.858580+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "command_source_sha256": "1a5a78515852983d0557f28c517afbc086df20cdc4f3b5b4af4114193e8f47d1",
+  "expected_exit": 0,
+  "exit": 0,
+  "stdout": "{\n  \"outcome\": \"passed\",\n  \"fixture_sha256\": \"0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:23:28.122928+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/retained-artifact-reverification.json",
+  "output_sha256": "3202f1ca39802d3064bd20095ea627ae81ce5cffee9bc173d24fcbdb7b3e8b65"
+}

@@ -1,0 +1,28 @@
+{
+  "repository_base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "kata_commit": "b70a4306464e319701df30a3b92860289613b15a",
+  "binary_version": "kata gb70a430\n  commit:  b70a430\n  built:   2026-10-01T03:15:05Z\n  go:      go1.27.1\n  os/arch: linux/amd64\n",
+  "go_download": "https://go.dev/dl/go1.27.1.linux-amd64.tar.gz",
+  "go_sha256": "63d339f0da5ab53635a56f2490a7984dfe12dfcff22ad749f63edaf590168445",
+  "files": {
+    "docs/efforts/team-control-plane/research/probes/kata_remote_probe.py": "3db308efc24b076fc7cf84575c97fc0db6f2ba740a763f08339481a0c2dd88a8",
+    "docs/efforts/team-control-plane/evidence/ticket17-kata-remote-results.json": "e31da9a1f3cd2cf84205ff6f6ac6fda2df5536da3b4518bbe957d2126ed48158",
+    "docs/efforts/team-control-plane/research/probes/kata_upgrade_probe.py": "17ab8a631e32944797512eb6971a83b17c54b3172eda7fb98e4b1447234f7bc2",
+    "docs/efforts/team-control-plane/evidence/ticket17-kata-upgrade-results.json": "4b925b58b47aab98bf272525c6e734d8fec975beab206264bd52756ac2ac719d",
+    "docs/efforts/team-control-plane/research/probes/kata_postgres_probe.sh": "b117d40f27a2489f554804664e2208ba468e2819a8cdfbc557469154c5444b19",
+    "docs/efforts/team-control-plane/evidence/ticket17-kata-postgres-results.json": "a829feab587ee88abfe76eb116922cfd34e449eb1818a4d7f68865e6cee4d9ff",
+    "docs/efforts/team-control-plane/research/probes/kata_broker_probe.py": "036c9b86d47a7353304cc02c4c96978c4fdaf6742cfb89dc770545cd2992862c",
+    "docs/efforts/team-control-plane/research/kata-broker-mapping.md": "85ea0f5735e96d45ac397eac86b606cfd59270dd9bd2f9057f71a1cc67e8ad4e",
+    "docs/efforts/team-control-plane/research/kata-executable-evaluation.md": "1e29b31440aa179fef6de09f5e870344da561703829a0c8053b20acaa95d4e2a",
+    "docs/efforts/team-control-plane/evidence/ticket17-kata-broker-results.json": "a5044c39a36ee08cdaebc266b62c70d30baac899772dd9ef25a8adec1477fddc",
+    "docs/efforts/team-control-plane/evidence/ticket17-kata-broker-proof.md": "498e7f1109c3df645f8d8e3b91433158166fd8c99dc2735bf6e9467003616115",
+    "docs/efforts/team-control-plane/evidence/ticket17-target-guard-repair.md": "361a471d7782f51c0646077ed647f488ccd318f77222e5a71dca2c687161452c",
+    "docs/efforts/team-control-plane/evidence/ticket17-target-guard-results.json": "73f3479e93940bccc43ea3ca465d0453a85ec5f15f3f3f775583b7676822b7de"
+  },
+  "old_binary_reported_commit": "410ee88bca267b117c845a36f8249890c5160e3b",
+  "postgres_image": "postgres@sha256:f3bd19c606e442c3d7bdfa8002e03fe260a1023351e0ea4598032022b68dd6e3",
+  "broker_content_baseline": "docs/efforts/team-control-plane/evidence/ticket10-accepted-manifest.json",
+  "broker_build_command": "cargo build --manifest-path .scratch/team-control-plane/kata17/broker-source/Cargo.toml --locked",
+  "broker_binary_sha256": "02a1688836aef3b7ce847a1fb67dd169515f874744a751b10846ac8df24b3e66",
+  "evaluation_repair_round": 2
+}

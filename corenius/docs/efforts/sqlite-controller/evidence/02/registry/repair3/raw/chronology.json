@@ -1,0 +1,360 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_adopted",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 101,
+    "seconds": 59.3,
+    "started_at": "2026-10-04T12:27:16.341362+00:00",
+    "name": "red-adoption",
+    "log": "red-adoption.log",
+    "source_manifest": "red-adoption-source.json",
+    "source_archive": "red-adoption-source.tar.gz",
+    "classification": "uncredited setup/oracle failure",
+    "sha256": {
+      "red-adoption.log": "34c374bb05e9e753aa1c9bda51e4a6b5e8594247890ebccb4b3f80a48893a539",
+      "red-adoption-source.json": "498cc6da6b86972ef57925091302a8a50621a3c4f92588bfdbb8ff32fcca9286",
+      "red-adoption-source.tar.gz": "0296cd1b9d912e35984e3af4df1790cc6a48e7796c9d071e06f390ffb9443ea8"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_adopted",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 101,
+    "seconds": 58.37,
+    "started_at": "2026-10-04T12:31:32.328683+00:00",
+    "name": "red-adoption-completed",
+    "log": "red-adoption-completed.log",
+    "source_manifest": "red-adoption-completed-source.json",
+    "source_archive": "red-adoption-completed-source.tar.gz",
+    "classification": "uncredited setup/oracle failure",
+    "sha256": {
+      "red-adoption-completed.log": "e74e3c6d402f76e27c165802df17d5e9674a33469025e542e7d10467e9002021",
+      "red-adoption-completed-source.json": "f13720e8036bb1c6bdbef7571d8199a0d1c87fad0844fe346e15fd4ffea35550",
+      "red-adoption-completed-source.tar.gz": "2378963e933f31107fcc9de0f017d19141c650caea2b2d3cb21d8f6862852e21"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_adopted",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 101,
+    "seconds": 58.44,
+    "started_at": "2026-10-04T12:40:21.762378+00:00",
+    "source_unchanged": true,
+    "name": "red-adoption-status",
+    "log": "red-adoption-status.log",
+    "source_manifest": "red-adoption-status-source.json",
+    "source_archive": "red-adoption-status-source.tar.gz",
+    "classification": "genuine behavior RED",
+    "sha256": {
+      "red-adoption-status.log": "cd74b9a049dd731c590ce723029f73924c1e6098f6bf9d628804a73d24978607",
+      "red-adoption-status-source.json": "a940a3a0b7650fbcd9f2e45defbd3204415d59d734fdedf45fc560f6da81232e",
+      "red-adoption-status-source.tar.gz": "0a404410095005c53a32b560bc549d61e0dc02f025ea3756ec15d0ff3bccde79"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_adopted",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 0,
+    "seconds": 60.1,
+    "started_at": "2026-10-04T12:41:39.641580+00:00",
+    "source_unchanged": true,
+    "name": "green-adoption",
+    "log": "green-adoption.log",
+    "source_manifest": "green-adoption-source.json",
+    "source_archive": "green-adoption-source.tar.gz",
+    "classification": "covering GREEN",
+    "sha256": {
+      "green-adoption.log": "19c0ed3f8647489120f62aa1b9dbc4b569d260e5060c2ff5ac933a9c29364f24",
+      "green-adoption-source.json": "25e7bc5c1e04c3047ef0721d229c3dda09377a9d332eebd57a71647a31c31a5a",
+      "green-adoption-source.tar.gz": "c01e0efa63af6a88995ae008946f0dfcfe3cdcab094954d33fde2a8112ce62cb"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_cleanup_retry",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 101,
+    "seconds": 61.52,
+    "started_at": "2026-10-04T12:43:48.588437+00:00",
+    "source_unchanged": true,
+    "name": "red-cleanup",
+    "log": "red-cleanup.log",
+    "source_manifest": "red-cleanup-source.json",
+    "source_archive": "red-cleanup-source.tar.gz",
+    "classification": "genuine behavior RED",
+    "sha256": {
+      "red-cleanup.log": "92758a6b067314185a0c7920f2d8d840eea2945846e8732af25d34ad3ec61fd6",
+      "red-cleanup-source.json": "209b76998638f34ea5826b1464b24910816e481c3f1bfe1ef52f5ccaf704958d",
+      "red-cleanup-source.tar.gz": "ea7861cc7e50c3917a4ac908ae4e80304e4f1508486380cc63abda0f1fc3985f"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_cleanup_retry",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 0,
+    "seconds": 62.46,
+    "started_at": "2026-10-04T12:46:15.194374+00:00",
+    "source_unchanged": true,
+    "name": "green-cleanup",
+    "log": "green-cleanup.log",
+    "source_manifest": "green-cleanup-source.json",
+    "source_archive": "green-cleanup-source.tar.gz",
+    "classification": "covering GREEN",
+    "sha256": {
+      "green-cleanup.log": "42f07a714b501c4304de2e7758512e4e03955e70089d2e91bf868beae9568bb4",
+      "green-cleanup-source.json": "4cb54d4c80b95376c5d390ec4c2703770a24db718f55a49679d6e7beae7570f2",
+      "green-cleanup-source.tar.gz": "49ab39ebd78d29e1d5e8b93415dcf9d2ab4ef03590b33da33d9793bb544bc247"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_cleanup_retry",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 101,
+    "seconds": 60.57,
+    "started_at": "2026-10-04T12:48:34.651422+00:00",
+    "source_unchanged": true,
+    "name": "red-cleanup-retained-error",
+    "log": "red-cleanup-retained-error.log",
+    "source_manifest": "red-cleanup-retained-error-source.json",
+    "source_archive": "red-cleanup-retained-error-source.tar.gz",
+    "classification": "genuine behavior RED",
+    "sha256": {
+      "red-cleanup-retained-error.log": "1080c9a84b80c3f9508a8d5e6b2d9bce26540bbe5945ab32897b2609aa74ef5c",
+      "red-cleanup-retained-error-source.json": "e18bf2ed4c2a031960dc36662d758e5fd7b5b342848e2d677218a2fbf3500c57",
+      "red-cleanup-retained-error-source.tar.gz": "d65b6536e0a428d0e0acd099c27998a3aa0e9133a63f8ef2be631207a0dbce6e"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--features",
+      "fault-injection",
+      "--test",
+      "codex",
+      "repair3_",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "exit": 0,
+    "seconds": 124.16,
+    "started_at": "2026-10-04T12:50:20.647970+00:00",
+    "source_unchanged": true,
+    "name": "green-combined",
+    "log": "green-combined.log",
+    "source_manifest": "green-combined-source.json",
+    "source_archive": "green-combined-source.tar.gz",
+    "classification": "covering GREEN",
+    "sha256": {
+      "green-combined.log": "69153070c15bef7534eb503adef8ccd82610c4d15bd8166fd639ab54d880d3a2",
+      "green-combined-source.json": "33d866350f97546811dfa6b6623bcc459491b6b6b16678574b1f4060ce18b7e1",
+      "green-combined-source.tar.gz": "a72348b75038220f18fdcb4b0a0b0ce748d4c2358040be8464e805cacb27a681"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--all-targets",
+      "--features",
+      "fault-injection",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 101,
+    "seconds": 0.95,
+    "started_at": "2026-10-04T12:53:19.772174+00:00",
+    "source_unchanged": true,
+    "name": "prefreeze-clippy-first",
+    "log": "prefreeze-clippy-first.log",
+    "source_manifest": "prefreeze-clippy-first-source.json",
+    "source_archive": "prefreeze-clippy-first-source.tar.gz",
+    "classification": "failed compiler check",
+    "sha256": {
+      "prefreeze-clippy-first.log": "c75f6d98394890cac820e02c60ff2dcdfd625f41aa7694942ddf31e91c400175",
+      "prefreeze-clippy-first-source.json": "33d866350f97546811dfa6b6623bcc459491b6b6b16678574b1f4060ce18b7e1",
+      "prefreeze-clippy-first-source.tar.gz": "4b6ab16b7823d754213d5a334c00e9d38b58fead277b91a0568aa4691b608b7b"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--all-targets",
+      "--features",
+      "fault-injection",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 1.2,
+    "started_at": "2026-10-04T12:53:21.111443+00:00",
+    "source_unchanged": true,
+    "name": "prefreeze-clippy",
+    "log": "prefreeze-clippy.log",
+    "source_manifest": "prefreeze-clippy-source.json",
+    "source_archive": "prefreeze-clippy-source.tar.gz",
+    "classification": "source prefreeze check",
+    "sha256": {
+      "prefreeze-clippy.log": "04a2b2df488f956802a3f195161ad8d12f9ccf30be16283a0504d49f3f9e5a19",
+      "prefreeze-clippy-source.json": "467e82fc4cc4b6b161e9a2e030232a1887f3bb5e4d687b815ecc38c0f03a94e3",
+      "prefreeze-clippy-source.tar.gz": "afd1d807764b790c71bee578d35eebd42b366b3a42c56f9ef1a034aea2782885"
+    }
+  },
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.23,
+    "started_at": "2026-10-04T12:53:51.463698+00:00",
+    "source_unchanged": true,
+    "name": "prefreeze-fmt",
+    "log": "prefreeze-fmt.log",
+    "source_manifest": "prefreeze-fmt-source.json",
+    "source_archive": "prefreeze-fmt-source.tar.gz",
+    "classification": "source prefreeze check",
+    "sha256": {
+      "prefreeze-fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prefreeze-fmt-source.json": "467e82fc4cc4b6b161e9a2e030232a1887f3bb5e4d687b815ecc38c0f03a94e3",
+      "prefreeze-fmt-source.tar.gz": "0aa577d9f91ec63aaf3c6c08d618d264e1432d792e5ed5a5758b51ae7c85cd89"
+    }
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.01,
+    "started_at": "2026-10-04T12:53:51.847650+00:00",
+    "source_unchanged": true,
+    "name": "prefreeze-diff",
+    "log": "prefreeze-diff.log",
+    "source_manifest": "prefreeze-diff-source.json",
+    "source_archive": "prefreeze-diff-source.tar.gz",
+    "classification": "source prefreeze check",
+    "sha256": {
+      "prefreeze-diff.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prefreeze-diff-source.json": "467e82fc4cc4b6b161e9a2e030232a1887f3bb5e4d687b815ecc38c0f03a94e3",
+      "prefreeze-diff-source.tar.gz": "9285a6355a277f435bbc73cbec2f3987611057d5c056fed57d3ba8e3376031fa"
+    }
+  }
+]

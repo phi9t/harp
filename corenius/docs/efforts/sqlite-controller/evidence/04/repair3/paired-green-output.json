@@ -1,0 +1,2518 @@
+[
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/accepted-capture-g4-qfzpjpuv.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/accepted-capture-g4-qfzpjpuv.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/accepted-capture-g4-qfzpjpuv.tar.gz",
+    "archive_member": "g4-qfzpjpuv/authority/artifacts/c9b062d993e683c0e9a199b04dac8df61e0b4cb655c1679c8fc4f85fef196bb3",
+    "artifact_sha256": "c9b062d993e683c0e9a199b04dac8df61e0b4cb655c1679c8fc4f85fef196bb3",
+    "log": "accepted-capture-red.log",
+    "mode": "accepted-capture",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3881136,
+      "start_ticks": "54926834"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-qfzpjpuv"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-qfzpjpuv"
+      ],
+      "base": "ae4ee792a0ffe6348d70436a91e189a3ba91d38c",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-qfzpjpuv/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-archive-g4-6hypebaj.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-archive-g4-6hypebaj.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-archive-g4-6hypebaj.tar.gz",
+    "archive_member": "g4-6hypebaj/authority/artifacts/09147ab355357d1ae12b9aea8927836d2e24f69a1b21a2904ebaadf661beaf31",
+    "artifact_sha256": "09147ab355357d1ae12b9aea8927836d2e24f69a1b21a2904ebaadf661beaf31",
+    "log": "archive-green.log",
+    "mode": "bounded-archive",
+    "process": {
+      "exit": null,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4078862,
+      "start_ticks": "55115400"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-6hypebaj/workers",
+      "8ed14415-b41f-4738-a867-46e796b7c3c0"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 33554432,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-archive-g4-6hypebaj.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-archive-g4-6hypebaj.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-archive-g4-6hypebaj.tar.gz",
+    "archive_member": "g4-6hypebaj/authority/artifacts/8cf019700ef6250ce38e0f4465c87921e6a4339da33ce8c3781a236277e052d0",
+    "artifact_sha256": "8cf019700ef6250ce38e0f4465c87921e6a4339da33ce8c3781a236277e052d0",
+    "log": "archive-green.log",
+    "mode": "bounded-archive",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4078964,
+      "start_ticks": "55115448"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-6hypebaj/workers",
+      "8ed14415-b41f-4738-a867-46e796b7c3c0"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-_uchsf3k.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-_uchsf3k.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-_uchsf3k.tar.gz",
+    "archive_member": "g4-_uchsf3k/authority/artifacts/e168d808a62b5380b79194344ec3629c01ad63bf9e3b98fd3021155eb7c6c48e",
+    "artifact_sha256": "e168d808a62b5380b79194344ec3629c01ad63bf9e3b98fd3021155eb7c6c48e",
+    "log": "archive-green.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4079593,
+      "start_ticks": "55115905"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-_uchsf3k"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-_uchsf3k"
+      ],
+      "base": "fcb4c58390acaa425d2a11d479118cfe26e52f12",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-_uchsf3k/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_land_admission-g4-szn0f6sa.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_land_admission-g4-szn0f6sa.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_land_admission-g4-szn0f6sa.tar.gz",
+    "archive_member": "g4-szn0f6sa/authority/artifacts/528df5dda665646c0b2e740cc5fa090b05e516861ebac4e88f0302606e4a9829",
+    "artifact_sha256": "528df5dda665646c0b2e740cc5fa090b05e516861ebac4e88f0302606e4a9829",
+    "log": "authority-green.log",
+    "mode": "before_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3904135,
+      "start_ticks": "54954301"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-szn0f6sa"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-szn0f6sa"
+      ],
+      "base": "58a7c6f6e76cc53582265cafe97fa2bb587444c1",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-szn0f6sa/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/after_land_admission-g4-9xxkgc_8.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/after_land_admission-g4-9xxkgc_8.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/after_land_admission-g4-9xxkgc_8.tar.gz",
+    "archive_member": "g4-9xxkgc_8/authority/artifacts/0ad572936db60c7010d66443a25c164bac6803dbcb7f6315b522e8cae0da2f2c",
+    "artifact_sha256": "0ad572936db60c7010d66443a25c164bac6803dbcb7f6315b522e8cae0da2f2c",
+    "log": "authority-green.log",
+    "mode": "after_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3904754,
+      "start_ticks": "54954893"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-9xxkgc_8"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-9xxkgc_8"
+      ],
+      "base": "7f454ce564090e6c853c102ec7ef304fa03472b2",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-9xxkgc_8/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_land_admission-g4-h_gg_msv.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_land_admission-g4-h_gg_msv.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_land_admission-g4-h_gg_msv.tar.gz",
+    "archive_member": "g4-h_gg_msv/authority/artifacts/1662bb9d1c5d6d51eb520e3acc877bc2b47acf1a2972dd28380813cb66a269cf",
+    "artifact_sha256": "1662bb9d1c5d6d51eb520e3acc877bc2b47acf1a2972dd28380813cb66a269cf",
+    "log": "authority-red.log",
+    "mode": "before_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3899421,
+      "start_ticks": "54948596"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-h_gg_msv"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-h_gg_msv"
+      ],
+      "base": "616b62ca6a55ff58eb6d1133a2c0cc10996084bf",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-h_gg_msv/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-g98z6f1w.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-g98z6f1w.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-g98z6f1w.tar.gz",
+    "archive_member": "g4-g98z6f1w/authority/artifacts/33e4033336adab031a66c6c435040bfbe0cda0d2bf42ac61392db5ea363e6601",
+    "artifact_sha256": "33e4033336adab031a66c6c435040bfbe0cda0d2bf42ac61392db5ea363e6601",
+    "log": "final-output-green.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4057428,
+      "start_ticks": "55098427"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-g98z6f1w"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-g98z6f1w"
+      ],
+      "base": "4e1dbc9326456d9ba66999050597b82f7209c48b",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-g98z6f1w/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-pvadphsh.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-pvadphsh.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-pvadphsh.tar.gz",
+    "archive_member": "g4-pvadphsh/authority/artifacts/1edfd509e75f71d57db0c12d9047691e9959170a1a1924f97c06ad02e8c13549",
+    "artifact_sha256": "1edfd509e75f71d57db0c12d9047691e9959170a1a1924f97c06ad02e8c13549",
+    "log": "final-output-green2.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4065240,
+      "start_ticks": "55102391"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-pvadphsh"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-pvadphsh"
+      ],
+      "base": "f2559ea0204b0adba38cc4f5d60220e4524da8c7",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-pvadphsh/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-5_3zvd7f.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-5_3zvd7f.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-5_3zvd7f.tar.gz",
+    "archive_member": "g4-5_3zvd7f/authority/artifacts/9fc502d8d2aafa7ab77e20aa8c85da91a3e9fe0647aaf15b6d6d01bcdba9e84d",
+    "artifact_sha256": "9fc502d8d2aafa7ab77e20aa8c85da91a3e9fe0647aaf15b6d6d01bcdba9e84d",
+    "log": "final-output-red.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4015667,
+      "start_ticks": "55066633"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-5_3zvd7f"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-5_3zvd7f"
+      ],
+      "base": "2efa866a1aed9dded7ffe2f3e3c90060542897eb",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-5_3zvd7f/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-archive-g4-nrjeefx7.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-archive-g4-nrjeefx7.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-archive-g4-nrjeefx7.tar.gz",
+    "archive_member": "g4-nrjeefx7/authority/artifacts/94ffca8d40d81b1f4360111003852ae71d3ef2de39c7b50fe72bc2ad7539d6e1",
+    "artifact_sha256": "94ffca8d40d81b1f4360111003852ae71d3ef2de39c7b50fe72bc2ad7539d6e1",
+    "log": "freeze-controls.log",
+    "mode": "bounded-archive",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4188691,
+      "signal": null,
+      "start_ticks": "55185623",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-nrjeefx7/workers",
+      "cb24325b-6bdc-45a6-861e-d6fcbd39bdb9"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-archive-g4-nrjeefx7.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-archive-g4-nrjeefx7.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-archive-g4-nrjeefx7.tar.gz",
+    "archive_member": "g4-nrjeefx7/authority/artifacts/b52efea38d7398d5c1a18ee9b00935d7bc7793f128f76eb101f5c8327b654282",
+    "artifact_sha256": "b52efea38d7398d5c1a18ee9b00935d7bc7793f128f76eb101f5c8327b654282",
+    "log": "freeze-controls.log",
+    "mode": "bounded-archive",
+    "process": {
+      "exit": null,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4188534,
+      "signal": 13,
+      "start_ticks": "55185573",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-nrjeefx7/workers",
+      "cb24325b-6bdc-45a6-861e-d6fcbd39bdb9"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 33554432,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-y9tq_30n.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-y9tq_30n.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-y9tq_30n.tar.gz",
+    "archive_member": "g4-y9tq_30n/authority/artifacts/a23c70f5865fbdaaf53018d230176dcb2b448328dc8c13c6b5614c01db3207d8",
+    "artifact_sha256": "a23c70f5865fbdaaf53018d230176dcb2b448328dc8c13c6b5614c01db3207d8",
+    "log": "freeze-controls.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4190095,
+      "signal": null,
+      "start_ticks": "55186080",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-y9tq_30n"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-y9tq_30n"
+      ],
+      "base": "d8eb4ea0cb6ee734f00ab1c05b7292677c05d207",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-y9tq_30n/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/partial_workspace_cleanup-g4-rplq1xts.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/partial_workspace_cleanup-g4-rplq1xts.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/partial_workspace_cleanup-g4-rplq1xts.tar.gz",
+    "archive_member": "g4-rplq1xts/authority/artifacts/ed63ba1ba3ec653dc0ecda88cda0bc7a1690d1a397284c6c866f226e67340928",
+    "artifact_sha256": "ed63ba1ba3ec653dc0ecda88cda0bc7a1690d1a397284c6c866f226e67340928",
+    "log": "freeze-controls.log",
+    "mode": "partial_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4190700,
+      "signal": null,
+      "start_ticks": "55186775",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-rplq1xts/workers",
+      "b31d146f-ae8c-4a2e-a382-cca9e2272c6d"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/normal-g4-nammc1z9.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/normal-g4-nammc1z9.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/normal-g4-nammc1z9.tar.gz",
+    "archive_member": "g4-nammc1z9/authority/artifacts/2ab6940cc7afccf919c48e1ffd4b41e84032dffa594931e282e7e8ce825026f9",
+    "artifact_sha256": "2ab6940cc7afccf919c48e1ffd4b41e84032dffa594931e282e7e8ce825026f9",
+    "log": "gate-affected.log",
+    "mode": "normal",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 52465,
+      "signal": null,
+      "start_ticks": "55199491",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-nammc1z9"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-nammc1z9"
+      ],
+      "base": "ebc4c535dfbd488bee09af4f46bba992e935d942",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-nammc1z9/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/normal-g4-nammc1z9.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/normal-g4-nammc1z9.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/normal-g4-nammc1z9.tar.gz",
+    "archive_member": "g4-nammc1z9/authority/artifacts/652015884e3c50f77874cff7ead4dba19a231c43008e4a92079d3bea0ba6bd03",
+    "artifact_sha256": "652015884e3c50f77874cff7ead4dba19a231c43008e4a92079d3bea0ba6bd03",
+    "log": "gate-affected.log",
+    "mode": "normal",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 56226,
+      "signal": null,
+      "start_ticks": "55200280",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "combined",
+      "/tmp/g4-nammc1z9"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "combined",
+        "/tmp/g4-nammc1z9"
+      ],
+      "base": null,
+      "id": "b-combined",
+      "script": {
+        "path": "/tmp/g4-nammc1z9/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "b"
+    },
+    "stdout_bytes": 114,
+    "stdout_sha256": "e82988b98fd07010f3612771265113e0598ac974b80dc580abe2c2b1c7831b70",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/normal-g4-nammc1z9.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/normal-g4-nammc1z9.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/normal-g4-nammc1z9.tar.gz",
+    "archive_member": "g4-nammc1z9/authority/artifacts/7cfba119cc01b760c23268d65baa5ff230a33856f2f08b0e2c10e0db53d79287",
+    "artifact_sha256": "7cfba119cc01b760c23268d65baa5ff230a33856f2f08b0e2c10e0db53d79287",
+    "log": "gate-affected.log",
+    "mode": "normal",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 53693,
+      "signal": null,
+      "start_ticks": "55199669",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "b",
+      "/tmp/g4-nammc1z9"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "b",
+        "/tmp/g4-nammc1z9"
+      ],
+      "base": "ebc4c535dfbd488bee09af4f46bba992e935d942",
+      "id": "b-initial",
+      "script": {
+        "path": "/tmp/g4-nammc1z9/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "b"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "f73cc45e828251d282002ed812120f82d178020f19af021fd4998bb94a0dd40e",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/normal-g4-nammc1z9.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/normal-g4-nammc1z9.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/normal-g4-nammc1z9.tar.gz",
+    "archive_member": "g4-nammc1z9/authority/artifacts/7f278860407397de3e5d540491d6a95dbb119e67107a4d791c17fd562b0ddfd0",
+    "artifact_sha256": "7f278860407397de3e5d540491d6a95dbb119e67107a4d791c17fd562b0ddfd0",
+    "log": "gate-affected.log",
+    "mode": "normal",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 59271,
+      "signal": null,
+      "start_ticks": "55200580",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-nammc1z9/workers",
+      "578cf228-5734-406b-8fe5-cf90c636184a"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_ref_update-g4-u2mywfwl.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_ref_update-g4-u2mywfwl.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_ref_update-g4-u2mywfwl.tar.gz",
+    "archive_member": "g4-u2mywfwl/authority/artifacts/b353e5536ee240649bd79240e5802f874036466f8622ae9a5fe881dd1d72b6ee",
+    "artifact_sha256": "b353e5536ee240649bd79240e5802f874036466f8622ae9a5fe881dd1d72b6ee",
+    "log": "gate-affected.log",
+    "mode": "before_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 62328,
+      "signal": null,
+      "start_ticks": "55201017",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-u2mywfwl"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-u2mywfwl"
+      ],
+      "base": "b9afea9e2b2208337cd83f2fe94da76231fbd4c6",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-u2mywfwl/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/after_ref_update-g4-6ihvvoh0.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/after_ref_update-g4-6ihvvoh0.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/after_ref_update-g4-6ihvvoh0.tar.gz",
+    "archive_member": "g4-6ihvvoh0/authority/artifacts/cec985f58cb958b6f75fa35e353d0f7d2746e8e244ef5f058c9cd8b96acf23e3",
+    "artifact_sha256": "cec985f58cb958b6f75fa35e353d0f7d2746e8e244ef5f058c9cd8b96acf23e3",
+    "log": "gate-affected.log",
+    "mode": "after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 66216,
+      "signal": null,
+      "start_ticks": "55201758",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-6ihvvoh0"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-6ihvvoh0"
+      ],
+      "base": "82684d03d8aa62b235c90e3ce0a98c59a49ca94c",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-6ihvvoh0/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_ref_update-divergence-g4-k34rdr8t.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_ref_update-divergence-g4-k34rdr8t.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_ref_update-divergence-g4-k34rdr8t.tar.gz",
+    "archive_member": "g4-k34rdr8t/authority/artifacts/84b9c4ca2cf7a9b4987a5317fcc3d972d0c67ca0840cf36fb271d9050a03a205",
+    "artifact_sha256": "84b9c4ca2cf7a9b4987a5317fcc3d972d0c67ca0840cf36fb271d9050a03a205",
+    "log": "gate-affected.log",
+    "mode": "before_ref_update-divergence",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 71313,
+      "signal": null,
+      "start_ticks": "55202493",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-k34rdr8t"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-k34rdr8t"
+      ],
+      "base": "ad92f7a600d52e2b8780025914fcdfc72bc86f13",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-k34rdr8t/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-output-g4-52672ri_.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-output-g4-52672ri_.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-output-g4-52672ri_.tar.gz",
+    "archive_member": "g4-52672ri_/authority/artifacts/f4230b4f3e0ad26067a09feed3f3b5b3106af711e6bfcd2e3dfef5e8f427f2d5",
+    "artifact_sha256": "f4230b4f3e0ad26067a09feed3f3b5b3106af711e6bfcd2e3dfef5e8f427f2d5",
+    "log": "gate-affected.log",
+    "mode": "bounded-output",
+    "process": {
+      "exit": null,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 78023,
+      "signal": 9,
+      "start_ticks": "55203440",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-52672ri_"
+    ],
+    "exit": null,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-52672ri_"
+      ],
+      "base": "cf0d837f92ac9564abe295ed346798ae194ac318",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-52672ri_/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_workspace_cleanup-g4-45xai97t.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_workspace_cleanup-g4-45xai97t.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_workspace_cleanup-g4-45xai97t.tar.gz",
+    "archive_member": "g4-45xai97t/authority/artifacts/3f1f571f3ff3198e861d9984abfdcad7918989b62848b6a319e08b96d5aaaae3",
+    "artifact_sha256": "3f1f571f3ff3198e861d9984abfdcad7918989b62848b6a319e08b96d5aaaae3",
+    "log": "gate-affected.log",
+    "mode": "before_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 86255,
+      "signal": null,
+      "start_ticks": "55204488",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-45xai97t/workers",
+      "2ce5e1c1-267e-4b59-ae0b-2945ec459bfa"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/after_workspace_cleanup-g4-jb8x1uxm.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/after_workspace_cleanup-g4-jb8x1uxm.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/after_workspace_cleanup-g4-jb8x1uxm.tar.gz",
+    "archive_member": "g4-jb8x1uxm/authority/artifacts/6cec1bc3c80cc85feb7f64ea568e8f1656380f478c70909ca5efa3a326513396",
+    "artifact_sha256": "6cec1bc3c80cc85feb7f64ea568e8f1656380f478c70909ca5efa3a326513396",
+    "log": "gate-affected.log",
+    "mode": "after_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 90551,
+      "signal": null,
+      "start_ticks": "55204963",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-jb8x1uxm/workers",
+      "17a845e1-624e-448c-9463-7501387bdc46"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_land_admission-g4-khtupwww.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_land_admission-g4-khtupwww.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_land_admission-g4-khtupwww.tar.gz",
+    "archive_member": "g4-khtupwww/authority/artifacts/a91a1f2c66dbe4470d5515df946b402999427d5844e2dbc491bf317d04b16e4b",
+    "artifact_sha256": "a91a1f2c66dbe4470d5515df946b402999427d5844e2dbc491bf317d04b16e4b",
+    "log": "gate-affected.log",
+    "mode": "before_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 93626,
+      "signal": null,
+      "start_ticks": "55205787",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-khtupwww"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-khtupwww"
+      ],
+      "base": "f37a0213f4fa4a954d19b3db9a74e573246ef76d",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-khtupwww/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/after_land_admission-g4-j0ho5435.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/after_land_admission-g4-j0ho5435.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/after_land_admission-g4-j0ho5435.tar.gz",
+    "archive_member": "g4-j0ho5435/authority/artifacts/2d67b4f439719b46c2aac15660ed75903496ebeea0e75152b9fa99a0c14556c0",
+    "artifact_sha256": "2d67b4f439719b46c2aac15660ed75903496ebeea0e75152b9fa99a0c14556c0",
+    "log": "gate-affected.log",
+    "mode": "after_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 95036,
+      "signal": null,
+      "start_ticks": "55206376",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-j0ho5435"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-j0ho5435"
+      ],
+      "base": "4fdb183852fc65f46acf8175b9c8ac525a568f37",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-j0ho5435/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/publication-before_ref_update-g4-h674j9ek.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/publication-before_ref_update-g4-h674j9ek.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/publication-before_ref_update-g4-h674j9ek.tar.gz",
+    "archive_member": "g4-h674j9ek/authority/artifacts/07385833dd2135b5ce23b77c42c1912e386d32adadefedab7d4c9d6421121bf9",
+    "artifact_sha256": "07385833dd2135b5ce23b77c42c1912e386d32adadefedab7d4c9d6421121bf9",
+    "log": "gate-affected.log",
+    "mode": "publication-before_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 95789,
+      "signal": null,
+      "start_ticks": "55207018",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-h674j9ek"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-h674j9ek"
+      ],
+      "base": "d114a20a03320d43f0245ea116bb24af4c524671",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-h674j9ek/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/publication-after_ref_update-g4-e3h9z6dm.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/publication-after_ref_update-g4-e3h9z6dm.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/publication-after_ref_update-g4-e3h9z6dm.tar.gz",
+    "archive_member": "g4-e3h9z6dm/authority/artifacts/aeb0bcfe2143d017dbdd7a6dd9eadf21d7c35df89437b3d4bdd3ca4ba94b2c13",
+    "artifact_sha256": "aeb0bcfe2143d017dbdd7a6dd9eadf21d7c35df89437b3d4bdd3ca4ba94b2c13",
+    "log": "gate-affected.log",
+    "mode": "publication-after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 97225,
+      "signal": null,
+      "start_ticks": "55207781",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-e3h9z6dm"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-e3h9z6dm"
+      ],
+      "base": "d1a678794a89814cf7576ff803e560c0dc541b87",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-e3h9z6dm/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-capture-g4-opdvdb5c.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-capture-g4-opdvdb5c.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-capture-g4-opdvdb5c.tar.gz",
+    "archive_member": "g4-opdvdb5c/authority/artifacts/0eddd8a89bf8aca4c367441891c8d8f5cae013c006f0ac9e5566342934977761",
+    "artifact_sha256": "0eddd8a89bf8aca4c367441891c8d8f5cae013c006f0ac9e5566342934977761",
+    "log": "gate-affected.log",
+    "mode": "terminal-capture",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 103958,
+      "signal": null,
+      "start_ticks": "55208534",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-opdvdb5c"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-opdvdb5c"
+      ],
+      "base": "3130ae50cc74ef88466deb33bfa09cc5481c5e6b",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-opdvdb5c/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-accept-g4-en5x48b5.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-accept-g4-en5x48b5.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-accept-g4-en5x48b5.tar.gz",
+    "archive_member": "g4-en5x48b5/authority/artifacts/c2a1c037263beebfd72aedf2d0fd82cfc226fe517b8ab8ecd0a9f48184ce4c34",
+    "artifact_sha256": "c2a1c037263beebfd72aedf2d0fd82cfc226fe517b8ab8ecd0a9f48184ce4c34",
+    "log": "gate-affected.log",
+    "mode": "terminal-accept",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 112435,
+      "signal": null,
+      "start_ticks": "55209260",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-en5x48b5"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-en5x48b5"
+      ],
+      "base": "64c715c152637100e51e65e312541d5662d3fc79",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-en5x48b5/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-land-g4-36skoq8q.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-land-g4-36skoq8q.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-land-g4-36skoq8q.tar.gz",
+    "archive_member": "g4-36skoq8q/authority/artifacts/b57056ee490f1fb1b577e155f56e3971e5d9fd15915d948f807f9dd4ab4723ce",
+    "artifact_sha256": "b57056ee490f1fb1b577e155f56e3971e5d9fd15915d948f807f9dd4ab4723ce",
+    "log": "gate-affected.log",
+    "mode": "terminal-land",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 119103,
+      "signal": null,
+      "start_ticks": "55209885",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-36skoq8q"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-36skoq8q"
+      ],
+      "base": "ae8c417a834cfbca435d9b35d952554a256bffca",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-36skoq8q/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/accepted-capture-g4-eet709wy.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/accepted-capture-g4-eet709wy.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/accepted-capture-g4-eet709wy.tar.gz",
+    "archive_member": "g4-eet709wy/authority/artifacts/f0ba92d992ad447107b5666d45c9e1269c5e90786b5317d480b8be1b0edee418",
+    "artifact_sha256": "f0ba92d992ad447107b5666d45c9e1269c5e90786b5317d480b8be1b0edee418",
+    "log": "gate-affected.log",
+    "mode": "accepted-capture",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 125426,
+      "signal": null,
+      "start_ticks": "55210508",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-eet709wy"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-eet709wy"
+      ],
+      "base": "80cfc00c39c180236e2ffbcb08c1fff491b4ee7d",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-eet709wy/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-vqhslksx.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-vqhslksx.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-vqhslksx.tar.gz",
+    "archive_member": "g4-vqhslksx/authority/artifacts/a166907f69127bab4ab379522f61e56d7ffac731effbd8d0d74aec1fe7c9583c",
+    "artifact_sha256": "a166907f69127bab4ab379522f61e56d7ffac731effbd8d0d74aec1fe7c9583c",
+    "log": "gate-affected.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 133779,
+      "signal": null,
+      "start_ticks": "55211971",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-vqhslksx"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-vqhslksx"
+      ],
+      "base": "b7cd78764b28e866dc3e6c96a66a6ae8a48b5c29",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-vqhslksx/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-archive-g4-dospv5gz.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-archive-g4-dospv5gz.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-archive-g4-dospv5gz.tar.gz",
+    "archive_member": "g4-dospv5gz/authority/artifacts/2a4f7b31d5a3cb02feb1f59e6e9e1f2decf8a431522be0b4f5e1c7cfe4ede95b",
+    "artifact_sha256": "2a4f7b31d5a3cb02feb1f59e6e9e1f2decf8a431522be0b4f5e1c7cfe4ede95b",
+    "log": "gate-affected.log",
+    "mode": "bounded-archive",
+    "process": {
+      "exit": null,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 138202,
+      "signal": 13,
+      "start_ticks": "55212622",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-dospv5gz/workers",
+      "d2f9356b-50c2-4b56-86bd-e8485d2c7e82"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 33554432,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/bounded-archive-g4-dospv5gz.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/bounded-archive-g4-dospv5gz.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/bounded-archive-g4-dospv5gz.tar.gz",
+    "archive_member": "g4-dospv5gz/authority/artifacts/fa6d4118d02792c062827fc7d98f754316a133d75ef62c94380515f3b0aab808",
+    "artifact_sha256": "fa6d4118d02792c062827fc7d98f754316a133d75ef62c94380515f3b0aab808",
+    "log": "gate-affected.log",
+    "mode": "bounded-archive",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 138332,
+      "signal": null,
+      "start_ticks": "55212670",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-dospv5gz/workers",
+      "d2f9356b-50c2-4b56-86bd-e8485d2c7e82"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/partial_workspace_cleanup-g4-9rae6h_v.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/partial_workspace_cleanup-g4-9rae6h_v.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/partial_workspace_cleanup-g4-9rae6h_v.tar.gz",
+    "archive_member": "g4-9rae6h_v/authority/artifacts/97fb1380bf04ae79c681922c558caf7a755f1413e13b8959c6c1904736d136f1",
+    "artifact_sha256": "97fb1380bf04ae79c681922c558caf7a755f1413e13b8959c6c1904736d136f1",
+    "log": "gate-affected.log",
+    "mode": "partial_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 139701,
+      "signal": null,
+      "start_ticks": "55213054",
+      "stderr_limit": 1048576,
+      "stdout_limit": 33554432,
+      "waited": true
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-9rae6h_v/workers",
+      "2ba5b391-1114-4f39-9b88-24811b4ff620"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/git-publication-after_ref_update-g4-aw1phkws.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/git-publication-after_ref_update-g4-aw1phkws.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/git-publication-after_ref_update-g4-aw1phkws.tar.gz",
+    "archive_member": "g4-aw1phkws/authority/artifacts/3c61e6e5211620f9a1d68c21b94c42f088c2b96a3a861b4e059074453d672735",
+    "artifact_sha256": "3c61e6e5211620f9a1d68c21b94c42f088c2b96a3a861b4e059074453d672735",
+    "log": "gate-affected.log",
+    "mode": "git-publication-after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 146635,
+      "signal": null,
+      "start_ticks": "55213870",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-aw1phkws"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-aw1phkws"
+      ],
+      "base": "f5d9f6285e03ed47d70b851e4ce987c5986faebf",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-aw1phkws/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/git-publication-before_ref_update-g4-ezzqcuzf.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/git-publication-before_ref_update-g4-ezzqcuzf.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/git-publication-before_ref_update-g4-ezzqcuzf.tar.gz",
+    "archive_member": "g4-ezzqcuzf/authority/artifacts/abfebf465f61d2579be121e8549acaa207828b9de78ad6ed6a958380072d6be1",
+    "artifact_sha256": "abfebf465f61d2579be121e8549acaa207828b9de78ad6ed6a958380072d6be1",
+    "log": "gate-affected.log",
+    "mode": "git-publication-before_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 149130,
+      "signal": null,
+      "start_ticks": "55214118",
+      "stderr_limit": 1048576,
+      "stdout_limit": 25165824,
+      "waited": true
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-ezzqcuzf"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-ezzqcuzf"
+      ],
+      "base": "222837e993429f6ef6b2c4702d733e6a21247440",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-ezzqcuzf/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/git-publication-after_ref_update-g4-q9yfyhuv.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/git-publication-after_ref_update-g4-q9yfyhuv.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/git-publication-after_ref_update-g4-q9yfyhuv.tar.gz",
+    "archive_member": "g4-q9yfyhuv/authority/artifacts/3a9997a678f9d7e07eebbe859e4667c67636204417d4f5eb2257a6953932b1c8",
+    "artifact_sha256": "3a9997a678f9d7e07eebbe859e4667c67636204417d4f5eb2257a6953932b1c8",
+    "log": "kata-publication-green.log",
+    "mode": "git-publication-after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4126413,
+      "start_ticks": "55157946"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-q9yfyhuv"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-q9yfyhuv"
+      ],
+      "base": "a00311acea32ff7f7271c6d523566c649e6417fb",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-q9yfyhuv/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/git-publication-before_ref_update-g4-xsulc7rh.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/git-publication-before_ref_update-g4-xsulc7rh.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/git-publication-before_ref_update-g4-xsulc7rh.tar.gz",
+    "archive_member": "g4-xsulc7rh/authority/artifacts/aaf53a79e7506b54d475c44e2103700cd9b4b313894437a889fdaa3828c647b0",
+    "artifact_sha256": "aaf53a79e7506b54d475c44e2103700cd9b4b313894437a889fdaa3828c647b0",
+    "log": "kata-publication-green.log",
+    "mode": "git-publication-before_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4126409,
+      "start_ticks": "55157941"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-xsulc7rh"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-xsulc7rh"
+      ],
+      "base": "a00311acea32ff7f7271c6d523566c649e6417fb",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-xsulc7rh/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/git-publication-after_ref_update-g4-y0lxx_il.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/git-publication-after_ref_update-g4-y0lxx_il.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/git-publication-after_ref_update-g4-y0lxx_il.tar.gz",
+    "archive_member": "g4-y0lxx_il/authority/artifacts/ef5af40ce15672ca812bc8be7afe0cc67d837d34157f4518ca99c25e6f1a35a8",
+    "artifact_sha256": "ef5af40ce15672ca812bc8be7afe0cc67d837d34157f4518ca99c25e6f1a35a8",
+    "log": "kata-publication-green2.log",
+    "mode": "git-publication-after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4144415,
+      "start_ticks": "55171757"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-y0lxx_il"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-y0lxx_il"
+      ],
+      "base": "b08f65c6302d669099711cba4f7ab45fc17d2fbf",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-y0lxx_il/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/git-publication-before_ref_update-g4-9w0flnrw.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/git-publication-before_ref_update-g4-9w0flnrw.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/git-publication-before_ref_update-g4-9w0flnrw.tar.gz",
+    "archive_member": "g4-9w0flnrw/authority/artifacts/ee611b86bd2eb0bcf488a3bd39654dfa1179f903da8ecf9e0a7673480eeb6921",
+    "artifact_sha256": "ee611b86bd2eb0bcf488a3bd39654dfa1179f903da8ecf9e0a7673480eeb6921",
+    "log": "kata-publication-green2.log",
+    "mode": "git-publication-before_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4144419,
+      "start_ticks": "55171758"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-9w0flnrw"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-9w0flnrw"
+      ],
+      "base": "b08f65c6302d669099711cba4f7ab45fc17d2fbf",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-9w0flnrw/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-capture-g4-klixfkhd.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-capture-g4-klixfkhd.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-capture-g4-klixfkhd.tar.gz",
+    "archive_member": "g4-klixfkhd/authority/artifacts/d6ab15a0112fc5ef4eee2ba97c2f252e16446674d59862d41222dce719e09faa",
+    "artifact_sha256": "d6ab15a0112fc5ef4eee2ba97c2f252e16446674d59862d41222dce719e09faa",
+    "log": "lifecycle-green.log",
+    "mode": "terminal-capture",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3888078,
+      "start_ticks": "54933588"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-klixfkhd"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-klixfkhd"
+      ],
+      "base": "8c3d08c2fc163b8d75e4a00bec68170b43acc175",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-klixfkhd/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-accept-g4-3o4bc_vu.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-accept-g4-3o4bc_vu.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-accept-g4-3o4bc_vu.tar.gz",
+    "archive_member": "g4-3o4bc_vu/authority/artifacts/992b22b04078f44a5c988598717a0627ec8105dbdfb8e654300930f0b24ab8d9",
+    "artifact_sha256": "992b22b04078f44a5c988598717a0627ec8105dbdfb8e654300930f0b24ab8d9",
+    "log": "lifecycle-green.log",
+    "mode": "terminal-accept",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3888900,
+      "start_ticks": "54934296"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-3o4bc_vu"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-3o4bc_vu"
+      ],
+      "base": "77f443b646fff226ce2f41df28955e37140fee80",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-3o4bc_vu/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/accepted-capture-g4-ux5368r8.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/accepted-capture-g4-ux5368r8.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/accepted-capture-g4-ux5368r8.tar.gz",
+    "archive_member": "g4-ux5368r8/authority/artifacts/7765862f6cea2c31a9f11452d827371ebdf19bfa9288b8eec1a1fcbc3d5dece7",
+    "artifact_sha256": "7765862f6cea2c31a9f11452d827371ebdf19bfa9288b8eec1a1fcbc3d5dece7",
+    "log": "lifecycle-green.log",
+    "mode": "accepted-capture",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3889301,
+      "start_ticks": "54934899"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-ux5368r8"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-ux5368r8"
+      ],
+      "base": "153ac1769660536688c9b7c1f22226c76a5af8e3",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-ux5368r8/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/partial_workspace_cleanup-g4-8fkl6jkt.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/partial_workspace_cleanup-g4-8fkl6jkt.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/partial_workspace_cleanup-g4-8fkl6jkt.tar.gz",
+    "archive_member": "g4-8fkl6jkt/authority/artifacts/c999248ee5c4677fac7d5348237acc688ea1b0de9e64ac29873ebf7eaf4c0487",
+    "artifact_sha256": "c999248ee5c4677fac7d5348237acc688ea1b0de9e64ac29873ebf7eaf4c0487",
+    "log": "partial-controls-green.log",
+    "mode": "partial_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4116251,
+      "start_ticks": "55147997"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-8fkl6jkt/workers",
+      "a3f8e798-f65c-44fc-b913-76af0ae66b37"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/final-output-g4-9odk8kgk.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/final-output-g4-9odk8kgk.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/final-output-g4-9odk8kgk.tar.gz",
+    "archive_member": "g4-9odk8kgk/authority/artifacts/9bcc4a43119a786ddb20cfcd061904ba9408a6c217dec5da8123b014e873d155",
+    "artifact_sha256": "9bcc4a43119a786ddb20cfcd061904ba9408a6c217dec5da8123b014e873d155",
+    "log": "partial-controls-green.log",
+    "mode": "final-output",
+    "process": {
+      "exit": 0,
+      "limit": "output bound",
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4117085,
+      "start_ticks": "55148649"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-9odk8kgk"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-9odk8kgk"
+      ],
+      "base": "7c7d18965a1e47c2a07e4fe4575ad83cdee97ef7",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-9odk8kgk/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 25165824,
+    "stdout_sha256": "f2deb61684a0aa6f0fb8d808348b5ec16d3f209e80619a72a40be9465bbd61d5",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/partial_workspace_cleanup-g4-yesk6wt4.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/partial_workspace_cleanup-g4-yesk6wt4.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/partial_workspace_cleanup-g4-yesk6wt4.tar.gz",
+    "archive_member": "g4-yesk6wt4/authority/artifacts/b31ad6a6ae8f313946cc9d7d64710867dd5d098987b5166dfdd0b18e195b332a",
+    "artifact_sha256": "b31ad6a6ae8f313946cc9d7d64710867dd5d098987b5166dfdd0b18e195b332a",
+    "log": "partial-green.log",
+    "mode": "partial_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4099602,
+      "start_ticks": "55131086"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-yesk6wt4/workers",
+      "2c874b92-7dee-49ef-8754-abac19b3c38b"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_workspace_cleanup-g4-j8l_hi4m.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_workspace_cleanup-g4-j8l_hi4m.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_workspace_cleanup-g4-j8l_hi4m.tar.gz",
+    "archive_member": "g4-j8l_hi4m/authority/artifacts/044d9f83257b61f93b951c03e5d8c19e2ca442b3bcd4fe47384ad2f1575eccd3",
+    "artifact_sha256": "044d9f83257b61f93b951c03e5d8c19e2ca442b3bcd4fe47384ad2f1575eccd3",
+    "log": "partial-green.log",
+    "mode": "before_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4100740,
+      "start_ticks": "55131562"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-j8l_hi4m/workers",
+      "807c7e0c-da94-4386-80c1-c878f85488c9"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/after_workspace_cleanup-g4-ndt_3kyy.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/after_workspace_cleanup-g4-ndt_3kyy.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/after_workspace_cleanup-g4-ndt_3kyy.tar.gz",
+    "archive_member": "g4-ndt_3kyy/authority/artifacts/74737ad9ae61edef244b797a399557870fd693879462e57fa29013c3fd21d9b4",
+    "artifact_sha256": "74737ad9ae61edef244b797a399557870fd693879462e57fa29013c3fd21d9b4",
+    "log": "partial-green.log",
+    "mode": "after_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4101535,
+      "start_ticks": "55132036"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-ndt_3kyy/workers",
+      "e0fcba72-a77b-4c20-a483-a69c7c209bfc"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/partial_workspace_cleanup-g4-yurksu2d.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/partial_workspace_cleanup-g4-yurksu2d.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/partial_workspace_cleanup-g4-yurksu2d.tar.gz",
+    "archive_member": "g4-yurksu2d/authority/artifacts/0a8d6ede97c940ceb652a6307dfd07fa43c5db3dc8aa41922b328388e055ab65",
+    "artifact_sha256": "0a8d6ede97c940ceb652a6307dfd07fa43c5db3dc8aa41922b328388e055ab65",
+    "log": "partial-red.log",
+    "mode": "partial_workspace_cleanup",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 4087061,
+      "start_ticks": "55122235"
+    },
+    "argv": [
+      "--format=posix",
+      "-cf",
+      "-",
+      "-C",
+      "/tmp/g4-yurksu2d/workers",
+      "a189c187-797b-464d-845c-f1ed93718b21"
+    ],
+    "tool": {
+      "path": "/usr/bin/tar",
+      "sha256": "4e11647a9c86fb8857768bd622c43ed0662d7019f60f5bdd12fb15ac5f087070"
+    },
+    "archive_limit": 33554432,
+    "retained_archive_bytes": 81920,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/publication-before_ref_update-g4-zk0zumm_.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/publication-before_ref_update-g4-zk0zumm_.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/publication-before_ref_update-g4-zk0zumm_.tar.gz",
+    "archive_member": "g4-zk0zumm_/authority/artifacts/c888fe5b4a8ed24569449d5dd76cb637408771ffe9c08a0033075c666d258549",
+    "artifact_sha256": "c888fe5b4a8ed24569449d5dd76cb637408771ffe9c08a0033075c666d258549",
+    "log": "publication-green2.log",
+    "mode": "publication-before_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3920865,
+      "start_ticks": "54974276"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-zk0zumm_"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-zk0zumm_"
+      ],
+      "base": "398fb725698c1589f6138a92ae7f3835e7511518",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-zk0zumm_/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/publication-after_ref_update-g4-yu0akd_o.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/publication-after_ref_update-g4-yu0akd_o.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/publication-after_ref_update-g4-yu0akd_o.tar.gz",
+    "archive_member": "g4-yu0akd_o/authority/artifacts/a06d2a4eaf757d998981028e12c8f4095784a4f20ab995fdbccdb78811fdbf64",
+    "artifact_sha256": "a06d2a4eaf757d998981028e12c8f4095784a4f20ab995fdbccdb78811fdbf64",
+    "log": "publication-green2.log",
+    "mode": "publication-after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3921464,
+      "start_ticks": "54975041"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-yu0akd_o"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-yu0akd_o"
+      ],
+      "base": "cf2a4303a92af0a17ecd1f22a8cc18f9220b3d4a",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-yu0akd_o/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-land-g4-jiorwtrb.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-land-g4-jiorwtrb.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-land-g4-jiorwtrb.tar.gz",
+    "archive_member": "g4-jiorwtrb/authority/artifacts/602895cad7209b6791212d19385c0e630c1aa227414058d6478e220eea6f26b9",
+    "artifact_sha256": "602895cad7209b6791212d19385c0e630c1aa227414058d6478e220eea6f26b9",
+    "log": "publication-green2.log",
+    "mode": "terminal-land",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3922142,
+      "start_ticks": "54975794"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-jiorwtrb"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-jiorwtrb"
+      ],
+      "base": "b84bd9d026915d3ecf302cb64ccb209599a0166a",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-jiorwtrb/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/before_land_admission-g4-9s0auz73.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/before_land_admission-g4-9s0auz73.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/before_land_admission-g4-9s0auz73.tar.gz",
+    "archive_member": "g4-9s0auz73/authority/artifacts/c84b9d872b1ac468a442c59d170a597f5fe18561396fab6b61fe22e8473694d5",
+    "artifact_sha256": "c84b9d872b1ac468a442c59d170a597f5fe18561396fab6b61fe22e8473694d5",
+    "log": "publication-green2.log",
+    "mode": "before_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3922686,
+      "start_ticks": "54976413"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-9s0auz73"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-9s0auz73"
+      ],
+      "base": "846034e02afa3d44fd670ca7a7e72910ee474664",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-9s0auz73/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/after_land_admission-g4-nhynnzvb.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/after_land_admission-g4-nhynnzvb.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/after_land_admission-g4-nhynnzvb.tar.gz",
+    "archive_member": "g4-nhynnzvb/authority/artifacts/d595f5ae4a829659db52024491e8f083bb55ace269095c02262d810427824aa8",
+    "artifact_sha256": "d595f5ae4a829659db52024491e8f083bb55ace269095c02262d810427824aa8",
+    "log": "publication-green2.log",
+    "mode": "after_land_admission",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3923046,
+      "start_ticks": "54977002"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-nhynnzvb"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-nhynnzvb"
+      ],
+      "base": "e9cb6741fe5247d32f1a0ce640083566391efd52",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-nhynnzvb/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/publication-after_ref_update-g4-a4vt_l_0.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/publication-after_ref_update-g4-a4vt_l_0.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/publication-after_ref_update-g4-a4vt_l_0.tar.gz",
+    "archive_member": "g4-a4vt_l_0/authority/artifacts/98e29b10197213886ae3f165d90c2514547f892bc86d7e46f0d7094f629c3921",
+    "artifact_sha256": "98e29b10197213886ae3f165d90c2514547f892bc86d7e46f0d7094f629c3921",
+    "log": "publication-red.log",
+    "mode": "publication-after_ref_update",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3912488,
+      "start_ticks": "54963736"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-a4vt_l_0"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-a4vt_l_0"
+      ],
+      "base": "11e3f449c160ab6fb2e8459f59eeb81bef416c96",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-a4vt_l_0/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-accept-g4-jkic_91c.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-accept-g4-jkic_91c.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-accept-g4-jkic_91c.tar.gz",
+    "archive_member": "g4-jkic_91c/authority/artifacts/9f88bc2029ce04feb610b67e61c0bb1f92f14eb203409ceca0cf3d9e8307f8a4",
+    "artifact_sha256": "9f88bc2029ce04feb610b67e61c0bb1f92f14eb203409ceca0cf3d9e8307f8a4",
+    "log": "terminal-accept-red.log",
+    "mode": "terminal-accept",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3880563,
+      "start_ticks": "54926164"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-jkic_91c"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-jkic_91c"
+      ],
+      "base": "c69ac97aaee604339447bc8e03782cba33510b8c",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-jkic_91c/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archive": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/inputs/fixtures/terminal-capture-g4-9iw1m0r2.tar.gz",
+    "archive_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/original/terminal-capture-g4-9iw1m0r2.tar.gz",
+    "archive_retained_original": "/data02/home/philip.yang/workspace/corenius-sqlite04-git/.scratch/sqlite-controller/04/repair3/relocated-z3ni79xz/nonexistent-original-checkout/retained/terminal-capture-g4-9iw1m0r2.tar.gz",
+    "archive_member": "g4-9iw1m0r2/authority/artifacts/c6af3fb4b4cf8c9d8e7a16067ae11e4e14f453c274a8323a2a4dcc1e432ad689",
+    "artifact_sha256": "c6af3fb4b4cf8c9d8e7a16067ae11e4e14f453c274a8323a2a4dcc1e432ad689",
+    "log": "terminal-capture-red.log",
+    "mode": "terminal-capture",
+    "process": {
+      "exit": 0,
+      "limit": null,
+      "monitor_pid_namespace": "pid:[4026531836]",
+      "pid": 3879964,
+      "start_ticks": "54925459"
+    },
+    "argv": [
+      "/usr/bin/python3",
+      "/run/verification.py"
+    ],
+    "args": [
+      "a",
+      "/tmp/g4-9iw1m0r2"
+    ],
+    "exit": 0,
+    "os_isolated": true,
+    "environment": "bd2f0c5c9b9c5b7f71a0f10a1edb99e94856e3c364cff5a2bec2786eccb298a9",
+    "suite": {
+      "args": [
+        "a",
+        "/tmp/g4-9iw1m0r2"
+      ],
+      "base": "93b7866d53c9fa4edb06eda4385e2a11b8661c2f",
+      "id": "a-initial",
+      "script": {
+        "path": "/tmp/g4-9iw1m0r2/verification.py",
+        "sha256": "5f5b1473f0dfdd2cecb0bb224e14695c5d4febe651b413c1527694df619f6377"
+      },
+      "task": "a"
+    },
+    "stdout_bytes": 75,
+    "stdout_sha256": "9217561e33d51998c78271f37d9939c6d7a7eba37f60fe83d5e4740a1bf670e3",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

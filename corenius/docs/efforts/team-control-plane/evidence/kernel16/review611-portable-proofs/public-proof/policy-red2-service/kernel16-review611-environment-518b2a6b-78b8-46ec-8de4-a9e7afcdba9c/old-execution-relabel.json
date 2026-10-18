@@ -1,0 +1,70 @@
+{
+  "configure_revision": 6,
+  "old_execution": "73f18c6f-2a9e-4e55-81ab-e1b723e7d708",
+  "old_report": {
+    "candidate": {
+      "artifact": "f73bbc850087d2f12a66012daef0e3bf9c08aa2021eb629dcd7045df1cbf76b6",
+      "base": "c95977d4a2e0254717301b44cfbbf2f0a3a8f65c",
+      "commit": "465e8bf644c1a8bb43c2b57090c21c1984d9b9e9",
+      "deliverables": [
+        "src/result"
+      ],
+      "generation": 1,
+      "risks": [],
+      "spec_digest": "3a6821c0ca8c855c3f9461842e3ba770bf00c9a1fcf503b3665e741dfeb5d1c7",
+      "spec_revision": 2,
+      "tree": "f6b3bc641318aac78c23269f0a7c3a720c194a15"
+    },
+    "checks": [
+      {
+        "command": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'actual candidate'; cat src/result"
+        ],
+        "exit_code": 0,
+        "logs": "4f91e6459735bea544d0ef63c5fc5ae0fbeb9f7b7294407a0ab00a10198b3717"
+      }
+    ],
+    "environment": "14ab2782a7b3f365f1727fa8b62e889228cf215360e6153ffad8b45c92a52732",
+    "resolved_decisions": true,
+    "suite": "273d9693920660d445d7d2b6850d5abd1f82f7fbd806ca4cac0d3dc074283fac"
+  },
+  "relabeled_report": {
+    "candidate": {
+      "artifact": "f73bbc850087d2f12a66012daef0e3bf9c08aa2021eb629dcd7045df1cbf76b6",
+      "base": "c95977d4a2e0254717301b44cfbbf2f0a3a8f65c",
+      "commit": "465e8bf644c1a8bb43c2b57090c21c1984d9b9e9",
+      "deliverables": [
+        "src/result"
+      ],
+      "generation": 1,
+      "risks": [],
+      "spec_digest": "3a6821c0ca8c855c3f9461842e3ba770bf00c9a1fcf503b3665e741dfeb5d1c7",
+      "spec_revision": 2,
+      "tree": "f6b3bc641318aac78c23269f0a7c3a720c194a15"
+    },
+    "checks": [
+      {
+        "command": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'actual candidate'; cat src/result"
+        ],
+        "exit_code": 0,
+        "logs": "4f91e6459735bea544d0ef63c5fc5ae0fbeb9f7b7294407a0ab00a10198b3717"
+      }
+    ],
+    "environment": "800228292becb64b5ca090963c8fd3b6236e40b4ae4599a0872fb3c11a3eefbe",
+    "resolved_decisions": true,
+    "suite": "273d9693920660d445d7d2b6850d5abd1f82f7fbd806ca4cac0d3dc074283fac"
+  },
+  "reuse": {
+    "Ok": {
+      "accepted": false,
+      "candidate_id": "77e221e078fa74f284742c515a827dbd4f4338a8efac1391e0e85af5127bfcc1",
+      "report_id": "dd505ef6e9db52c1cecf98ae885f41b9c7dca561941477343222b5dbe093f9ac",
+      "revision": 7
+    }
+  }
+}

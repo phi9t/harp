@@ -1,0 +1,1 @@
+Controller only: missing-control boundary red; committed grant/case/source validation; durable exclusive start and single execution; write/fsync/terminal fault retention; immutable source-first handoff. No runtime/namespace/provider launch.

@@ -1,0 +1,282 @@
+{
+  "before": null,
+  "capacity": 0,
+  "controls": [
+    [
+      "symlink",
+      {
+        "Err": "dependency_unmet"
+      },
+      null
+    ],
+    [
+      "fifo",
+      {
+        "Err": "dependency_unmet"
+      },
+      null
+    ],
+    [
+      "unsafe-mode",
+      {
+        "Err": "dependency_unmet"
+      },
+      null
+    ],
+    [
+      "directory",
+      {
+        "Err": "dependency_unmet"
+      },
+      null
+    ]
+  ],
+  "execution": {
+    "id": "fd45f736-bf1a-4800-a882-bd0f59cbbc46",
+    "path": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/workspaces/fd45f736-bf1a-4800-a882-bd0f59cbbc46"
+  },
+  "first": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "sleep 1; printf actual-crash-output"
+    ],
+    "candidate": null,
+    "completion": {
+      "finalizer": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 143601,
+        "pid": 143601,
+        "start_ticks": 39890759
+      },
+      "init_process": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026539772]",
+        "namespace_pid": 1,
+        "pid": 152183,
+        "start_ticks": 39891753
+      },
+      "kind": "recovered_stop",
+      "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+      "stop_observation": "3ba42559-f35e-4919-91d4-8fdd3f5c6eb9"
+    },
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 151959,
+      "pid": 151959,
+      "start_ticks": 39891749
+    },
+    "execution": "fd45f736-bf1a-4800-a882-bd0f59cbbc46",
+    "exit_code": null,
+    "logs": "5b8a788f6f549f1c3b940cbd98cbf2d73a10c77293b8e7b0ec164200b048131a",
+    "namespace_stopped": true,
+    "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+    "signal": null
+  },
+  "independent_raw_digest": "5b8a788f6f549f1c3b940cbd98cbf2d73a10c77293b8e7b0ec164200b048131a",
+  "original_stop": {
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 151959,
+      "pid": 151959,
+      "start_ticks": 39891749
+    },
+    "init_process": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026539772]",
+      "namespace_pid": 1,
+      "pid": 152183,
+      "start_ticks": 39891753
+    },
+    "launcher": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 152182,
+      "pid": 152182,
+      "start_ticks": 39891753
+    },
+    "members": [],
+    "state": "stopped"
+  },
+  "release": {
+    "Ok": null
+  },
+  "repeat": {
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 151959,
+      "pid": 151959,
+      "start_ticks": 39891749
+    },
+    "launcher": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 152182,
+      "pid": 152182,
+      "start_ticks": 39891753
+    },
+    "manifest": {
+      "attempt": "d81b17de-3cd8-4242-85cd-5e22c5b62748",
+      "base": "a1d71c5cae506b91ae2bf7786619bba76cde4b5f",
+      "candidate": null,
+      "episode": "2443af34-009b-4bf1-b22d-0170d5dfee76",
+      "generation": 1,
+      "input": {
+        "digest": "b8dba01af127365631989a6c0096d781a5cd47208762bef70d8686ff9449419d",
+        "id": "9072dc6c-cd3c-4021-898c-af20878c8ef3"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/workspaces/.execution-logs/fd45f736-bf1a-4800-a882-bd0f59cbbc46.log",
+      "mission": "4031eea2-6969-43b5-951d-1f4ef41fe7f7",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/workspaces/fd45f736-bf1a-4800-a882-bd0f59cbbc46",
+      "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "4866dc8bdf7cd2e74108a31855a510c68c1c60b4c093298dd1508ec64cadd5d5",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/store",
+      "task": "773f86be-d69c-4f8b-843c-e943f5d59b98",
+      "write_scope": [
+        "src"
+      ]
+    },
+    "members": [],
+    "quarantine_reason": null,
+    "state": "released"
+  },
+  "repeated_result": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "sleep 1; printf actual-crash-output"
+    ],
+    "candidate": null,
+    "completion": {
+      "finalizer": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 143601,
+        "pid": 143601,
+        "start_ticks": 39890759
+      },
+      "init_process": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026539772]",
+        "namespace_pid": 1,
+        "pid": 152183,
+        "start_ticks": 39891753
+      },
+      "kind": "recovered_stop",
+      "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+      "stop_observation": "3ba42559-f35e-4919-91d4-8fdd3f5c6eb9"
+    },
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 151959,
+      "pid": 151959,
+      "start_ticks": 39891749
+    },
+    "execution": "fd45f736-bf1a-4800-a882-bd0f59cbbc46",
+    "exit_code": null,
+    "logs": "5b8a788f6f549f1c3b940cbd98cbf2d73a10c77293b8e7b0ec164200b048131a",
+    "namespace_stopped": true,
+    "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+    "signal": null
+  },
+  "result": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "sleep 1; printf actual-crash-output"
+    ],
+    "candidate": null,
+    "completion": {
+      "finalizer": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 143601,
+        "pid": 143601,
+        "start_ticks": 39890759
+      },
+      "init_process": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026539772]",
+        "namespace_pid": 1,
+        "pid": 152183,
+        "start_ticks": 39891753
+      },
+      "kind": "recovered_stop",
+      "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+      "stop_observation": "3ba42559-f35e-4919-91d4-8fdd3f5c6eb9"
+    },
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 151959,
+      "pid": 151959,
+      "start_ticks": 39891749
+    },
+    "execution": "fd45f736-bf1a-4800-a882-bd0f59cbbc46",
+    "exit_code": null,
+    "logs": "5b8a788f6f549f1c3b940cbd98cbf2d73a10c77293b8e7b0ec164200b048131a",
+    "namespace_stopped": true,
+    "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+    "signal": null
+  },
+  "unauthorized": {
+    "Err": "unauthorized"
+  },
+  "view": {
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 151959,
+      "pid": 151959,
+      "start_ticks": 39891749
+    },
+    "launcher": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 152182,
+      "pid": 152182,
+      "start_ticks": 39891753
+    },
+    "manifest": {
+      "attempt": "d81b17de-3cd8-4242-85cd-5e22c5b62748",
+      "base": "a1d71c5cae506b91ae2bf7786619bba76cde4b5f",
+      "candidate": null,
+      "episode": "2443af34-009b-4bf1-b22d-0170d5dfee76",
+      "generation": 1,
+      "input": {
+        "digest": "b8dba01af127365631989a6c0096d781a5cd47208762bef70d8686ff9449419d",
+        "id": "9072dc6c-cd3c-4021-898c-af20878c8ef3"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/workspaces/.execution-logs/fd45f736-bf1a-4800-a882-bd0f59cbbc46.log",
+      "mission": "4031eea2-6969-43b5-951d-1f4ef41fe7f7",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/workspaces/fd45f736-bf1a-4800-a882-bd0f59cbbc46",
+      "recovery_epoch": "7057fae5-c211-469f-b581-725ee4520c20",
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "4866dc8bdf7cd2e74108a31855a510c68c1c60b4c093298dd1508ec64cadd5d5",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-21d4c776-9d6d-4060-8c8f-d76f588e824d/store",
+      "task": "773f86be-d69c-4f8b-843c-e943f5d59b98",
+      "write_scope": [
+        "src"
+      ]
+    },
+    "members": [],
+    "quarantine_reason": null,
+    "state": "stopped"
+  }
+}

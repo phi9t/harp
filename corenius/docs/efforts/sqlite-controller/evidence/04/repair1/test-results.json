@@ -1,0 +1,116 @@
+{
+  "accepted-capture-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.78s"
+  ],
+  "archive-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.54s"
+  ],
+  "archive-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.98s"
+  ],
+  "authority-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.40s"
+  ],
+  "authority-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.22s"
+  ],
+  "final-output-green.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.62s"
+  ],
+  "final-output-green2.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.62s"
+  ],
+  "final-output-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.65s"
+  ],
+  "freeze-controls.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.74s"
+  ],
+  "gate-affected.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 144.48s",
+    "ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.88s",
+    "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s",
+    "ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s",
+    "ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.30s"
+  ],
+  "gate-build-last.log": [],
+  "gate-clippy.log": [],
+  "gate-default.log": [
+    "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 171.25s",
+    "ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s",
+    "ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+  ],
+  "gate-fmt.log": [],
+  "gate-native.log": [
+    "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 71.61s"
+  ],
+  "gate-pending-controls.log": [
+    "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 26 filtered out; finished in 123.03s"
+  ],
+  "inventory-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.30s"
+  ],
+  "inventory-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.34s"
+  ],
+  "kata-publication-green.log": [
+    "FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 6 filtered out; finished in 8.86s"
+  ],
+  "kata-publication-green2.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 9.47s"
+  ],
+  "lifecycle-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.18s"
+  ],
+  "native-final-driver-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 27 filtered out; finished in 35.75s"
+  ],
+  "native-final-driver-red.log": [
+    "FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 27 filtered out; finished in 50.94s"
+  ],
+  "native-lost-ack-green.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 27 filtered out; finished in 49.81s"
+  ],
+  "native-lost-ack-green2.log": [
+    "FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 27 filtered out; finished in 35.70s"
+  ],
+  "native-lost-ack-red.log": [
+    "FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 27 filtered out; finished in 50.18s"
+  ],
+  "partial-controls-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.50s"
+  ],
+  "partial-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.30s"
+  ],
+  "partial-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.69s"
+  ],
+  "publication-green.log": [],
+  "publication-green2.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.72s"
+  ],
+  "publication-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.45s"
+  ],
+  "shadow-green.log": [
+    "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.41s"
+  ],
+  "shadow-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.11s"
+  ],
+  "terminal-accept-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.38s"
+  ],
+  "terminal-capture-red.log": [
+    "FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.72s"
+  ]
+}

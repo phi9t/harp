@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_occupied_uncertainty_output_refuses_before_reservation (test_trae_case_control.DurableControllerBehavior.test_occupied_uncertainty_output_refuses_before_reservation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae20-budget-repair-author/tools/probes/test_trae_case_control.py", line 353, in test_occupied_uncertainty_output_refuses_before_reservation
+    self.assertFalse((self.out/'started.json').exists(), 'incompatible prior uncertainty must refuse before reservation')
+AssertionError: True is not false : incompatible prior uncertainty must refuse before reservation
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

@@ -1,0 +1,308 @@
+{
+  "axis": "Spec",
+  "outcome": "FAIL",
+  "created_utc": "2026-10-04T22:01:25.511644+00:00",
+  "source": {
+    "owner": "/root/sqlite04_repair1_spec_review",
+    "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+    "source_tree": "917018ee0d6fe5cd35847ea569cf37894454e229",
+    "evidence_tip": "0fccc193949476e9b7f04da1b0c9513f3d0a055c",
+    "evidence_tree": "46d03f269edbaeeb41287c8454d7d682d3f9edd2",
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236"
+  },
+  "source_files": 43,
+  "implementation_manifest_sha256": "f52b14991bc2b73812965b7154ea9ef4146c877f947ca4edd3e423080e3735d7",
+  "findings": [
+    {
+      "id": "S05-FINAL-1",
+      "priority": "P1",
+      "original_control": "STD05-005 / final brief control5",
+      "title": "Failure transaction cannot roll back the caller\u2019s applying admission",
+      "path": "crates/sqlite-controller/src/codex.rs",
+      "lines": [
+        1449,
+        1452,
+        1474
+      ],
+      "related": [
+        {
+          "path": "crates/sqlite-controller/src/control.rs",
+          "lines": [
+            223,
+            225,
+            291,
+            303
+          ]
+        },
+        {
+          "path": "crates/sqlite-controller/src/codex.rs",
+          "lines": [
+            1298,
+            1299
+          ]
+        }
+      ],
+      "requirement": "SPEC78: A turn race returns delivery to pending; final brief5 requires atomic or explicitly crash-recoverable native/domain failure transitions.",
+      "behavior": "dispatch_prepared autocommits applying before the stale-turn branch invokes fail_delivery. If SQLite aborts the later domain update, the helper transaction rolls back to applying/question prepared, not prepared. After reopen, prepare_delivery refuses the ambiguous operation; turn-start-only reconcile_turn_ack does not recover the stranded steer.",
+      "evidence": "Independent static caller review plus root-authenticated Standards actual dispatcher SQLite second-write failure/reopen probe: operation applying, question prepared, one operation after reprepare. Retained log SHA14b2af4bcf6439e58fefddba612a0b66df0b1fadfd044cd3b76e43bcc0124739. Reviewer also ran existing helper test successfully; that tests a different boundary. No process-kill/native claim for this probe.",
+      "correction": "Keep local stale-turn rejection and both journal/domain writes in one boundary before committing applying, or add explicit durable recovery for this exact pre-dispatch applying state. Test real dispatcher caller with failed second write, reopen/reprepare, early ACK preservation and no duplicate history/effects."
+    },
+    {
+      "id": "S05-FINAL-2",
+      "priority": "P2",
+      "original_control": "STD05 bounded-input finding / final brief control6; publication acceptance remains incomplete",
+      "title": "Missing complete sealed input still receives reviewed coverage",
+      "path": "crates/sqlite-controller/src/monitor.rs",
+      "lines": [
+        887,
+        924,
+        715,
+        720
+      ],
+      "requirement": "Owner SPEC112: Before review credit, retain complete allowed visible-item inputs; missing evidence must restrict confidence/coverage. Final brief6 says unavailable/replaced/oversized input cannot advance reviewed coverage/credits.",
+      "behavior": "validate_evidence reads only report.evidence verifier artifacts, not full native input dependencies retained in monitor_native_inputs. A >32768-byte native item is represented in the sealed batch by a placeholder. Deleting its full artifact makes monitor_input fail, yet publishing progress dispositions with no verifier evidence succeeds and advances reviewed_history to the end with gap null and history_gap false.",
+      "evidence": "Own source924-derived test-only fixture, production bytes unchanged. Retained40KB native item, sealed batch, deleted complete artifact, authenticated public monitor_input refused, public publish_monitor_assessment succeeded: reviewed_history0->2, backlog0, gap:null, history_gap:false. Actual test exit101,0PASS/1FAIL. No verified evidence credit or execution authority was created; defect is false reviewed coverage. Log SHAd6ce32b49f4619b7b302f85a8649f1b726b914ad7d092f706c243cd88b3dca5a.",
+      "correction": "Validate complete sealed-input dependencies with bounded identity/hash reads outside the writer before review publication, and transactionally bind the validated set/coverage outcome. Missing or policy-omitted input must remain pending or explicitly limited coverage; an advisory report cannot turn an unavailable input into fully reviewed history. Add >32KiB missing/replaced/FIFO/symlink publication negatives."
+    }
+  ],
+  "original_finding_dispositions": [
+    {
+      "original": "S05-F1 observer effects",
+      "status": "resolved in scoped review",
+      "evidence": "Original probe now contract_pass=true; verification reports0->0 and workspace preserved. Exhaustive direct/gateway Git mutation/evidence refusal plus authorized verifier/land/retire test passes."
+    },
+    {
+      "original": "S05-F2 native turn admission",
+      "status": "resolved in scoped review",
+      "evidence": "Qualified typed turn required; durable in-flight correlation allowed; tests reject stale/unrelated/completed new effects, permit early correlated call and cached terminal replay. Wire-before-reply unit and actual native reply deferral remain distinct proofs."
+    },
+    {
+      "original": "S05-F3 shared peer routing",
+      "status": "resolved in scoped review",
+      "evidence": "Owner/thread filter before handler; peer queued. Wire unit and own actual shared/separate decoded assignment routing pass."
+    },
+    {
+      "original": "S05-F4 pending argument mismatch",
+      "status": "resolved in scoped review",
+      "evidence": "Retained arguments checked regardless of nullable response; mismatch no-effect and same-payload pending/cached replay tests pass."
+    },
+    {
+      "original": "STD05-005 atomic delivery failure",
+      "status": "unresolved",
+      "finding": "S05-FINAL-1"
+    },
+    {
+      "original": "STD05 bounded retained input",
+      "status": "partially resolved; acceptance remains incomplete",
+      "evidence": "nofollow/nonblocking bounded descriptor reader, metadata/hash checks and FIFO/symlink/oversize/missing retrieval tests pass. Missing full-input publication still advances coverage.",
+      "finding": "S05-FINAL-2"
+    }
+  ],
+  "actual_independent_runs": {
+    "focused": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/target",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "--test",
+        "control_center",
+        "--test",
+        "client",
+        "--",
+        "--nocapture"
+      ],
+      "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_utc": "2026-10-04T21:53:19.072468+00:00",
+      "pid": 2809035,
+      "start_ticks": "56637937",
+      "exit": 0,
+      "seconds": 13.678397385054268,
+      "log_sha256": "f4b6d6774601192b59b81ca386acd4566074cdb9d0814858b538fdfbebef0f31",
+      "finished_utc": "2026-10-04T21:53:32.750884+00:00"
+    },
+    "observer": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/target",
+        "--features",
+        "fault-injection",
+        "--test",
+        "git",
+        "actual_observer_git_authority_has_no_effect_and_preserves_authorized_control",
+        "--",
+        "--nocapture"
+      ],
+      "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_utc": "2026-10-04T21:54:39.034014+00:00",
+      "pid": 2823223,
+      "start_ticks": "56645933",
+      "exit": 0,
+      "seconds": 6.79954563092906,
+      "log_sha256": "10bfd92118930cfe651210283106dd66fad81134e7291f9f5884933b3f4f69ec",
+      "finished_utc": "2026-10-04T21:54:45.833581+00:00"
+    },
+    "original-observer": {
+      "command": [
+        "python3",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/original-observer-probe.py"
+      ],
+      "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_utc": "2026-10-04T21:56:05.200042+00:00",
+      "pid": 2839486,
+      "start_ticks": "56654549",
+      "exit": 0,
+      "seconds": 3.896271175937727,
+      "log_sha256": "1d40fd13b93191043c063dc28f55db1e17ee8523a1aaccab9b014cd892e594c6",
+      "finished_utc": "2026-10-04T21:56:09.096331+00:00"
+    },
+    "native-combined": {
+      "command": [
+        "env",
+        "CORENIUS_TEST_UI_FIXTURE=1",
+        "CORENIUS_TEST_UI_DRAIN_RACE=1",
+        "CORENIUS_TEST_TOOL_INTERLEAVING=1",
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/target",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "actual_native_control_races_and_authenticated_correction",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_utc": "2026-10-04T21:55:43.522671+00:00",
+      "pid": 2833709,
+      "start_ticks": "56652382",
+      "exit": 0,
+      "seconds": 108.80045510292985,
+      "log_sha256": "1a573c17fd45561fc7a5ba6d8da8bfe294e1c51dd2c7cb24c2743cb2aad37e7c",
+      "finished_utc": "2026-10-04T21:57:32.323371+00:00"
+    },
+    "initial-confirm-default": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/target",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "repair2_initial_turn_receipt_survives_app_restart_before_adoption",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_utc": "2026-10-04T21:57:48.659740+00:00",
+      "pid": 2863029,
+      "start_ticks": "56664895",
+      "exit": 101,
+      "seconds": 54.77350338594988,
+      "log_sha256": "d58257100c227fc304cd99b5f63124768bd4e4ae28753ab5225656d2d3dd7ce6",
+      "finished_utc": "2026-10-04T21:58:43.433336+00:00"
+    },
+    "missing-input": {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/coverage-probe-crate/Cargo.toml",
+        "--target-dir",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/coverage-target",
+        "--lib",
+        "review_missing_full_sealed_input_cannot_advance_coverage",
+        "--",
+        "--nocapture"
+      ],
+      "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+      "started_utc": "2026-10-04T21:55:31.622082+00:00",
+      "pid": 2831938,
+      "start_ticks": "56651192",
+      "exit": 101,
+      "seconds": 12.544763706973754,
+      "log_sha256": "d6ce32b49f4619b7b302f85a8649f1b726b914ad7d092f706c243cd88b3dca5a",
+      "finished_utc": "2026-10-04T21:55:44.166863+00:00"
+    }
+  },
+  "required_gate_failure": {
+    "test": "repair2_initial_turn_receipt_survives_app_restart_before_adoption",
+    "source": "92429710c422075332f9d5d4f7a5eaa9b583da2b",
+    "exit": 101,
+    "seconds": 54.77350338594988,
+    "behavior": "Shared original default one-shot turn/clientId assertion native_registry.py261 failed; secondary ConnectionRefused diagnostic. Separate branch reached recovery assertions. No persistence-poll diagnostic environment. Both raw fixture archives retained.",
+    "disposition": "Unresolved required qualification; no asynchronous cause,05 causal attribution, waiver,02/04 cap reopening or automatic rerun inferred."
+  },
+  "qualification_limits": [
+    "Model-free actual pinned native runtime/Insula/TUI tests are not live model acceptance.06 retains recurring supervised observer, permanent harness and genuine live controlled trial.",
+    "Original gate36 two failures and INITIAL_CONFIRM archive gap remain retained historical limits; new52 FIRST-read successes prove neither async cause nor05 attribution.",
+    "Run28 source drift and26 binary collision receive no final-source execution credit. Author56 historical namespace counts10 product-cleanup/3 fixture-signalled remain distinct from reviewer combined counts11/2.",
+    "Root full FI/default/fmt/strict-clippy/build and branch650 remain root-owned pending gates; this report cannot accept or integrate source.",
+    "All43 source hashes verified after each run. Missing-input probe uses a separate derived crate with only one test insertion and separate target; no product source mutation. No subagents, paid calls, user sessions or landing.",
+    "Original02 registry3/3 and04 final3/3 caps and nine04 obligations preserved.",
+    "Author committed implementation manifest64files verified; this does not substitute for root final retention audit."
+  ],
+  "owned_cleanup": {
+    "path": "/data02/home/philip.yang/devx/tmp/sqlite05-final-spec-1dzaulnx/owned-process-cleanup.json",
+    "all_owned_identities_terminal": true,
+    "counts": {
+      "observer": {
+        "resources": 2,
+        "namespaces": 1,
+        "product_terminated": 0,
+        "fixture_signalled": 0,
+        "all_namespace_terminal": true
+      },
+      "original-observer": {
+        "resources": 2,
+        "namespaces": 1,
+        "product_terminated": 0,
+        "fixture_signalled": 0,
+        "all_namespace_terminal": true
+      },
+      "native-combined": {
+        "resources": 8,
+        "namespaces": 13,
+        "product_terminated": 11,
+        "fixture_signalled": 2,
+        "all_namespace_terminal": true
+      },
+      "initial-confirm-default": {
+        "resources": 7,
+        "namespaces": 7,
+        "product_terminated": 4,
+        "fixture_signalled": 3,
+        "all_namespace_terminal": true
+      }
+    }
+  }
+}

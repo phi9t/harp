@@ -1,0 +1,5 @@
+# Ticket04 and linked02 scoped acceptance
+
+2026-10-04T19:08:03Z Root accepts exact product e31d57bc9ab739d5b4473c387a9320d176adf07b, helper f439e9a1bbab958c0ced1a49026cac4207d7db64, evidence 706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92. Standards, Spec, exact branch649, independent real relocated helper and committed retention audit pass. All34 product files match the current passing affected/native/default/fmt/Clippy/build gate; the unchanged native components inherit the complete repair1 gate. Original failures and all repair caps remain visible.
+
+The nine-finding root matrix distinguishes focused, independent and inherited proof. The missing-script overwrite oracle was corrected before any GREEN credit; root independently obtained actual FileExistsError with unchanged output. No live Codex or final whole-baseline claim. Tickets05/06 retain source-bound control-center/observer, complete assembled/restore and dedicated actual Codex qualification gates. Exact-build journal qualification and capped cleanup routing are recorded decisions with costs if wrong.

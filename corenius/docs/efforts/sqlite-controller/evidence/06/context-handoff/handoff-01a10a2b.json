@@ -1,0 +1,240 @@
+{
+  "at": 1791173733.6201777,
+  "actor": "/root/sqlite06_happy_path_author",
+  "thread": "01a10a2b-1c44-7e11-aed9-11720d14abb0",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "branch": "sqlite06/happy-path",
+  "source": "173053bcd336e8e5cade6c6dfb7f5eefc1f2e9bd",
+  "clean": true,
+  "run": "/tmp/cb-20261005T040926Z-c8403c",
+  "session": "corenius-baseline-20261005T040926Z-c8403c",
+  "outer_harness": "still running; DO NOT launch a duplicate or stop existing services",
+  "tmux_windows": [
+    "1:outer %91 699353 0",
+    "2:kata %92 699440 0",
+    "3:relay %93 699544 0",
+    "4:workers %94 699586 0",
+    "5:controlplanes %95 702021 0",
+    "6:controller %96 704748 0",
+    "7:gateway %97 706477 0",
+    "8:lead %98 706539 0",
+    "9:dashboard %99 706550 0",
+    "10:workerA %100 706554 0",
+    "11:workerB %101 706776 0"
+  ],
+  "milestones": [
+    "{\"at\": 1791173367.8022153, \"milestone\": \"real Kata ready\"}",
+    "{\"at\": 1791173368.3380902, \"milestone\": \"relay socket ready\"}",
+    "{\"at\": 1791173377.3673909, \"milestone\": \"workers socket ready\"}",
+    "{\"at\": 1791173387.408947, \"milestone\": \"controlplanes socket ready\"}",
+    "{\"at\": 1791173388.4542232, \"milestone\": \"controller ready\"}",
+    "{\"at\": 1791173396.6180117, \"milestone\": \"real native lead bound\"}",
+    "{\"at\": 1791173397.151012, \"milestone\": \"scoped gateway ready\"}",
+    "{\"at\": 1791173398.327508, \"milestone\": \"real lead TUI attached\"}",
+    "{\"at\": 1791173484.913569, \"milestone\": \"initial lead turn terminal\"}",
+    "{\"at\": 1791173668.0484552, \"milestone\": \"one worker exact candidate captured\"}",
+    "{\"at\": 1791173668.1147938, \"milestone\": \"lead admission turn terminal\"}"
+  ],
+  "revision": 44,
+  "slots": 1,
+  "tasks": [
+    {
+      "id": "solo",
+      "state": "accepted"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+      "task": "solo",
+      "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+      "state": "running",
+      "scope_epoch": 1,
+      "cancel_requested": false
+    }
+  ],
+  "candidates": [
+    {
+      "id": "b41396ac-9b82-410c-86ea-33cfb570a429",
+      "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+      "commit_id": "ec49f779e0beeafd0fc90e472d6a8a2348f971c9",
+      "tree_id": "7fd28f140ae15435fb213836ef6c4cfff27b2829",
+      "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8"
+    }
+  ],
+  "verification": [
+    {
+      "id": "e7ea6759-74aa-4c2f-9f6b-c50c07c83353",
+      "candidate": "b41396ac-9b82-410c-86ea-33cfb570a429",
+      "verdict": "pass"
+    }
+  ],
+  "acceptance": [
+    {
+      "id": "df18a04b-bbdd-42ba-8287-f08d702c46cc",
+      "candidate": "b41396ac-9b82-410c-86ea-33cfb570a429",
+      "verification": "e7ea6759-74aa-4c2f-9f6b-c50c07c83353",
+      "decision": "accepted"
+    }
+  ],
+  "ref": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+  "roles": [
+    {
+      "binding": "lead:demo:1",
+      "role": "lead",
+      "attempt": null,
+      "state": "bound",
+      "document": {
+        "thread_id": "01a10a40-f217-75a1-8d26-88b790b84e54",
+        "turn_id": "01a10a45-2f57-7643-a86a-fbdd0ad0e721",
+        "server_id": "native:2b250d8f-5b2a-4624-afcf-8916dae23e65",
+        "server_store": "79e6d7bf-6abe-4d14-b27d-ae12db510381",
+        "server_incarnation": "894ce67efb7e2491a4865f838fe5ff13d164d8fd1cda9705f7943322802f1363",
+        "environment_id": "executor-2b250d8f-5b2a-4624-afcf-8916dae23e65-58896989",
+        "workspace_identity": null,
+        "ui_input_ready": true
+      },
+      "turn_state": "active",
+      "executor_execution": {
+        "handle": "31b409f7-58a2-41ed-8c05-a5328e850d4c",
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace_init": 705020,
+        "init_start_ticks": "58896952",
+        "pid_namespace": 4026539613,
+        "binding": {
+          "attempt": "2b250d8f-5b2a-4624-afcf-8916dae23e65",
+          "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+          "brief": "lead-authority:1",
+          "operation": "2f0e3244-ae60-4c21-92a8-c1aac368b9ba",
+          "project": "demo",
+          "scope_epoch": 1
+        }
+      },
+      "server_execution": {
+        "handle": "ed2fb5c4-e596-41e0-aee1-841ce89b97e7",
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace_init": 705271,
+        "init_start_ticks": "58897004",
+        "pid_namespace": 4026539743,
+        "binding": {
+          "attempt": "2b250d8f-5b2a-4624-afcf-8916dae23e65",
+          "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+          "brief": "lead-authority:1",
+          "operation": "908887a6-2bd8-4a46-ba70-96371cdd0c3f",
+          "project": "demo",
+          "scope_epoch": 1
+        }
+      }
+    },
+    {
+      "binding": "worker:81a5f478-21ad-46a2-a25c-7cc67b425d82:1",
+      "role": "attempt",
+      "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+      "state": "bound",
+      "document": {
+        "thread_id": "01a10a43-25c7-70a0-a8e6-136c83546858",
+        "turn_id": "01a10a43-398f-7922-8f9f-24fb17effa24",
+        "server_id": "native:81a5f478-21ad-46a2-a25c-7cc67b425d82",
+        "server_store": "350c7338-1fae-48bc-b870-0c2c7c01335b",
+        "server_incarnation": "929ba8db7ce7f096b9ce1bea7309c9e3100f05ce23dac0a50152cbb19764a022",
+        "environment_id": "executor-81a5f478-21ad-46a2-a25c-7cc67b425d82-58911423",
+        "workspace_identity": null,
+        "ui_input_ready": true
+      },
+      "turn_state": "terminal",
+      "executor_execution": {
+        "handle": "24e143af-ffc0-4509-b945-039d73e0408a",
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace_init": 740996,
+        "init_start_ticks": "58911390",
+        "pid_namespace": 4026539927,
+        "binding": {
+          "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+          "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+          "brief": "359b8a12-eea9-4b72-9e27-bacd75d53181",
+          "operation": "f4452c79-60ac-4fac-9b7c-d6765dd916d4",
+          "project": "demo",
+          "scope_epoch": 1
+        }
+      },
+      "server_execution": {
+        "handle": "2c9e10ee-76db-4f59-9775-ad62d84bb26d",
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace_init": 741256,
+        "init_start_ticks": "58911431",
+        "pid_namespace": 4026540177,
+        "binding": {
+          "attempt": "81a5f478-21ad-46a2-a25c-7cc67b425d82",
+          "base": "2a430fe498a0bf15346aab4f0180be2a3707f7c8",
+          "brief": "359b8a12-eea9-4b72-9e27-bacd75d53181",
+          "operation": "96c12efa-ec34-4600-8c09-5732f5585a15",
+          "project": "demo",
+          "scope_epoch": 1
+        }
+      }
+    }
+  ],
+  "processes": [
+    {
+      "name": "kata",
+      "pid": 699450,
+      "start_ticks": "58894763",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "relay",
+      "pid": 699556,
+      "start_ticks": "58894818",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "workers",
+      "pid": 699592,
+      "start_ticks": "58894871",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "controlplanes",
+      "pid": 702025,
+      "start_ticks": "58895774",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "controller",
+      "pid": 704750,
+      "start_ticks": "58896781",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "gateway",
+      "pid": 706499,
+      "start_ticks": "58897700",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "dashboard",
+      "pid": 706775,
+      "start_ticks": "58897758",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    },
+    {
+      "name": "lead",
+      "pid": 706553,
+      "start_ticks": "58897754",
+      "same_birth_live": true,
+      "kernel_state": "S"
+    }
+  ],
+  "failed_run": "/tmp/cb-20261005T040718Z-c23b16; original outer exit1/Kata duplicate_candidates409; original KataPID665477/start58881982 still retained",
+  "known_findings": "C1-TEST-PEER-WAIT and S2 strict stream wall OPEN hardening; baseline unqualified; original caps immutable",
+  "pending_effects": "Existing outer harness has pasted lead landing input after real solo capture. It alone will advance to verify/accept/FF, then concurrent a/b, stale-b and fresh integration. Do not send duplicate model inputs.",
+  "safe_credentials": "Generated controller/supervisor/UI/Kata grants in run-owned0700 .private.json/lead.json/kata.token; current host auth remains only host .codex/auth.json, never copied. Do not publish these private grant values.",
+  "context": "Root observed actual input161432/cached160896/output312/window258400=62.47%, no compacted event. No supported child compact tool. Author source/runtime observations quiescing for fresh non-inheriting actor."
+}

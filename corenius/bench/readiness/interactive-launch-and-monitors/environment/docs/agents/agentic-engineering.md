@@ -1,0 +1,1 @@
+Fixture gated-path instructions.

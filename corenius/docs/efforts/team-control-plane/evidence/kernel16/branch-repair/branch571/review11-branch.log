@@ -1,0 +1,30 @@
+Reviewing branch "codex/reference-design": 4 commits since main
+Enqueued job 571 for 1f16415..da7ff9b (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:2195`
+- **Problem**: Cancelling an admitted but unallocated Verifier or continuation episode permanently strands its capacity. These episodes independently increment `used_capacity`, but reconciliation refunds only the Attempt reservation. Once marked cancelled, they cannot yield or allocate an execution, and no handle exists for `Supervisor::release`.
+- **Fix**: Provide an idempotent release path for independently reserved, unallocated episodes after proving no effects, while preserving cumulative admission counters.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/gateway.rs:395` and `:529`
+- **Problem**: The unconditional cancellation fence also rejects `OperationKind::Cancel`. After `CancelAttempt` commits `desired_cancel`, neither a new nor a previously prepared native Cancel can execute, preventing an adapter from stopping an existing runtime workload.
+- **Fix**: Allow authenticated cleanup operations against existing bindings while continuing to fence operations that create or extend work.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/artifacts.rs:547`
+- **Problem**: Immutable verification evidence becomes unusable when its original execution credential expires. This check also runs when replaying an already successful Accept, so a still-authorized Owner receives `DependencyUnmet` instead of the durable acceptance receipt despite unchanged evidence.
+- **Fix**: Validate execution authority at execution/report creation and retain that provenance; do not require the producing credential to remain unexpired when validating completed evidence or replaying acceptance.
+
+## Summary
+
+The change assembles durable episode execution, supervised verification, cancellation, operator recovery, and typed Temporal waits.

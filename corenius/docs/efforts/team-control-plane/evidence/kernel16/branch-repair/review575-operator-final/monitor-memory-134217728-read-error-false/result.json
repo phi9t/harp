@@ -1,0 +1,75 @@
+{
+  "capacity": 0,
+  "independent_raw_sha256": "254bcc3fc4f27172636df4bf32de9f107f620d559b20d760197e452b97453917",
+  "measured_log_bytes": 134217728,
+  "observed": {
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 3149051,
+      "pid": 3149051,
+      "start_ticks": 39440065
+    },
+    "launcher": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 3149063,
+      "pid": 3149063,
+      "start_ticks": 39440068
+    },
+    "manifest": {
+      "attempt": "7b126fd6-18ff-4088-a8bf-0068001106b7",
+      "base": "ca07380e81cfdc57cf62d5f8adca3e227f1462ed",
+      "candidate": null,
+      "episode": "6d0d8e37-5e90-465b-ae45-eb15e4f2ef2f",
+      "generation": 1,
+      "input": {
+        "digest": "2638817a63cb7cd983111bf7f395074b8b729fe029188754c8cdb23d681761d5",
+        "id": "bbeb8ed3-32d8-42a2-8d1b-b658f87bc439"
+      },
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-9451b124-6615-456e-8bc3-cc57a98333e4/workspaces/.execution-logs/aaeba10f-5afb-476f-b1de-0b83e7877dc0.log",
+      "mission": "aca406d1-45e3-41bb-9520-1dd1ae437d71",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-9451b124-6615-456e-8bc3-cc57a98333e4/workspaces/aaeba10f-5afb-476f-b1de-0b83e7877dc0",
+      "recovery_epoch": "2df38335-f57c-47a6-8472-50c3b85a6e91",
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "9fb840252eaeb08a31a239b61dc52ac01a7af6d04d95442814e35a06319cdde5",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-9451b124-6615-456e-8bc3-cc57a98333e4/store",
+      "task": "b3d1a9e0-d74e-4264-a1d1-6c9e2486528a",
+      "write_scope": [
+        "src"
+      ]
+    },
+    "members": [],
+    "quarantine_reason": null,
+    "state": "stopped"
+  },
+  "release": {
+    "Ok": null
+  },
+  "result": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "sleep 3; head -c 134217728 /dev/zero"
+    ],
+    "candidate": null,
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 3149051,
+      "pid": 3149051,
+      "start_ticks": 39440065
+    },
+    "execution": "aaeba10f-5afb-476f-b1de-0b83e7877dc0",
+    "exit_code": 0,
+    "logs": "254bcc3fc4f27172636df4bf32de9f107f620d559b20d760197e452b97453917",
+    "namespace_stopped": true,
+    "recovery_epoch": "2df38335-f57c-47a6-8472-50c3b85a6e91",
+    "signal": null
+  }
+}

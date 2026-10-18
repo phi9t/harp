@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-03T23:06:12.182923+00:00",
+  "task": "26-intent-plan-contracts",
+  "allocation": "post-architecture outcome-lifecycle1; original rounds1-3 exhausted",
+  "worker": "/root/intent26_outcome_lifecycle1_author",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-outcome-lifecycle1",
+  "branch": "codex-intent26/outcome-lifecycle1",
+  "base": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+  "canonical_assignment": "docs/efforts/team-control-plane/decisions/20261003-intent26-outcome-lifecycle-allocation1.md",
+  "source_initialization": "exact20 rejected repair3 postimages after root repair2 preimage checks",
+  "former_worktree": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts",
+  "former_worktree_mutation_authorized": false,
+  "resource_owner": "new worker exclusively; root no Cargo/PostgreSQL until explicit disposition",
+  "max_top_level_cargo_tests": 10,
+  "command_timeout_seconds": 1800,
+  "cumulative_compile_test_wall_seconds": 3600,
+  "provider_temporal_remote_runs_authorized": false,
+  "conformance_passes_allocated": 1,
+  "accepted": false,
+  "landed": false
+}

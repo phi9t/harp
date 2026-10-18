@@ -1,0 +1,27 @@
+{
+  "label": "binding-red",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+    "--case",
+    "manifest-binding",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/binding-red.json",
+    "--retain-artifacts",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/binding-red-artifacts"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:17:49.887971+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "7c58414110650c199ffc2420f6ce92720caec176eb5042da4d51daf369bb07a8",
+  "command_source_sha256": "ed697c076f979f3cf0dcef47a6ef512d43f6eb56efd5740196300da461e1b73d",
+  "expected_exit": 1,
+  "exit": 1,
+  "stdout": "{\n  \"outcome\": \"failed\",\n  \"fixture_sha256\": \"7c58414110650c199ffc2420f6ce92720caec176eb5042da4d51daf369bb07a8\",\n  \"fixture_removed\": true,\n  \"failure\": \"direct prepare accepted a forged tree identity and published a bundle\"\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:17:50.247454+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/binding-red.json",
+  "output_sha256": "1dabab4ff6e3e80f3a6ab1f2407aca36ddd1d3d904fd8f6eb0984b14c4c6421f"
+}

@@ -1,0 +1,163 @@
+{
+  "session": 46372,
+  "exit": 0,
+  "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d",
+  "selection": "root gate raw result and cleanup records only; no service logs/config/databases",
+  "files": [
+    {
+      "path": "run.log",
+      "bytes": 32812,
+      "sha256": "a8a273f2ea29b0a86fd4f80ed2466fde09298c450d7339a00265852d4d1aedf3"
+    },
+    {
+      "path": "run.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "service/cleanup.json",
+      "bytes": 34,
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "service/monitor-memory-134217728-read-error-false/cleanup.json",
+      "bytes": 75,
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "service/same-principal-role/cleanup.json",
+      "bytes": 183,
+      "sha256": "84b4ba980495cc8753a206e794ea2e82d58f11540f37a75a4571158634a73b5c"
+    },
+    {
+      "path": "service/issuer-expiry/cleanup.json",
+      "bytes": 183,
+      "sha256": "66a350f5ffd95f295463a512ad0eeb3b85370bd2dc3eaf6ab92fe4c91d9db33c"
+    },
+    {
+      "path": "service/review611-predeadline-yielded/cleanup.json",
+      "bytes": 103,
+      "sha256": "a8c6f2ce0dd3fb8002f522090f032111720c9ee14ce14d1e90c4a0070cf8678a"
+    },
+    {
+      "path": "service/review611-unreleased/cleanup.json",
+      "bytes": 95,
+      "sha256": "3592d068bbaa55352f8cb6b9662dfd77c9abd4eb9352766e58d47cc28e1ad9ae"
+    },
+    {
+      "path": "service/review611-uncertain/cleanup.json",
+      "bytes": 128,
+      "sha256": "84ba2618907cc07ffde945d1a1a70a4e91c8368ed20d8676e4f978a08fb13b68"
+    },
+    {
+      "path": "service/historical/cleanup.json",
+      "bytes": 183,
+      "sha256": "b4c944a142494d1b2d60ddab48a7bd8ea23a6ac43b218a0ec00733e87e68ca0a"
+    },
+    {
+      "path": "service/review611-release-before-expiry/cleanup.json",
+      "bytes": 103,
+      "sha256": "03acd8f96f2e923b3ddb69b9853eee0f0421e07cbfc06165febe3ec4361f20be"
+    },
+    {
+      "path": "service/review611-deadline/cleanup.json",
+      "bytes": 103,
+      "sha256": "5ca1c8a72f42456623c431dce1d0e8c20625e3b6ca59924b43e7a25e8a66114e"
+    },
+    {
+      "path": "service/review580-crash/cleanup.json",
+      "bytes": 75,
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2"
+    },
+    {
+      "path": "service/review580-fast-crash/cleanup.json",
+      "bytes": 75,
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2"
+    },
+    {
+      "path": "service/kernel16-review611-suite-efe8f394-45b6-4b7b-b5be-28d827a9a1f6/cleanup.json",
+      "bytes": 161,
+      "sha256": "513ef32f06d905bbd369fa7a527898db5b38d84d53993ef52d14204d62a0aa65"
+    },
+    {
+      "path": "service/kernel16-binary-output-03d5f19c-040b-4a57-ab1f-638e6e54d910/cleanup.json",
+      "bytes": 74,
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f"
+    },
+    {
+      "path": "service/overflow/cleanup.json",
+      "bytes": 1635,
+      "sha256": "b2e67031b6c77f6fdeb83f6facdb3a93d6e903dcfcb73949a0f85d4adf485911"
+    },
+    {
+      "path": "service/monitor-memory-1048576-read-error-false/cleanup.json",
+      "bytes": 75,
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "service/review611-unallocated/cleanup.json",
+      "bytes": 50,
+      "sha256": "25de86ec7f56999b7f012b62d2bec34e895565dc66f4d3b8a0d26f09b4211af7"
+    },
+    {
+      "path": "service/review611-yielded/cleanup.json",
+      "bytes": 103,
+      "sha256": "0343f36d6692f67cd147daad73312846ed53e96c2bcaab7205afc9ffd0390268"
+    },
+    {
+      "path": "service/monitor-memory-1048576-read-error-true/cleanup.json",
+      "bytes": 75,
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "service/kernel16-review611-cached-9ece5434-8833-4015-8a6c-0cc0804bbe83/cleanup.json",
+      "bytes": 161,
+      "sha256": "9b52f375b471ae5b63f5ddbfe015c39ee918150f6a34dfbbeb08c297f056ce9b"
+    },
+    {
+      "path": "service/merged-journals/cleanup.json",
+      "bytes": 1503,
+      "sha256": "bc20735f817b8d72095689410459809107ee3432aeb88c5900c58ccc2a1cdea4"
+    },
+    {
+      "path": "service/known/cleanup.json",
+      "bytes": 105,
+      "sha256": "18a01f03507fb428d4fe4ca851c6bbd338f478b1cbcdea7159a7a0dc81fe0414"
+    },
+    {
+      "path": "service/kernel16-review611-environment-fbd90e48-6bf6-4303-9b38-da35af551c81/cleanup.json",
+      "bytes": 161,
+      "sha256": "45024fd2fd9629c6457489ae75d88fc4b635b3dc18f9c889c6596cefa79bf948"
+    },
+    {
+      "path": "service/legacy-quarantined/cleanup.json",
+      "bytes": 93,
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68"
+    },
+    {
+      "path": "service/review584-crash-rotate/cleanup.json",
+      "bytes": 75,
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2"
+    },
+    {
+      "path": "service/legacy-running/cleanup.json",
+      "bytes": 92,
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d"
+    },
+    {
+      "path": "service/unknown-usage/cleanup.json",
+      "bytes": 78,
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda"
+    },
+    {
+      "path": "service/same-principal-role-boundary/cleanup.json",
+      "bytes": 1635,
+      "sha256": "002ab060e4ed9b52f464bb654acff4cbc3ae6659d3421e7a3c16e91dd4cf3c23"
+    },
+    {
+      "path": "service/unknown-effect/cleanup.json",
+      "bytes": 78,
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda"
+    }
+  ]
+}

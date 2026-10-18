@@ -1,0 +1,1 @@
+Add `format_size(n)` to sizes.py: n is an int number of bytes; below 1024 return `<n> B`; otherwise divide by 1024 repeatedly and return one decimal with the unit KiB, MiB or GiB (GiB is the largest unit). Example: 1536 -> `1.5 KiB`. Do not change parse_size.

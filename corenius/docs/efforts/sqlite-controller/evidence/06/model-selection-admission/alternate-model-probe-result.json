@@ -1,0 +1,35 @@
+{
+  "started": 1791177227.1282287,
+  "pid": 1518414,
+  "birth": "59280736",
+  "requested_model": "gpt-6.1-sol",
+  "boundary": "existing approved host Responses relay, fixed upstream",
+  "request_sha256": "99a252222d20a8db7e2410c9db6ed151a65600498d0198321de36f954829e557",
+  "provider_calls": 1,
+  "retry": false,
+  "prior_trial_outer_exit": 1,
+  "relay_http_status": 200,
+  "returned_model": "gpt-6.1-sol",
+  "response_status": "completed",
+  "error": null,
+  "usage": {
+    "input_tokens": 15,
+    "output_tokens": 5,
+    "total_tokens": 20
+  },
+  "outcome": "response.completed",
+  "stream_ended": true,
+  "events": {
+    "response.created": 1,
+    "response.in_progress": 1,
+    "response.output_item.added": 1,
+    "response.content_part.added": 1,
+    "response.output_text.delta": 1,
+    "response.output_text.done": 1,
+    "response.content_part.done": 1,
+    "response.output_item.done": 1,
+    "response.completed": 1
+  },
+  "finished": 1791177228.789361,
+  "actual_exit": 0
+}

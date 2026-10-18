@@ -1,0 +1,47 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "baseline": "ticket12-accepted-manifest.json",
+  "repair_round": 2,
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "dcf7fad04111d3c126e38efc03b17d1abfc909d6f2d351415ccb1e090a6702fe",
+      "bytes": 36534
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "1f975d506bda2a0c3341b89fc7da7fe306b4506c1f7cedbd5f45f0fdf578753e",
+      "bytes": 565
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "3af1d69712f59b4590e11b9d3c1bfb4bdf6c429ff81b6ece98e9dcb140a18947",
+      "bytes": 219
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "c19fd8284e2804a36f10efb09df5f010989665856024acdd78ebc7205f3ea902",
+      "bytes": 3045
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "d8d4368ea3474ebdff61ec1086033c6044f8983101e514dbd965c034a06f9c3b",
+      "bytes": 14876
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "672b6d21c4c90148614c0a1d5d91d667cc228adc295ccda353add21220e85079",
+      "bytes": 46730
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "sha256": "6c114355c0ce160ed406cd14331c8837c1a681a2a623f604914fb0caeea28671",
+      "bytes": 1649
+    },
+    {
+      "path": "crates/team-control-plane/tests/supervisor.rs",
+      "sha256": "030f984dc3a4102dc0193bf40a832ce82af7f951e167664fae3e6a61e5f19cb4",
+      "bytes": 40795
+    }
+  ]
+}

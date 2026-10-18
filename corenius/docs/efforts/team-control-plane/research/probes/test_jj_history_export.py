@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Public export regression: deleting a private path does not authorize its history."""
+from __future__ import annotations
+import argparse
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import shutil
+
+SYNTHETIC = 'SYNTHETIC_PRIVATE_HISTORY_DO_NOT_EXPORT\n'
+
+
+def private_history(evaluation, module, path='private.env', name='private-history'):
+    repo = evaluation.create_attempt(name)
+    (repo / '.gitignore').write_text('')
+    (repo / path).write_text(SYNTHETIC)
+    ancestor = evaluation.checkpoint(repo, True)
+    evaluation.jj(repo, 'new', '-m', 'descendant of synthetic private checkpoint')
+    (repo / path).unlink()
+    (repo / '.gitignore').write_text('private.env\n')
+    (repo / 'artifact.txt').write_text('verified-original\n')
+    evaluation.checkpoint(repo, True)
+    evaluation.jj(repo, 'bookmark', 'create', name + '-bookmark', '-r', ancestor['commit'])
+    candidate = evaluation.freeze_candidate(repo)
+    assert candidate['captured_paths'] == ['.gitignore', 'artifact.txt']
+    store = evaluation.store(repo)
+    before = evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True)
+    observed = {'ancestor': ancestor, 'clean_candidate': candidate, 'refs_before': before}
+    evaluation.result['observations'][name.replace('-', '_')] = observed
+    try:
+        bundle = evaluation.prepare_integration(repo, candidate, name)
+    except module.Refused as error:
+        observed['refusal'] = str(error)
+        after = evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True)
+        observed['refs_after'] = after
+        assert before == after, 'refusal published a Git ref'
+        assert not (evaluation.root / (name + '.bundle')).exists(), 'refusal published a bundle'
+        journal = [json.loads(line) for line in (evaluation.root / 'operations.jsonl').read_text().splitlines()]
+        assert any(entry.get('phase') == 'integration refused' and entry.get('candidate') == candidate
+                   for entry in journal), 'refusal did not journal the exact candidate'
+        return
+    imported = evaluation.root / (name + '-import'); imported.mkdir()
+    evaluation.git(imported, 'init', '-q')
+    evaluation.git(imported, 'fetch', str(bundle), 'refs/fixture/' + name)
+    recovered = evaluation.git(imported, 'show', ancestor['commit'] + ':' + path)
+    assert recovered == SYNTHETIC.strip(), 'RED setup did not recover the synthetic ancestor content'
+    observed.update(bundle_sha256=hashlib.sha256(bundle.read_bytes()).hexdigest(),
+                    recovered_private_content=recovered, recoverable=True)
+    raise AssertionError('private ancestor bytes remain recoverable from the exported clean-tip bundle')
+
+
+def manifest_binding(evaluation, module):
+    repo = evaluation.create_attempt('manifest-binding')
+    (repo / 'artifact.txt').write_text('verified-original\n')
+    evaluation.checkpoint(repo, True)
+    original = evaluation.freeze_candidate(repo)
+    (repo / 'artifact.txt').write_text('rewritten-source\n')
+    evaluation.checkpoint(repo, True)
+    changed = evaluation.freeze_candidate(repo)
+    store = evaluation.store(repo)
+    variants = [('tree', '0' * 40), ('commit', changed['commit']), ('commit', '@'),
+                ('operation', '@'), ('store', str(evaluation.root / 'another-store')),
+                ('workspace', str(evaluation.root / 'another-workspace')), ('base_commit', '0' * 40),
+                ('captured_paths', ['.gitignore', 'artifact.txt', 'private.env']),
+                ('allowed_paths', ['.gitignore', 'artifact.txt', 'private.env']),
+                ('conflict', True), ('change', 'mutable-navigation-is-not-proof'), ('backend', 'git')]
+    attempts = []; evaluation.result['observations']['manifest_refusals'] = attempts
+    for index, (field, value) in enumerate(variants):
+        forged = original.copy(); forged[field] = value
+        name = 'forged-' + str(index)
+        before = evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True)
+        try:
+            evaluation.prepare_integration(repo, forged, name)
+        except module.Refused as error:
+            attempts.append({'field': field, 'candidate': forged, 'refusal': str(error)})
+            assert evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True) == before
+            assert not (evaluation.root / (name + '.bundle')).exists()
+            continue
+        raise AssertionError('direct prepare accepted forged/stale ' + field + ' and published a bundle')
+    # A correctly bound historical candidate remains exportable after mutable @ changes.
+    # An unrelated private bookmark must not accompany this clean candidate graph.
+    (repo / '.gitignore').write_text(''); (repo / 'private.env').write_text(SYNTHETIC)
+    private = evaluation.checkpoint(repo, True)
+    evaluation.jj(repo, 'bookmark', 'create', 'unrelated-private', '-r', private['commit'])
+    candidate_bundle = evaluation.prepare_integration(repo, original, 'retained-clean')
+    receipt = evaluation.verify_candidate(original, candidate_bundle, 'original', 'retained-clean', 'retained-clean')
+    assert evaluation.reuse_verification(original, receipt)
+    ref = evaluation.git(store, 'rev-parse', '--verify', 'refs/heads/unrelated-private', bare=True, check=False)
+    assert ref.returncode != 0, 'candidate preparation silently exported an unrelated private bookmark'
+    imported = Path(json.loads(receipt.read_text())['verifier']['workspace'])
+    recovered = evaluation.git(imported, 'cat-file', '-e', private['commit'] + ':private.env', check=False)
+    assert recovered.returncode != 0, 'candidate bundle included unrelated private history'
+    evaluation.result['observations']['retained_clean'] = {'candidate': original, 'rewritten': changed,
+        'unrelated_private': private, 'receipt': json.loads(receipt.read_text()),
+        'bundle_sha256': hashlib.sha256(candidate_bundle.read_bytes()).hexdigest(),
+        'unrelated_ref_absent': True, 'unrelated_private_object_absent': True}
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--binary', required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--fixture', type=Path, default=Path(__file__).with_name('jj_workspace_evaluation.py'))
+    parser.add_argument('--retain-artifacts', type=Path)
+    parser.add_argument('--case', choices=['private-history', 'manifest-binding', 'disallowed-history', 'all'], default='all')
+    parser.add_argument('--unsafe-control', action='store_true')
+    args = parser.parse_args()
+    spec = importlib.util.spec_from_file_location('jj_fixture', args.fixture)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    evaluation = module.Evaluation(args.binary, args.unsafe_control)
+    code = 0
+    try:
+        if args.case in ('private-history', 'all'):
+            private_history(evaluation, module)
+        if args.case in ('manifest-binding', 'all'):
+            manifest_binding(evaluation, module)
+        if args.case in ('disallowed-history', 'all'):
+            private_history(evaluation, module, 'unexpected.txt', 'disallowed-history')
+        evaluation.result['outcome'] = 'passed'
+    except Exception as error:
+        evaluation.result.update(outcome='failed', failure=str(error), failure_type=type(error).__name__)
+        code = 1
+    finally:
+        if args.retain_artifacts:
+            args.retain_artifacts.mkdir(parents=True, exist_ok=False)
+            for p in sorted(evaluation.root.glob('*.bundle')) + sorted(evaluation.root.glob('verification-*.json')):
+                shutil.copyfile(p, args.retain_artifacts / p.name)
+        evaluation.result['durable_preexecution_journal'] = (evaluation.root / 'operations.jsonl').read_text()
+        evaluation.tmp.cleanup()
+        evaluation.result.update(slice='history-export-contract', fixture_removed=not evaluation.root.exists(),
+                                 case=args.case, regression_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+        args.output.write_text(json.dumps(evaluation.result, indent=2) + '\n')
+    print(json.dumps({key: evaluation.result[key] for key in ('outcome', 'fixture_sha256', 'fixture_removed', 'failure')
+                      if key in evaluation.result}, indent=2))
+    return code
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

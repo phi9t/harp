@@ -1,0 +1,739 @@
+{
+  "archive_renames": {
+    "bytes": 4019,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/archive-renames.json",
+    "sha256": "4a821d6795687b2534e990caeec9e8a7825f3912cb79dd9b10d4258b25351ac3"
+  },
+  "canonical_input_archives": [
+    {
+      "bytes": 3080,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9.txt",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "bytes": 3484,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097.txt",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "bytes": 2816,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173.txt",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "bytes": 9722,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926.txt",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "bytes": 2045,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99.txt",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+    },
+    {
+      "bytes": 9818,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0.txt",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+    },
+    {
+      "bytes": 33123,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c.txt",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c"
+    },
+    {
+      "bytes": 17345,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924.txt",
+      "sha256": "93db1b47fcdec45550206be0a32893c398f18e1de0e1668f51a630318724a924"
+    },
+    {
+      "bytes": 21340,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c.txt",
+      "sha256": "9096a57f2930451bee741607569baee9babf2cb04bafc52cc811cfa406dcc44c"
+    },
+    {
+      "bytes": 3534,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513.txt",
+      "sha256": "50b11f49685cede73b92aa95b0d1c5b0096694c1851aa016bbbe7fff6ba55513"
+    },
+    {
+      "bytes": 6970,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4.txt",
+      "sha256": "b802be0bf27468915c4a1b4c6f82e21a92d1db812758c57592ced71a0065bdc4"
+    },
+    {
+      "bytes": 1912,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989.txt",
+      "sha256": "70da4010b86e36f19d750e1577c780df0046d3f3db517fd25c74dbc2b6247989"
+    },
+    {
+      "bytes": 2302,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655.txt",
+      "sha256": "37c26254afe3997b6744ef12ef255b17265df0493d3584e78fda3c9dbbcda655"
+    },
+    {
+      "bytes": 2660,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d.txt",
+      "sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d"
+    },
+    {
+      "bytes": 2253,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349.txt",
+      "sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349"
+    }
+  ],
+  "checks": {
+    "path": "docs/efforts/team-control-plane/evidence/intent26/checks.json"
+  },
+  "excluded_origins": [
+    ".scratch/ session working detail and target",
+    "ignored physical runtime logs/workspaces",
+    "test database and candidate bundle bytes after fixture cleanup"
+  ],
+  "interpretation": "Raw logs are actual process output. JSON record extraction and this index are derived metadata. No fabricated monitor facts or PASS objects; measurements came from the actual supervised verifier execution. Older source-bound runs are distinguished from final source by hashes.",
+  "ledger": {
+    "bytes": 117082,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/runs.jsonl",
+    "sha256": "be4a763bbe8315e8bb7ea6245ca1987510ec0593ee4ef34e8870f9d280cfb75d"
+  },
+  "pending": [
+    "root-owned Standards review",
+    "root-owned Spec review",
+    "root-owned independent branch review and landing gate"
+  ],
+  "preimage_archives": [
+    {
+      "bytes": 15041,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109.txt",
+      "sha256": "eec3d473a78cab84cda331ddf719015871fe05a7eee3ca4287aecaf773535109"
+    },
+    {
+      "bytes": 19619,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c.txt",
+      "sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+    },
+    {
+      "bytes": 52941,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57.txt",
+      "sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+    },
+    {
+      "bytes": 3760,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966.txt",
+      "sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+    },
+    {
+      "bytes": 36901,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1.txt",
+      "sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+    },
+    {
+      "bytes": 9410,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92.txt",
+      "sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92"
+    },
+    {
+      "bytes": 367,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa.txt",
+      "sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa"
+    },
+    {
+      "bytes": 104201,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a.txt",
+      "sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+    },
+    {
+      "bytes": 16071,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68.txt",
+      "sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68"
+    },
+    {
+      "bytes": 125877,
+      "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3.txt",
+      "sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+    }
+  ],
+  "public_records": {
+    "count": 70,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/public-records.jsonl",
+    "sha256": "1637dc3d4e89d20e88272efaf333479828d3592ef6d4cbf2095fa8801dfbda24"
+  },
+  "report": {
+    "bytes": 6047,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/report.md",
+    "sha256": "9ede4e6d55a21f6ad11d5c6a4e52abdde4bc3e568e4cac6b3f9454c3e3a628cb"
+  },
+  "resource_status": "final run terminal exit0 and cleanup completed; shared Cargo/PostgreSQL slot released to root; no subsequent resource run",
+  "run_harness_snapshot": {
+    "bytes": 1527,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/snapshots/f8539ab393d87e1e7675a7dc3d0964f53889a43d4da86cf24411c14150a0116e.txt",
+    "sha256": "f8539ab393d87e1e7675a7dc3d0964f53889a43d4da86cf24411c14150a0116e"
+  },
+  "runs": [
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 1,
+      "name": "red-admission",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/red-admission.log.txt",
+      "sha256": "fbc0ba671b8508a712921d565868af0f7e7f1e4d19e486f122562c10342d14c3",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 2,
+      "name": "green-admission",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-admission.log.txt",
+      "sha256": "8f5ef447eb027b3fa735bf6f7ff30ee8d6e1e1c1d0e1154a69953600212f947d",
+      "test_summaries": []
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "exact_admission_is_durable_idempotent_and_rejects_changed_or_stale_payload"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 3,
+      "name": "green-admission-2",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-admission-2.log.txt",
+      "sha256": "966b420efe02349e9ce988003899c29f7cc4c06ebdbbe178bfa34d15cb400e8a",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 4,
+      "name": "red-authority-plan",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/red-authority-plan.log.txt",
+      "sha256": "f7aafe4040e437addebc864dc00cc16e6ff4e9ec1a3193e5ce308040db53c2f7",
+      "test_summaries": [
+        {
+          "failed": 2,
+          "passed": 2,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 5,
+      "name": "green-authority-plan",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-authority-plan.log.txt",
+      "sha256": "a2846cf529057a7c28611e0d693099a80fd4cc811535693a31fa0c8b97ac6aa7",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 3,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 6,
+      "name": "green-authority-plan-2",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-authority-plan-2.log.txt",
+      "sha256": "85c2afa03272f0b150fea9b7631641b0e31490ae61cbcc3098684720e8094e33",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 4,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 7,
+      "name": "red-dependency-outcomes",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/red-dependency-outcomes.log.txt",
+      "sha256": "3335d5e30ef6b01c4680529e97a9a0c1c7b64322fd288049ffbcf655a176f286",
+      "test_summaries": [
+        {
+          "failed": 3,
+          "passed": 4,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 8,
+      "name": "green-outcomes-red-dependencies",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-outcomes-red-dependencies.log.txt",
+      "sha256": "364d63db1c3d8cb90519bb8a6cfa43aec282a55e556058d8efb2f77ffdc66890",
+      "test_summaries": []
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 9,
+      "name": "green-outcomes-red-dependencies-2",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-outcomes-red-dependencies-2.log.txt",
+      "sha256": "cf37766e0352b3ea0a568f4f737e5d3dea38609f501f8085dc834934aa5ffa4f",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 6,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 10,
+      "name": "green-dependencies",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-dependencies.log.txt",
+      "sha256": "2f12337134a13f66f29119a5d6ff08e8925b33e60666acd77fcf8b95260dbc47",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 7,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 11,
+      "name": "red-retention-grants-ceilings",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/red-retention-grants-ceilings.log.txt",
+      "sha256": "4406142fec681a325b447b985b8a804d51dd8be86a01b9997fc1f97217ee66d5",
+      "test_summaries": [
+        {
+          "failed": 4,
+          "passed": 4,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 12,
+      "name": "green-retention-grants-ceilings",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-retention-grants-ceilings.log.txt",
+      "sha256": "495ffec9e89d7df6a75cf3828876d15e35290d7a4a9584ff6ca0de9fff252ad1",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 8,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 13,
+      "name": "red-replay-ceiling-compatibility",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/red-replay-ceiling-compatibility.log.txt",
+      "sha256": "09759637aa6f04f4addd3a86359b467826aa56d8655074cd54d9bccd5a59e4f5",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 8,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 14,
+      "name": "green-final-public",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-final-public.log.txt",
+      "sha256": "378187a94f782f4dc7449c6663053c1f21a7f5b5a5300675eb51e6d6927ca267",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--lib",
+        "--test",
+        "artifacts",
+        "--test",
+        "kernel",
+        "--test",
+        "mailbox",
+        "--test",
+        "mailbox_delivery",
+        "--test",
+        "mailbox_artifacts",
+        "--test",
+        "supervisor",
+        "--test",
+        "gateway",
+        "--test",
+        "intent_contracts"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 15,
+      "name": "green-api-compatibility",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-api-compatibility.log.txt",
+      "sha256": "1eaddcc073954cce65691e5112f5a3d09d7f92084edad0e3248a08bd21186e9b",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 11,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 4,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 16,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 2,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 3,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 20,
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--test",
+        "intent_contracts",
+        "admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 101,
+      "ledger_record": 16,
+      "name": "red-dependency-disposition-revision",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/red-dependency-disposition-revision.log.txt",
+      "sha256": "f4ee8ada9c3211f7fe396d374bf3c743adde8af6beb95410225d064b62727e41",
+      "test_summaries": [
+        {
+          "failed": 1,
+          "passed": 0,
+          "result": "FAILED"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "bash",
+        "crates/team-control-plane/tests/run-postgres.sh",
+        "--offline",
+        "--lib",
+        "--test",
+        "intent_contracts",
+        "--test",
+        "kernel",
+        "--test",
+        "gateway",
+        "--test",
+        "mailbox",
+        "--",
+        "--nocapture"
+      ],
+      "bounded_timeout_seconds": 1800,
+      "env": {
+        "CARGO_BUILD_JOBS": "2",
+        "CARGO_NET_OFFLINE": "true",
+        "CARGO_TARGET_DIR": "/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target",
+        "RUST_TEST_THREADS": "1"
+      },
+      "exit_code": 0,
+      "ledger_record": 17,
+      "name": "green-final-contract-revisions",
+      "path": "docs/efforts/team-control-plane/evidence/intent26/green-final-contract-revisions.log.txt",
+      "sha256": "8d4774e08a9fe8a0b400d24cf0317abf5447cb8799a171714e9dfa4e2bdcde1e",
+      "test_summaries": [
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 4,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 9,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 16,
+          "result": "ok"
+        },
+        {
+          "failed": 0,
+          "passed": 1,
+          "result": "ok"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "scope": "ticket26 public PostgreSQL/ArtifactService proof; independent root gates pending",
+  "source_manifest": {
+    "bytes": 13463,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/source-manifest.json",
+    "sha256": "72dfe3d9e5bdf7b8885c6934713f0ff3f95a5db10518882d0060438e863e6aba"
+  },
+  "source_patch": {
+    "bytes": 127702,
+    "path": "docs/efforts/team-control-plane/evidence/intent26/source.patch",
+    "sha256": "c91fd436ef8046e4d41b9b1633209a4a1eefed2e1b59605193e2f26d00d24120"
+  }
+}

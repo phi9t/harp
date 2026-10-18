@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/tmp/corenius-controller-git-reader-proof-20261003/proof.py"
+  ],
+  "execution_budget": {
+    "fixture_repositories": 1,
+    "physical_launches": 0,
+    "recording_callbacks": 1
+  },
+  "fixture_repository_exists_before_execution": false,
+  "proof_script_mode": "0o700",
+  "proof_script_sha256": "da54eb975f50f4ec35498c11122801460f813e71fc7673e93099ac8b8e63eaf1",
+  "script_retained_before_execution": true
+}

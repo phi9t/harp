@@ -1,0 +1,14 @@
+test_fsync_failure_never_execute (test_trae_case_control.DurableControllerBehavior.test_fsync_failure_never_execute) ... FAIL
+
+======================================================================
+FAIL: test_fsync_failure_never_execute (test_trae_case_control.DurableControllerBehavior.test_fsync_failure_never_execute)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/corenius-trae-controller-repair1-spec-review-20261003/fixture/tools/probes/test_trae_case_control.py", line 85, in test_fsync_failure_never_execute
+    self.assertFalse(self.run_controller()['executed'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

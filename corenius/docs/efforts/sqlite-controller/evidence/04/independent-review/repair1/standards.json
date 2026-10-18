@@ -1,0 +1,82 @@
+{
+  "axis": "Standards",
+  "round": "repair1/3",
+  "verdict": "PASS",
+  "qualification": "source-conformance PASS; final behavioral/retention acceptance pending",
+  "whole_base": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+  "repair_base": "2b1887b8c8c6e0ea806487271ae77fc3b743f63d",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "tree": "d2df74745f883262d81e53b83cab177328e87408",
+  "diff_command": "git diff 2b1887b8c8c6e0ea806487271ae77fc3b743f63d...e6ab0abb9ff58e08669398034e693a2190ef46a1 -- crates tools",
+  "changed_files": [
+    "crates/sqlite-controller/src/codex.rs",
+    "crates/sqlite-controller/src/git.rs",
+    "crates/sqlite-controller/src/git_workspace.rs",
+    "crates/sqlite-controller/tests/codex.rs",
+    "crates/sqlite-controller/tests/kata.rs",
+    "crates/sqlite-controller/tests/support/git_protocol.py",
+    "crates/sqlite-controller/tests/support/kata_protocol.py",
+    "crates/sqlite-controller/tests/support/native_registry.py"
+  ],
+  "requirements_manifest_sha256": "14251b6b21eccc1f9d5db8f9e7c4fe967ed67cc2e5cd44673f9d35794389e198",
+  "findings": [],
+  "blocking_findings": 0,
+  "resolved_findings": [
+    {
+      "id": "S1",
+      "original_severity": "P1 / Important",
+      "status": "resolved",
+      "original_location": "git.rs1195\u20131211 at2b1887b",
+      "rule": "README24\u201325: Controller effects use their own bounded execution budget.",
+      "repair_locations": [
+        "git_workspace.rs273\u2013289 bounded readers",
+        "git_workspace.rs292\u2013397 owned30s effect deadline/final limit check",
+        "git_workspace.rs565\u2013587 capped archive producer and retained diagnostics",
+        "git.rs1309\u20131364 retention-before-cleanup admission and deletion"
+      ],
+      "static_evidence": "tar writes stdout instead of host archive file; archive reader takes32MiB+1 then closes pipe; stderr1MiB+1; positively owned Child/pidfd sampled before stop,30s deadline,waited identity evidence; unsuccessful/limited result refuses cleanup before journaled removal.",
+      "observed_regression_evidence": "Original archive-red.log observes67,194,880-byte expansion from64MiB sparse file then fails its bounded-storage oracle. archive-green.log observes no expanding file and preserved root followed by successful retry. Later freeze-controls.log records32MiB retained archive bytes,output-bound,SIGPIPE13,waitedtrue and successful retry; log/source/archive hashes pinned.",
+      "runtime_rerun_by_reviewer": false
+    }
+  ],
+  "baseline_smells": [],
+  "notes": [
+    "Inventory mutex concern resolved: coherent DB snapshot released before observations; revision/elapsed drift exposed.",
+    "Trusted inspection uses Python-I with retained argv/tool/process provenance.",
+    "Cleanup resumes only against original root identity,original stop/operation/retention and retained per-entry identity/content subset; additions/replacements/aliases refuse.",
+    "Native retries retain exactly selected stop_qualification,with unchanged original turn_shutdown and same logicalID/connection/store/incarnation fences; legacy pending payload shape remains unchanged.",
+    "Landing admission rechecks actor/current accepted candidate in short transaction; recovered publication reuses retained request and exactly-once receipt/event/Kata path; terminal accepted/landed transitions preserved."
+  ],
+  "evidence_source_pairs": {
+    "archive-red": {
+      "before_after_source_equal": true,
+      "source_files": 34,
+      "matches_frozen_source_count": 27,
+      "before_head": "f85fcd15a912a59a9af7e4d0da56329f38a5c298",
+      "after_head": "f85fcd15a912a59a9af7e4d0da56329f38a5c298"
+    },
+    "archive-green": {
+      "before_after_source_equal": true,
+      "source_files": 34,
+      "matches_frozen_source_count": 27,
+      "before_head": "f85fcd15a912a59a9af7e4d0da56329f38a5c298",
+      "after_head": "f85fcd15a912a59a9af7e4d0da56329f38a5c298"
+    },
+    "freeze-controls": {
+      "before_after_source_equal": true,
+      "source_files": 34,
+      "matches_frozen_source_count": 34,
+      "before_head": "f85fcd15a912a59a9af7e4d0da56329f38a5c298",
+      "after_head": "f85fcd15a912a59a9af7e4d0da56329f38a5c298"
+    }
+  },
+  "qualification_limits": [
+    "Static Standards source-conformance review only; no tests, builds, workloads, helpers, process signals, source edits, staging, checkout or user-session actions.",
+    "Initial FAIL and all prior reports preserved unchanged. Eight repaired product/test files reviewed against whole initial BASE; existing unchanged ticket04 architecture remains reviewed from the initial report.",
+    "Final repair evidence retention tip/handoff and fresh author/root full gates are pending; no complete-gate or acceptance claim.",
+    "Pinned raw logs and repair1 source pairs are explicit observed author filesystem evidence, not asserted committed. Root owns independent retained-artifact verification before acceptance.",
+    "Archive RED/GREEN source pairs are intermediate repair snapshots, not falsely labelled frozen e6ab0ab. Freeze-controls source-pair match count is recorded separately.",
+    "Supported Kata crash-publication fixtures use declared runtime pause plus public reconcile. They do not establish new autonomous qualification.",
+    "No optional jj/PG/Temporal/live05/06, production, restore or power-loss qualification inferred; hostile original dummy /scratch/ancestor remains distinct from the separately retained actual parent-mountpoint control."
+  ]
+}

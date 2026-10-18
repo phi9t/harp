@@ -1,0 +1,28 @@
+Base/source before repair:958ebdb04949aa06df1b282e93de7490023e7e35
+Repair round2/3. Independent whole-branch633 rejected that base despite conformance/gate passes.
+All listed commands terminal. Raw logs are followed by wrapper-recorded status.
+
+Behavioral RED before production correction, status101:
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public own_
+  red-execution-events.log: two new failures, own observation and operation transition
+  absent from reconnect; two matching older compatibility tests passed.
+- cargo test --offline --manifest-path crates/sqlite-controller/Cargo.toml --test public sqlite_like
+  red-foreign-prefix.log: foreign sqlitecache database accepted; no refusal.
+
+Focused GREEN after correction, status0:
+- Same own_ command, green-execution-events.log:4 matching tests pass.
+- Same sqlite_like command, green-foreign-prefix.log:1 test passes, foreign data retained.
+
+Final exact-source commands, status0:
+- cargo fmt --manifest-path crates/sqlite-controller/Cargo.toml -- --check
+  fmt-final.log.
+- cargo clippy --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --all-targets --all-features -- -D warnings
+  clippy-final.log.
+- sh tools/agents/checks.d/70-sqlite-controller.sh
+  expands cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture
+  test-final.log:21/21, 18 public and3 owned daemon/process tests; prior18 preserved.
+- git diff --check; staged diff inspected; exact source manifest matches final files.
+
+Branch633 verdict JSON/Markdown copied byte-for-byte as history data, checked
+against root-owned original files. Earlier source/evidence untouched. No broad
+legacy-service matrix or paid/live model run. Root owns independent re-review.

@@ -1,0 +1,28 @@
+{
+  "id": "05-repair2-runtime-context",
+  "at": "2026-10-04T23:55:21.302513+00:00",
+  "coordinator": "/root",
+  "actor": "/root/sqlite05_control_center_author",
+  "repair_round": 2,
+  "core_scope": "Only bounded read-seam preservation for the new public projection pagination regression; no runtime effect-policy change.",
+  "source_witnesses": "runtime.rs57/148 currently consume snapshot; lib.rs552-564 start admission creates one start and603-612 conditional one cancel transaction. No database unique constraint on operation kind; bounded context must detect ambiguity, not silently LIMIT1.",
+  "decision": "ADMIT concrete operator-only runtime_context and the two reconciler read substitutions under the following invariants.",
+  "requirements": [
+    "Authenticate current operator principal/project before ANY runtime/supervisor action, equivalent to prior pending_operations operator guard.",
+    "Return coherent original project state including paused and revision; at most TWO occupied-slot attempts filtered by exact project.",
+    "Return original unmodified start/cancel columns/payload/identity/state; require exactly one start and at most one cancel per selected attempt, detect missing/duplicates/cross-project ambiguity fail-closed rather than hide via LIMIT1.",
+    "Preserve original start birth scope_epoch/base/brief/operation identity for supervisor Binding, and distinct current attempt cancel_requested/scope_epoch for revocation check.",
+    "Post-lookup exact-attempt reread authenticates and requires selected current occupied attempt; disappearance/ambiguity refuses current observation, never authorizes retry.",
+    "Keep dispatch_context admission, pause behavior, prepared/applying/unknown transition rules, cancellation tombstone, unknown slot reservation, I/O outside writer and journal revision reads unchanged.",
+    "Do not modify source while any positively owned test runs.",
+    "No new scheduler/cap renewal/status/acceptance authority."
+  ],
+  "proof": [
+    "Before mutation, real local >20 exited historical attempts/operations and active late slot RED on current projected source.",
+    "Same fixture GREEN after read-seam change, active exact start/physical effects observed; original current authority/cancel/unknown/paused controls qualified.",
+    "Scoped operator/lead/worker authorization and missing/duplicate-journal ambiguity checks.",
+    "Fresh final exact candidate full suite/default gates/independent reviews/branch gate before acceptance."
+  ],
+  "caps": "Ticket05 repair2/3; diagnostic72+75 two of two used; these distinct runtime/projection contract tests are not repeated empty-state diagnostics. Exhausted02/04 caps remain unchanged.",
+  "status": "authenticated source-scoped admission pending actor ACK"
+}

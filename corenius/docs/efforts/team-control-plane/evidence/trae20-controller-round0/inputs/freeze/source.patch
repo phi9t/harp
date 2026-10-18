@@ -1,0 +1,281 @@
+diff --git a/tools/probes/trae_case_control.py b/tools/probes/trae_case_control.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..116f74ba9f4536006f27f38be7a2924f1c662b84
+--- /dev/null
++++ b/tools/probes/trae_case_control.py
+@@ -0,0 +1,154 @@
++"""Durable future-case control. No runtime launcher or fixture receipt CLI exists."""
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import stat
++import subprocess
++
++
++def digest(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def encoded(value):
++    return json.dumps(value, sort_keys=True, separators=(',', ':')).encode()
++
++
++def committed_reader(repository):
++    def read(revision, path):
++        if not re.fullmatch(r'[0-9a-f]{40}', revision):
++            raise ValueError('exact commit required')
++        kind = subprocess.run(['git', '-C', str(repository), 'cat-file', '-t', revision], check=True, capture_output=True).stdout
++        if kind != b'commit\n':
++            raise ValueError('revision is not a commit')
++        return subprocess.run(['git', '-C', str(repository), 'show', f'{revision}:{path}'], check=True, capture_output=True).stdout
++    return read
++
++
++def checked_path(root, path):
++    relative = Path(path)
++    if relative.is_absolute() or '..' in relative.parts or not relative.parts:
++        raise ValueError('repository-relative path required')
++    candidate = root / relative
++    if candidate.resolve() != candidate.absolute():
++        raise ValueError('symlink input refused')
++    return candidate
++
++
++def input_bytes(path):
++    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
++    try:
++        info = os.fstat(fd)
++        if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or info.st_nlink != 1 or info.st_size > 1048576:
++            raise ValueError('unsafe input')
++        return os.read(fd, 1048577)
++    finally:
++        os.close(fd)
++
++
++def write_all(fd, data):
++    offset = 0
++    while offset < len(data):
++        written = os.write(fd, data[offset:])
++        if written <= 0:
++            raise OSError('write made no progress')
++        offset += written
++
++
++def exclusive(directory, name):
++    return os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=directory)
++
++
++def run_case(*, case_path, grant_path, grant_revision, operation_id, repository, output_directory, executor, read_committed=None):
++    """Injected reader/executor are offline proof seams; production uses Git reader.
++
++    Caller pins the reviewed grant revision. Git integrity alone does not confer
++    approval. This module does not implement runtime or descendant supervision.
++    """
++    directory = None
++    records = []
++    executed = False
++    try:
++        root = Path(repository).absolute()
++        reader = read_committed or committed_reader(root)
++        if not re.fullmatch(r'[0-9a-f]{40}', grant_revision):
++            raise ValueError('exact grant commit required')
++        def frozen(path, revision):
++            relative = Path(path).absolute().relative_to(root).as_posix()
++            actual = input_bytes(checked_path(root, relative))
++            if actual != reader(revision, relative):
++                raise ValueError('input differs from committed bytes')
++            return actual
++        grant_raw = frozen(grant_path, grant_revision)
++        case_raw = frozen(case_path, grant_revision)
++        grant, case = json.loads(grant_raw), json.loads(case_raw)
++        if grant.get('version') != 1 or grant.get('status') != 'admitted' or grant.get('operation_id') != operation_id:
++            raise ValueError('reviewed control missing')
++        if grant['case_path'] != Path(case_path).absolute().relative_to(root).as_posix() or grant['case_sha256'] != digest(case_raw):
++            raise ValueError('case mismatch')
++        command = case['command']
++        if grant['command_sha256'] != digest(encoded(command)) or command['cwd'] != str(root):
++            raise ValueError('command mismatch')
++        if not isinstance(command['argv'], list) or not command['argv'] or not all(isinstance(v, str) for v in command['argv']):
++            raise ValueError('invalid argv')
++        if not isinstance(command['env'], dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in command['env'].items()):
++            raise ValueError('invalid environment')
++        limits = grant['limits']
++        if limits != {'max_invocations': 1, 'namespace_starts': 1, 'timeout_seconds': 30, 'fixture_seconds': 10, 'trae_starts': 0, 'provider_requests': 0, 'automatic_retry': False}:
++            raise ValueError('unsupported envelope')
++        source_revision = grant['input_commit']
++        if not re.fullmatch(r'[0-9a-f]{40}', source_revision):
++            raise ValueError('exact source commit required')
++        sources = case['sources']
++        controller = Path(__file__).absolute().relative_to(root).as_posix()
++        if controller not in sources or grant['controller_sha256'] != sources[controller]:
++            raise ValueError('controller provenance missing')
++        for relative, expected in sources.items():
++            if digest(frozen(checked_path(root, relative), source_revision)) != expected:
++                raise ValueError('source mismatch')
++        output = Path(output_directory).absolute()
++        if grant['output_directory'] != str(output):
++            raise ValueError('output mismatch')
++        directory = os.open(output, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
++        info = os.fstat(directory)
++        if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) != 0o700:
++            raise ValueError('unsafe output directory')
++        start = exclusive(directory, 'started.json')
++        try:
++            write_all(start, encoded({'operation_id': operation_id, 'grant_revision': grant_revision, 'grant_sha256': digest(grant_raw), 'case_sha256': digest(case_raw), 'command': command, 'sources': sources, 'provenance': 'injected-offline-fixture' if read_committed else 'committed-git'}))
++            os.fsync(start)
++        finally:
++            os.close(start)
++        os.fsync(directory)
++        for name in ('stdout.log.txt', 'stderr.log.txt', 'terminal.json'):
++            fd = exclusive(directory, name)
++            records.append(fd)
++            os.fsync(fd)
++        os.fsync(directory)
++        # Recheck frozen inputs after durable reservation; failure remains spent.
++        if frozen(grant_path, grant_revision) != grant_raw or frozen(case_path, grant_revision) != case_raw:
++            raise ValueError('input changed after reservation')
++        for relative, expected in sources.items():
++            if digest(frozen(checked_path(root, relative), source_revision)) != expected:
++                raise ValueError('source changed after reservation')
++        executed = True
++        try:
++            code = executor({'command': command, 'timeout_seconds': 30, 'stdout_fd': records[0], 'stderr_fd': records[1], 'operation_id': operation_id})
++            terminal = {'status': 'terminal', 'exit_code': code, 'executed': True}
++        except Exception as error:
++            terminal = {'status': 'unknown', 'error': type(error).__name__ + ': ' + str(error), 'executed': True}
++        for fd in records[:2]:
++            os.fsync(fd)
++        write_all(records[2], encoded(terminal))
++        os.fsync(records[2])
++        os.fsync(directory)
++        return terminal
++    except Exception as error:
++        return {'status': 'unknown' if executed else 'refused', 'executed': executed, 'error': type(error).__name__ + ': ' + str(error)}
++    finally:
++        for fd in records:
++            os.close(fd)
++        if directory is not None:
++            os.close(directory)
+diff --git a/tools/probes/test_trae_case_control.py b/tools/probes/test_trae_case_control.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..2110e5ce8551ae69e48f6fc61d78e3f75146f35a
+--- /dev/null
++++ b/tools/probes/test_trae_case_control.py
+@@ -0,0 +1,115 @@
++"""Controller executor-boundary fixtures only; no runtime/service/process launch."""
++import json
++from pathlib import Path
++import tempfile
++import unittest
++from trae_case_control import run_case
++
++class ControllerBehavior(unittest.TestCase):
++    def test_missing_reviewed_control_never_reaches_executor(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root=Path(tmp);case=root/'case.json';grant=root/'grant.json';out=root/'operation';out.mkdir()
++            case.write_text('{}');grant.write_text(json.dumps({'status':'admitted','operation_id':'owned-test'}))
++            calls=[]
++            result=run_case(case_path=case,grant_path=grant,grant_revision='a'*40,operation_id='owned-test',repository=root,output_directory=out,executor=lambda invocation:calls.append(invocation),read_committed=lambda revision,path:b'')
++            self.assertEqual(calls,[],'missing control must refuse at the executor boundary')
++            self.assertFalse(result['executed'])
++
++class DurableControllerBehavior(unittest.TestCase):
++    def setUp(self):
++        import trae_case_control as control
++        self.control = control
++        self.root = Path(control.__file__).resolve().parents[2]
++        self.temp = tempfile.TemporaryDirectory(dir=self.root / '.scratch')
++        self.addCleanup(self.temp.cleanup)
++        self.folder = Path(self.temp.name)
++        self.out = self.folder / 'operation'
++        self.out.mkdir(mode=0o700)
++        self.case = self.folder / 'case.json'
++        self.grant = self.folder / 'grant.json'
++        source = Path(control.__file__).relative_to(self.root).as_posix()
++        body = {'command': {'argv': ['/recording-only'], 'env': {}, 'cwd': str(self.root)}, 'sources': {source: control.digest(Path(control.__file__).read_bytes())}}
++        self.case.write_bytes(control.encoded(body))
++        grant = {'version': 1, 'status': 'admitted', 'operation_id': 'fixture-operation', 'case_path': self.case.relative_to(self.root).as_posix(), 'case_sha256': control.digest(self.case.read_bytes()), 'command_sha256': control.digest(control.encoded(body['command'])), 'controller_sha256': body['sources'][source], 'input_commit': 'b'*40, 'output_directory': str(self.out), 'limits': {'max_invocations':1, 'namespace_starts':1, 'timeout_seconds':30, 'fixture_seconds':10, 'trae_starts':0, 'provider_requests':0, 'automatic_retry':False}}
++        self.grant.write_bytes(control.encoded(grant))
++        self.frozen = {('a'*40, self.case.relative_to(self.root).as_posix()): self.case.read_bytes(), ('a'*40, self.grant.relative_to(self.root).as_posix()): self.grant.read_bytes(), ('b'*40, source): Path(control.__file__).read_bytes()}
++        self.calls = []
++
++    def run_controller(self, executor=None):
++        return run_case(case_path=self.case, grant_path=self.grant, grant_revision='a'*40, operation_id='fixture-operation', repository=self.root, output_directory=self.out, executor=executor or self.record, read_committed=lambda revision, path: self.frozen[(revision, path)])
++
++    def record(self, invocation):
++        import os
++        self.assertTrue((self.out / 'started.json').exists())
++        self.assertEqual(json.loads((self.out / 'started.json').read_text())['provenance'], 'injected-offline-fixture')
++        os.write(invocation['stdout_fd'], b'recorded-only\n')
++        self.calls.append(invocation)
++        return 0
++
++    def test_durable_boundary_and_duplicate_refusal(self):
++        self.assertEqual(self.run_controller()['status'], 'terminal')
++        retained = {p.name:p.read_bytes() for p in self.out.iterdir()}
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)
++        self.assertEqual(retained, {p.name:p.read_bytes() for p in self.out.iterdir()})
++
++    def test_concurrent_operation_executes_once(self):
++        import concurrent.futures
++        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
++            results = list(pool.map(lambda _: self.run_controller(), range(2)))
++        self.assertEqual(sum(r['executed'] for r in results), 1)
++        self.assertEqual(len(self.calls), 1)
++
++    def test_changed_case_grant_and_source_refuse(self):
++        for path in (self.case, self.grant):
++            original = path.read_bytes()
++            path.write_bytes(original+b' ')
++            self.assertFalse(self.run_controller()['executed'])
++            path.write_bytes(original)
++        key = next(key for key in self.frozen if key[0] == 'b'*40)
++        self.frozen[key] += b'changed'
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(self.calls, [])
++
++    def test_failed_write_spends_reservation_without_execution(self):
++        from unittest.mock import patch
++        with patch('trae_case_control.os.write', side_effect=OSError('injected write fault')):
++            self.assertFalse(self.run_controller()['executed'])
++        self.assertTrue((self.out / 'started.json').exists())
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(self.calls, [])
++
++    def test_fsync_failure_never_execute(self):
++        from unittest.mock import patch
++        with patch('trae_case_control.os.fsync', side_effect=OSError('injected fsync')):
++            self.assertFalse(self.run_controller()['executed'])
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(self.calls, [])
++
++    def test_short_writes_complete_and_fsync_precedes_executor(self):
++        import os
++        from unittest.mock import patch
++        original_write, original_sync = os.write, os.fsync
++        syncs = []
++        def short(fd, data):
++            return original_write(fd, data[:7])
++        def sync(fd):
++            syncs.append(os.fstat(fd).st_mode)
++            return original_sync(fd)
++        def execute(invocation):
++            import stat
++            self.assertTrue(any(stat.S_ISDIR(mode) for mode in syncs))
++            self.assertGreaterEqual(len(syncs), 6)
++            return self.record(invocation)
++        with patch('trae_case_control.os.write', side_effect=short), patch('trae_case_control.os.fsync', side_effect=sync):
++            self.assertEqual(self.run_controller(execute)['exit_code'], 0)
++
++    def test_timeout_and_exception_are_retained_unknown_without_retry(self):
++        def failure(invocation):
++            self.calls.append(invocation)
++            raise TimeoutError('recording executor only')
++        result = self.run_controller(failure)
++        self.assertEqual(result['status'], 'unknown')
++        self.assertEqual(json.loads((self.out/'terminal.json').read_text()), result)
++        self.assertFalse(self.run_controller()['executed'])
++        self.assertEqual(len(self.calls), 1)

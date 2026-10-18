@@ -1,0 +1,34 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.36s
+     Running tests/intent_contracts.rs (/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts/.scratch/team-control-plane/ticket26/target/debug/deps/intent_contracts-b53fa16ba734093e)
+
+running 1 test
+test admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt ... FAILED
+
+failures:
+
+---- admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt stdout ----
+postgres_fixture {"dsn":"host=127.0.0.1 port=10711 user=probe dbname=probe","epoch":"e1aeb240-c518-4657-bff8-20f57291c45d"}
+public_contract_response {"family":"intent.admit","key":"prerequisite","result":{"acceptance":"1354731014a86d7601cc74d427225826b74ab6b749ae475518490a1137596339","admitted_version":1,"disposition":"applied","intent":"3d7fd987f395a94710fb5693fa05e46b98811e4c5f748fd9210f2b4980f53881","revision":1,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"outcome.propose","key":"prerequisite-proposal","result":{"disposition":"proposed","proposal":"de0705679fd02ff7170103660f4755c5c5bf3f29f4755b7b5018d7b746a2d1a2","revision":1,"schema_version":2},"status":200,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"research.verify","key":"prerequisite-verify","result":{"code":"unauthorized"},"status":401,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"research.verify","key":"prerequisite-verify","result":{"disposition":"applied","outcome":"investigation_complete","proof":"92a0f59545cdcda9ce8e98f14d092e179a6981e337ddfb3ed83872da7fb6b629","revision":2,"schema_version":2},"status":200,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"outcome.accept","key":"prerequisite-accept","result":{"code":"unauthorized"},"status":401,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"outcome.accept","key":"prerequisite-accept","result":{"disposition":"applied","outcome":"investigation_complete","proof":"92a0f59545cdcda9ce8e98f14d092e179a6981e337ddfb3ed83872da7fb6b629","revision":3,"schema_version":2,"subject":"dc2b40cb75c9b3bfae1b3cc6a5d95982207d64588fef90e301d0d4114c3b3deb"},"status":200,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"intent.admit","key":"dependent-intent","result":{"acceptance":"a11c60f0fdaec33c97e3e62ee91fbf19d1f4ae27415b15cc485ff1fc93296694","admitted_version":1,"disposition":"applied","intent":"dba3b82e003b10f47186cbcdeca4d1babaefd0beedcfc0127fb905efd69375fa","revision":1,"schema_version":2,"work":"35f22b4712993f6131816fdcc16dba72d60e20d6389cbe4a3b87aa934c9700fc"},"status":200,"task":"c2b1d163-1147-47f6-a2a9-08e41bcf5770"}
+public_contract_response {"family":"source.propose","key":"unadmitted-edit","result":{"disposition":"proposed","proposal":"9e3e959ffe6c7728e63c94fb33e2f0c124d63e7d09bc7d7d00a7d3b1b5f59a68","revision":3,"schema_version":2},"status":200,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+public_contract_response {"family":"intent.admit","key":"supersede","result":{"acceptance":"1354731014a86d7601cc74d427225826b74ab6b749ae475518490a1137596339","admitted_version":2,"disposition":"applied","intent":"c5a23d212fde655d9f988c96f3194b02c46487f99dd8778df59ae0906f8332cc","revision":4,"schema_version":2,"work":"69d2aec8012890ef71e063dd7ff29046effa19f743cd9a2f9d0391577fe6f625"},"status":200,"task":"033be942-7bf5-485d-902d-ae426087c37b"}
+
+thread 'admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt' (4045400) panicked at tests/intent_contracts.rs:414:5:
+assertion `left == right` failed: authoritative dependency disposition change must invalidate stale aggregate revisions
+  left: Number(1)
+ right: 2
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    admitted_prerequisite_supersession_blocks_fresh_grants_and_retains_old_receipt
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.32s
+
+error: test failed, to rerun pass `--test intent_contracts`

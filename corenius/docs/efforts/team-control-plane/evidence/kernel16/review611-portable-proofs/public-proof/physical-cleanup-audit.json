@@ -1,0 +1,16 @@
+{
+  "observed_at_unix": 1791009782.28778,
+  "fixture_root": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255",
+  "episode": "46ebcbb6-9b34-465e-8e48-edceae7e42c6",
+  "execution": "ab7bea80-fede-4395-a212-b3797da3c5da",
+  "retained": true,
+  "matching_current_proc_entries": [],
+  "unreadable_or_exited_proc_entries": 2897,
+  "status": "unresolved quarantine",
+  "missing_evidence": [
+    "exact PID identities",
+    "database manifest/result/stop observations; removed with failed-run Postgres"
+  ],
+  "limits": "Current path attribution scan does not prove historical or current namespace shutdown. No kill, deletion, reuse, accounting refund, or immutable-result rewrite performed.",
+  "observer_artifact": "Initial inline audit matched its invoking shell payload, not a runtime. This file-based rerun avoids the fixture strings in observer argv."
+}

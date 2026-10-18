@@ -1,0 +1,106 @@
+{
+  "session": 25437,
+  "exit": 0,
+  "scope": "real PostgreSQL/Temporal all-targets matrix; summary lines include owned child runs",
+  "summary_lines": [
+    [
+      "9",
+      "0",
+      "0"
+    ],
+    [
+      "0",
+      "0",
+      "0"
+    ],
+    [
+      "11",
+      "0",
+      "0"
+    ],
+    [
+      "1",
+      "0",
+      "0"
+    ],
+    [
+      "27",
+      "0",
+      "3"
+    ],
+    [
+      "3",
+      "0",
+      "1"
+    ],
+    [
+      "4",
+      "0",
+      "0"
+    ],
+    [
+      "10",
+      "0",
+      "0"
+    ],
+    [
+      "54",
+      "0",
+      "3"
+    ],
+    [
+      "4",
+      "0",
+      "0"
+    ],
+    [
+      "16",
+      "0",
+      "0"
+    ],
+    [
+      "1",
+      "0",
+      "0"
+    ],
+    [
+      "2",
+      "0",
+      "0"
+    ],
+    [
+      "3",
+      "0",
+      "0"
+    ],
+    [
+      "20",
+      "0",
+      "0"
+    ],
+    [
+      "7",
+      "0",
+      "1"
+    ]
+  ],
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "875e621b7181d74f0432e37efa117524861ccdf73135e5fec06d621efbbc3126"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    }
+  ],
+  "acceptance": "strict/freeze/conformance/rootgate/branchreview pending"
+}

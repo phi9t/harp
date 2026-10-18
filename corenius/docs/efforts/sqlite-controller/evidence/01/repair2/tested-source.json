@@ -1,0 +1,31 @@
+{
+  "base": "958ebdb04949aa06df1b282e93de7490023e7e35",
+  "repair_round": 2,
+  "branch": "sqlite01/storage",
+  "tested_at_utc": "2026-10-04T04:56:09.799088+00:00",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "files_sha256": {
+    "crates/sqlite-controller/Cargo.toml": "12324d7fe4e265326be0dc1d0b2a48cf60e860e0dec80b7d722f619f04653844",
+    "crates/sqlite-controller/Cargo.lock": "52dc89ac3aaf894d6b765eb152b9adb7984052787bdc3974fbac4180a3b0ed3b",
+    "crates/sqlite-controller/README.md": "ab70b0e5cc98740c542e566284902d47dfd9bf2d5a2dd2cfca04c2cbd822d443",
+    "tools/agents/checks.d/70-sqlite-controller.sh": "f3949ef5dcc7ecd260e207c42f3902cc30da1b7492626ecfe97146a71c830436",
+    "crates/sqlite-controller/src/lib.rs": "683beb23f5aaa18c227de79d7ab0cbe66254559083b63db4c2cbf8d528dfd498",
+    "crates/sqlite-controller/src/main.rs": "5645f68875e1835bd5b16bdd7ecb9384b8dd0ea15b1b5470150f76d0d66e40b1",
+    "crates/sqlite-controller/src/query.rs": "d3e31fe5df7a01a1535cdbbe729e21ee3a056bcf2e8993a64c239c5fc9f3408d",
+    "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+    "crates/sqlite-controller/src/service.rs": "9f2ed19a6c311daf5e1bddc58c0df4196ea0ad42e32bbeb853d00664f0590f63",
+    "crates/sqlite-controller/tests/process.rs": "279994b60600272dcfa936331e4e5b10e01b896f3cd953ccfdc1ab44631dd8a6",
+    "crates/sqlite-controller/tests/public.rs": "479eb33d19b71fa2ffa217cc7169e12f9f7df6ed33d035f9abbe43f751be940b"
+  },
+  "source_manifest_sha256": "a61dd7279e48089b596ffa435a1986a90810009e205ab3faa9df79d5061b261a",
+  "branch633_verdict_sha256": {
+    "branch633.json": "3ca83da76c6ce22db824310956f7824f27be9343e10317299c44ec94a66548ef",
+    "branch633.md": "4cccc39de1b6b54eaf28878b95dabcfe440f6f56d30e805b06599186b0562285"
+  },
+  "tests": {
+    "public": 18,
+    "process": 3,
+    "failures": 0
+  },
+  "independent_rereview": "pending, root-owned"
+}

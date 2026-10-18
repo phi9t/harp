@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "-m",
+    "unittest",
+    "-v",
+    "test_trae_case_control"
+  ],
+  "cwd": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture",
+  "env_controls": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "tools/probes"
+  },
+  "source": {
+    "path": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture/tools/probes/trae_case_control.py",
+    "sha256": "9e6adfc1fe3c312776507676f29ba945eec75e96cc2bc73eeba86d63458bd207",
+    "bytes": 9505
+  },
+  "tests": {
+    "path": "/tmp/corenius-trae-controller-repair2-spec-review-20261003/final-fixture/tools/probes/test_trae_case_control.py",
+    "sha256": "7297a7a861acbd5c323d48070d31e80a0c700a7133f4533b861351c8e331db75",
+    "bytes": 19935
+  },
+  "terminal_exit_code": 0
+}

@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.84s
+     Running tests/temporal.rs (target/debug/deps/temporal-8210ec28f7bc216c)
+
+running 1 test
+
+thread 'public_migration_installs_transactional_workflow_registry' (925295) panicked at tests/temporal.rs:513:46:
+called `Result::unwrap_err()` on an `Ok` value: OperationProgress { admission_id: 4f7dcb96-7087-4563-a74a-87116cc220d9, journals: [(e303837e-6a42-4883-9670-05c905fbe814, OutcomeUnknown)], limitation: None }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test public_migration_installs_transactional_workflow_registry ... FAILED
+
+failures:
+
+failures:
+    public_migration_installs_transactional_workflow_registry
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 1.56s
+
+error: test failed, to rerun pass `--test temporal`

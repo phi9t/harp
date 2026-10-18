@@ -1,0 +1,1 @@
+The `lib` package should build with `blade-offline build //lib:main` and the resulting binary should print `BLADE_L0_INCS_SRCS ok`. Fix the package's Blade declaration and the bad header include in the app source. Headers belong in `srcs` when Blade needs to see them; do not use a `hdrs` option.

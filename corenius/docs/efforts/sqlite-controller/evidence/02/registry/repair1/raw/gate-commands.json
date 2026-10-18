@@ -1,0 +1,13 @@
+{
+  "source_base": "2dcc4ec34bf7bdd74a6759bcd2f743361083e01c",
+  "classification": "MODEL_FREE_ACTUAL_PROTOCOL; no paid/live inference",
+  "commands": [
+    {
+      "command": "cargo test --locked --offline --manifest-path crates/sqlite-controller/Cargo.toml --features fault-injection -- --nocapture --test-threads=2",
+      "exit": 101,
+      "log": "gate-tests.log",
+      "seconds": 597.55,
+      "started_at": "2026-10-04T10:30:58.721084+00:00"
+    }
+  ]
+}

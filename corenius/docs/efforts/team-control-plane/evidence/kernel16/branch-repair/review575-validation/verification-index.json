@@ -1,0 +1,37 @@
+{
+  "base": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+  "freeze": "/tmp/corenius-kernel16-review575-author/.scratch/team-control-plane/repair575/freeze",
+  "freeze_manifest_sha256": "6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b",
+  "patch_sha256": "23ef97df592c409cff0aebb8b8c6c5d4407c489acac7655b1c33a8b9f5757f58",
+  "current_source_matches_all_48": true,
+  "current_diff_matches": true,
+  "matrix": {
+    "exit": 0,
+    "passed": 162,
+    "failed": 0,
+    "ignored": 7
+  },
+  "strict_exit": 0,
+  "fmt_exit": 0,
+  "diff_check_exit": 0,
+  "meaningful_reds": {
+    "mission": "red1d",
+    "legacy": "red2c",
+    "bytes": "red3e",
+    "monitor": "red4"
+  },
+  "focused_greens": {
+    "mission": "green1b",
+    "legacy": "green2",
+    "bytes": "green3",
+    "monitor": "green4",
+    "final_operator": "focused-operator"
+  },
+  "cleanup": "setup-failure-cleanup.json",
+  "correction": "Earlier statement that red3c overflow preceded SDK process spawning was incorrect; owned orphan PID3073469 start_ticks39397357 was validated and terminated with SIGTERM; exact executable disappeared and three owned setup roots were removed.",
+  "limitations": [
+    "No ticket16 acceptance or landing claim",
+    "No live provider proof or restore proof",
+    "Independent review and root exact final source gate pending"
+  ]
+}

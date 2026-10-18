@@ -1,0 +1,13 @@
+--- candidate-with-target-guard
++++ counterfactual-with-target-guard-removed
+@@ -478,9 +478,7 @@
+             }
+             _ => None,
+         };
+-        if let Some(task) = target {
+-            crate::contracts::lifecycle::require_open(&tx, task).await?;
+-        }
++        let _ = target; // RED probe: remove only operation-target terminal fence.
+         let (family, mission) = match &e.command {
+             MailboxCommand::CaptureInput { mission, .. } => ("episode.input_capture", *mission),
+             MailboxCommand::PrepareDelivery { episode, .. } => {

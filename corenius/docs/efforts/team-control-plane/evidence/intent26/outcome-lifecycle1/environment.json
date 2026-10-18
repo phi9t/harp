@@ -1,0 +1,61 @@
+[
+  {
+    "command": [
+      "cargo",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "rustc",
+      "-vV"
+    ],
+    "exit_code": 0,
+    "stdout": "rustc 1.95.0 (59807616e 2026-04-14)\nbinary: rustc\ncommit-hash: 59807616e1fa2540724bfbac14d7976d7e4a3860\ncommit-date: 2026-04-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.95.0\nLLVM version: 22.1.2\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "bwrap",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "bubblewrap 0.8.0\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "branch",
+      "--show-current"
+    ],
+    "exit_code": 0,
+    "stdout": "codex-intent26/outcome-lifecycle1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "docker",
+      "exec",
+      "corenius-intent26-outcome-lifecycle1-pg",
+      "postgres",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "postgres (PostgreSQL) 17.6 (Debian 17.6-2.pgdg12+1)\n",
+    "stderr": ""
+  }
+]

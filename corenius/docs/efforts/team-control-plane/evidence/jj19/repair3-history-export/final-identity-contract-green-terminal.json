@@ -1,0 +1,25 @@
+{
+  "label": "final-identity-contract-green",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-identity-contract-green.json",
+    "--retain-artifacts",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-identity-artifacts"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:20:39.468711+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "command_source_sha256": "1dd2034d12b431efdc934d93ab73560b726884526d1ed3fd7221b779201c3af9",
+  "expected_exit": 0,
+  "exit": 0,
+  "stdout": "{\n  \"outcome\": \"passed\",\n  \"fixture_sha256\": \"0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:20:40.347815+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-identity-contract-green.json",
+  "output_sha256": "1c027c5dd060d2a15cd5a618784338d28bdec269c57ddfd191a68c49c7d4fdc2"
+}

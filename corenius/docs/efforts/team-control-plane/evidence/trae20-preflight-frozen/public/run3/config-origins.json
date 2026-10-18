@@ -1,0 +1,78 @@
+{
+  "origins": {
+    "model_provider": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "analytics.enabled": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.multi_agent": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.hooks": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.goals": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.memories": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.multi_agent_v2.enabled": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.plugin_hooks": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.code_mode_host": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    },
+    "features.plugins": {
+      "name": {
+        "type": "sessionFlags"
+      },
+      "version": "sha256:437070217343ec8d623ce182d5df2a0be2dfbcd16bb4e35c552e6d21ad9cb727"
+    }
+  },
+  "layer_names": [
+    {
+      "type": "sessionFlags"
+    },
+    {
+      "type": "user",
+      "file": "/fixture/store/traecli.toml"
+    },
+    {
+      "type": "system",
+      "file": "/etc/trae/traecli.toml"
+    }
+  ],
+  "model_provider": "lmstudio"
+}

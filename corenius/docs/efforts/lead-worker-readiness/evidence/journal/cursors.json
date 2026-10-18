@@ -1,0 +1,2288 @@
+{
+  "updated_utc": "2026-10-05T23:54:44Z",
+  "lead_transcript": {
+    "path": "/data02/home/philip.yang/.claude/projects/-data02-home-philip-yang-workspace-corenius/b8dd1a72-5c0d-4e13-99aa-beecaa39b047.jsonl",
+    "offset": 5914919,
+    "last_selected_records": {
+      "473": "2026-10-05T08:04:43.914Z Write ws.py",
+      "484": "2026-10-05T08:04:51.133Z ws.py up and launch 01",
+      "526": "2026-10-05T08:13:56.691Z write lead-protocol.md",
+      "new_after_2033846": "no selected lead tool calls through 2034543",
+      "new_after_2034543": "candidate review started; review sent; coordinator wait restarted through 2221942",
+      "new_after_2221942": "no selected lead tool events through 2230524",
+      "new_after_2230524": "no selected lead tool events through 2231193",
+      "new_after_2231193": "09:03 second review began; 09:04 land gate invoked; 09:05 ticket 01 resolved/accepted; 09:06 tickets 02, 08 and 13 launched; 09:07 launch batching patch observed through 2382015",
+      "new_after_2382015": "no selected lead tool calls through 2382692; prompt-level record at 09:10 asked whether to add tracker-state ticket and launch 05/12",
+      "new_after_2382692": "09:17 watcher/review for ticket 13; review-1 sent; 09:25 land gate for fcfd998 started; selected through 2475561",
+      "new_after_2475561": "09:26 ticket 13 resolved/accepted and ticket 05 launched; 09:29 ticket 02 reviewed and review-1 sent; selected through 2609364",
+      "new_after_2609364": "09:50 ticket 02 land gate and landing; 09:51 ticket 02 resolve/acceptance, ticket 03 claim/launch, and held ticket 08 review send; selected through 2727181",
+      "new_after_2727181": "10:02 ticket 08 inspection; 10:04 ticket 08 landing/acceptance and ticket 09 launch; 10:04-10:05 ticket 05 inspection and review send; selected through 2867201",
+      "new_after_2867201": "no selected lead tool calls through 2867820 during 10:12 tick",
+      "new_after_2867820": "10:16 ticket 03 review and defect reproduction; 10:21 ticket 09 review began; 10:23 ticket 09 gate command invoked, with no review/land artifact through 10:24:18",
+      "new_after_3023016": "10:25 ticket 12 launched after ticket 09 landing; selected through 3039915",
+      "new_after_3039915": "10:34 ticket 05 accepted for reintegration, ticket 03 held until 05 lands, and lead noted ticket 03 premature marker; selected through 3094224",
+      "new_after_3094224": "10:48 ticket 12 review began; real codex help and codex exec --json probes ran; 10:51 ticket 12 review-1 written; selected through 3197610",
+      "new_after_3197610": "10:58 ATTENTION/status check; 10:58 ticket 05 gate/land sequence; 11:00 ticket 05 landed, 03 reintegrate sent, ws.py launch-without-claim patch and ticket 11 launch output; selected through 3256272",
+      "new_after_3256272": "11:13 ATTENTION/status check; 11:13 ticket 03 gate/land sequence; 11:15 ticket 03 acceptance/resolution, deferred ticket 11 claim and ticket 07 launch; 11:16 wait 07 11 12; 11:17 ticket 11 review written and scratch draft ticket 16 file created; selected through 3366182",
+      "new_after_3366182": "11:32 ATTENTION/status check; 11:33 ticket 12 branch/report inspection and candidate/gate command started; no selected result or landing artifact by 11:35 cutoff; selected through 3397239",
+      "new_after_3397239": "11:35 ticket 12 gate result returned; ticket 12 acceptance/review/reintegration artifacts copied, ticket 16 added, ticket 04 amended, ticket 12 landed; 11:35 ticket 04 launched and ticket 11 reintegration sent; selected through 3443945",
+      "new_after_3443945": "11:45 ATTENTION/status check; ticket 11 accepted and landed with land.py; ticket 07 reviewed for two-worktree effort-record defect; ws.py brief warning added; ticket 06 held and ws.py wait 04 07 started; selected through 3562261",
+      "new_after_3562261": "12:12 ATTENTION/status check saw 04 running and 07 ready; 12:12 ticket 07 three-checkout reproduction passed; ticket 07 accepted/landed; 12:15 resolved 07, recorded acceptance, named integration branch, amended/launched 06 and launched 16; 12:15 real effort status regression found and note sent to 16; selected through 3650677",
+      "new_after_3650677": "12:21 ATTENTION/coordinator check and ticket 04 report/diff review; 12:22 review-1 sent for Candidate e1b111f; selected through 3715350",
+      "new_after_3715350": "no selected lead tool records through 3715350 during 12:33 pass",
+      "new_after_3715350_1243": "no selected lead tool records through 3715350 during 12:43 pass",
+      "new_after_3715350_1253": "no selected lead tool records through 3715350 during 12:53 pass",
+      "new_after_3715350_1303": "12:57 ticket 04 acceptance/landing first failed from an invalid relative path and then from the main checkout; retry from integration worktree accepted and landed a7ba1a7; 12:59 ticket 04 resolution/acceptance and ticket 10 amendment/claim; 13:00 independent-review gap note and wait 06 10 16; 13:02-13:03 ticket 16 review; 13:05-13:07 ticket 06 review with real Codex sandbox probe; selected through 3976714",
+      "new_after_3976714_1323": "no selected lead tool calls, review sends, landing attempts or public status messages through 3977352 during 13:23 pass",
+      "new_after_3977352_1333": "no new selected lead tool calls, review sends, landing attempts or public status messages during 13:33 pass",
+      "new_after_3977352_1343": "no selected lead tool calls, review sends, landing attempts or public status messages through 3979287 during 13:43 pass",
+      "new_after_3979287_1353": "13:44 ticket 16 review/acceptance checks and acceptance record; 13:48 ticket 16 resolve/acceptance/ticket 17 launch/ticket 06 reintegration; 13:53 ticket 10 review began and ticket 18 draft written; selected through 4115684",
+      "new_after_4115684_1403": "no selected lead transcript records, lead-log entries or notes entries through 14:03 pass; transcript remained at 4115684",
+      "new_after_4115684_1413": "no selected lead transcript records, lead-log entries, notes entries, ws.py changes or coordinator artifacts through 14:13 pass; transcript remained at 4115684",
+      "new_after_4115684_1423": "14:24 attention/status check and ticket 06 review/check command started; no selected tool result, review artifact or landing artifact by cursor 4135465",
+      "new_after_4135465_1433": "14:24-14:27 ticket 06 review/check completed, ticket 06 landed and ticket 18 added; 14:27 ticket 10 reintegration sent; 14:28-14:30 ticket 17 review used real TraeCLI/Codex probes and sent review-1; selected through 4233227",
+      "new_after_4233227_1443": "no new lead transcript bytes through the 14:46 cutoff; lead-log and notes also unchanged",
+      "new_after_4233227_1453": "14:46-14:50 ticket 10 real-effort monitor/accounting checks, acceptance, landing and resolution; 14:50-14:52 ticket 17 state read, real Codex/TraeCLI probes rerun, reintegration sent; selected through 4310570",
+      "new_after_4310570_1503": "only a system record through 4311175; no selected lead tool calls or public actions",
+      "new_after_4311175_1513": "no selected lead transcript records, coordinator artifacts, lead-log entries or notes entries through the 15:14 cutoff",
+      "new_after_4311175_1523": "no new lead transcript bytes, coordinator artifacts, lead-log entries or notes entries through the 15:24 cutoff",
+      "new_after_4311175_1533": "no new lead transcript bytes, coordinator artifacts, lead-log entries or notes entries through the 15:34 cutoff",
+      "new_after_4311175_1543": "no new lead transcript bytes, coordinator artifacts, lead-log entries or notes entries through the 15:44 cutoff",
+      "new_after_4311175_1553": "lead saw ticket 17 ready/clean at 7fddf82, probed tmux temp failures, reran test_mac_tmux with TMUX_TMPDIR, then started acceptance/land command; selected through 4393340 with no landed.json by 15:54 cutoff",
+      "new_after_4393340_1603": "lead landed/resolved ticket 17, recorded acceptance, launched ticket 18, sent ticket 18 a temp-directory note after /tmp inode failures, and started an independent read-only integration review; selected through 4489660",
+      "new_after_4489660_1613": "independent review completed at 16:09; lead recorded review output, wrote tickets 19-21, committed ad110d7, launched tickets 19 and 20 from 375c261, then started ws.py wait 18 19 20; selected through 4668045",
+      "new_after_4668045_1623": "no new lead transcript bytes, lead-log entries, notes entries, ws.py changes, integration commits or coordinator review/landing artifacts through the 16:25 cutoff",
+      "new_after_4668045_1633": "no new lead transcript bytes, lead-log entries, notes entries, ws.py changes, integration commits or coordinator review/landing artifacts through the 16:35 cutoff",
+      "new_after_4668045_1643": "no new lead transcript bytes, lead-log entries, notes entries, ws.py changes, integration commits or coordinator review/landing artifacts through the 16:48 cutoff",
+      "new_after_4668045_1653": "no new lead transcript bytes, lead-log entries, notes entries, ws.py changes, integration commits or coordinator review/landing artifacts through the 16:54 cutoff",
+      "new_after_4668045_1703": "16:57 lead saw ticket 20 needs-info, inspected its branch/report, wrote answer-1.md, invoked ws.py tell 20, and by 17:01 status showed ticket 20 ready; selected through 4786909",
+      "new_after_4786909_1713": "17:05 ticket 20 review-1 written and sent; 17:07 ticket 20 observed ready at rewritten marker 62b50ec; 17:12 active worker panes/processes inspected; ticket 20 resolved/accepted and landed windows closed; 17:14 notes/log updated and ticket 21 launched; selected through 4915251",
+      "new_after_4915251_1723": "17:24 lead checked ATTENTION/status/workers and saw ticket 18 ready, 19 running, 21 running; 17:25 read ticket 18 report/diff and launched then waited on a throwaway real interactive-worker probe; no probe result by selected cursor 4963320",
+      "new_after_4963320_1733": "17:32 ticket 18 throwaway probe was still running behind a project trust/config prompt after wait rc=0; lead sent input to probe tmux session and started another wait; no result by cursor 4975363",
+      "new_after_4975363_1743": "17:38 ticket 18 throwaway probe reached ready marker but pane still showed interactive review prompt; lead preserved probe pane/run record, wrote review-1.md, sent ws.py send 18, and began wait for 19 or 21; selected through 5030951",
+      "new_after_5030951_1803": "18:00 lead checked ATTENTION/status, inspected ticket 19 report/code excerpts, wrote review-1.md and sent ws.py send 19; selected through 5101267",
+      "new_after_5101267_1823": "no selected lead transcript records, scratch note changes, integration commits or coordinator review/landing artifacts through the 18:24 cutoff",
+      "new_after_5101267_1833": "no selected lead transcript records, scratch note changes, integration commits or coordinator review/landing artifacts through the 18:37 cutoff",
+      "new_after_5101267_1843": "18:42 lead status check observed ticket 19 ready at bdda651 and ticket 21 running; lead then started ticket 19 candidate acceptance/review command with no result by cursor 5119867",
+      "new_after_5119867_1853": "18:47 ticket 19 acceptance/landing/resolve completed, then ws.py was rewired to record-worktree bookkeeping; 18:48 ticket 21 reviewed/reintegrated; 18:52-18:54 ticket 18 real interactive probe and review-2; selected through 5295105",
+      "new_after_5295105_1903": "only one system record through 5295761; no selected lead tool calls or public lead actions after ticket 18 review-2",
+      "new_after_5295761_1913": "no new lead transcript bytes through fixed 19:17:10Z cutoff; no selected lead tool calls or public lead actions",
+      "new_after_5295761_1923": "through fixed 2026-10-05T19:25Z cutoff lead received public status prompt, checked ATTENTION/status/workers/branch ancestry, and replied that 17 tickets were landed, 21 current, 18 behind and in second rework, and 14/15 blocked",
+      "new_after_5315680_1933": "through fixed 2026-10-05T19:36:37Z cutoff owner asked for cleanup/review/landing/live trial; lead launched disk-cleanup worker, wrote no-tmp decision and ticket 22, patched ws.py, committed record-branch 9b1d350, and launched ticket 22",
+      "new_after_5482607_1943": "through fixed 2026-10-05T19:47:23Z cutoff lead saw tickets 18 and 21 ready, ticket 21 gate failed on candidate b9cfd0b and failed again in a clean checkout, lead recorded acceptance then gate-failed review 5fb3474, and sent ticket 18 a reintegration handoff",
+      "new_after_5571462_1953": "no selected lead tool calls, public replies, review sends or landing attempts through fixed 2026-10-05T19:54:30Z cutoff",
+      "new_after_5572129_2003": "no new lead transcript bytes through fixed 2026-10-05T20:05:31Z cutoff",
+      "new_after_5572129_2013": "through fixed 2026-10-05T20:17:18Z cutoff lead checked ATTENTION/status/workers/branch ancestry and disk-cleanup output, saw ticket 21 ready and ticket 22 finishing/ready, read cleanup report summary, then started a compound command to close disk-cleanup, copy its report, inspect ticket 21 report and begin acceptance work; no tool result by cutoff",
+      "new_after_5614290_2023": "through fixed 2026-10-05T20:26:30Z cutoff lead received the compound-command result, resolved and landed ticket 21 on integration, sent ticket 18 note-2 after the tip moved, checked ticket 22 in a detached checkout, publicly reported ticket 21 landed and ticket 22 content accepted, and held ticket 22 behind ticket 18",
+      "new_after_5663992_2033": "no new lead transcript bytes through fixed 2026-10-05T20:35:02Z cutoff",
+      "new_after_5663992_2043": "no new lead transcript bytes through fixed 2026-10-05T20:48:04Z cutoff",
+      "new_after_5663992_2053": "no new lead transcript bytes through fixed 2026-10-05T20:54:31Z cutoff",
+      "new_after_5663992_2103": "no new lead transcript bytes through fixed 2026-10-05T21:04:33Z cutoff",
+      "new_after_5663992_2113": "no new lead transcript bytes through fixed 2026-10-05T21:14:36Z cutoff",
+      "new_after_5663992_2123": "no new lead transcript bytes through fixed 2026-10-05T21:24:34Z cutoff",
+      "new_after_5663992_2133": "no new lead transcript bytes through fixed 2026-10-05T21:34:52Z cutoff",
+      "new_after_5663992_2143": "no new lead transcript bytes through fixed 2026-10-05T21:44:45Z cutoff",
+      "new_after_5663992_2153": "21:53 owner asked for status; lead checked ATTENTION, monitors, ticket 18 branch/pane/processes, closed landed ticket windows 19 and 21, appended lead-log status, and reported 18 running clean gate, 22 ready behind 18, 14/15 waiting; selected through 5704428",
+      "new_after_5704428_2203": "no new lead transcript bytes through fixed 2026-10-05T22:04:43Z cutoff",
+      "new_after_5704428_2213": "22:08 owner asked for a recap of the overall semantics; lead replied with a conceptual summary of lead-driven, local-controller and workflow-controller forms, readiness stories, and current adoption status; no selected coordinator/review/landing action through 5721039",
+      "new_after_5721039_2223": "22:18 lead noticed ticket 18 ready at 3ab9ec4, checked status/report/ancestry, ran and cleaned a throwaway interactive probe, then began longer review/acceptance work; no review or landing artifact by cursor 5757281",
+      "new_after_5757281_2233": "22:30 lead reported ticket 18 real interactive proof passed and landing was running; 22:34 acceptance/landing task completed exit 0 for candidate 3ab9ec4 with record commits a488212/e3e6474; lead resolved 18, closed its window, sent ticket 22 reintegrate-1, and reported 19 of 22 tickets landed; selected through 5784365",
+      "new_after_5784365_2244": "no new lead transcript bytes through fixed 2026-10-05T22:45:29Z cutoff",
+      "new_after_5784365_2254": "no new lead transcript bytes through fixed 2026-10-05T22:54:54Z cutoff",
+      "new_after_5784365_2304": "23:00 owner asked for status; lead checked ATTENTION/status/workers/ticket22 ancestry and pane plus journal commit, then reported 19 of 22 landed, ticket 22 on final clean gate, 14 waiting for 22 and pre-landing review, 15 waiting for 14, and next steps of landing 22, retiring the interim script, independent review, fixes/TODO and mainline fast-forward; selected through 5806472",
+      "new_after_5806472_2314": "no new lead transcript bytes through fixed 2026-10-05T23:16:19Z cutoff; lead-log, notes and ws.py also unchanged",
+      "new_after_5806472_2324": "no new lead transcript bytes through fixed 2026-10-05T23:23:42Z cutoff; lead-log, notes and ws.py also unchanged",
+      "new_after_5806472_2334": "23:31 prior background wait completed exit 0; lead checked status/workers/ticket22 log/status/report, saw ticket 22 ready at 7d2f69c, started background acceptance/landing task buqu2ydin at 23:32, and publicly reported ticket 22 was landing; selected through 5842413",
+      "new_after_5842413_2344": "no new lead transcript bytes through fixed 2026-10-05T23:44:50Z cutoff; ticket 22 background landing task had no visible completion in transcript, monitor, integration branch or state directory",
+      "new_after_5842413_2354": "23:46 ticket 22 background acceptance/landing completed exit 0; lead resolved ticket 22, closed its worker window, recorded all build tickets landed, launched second independent branch review, ran real Codex launch-then-resume proof and committed record-branch proof 540f8f7; selected through 5914919"
+    }
+  },
+  "worker_transcripts": {
+    "01-one-scenario-end-to-end": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T08-05-19-01a10b18-86cd-7421-a2e9-1d3c895205bb.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-01-one-scenario-end-to-end",
+      "offset": 8198783,
+      "last_selected_records": {
+        "2955153": "2026-10-05T08:20:42.969Z all bench/harness/test_*.py passed",
+        "3003818": "2026-10-05T08:20:52.037Z default handoff scenario exited 0",
+        "4275471": "2026-10-05T08:35:34.428Z worker terminated stuck check gate processes",
+        "6026475": "2026-10-05T08:41:19.996Z first marker commit 88baa03 created",
+        "6079446": "2026-10-05T08:42:05.350Z final replacement commits d04afac and c153084 created",
+        "6668385": "2026-10-05T08:46:47.612Z worker read bench/tasks/t01-log-window fixture",
+        "6793562": "2026-10-05T08:47:57.310Z lead-driven tests failed on missing marker participants",
+        "6877910": "2026-10-05T08:48:39.745Z worker tests exited 1 during rework",
+        "7156327": "2026-10-05T08:52:59.847Z worker tests exited 0 after rework changes",
+        "7163226": "2026-10-05T08:53:20.752Z lead-driven tests passed 9 tests",
+        "8198783": "through 2026-10-05T09:02:45Z worker 01 produced clean second Candidate 2bc91245e38fedd28ccedf20b27c5b72b34a5870"
+      }
+    },
+    "02-exact-candidate-lands": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T09-06-28-01a10b50-846e-7790-9e4a-941c848b4a71.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-02-exact-candidate-lands",
+      "offset": 6085982,
+      "last_selected_records": {
+        "575852": "2026-10-05T09:06:45.877Z read AGENTS.md and CONSTITUTION.md",
+        "1076671": "2026-10-05T09:07:43.863Z read lander, lander tests, wt.py and readiness file list",
+        "2027602": "2026-10-05T09:10:54.818Z python3 tools/agents/test_land.py failed",
+        "2133979": "2026-10-05T09:12:48.807Z python3 tools/agents/test_land.py passed",
+        "2289912": "2026-10-05T09:14:09.722Z chmod scenario participants and python3 bench/harness/test_lead_driven.py failed",
+        "2334155": "2026-10-05T09:14:59.848Z python3 bench/harness/test_lead_driven.py passed",
+        "2497834": "2026-10-05T09:19:48.628Z python3 tools/agents/test_land.py && python3 tools/agents/test_wt.py passed",
+        "2639256": "2026-10-05T09:21:05.800Z all bench/harness/test_*.py passed",
+        "2692394": "2026-10-05T09:21:17.696Z handoff scenario passed",
+        "2696548": "2026-10-05T09:21:24.151Z land-exact-candidate scenario passed",
+        "2701682": "2026-10-05T09:21:31.061Z land-stale-candidate scenario passed",
+        "2709283": "2026-10-05T09:21:36.607Z tracker lint passed",
+        "3153177": "2026-10-05T09:23:46.371Z python3 tools/agents/test_land.py passed again",
+        "3157018": "2026-10-05T09:23:57.139Z python3 tools/agents/test_wt.py passed again",
+        "3298259": "2026-10-05T09:25:12.270Z all bench/harness/test_*.py passed before first marker",
+        "3546313": "2026-10-05T09:27:22.485Z committed first marker Candidate 955059a",
+        "3671261": "2026-10-05T09:30:03.737Z read review-1.md",
+        "3705159": "2026-10-05T09:30:32.710Z git rebase effort/lead-worker-readiness failed",
+        "4091471": "2026-10-05T09:31:49.197Z conflict markers absent and touched files compile",
+        "4102969": "2026-10-05T09:31:56.263Z rebase --continue succeeded; branch at marker 07028af",
+        "5379951": "through 2026-10-05T09:35:27Z post-compaction review/code reading continued; no final stable ready observed by monitor",
+        "5418238": "2026-10-05T09:36:09.590Z post-review test_land.py failed",
+        "5454984": "2026-10-05T09:36:45.415Z post-review test_land.py failed again",
+        "5510069": "2026-10-05T09:37:43.893Z post-review test_land.py passed",
+        "5629921": "2026-10-05T09:38:22.237Z committed fix checked-out target landing",
+        "5654811": "2026-10-05T09:38:41.709Z focused report scenario test failed",
+        "5684907": "2026-10-05T09:39:00.251Z focused exact-candidate scenario test failed",
+        "5706207": "2026-10-05T09:39:18.392Z focused exact-candidate scenario test passed",
+        "5716673": "2026-10-05T09:39:31.459Z focused report scenario test passed",
+        "5758359": "2026-10-05T09:40:02.382Z full lead-driven suite failed",
+        "5780355": "2026-10-05T09:40:40.355Z full lead-driven suite passed",
+        "5834634": "2026-10-05T09:41:12.425Z committed declare landing scenario stories",
+        "5892567": "2026-10-05T09:42:02.269Z post-review test_land.py passed",
+        "5898954": "2026-10-05T09:42:15.556Z test_wt.py passed",
+        "5988200": "2026-10-05T09:42:53.603Z test_fleet.py passed",
+        "6002164": "2026-10-05T09:43:25.502Z lead-driven tests passed",
+        "6067734": "2026-10-05T09:43:44.230Z test_run.py passed",
+        "6082459": "2026-10-05T09:43:50.761Z test_tasks_tracked.py passed"
+      }
+    },
+    "08-launch-access-profile": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T09-06-30-01a10b50-8bcf-7091-9cbf-b35a2ad4d1c8.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-08-launch-access-profile",
+      "offset": 7264420,
+      "last_selected_records": {
+        "581269": "2026-10-05T09:06:41.119Z read superpowers guidance",
+        "1074174": "2026-10-05T09:08:02.113Z checked git status and code file list",
+        "1982192": "2026-10-05T09:12:58.111Z python3 tools/agents/test_worker.py failed",
+        "2007203": "2026-10-05T09:13:13.989Z python3 tools/agents/test_worker.py WorkerTest.test_clean_run passed",
+        "2016880": "2026-10-05T09:13:39.821Z python3 bench/harness/test_lead_driven.py failed",
+        "2288153": "2026-10-05T09:15:45.745Z python3 tools/agents/test_worker.py passed",
+        "2561880": "2026-10-05T09:18:48.871Z python3 tools/agents/test_worker.py failed",
+        "2570925": "2026-10-05T09:18:58.706Z narrow worker test passed",
+        "2652787": "2026-10-05T09:19:55.404Z full worker suite passed",
+        "2656791": "2026-10-05T09:20:20.853Z lead-driven tests passed",
+        "2733328": "2026-10-05T09:22:51.376Z tools/agents unittest discovery passed",
+        "2958682": "2026-10-05T09:24:07.595Z bench/harness unittest discovery passed",
+        "2966401": "2026-10-05T09:24:19.169Z handoff scenario passed",
+        "2972013": "2026-10-05T09:24:29.172Z access-profile scenario passed",
+        "2978308": "2026-10-05T09:24:35.207Z tracker lint passed",
+        "3227987": "2026-10-05T09:26:19.153Z combined worker/lead-driven gate failed",
+        "3335689": "2026-10-05T09:27:35.315Z focused command-timeout worker test passed",
+        "3491502": "2026-10-05T09:29:25.620Z full worker suite passed",
+        "3557954": "2026-10-05T09:31:48.140Z tools/agents unittest discovery passed",
+        "3785175": "2026-10-05T09:33:04.454Z bench/harness unittest discovery passed",
+        "3793868": "2026-10-05T09:33:18.122Z handoff and access-profile scenarios plus tracker lint passed",
+        "4314537": "2026-10-05T09:35:33.999Z final observed worker suite passed",
+        "5482002": "2026-10-05T09:39:40.506Z test_worker.py passed",
+        "5561707": "2026-10-05T09:42:07.584Z tools/agents unittest discovery passed",
+        "5771250": "2026-10-05T09:43:27.723Z bench/harness unittest discovery passed",
+        "6708014": "through 2026-10-05T09:55:02Z handoff/access-profile scenarios and tracker lint passed, first marker cfda301 committed, review read, rebase failed then continued, post-rebase inspection ongoing",
+        "7264420": "through 2026-10-05T10:01:49Z final ticket 08 gate passed, marker 5b1f23a committed, worker idle; no new selected records in 10:12 tick"
+      }
+    },
+    "03-acceptance-record": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T09-51-39-01a10b79-e3d8-7542-8b29-d35bdcd1df88.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-03-acceptance-record",
+      "offset": 6701348,
+      "last_selected_records": {
+        "1659699": "through 2026-10-05T09:54:50Z worker read AGENTS/CONSTITUTION/docs, ticket 03, lander, claims, harness, scenario and tracker code; no implementation selected yet",
+        "2459999": "through 2026-10-05T10:06:50Z acceptance-record implementation red-green loop; test_acceptance failed then passed; land, claims, lead-driven, run and validate tests passed; worker still dirty",
+        "3294841": "through 2026-10-05T10:13:24Z fleet, task-tracking, scenarios, tracker lint, acceptance check, acceptance/land, lead-driven, run, validate and diff-check commands passed; report/evidence inspection ongoing; worker still dirty",
+        "4150327": "through 2026-10-05T10:24:23Z first marker 3128942 committed, review read, post-review acceptance/land tests alternated failures and passes, lead-driven and combined acceptance/land/claims passed; worker dirty and active",
+        "4432958": "through 2026-10-05T10:27:25Z post-review broad harness/test command passed, claims sampled, review changes committed as marker 8900967; worker clean and idle by 10:34 monitor; no new selected command records in 10:42 or 10:52 ticks",
+        "5811306": "through 2026-10-05T11:06:22Z reintegration message read, rebase failed, conflicts inspected, rebase continued successfully to marker 1e04c59, required checks running",
+        "6701348": "through 2026-10-05T11:12:35Z post-rebase gates hit /tmp inode exhaustion, reran scenarios with worktree TMPDIR, tracker/acceptance/diff checks passed, final marker amended to dc96ae0"
+      }
+    },
+    "13-results-table-and-notes": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T09-06-30-01a10b50-8b02-7541-b92a-1cb30e3fac2d.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-13-results-table-and-notes",
+      "offset": 2910301,
+      "last_selected_records": {
+        "567268": "2026-10-05T09:06:46.766Z read AGENTS.md",
+        "1005687": "2026-10-05T09:08:34.127Z read ticket 13",
+        "1457700": "2026-10-05T09:11:28.089Z python3 bench/harness/test_lead_driven.py failed",
+        "1543559": "2026-10-05T09:12:46.893Z python3 bench/harness/test_lead_driven.py passed",
+        "1593749": "2026-10-05T09:13:14.938Z python3 bench/harness/test_run.py passed",
+        "1645811": "2026-10-05T09:13:56.162Z full bench/harness unittest discovery backgrounded",
+        "1836414": "2026-10-05T09:14:31.939Z full bench/harness unittest discovery passed",
+        "1843227": "2026-10-05T09:14:40.444Z handoff scenario passed",
+        "1849380": "2026-10-05T09:14:45.992Z tracker lint passed",
+        "2100472": "2026-10-05T09:16:08.038Z committed ticket 13 implementation 479132e",
+        "2210839": "2026-10-05T09:17:05.490Z committed first marker Candidate 37b0f5b",
+        "2318065": "2026-10-05T09:19:02.472Z read review-1.md",
+        "2369753": "2026-10-05T09:19:58.630Z lead-driven tests failed during rework",
+        "2402993": "2026-10-05T09:20:40.166Z lead-driven tests passed during rework",
+        "2688104": "2026-10-05T09:22:20.052Z full bench/harness unittest discovery passed during rework",
+        "2696667": "2026-10-05T09:22:29.693Z handoff scenario and report command passed",
+        "2703895": "2026-10-05T09:22:35.581Z tracker lint and git diff --check passed",
+        "2896540": "2026-10-05T09:23:55.379Z committed review fixes 26652eb",
+        "2902223": "2026-10-05T09:24:02.291Z committed second marker Candidate fcfd998"
+      }
+    },
+    "05-launch-by-edges-and-triage": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T09-26-40-01a10b63-03e6-7db3-beb9-6470d4179147.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-05-launch-by-edges-and-triage",
+      "offset": 12044420,
+      "last_selected_records": {
+        "568271": "2026-10-05T09:26:57.160Z read AGENTS.md",
+        "810880": "2026-10-05T09:27:34.356Z read ticket 05",
+        "1134887": "2026-10-05T09:29:02.486Z read tracker.py",
+        "2305061": "2026-10-05T09:32:53.338Z python3 tools/agents/test_tracker.py failed",
+        "2346721": "2026-10-05T09:33:16.938Z python3 tools/agents/test_tracker.py failed again",
+        "2360354": "2026-10-05T09:33:31.667Z python3 tools/agents/test_tracker.py passed",
+        "2462365": "2026-10-05T09:35:22.793Z python3 tools/agents/test_lead_launch.py failed",
+        "2516947": "2026-10-05T09:35:55.729Z python3 tools/agents/test_lead_launch.py passed",
+        "2532137": "2026-10-05T09:36:11.289Z python3 tools/agents/test_lead_launch.py failed again",
+        "2560473": "2026-10-05T09:36:36.711Z python3 tools/agents/test_lead_launch.py passed again",
+        "2652080": "2026-10-05T09:37:39.919Z lead-driven tests failed",
+        "2808562": "2026-10-05T09:39:53.065Z chmod plus lead-driven tests failed",
+        "2832795": "2026-10-05T09:40:36.126Z lead-driven tests passed",
+        "2870954": "2026-10-05T09:41:10.241Z made lead_launch and check script executable; status checked",
+        "2899006": "2026-10-05T09:42:00.074Z tracker, lead_launch and lead-driven tests passed",
+        "2909398": "2026-10-05T09:42:15.902Z launch-by-edges-and-triage scenario passed",
+        "2928632": "2026-10-05T09:42:39.113Z tracker lint and py_compile passed",
+        "2981233": "2026-10-05T09:43:24.251Z test_lead_launch.py failed",
+        "2999945": "2026-10-05T09:43:47.643Z test_lead_launch.py plus launch scenario passed",
+        "4086543": "through 2026-10-05T09:55:01Z full tools/agents and bench/harness gates passed, readiness scenarios plus tracker lint passed, scenario cleanup pkill commands observed, git diff --check and py_compile passed",
+        "6831960": "through 2026-10-05T10:06:50Z first marker be64d24 committed, review read, rebase failed on integration tip, conflict inspection/read-only source inspection continued",
+        "7146017": "through 2026-10-05T10:07:36Z conflict markers checked, reworked commits a6e7767 and ce06d44 created, post-marker inspection ongoing",
+        "7686057": "through 2026-10-05T10:12:58Z review rework continued; test_lead_launch failed then passed; focused launch-by-edges scenario failed then passed; py_compile, diff-check and broad gate passed; commit d400932 wrote past marker",
+        "9000780": "through 2026-10-05T10:23:25Z broad gate failed, harness test passed, commit 93dbb4f stabilized rebased harness, later broad gates failed then passed; worker clean but active and not at ready-marker subject",
+        "10121737": "through 2026-10-05T10:33:22Z broad gate passed, process-state checks were inspected, final marker fe86c18 committed; worker clean and idle by 10:34 monitor",
+        "11354351": "through 2026-10-05T10:39:30Z reintegrate message read, rebase failed then continued, rebased marker 1e8b278 created, focused lead-launch tests failed then passed, full lead_launch test passed, later worker dirtied lead_launch files while gate ran",
+        "11683437": "through 2026-10-05T10:48:58Z long Python gate failed, lead-driven tests alternated pass/fail/pass, later Python check passed; worker still dirty and active",
+        "12044420": "through 2026-10-05T10:57:35Z final gate commands passed, diff/hook state inspected, final ready marker 028d837 committed"
+      },
+      "subagents": {
+        "explorer_01a10b66": {
+          "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T09-30-13-01a10b66-41f6-7581-8233-5a8a6a59786b.jsonl",
+          "offset": 1797273,
+          "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-05-launch-by-edges-and-triage",
+          "source": "subagent role explorer spawned by ticket 05 worker; selected records through 09:31:13 were read-only exploration commands"
+        }
+      }
+    },
+    "09-external-state-report": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T10-04-41-01a10b85-d1e8-78e1-9a50-afed0d7354e1.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-09-external-state-report",
+      "offset": 3345899,
+      "last_selected_records": {
+        "1817732": "through 2026-10-05T10:06:06Z worker read skills, AGENTS/CONSTITUTION/effort context, ticket and worker code; no implementation selected yet",
+        "1944799": "through 2026-10-05T10:07:31Z external_protected worker test passed then failed; worker status checked and one dirty path visible in monitor",
+        "2361975": "through 2026-10-05T10:12:36Z external_protected worker test alternated failures and passes, then focused external-state lead-driven tests and combined worker plus lead-driven command passed; worker still dirty",
+        "3345899": "through 2026-10-05T10:20:51Z worker/harness tests recovered from failure, ready marker committed then amended, final marker f8588e1 clean and idle; no new selected command records in 10:42 tick"
+      }
+    },
+    "12-codex-worker-runtime": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T10-25-59-01a10b99-51d9-74b1-9ee1-81eda70ebefd.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-12-codex-worker-runtime",
+      "offset": 14874276,
+      "last_selected_records": {
+        "8871303": "through 2026-10-05T10:33:56Z worker read skills, AGENTS/CONSTITUTION/docs, ticket 12, worker/harness code, Codex and TraeCLI help, and session file shapes; first runtime and lead-driven tests failed; worker had two dirty files",
+        "10351639": "through 2026-10-05T10:44:38Z runtime-focused worker tests, focused Codex-runtime harness test, full test_worker, full bench/harness discovery and four lead-driven scenarios passed after earlier failures; worker still dirty",
+        "11533429": "through 2026-10-05T10:53:59Z land-stale and tracker lint passed, diff/check passed, marker 9548178 committed, review read, and post-review code inspection started without selected edits",
+        "12297403": "through 2026-10-05T11:03:05Z post-review focused tests failed then passed, full worker/harness/scenario/tracker/py_compile/diff checks passed, fix commit f7b794c created; clean and idle but no new marker",
+        "13366587": "through 2026-10-05T11:24:23Z reintegration message read, rebase failed then continued to 28fb77e, focused runtime checks failed then passed, broader gate running with dirty files",
+        "14874276": "through 2026-10-05T11:32:07Z broad harness/scenario gates reran, default temp scenario loop failed then worktree TMPDIR rerun passed, final ready marker 536a2b1 after amend/hook inspection"
+      }
+    },
+    "11-handoffs-into-briefs": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T11-01-11-01a10bb9-8b55-7021-bcce-9676b08b4166.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-11-handoffs-into-briefs",
+      "offset": 7986645,
+      "last_selected_records": {
+        "3339169": "through 2026-10-05T11:03:36Z startup reading of AGENTS/CONSTITUTION/policy/effort docs/ticket, TDD skills, tracker/launch/harness files and readiness context; no implementation selected yet",
+        "3595453": "through 2026-10-05T11:07:28Z first tracker and lead-launch tests failed, lead-driven invocation unresolved in selected output, ticket structure searches and implementation started; dirty, no commits",
+        "5100861": "through 2026-10-05T11:24:32Z tests recovered, marker 1aca3a5 created via commit/amend/update-ref sequence, review read, cross-source finding rework underway with failing checks",
+        "6664440": "through 2026-10-05T11:33:12Z review rework continued, malformed scenario loop failed then six scenarios passed, tracker lint and diff-check passed, non-marker fix commit 850c0a2 created; clean/idle and waiting for reintegration",
+        "7986645": "through 2026-10-05T11:44:25Z reintegration message read, rebase failed then continued, broad gates/scenarios passed, final ready marker 716019b committed clean"
+      }
+    },
+    "07-integration-branch": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T11-16-23-01a10bc7-767b-71e2-b2e7-b939f2ca092a.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-07-integration-branch",
+      "offset": 8346357,
+      "last_selected_records": {
+        "3079012": "through 2026-10-05T11:24:20Z startup reading of instructions, decisions, ticket 07, effort/land/acceptance/harness code; memory search empty; adding failing integration-branch test with focused failure",
+        "3767099": "through 2026-10-05T11:34:04Z focused integration-branch scenario passed, broad effort/land/lead-launch/harness commands still running in selected output, diffs/source inspected; dirty, no commits",
+        "5510669": "through 2026-10-05T11:44:33Z broad verification/gate passed, final ready marker 4891fa9 committed clean",
+        "7276605": "through 2026-10-05T11:57:26Z review read, rebase to e94f10a succeeded rewriting ready marker to cac27cf, focused effort/land/lead-launch/scenario tests failed then passed, broad gate started; dirty, no final marker",
+        "7661021": "through 2026-10-05T12:03:56Z broad gate failed, acceptance-missing-record and acceptance-waived-check scenarios failed then passed after harness/scenario edits, full gate restarted; dirty, no final marker",
+        "8346357": "through 2026-10-05T12:11:30Z full review gate passed, report updated, final ready marker c75abcd committed clean"
+      }
+    },
+    "04-rework-round": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T11-36-29-01a10bd9-dd14-7310-b67e-3799173f5b9c.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-04-rework-round",
+      "offset": 11997522,
+      "last_selected_records": {
+        "2837011": "through 2026-10-05T11:44:51Z startup reading of skills, instructions, effort docs, ticket 04, worker/acceptance/lead-launch/lander/harness code; memory search exited 1; adding failing tests; dirty, no commits",
+        "3903831": "through 2026-10-05T11:57:52Z focused worker/acceptance/lead-launch/rework-round tests failed then passed, relative --out scenario failed while absolute mktemp -d passed, broad tool gate running; dirty, no commits",
+        "4394323": "through 2026-10-05T12:04:23Z broad tool gate, harness loop, all readiness scenarios, tracker lint and static checks passed before a worker.py cleanup edit; dirty, no commits",
+        "6383040": "through 2026-10-05T12:17:56Z post-compaction resumed; worker/lead-launch/compile, acceptance/land, harness discovery, scenarios and tracker lint passed; added fixes-committed-waiting-for-re-integration state; no commits yet",
+        "7744751": "through 2026-10-05T12:28:41Z first ready marker e1b111f produced; review-1 read; rebase conflict in test_lead_driven.py continued to marker 56a6aa3; red acknowledgement tests left worker dirty",
+        "8408418": "through 2026-10-05T12:35:10Z acknowledgement worker tests failed then passed; acceptance/lead-launch lookup tests added and still red; worker dirty on top of marker 56a6aa3",
+        "10532740": "through 2026-10-05T12:44:52Z lead-launch/acceptance review tests recovered to green; focused rework-round harness test failed; active shell running focused scenario plus worker suite; 9 dirty paths",
+        "11662958": "through 2026-10-05T12:54:35Z focused rework scenario, worker suite, acceptance/lead-launch, land/tracker/effort, full harness, all scenarios, tracker lint, diff-check and py_compile passed; report was being revised; no new marker",
+        "11997522": "through 2026-10-05T12:55:11Z final ticket 04 marker a7ba1a74db0010b62090c44869cb19057061c206 committed clean"
+      }
+    },
+    "06-parallel-workers-and-overlap": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T12-15-30-01a10bfd-94b7-7342-abe2-3a5c88d4211e.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-06-parallel-workers-and-overlap",
+      "offset": 15475725,
+      "last_selected_records": {
+        "1223778": "through 2026-10-05T12:17:57Z startup reading of skills, repository instructions, domain docs, effort spec and decisions; no selected edits",
+        "3142355": "through 2026-10-05T12:28:41Z red overlap tests added; first lead_launch suite failed on missing overlap surfaces; later lead_launch suite passed while worker suite still running; dirty in lead_launch/worker code and tests",
+        "3558370": "through 2026-10-05T12:35:10Z worker suite failed then passed after supervisor attribution edits; focused parallel-workers scenario failed; scenario files created; worker still dirty",
+        "4161133": "through 2026-10-05T12:44:52Z focused parallel-workers scenario, lead_launch, worker suite and full lead_driven.py passed; direct scenario still running; 7 dirty paths",
+        "6314507": "through 2026-10-05T12:54:35Z direct parallel-workers CLI scenario passed; full harness loop passed; all-scenario loop ran; diff/anchor inspection and report planning continued; no commit",
+        "7295183": "through about 2026-10-05T13:03Z ticket 06 continued report/evidence and gate work before later marker/review; transcript file had grown beyond this offset by 13:08 and should be resumed from here",
+        "9916305": "through about 2026-10-05T13:25Z review-1 read, file_change accounting tests added, focused tests failed then passed, touched tool gate passed, full readiness and harness loops failed then passed, evidence report edited; branch still dirty with no new review-fix commit",
+        "10465879": "through 2026-10-05T13:32Z final review-fix gates passed, evidence report updated, non-marker commit 581903c created clean and idle while waiting for reintegration; no new transcript events through 13:43 pass",
+        "12086510": "through 2026-10-05T13:59Z reintegration message read, first rebase hit conflicts, conflicts resolved across lead_launch and harness files, rebase continued to new head 4bd776c, focused launch/harness tests passed, full tools sweep still running",
+        "12614760": "through 2026-10-05T14:04Z full tools sweep first failed, focused symlink/protected-path test passed twice, test_worker.py passed, full tools/agents/test_*.py loop passed, no marker yet",
+        "13930282": "through 2026-10-05T14:15Z post-rebase tools sweep completed code 0, bench harness sweep completed code 0 with ResourceWarning noise, worker compacted/re-read reintegration guidance and started another tools sweep; clean at 4bd776c, no marker",
+        "15475725": "through 2026-10-05T14:23Z fresh tools, harness, readiness scenario, tracker lint and diff-check gates passed; report updated; final marker 3b9baeb committed clean; task completed"
+      }
+    },
+    "16-bookkeeping-off-code-branch": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T12-15-31-01a10bfd-98e1-7a70-b1e9-15d4fc35b6b5.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-16-bookkeeping-off-code-branch",
+      "offset": 12780131,
+      "last_selected_records": {
+        "1922523": "through 2026-10-05T12:17:52Z startup reading of repository instructions, lead note, effort docs and agent tool files; no selected edits",
+        "3202311": "through 2026-10-05T12:28:41Z red tests added for record branch/bookkeeping and ticket 07 real-repo lookup regression; production edits started across effort/land/launch/tracker/acceptance",
+        "3720621": "through 2026-10-05T12:35:10Z record-branch implementation progressed; effort/tracker/acceptance tests became green but land/lead-launch checks remained red; worker still dirty",
+        "4315330": "through 2026-10-05T12:44:52Z land and lead-launch tests recovered; bookkeeping scenario focused test passed; expanded lead-driven gate still had failures before focused rerun; policy docs edited; 13 dirty paths",
+        "5417276": "through 2026-10-05T12:54:35Z touched tool gate, sync-policy check and tracker lint recovered to green; full harness/scenario validation still running in pane; 15 dirty paths",
+        "7189328": "through about 2026-10-05T13:05:01Z ticket 16 produced commits 1c7391b and marker 54e10bc, read review-1, and began rework; later file growth remains for next pass",
+        "11125624": "through about 2026-10-05T13:25Z ticket 16 stayed on post-review marker 83f6b42, wrote past it with accepted-report record-branch changes, saw repeated acceptance/tracker/lead-launch/scenario failures, then recovered acceptance plus tracker by 13:25; still dirty",
+        "11640776": "through about 2026-10-05T13:30Z accepted-report copy work recovered lead-launch, direct scenario and broader acceptance/tracker/lead-launch/scenario checks; policy and manifest edits followed; still dirty with implementation active",
+        "12780131": "through 2026-10-05T13:43Z scenario loop initially failed, later passed; policy sync passed; commit 18c3f5f imported accepted worker reports; final marker f92a234 committed clean and ready"
+      }
+    },
+    "10-watching-limits-accounting": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T13-00-29-01a10c26-c2f6-7be2-936f-3dfe6bd10fd3.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-10-watching-limits-accounting",
+      "offset": 11008761,
+      "last_selected_records": {
+        "2507637": "through about 2026-10-05T13:03Z startup, instruction/context reads and code mapping; still running with no commits",
+        "4154393": "through about 2026-10-05T13:24Z worker/lead-launch/lead-driven tests failed first, focused watching-limits scenario and full worker/lead-driven tests recovered, direct scenario passed, broader combined gate running; no commits",
+        "6297907": "through about 2026-10-05T13:34Z broad harness and lead-launch tests passed; git diff --check showed six tracked files changed; worker remained in gate/diff work with no commits",
+        "7052703": "through about 2026-10-05T13:44Z more lead-launch and worker tests passed after one combined failure; worker edited participant and harness files again; focused lead-driven scenario passed and another lead-launch command started; no commits",
+        "7871786": "through 2026-10-05T13:52Z broad gate, diff-check and tracker lint passed; implementation commit f2cd595 and final marker 2135428 created clean; worker task completed; no new transcript events through 14:23 pass",
+        "9931523": "through 2026-10-05T14:34Z reintegration message read, rebase to integration hit conflicts, lead_launch/test_worker/test_lead_launch patched, focused lead-launch test and py_compile passed, conflict-resolution files staged; no final marker",
+        "11008761": "through 2026-10-05T14:45Z rebase continued, full tool-agent, harness and readiness scenario loops plus tracker lint passed, report updated, final marker eebb102 committed clean and ready"
+      }
+    },
+    "17-sandboxed-worker-can-commit": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T13-48-52-01a10c53-0e27-7412-8b87-989818e85b6d.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-17-sandboxed-worker-can-commit",
+      "offset": 15272928,
+      "last_selected_records": {
+        "3589463": "through 2026-10-05T13:59Z startup reads, code mapping, private-clone/shared-ref implementation patches across worker.py, test_worker.py, test_lead_launch.py and lead_driven.py; test_worker.py passed once then failed after further implementation; branch dirty",
+        "3888186": "through 2026-10-05T14:05Z test_worker.py recovered, test_lead_launch.py failed then recovered, one lead_driven harness run passed and a later run failed; branch dirty in five files",
+        "5209075": "through 2026-10-05T14:15Z lead_driven, test_land, test_lead_launch and focused tool-suite checks passed after earlier failures; docs/practice and run-worker skill patched; branch dirty in seven files, no commits",
+        "5999787": "through 2026-10-05T14:24Z focused tools, harness, all readiness scenarios, tracker lint and diff-check passed; initial size probe failed then reran successfully; report added; final marker 25d8d0d committed clean; task completed",
+        "6705449": "through 2026-10-05T14:34Z review-1 read, Codex/TraeCLI help checked, test_worker.py patched, one test_worker.py run passed and a later run failed; marker still at head with dirty rework",
+        "7340454": "through 2026-10-05T14:46Z private git-dir code patched, corrected separate-git probe passed, worker/tool/harness/scenario/tracker/size checks passed, real Codex and TraeCLI probes passed with public event streams; report still dirty",
+        "8439066": "through 2026-10-05T14:54Z report patched and committed as accepted candidate 6087d2d, lead reintegration read, rebase to 25a03d0 succeeded, branch had rebased marker 3d25593 then worker dirtied six files for private-repo accounting follow-up",
+        "9639688": "through 2026-10-05T15:04Z post-reintegration tools loop failed twice, tmux test passed with workspace TMPDIR/TMUX_TMPDIR, verification/TDD guidance read, full gate runner started; worker still dirty and active",
+        "10281116": "through 2026-10-05T15:14Z full gate attempts failed, bwrap private-/tmp reproductions showed tmux needs mode 1777 plus pre-created tmux-$UID, test_sqlite_baseline then passed, full private-/tmp gate running; dirty active",
+        "11371182": "through 2026-10-05T15:24Z private-/tmp full gate failed on shared-branch accounting; focused peer-worker branch regression failed red then passed green after worker.py patch; generated .local removed; new full private-/tmp gate running",
+        "12606021": "through 2026-10-05T15:34Z full private-/tmp gate cleared tools/fleet then failed in lead-driven harness; resume-refresh regression failed red then passed green after worker.py patches; parallel-overlap scenario still failed with details=landing; worker active and dirty",
+        "14561905": "through 2026-10-05T15:44Z context_compacted event observed; stale-base same-session rework test failed red then passed green; parallel-overlap scenario passed narrowly; full tools and bench harness unit sweeps passed under private /tmp; readiness scenarios starting; worker active and dirty",
+        "15272928": "through 2026-10-05T15:50Z readiness scenario wrapper false green corrected, per-scenario readiness sweep/tracker lint/diff-check passed, temp artifacts removed, final marker 7fddf82 committed clean and worker handed off"
+      }
+    },
+    "18-interactive-launch-and-monitors": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T15-58-45-01a10cc9-f770-7210-9de1-17473a5fafc7.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-18-interactive-launch-and-monitors",
+      "offset": 45448595,
+      "last_selected_records": {
+        "2859027": "through 2026-10-05T16:04Z worker 18 startup, lead temp-directory note read, TMPDIR/TMUX_TMPDIR/TMPPREFIX set under devx/tmp, code/tests mapped, initial test patches applied after one failed patch; branch at integration head with two dirty test files",
+        "4008109": "through 2026-10-05T16:18Z worker 18 added interactive launch/monitor/open-session surfaces; focused worker and lead-launch tests alternated fail/pass; no commits ahead and four dirty agent-tooling files at cutoff",
+        "5669046": "through 2026-10-05T16:25Z worker 18 had focused lead-launch and worker tests green, then inspected interactive rework-delivery and readiness-scenario paths; still no commits ahead and four dirty agent-tooling files",
+        "7217912": "through 2026-10-05T16:34Z worker 18 compiled edited files, recovered focused rework-delivery and shared-brief tests after failures, and remained dirty with no candidate",
+        "8116435": "through 2026-10-05T16:48Z worker 18 added interactive-launch readiness scenario files, passed py_compile, then focused interactive scenario test failed; branch still dirty with no candidate",
+        "8507486": "through 2026-10-05T16:54Z worker 18 had direct interactive scenario probes pass but focused harness test fail repeatedly while tmux/scenario debugging continued; no commits",
+        "8937516": "through 2026-10-05T17:04Z worker 18 still had direct scenario probes passing but focused harness test failures, patched run-worker skill and lead-supervisor practice docs, and remained dirty with no commits",
+        "10190105": "through 2026-10-05T17:17Z worker 18 recovered full lead_driven tests, scenario sweep, tracker lint and py_compile/check command after earlier focused failures; branch still dirty, no commits, and 8 behind integration",
+        "11412939": "through 2026-10-05T17:23Z worker 18 verified diff-check/tracker lint, excluded hardcoded-/tmp sqlite test after /tmp inode exhaustion, committed ready marker 901a770 clean, and handed off",
+        "18905924": "through 2026-10-05T17:45Z worker 18 read review-1 and rework-related skills, investigated trust prompt/runtime/transcript/rework paths, and stayed clean at ready marker 901a770; one memory rg returned 1",
+        "20709676": "through 2026-10-05T17:54Z worker 18 began active rework edits, focused interactive-launch worker/lead-launch tests passed, one nonexistent fixture-ticket path read exited 2, and no commit was observed",
+        "21349517": "through 2026-10-05T18:07Z worker 18 recovered full worker and lead-launch tests after focused failures, full lead-driven harness failed, focused interactive scenario passed, and another full harness run started; no commit",
+        "21722664": "through 2026-10-05T18:14Z worker 18 completed full harness, py_compile, auxiliary harness, lead-launch and readiness scenario checks successfully, then inspected final diff for report/marker work; no commit",
+        "23213794": "through 2026-10-05T18:24Z worker 18 edited/report-inspected after green checks, then a later py_compile/check command failed; worktree stayed dirty at stale ready marker 901a770",
+        "23894901": "through 2026-10-05T18:35Z worker 18 patched interactive wait/cap timing after focused failures; focused interactive lead-driven test then passed, but branch stayed dirty at stale ready marker 901a770",
+        "24332190": "through 2026-10-05T18:43Z worker 18 reported broad gates green after review-code changes and reran tracker lint, py_compile and diff-check after report edits; no replacement marker observed",
+        "25784694": "through 2026-10-05T18:56Z worker 18 committed clean replacement marker f127c06, received review-2, and began more inspection/check work without a later marker",
+        "26407873": "through 2026-10-05T19:05Z worker 18 worked review-2 trust override fixes, hit test_worker.py exit 2, recovered focused worker tests and lead-driven scenario checks, and remained dirty without a new marker",
+        "27399156": "through fixed 2026-10-05T19:17Z cutoff worker 18 completed real interactive proof cleanup plus focused worker/lead-launch/trust tests, compacted context, reread review guidance, and started full lead-driven harness while still dirty at marker f127c06",
+        "27728520": "through fixed 2026-10-05T19:25Z cutoff worker 18 completed full lead-driven and smaller harness gates, then started a full tools/agents test sweep still running in test_worker.py while seven files stayed dirty at marker f127c06",
+        "28756722": "through fixed 2026-10-05T19:36:37Z cutoff worker 18 completed full tools, readiness, tracker, diff-check and py_compile gates, then committed clean ready marker 49b6c8f; pane noted ResourceWarning noise and no tools/agents/check.sh or cargo run",
+        "28969444": "through fixed 2026-10-05T19:47:23Z cutoff worker 18 received reintegrate-1, read receiving-code-review guidance and memory context, and prepared for rebase without selected edits or commits",
+        "30762295": "through fixed 2026-10-05T19:54:30Z cutoff worker 18 ran git rebase effort/lead-worker-readiness and got exit 1, read merge-conflict guidance after one missing skill path, inspected unmerged stage versions and conflict markers, and edited worker.py while conflicts remained",
+        "33489907": "through fixed 2026-10-05T20:05:31Z cutoff worker 18 resolved conflicts, passed py_compile checks, committed rebased ready markers ending at c84af72, then dirtied lead_launch.py and worker.py and started test_worker.py",
+        "34389187": "through fixed 2026-10-05T20:17:18Z cutoff worker 18 stayed at marker c84af72 but added post-marker dirty edits in test_worker.py, lead_launch.py and test_lead_launch.py; test_worker.py and repeated test_lead_launch.py runs failed before a final focused test_lead_launch.py run passed 43 tests",
+        "35893909": "through fixed 2026-10-05T20:26:30Z cutoff worker 18 committed 514bd31, then git rebase effort/lead-worker-readiness failed against landed ticket 21 with conflicts in lead_driven.py, lead_launch.py and test_lead_launch.py; worker read merge-conflict guidance and began resolving lead_driven.py",
+        "37980301": "through fixed 2026-10-05T20:35:02Z cutoff worker 18 resolved ticket 21 rebase conflicts, created interim ready-marker commits and final non-marker commit 60f6d22, verified no rebase in progress, stayed clean and began auditing the interactive scenario against ticket 21 rules",
+        "40191619": "through fixed 2026-10-05T20:48:04Z cutoff worker 18 patched lead_driven scenario/status handling after ticket 21 integration, saw a two-test focused harness command fail with two failures at 20:43:38Z and fail again with one failure at 20:46:54Z, then patched lead_driven.py again and started another focused rerun",
+        "40791926": "through fixed 2026-10-05T20:54:31Z cutoff worker 18 saw the focused two-test harness rerun fail with one failure at 20:50:53Z, shifted into lead_launch status vocabulary fixes, saw one focused lead_launch test fail at 20:53:13Z, patched lead_launch.py twice, and recovered that focused test plus py_compile at 20:54:26Z",
+        "41252363": "through fixed 2026-10-05T21:04:57Z cutoff worker 18 ran chained status-vocabulary, py_compile and two-test harness checks; the lead_launch subtest passed but the harness segment failed at 20:57:04Z and again at 21:01:23Z, then the worker ran a direct interactive scenario probe and inspected acknowledgement/status code without a new marker",
+        "41616872": "through fixed 2026-10-05T21:15:00Z cutoff worker 18 patched scripted_participant.py, recovered the focused harness pair at 21:09:25Z, then saw broad test_lead_launch.py fail with two errors at 21:11:37Z; after fake-tmux path inspection and test_lead_launch.py patches, a focused three-test lead_launch command passed at 21:14:27Z, with no new marker",
+        "41810220": "through fixed 2026-10-05T21:24:34Z cutoff worker 18 passed the focused lead-launch/harness chain, full test_worker.py, and full test_lead_launch.py, then started a broader bench/harness/test_lead_driven.py command with no result yet and no new marker",
+        "41969499": "through fixed 2026-10-05T21:34:52Z cutoff worker 18 passed the full lead-driven harness, made clean non-marker implementation commit 9c4934c, started a detached clean-gate worktree, and had early agent suites plus test_land.py green while test_lead_launch.py was still running; no final ready marker",
+        "42069900": "through fixed 2026-10-05T21:44:45Z cutoff worker 18 continued the detached clean gate: lead-launch/monitor suites had passed, test_worker.py was running at 21:37, all tools/agents suites were complete by 21:40, and full bench/harness/test_lead_driven.py was running with no final result, report refresh or ready marker",
+        "43573289": "through fixed 2026-10-05T21:54:47Z cutoff worker 18's clean gate produced accumulated output through tools/agents/test_land.py from clean-gate.cYZlns, then the worker inspected status/source/report/gate log, reread guidance and note-2, stayed clean at 9c4934c, and started a fresh detached gate clean-gate.ZDtV04; no final report refresh or ready marker",
+        "43718874": "through fixed 2026-10-05T22:04:43Z cutoff worker 18's clean-gate.ZDtV04 reached and passed main lead-launch tests, completed all required tools/agents tests, moved into bench/harness/test_lead_driven.py, and remained in quiet-but-alive harness execution with no final result, report refresh or ready marker",
+        "45096969": "through fixed 2026-10-05T22:14:44Z cutoff worker 18's clean-gate.ZDtV04 finished bench harness and readiness scenarios, including interactive-launch-and-monitors, reported full clean-detached gate exit 0 at 22:13:16, then inspected sources/report/docs and prepared to patch the report; branch still clean at non-marker 9c4934c with no ready marker",
+        "45448595": "through fixed 2026-10-05T22:25:45Z cutoff worker 18 refreshed 18-report.md, passed git diff --check and tracker.py lint, committed final ready marker 3ab9ec4, confirmed a clean tree and handed off; worker noted the hook added an extra co-author trailer"
+      }
+    },
+    "19-safe-on-a-shared-repository": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T16-11-42-01a10cd5-d495-72f2-ad4f-01996209555c.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-19-safe-on-a-shared-repository",
+      "offset": 21452194,
+      "last_selected_records": {
+        "3814548": "through 2026-10-05T16:18Z worker 19 read instructions, independent-review findings and safe-shared-repository ticket; began red tests for finding 1, record-source/landing regressions and launch atomicity; dirty in test_land.py and test_worker.py",
+        "4984804": "through 2026-10-05T16:26Z worker 19 expanded red coverage into harness, scenario and tool tests; chmodded shared-repository-safe scenario; full test_worker.py run exited 1; branch dirty in eight tracked files plus new scenario directory",
+        "7266761": "through 2026-10-05T16:34Z worker 19 saw test_land.py and combined acceptance/tool failures, then inspected shared-branch, record-root, acceptance, tracker, lander and harness code; no commits and nine dirty paths",
+        "9761880": "through 2026-10-05T16:48Z worker 19 recovered py_compile but test_land.py still failed, then continued land/record-branch inspection; dirty in twelve tracked files plus shared-repository-safe scenario and no commits",
+        "10231816": "through 2026-10-05T16:54Z worker 19 patched land/harness/tracker/launch files, saw combined tracker/effort/lead-launch/worker suite fail, then had narrower lead-launch plus worker suite still running; no commits",
+        "11198270": "through 2026-10-05T17:04Z worker 19 saw combined lead-launch and worker tests fail, patched worker/test_worker, then started broad harness gate that was still running; no commits",
+        "12513799": "through 2026-10-05T17:17Z worker 19 ran scenario commands with failures and passes, full scenario loop passed, py_compile plus lead_driven tests passed, and broad harness gate was still running; branch dirty and 6 behind integration",
+        "14196012": "through 2026-10-05T17:28Z worker 19 broad harness gate and py_compile passed, then worker continued inspecting shared-repository/base behavior; branch still dirty with 14 paths, no commit, and one rg pipeline printed an argument error while returning shell exit 0",
+        "14539681": "through 2026-10-05T17:34Z worker 19 test_worker.py and py_compile passed, but a later chained gate failed in test_lead_launch.py on failed batch launch cleanup; worker read debugging skill and began rerunning test_lead_launch; branch still dirty",
+        "15152721": "through 2026-10-05T17:45Z worker 19 recovered test_lead_launch and a broad chained gate exited 0, with repeated subprocess ResourceWarning output; branch still dirty in 14 paths and no commit",
+        "15752540": "through 2026-10-05T17:54Z worker 19 broad gates, harness suites, tracker lint and py_compile passed with repeated ResourceWarning output; another scenario loop was running and no commit was observed",
+        "18480686": "through 2026-10-05T18:07Z worker 19 committed implementation and ready marker, received review, rebased successfully to 572128d, began review-follow-up tests, and a chained land/acceptance/harness gate failed",
+        "18730820": "through 2026-10-05T18:14Z worker 19 reran the same chained land/acceptance/harness gate through three failures and one pass, enumerated broader gates, and started the full tools gate; no new marker",
+        "19463948": "through 2026-10-05T18:21Z worker 19 full tools gate failed, compared against ticket 20 acknowledgement behavior, patched test_worker.py, and started a targeted worker/land/acceptance/harness rerun; no new marker",
+        "20703489": "through 2026-10-05T18:37Z worker 19 recovered targeted worker/land/acceptance/harness, full tools, bench harness and readiness scenario gates; context compacted and no replacement marker was observed",
+        "21452194": "through 2026-10-05T18:41Z worker 19 patched report, passed tracker/test_worker/diff checks, committed implementation 8ff9423 and clean ready marker bdda651"
+      }
+    },
+    "20-rework-and-resume-hold": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T16-11-42-01a10cd5-d5ad-7582-b8be-d3844605351d.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-20-rework-and-resume-hold",
+      "offset": 10129038,
+      "last_selected_records": {
+        "5597053": "through 2026-10-05T16:17Z worker 20 read instructions, independent-review findings and ticket 20; inspected worker/acceptance/lead-launch source and real runtime resume help; began red-test edits in test_lead_launch.py and test_worker.py",
+        "6247144": "through 2026-10-05T16:26Z worker 20 added production edits for acceptance/worker rework handling; py_compile passed; focused resume and lead-launch tests alternated pass/fail and a narrow worker test remained in progress in pane",
+        "7389652": "through 2026-10-05T16:34Z worker 20 added lead_launch.py production edits, recovered several focused tests and py_compile, saw a broader test_worker.py failure, and started another compile/check command",
+        "8598245": "through 2026-10-05T16:48Z worker 20 recovered py_compile, focused lead-driven, broad harness and all-scenario checks after earlier harness failures; still dirty with no commit",
+        "9570732": "through 2026-10-05T16:54Z worker 20 had tracker lint, compile/focused harness, readiness scenario loop and status checks pass, wrote six untracked real-runtime evidence files, and remained dirty with no commit",
+        "9997373": "through 2026-10-05T17:00Z worker 20 created needs-info commit 4e67309, received lead answer, updated report, passed diff-check and produced ready marker 7538209 clean",
+        "10129038": "through 2026-10-05T17:06Z worker 20 received review, updated report, passed tracker lint and diff-check, and committed replacement ready marker 62b50ec"
+      }
+    },
+    "21-scenarios-that-can-fail": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T17-14-49-01a10d0f-9e85-7fb0-b2fa-9106b22c4085.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-21-scenarios-that-can-fail",
+      "offset": 24555579,
+      "last_selected_records": {
+        "2801340": "through 2026-10-05T17:17Z worker 21 startup used ticket-local temp env, read harness/source files and status, and had no selected edits",
+        "6797863": "through 2026-10-05T17:28Z worker 21 inspected scenario/result harness code, saw focused lead_driven scenario tests fail, and remained dirty in results.py and test_lead_driven.py with no commit",
+        "7397587": "through 2026-10-05T17:34Z worker 21 added lead_driven.py to dirty set, continued scenario/result harness inspection, and py_compile over edited harness files passed; no commit",
+        "8423214": "through 2026-10-05T17:45Z worker 21 expanded dirty set to 15 files across harness, scenarios, acceptance and lander code; compile checks passed and no commit",
+        "10693405": "through 2026-10-05T17:54Z worker 21 focused lead-launch monitor tests failed then passed, focused effort test failed on existing record branch state, and no commit was observed",
+        "13421703": "through 2026-10-05T18:07Z worker 21 recovered focused effort, lead-launch and worker tests, added executable check fragments, then full lead-driven harness failed and launch-fixture inspection continued; no commit",
+        "14909568": "through 2026-10-05T18:14Z worker 21 inspected launch fixtures, saw focused mutation/bookkeeping scenario failures, recovered later inspection/compile checks, and started combined tool unittest gate; no commit",
+        "15284554": "through 2026-10-05T18:24Z worker 21 combined tool unittest failed then reran; pane showed the rerun completed OK with ResourceWarning output and full lead-driven harness started; no commit",
+        "16495446": "through 2026-10-05T18:36Z worker 21 passed standalone readiness and tracker gates, patched 30-tracker.sh, saw direct 30-tracker pass, and started a full scenario run; no commit",
+        "18173449": "through 2026-10-05T18:44Z worker 21 compacted context, kept running report/diff/check work, added untracked 21-report.md, and had staged plus unstaged changes but no commit",
+        "19501908": "through 2026-10-05T18:55Z worker 21 committed implementation f29a2b7 and ready marker 8e754d2, received reintegration request, then returned to dirty harness rework after a focused failure",
+        "20424622": "through 2026-10-05T19:05Z worker 21 saw a lander-related check fail, recovered focused scenario checks, and completed full bench.harness.test_lead_driven unittest while still dirty",
+        "20605447": "through fixed 2026-10-05T19:17Z cutoff worker 21 completed a broad tools unittest and full lead-driven harness pass, then restarted the broad tools unittest while still dirty at marker 8e754d2",
+        "21491603": "through fixed 2026-10-05T19:25Z cutoff worker 21 completed broad tools and harness gates, compacted context, reread guidance, and started a 17-scenario readiness loop while three files stayed dirty at marker 8e754d2",
+        "23317008": "through fixed 2026-10-05T19:36:37Z cutoff worker 21 completed readiness, shared-output/report, py_compile and final marker work; code commit 08da9b4 and clean ready marker b9cfd0b were created",
+        "23582986": "through fixed 2026-10-05T19:47:23Z cutoff worker 21 received review-1, created a clean detached reproduction worktree under its TMPDIR, inspected harness code, edited bench/harness/test_lead_driven.py and saw the focused reviewed failure still exit 1",
+        "23785543": "through fixed 2026-10-05T19:54:30Z cutoff worker 21 edited lead_driven.py, recovered the focused reviewed tests, committed 3df6674, passed full lead_driven harness in a clean detached checkout, and started a broad tools gate still running",
+        "24280090": "through fixed 2026-10-05T20:05:31Z cutoff worker 21 completed clean-checkout broad tools, remaining harness and first all-scenario gates with exit 0, then started a second per-scenario clean-checkout loop",
+        "24555579": "through fixed 2026-10-05T20:17:18Z cutoff worker 21 finished the second clean-checkout scenario loop, updated 21-report.md, passed final lint/compile checks and committed clean ready marker 94e66ec"
+      }
+    },
+    "22-no-host-tmp": {
+      "path": "/data02/home/philip.yang/.trae/cli/sessions/2026/10/05/rollout-2026-10-05T19-29-49-01a10d8b-3473-7ee3-8585-7e819cc2f4fd.jsonl",
+      "first_record_cwd": "/data02/home/philip.yang/workspace/corenius-lwr-22-no-host-tmp",
+      "offset": 10834955,
+      "last_selected_records": {
+        "3060197": "through fixed 2026-10-05T19:36:37Z cutoff worker 22 read repo/effort/ticket context and began no-host-/tmp tests in test_land.py, test_lead_launch.py and test_worker.py; branch stayed at integration tip with three dirty files",
+        "4225481": "through fixed 2026-10-05T19:47:23Z cutoff worker 22 ran repeated focused no-host-/tmp unittest commands under devx/tmp/lwr-22 with failures and recoveries, edited launcher/worker/land/sqlite/policy surfaces, chmodded checks.d/90-no-host-tmp.sh, hit one rg lookbehind exit 2 and one failed worker.py patch, and reached 14 dirty paths with context 17 percent",
+        "5500604": "through fixed 2026-10-05T19:54:30Z cutoff worker 22 passed focused lead-launch accounting tests, inspected scenario/test inventory, started a broad tools unittest gate that failed with exit 1 at 19:54:06Z, then inspected temporary-directory helpers while still dirty in 14 paths after context compaction",
+        "5994047": "through fixed 2026-10-05T20:05:31Z cutoff worker 22 edited worker/test_worker, passed focused tests, broad tools, sqlite baseline, full harness, all readiness scenarios, tracker lint, no-host-tmp check and py_compile; no commit yet and 14 dirty paths remained",
+        "7539037": "through fixed 2026-10-05T20:17:18Z cutoff worker 22 patched no-host-tmp check and report, committed marker 4450f81, observed duplicate co-author trailers, amended to 78f1ac0 and then to final clean ready marker 738ead5 with hooks disabled",
+        "7637873": "through fixed 2026-10-05T22:35:45Z cutoff worker 22 received reintegrate-1, read review guidance, started rebase onto effort/lead-worker-readiness at 3ab9ec4, and hit conflicts in .claude/skills/run-worker/SKILL.md, tools/agents/lead_launch.py and tools/agents/worker.py",
+        "9446966": "through fixed 2026-10-05T22:45:29Z cutoff worker 22 resolved reintegration conflicts, cleared conflict markers, passed py_compile, test_worker.py and test_lead_launch.py, continued the rebase to clean marker 244f3da, then passed py_compile plus 90-no-host-tmp.sh while preparing the clean detached full gate",
+        "9666523": "through fixed 2026-10-05T22:54:54Z cutoff worker 22 started a clean detached full gate for rebased marker 244f3da under devx/tmp/lwr-22; the gate was still running with repeated waits, had progressed through tools suites and bench/harness/test_fleet.py into bench/harness/test_lead_driven.py, and had no final verdict/report refresh/handoff yet",
+        "9743815": "through fixed 2026-10-05T23:05:09Z cutoff worker 22 clean detached gate for 244f3da continued alive with repeated waits, completed all bench/harness/test_*.py suites, entered readiness scenarios, passed the first five, and was running interactive-launch-and-monitors; no final gate result, report refresh or handoff yet",
+        "10664830": "through fixed 2026-10-05T23:16:19Z cutoff worker 22 completed the 244f3da clean detached gate, refreshed 22-report.md, committed report-only marker 7d2f69c at 23:09:14, then started an exact-final-commit detached gate for 7d2f69c; repeated waits showed it passed smaller tools suites and reached test_worker.py, with no final verdict or handoff yet",
+        "10684847": "through fixed 2026-10-05T23:23:42Z cutoff worker 22 had no gate command-end or handoff; repeated waits on the 7d2f69c exact-marker detached gate showed progress past test_worker.py, test_wt.py and bench/harness/test_fleet.py into bench/harness/test_lead_driven.py",
+        "10834955": "through fixed 2026-10-05T23:30:59Z cutoff worker 22 exact-marker gate for 7d2f69c exited 0, final hygiene checks passed, and the worker handed off final commit 7d2f69c with tools suites, bench harness suites, all readiness scenarios and tracker lint reported green",
+        "new_after_10834955_2344": "no new worker 22 transcript bytes through fixed 2026-10-05T23:44:50Z cutoff; pane and workers monitor showed ready and idle at 7d2f69c",
+        "new_after_10834955_2354": "no new worker 22 transcript bytes through fixed 2026-10-05T23:54:44Z cutoff; worker window was closed after landing"
+      }
+    }
+  },
+  "branches": {
+    "integration": {
+      "name": "effort/lead-worker-readiness",
+      "last_seen": "7d2f69cb274fe548940b1da4794a2ca2e243c43f"
+    },
+    "record_branch": {
+      "name": "effort/lead-worker-readiness-records",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-records",
+      "last_seen": "540f8f7"
+    },
+    "worker_01": {
+      "name": "work/lead-worker-readiness/01-one-scenario-end-to-end",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-01-one-scenario-end-to-end",
+      "last_seen": "2bc91245e38fedd28ccedf20b27c5b72b34a5870"
+    },
+    "worker_02": {
+      "name": "work/lead-worker-readiness/02-exact-candidate-lands",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-02-exact-candidate-lands",
+      "last_seen": "cddfa2087d51644861ed39ee1f76e5ade1aa6fd9"
+    },
+    "worker_08": {
+      "name": "work/lead-worker-readiness/08-launch-access-profile",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-08-launch-access-profile",
+      "last_seen": "5b1f23abdcffce430e7f485d0373919ab69e2c9d"
+    },
+    "worker_13": {
+      "name": "work/lead-worker-readiness/13-results-table-and-notes",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-13-results-table-and-notes",
+      "last_seen": "fcfd998974ed0923289640f7778e5e224dbf351d"
+    },
+    "journal": {
+      "name": "journal/lead-worker-readiness",
+      "last_seen_before_journal_commit": "0229a206688d6fb83477fa5d8afdd0d8931c3d03"
+    },
+    "worker_05": {
+      "name": "work/lead-worker-readiness/05-launch-by-edges-and-triage",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-05-launch-by-edges-and-triage",
+      "last_seen": "028d837cc6d5fb914d7694c356890bf8a142ed86"
+    },
+    "worker_03": {
+      "name": "work/lead-worker-readiness/03-acceptance-record",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-03-acceptance-record",
+      "last_seen": "dc96ae0d25503b7a214eec42dc7a898c2ade4b32"
+    },
+    "worker_09": {
+      "name": "work/lead-worker-readiness/09-external-state-report",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-09-external-state-report",
+      "last_seen": "f8588e112dbb20c98aaf47fa5f410e7de771e539"
+    },
+    "worker_12": {
+      "name": "work/lead-worker-readiness/12-codex-worker-runtime",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-12-codex-worker-runtime",
+      "last_seen": "536a2b1675176bee21665f075e8e1fff51999344"
+    },
+    "worker_11": {
+      "name": "work/lead-worker-readiness/11-handoffs-into-briefs",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-11-handoffs-into-briefs",
+      "last_seen": "716019bcb34950d0513253a24887c2f622a649c4"
+    },
+    "worker_07": {
+      "name": "work/lead-worker-readiness/07-integration-branch",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-07-integration-branch",
+      "last_seen": "c75abcd66f3a832b6d19bf17f21f8d785214df04"
+    },
+    "worker_04": {
+      "name": "work/lead-worker-readiness/04-rework-round",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-04-rework-round",
+      "last_seen": "a7ba1a74db0010b62090c44869cb19057061c206"
+    },
+    "worker_06": {
+      "name": "work/lead-worker-readiness/06-parallel-workers-and-overlap",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-06-parallel-workers-and-overlap",
+      "last_seen": "3b9baeb2ce8497b5195993e232ab044f83e6e0b4"
+    },
+    "worker_16": {
+      "name": "work/lead-worker-readiness/16-bookkeeping-off-code-branch",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-16-bookkeeping-off-code-branch",
+      "last_seen": "f92a2349a89e4538e06e72594cfc9240ba84bb37"
+    },
+    "worker_10": {
+      "name": "work/lead-worker-readiness/10-watching-limits-accounting",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-10-watching-limits-accounting",
+      "last_seen": "eebb10292c89667a29894acf67aff5f38040d865"
+    },
+    "worker_17": {
+      "name": "work/lead-worker-readiness/17-sandboxed-worker-can-commit",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-17-sandboxed-worker-can-commit",
+      "last_seen": "7fddf822548fbe0db81a5671155f3c66548218dc"
+    },
+    "worker_18": {
+      "name": "work/lead-worker-readiness/18-interactive-launch-and-monitors",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-18-interactive-launch-and-monitors",
+      "last_seen": "3ab9ec45cd46779632d19238f496903be9695287"
+    },
+    "worker_19": {
+      "name": "work/lead-worker-readiness/19-safe-on-a-shared-repository",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-19-safe-on-a-shared-repository",
+      "last_seen": "bdda6518d8c33005dc6c63baf8983edc416eeefe"
+    },
+    "worker_20": {
+      "name": "work/lead-worker-readiness/20-rework-and-resume-hold",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-20-rework-and-resume-hold",
+      "last_seen": "62b50ecbf5f7541f5c4ef4a4a67c4f1ae47ce526"
+    },
+    "worker_21": {
+      "name": "work/lead-worker-readiness/21-scenarios-that-can-fail",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-21-scenarios-that-can-fail",
+      "last_seen": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663"
+    },
+    "worker_22": {
+      "name": "work/lead-worker-readiness/22-no-host-tmp",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-22-no-host-tmp",
+      "last_seen": "7d2f69cb274fe548940b1da4794a2ca2e243c43f"
+    }
+  },
+  "tmux": {
+    "session": "corenius-readiness",
+    "windows": [
+      "tickets",
+      "workers",
+      "journal",
+      "ticker"
+    ],
+    "worker_01_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_01_last_activity": "landed and idle; context 19% left",
+    "worker_02_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_02_last_activity": "landed and idle; context 53% left",
+    "worker_08_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_08_last_activity": "landed and idle; context 45% left",
+    "worker_13_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_13_last_activity": "landed and idle; context 47% left",
+    "worker_05_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_05_last_activity": "landed and idle; context 20% left",
+    "worker_03_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_03_last_activity": "landed and idle; context 54% left",
+    "worker_09_last_snapshot_utc": "2026-10-05T11:33:31Z",
+    "worker_09_last_activity": "landed and idle; context 36% left",
+    "worker_12_last_snapshot_utc": "2026-10-05T12:17:20Z",
+    "worker_12_last_activity": "landed and idle; clean at candidate 536a2b1",
+    "worker_11_last_snapshot_utc": "2026-10-05T12:17:20Z",
+    "worker_11_last_activity": "landed and idle; clean at candidate 716019b",
+    "worker_07_last_snapshot_utc": "2026-10-05T12:17:20Z",
+    "worker_07_last_activity": "landed and idle; clean at candidate c75abcd",
+    "worker_04_last_snapshot_utc": "2026-10-05T13:08:56Z",
+    "worker_04_last_activity": "landed and idle; clean at candidate a7ba1a7; context 30% left",
+    "worker_06_last_snapshot_utc": "2026-10-05T14:33:48Z",
+    "worker_06_last_activity": "resolved and landed after lead review; final candidate 3b9baeb accepted and integration advanced to f57e715",
+    "worker_16_last_snapshot_utc": "2026-10-05T13:53:35Z",
+    "worker_16_last_activity": "landed and idle; clean at candidate f92a234; context 19% left",
+    "worker_10_last_snapshot_utc": "2026-10-05T14:53:47Z",
+    "worker_10_last_activity": "landed and idle; clean at candidate eebb102 after integration advanced to 25a03d0; context 38% left",
+    "worker_17_last_snapshot_utc": "2026-10-05T16:14:16Z",
+    "worker_17_last_activity": "landed and idle at final marker 7fddf82; coordinator status still says landed but state cache lacks landed.json; context 51% at monitor",
+    "worker_18_last_snapshot_utc": "2026-10-05T22:35:17Z",
+    "worker_18_last_activity": "resolved and landed at marker 3ab9ec4; integration advanced to the same commit and lead closed the worker tmux window, so live pid/context are now unknown",
+    "worker_19_last_snapshot_utc": "2026-10-05T21:54:19Z",
+    "worker_19_last_activity": "landed; stale tmux window closed by lead during owner status cleanup, so monitor now shows pid/context unknown",
+    "worker_20_last_snapshot_utc": "2026-10-05T17:15:12Z",
+    "worker_20_last_activity": "landed; final worker marker 62b50ec, integration accepted through c25920c; window closed so pid/context unknown in monitor",
+    "worker_21_last_snapshot_utc": "2026-10-05T21:54:19Z",
+    "worker_21_last_activity": "landed and idle at clean marker 94e66ec after lead acceptance and integration advance; stale tmux window closed by lead during owner status cleanup, so monitor now shows pid/context unknown",
+    "worker_22_last_snapshot_utc": "2026-10-05T23:54:44Z",
+    "worker_22_last_activity": "resolved and landed at final marker 7d2f69c; integration advanced to the same commit and the lead closed the worker tmux window, so live pid/context are now unknown",
+    "maintenance_disk_cleanup_last_snapshot_utc": "2026-10-05T20:20:27Z",
+    "maintenance_disk_cleanup_last_activity": "lead log and public status said cleanup finished, report filed, and disk-cleanup tmux window was closed; reported 5.7 GiB freed inside allowlist"
+  },
+  "coordinator_state": {
+    "state_dir": "/data02/home/philip.yang/.cache/corenius/readiness/lead-worker-readiness",
+    "ws_py_size_bytes": 31544,
+    "lead_log_size_bytes": 27671,
+    "notes_size_bytes": 28525,
+    "ticket_01_review_1": {
+      "sent": "2026-10-05T08:44:44Z",
+      "candidate": "c1530849d43785959f3565908eac97b8a0654a93",
+      "sha256": "9c368fc2da9e7744eef47ab2b7d4904a2993e687f3ff1354b1b09aa24ba9c76f"
+    },
+    "ticket_01_landed": {
+      "landed": "2026-10-05T09:05:18Z",
+      "candidate": "2bc91245e38fedd28ccedf20b27c5b72b34a5870",
+      "previous_tip": "3a476b06cff3b3d219d5c4c25704b7bae230e510"
+    },
+    "ticket_02_launch": {
+      "launched": "2026-10-05T09:06:02Z",
+      "base": "e49ce68df5da8ac6adaba7e9b68e386244aaff4d",
+      "prompt_sha256": "b2ac8f93b96d573dea4b58b54bf434936925daa6a67aa9bc46713de662742576"
+    },
+    "ticket_08_launch": {
+      "launched": "2026-10-05T09:06:03Z",
+      "base": "3c5f6825f1e0177a22e9bb5b65cd7f9f35d635b8",
+      "prompt_sha256": "849777ff4f75d4d5653926a20b6ab9e9db7f4b3e10187a2caa1421360a847d5e"
+    },
+    "ticket_13_launch": {
+      "launched": "2026-10-05T09:06:04Z",
+      "base": "ebc7c9f351c38d5013c26baf3771e94b90e2c166",
+      "prompt_sha256": "3c8e5d1962e1ea62db10fa39ef984077fef067a5efe800a03bea104de1d8814c"
+    },
+    "ticket_13_review_1": {
+      "sent": "2026-10-05T09:18:47Z",
+      "candidate": "37b0f5bc522bccdbc056113a9ffecd5e79fe5cad",
+      "sha256": "7ccb17afcfea51f1a16a5da8d29901078b7ff2019316e3c615ca8cf03e5e7c5d"
+    },
+    "ticket_13_ready_2": {
+      "ready": "2026-10-05T09:24:02Z",
+      "candidate": "fcfd998fb55b7e25516ba4443b3fc1750aed966d"
+    },
+    "ticket_13_landed": {
+      "landed": "2026-10-05T09:25:53Z",
+      "candidate": "fcfd998974ed0923289640f7778e5e224dbf351d",
+      "previous_tip": "ebc7c9f351c38d5013c26baf3771e94b90e2c166"
+    },
+    "ticket_05_launch": {
+      "launched": "2026-10-05T09:26:14Z",
+      "base": "4533ecb73884a238186167e4402a282415ac2e20",
+      "prompt_sha256": "981b9d886c906b9a08d6071f5c27a2ef53a01ca5c9171e6133502cc9153a7592"
+    },
+    "ticket_02_review_1": {
+      "sent": "2026-10-05T09:29:43Z",
+      "candidate": "955059a31dca69b347ec25db0e9eb33d4a4750eb",
+      "sha256": "9d7292087ebd1ff2d65f8344d669e750e7e6cb8f610934c9947ab5c6862e2a7d"
+    },
+    "ticket_02_ready_after_reintegration": {
+      "candidate": "07028af8a38ed11493bb650ce90952312c0153d9",
+      "committed": "2026-10-05T09:31:56Z",
+      "status_at_snapshot": "running with one dirty file, not stable ready"
+    },
+    "ticket_02_landed": {
+      "landed": "2026-10-05T09:50:45Z",
+      "candidate": "cddfa2087d51644861ed39ee1f76e5ade1aa6fd9",
+      "previous_tip": "4533ecb73884a238186167e4402a282415ac2e20"
+    },
+    "ticket_03_launch": {
+      "launched": "2026-10-05T09:51:13Z",
+      "base": "3c6d325029f589dc9327b1cd5c411d6286bf7add",
+      "prompt_sha256": "aff744a29e371b82df92445d9657f9ebfbc002723fa8922c280956f8700c0ad3"
+    },
+    "ticket_08_review_1": {
+      "sent": "2026-10-05T09:51:14Z",
+      "candidate": "cfda3014e5219cd109a939d9833ec32645e88260",
+      "sha256": "74aa161d75dd34f9d5c5d996e11a4cb250f7e69e89da908f23d0978099c2453c"
+    },
+    "ticket_08_ready_after_reintegration": {
+      "candidate": "beca9c1063670a9b0897064ba315f08af4ad1de7",
+      "committed": "2026-10-05T09:53:33Z",
+      "status_at_snapshot": "running with dirty files after marker"
+    },
+    "ticket_08_post_marker_commit": {
+      "commit": "e5b0f56b21ca0e0b1ee9056e53be884475a764e2",
+      "committed": "2026-10-05T09:55:28Z",
+      "subject": "Declare access-profile scenario stories"
+    },
+    "ticket_08_ready_final": {
+      "candidate": "5b1f23abdcffce430e7f485d0373919ab69e2c9d",
+      "committed": "2026-10-05T10:01:44Z"
+    },
+    "ticket_08_landed": {
+      "landed": "2026-10-05T10:03:55Z",
+      "candidate": "5b1f23abdcffce430e7f485d0373919ab69e2c9d",
+      "previous_tip": "3c6d325029f589dc9327b1cd5c411d6286bf7add"
+    },
+    "ticket_09_launch": {
+      "launched": "2026-10-05T10:04:15Z",
+      "base": "599a306adfc4494b28014f82236b68af0cb18415",
+      "prompt_sha256": "3ef61b7e12e893383297999a8bd8cc8bcd496dd84351512528da7daabf0a1478"
+    },
+    "ticket_05_first_ready": {
+      "candidate": "be64d24b2a74b7a68f6644ef9d9095f83698e018",
+      "committed": "2026-10-05T10:03:12Z"
+    },
+    "ticket_05_review_1": {
+      "sent": "2026-10-05T10:05:05Z",
+      "candidate": "be64d24b2a74b7a68f6644ef9d9095f83698e018",
+      "sha256": "35760d8a050baae965849a22cb4cd058a2a94b925ac27633496c9d53300e2ce0"
+    },
+    "ticket_05_ready_after_reintegration": {
+      "candidate": "ce06d44f39c2bf636b1216ca246c444a6aeaf3ed",
+      "committed": "2026-10-05T10:07:21Z",
+      "status_at_snapshot": "finishing with active pane"
+    },
+    "ticket_05_post_marker_rework_commit": {
+      "commit": "d4009328de2a00d614450d47f03f1d8ebe4a710f",
+      "committed": "2026-10-05T10:12:13Z",
+      "subject": "ticket 05: address lead review",
+      "status_at_snapshot": "running; clean tree but pane active and head not ready marker"
+    },
+    "ticket_03_first_ready": {
+      "candidate": "3128942e9a73be0a846e2b9e6144611f2452d1ad",
+      "committed": "2026-10-05T10:15:12Z"
+    },
+    "ticket_03_review_1": {
+      "sent": "2026-10-05T10:17:19Z",
+      "candidate": "3128942e9a73be0a846e2b9e6144611f2452d1ad",
+      "sha256": "c0718c7c6522c5e229cb5d4d3e4805cc04f58360554421100849fe6d8b6f5381"
+    },
+    "ticket_05_post_marker_stabilize_commit": {
+      "commit": "93dbb4f2d0ad4953f52f2c45ca1c9398a1fe6a91",
+      "committed": "2026-10-05T10:17:52Z",
+      "subject": "ticket 05: stabilize rebased harness",
+      "status_at_snapshot": "running; clean tree but pane active and head not ready marker"
+    },
+    "ticket_09_first_ready": {
+      "candidate": "f8588e112dbb20c98aaf47fa5f410e7de771e539",
+      "committed": "2026-10-05T10:20:51Z",
+      "status_at_snapshot": "ready; no review or landing artifact through 2026-10-05T10:24:18Z"
+    },
+    "ticket_09_landed": {
+      "landed": "2026-10-05T10:25:21Z",
+      "candidate": "f8588e112dbb20c98aaf47fa5f410e7de771e539",
+      "previous_tip": "599a306adfc4494b28014f82236b68af0cb18415"
+    },
+    "ticket_12_launch": {
+      "launched": "2026-10-05T10:25:31Z",
+      "base": "64a369244a0cf961cace48ba1d0dbce9a7c5c1a7",
+      "prompt_sha256": "52a23d8161fe35c6ee105f40720a411a726d18bfc8ef32fbe6dbf0036473f3bd"
+    },
+    "ticket_03_ready_after_review": {
+      "candidate": "8900967e746886bb39af805e51f367f2314eb04c",
+      "committed": "2026-10-05T10:27:18Z",
+      "status_at_snapshot": "ready and idle by 2026-10-05T10:34:23Z"
+    },
+    "ticket_05_ready_after_review": {
+      "candidate": "fe86c18b365021cfba64369dee3b51519937c283",
+      "committed": "2026-10-05T10:33:21Z",
+      "status_at_snapshot": "ready and idle by 2026-10-05T10:34:23Z"
+    },
+    "ticket_05_reintegrate_1": {
+      "sent": "2026-10-05T10:34:49Z",
+      "candidate": "fe86c18b365021cfba64369dee3b51519937c283",
+      "sha256": "b6ff354497fbc48d265749f00ed0b31e3935c0bbee6af35bcb4955022c08436a"
+    },
+    "ticket_05_rebased_marker_after_reintegrate_1": {
+      "candidate": "1e8b27839553ef1b456ed8db576d424a1f1c05c1",
+      "committed": "2026-10-05T10:36:40Z",
+      "status_at_snapshot": "running with two dirty files after marker"
+    },
+    "ticket_12_first_ready": {
+      "candidate": "9548178358f995522a32b798d42f1ddb6c0d4cf5",
+      "committed": "2026-10-05T10:47:08Z"
+    },
+    "ticket_12_review_1": {
+      "sent": "2026-10-05T10:51:58Z",
+      "candidate": "9548178358f995522a32b798d42f1ddb6c0d4cf5",
+      "sha256": "0063a428aacab6ee805ef25be25a289bfff4c5f5a9feb468a8c1b42f083e596e"
+    },
+    "ticket_05_landed": {
+      "landed": "2026-10-05T11:00:18Z",
+      "candidate": "028d837cc6d5fb914d7694c356890bf8a142ed86",
+      "previous_tip": "64a369244a0cf961cace48ba1d0dbce9a7c5c1a7"
+    },
+    "ticket_03_reintegrate_1": {
+      "sent": "2026-10-05T11:00:20Z",
+      "candidate": "8900967e746886bb39af805e51f367f2314eb04c",
+      "sha256": "ed8ddd3c05935de2d865cc646fefdfa011f374c19c55df936df29187053db3db"
+    },
+    "ticket_11_launch": {
+      "launched": "2026-10-05T11:00:44Z",
+      "base": "dffeb763ec208de7c78cbdbc7375e521bd9df72e",
+      "prompt_sha256": "207aefe7c5289ed14943c960e5418e7755e6ef093f8a48d6c68e7163698d14f3"
+    },
+    "ticket_03_rebased_marker_after_reintegrate_1": {
+      "candidate": "1e04c59c8f38df4811d68b932c37a7be0da27e79",
+      "committed": "2026-10-05T11:04:09Z",
+      "status_at_snapshot": "finishing with one shell running required checks"
+    },
+    "ticket_12_review_fix_commit": {
+      "commit": "f7b794c3f83c5660427193730d3f8cd1124923d1",
+      "committed": "2026-10-05T11:02:57Z",
+      "subject": "ticket 12: address review 1",
+      "status_at_snapshot": "running; clean and idle but head not ready marker"
+    },
+    "ticket_03_landed": {
+      "landed": "2026-10-05T11:15:36Z",
+      "candidate": "dc96ae0d25503b7a214eec42dc7a898c2ade4b32",
+      "previous_tip": "dffeb763ec208de7c78cbdbc7375e521bd9df72e"
+    },
+    "ticket_11_deferred_claim": {
+      "commit": "df61ccf",
+      "committed": "2026-10-05T11:15:52Z",
+      "subject": "Claim tickets 11 for workers"
+    },
+    "ticket_07_launch": {
+      "launched": "2026-10-05T11:15:56Z",
+      "base": "8396875948981848500e4c8f53257e3a9d75a943",
+      "prompt_sha256": "359078b2a3350d2c22a95111590134390403d6192d6467924efae0aae5031332"
+    },
+    "ticket_12_reintegrate_1": {
+      "sent": "2026-10-05T11:15:57Z",
+      "candidate": "f7b794c3f83c5660427193730d3f8cd1124923d1",
+      "sha256": "cf8551cbb5c8842dcd72cb1d51121341ebbc97d4c6a78a631b7b8f163f41eeb6"
+    },
+    "ticket_11_ready_1": {
+      "candidate": "1aca3a536e0d7ffa9cb128dae651d7a03b8f937d",
+      "committed": "2026-10-05T11:16:07Z",
+      "status_at_snapshot": "review sent; worker dirty and active after marker"
+    },
+    "ticket_11_review_1": {
+      "sent": "2026-10-05T11:17:38Z",
+      "candidate": "1aca3a536e0d7ffa9cb128dae651d7a03b8f937d",
+      "sha256": "0a3f4fd6bed60b1ad26dc2daa978c27f01c02177b600b7fcee5cb4fb890a6024"
+    },
+    "ticket_12_rebased_after_reintegrate_1": {
+      "commit": "28fb77e96c06d1e5d85be5e81fe16da55a918348",
+      "committed": "2026-10-05T11:18:05Z",
+      "subject": "ticket 12: address review 1",
+      "status_at_snapshot": "running with dirty files during expanded gate"
+    },
+    "ticket_12_ready_after_reintegrate_1": {
+      "candidate": "536a2b1675176bee21665f075e8e1fff51999344",
+      "committed": "2026-10-05T11:32:07Z",
+      "status_at_snapshot": "ready and idle by 2026-10-05T11:33:31Z"
+    },
+    "ticket_11_review_fix_commit": {
+      "commit": "850c0a2699526d465125e853e63990afe69f2d52",
+      "committed": "2026-10-05T11:33:05Z",
+      "subject": "Address ticket 11 review findings",
+      "status_at_snapshot": "running; clean and idle but intentionally waiting for reintegration"
+    },
+    "ticket_12_lead_review_or_land_started": {
+      "started": "2026-10-05T11:33:27Z",
+      "candidate": "536a2b1675176bee21665f075e8e1fff51999344",
+      "status_at_snapshot": "lead command started; no selected result or landing artifact by 2026-10-05T11:35:06Z"
+    },
+    "ticket_12_accepted_durable": {
+      "recorded_at": "2026-10-05T11:33:27Z",
+      "candidate": "536a2b1675176bee21665f075e8e1fff51999344",
+      "checks": [
+        "gate",
+        "real-codex-stream"
+      ],
+      "status_at_snapshot": "resolved and landed by 2026-10-05T11:43:27Z; scratch landed.json missing during artifact scan"
+    },
+    "ticket_04_launch": {
+      "launched": "2026-10-05T11:36:03Z",
+      "base": "d41faae6cc2b4df4d1939bb87074ba9cafd83c7c",
+      "prompt_sha256": "da4907dcdc70290e7e5b1b1776cf54f7fdc06032b1569fff15029991e363c8b4"
+    },
+    "ticket_11_reintegrate_1": {
+      "sent": "2026-10-05T11:36:04Z",
+      "candidate": "850c0a2699526d465125e853e63990afe69f2d52",
+      "sha256": "d715534a3164c55866dd27e166484ddf98a9ed20b146bad5524dc0fe96cfe19e"
+    },
+    "ticket_11_accepted_durable": {
+      "recorded_at": "2026-10-05T11:45:42Z",
+      "candidate": "716019bcb34950d0513253a24887c2f622a649c4",
+      "checks": [
+        "gate",
+        "real-findings-collected"
+      ],
+      "claim_sampling": "25 claims, 25 unrecorded",
+      "status_at_snapshot": "resolved and landed by 2026-10-05T11:53:20Z; scratch landed.json missing during artifact scan"
+    },
+    "ticket_07_review_1": {
+      "sent": "2026-10-05T11:48:16Z",
+      "candidate": "4891fa91f400d7327f9ee515a8e219e7e299dcda",
+      "sha256": "435c14a507d3126d8074578171a92e9b134a6df512de1d0d231ea68fdf422436"
+    },
+    "coordinator_brief_three_checkout_warning": {
+      "changed": "2026-10-05T11:48:15Z",
+      "status_at_snapshot": "ws.py brief now names main checkout, integration worktree and worker worktrees after recurring two-worktree defects"
+    },
+    "ticket_06_held_after_11_landed": {
+      "recorded": "2026-10-05T11:48:31Z",
+      "reason": "ticket amendment and claim would move integration while ticket 07 was re-integrating"
+    },
+    "ticket_04_gate_progress": {
+      "observed": "2026-10-05T12:04:41Z",
+      "status_at_snapshot": "tool gate, harness loop, all readiness scenarios, tracker lint and static checks passed before later cleanup edit; no candidate yet"
+    },
+    "ticket_07_review_gate_progress": {
+      "observed": "2026-10-05T12:04:41Z",
+      "status_at_snapshot": "focused review-fix tests recovered; full gate started at 2026-10-05T12:03:56Z and was still running"
+    },
+    "ticket_07_accepted_durable": {
+      "recorded_at": "2026-10-05T12:12:48Z",
+      "candidate": "c75abcd66f3a832b6d19bf17f21f8d785214df04",
+      "checks": [
+        "gate",
+        "three-checkout-reproduction"
+      ],
+      "claim_sampling": "21 claims, 21 unrecorded",
+      "status_at_snapshot": "resolved and landed by 2026-10-05T12:17:11Z; scratch landed.json missing during artifact scan"
+    },
+    "ticket_06_launch": {
+      "launched": "2026-10-05T12:15:04Z",
+      "base": "253a5d62c599ce7b96a0769ec7032252533d2832",
+      "prompt_sha256": "08f30d81a49d16c9921abf281b37f7168e940b3553d433311229b21e206ac249"
+    },
+    "ticket_16_launch": {
+      "launched": "2026-10-05T12:15:05Z",
+      "base": "253a5d62c599ce7b96a0769ec7032252533d2832",
+      "prompt_sha256": "444e1853be1f9f3c166bd6c085fa73a3b487554e51fb4414e52ff1b7e25e7fd0"
+    },
+    "ticket_16_note_1": {
+      "sent": "2026-10-05T12:15:46Z",
+      "sha256": "dcaa4cf109ddd20c6f123eadef3f091101b0fed16431940b42905ef6f5504ffd",
+      "summary": "lead-reported real-repo ambiguity in just-landed effort-record lookup"
+    },
+    "ticket_07_post_landing_real_repo_regression": {
+      "observed": "2026-10-05T12:15:46Z",
+      "summary": "effort.py status failed for older efforts copied across many worktrees without Integration branch metadata"
+    },
+    "ticket_04_first_ready": {
+      "candidate": "e1b111ff84f05aa8d5397fc9458feacc2a55e94e",
+      "committed": "2026-10-05T12:20:06Z",
+      "status_at_snapshot": "clean and marked ready, then review was sent at 2026-10-05T12:22:20Z"
+    },
+    "ticket_04_review_1": {
+      "sent": "2026-10-05T12:22:20Z",
+      "candidate": "e1b111ff84f05aa8d5397fc9458feacc2a55e94e",
+      "sha256": "ad7c5b96fb3845e2ffc44fbc2f1c2e06dc397b51b62a2b2c06220a6b54e9e109",
+      "summary": "terminal delivery acknowledgement, effort-record lookup for rework commands, re-integration and hand-off target fixes"
+    },
+    "ticket_04_rebased_after_review_1": {
+      "candidate": "56a6aa3d14e67bd104b5c69aca8db79d61387af2",
+      "implementation_commit": "6ab58b36e21ef0e1892c46be3354bfc2051dacc1",
+      "committed": "2026-10-05T12:23:24Z",
+      "status_at_snapshot": "rebase initially failed in bench/harness/test_lead_driven.py, then continued; later dirty while adding acknowledgement tests"
+    },
+    "ticket_06_overlap_progress": {
+      "observed": "2026-10-05T12:28:41Z",
+      "summary": "red tests added for overlap surfaces; lead_launch suite later passed while worker suite was still running"
+    },
+    "ticket_16_record_branch_progress": {
+      "observed": "2026-10-05T12:28:41Z",
+      "summary": "red tests added for moving bookkeeping records off code branch and for legacy effort lookup; production edits started"
+    },
+    "ticket_04_review_rework_progress": {
+      "observed": "2026-10-05T12:35:10Z",
+      "summary": "worker acknowledgement tests failed then passed; new acceptance/lead-launch effort-record tests still red"
+    },
+    "ticket_06_overlap_scenario_progress": {
+      "observed": "2026-10-05T12:35:10Z",
+      "summary": "worker suite passed after overlap attribution edits; focused parallel-workers-and-overlap scenario still failed while scenario files were being added"
+    },
+    "ticket_16_bookkeeping_gate_progress": {
+      "observed": "2026-10-05T12:35:10Z",
+      "summary": "effort/tracker/acceptance tests passed; land and lead-launch checks still failed"
+    },
+    "ticket_04_rework_gate_progress_1243": {
+      "observed": "2026-10-05T12:44:52Z",
+      "summary": "lead-launch/acceptance review tests passed, then focused rework-round harness test failed; active combined scenario plus worker suite running"
+    },
+    "ticket_06_overlap_gate_progress_1243": {
+      "observed": "2026-10-05T12:44:52Z",
+      "summary": "focused overlap scenario, lead_launch suite, worker suite and full lead_driven suite passed; direct scenario running"
+    },
+    "ticket_16_bookkeeping_gate_progress_1243": {
+      "observed": "2026-10-05T12:44:52Z",
+      "summary": "land and lead-launch tests passed, bookkeeping scenario focused test passed, broader lead_driven suite still failed before targeted rerun; policy docs edited"
+    },
+    "ticket_04_rework_gate_progress_1253": {
+      "observed": "2026-10-05T12:54:35Z",
+      "summary": "focused rework scenario, worker suite, acceptance/lead-launch, land/tracker/effort, full harness, all scenarios, tracker lint, diff-check and py_compile passed; report being revised"
+    },
+    "ticket_06_overlap_gate_progress_1253": {
+      "observed": "2026-10-05T12:54:35Z",
+      "summary": "direct overlap scenario and full harness loop passed; all-scenario loop and report planning continued with no commit"
+    },
+    "ticket_16_bookkeeping_gate_progress_1253": {
+      "observed": "2026-10-05T12:54:35Z",
+      "summary": "touched tool gate, sync-policy check and tracker lint passed after earlier failures; broad harness/scenario validation still running"
+    },
+    "ticket_04_accepted_durable": {
+      "recorded_at": "2026-10-05T12:57:26Z",
+      "candidate": "a7ba1a74db0010b62090c44869cb19057061c206",
+      "checks": [
+        "gate",
+        "main-checkout-reproduction"
+      ],
+      "claim_sampling": "43 claims, 43 unrecorded",
+      "status_at_snapshot": "resolved and landed by 2026-10-05T13:08:46Z"
+    },
+    "ticket_04_landed": {
+      "landed": "2026-10-05T12:59:32Z",
+      "candidate": "a7ba1a74db0010b62090c44869cb19057061c206",
+      "previous_tip": "253a5d62c599ce7b96a0769ec7032252533d2832",
+      "status_at_snapshot": "first two lead attempts failed before successful integration-worktree retry"
+    },
+    "ticket_10_launch": {
+      "launched": "2026-10-05T13:00:02Z",
+      "base": "c92de6283239be3a19fa941cad5d471d9f2e222e",
+      "prompt_sha256": "9b758f51b46fb15d929459decac44eaf9f0e92466613f0951515b9233708d472"
+    },
+    "lead_independent_review_gap_note": {
+      "recorded": "2026-10-05T13:00:12Z",
+      "summary": "acceptance summary showed 4 tickets accepted with the tool and 0 reviewed by a context other than lead; story 11 and independent-verification gate not met before mainline"
+    },
+    "ticket_16_review_1": {
+      "sent": "2026-10-05T13:03:27Z",
+      "candidate": "54e10bc4b994b35f6795e2ed7632b391b8905181",
+      "sha256": "93cb697fda71d8188591dba204988b3a7f2d6816a8ded7505434b2ed5d5787b7",
+      "summary": "record branch and real-repo lookup worked; worker reports stranded on code branch after move-records; re-integrate in same pass"
+    },
+    "ticket_06_review_1": {
+      "sent": "2026-10-05T13:07:03Z",
+      "candidate": "4d08d2dce51700d9f9a7b97dc2d55cd6341babb8",
+      "sha256": "800259f394e04b1e95103a1bf3289b770775a7d5d99dc7249bbfde3d75b1b3af",
+      "summary": "overlap surfaces accepted; blocked on file_change event accounting and dirty allowed path severity before versus after pinned Candidate; lead recorded sandboxed git-worktree commit blocker for ticket 14"
+    },
+    "ticket_16_rebased_marker_after_review_1": {
+      "candidate": "83f6b4263ad071ac2cbb8dc891c1e7f31ece0728",
+      "implementation_commit": "6fd875f8d489e706d34c906586c82cb2e8ac4219",
+      "committed": "2026-10-05T13:07:18Z",
+      "status_at_snapshot": "direct git status after 13:08 monitor showed bench/harness/test_lead_driven.py dirty"
+    },
+    "ticket_06_review_rework_progress_1323": {
+      "observed": "2026-10-05T13:23:36Z",
+      "summary": "review-1 read; file_change accounting and dirty-path severity tests added; first focused review command failed then passed; touched tool gate passed; full readiness and harness loops failed then passed; worker dirty and preparing non-marker commit"
+    },
+    "ticket_10_limit_accounting_progress_1323": {
+      "observed": "2026-10-05T13:23:36Z",
+      "summary": "worker, lead-launch and lead-driven tests failed first; after time-threshold and launcher edits, focused watching-limits scenario, full worker suite, full lead-driven suite and direct scenario passed; broad combined gate still running"
+    },
+    "ticket_16_report_copy_rework_progress_1323": {
+      "observed": "2026-10-05T13:23:36Z",
+      "summary": "post-review marker was written past; accepted-report record-branch work produced repeated acceptance, tracker, lead-launch and scenario failures; acceptance and tracker suites later recovered, but branch remained dirty"
+    },
+    "ticket_06_review_fix_commit": {
+      "commit": "581903c2fd76bf410d807a94944d3e2507df20bc",
+      "committed": "2026-10-05T13:31:44Z",
+      "subject": "Address review 1 for ticket 06",
+      "status_at_snapshot": "clean and idle; intentionally no ready marker until lead sends reintegration permission"
+    },
+    "ticket_10_limit_accounting_progress_1333": {
+      "observed": "2026-10-05T13:33:33Z",
+      "summary": "broad harness and lead-launch tests passed after earlier failures; worker still had seven dirty paths and no commits while continuing gate/diff work"
+    },
+    "ticket_16_report_copy_rework_progress_1333": {
+      "observed": "2026-10-05T13:33:33Z",
+      "summary": "lead-launch, direct bookkeeping scenario and broader acceptance/tracker/lead-launch/scenario checks passed after earlier failures; worker then edited policy docs and manifest and remained dirty"
+    },
+    "ticket_06_waiting_reintegration_1343": {
+      "observed": "2026-10-05T13:43:37Z",
+      "commit": "581903c2fd76bf410d807a94944d3e2507df20bc",
+      "summary": "clean and idle after non-marker review-fix commit; monitor still reports running because the head is not a ready marker"
+    },
+    "ticket_16_ready_after_review_1": {
+      "ready": "2026-10-05T13:43:00Z",
+      "candidate": "f92a2349a89e4538e06e72594cfc9240ba84bb37",
+      "implementation_commit": "18c3f5f84d1978e2c0adf30b9318abe983f4d12d",
+      "status_at_snapshot": "monitor showed ready at 13:43:37Z; no review artifact existed by artifact scan"
+    },
+    "ticket_10_limit_accounting_progress_1343": {
+      "observed": "2026-10-05T13:43:37Z",
+      "summary": "lead-launch, worker and broad scenario tests passed after a combined failure, but the worker edited harness/scenario files again after the monitor sample and remained uncommitted"
+    },
+    "ticket_16_landed_1353": {
+      "observed": "2026-10-05T13:53:35Z",
+      "candidate": "f92a2349a89e4538e06e72594cfc9240ba84bb37",
+      "resolved_commit": "8494c2158794b9909a441ebcb55cb5c3c29e9261",
+      "acceptance_commit": "9da48b32538a0f3f36a451304e5d8979f9151994",
+      "status_at_snapshot": "resolved and landed; no per-ticket landed.json found in coordinator state directory"
+    },
+    "ticket_17_launch": {
+      "launched": "2026-10-05T13:48:26Z",
+      "base": "9ab6f267bc0bb13f76c9a7b9ee6e6d759e727ea8",
+      "prompt_sha256": "4a2da9ecfd0f987eadfb8b3630e0176e1dec83ddb2c64734ae06064dbab8c1d6"
+    },
+    "ticket_06_reintegrate_1": {
+      "sent": "2026-10-05T13:48:27Z",
+      "candidate": "581903c2fd76bf410d807a94944d3e2507df20bc",
+      "sha256": "5d43dbabba7c243b1a9bcad32e7c8549d66c4834934d572cc6162f5c1cfd5de5",
+      "summary": "lead told worker this was not a review round; rebase onto current integration and finish with marker after full gate"
+    },
+    "ticket_10_ready_1353": {
+      "ready": "2026-10-05T13:51:45Z",
+      "candidate": "2135428d6dc84bdb5b47a711f04d41b2ff320d4a",
+      "implementation_commit": "f2cd59539119e04cd801810ac48474a5c7975c54",
+      "status_at_snapshot": "ready and clean but 7 behind current integration by direct branch comparison at 13:57Z"
+    },
+    "ticket_06_reintegration_progress_1353": {
+      "observed": "2026-10-05T13:59:51Z",
+      "commit": "4bd776c86a7601852b807aa51ef1d105276dc17f",
+      "summary": "rebase first hit conflicts, then continued to clean rebased head; focused launch/harness tests passed; full tools sweep still running"
+    },
+    "ticket_17_sandboxed_commit_progress_1353": {
+      "observed": "2026-10-05T13:59:53Z",
+      "summary": "startup reads and implementation began; test_worker.py passed once then failed after further private-clone/shared-ref edits; four dirty files"
+    },
+    "ticket_06_reintegration_progress_1403": {
+      "observed": "2026-10-05T14:04:39Z",
+      "commit": "4bd776c86a7601852b807aa51ef1d105276dc17f",
+      "summary": "post-rebase gate continued; full tools sweep failed once, focused worker test passed twice, test_worker.py passed, then full tools/agents/test_*.py loop passed; no final ready marker yet"
+    },
+    "ticket_10_ready_waiting_1403": {
+      "observed": "2026-10-05T14:03:39Z",
+      "candidate": "2135428d6dc84bdb5b47a711f04d41b2ff320d4a",
+      "summary": "no new transcript events; clean ready candidate remained idle while stale behind integration"
+    },
+    "ticket_17_sandboxed_commit_progress_1403": {
+      "observed": "2026-10-05T14:05:06Z",
+      "summary": "test_worker.py recovered, test_lead_launch.py failed then recovered, one lead_driven harness run passed, later lead_driven harness run failed; five dirty files"
+    },
+    "ticket_06_reintegration_progress_1413": {
+      "observed": "2026-10-05T14:15:02Z",
+      "commit": "4bd776c86a7601852b807aa51ef1d105276dc17f",
+      "summary": "tools sweep and bench harness sweep completed code 0 after earlier failure/noisy warning; worker compacted and began another tools sweep; clean non-marker head"
+    },
+    "ticket_10_ready_waiting_1413": {
+      "observed": "2026-10-05T14:13:42Z",
+      "candidate": "2135428d6dc84bdb5b47a711f04d41b2ff320d4a",
+      "summary": "ready and idle with no transcript changes; still awaiting sequencing behind ticket 06"
+    },
+    "ticket_17_sandboxed_commit_progress_1413": {
+      "observed": "2026-10-05T14:15:07Z",
+      "summary": "lead_driven and land tests recovered, docs/practice and run-worker skill edited, focused tool-suite command passed; still dirty in seven files with no commits"
+    },
+    "ticket_06_ready_after_reintegration_1423": {
+      "ready": "2026-10-05T14:22:43Z",
+      "candidate": "3b9baeb2ce8497b5195993e232ab044f83e6e0b4",
+      "status_at_snapshot": "clean, idle and 4 ahead of integration; lead began review/check at 14:24 with no result by cursor"
+    },
+    "ticket_10_ready_waiting_1423": {
+      "observed": "2026-10-05T14:23:45Z",
+      "candidate": "2135428d6dc84bdb5b47a711f04d41b2ff320d4a",
+      "summary": "ready and idle for another tick; still stale behind integration"
+    },
+    "ticket_17_ready_1423": {
+      "ready": "2026-10-05T14:24:14Z",
+      "candidate": "25d8d0d89889a0f2f8c2584966e7a840c01addf4",
+      "status_at_snapshot": "monitor at 14:23:45Z still showed running with 8 dirty paths; direct branch status at 14:24:19Z was clean and 1 ahead"
+    },
+    "ticket_06_landed_1433": {
+      "observed": "2026-10-05T14:33:48Z",
+      "candidate": "3b9baeb2ce8497b5195993e232ab044f83e6e0b4",
+      "resolved_commit": "bc36daf",
+      "acceptance_commit": "f57e71554ae8e8070f602f4838be0984944c3f2b",
+      "summary": "lead completed review/check, copied review and acceptance evidence, resolved ticket 06 and added ticket 18"
+    },
+    "ticket_18_added_1433": {
+      "observed": "2026-10-05T14:33:48Z",
+      "path": "docs/efforts/lead-worker-readiness/tickets/18-interactive-launch-and-monitors.md",
+      "summary": "new blocked ticket carries missed interactive-launch and monitor work; ticket 18 waits for 06,10,17 and ticket 14 now waits for 18"
+    },
+    "ticket_10_reintegrate_1": {
+      "sent": "2026-10-05T14:27:47Z",
+      "candidate": "2135428d6dc84bdb5b47a711f04d41b2ff320d4a",
+      "sha256": "e48f84aded4dc0f3047248cdfe6af33c96067dad31fd3c38cf056218bb8e021d",
+      "summary": "lead accepted ticket 10 content as built, moved missed interactive-launch/monitor work to ticket 18, and asked for rebase after tickets 16 and 06"
+    },
+    "ticket_10_reintegration_progress_1433": {
+      "observed": "2026-10-05T14:34:53Z",
+      "summary": "worker read reintegration, rebase hit conflicts, patched lead_launch/test_worker/test_lead_launch, recovered one focused lead-launch test and py_compile, then staged conflict-resolution files; no final marker"
+    },
+    "ticket_17_review_1": {
+      "sent": "2026-10-05T14:30:22Z",
+      "candidate": "25d8d0d89889a0f2f8c2584966e7a840c01addf4",
+      "sha256": "266eb5d4c1e55261f91d50a111fc4badafea2f5339438e4274e50e7f9497e669",
+      "summary": "lead review accepted TraeCLI private-clone behavior but blocked on Codex sandbox .git writability and required real-runtime evidence"
+    },
+    "ticket_17_review_rework_progress_1433": {
+      "observed": "2026-10-05T14:34:50Z",
+      "summary": "worker read review-1, checked Codex and TraeCLI help, patched test_worker.py, had one passing worker test run and one later failing worker test run; branch dirty after marker"
+    },
+    "ticket_10_ready_after_reintegration_1443": {
+      "ready": "2026-10-05T14:45:21Z",
+      "candidate": "eebb10292c89667a29894acf67aff5f38040d865",
+      "previous_post_rebase_marker": "1d86d3a",
+      "summary": "rebase continued, full tool-agent, harness and readiness scenario loops plus tracker lint passed, evidence report updated, and final marker committed clean"
+    },
+    "ticket_17_probe_progress_1443": {
+      "observed": "2026-10-05T14:46:26Z",
+      "candidate_under_rework": "25d8d0d89889a0f2f8c2584966e7a840c01addf4",
+      "summary": "separate private git-dir fix passed worker tests; real Codex and TraeCLI probes passed and wrote 19-line and 16-line public event streams; worker/tool/harness/scenario/tracker/size checks passed but report/final marker still pending"
+    },
+    "ticket_17_rebase_skew_1443": {
+      "observed": "2026-10-05T14:46:26Z",
+      "behind": 6,
+      "ahead": 1,
+      "summary": "direct branch comparison showed worker 17 behind current integration after ticket 06 landed, while the monitor displayed only ahead and dirty counts"
+    },
+    "ticket_10_landed_1453": {
+      "observed": "2026-10-05T14:53:47Z",
+      "candidate": "eebb10292c89667a29894acf67aff5f38040d865",
+      "resolved_commit": "e9b32fa",
+      "acceptance_commit": "25a03d015649d5b2ed64b71b12dab7a61e719db6",
+      "summary": "lead ran ticket 10 monitor/accounting checks on the real effort, recorded acceptance, landed/resolved ticket 10 and left the worker clean/idle"
+    },
+    "ticket_17_ready_after_review_1453": {
+      "ready": "2026-10-05T14:48:58Z",
+      "candidate": "6087d2d41cb2520b2b720380d9763018f48cf5e7",
+      "summary": "worker finished review-1 by updating report evidence, fixing tracker-lint failure and committing a clean ready marker before lead re-ran real probes"
+    },
+    "ticket_17_reintegrate_1": {
+      "sent": "2026-10-05T14:52:19Z",
+      "candidate": "6087d2d41cb2520b2b720380d9763018f48cf5e7",
+      "sha256": "16febdf21d15bab6b4818d0617924e51e544fba9ffed32b591a39f80f0def0e7",
+      "summary": "lead accepted content after real Codex and TraeCLI probes, then asked for rebase after tickets 06 and 10 plus private-repository accounting adaptation"
+    },
+    "ticket_17_reintegration_progress_1453": {
+      "observed": "2026-10-05T14:54:58Z",
+      "commit": "3d2559336cfe0dc59ae757b0b356a7746c846225",
+      "previous_marker_after_rebase": "2bc5633e17f0279c4211d89a6249d0fb7eec716b",
+      "summary": "rebase onto 25a03d0 succeeded without conflicts, then worker inspected ticket 06/10 surfaces and dirtied worker, lead_launch, harness tests and report files after the marker"
+    },
+    "ticket_17_gate_progress_1503": {
+      "observed": "2026-10-05T15:04:58Z",
+      "head": "3d2559336cfe0dc59ae757b0b356a7746c846225",
+      "summary": "post-reintegration full tools loop failed twice; focused test_mac_tmux.py passed with workspace-local TMPDIR and TMUX_TMPDIR; full gate runner started at 15:04:43Z and was still running; branch dirty in seven tracked files plus untracked .local"
+    },
+    "ticket_17_context_jump_1503": {
+      "observed": "2026-10-05T15:03:54Z",
+      "summary": "worker context gauge rose from 22% at the 14:53 monitor to 85% while the worker remained active"
+    },
+    "ticket_17_private_tmp_gate_1513": {
+      "observed": "2026-10-05T15:14:41Z",
+      "head": "3d2559336cfe0dc59ae757b0b356a7746c846225",
+      "summary": "full gate failed twice, focused tmux/bwrap reproductions showed private /tmp must have 1777 mode and pre-created tmux-$UID; test_sqlite_baseline passed under that setup and a full private-/tmp gate was running"
+    },
+    "ticket_17_peer_branch_fix_1523": {
+      "observed": "2026-10-05T15:24:56Z",
+      "head": "3d2559336cfe0dc59ae757b0b356a7746c846225",
+      "summary": "private-/tmp full gate failed at 15:17:23Z on parallel-workers-and-overlap shared-branch accounting; focused peer-worker branch regression failed red at 15:19:50Z and passed green at 15:20:12Z after worker.py patch; generated .local removed and a fresh full private-/tmp gate was still running"
+    },
+    "ticket_17_resume_refresh_progress_1533": {
+      "observed": "2026-10-05T15:34:00Z",
+      "head": "3d2559336cfe0dc59ae757b0b356a7746c846225",
+      "summary": "private-/tmp full gate cleared tools and test_fleet but failed at 15:26:49Z in the lead-driven harness; focused private-clone resume-refresh test failed red at 15:30:39Z and passed green at 15:31:47Z after worker.py patches; parallel-overlap still failed with details=landing at 15:32:21Z and worker was still diagnosing"
+    },
+    "ticket_17_stale_base_same_session_progress_1543": {
+      "observed": "2026-10-05T15:44:50Z",
+      "head": "3d2559336cfe0dc59ae757b0b356a7746c846225",
+      "summary": "context compacted at 15:35:52Z; stale-base same-session rework focused test failed red then passed after lead_launch.py patch; parallel-overlap scenario failed then passed after lead_driven.py patch; full tools and bench harness unit sweeps passed under private /tmp and readiness scenarios were starting"
+    },
+    "ticket_17_ready_and_lead_gate_1553": {
+      "observed": "2026-10-05T15:54:59Z",
+      "candidate": "7fddf822548fbe0db81a5671155f3c66548218dc",
+      "summary": "worker corrected a false-green scenario wrapper, reran per-scenario readiness checks, tracker lint and diff-check, removed temp l17 artifacts, and committed a clean ready marker at 15:49:48Z; lead checked the ready marker by 15:50:53Z but lead-side gate/land hit /tmp inode exhaustion and then test_sqlite_baseline failure, leaving untracked acceptance-17.jsonl and no landed.json by cutoff"
+    },
+    "ticket_17_landed_without_cache_landed_json_1603": {
+      "observed": "2026-10-05T16:05:24Z",
+      "candidate": "7fddf822548fbe0db81a5671155f3c66548218dc",
+      "integration_tip": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "integration advanced through ticket 17 resolution and acceptance/log commits and ws.py status reported ticket 17 landed, but the coordinator state cache still had no 17-sandboxed-worker-can-commit/landed.json"
+    },
+    "ticket_18_launch_1603": {
+      "launched": "2026-10-05T15:58:18Z",
+      "base": "0a28a3dd857524362746fca4e43f677167579c55",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-18-interactive-launch-and-monitors",
+      "summary": "ticket 18 launched after ticket 17 landed; lead sent temp-directory note at 15:59:04Z; worker read the note, set TMPDIR/TMUX_TMPDIR/TMPPREFIX under devx/tmp/lwr-18, and began test-first edits"
+    },
+    "independent_review_1_recorded_1613": {
+      "recorded": "2026-10-05T16:11:11Z",
+      "commit": "ad110d78c99b709ada7fb06935520c77e9b76f34",
+      "summary": "lead recorded independent review of main..effort/lead-worker-readiness at 0a28a3d; report listed 23 defects, four blocking, despite green suites and scenarios; tickets 19-21 were added from its findings"
+    },
+    "ticket_19_launch": {
+      "launched": "2026-10-05T16:11:16Z",
+      "base": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-19-safe-on-a-shared-repository",
+      "prompt_sha256": "d8e02cb8009e0cdf1fd541fe4e8056bd0991e7f34eee62c9c832f244feffeffb"
+    },
+    "ticket_20_launch": {
+      "launched": "2026-10-05T16:11:16Z",
+      "base": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-20-rework-and-resume-hold",
+      "prompt_sha256": "b59143dbcb63a248d5faad4af6fec54c7f89388c3001db624376ca2c139ed7d2"
+    },
+    "ticket_18_implementation_progress_1613": {
+      "observed": "2026-10-05T16:19:17Z",
+      "head": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "interactive launch/monitor code and tests in progress; worker had four dirty files, no commits ahead, and several focused test failure/pass cycles"
+    },
+    "parallel_18_19_20_overlap_1613": {
+      "observed": "2026-10-05T16:19:17Z",
+      "summary": "tickets 18, 19 and 20 all active in overlapping agent-tooling files; monitor showed dirty counts but not the shared path collision"
+    },
+    "ticket_18_progress_1623": {
+      "observed": "2026-10-05T16:25:45Z",
+      "head": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "focused lead-launch and worker tests passed, then worker moved to interactive rework delivery and readiness-scenario work; dirty in lead_launch.py, worker.py and two test files; no commits ahead"
+    },
+    "ticket_19_progress_1623": {
+      "observed": "2026-10-05T16:25:45Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "red-test/scenario setup expanded to eight tracked dirty files plus shared-repository-safe scenario; test_worker.py run was active at pane sample and later exited 1"
+    },
+    "ticket_20_progress_1623": {
+      "observed": "2026-10-05T16:25:45Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "implementation moved into acceptance.py and worker.py; py_compile passed, focused resume and lead-launch tests alternated pass/fail, and a narrow worker test was still running in pane"
+    },
+    "parallel_18_19_20_overlap_1623": {
+      "observed": "2026-10-05T16:25:45Z",
+      "summary": "all three active workers touched tools/agents/test_worker.py and tools/agents/test_lead_launch.py; tickets 18 and 20 also touched worker.py; monitor exposed dirty counts but not path overlap"
+    },
+    "ticket_18_progress_1633": {
+      "observed": "2026-10-05T16:35:28Z",
+      "head": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "focused tests for rework delivery and shared brief failed then passed; worker remained in interactive rework/scenario implementation, with four dirty files and no commits"
+    },
+    "ticket_19_progress_1633": {
+      "observed": "2026-10-05T16:35:28Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "test_land.py and combined acceptance/tool command failed; worker continued mapping shared-branch, record-root, tracker, lander and harness code; dirty in eight tracked files plus shared-repository-safe scenario"
+    },
+    "ticket_20_progress_1633": {
+      "observed": "2026-10-05T16:35:28Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "added lead_launch.py production edits; focused worker, lead-launch and acceptance checks passed, broader worker suite failed once, then focused worker checks and py_compile recovered; no commits"
+    },
+    "parallel_18_19_20_overlap_1633": {
+      "observed": "2026-10-05T16:35:28Z",
+      "summary": "tickets 18, 19 and 20 still all modified test_worker.py and test_lead_launch.py; tickets 18 and 20 modified worker.py; ticket 19 modified harness/scenario/test files"
+    },
+    "ticket_18_progress_1643": {
+      "observed": "2026-10-05T16:48:18Z",
+      "head": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "interactive readiness scenario directory added; py_compile passed; focused interactive-launch scenario failed; no commits"
+    },
+    "ticket_19_progress_1643": {
+      "observed": "2026-10-05T16:48:18Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "py_compile passed but test_land.py still failed; worker continued land/record-branch inspection; no commits"
+    },
+    "ticket_20_progress_1643": {
+      "observed": "2026-10-05T16:48:18Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "broad harness and all-scenario loops passed after earlier failures; worker inspected ticket/diff and remained dirty with no commit"
+    },
+    "parallel_18_19_20_overlap_1643": {
+      "observed": "2026-10-05T16:48:18Z",
+      "summary": "tickets 18, 19 and 20 still all modified test_lead_launch.py and test_worker.py; ticket 18 added an untracked scenario directory that the monitor dirty count did not distinguish"
+    },
+    "ticket_18_progress_1653": {
+      "observed": "2026-10-05T16:54:48Z",
+      "head": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "direct interactive scenario probes passed, but focused harness unit test failed repeatedly; scenario/tmux debugging continued with six tracked dirty files plus untracked scenario directory"
+    },
+    "ticket_19_progress_1653": {
+      "observed": "2026-10-05T16:54:48Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "combined tracker/effort/lead-launch/worker suite failed; narrower lead-launch plus worker suite still running at transcript cutoff; no commits"
+    },
+    "ticket_20_progress_1653": {
+      "observed": "2026-10-05T16:54:48Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "compile, focused harness, all-scenario and tracker checks passed; six untracked real-runtime evidence files appeared; worker remained dirty with no candidate"
+    },
+    "parallel_18_19_20_overlap_1653": {
+      "observed": "2026-10-05T16:54:48Z",
+      "summary": "tickets 18, 19 and 20 continued concurrent edits in shared worker/launcher/test surfaces; monitor still did not classify untracked fixture versus evidence files"
+    },
+    "ticket_20_needs_info_answer_1703": {
+      "observed": "2026-10-05T17:01:19Z",
+      "needs_info_commit": "4e6730923a927a1accf37e9aed4195c9d159a028",
+      "answer_sha256": "310aff3fa0a4d6d7942c1f519ebbdd4fae30b253e21e0c797e186b16219b28e7",
+      "summary": "lead saw ticket 20 in needs-info, inspected branch/report, wrote answer-1.md and sent it with ws.py tell 20; later status showed ticket 20 ready"
+    },
+    "ticket_20_ready_1703": {
+      "observed": "2026-10-05T17:03:54Z",
+      "head": "753820940d5b37ea1b1f6ddd215e900493983b61",
+      "summary": "ticket 20 was clean, idle, two commits ahead and ready for review after final marker"
+    },
+    "ticket_18_progress_1703": {
+      "observed": "2026-10-05T17:04:37Z",
+      "head": "0a28a3dd857524362746fca4e43f677167579c55",
+      "summary": "ticket 18 continued scenario/tmux debugging with repeated focused harness failures, direct scenario probes passing, practice/skill docs edited, and 18 percent context at monitor sample"
+    },
+    "ticket_19_progress_1703": {
+      "observed": "2026-10-05T17:04:42Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "ticket 19 remained dirty with combined lead-launch and worker tests failing earlier and a broad harness gate running at cutoff"
+    },
+    "ticket_18_ready_1723": {
+      "observed": "2026-10-05T17:24:11Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "committed": "2026-10-05T17:22:52Z",
+      "summary": "worker 18 committed ready marker after green checks and clean status; direct comparison showed 8 commits behind integration and 1 ahead"
+    },
+    "ticket_18_lead_review_probe_1723": {
+      "observed": "2026-10-05T17:25:25Z",
+      "summary": "lead read ticket 18 report/diff and launched a throwaway real interactive-worker probe; probe wait had no selected result by lead cursor 4963320"
+    },
+    "ticket_19_progress_1723": {
+      "observed": "2026-10-05T17:28:34Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "broad harness gate and py_compile passed, but worker continued shared-repository/base inspection; still dirty in 14 paths with no commit; one rg pipeline printed an argument error despite shell exit 0"
+    },
+    "ticket_21_progress_1723": {
+      "observed": "2026-10-05T17:28:38Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "early focused lead_driven scenario tests failed; worker edited bench/harness/results.py and bench/harness/test_lead_driven.py and remained uncommitted"
+    },
+    "ticket_18_review_probe_wait_1733": {
+      "observed": "2026-10-05T17:32:18Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "lead-side throwaway interactive probe remained running behind project trust/config prompt after about seven minutes; lead sent input to the probe pane and started another wait"
+    },
+    "ticket_19_progress_1733": {
+      "observed": "2026-10-05T17:34:33Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "test_worker.py and py_compile passed, then chained gate failed in LeadLaunchTest.test_failed_batch_launch_releases_tickets_that_did_not_launch_with_bad_tmpdir; worker read debugging guidance and reran lead_launch tests"
+    },
+    "ticket_21_progress_1733": {
+      "observed": "2026-10-05T17:34:46Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 continued scenario/result harness inspection, added bench/harness/lead_driven.py to the dirty set, and compile checks over edited harness files passed; no commit"
+    },
+    "ticket_18_review_1": {
+      "sent": "2026-10-05T17:39:24Z",
+      "candidate": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "sha256": "6541df708386621a4d5f880362565d54cb96af8377150a451793758ff3b0528b",
+      "summary": "lead review was based on a real interactive probe whose pane and run record were preserved in the ticket 18 state directory"
+    },
+    "ticket_18_rework_1743": {
+      "observed": "2026-10-05T17:45:26Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 read review-1 and began investigating trust prompt, runtime transcript and rework delivery paths; worktree still clean at ready marker"
+    },
+    "ticket_19_progress_1743": {
+      "observed": "2026-10-05T17:45:09Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "after earlier failure, worker 19 reran lead_launch and broad chained gates successfully, but output contained repeated subprocess ResourceWarnings and no candidate was committed"
+    },
+    "ticket_21_progress_1743": {
+      "observed": "2026-10-05T17:45:15Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 broadened changes to 15 files across harness, readiness scenarios, acceptance and lander code; compile checks passed and branch remained uncommitted"
+    },
+    "monitor_dirty_mismatch_1753": {
+      "observed": "2026-10-05T17:54:09Z",
+      "summary": "ws.py status, ws.py workers and direct git disagreed on dirty counts for active tickets 18 and 21 during the same observer pass"
+    },
+    "ticket_18_rework_progress_1753": {
+      "observed": "2026-10-05T17:54:57Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 moved into active review rework, passed focused interactive-launch worker and lead-launch tests, hit one nonexistent fixture-ticket path read, and remained uncommitted with eight dirty paths by direct git"
+    },
+    "ticket_19_progress_1753": {
+      "observed": "2026-10-05T17:53:56Z",
+      "head": "375c2610ab82cd498e8a18cbf77a0537d2868043",
+      "summary": "worker 19 had broad gates, harness suites, tracker lint and py_compile pass with repeated ResourceWarning output, then started another scenario loop; no commit"
+    },
+    "ticket_21_progress_1753": {
+      "observed": "2026-10-05T17:54:42Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 reached twenty dirty tracked paths, recovered focused lead-launch monitor tests after failures, then hit a focused effort rerun failure from an existing record branch; no commit"
+    },
+    "ticket_19_review_1": {
+      "sent": "2026-10-05T18:01:18Z",
+      "candidate": "357a8c79697c66326aa77fefd5e3a1132ec57ac7",
+      "sha256": "0ee2a8a833df41ae2899865791da1dec05f28c2bb162fc397baf80effd8c5d42",
+      "summary": "lead reviewed the pre-rebase ticket 19 ready marker shortly before the worker rebased that work to current head 572128d"
+    },
+    "ticket_19_ready_rebase_rework_1803": {
+      "observed": "2026-10-05T18:06:19Z",
+      "head": "572128d9d9c2d1ca1f142ff1f75248594fb7d0ef",
+      "summary": "worker 19 committed implementation and ready marker, received review, rebased successfully to integration, then dirtied three files while adding review-follow-up tests; chained land/acceptance/harness gate failed"
+    },
+    "ticket_18_rework_progress_1803": {
+      "observed": "2026-10-05T18:07:09Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 recovered full worker and lead-launch suites plus focused interactive scenario after failures, but full lead-driven harness still failed and another full harness run was started"
+    },
+    "ticket_21_progress_1803": {
+      "observed": "2026-10-05T18:07:34Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 reached 27 dirty paths, recovered several focused tests and executable gate fragments, then full lead-driven harness failed while launch-fixture inspection continued"
+    },
+    "observer_tmp_failure_1803": {
+      "observed": "2026-10-05T18:06Z",
+      "summary": "observer attempt to write tmux pane captures under /tmp failed with no space left on device; pane captures were rerun directly to stdout"
+    },
+    "ticket_18_verification_progress_1813": {
+      "observed": "2026-10-05T18:14:21Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 completed full harness, py_compile, auxiliary harness, lead-launch and readiness scenario checks successfully, then moved into evidence report and ready-marker work; no commit yet"
+    },
+    "ticket_19_rework_gate_progress_1813": {
+      "observed": "2026-10-05T18:14:30Z",
+      "head": "572128d9d9c2d1ca1f142ff1f75248594fb7d0ef",
+      "summary": "worker 19's chained land/acceptance/harness gate failed three times before passing, then the worker started a broader tools gate; branch stayed dirty after ready marker and review"
+    },
+    "ticket_21_scenario_failures_1813": {
+      "observed": "2026-10-05T18:14:06Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 inspected launch fixtures, hit focused mutation and bookkeeping scenario failures, passed later compile/import checks, and started a combined tool unittest gate; no commit"
+    },
+    "lead_idle_after_ticket_19_review_1813": {
+      "observed": "2026-10-05T18:13:52Z",
+      "summary": "no selected lead transcript records, scratch note changes, integration commits or new coordinator artifacts appeared after the ticket 19 review send"
+    },
+    "active_ticket_monitor_1823": {
+      "observed": "2026-10-05T18:24:01Z",
+      "integration_tip": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "ws.py status/workers showed tickets 18, 19 and 21 still running; ticket 18 context had reached 95 percent while all three active worktrees remained dirty"
+    },
+    "ticket_18_rework_regression_1823": {
+      "observed": "2026-10-05T18:24:30Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 remained at the old ready marker but accumulated twelve dirty paths; a py_compile/check command failed at 18:23:23Z and the pane showed context compaction plus a focused interactive scenario rerun"
+    },
+    "ticket_19_rework_gate_progress_1823": {
+      "observed": "2026-10-05T18:24:01Z",
+      "head": "572128d9d9c2d1ca1f142ff1f75248594fb7d0ef",
+      "summary": "worker 19's full tools gate failed at 18:19:50Z, then a targeted worker/land/acceptance/harness chain was running with the first three suites passed at pane sample"
+    },
+    "ticket_21_gate_progress_1823": {
+      "observed": "2026-10-05T18:24:15Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21's combined tool unittest failed at 18:18:29Z, then passed on rerun with ResourceWarning noise; the worker started the full lead-driven harness at 18:24:15Z"
+    },
+    "lead_idle_after_ticket_19_review_1823": {
+      "observed": "2026-10-05T18:25:07Z",
+      "summary": "no selected lead transcript records, scratch note changes, integration commits or new coordinator review/landing artifacts appeared during the 18:23 pass"
+    },
+    "active_ticket_monitor_1833": {
+      "observed": "2026-10-05T18:36:18Z",
+      "integration_tip": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "ws.py status/workers still showed tickets 18, 19 and 21 running with integration unchanged; ticket 19 dropped to 18 percent context while compacting"
+    },
+    "ticket_18_interactive_rework_1833": {
+      "observed": "2026-10-05T18:34:37Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 patched interactive scenario timing after focused failures; the focused interactive lead-driven test passed, but the worktree remained dirty at the old ready marker"
+    },
+    "ticket_19_gate_recovery_1833": {
+      "observed": "2026-10-05T18:37:05Z",
+      "head": "572128d9d9c2d1ca1f142ff1f75248594fb7d0ef",
+      "summary": "worker 19 recovered targeted worker/land/acceptance/harness, full tools, bench harness and readiness scenario gates after the earlier failure; context compacted and no replacement marker was observed"
+    },
+    "ticket_21_staged_rework_1833": {
+      "observed": "2026-10-05T18:37:21Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 passed readiness/tracker gates, patched 30-tracker.sh, and started another full scenario run; direct git showed staged additions plus unstaged edits while monitors only reported dirty 27"
+    },
+    "lead_idle_after_ticket_19_review_1833": {
+      "observed": "2026-10-05T18:37:21Z",
+      "summary": "no selected lead transcript records, scratch note changes, integration commits or new coordinator review/landing artifacts appeared during the 18:33 pass"
+    },
+    "active_ticket_monitor_1843": {
+      "observed": "2026-10-05T18:44:13Z",
+      "integration_tip": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "ws.py status/workers showed ticket 19 newly ready and clean at four commits ahead while tickets 18 and 21 remained running and dirty"
+    },
+    "lead_ticket_19_review_started_1843": {
+      "observed": "2026-10-05T18:42:56Z",
+      "candidate": "bdda6518d8c33005dc6c63baf8983edc416eeefe",
+      "summary": "lead status check saw ticket 19 ready at bdda651, then started a ticket 19 candidate acceptance/review command; no result was present by lead cursor 5119867"
+    },
+    "ticket_18_gate_progress_1843": {
+      "observed": "2026-10-05T18:43:42Z",
+      "head": "901a770294c4c8bc79f1f01a8bb73f9b314102d0",
+      "summary": "worker 18 reported broad gates green after review-code changes and reran tracker lint, py_compile and diff-check after report edits; worktree still dirty at the stale ready marker"
+    },
+    "ticket_19_ready_replacement_1843": {
+      "observed": "2026-10-05T18:41:08Z",
+      "candidate": "bdda6518d8c33005dc6c63baf8983edc416eeefe",
+      "summary": "worker 19 committed implementation 8ff9423 and replacement ready marker bdda651 after recovered post-review gates; direct git showed the worktree clean"
+    },
+    "ticket_21_report_progress_1843": {
+      "observed": "2026-10-05T18:44:55Z",
+      "head": "660b3b7b29ce0bc6f73015c385b78218312a89af",
+      "summary": "worker 21 compacted context, patched report content, and continued diff/status checks; direct git showed 28 dirty paths including untracked 21-report.md plus staged changes"
+    },
+    "ticket_19_landed_1853": {
+      "observed": "2026-10-05T18:47:29Z",
+      "candidate": "bdda6518d8c33005dc6c63baf8983edc416eeefe",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "lead accepted, landed and resolved ticket 19; integration advanced with ticket 19 commits plus resolve, acceptance/log and cleanup commits"
+    },
+    "coordinator_record_worktree_1853": {
+      "observed": "2026-10-05T18:47:58Z",
+      "summary": "lead changed ws.py so ticket/evidence bookkeeping reads and writes in the record worktree while code continues landing on the integration branch"
+    },
+    "ticket_21_review_reintegrate_1853": {
+      "observed": "2026-10-05T18:48:45Z",
+      "candidate": "e3ad04a90a52e5236adbacd51361a10f35549ebe",
+      "summary": "ticket 21 reached ready marker after implementation, lead ran detached mutation checks, wrote reintegrate-1.md and sent it; worker resumed dirty rework"
+    },
+    "ticket_18_review_2_1853": {
+      "observed": "2026-10-05T18:54:31Z",
+      "candidate": "f127c0650247c312d2c830303f866ae6d6b2bb4a",
+      "summary": "ticket 18 reached replacement ready marker, lead real interactive probe verified prompt/ready detection but found the trust override proof insufficient, and review-2 was sent"
+    },
+    "monitor_dirty_mismatch_1853": {
+      "observed": "2026-10-05T18:55:45Z",
+      "summary": "after ticket 21's reintegration, an earlier same-pass ws.py status sample showed dirty 2, while later ws.py status, ws.py workers and direct git showed dirty 3"
+    },
+    "active_ticket_monitor_1903": {
+      "observed": "2026-10-05T19:04:15Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "integration unchanged after ticket 19; tickets 18 and 21 were running dirty rework near 30 percent context while ticket 19 remained landed"
+    },
+    "lead_idle_after_review_2_1903": {
+      "observed": "2026-10-05T18:57:42Z",
+      "summary": "lead transcript added only a system record after ticket 18 review-2; no selected lead tool calls or public lead actions through the 19:03 pass"
+    },
+    "ticket_18_review_2_rework_1903": {
+      "observed": "2026-10-05T19:05:51Z",
+      "head": "f127c0650247c312d2c830303f866ae6d6b2bb4a",
+      "summary": "worker 18 accumulated seven dirty files while addressing review-2, hit test_worker.py exit 2, recovered focused worker tests and scenario checks, and had no new marker"
+    },
+    "ticket_21_review_rework_1903": {
+      "observed": "2026-10-05T19:05:59Z",
+      "head": "8e754d223c79bd426388be01b70d19a3a8fb73e3",
+      "summary": "worker 21 remained dirty after review-1/reintegration, saw a lander-related check fail, then completed focused checks and full bench.harness.test_lead_driven unittest without a new marker"
+    },
+    "active_ticket_monitor_1913": {
+      "observed": "2026-10-05T19:17:42Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "integration unchanged; tickets 18 and 21 still running with stale ready markers and dirty worktrees; ticket 18 monitor context showed 91 percent after compaction and ticket 21 showed 26 percent"
+    },
+    "lead_idle_after_review_2_1913": {
+      "observed": "2026-10-05T19:17:10Z",
+      "summary": "no new lead transcript bytes, scratch note changes, integration commits or coordinator review/landing artifacts appeared during the 19:13 pass"
+    },
+    "ticket_18_review_2_gate_progress_1913": {
+      "observed": "2026-10-05T19:17:51Z",
+      "head": "f127c0650247c312d2c830303f866ae6d6b2bb4a",
+      "summary": "worker 18 completed real interactive proof cleanup plus focused worker, lead-launch and trust-override tests, compacted context, then started a full lead-driven harness run while seven files remained dirty"
+    },
+    "ticket_21_reintegration_gate_progress_1913": {
+      "observed": "2026-10-05T19:17:51Z",
+      "head": "8e754d223c79bd426388be01b70d19a3a8fb73e3",
+      "summary": "worker 21 completed broad tools and full lead-driven harness gates, then restarted the broad tools gate while three harness files remained dirty"
+    },
+    "lead_status_reply_1923": {
+      "observed": "2026-10-05T19:24:33Z",
+      "summary": "lead answered public status prompt after checking ATTENTION, ws.py status/workers and branch ancestry; reply said 17 tickets landed, 21 current, 18 behind/in second rework and 14/15 blocked"
+    },
+    "active_ticket_monitor_1923": {
+      "observed": "2026-10-05T19:24:21Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "integration unchanged; tickets 18 and 21 still running with stale ready markers and dirty worktrees; ticket 18 showed 85 percent context and ticket 21 showed 91 percent after compaction"
+    },
+    "ticket_18_review_2_gate_progress_1923": {
+      "observed": "2026-10-05T19:25:48Z",
+      "head": "f127c0650247c312d2c830303f866ae6d6b2bb4a",
+      "summary": "worker 18 passed full lead-driven and smaller harness gates after review-2, then started a full tools/agents sweep that was still running in test_worker.py while seven files remained dirty"
+    },
+    "ticket_21_reintegration_gate_progress_1923": {
+      "observed": "2026-10-05T19:25:48Z",
+      "head": "8e754d223c79bd426388be01b70d19a3a8fb73e3",
+      "summary": "worker 21 completed broad tools and broad harness gates, compacted context, reread guidance and started a 17-scenario readiness loop while three harness files remained dirty"
+    },
+    "owner_cleanup_review_land_instruction_1933": {
+      "observed": "2026-10-05T19:26:03Z",
+      "summary": "owner told the lead to launch a TraeCLI disk-cleanup worker, thoroughly review the integration branch, fix issues, land and allow the live trial to proceed"
+    },
+    "disk_cleanup_worker_1933": {
+      "observed": "2026-10-05T19:36:37Z",
+      "state_dir": "/data02/home/philip.yang/.cache/corenius/readiness/lead-worker-readiness/disk-cleanup",
+      "worktree": "/data02/home/philip.yang/devx/tmp/disk-cleanup",
+      "summary": "lead-launched maintenance worker removed inactive old tmp.* directories under devx/tmp, reported about 1.45G freed, skipped live lwr-19 temp state, and remained outside ws.py workers ticket rows"
+    },
+    "lead_manual_tmux_input_1933": {
+      "observed": "2026-10-05T19:36:37Z",
+      "summary": "lead transcript showed tmux send-keys to the disk-cleanup pane while it waited at a prompt"
+    },
+    "ticket_22_launch_1933": {
+      "launched": "2026-10-05T19:29:22Z",
+      "base": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "worktree": "/data02/home/philip.yang/workspace/corenius-lwr-22-no-host-tmp",
+      "record_commit": "9b1d350",
+      "summary": "lead recorded no-host-/tmp decision and ticket 22, patched scratch ws.py, committed the record-branch change and launched ticket 22"
+    },
+    "active_ticket_monitor_1933": {
+      "observed": "2026-10-05T19:36:13Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "ws.py status/workers showed ticket 18 and ticket 21 newly ready and idle, ticket 22 running dirty in three files, ticket 19 landed/idle, and ticket 14 waiting on ticket 22"
+    },
+    "ticket_18_ready_after_review_2_1933": {
+      "observed": "2026-10-05T19:36:37Z",
+      "candidate": "49b6c8f0a3fba5704bbb0cfbc2459ca34619e9fd",
+      "committed": "2026-10-05T19:32:54Z",
+      "summary": "worker 18 completed full tools, readiness, tracker, diff-check and py_compile gates and committed a clean ready marker; pane noted ResourceWarning noise and skipped tools/agents/check.sh and cargo"
+    },
+    "ticket_21_ready_after_reintegration_1933": {
+      "observed": "2026-10-05T19:36:37Z",
+      "candidate": "b9cfd0b8e6670ff416ddf5f24d2319eb9bb56695",
+      "implementation_commit": "08da9b4545e5c827c7d9939e32c2d871469d8401",
+      "committed": "2026-10-05T19:35:41Z",
+      "summary": "worker 21 completed readiness, shared-output/report, py_compile and final marker work after reintegration and became clean/ready"
+    },
+    "ticket_22_start_1933": {
+      "observed": "2026-10-05T19:36:37Z",
+      "head": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "worker 22 started from the integration tip, read repo and effort context, and began no-host-/tmp test edits in test_land.py, test_lead_launch.py and test_worker.py"
+    },
+    "active_ticket_monitor_1943": {
+      "observed": "2026-10-05T19:47:06Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "ws.py status/workers showed tickets 18 and 21 in rework while clean at their ready markers, ticket 22 running with 14 dirty paths and 17 percent context, and ticket 14 still waiting on 22"
+    },
+    "ticket_21_accepted_then_gate_failed_1943": {
+      "observed": "2026-10-05T19:46:13Z",
+      "candidate": "b9cfd0b8e6670ff416ddf5f24d2319eb9bb56695",
+      "acceptance_commit": "e582325",
+      "review_commit": "5fb3474",
+      "review_sha256": "7f136ad060ee77f39c9e8a3fcc3199887e34610a744f3743adb83a88c8782d47",
+      "summary": "lead recorded acceptance for ticket 21, then the lead-side clean-checkout gate failed and review-1 requested rework for the same candidate"
+    },
+    "ticket_18_reintegrate_1_1943": {
+      "sent": "2026-10-05T19:46:27Z",
+      "candidate": "49b6c8f0a3fba5704bbb0cfbc2459ca34619e9fd",
+      "sha256": "9e521681d9341382348d7545b201880c0feffcfb1ac83a1c9cadc746d600ebbf",
+      "summary": "lead sent a non-review reintegration handoff telling ticket 18 to land first, rebase onto current integration and run the full gate in a clean detached checkout"
+    },
+    "ticket_21_rework_started_1943": {
+      "observed": "2026-10-05T19:47:23Z",
+      "head": "b9cfd0b8e6670ff416ddf5f24d2319eb9bb56695",
+      "summary": "worker 21 read review guidance, reproduced in a clean detached worktree, edited bench/harness/test_lead_driven.py and saw the focused reviewed test still fail with exit 1"
+    },
+    "ticket_22_no_host_tmp_progress_1943": {
+      "observed": "2026-10-05T19:47:23Z",
+      "head": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "worker 22 broadened to 13 direct diff paths by 19:46 and 14 monitor dirty paths by 19:47, including launcher/worker/land/sqlite tooling, AGENTS.md, run-worker skill and practice docs, while several focused no-host-/tmp checks were still failing or recovering"
+    },
+    "active_ticket_monitor_1953": {
+      "observed": "2026-10-05T19:54:08Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "ws.py status/workers showed ticket 18 running with 20 dirty paths after rebase conflict, ticket 21 running a required gate clean at 3df6674, and ticket 22 running with 14 dirty paths after compaction"
+    },
+    "ticket_18_rebase_conflict_1953": {
+      "observed": "2026-10-05T19:54:30Z",
+      "head": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "worker 18 ran git rebase effort/lead-worker-readiness at 19:47:29Z and got exit 1; direct git showed unmerged conflicts in lead_driven.py tests, lead_launch.py, test_lead_launch.py and worker.py while the worker inspected stages and edited worker.py"
+    },
+    "ticket_21_rework_gate_progress_1953": {
+      "observed": "2026-10-05T19:54:30Z",
+      "head": "3df66742e3e5215683617853eb7960ffd7779e1b",
+      "summary": "worker 21 recovered the focused reviewed tests, committed non-json worker event handling at 19:48:25Z, passed full lead_driven harness in a clean detached checkout and started a broad tools unittest gate still running at cutoff"
+    },
+    "ticket_22_gate_failure_1953": {
+      "observed": "2026-10-05T19:54:30Z",
+      "head": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "worker 22 passed focused lead-launch accounting tests but its broad tools unittest gate failed at 19:54:06Z; direct git showed 13 tracked dirty paths plus untracked checks.d/90-no-host-tmp.sh"
+    },
+    "active_ticket_monitor_2003": {
+      "observed": "2026-10-05T20:04:31Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "ws.py status/workers showed ticket 18 running with 3 ahead and 2 dirty after rebased marker c84af72, ticket 21 running clean at 3df6674, and ticket 22 running with 14 dirty paths after gate recovery"
+    },
+    "ticket_18_dirty_after_marker_2003": {
+      "observed": "2026-10-05T20:05:31Z",
+      "head": "c84af72ac593440eed843c04e0428ba4f2c06cb7",
+      "summary": "worker 18 resolved rebase conflicts, created new ready-marker commits, then dirtied lead_launch.py and worker.py and started test_worker.py"
+    },
+    "ticket_21_clean_checkout_gate_progress_2003": {
+      "observed": "2026-10-05T20:05:31Z",
+      "head": "3df66742e3e5215683617853eb7960ffd7779e1b",
+      "summary": "worker 21 passed clean-checkout broad tools, remaining harness and first all-scenario gates and started a second per-scenario clean-checkout loop"
+    },
+    "ticket_22_gate_recovery_2003": {
+      "observed": "2026-10-05T20:05:31Z",
+      "head": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "worker 22 recovered broad tools, sqlite baseline, full harness, readiness scenarios, tracker lint, no-host-tmp check and py_compile after earlier failures, but still had 14 dirty paths and no commit"
+    },
+    "active_ticket_monitor_2013": {
+      "observed": "2026-10-05T20:14:15Z",
+      "integration_tip": "a6d72b6d0ec950e080cd33a6f4a322dc6cd23f08",
+      "summary": "ws.py status/workers showed ticket 18 running with 3 ahead and 4 dirty, ticket 21 ready clean at 94e66ec, ticket 22 ready clean at 738ead5, and ticket 14 still waiting on ticket 22"
+    },
+    "lead_review_acceptance_start_2013": {
+      "observed": "2026-10-05T20:10:57Z",
+      "summary": "lead started a compound command to close the disk-cleanup tmux window, copy the cleanup report into the records worktree, inspect ticket 21 report evidence and begin acceptance work; no result was visible by the 20:17:18Z cutoff"
+    },
+    "ticket_18_post_marker_gate_failures_2013": {
+      "observed": "2026-10-05T20:17:18Z",
+      "head": "c84af72ac593440eed843c04e0428ba4f2c06cb7",
+      "summary": "worker 18 stayed at marker c84af72 while accumulating four dirty files after test_worker.py and test_lead_launch.py failures; final focused test_lead_launch.py run passed 43 tests at 20:17:12Z"
+    },
+    "ticket_21_ready_2013": {
+      "observed": "2026-10-05T20:17:18Z",
+      "candidate": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "worker 21 finished clean-checkout gates, updated 21-report.md and committed a clean ready marker at 20:09:16Z"
+    },
+    "ticket_22_ready_amended_2013": {
+      "observed": "2026-10-05T20:17:18Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "worker 22 committed marker 4450f81 at 20:10:01Z, amended twice after duplicate trailer handling, and ended clean at final ready marker 738ead5"
+    },
+    "active_ticket_monitor_2023": {
+      "observed": "2026-10-05T20:24:29Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 21 resolved and landed, ticket 18 running at integration head with 20 dirty paths, ticket 22 ready clean at 738ead5, and ticket 14 still waiting on ticket 22"
+    },
+    "ticket_21_landed_2023": {
+      "observed": "2026-10-05T20:19:45Z",
+      "candidate": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "lead resolved ticket 21 after acceptance and landing through the new record-branch flow; integration advanced to 94e66ec while the old cache state directory showed no new landed.json"
+    },
+    "ticket_22_content_accepted_hold_2023": {
+      "observed": "2026-10-05T20:20:27Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "lead checked ticket 22 in a detached checkout, accepted the content, and held its rebase until ticket 18 lands"
+    },
+    "ticket_18_tip_moved_conflict_2023": {
+      "observed": "2026-10-05T20:26:46Z",
+      "head": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "worker 18 received note-2 that ticket 21 landed, committed 514bd31, then rebase failed with three unmerged files and left the worktree at integration head with 20 dirty paths"
+    },
+    "disk_cleanup_completed_2023": {
+      "observed": "2026-10-05T20:20:27Z",
+      "summary": "lead reported the disk-cleanup worker finished, stayed inside its allowlist, freed 5.7 GiB, kept ticket branches and left larger deletion proposals for the owner"
+    },
+    "active_ticket_monitor_2033": {
+      "observed": "2026-10-05T20:34:16Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running clean at 60f6d22 with 4 ahead, ticket 21 landed, ticket 22 still ready clean at 738ead5, and ticket 14 still waiting on ticket 22"
+    },
+    "ticket_18_rebase_resolved_2033": {
+      "observed": "2026-10-05T20:35:02Z",
+      "head": "60f6d2283a74c1557d0b7cc83c8b02be9a7224a3",
+      "summary": "worker 18 resolved the ticket 21 rebase, replayed marker commits b23d1c4/f3acd85/05b7616 plus non-marker commit 60f6d22, remained clean, and started scenario-rule audit before full gates"
+    },
+    "ticket_22_stale_ready_2033": {
+      "observed": "2026-10-05T20:34:42Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 stayed clean and ready but was 6 commits behind and 1 ahead of integration after ticket 21 landed"
+    },
+    "active_ticket_monitor_2043": {
+      "observed": "2026-10-05T20:47:39Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 4 ahead, 2 dirty and activity Inspecting command errors, ticket 21 landed, ticket 22 ready clean at 738ead5, and ticket 14 still waiting on ticket 22"
+    },
+    "ticket_18_scenario_adaptation_2043": {
+      "observed": "2026-10-05T20:48:04Z",
+      "head": "60f6d2283a74c1557d0b7cc83c8b02be9a7224a3",
+      "summary": "worker 18 dirtied lead_driven.py and test_lead_driven.py after the clean rebase tip, ran focused harness commands that failed at 20:43:38Z and 20:46:54Z, then patched lead_driven.py again and started another focused rerun"
+    },
+    "ticket_22_stale_ready_2043": {
+      "observed": "2026-10-05T20:48:04Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted ready marker, still 6 commits behind and 1 ahead of integration while held behind ticket 18"
+    },
+    "active_ticket_monitor_2053": {
+      "observed": "2026-10-05T20:54:32Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 4 ahead, 4 dirty, activity Revising session status checks and one shell running; ticket 22 stayed ready clean at 738ead5 and ticket 14 still listed resolved waits plus ticket 22"
+    },
+    "ticket_18_status_vocabulary_rework_2053": {
+      "observed": "2026-10-05T20:55:05Z",
+      "head": "60f6d2283a74c1557d0b7cc83c8b02be9a7224a3",
+      "summary": "worker 18 expanded dirty files from harness to lead_launch.py and test_lead_launch.py, saw a focused two-test harness rerun fail at 20:50:53Z, then recovered a focused lead_launch status-vocabulary test at 20:54:26Z without a new marker"
+    },
+    "ticket_22_stale_ready_2053": {
+      "observed": "2026-10-05T20:54:32Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2103": {
+      "observed": "2026-10-05T21:04:34Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 4 ahead, 4 dirty, activity Evaluating commit logic and 50 percent context; ticket 22 stayed ready clean at 738ead5 and ticket 14 still listed resolved waits plus ticket 22"
+    },
+    "ticket_18_ack_status_probe_2103": {
+      "observed": "2026-10-05T21:04:57Z",
+      "head": "60f6d2283a74c1557d0b7cc83c8b02be9a7224a3",
+      "summary": "worker 18 recovered the lead_launch status-vocabulary subtest but the chained focused harness tests still failed twice, then it ran a direct interactive scenario probe and inspected worker acknowledgement/status paths without a new marker"
+    },
+    "ticket_22_stale_ready_2103": {
+      "observed": "2026-10-05T21:04:34Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2113": {
+      "observed": "2026-10-05T21:14:37Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 4 ahead, 5 dirty, activity Considering path quotes and 42 percent context; ticket 22 stayed ready clean at 738ead5 and ticket 14 still listed resolved waits plus ticket 22"
+    },
+    "ticket_18_broad_gate_failure_2113": {
+      "observed": "2026-10-05T21:15:13Z",
+      "head": "60f6d2283a74c1557d0b7cc83c8b02be9a7224a3",
+      "summary": "worker 18 patched the interactive scripted participant, recovered the focused harness pair, hit two errors in broad test_lead_launch.py, fixed a fake-tmux path issue and passed a focused three-test lead_launch command; full clean-detached gate and ready marker were still pending"
+    },
+    "ticket_22_stale_ready_2113": {
+      "observed": "2026-10-05T21:14:37Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2123": {
+      "observed": "2026-10-05T21:24:35Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 4 ahead, 5 dirty, activity Run narrow tests after conflict resolution, one shell running and 38 percent context; ticket 22 stayed ready clean at 738ead5 and ticket 14 still listed resolved waits plus ticket 22"
+    },
+    "ticket_18_broad_gate_running_2123": {
+      "observed": "2026-10-05T21:24:34Z",
+      "head": "60f6d2283a74c1557d0b7cc83c8b02be9a7224a3",
+      "summary": "worker 18 recovered the focused lead-launch/harness chain, full worker suite and full lead-launch suite, then started broader bench/harness/test_lead_driven.py with no result by cutoff; no fresh ready marker was present"
+    },
+    "ticket_22_stale_ready_2123": {
+      "observed": "2026-10-05T21:24:35Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2133": {
+      "observed": "2026-10-05T21:34:21Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 5 ahead, 0 dirty, head 9c4934c, activity Run narrow tests after conflict resolution, one shell running and 34 percent context; ticket 22 stayed ready clean at 738ead5 and ticket 14 still listed resolved waits plus ticket 22"
+    },
+    "ticket_18_clean_gate_running_2133": {
+      "observed": "2026-10-05T21:35:08Z",
+      "head": "9c4934c6849c1903b337801d1db0c16dc2860484",
+      "summary": "worker 18 passed full lead-driven harness, committed clean non-marker implementation commit 9c4934c, then started a detached clean-gate worktree under devx/tmp/lwr-18; early agent suites and test_land.py were green, test_lead_launch.py was running, ticket 18 still had no landed.json or fresh ready marker"
+    },
+    "ticket_22_stale_ready_2133": {
+      "observed": "2026-10-05T21:34:21Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2143": {
+      "observed": "2026-10-05T21:44:15Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 5 ahead, 0 dirty, head 9c4934c, activity Evaluating testing sequence, one shell running and 29 percent context; ticket 22 stayed ready clean at 738ead5 and ticket 14 still listed resolved waits plus ticket 22"
+    },
+    "ticket_18_clean_gate_progress_2143": {
+      "observed": "2026-10-05T21:44:58Z",
+      "head": "9c4934c6849c1903b337801d1db0c16dc2860484",
+      "summary": "worker 18 remained clean at non-marker implementation commit 9c4934c while its detached clean gate progressed from lead-launch/monitor suites through all tools/agents suites and into full bench/harness/test_lead_driven.py; no final gate result, report refresh or ready marker by cutoff"
+    },
+    "ticket_22_stale_ready_2143": {
+      "observed": "2026-10-05T21:44:15Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2153": {
+      "observed": "2026-10-05T21:54:19Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 5 ahead, 0 dirty, head 9c4934c, activity Reviewing commit status, one shell running and 88 percent context; ticket 22 stayed ready clean at 738ead5; windows 19 and 21 had been closed"
+    },
+    "lead_owner_status_2153": {
+      "observed": "2026-10-05T21:53:40Z",
+      "summary": "owner asked for status; lead checked live monitors and ticket 18 details, closed stale landed-ticket windows 19 and 21, appended lead-log status, and reported ticket 18 running a clean gate, ticket 22 ready behind 18, ticket 14 waiting for 18/22/review, ticket 15 waiting for 14, and nothing on main"
+    },
+    "ticket_18_clean_gate_restart_2153": {
+      "observed": "2026-10-05T21:55:29Z",
+      "head": "9c4934c6849c1903b337801d1db0c16dc2860484",
+      "summary": "worker 18 stayed clean at non-marker commit 9c4934c, produced partial accumulated clean-gate output from clean-gate.cYZlns, then reread guidance/note-2 and started a fresh clean-gate.ZDtV04 that was running tools/agents/test_evidence.py by pane sample; report and ready marker still pending"
+    },
+    "ticket_22_stale_ready_2153": {
+      "observed": "2026-10-05T21:54:19Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2203": {
+      "observed": "2026-10-05T22:04:18Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 5 ahead, 0 dirty, head 9c4934c, activity Considering analysis methods, one shell running and 82 percent context; ticket 22 stayed ready clean at 738ead5"
+    },
+    "ticket_18_clean_gate_progress_2203": {
+      "observed": "2026-10-05T22:04:53Z",
+      "head": "9c4934c6849c1903b337801d1db0c16dc2860484",
+      "summary": "worker 18 stayed clean at non-marker commit 9c4934c while clean-gate.ZDtV04 passed main lead-launch tests and all required tools/agents suites, then continued quiet-but-alive inside bench/harness/test_lead_driven.py; report and ready marker still pending"
+    },
+    "ticket_22_stale_ready_2203": {
+      "observed": "2026-10-05T22:04:18Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2213": {
+      "observed": "2026-10-05T22:14:24Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 running with 5 ahead, 0 dirty, head 9c4934c, activity Considering output approach and 59 percent context; ticket 22 stayed ready clean at 738ead5"
+    },
+    "lead_semantics_recap_2213": {
+      "observed": "2026-10-05T22:08:32Z",
+      "summary": "owner asked the lead to recap overall semantics; lead gave an owner-facing conceptual summary of the lead-driven effort and status, with no coordinator mutation, review send or landing action observed"
+    },
+    "ticket_18_gate_passed_report_pending_2213": {
+      "observed": "2026-10-05T22:14:44Z",
+      "head": "9c4934c6849c1903b337801d1db0c16dc2860484",
+      "summary": "worker 18 reported clean-gate.ZDtV04 exited 0 at 22:13:16 for non-marker commit 9c4934c, then inspected source/report/docs and prepared to patch the report; no ready marker by cutoff"
+    },
+    "ticket_22_stale_ready_2213": {
+      "observed": "2026-10-05T22:14:24Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2223": {
+      "observed": "2026-10-05T22:24:23Z",
+      "integration_tip": "94e66ecd7fe9e2818611193e6eb7dd0be86fa663",
+      "summary": "ws.py status/workers showed ticket 18 ready with 6 ahead, 0 dirty, head 3ab9ec4 and 42 percent context; ticket 22 stayed ready clean at 738ead5"
+    },
+    "ticket_18_ready_2223": {
+      "observed": "2026-10-05T22:25:28Z",
+      "candidate": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "worker 18 refreshed the report, passed git diff --check and tracker.py lint, committed final marker 3ab9ec4, and was clean; no landed.json or fresh review artifact existed in the old state directory"
+    },
+    "lead_ticket_18_review_probe_2223": {
+      "observed": "2026-10-05T22:20:11Z",
+      "candidate": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "after ticket 18 became ready, lead checked status/report/ancestry, ran a throwaway interactive probe under devx/tmp/lwr18probe3, cleaned it up, and began longer review/acceptance work; no result by cutoff"
+    },
+    "ticket_22_stale_ready_2223": {
+      "observed": "2026-10-05T22:24:22Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "summary": "ticket 22 remained clean and idle at the accepted marker, still 6 behind and 1 ahead of integration"
+    },
+    "active_ticket_monitor_2233_pre_resolve": {
+      "observed": "2026-10-05T22:34:31Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "integration had advanced to ticket 18 marker 3ab9ec4 while ws.py status/workers still showed ticket 18 claimed/ready with its window present; ticket 22 remained ready at 738ead5 and 12 behind/1 ahead by direct git"
+    },
+    "ticket_18_landed_2233": {
+      "observed": "2026-10-05T22:34:16Z",
+      "candidate": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "lead transcript showed ticket 18 acceptance true, land rc=0, integration at 3ab9ec4, and record-branch commits a488212 Accept ticket 18 Candidate plus e3e6474 Record landing; old cache landed.json remained absent"
+    },
+    "active_ticket_monitor_2233_post_resolve": {
+      "observed": "2026-10-05T22:35:17Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "after ws.py resolve 18, monitors showed ticket 18 resolved/landed and ticket 22 claimed/rework with activity Rebasing Branch Procedures, 1 ahead, 0 dirty and 32 percent context"
+    },
+    "ticket_22_reintegrate_1_2233": {
+      "observed": "2026-10-05T22:34:44Z",
+      "candidate": "738ead50f77fcbcaa18322708663df0ccb301190",
+      "sha256": "e7e518a3d368f2f1c0b1a9682798abab1b4590138bcff3080cdb032eb5f9c3aa",
+      "summary": "lead sent content-accepted reintegration instructions for ticket 22 after tickets 21 and 18 landed, asking it to rebase, resolve by intent, run the whole clean-detached gate and hand over with a new ready marker"
+    },
+    "ticket_22_rebase_conflict_2233": {
+      "observed": "2026-10-05T22:35:45Z",
+      "head": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "worker 22 ran git rebase effort/lead-worker-readiness and stopped with conflicts in .claude/skills/run-worker/SKILL.md, tools/agents/lead_launch.py and tools/agents/worker.py; direct status showed detached HEAD with unmerged paths and replayed ticket files staged/modified"
+    },
+    "active_ticket_monitor_2244": {
+      "observed": "2026-10-05T22:44:23Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 running from detached HEAD at integration 3ab9ec4, 0 ahead and 15 dirty paths, activity Finish conflict resolution and rebase, and context 81 percent"
+    },
+    "ticket_22_rebase_resolved_2244": {
+      "observed": "2026-10-05T22:44:31Z",
+      "candidate": "244f3dad31137a7a528c08e666962660f1d29f30",
+      "summary": "worker 22 resolved the reintegration conflicts, staged fifteen paths, passed focused worker/lead-launch checks, and rebase --continue succeeded with new ready-marker commit 244f3da"
+    },
+    "ticket_22_post_rebase_checks_2244": {
+      "observed": "2026-10-05T22:44:58Z",
+      "candidate": "244f3dad31137a7a528c08e666962660f1d29f30",
+      "summary": "after rebase continuation, worker 22 passed py_compile over touched modules and tools/agents/checks.d/90-no-host-tmp.sh, then prepared the clean detached full gate"
+    },
+    "active_ticket_monitor_2244_post_rebase": {
+      "observed": "2026-10-05T22:45:30Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 finishing with 1 ahead, 0 dirty, head ticket 22: ready for review and activity Evaluating reporting process; direct git showed clean head 244f3da comparing 0 behind/1 ahead"
+    },
+    "active_ticket_monitor_2254": {
+      "observed": "2026-10-05T22:54:31Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 finishing, 1 ahead and 0 dirty at head ticket 22: ready for review, one shell running and 72 percent context; ticket 18 remained resolved/landed and tickets 14/15 remained blocked/unlaunched"
+    },
+    "ticket_22_clean_gate_running_2254": {
+      "observed": "2026-10-05T22:54:54Z",
+      "candidate": "244f3dad31137a7a528c08e666962660f1d29f30",
+      "summary": "worker 22 launched a clean detached gate at 22:46:16; by cutoff it was still running with repeated waits, had cleared multiple tools suites plus bench/harness/test_fleet.py, and had entered bench/harness/test_lead_driven.py with no final gate result, report refresh or handoff"
+    },
+    "ticket_22_report_pending_2254": {
+      "observed": "2026-10-05T22:54:30Z",
+      "candidate": "244f3dad31137a7a528c08e666962660f1d29f30",
+      "summary": "ticket 22 report file mtime remained 22:35:32 while the worker checklist still showed report update pending after the full gate"
+    },
+    "interim_coordinator_retirement_note_2254": {
+      "observed": "2026-10-05T22:54:30Z",
+      "summary": "lead scratch notes contained a 22:34 observation that the real interactive launch mode worked end to end in the final layout and the interim coordinator could be retired once ticket 22 lands"
+    },
+    "active_ticket_monitor_2304": {
+      "observed": "2026-10-05T23:04:31Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 finishing, 1 ahead and 0 dirty at head ticket 22: ready for review, one shell running and 68 percent context; ticket 18 remained resolved/landed and tickets 14/15 remained blocked/unlaunched"
+    },
+    "lead_status_2301": {
+      "observed": "2026-10-05T23:01:27Z",
+      "summary": "owner asked for status; lead reported 19 of 22 tickets landed, ticket 22 running final clean gate, ticket 14 waiting for 22 and pre-landing review, ticket 15 waiting for 14, and next steps to land 22, retire the interim script, run independent review, fix/track findings and fast-forward main"
+    },
+    "ticket_22_clean_gate_progress_2304": {
+      "observed": "2026-10-05T23:05:09Z",
+      "candidate": "244f3dad31137a7a528c08e666962660f1d29f30",
+      "summary": "worker 22 clean detached gate continued from 22:46:16 through at least 23:04:55; by 23:02:50 all bench/harness/test_*.py suites had finished and readiness scenarios began, with first five passed and interactive-launch-and-monitors running by 23:03:55; no final verdict or report refresh"
+    },
+    "ticket_22_report_pending_2304": {
+      "observed": "2026-10-05T23:04:30Z",
+      "candidate": "244f3dad31137a7a528c08e666962660f1d29f30",
+      "summary": "ticket 22 report file mtime remained 22:35:32 and no handoff/review/landing artifact appeared while the clean detached gate was still running"
+    },
+    "active_ticket_monitor_2314": {
+      "observed": "2026-10-05T23:14:59Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 finishing, 2 ahead and 0 dirty at head ticket 22: ready for review, one shell running the clean detached full gate and 50 percent context; ticket 18 remained resolved/landed and tickets 14/15 remained blocked/unlaunched"
+    },
+    "ticket_22_report_marker_2314": {
+      "observed": "2026-10-05T23:09:14Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "worker 22 completed the prior clean gate, refreshed 22-report.md, and committed a second ready marker that changed only that report file with 52 insertions and 54 deletions"
+    },
+    "ticket_22_exact_marker_gate_2314": {
+      "observed": "2026-10-05T23:16:19Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "worker 22 started a fresh detached gate for exact marker 7d2f69c at 23:10:15 and was still running through repeated waits; by pane sample it had passed several tools suites and reached tools/agents/test_worker.py, with no final verdict or handoff"
+    },
+    "active_ticket_monitor_2324": {
+      "observed": "2026-10-05T23:24:34Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 finishing, 2 ahead and 0 dirty at head ticket 22: ready for review, one shell running the clean detached full gate and 50 percent context; ticket 18 remained resolved/landed and tickets 14/15 remained blocked/unlaunched"
+    },
+    "ticket_22_exact_marker_gate_progress_2324": {
+      "observed": "2026-10-05T23:24:35Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "ticket 22 exact-marker detached gate was still running; by the pane sample it had passed tools/agents/test_worker.py, tools/agents/test_wt.py and bench/harness/test_fleet.py, then entered bench/harness/test_lead_driven.py with no final verdict or handoff"
+    },
+    "active_ticket_monitor_2334": {
+      "observed": "2026-10-05T23:34:47Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 ready and idle, 2 ahead and 0 dirty at head ticket 22: ready for review, with 47 percent context; ticket 18 remained resolved/landed and tickets 14/15 remained blocked/unlaunched"
+    },
+    "ticket_22_worker_handoff_2334": {
+      "observed": "2026-10-05T23:30:59Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "worker 22 reported the exact-marker detached gate exit 0, final branch hygiene clean, one co-author trailer, and handoff with tools suites, bench harness suites, all readiness scenarios and tracker lint passing; tools/agents/check.sh, cargo and real model-worker launches were explicitly not run"
+    },
+    "lead_ticket_22_landing_started_2334": {
+      "observed": "2026-10-05T23:32:15Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "lead received the completed wait notification, inspected status/workers/log/status/report for ticket 22, started background acceptance/landing task buqu2ydin for candidate 7d2f69c, and publicly reported ticket 22 was landing; no completion record or integration movement by sample"
+    },
+    "active_ticket_monitor_2344": {
+      "observed": "2026-10-05T23:44:50Z",
+      "integration_tip": "3ab9ec45cd46779632d19238f496903be9695287",
+      "summary": "ws.py status/workers showed ticket 22 ready and idle, 2 ahead and 0 dirty at head ticket 22: ready for review, with 47 percent context; ticket 14 and ticket 15 remained blocked and unlaunched"
+    },
+    "ticket_22_landing_still_pending_2344": {
+      "observed": "2026-10-05T23:44:50Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "after the 23:32 lead background acceptance/landing start, integration still had not moved past 3ab9ec4, ticket 22 state still lacked landed.json or a new review artifact, and no new lead or worker transcript bytes appeared"
+    },
+    "active_ticket_monitor_2354": {
+      "observed": "2026-10-05T23:54:44Z",
+      "integration_tip": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "ws.py status/workers showed ticket 22 resolved/landed, 0 ahead and 0 dirty with no live pid; tickets 14 and 15 remained blocked and unlaunched, and ticket 14's displayed wait list still included landed ticket 22"
+    },
+    "ticket_22_landed_2354": {
+      "observed": "2026-10-05T23:46:38Z",
+      "candidate": "7d2f69cb274fe548940b1da4794a2ca2e243c43f",
+      "summary": "lead background task completed exit 0, integration advanced to 7d2f69c, record branch added acceptance commit 95e8e67, landing commit 30d39c3, resolve commits 1da5d92 and 5d2840f, and the lead closed the ticket 22 tmux window"
+    },
+    "second_independent_review_launched_2354": {
+      "observed": "2026-10-05T23:47:13Z",
+      "summary": "lead launched a background agent described as Second independent branch review over main..effort/lead-worker-readiness after all build tickets landed; no result was observed in this pass"
+    },
+    "lead_real_codex_resume_proof_2354": {
+      "observed": "2026-10-05T23:48:46Z",
+      "summary": "lead ran a real Codex launch-then-resume proof after landing ticket 22 and committed record-branch proof 540f8f7, with notes saying launch was ready and plain resume produced a violated candidate-moved verdict by design"
+    }
+  }
+}

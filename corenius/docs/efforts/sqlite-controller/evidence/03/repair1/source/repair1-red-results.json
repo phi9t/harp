@@ -1,0 +1,102 @@
+[
+  {
+    "case": "snapshot",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--features",
+      "fault-injection",
+      "--test",
+      "kata",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "returncode": 101,
+    "seconds": 0.9689424700336531
+  },
+  {
+    "case": "availability",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--features",
+      "fault-injection",
+      "--test",
+      "kata",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "returncode": 101,
+    "seconds": 1.1516508490312845
+  },
+  {
+    "case": "isolation",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--features",
+      "fault-injection",
+      "--test",
+      "kata",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "returncode": 101,
+    "seconds": 1.0390441459603608
+  },
+  {
+    "case": "progress",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--features",
+      "fault-injection",
+      "--test",
+      "kata",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "returncode": 101,
+    "seconds": 1.1617679679766297
+  },
+  {
+    "case": "responsiveness",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--locked",
+      "--offline",
+      "--features",
+      "fault-injection",
+      "--test",
+      "kata",
+      "--",
+      "--nocapture",
+      "--test-threads=2"
+    ],
+    "returncode": 0,
+    "seconds": 3.666202189051546
+  }
+]

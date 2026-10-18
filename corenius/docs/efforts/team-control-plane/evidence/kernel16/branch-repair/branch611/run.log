@@ -1,0 +1,23 @@
+Reviewing branch "codex/reference-design": 11 commits since main
+Enqueued job 611 for 1f16415..e6676bf (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: High
+- **Location**: `crates/team-control-plane/src/artifacts.rs:576`
+- **Problem**: Execution-backed verification binds the candidate, command and output, but not the suite or environment. After `Configure` changes either digest while retaining the same candidate and commands, a verifier can relabel an old successful execution with the new digests and obtain acceptance without executing under the new policy.
+- **Fix**: Capture the verification policy digests immutably in the execution binding and compare them against both the report and current policy. Add a regression covering reuse after a policy change.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:1032`
+- **Problem**: Releasing a completed episode execution refunds capacity but leaves its mailbox episode `admitted` or `active`. If a planning execution reaches its deadline, `YieldEpisode` subsequently rejects it as expired, while `AdmitEpisode` rejects every successor for that principal because the old episode remains live. The lead becomes permanently unable to continue despite stopped effects and released capacity.
+- **Fix**: Reconcile the episode’s terminal disposition when completion or shutdown is independently established, preserving existing checkpoints and waits. Test deadline shutdown followed by release and successor admission for the same lead.
+
+## Summary
+
+The changes assemble durable episode execution, verification, cancellation, recovery and bounded operator views.

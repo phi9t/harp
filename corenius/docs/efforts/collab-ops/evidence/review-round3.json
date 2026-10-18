@@ -1,0 +1,24 @@
+{
+  "schema": "corenius.collab_ops_review.v1",
+  "candidate": "3c812cf1a11f57d75c6bfd0a6965b7cdb1142478",
+  "base": "c0a2fc0370f18ff28009dbe9b62a59916de0e582",
+  "round": 3,
+  "axes": {
+    "standards": {
+      "result": "passed",
+      "reviewer_context": "/root/standards_review",
+      "independent_regressions_passed": 23,
+      "additional_verification": "17 archive hashes, Git bundle, eight branch HEADs/trees and removed-path absence",
+      "findings": []
+    },
+    "spec": {
+      "result": "passed",
+      "reviewer_context": "/root/spec_review",
+      "independent_regressions_passed": 13,
+      "retained_reproduction_directory": "/data02/home/philip.yang/devx/tmp/spec-round3-z21wuaez",
+      "findings": []
+    }
+  },
+  "independent_branch_review": "blocked; see branch-review-round3.json",
+  "acceptance": "not granted"
+}

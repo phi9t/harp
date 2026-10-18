@@ -1,0 +1,74 @@
+{
+  "source": "6f55bc67624b2399c3430fe2c5e003baeb4c22e0",
+  "base": "cbe7854b59898f9750d1478d2277584c7eca7b42",
+  "classification": "MODEL_FREE_ACTUAL_PROTOCOL",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--features",
+        "fault-injection",
+        "--",
+        "--nocapture",
+        "--test-threads=2"
+      ],
+      "exit": 0,
+      "log": "gate-tests.log",
+      "seconds": 762.44,
+      "started_at": "2026-10-04T12:01:00.798494+00:00"
+    },
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--check"
+      ],
+      "exit": 0,
+      "log": "gate-fmt.log",
+      "seconds": 0.22,
+      "started_at": "2026-10-04T12:13:43.236333+00:00"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--all-targets",
+        "--features",
+        "fault-injection",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "log": "gate-clippy.log",
+      "seconds": 0.1,
+      "started_at": "2026-10-04T12:13:43.457022+00:00"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml"
+      ],
+      "exit": 0,
+      "log": "gate-normal-build.log",
+      "seconds": 1.24,
+      "started_at": "2026-10-04T12:13:43.560166+00:00"
+    }
+  ],
+  "tested_source_unchanged": true
+}

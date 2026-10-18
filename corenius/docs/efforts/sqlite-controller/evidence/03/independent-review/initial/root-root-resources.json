@@ -1,0 +1,6225 @@
+{
+  "read_only_observations": [
+    {
+      "pid": 2776556,
+      "start_ticks": "53906805",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2776557,
+      "start_ticks": "53906805",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2777120,
+      "start_ticks": "53907603",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2777124,
+      "start_ticks": "53907607",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2778193,
+      "start_ticks": "53908425",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2778194,
+      "start_ticks": "53908429",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2778201,
+      "start_ticks": "53908452",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "088ffd7c-a40e-432c-aa7c-f351ee5b33a2",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2778203,
+      "start_ticks": "53908453",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "91129817-7eca-4911-a267-ad65215f6d01",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2778208,
+      "start_ticks": "53908455",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "eb5848cf-22a8-43f8-9251-1086bcf5cc2b",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2778210,
+      "start_ticks": "53908457",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "38e48ece-4f4a-41b7-b912-ac41751d25a1",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2778226,
+      "start_ticks": "53908484",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2778228,
+      "start_ticks": "53908484",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2778671,
+      "start_ticks": "53908487",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2778672,
+      "start_ticks": "53908487",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2779115,
+      "start_ticks": "53908506",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c3b79c4e-0233-430f-85a4-9976e55d102f",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2779117,
+      "start_ticks": "53908510",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b008b45a-fd9c-44a1-b4d3-9528fc2b37d5",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2779130,
+      "start_ticks": "53908537",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2779353,
+      "start_ticks": "53908541",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2781657,
+      "start_ticks": "53909697",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2781663,
+      "start_ticks": "53909701",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2782165,
+      "start_ticks": "53909798",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2782347,
+      "start_ticks": "53909993",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "710fc4af-40b9-46aa-b99b-4853bac288e1",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2783193,
+      "start_ticks": "53910600",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2783196,
+      "start_ticks": "53910630",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "84a64261-49d9-4eab-aef8-7672721edb86",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2784244,
+      "start_ticks": "53911376",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2784249,
+      "start_ticks": "53911407",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2784365,
+      "start_ticks": "53911433",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ec0fed04-4f31-40c9-a646-8e4f7ccb5d3b",
+      "pid_namespace": 4026539686,
+      "state": "absent"
+    },
+    {
+      "pid": 2784368,
+      "start_ticks": "53911435",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c56a2f01-c7eb-428f-ba85-3fed8f5a4df6",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2784372,
+      "start_ticks": "53911466",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539686,
+      "state": "absent"
+    },
+    {
+      "pid": 2784601,
+      "start_ticks": "53911469",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2784839,
+      "start_ticks": "53911487",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ec851be8-fbdf-445c-bce2-ab826c97d567",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2784841,
+      "start_ticks": "53911489",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c3580d07-8095-4aae-8384-d05a6d50724c",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2784910,
+      "start_ticks": "53911521",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2784911,
+      "start_ticks": "53911521",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2786221,
+      "start_ticks": "53912182",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2786613,
+      "start_ticks": "53912715",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2787054,
+      "start_ticks": "53912820",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2787577,
+      "start_ticks": "53912984",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2787582,
+      "start_ticks": "53913011",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3a69b514-200d-4d51-a445-e179f5f894ac",
+      "pid_namespace": 4026539686,
+      "state": "absent"
+    },
+    {
+      "pid": 2787584,
+      "start_ticks": "53913013",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b5142d9c-a859-43f3-a6c5-ee70d3cd626a",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2787594,
+      "start_ticks": "53913042",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2787595,
+      "start_ticks": "53913042",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539686,
+      "state": "absent"
+    },
+    {
+      "pid": 2788037,
+      "start_ticks": "53913065",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6fecb6ae-8b31-4689-9d88-23d29ff01af8",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2788043,
+      "start_ticks": "53913066",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "cdb45415-d6d9-4ec9-89a7-6c3bf220886e",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2788068,
+      "start_ticks": "53913096",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2788069,
+      "start_ticks": "53913096",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2789154,
+      "start_ticks": "53913625",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2789961,
+      "start_ticks": "53914258",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2790504,
+      "start_ticks": "53914435",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2790506,
+      "start_ticks": "53914462",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c3379e03-53b8-44bf-8c17-132b8fee4688",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2790508,
+      "start_ticks": "53914463",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "63c196ac-a94c-4127-b2d8-3d5995ee9c26",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2790523,
+      "start_ticks": "53914493",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2790525,
+      "start_ticks": "53914493",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2790977,
+      "start_ticks": "53914516",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "f50a015b-61c1-4c51-8b4b-af404c0e736a",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2791096,
+      "start_ticks": "53914547",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2791328,
+      "start_ticks": "53914567",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9dc9bd1c-f6f3-4275-a654-296ccd959029",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2791619,
+      "start_ticks": "53914603",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "38bf017c-da16-4ff6-b9b3-b93d91ff70a6",
+      "pid_namespace": 4026540450,
+      "state": "absent"
+    },
+    {
+      "pid": 2792624,
+      "start_ticks": "53915271",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "463d9183-0901-4020-9498-ddbd3b88ee30",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2792853,
+      "start_ticks": "53915307",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "41222fd4-c246-4c37-aae8-56336d1840f2",
+      "pid_namespace": 4026540454,
+      "state": "absent"
+    },
+    {
+      "pid": 2793328,
+      "start_ticks": "53915511",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2793478,
+      "start_ticks": "53915706",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2794077,
+      "start_ticks": "53915922",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "49c89843-b45f-498b-b71e-b8f85da57063",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2794724,
+      "start_ticks": "53916313",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2795029,
+      "start_ticks": "53916560",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "da37359e-1810-4d7f-9d61-cdff5849d47d",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2795692,
+      "start_ticks": "53917127",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2795820,
+      "start_ticks": "53917154",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "8e1f4c2b-4884-41d5-ab5f-923756d9525a",
+      "pid_namespace": 4026539787,
+      "state": "absent"
+    },
+    {
+      "pid": 2795824,
+      "start_ticks": "53917155",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "de5d7e95-7af3-4cdd-99b7-645970f8c6da",
+      "pid_namespace": 4026539871,
+      "state": "absent"
+    },
+    {
+      "pid": 2795840,
+      "start_ticks": "53917190",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539871,
+      "state": "absent"
+    },
+    {
+      "pid": 2795841,
+      "start_ticks": "53917190",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539787,
+      "state": "absent"
+    },
+    {
+      "pid": 2796296,
+      "start_ticks": "53917208",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "af31f78a-c5cd-4947-86b9-0769ae5d588b",
+      "pid_namespace": 4026540037,
+      "state": "absent"
+    },
+    {
+      "pid": 2796317,
+      "start_ticks": "53917240",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540037,
+      "state": "absent"
+    },
+    {
+      "pid": 2796624,
+      "start_ticks": "53917305",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2797340,
+      "start_ticks": "53918103",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2799778,
+      "start_ticks": "53918901",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2799884,
+      "start_ticks": "53918928",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "e1643cd0-888f-4591-98cd-ce21d536aee4",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2799886,
+      "start_ticks": "53918929",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "df410ed9-1b5f-43d3-83bd-4c3a5f62eb4b",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2799961,
+      "start_ticks": "53918960",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2799962,
+      "start_ticks": "53918960",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2800408,
+      "start_ticks": "53918982",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "a5c2aca2-f5a3-44fa-b246-0dfaf8b03152",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2800410,
+      "start_ticks": "53918983",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "906b6be4-e694-425d-b3c4-d1f679847e1a",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2800423,
+      "start_ticks": "53919013",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2800424,
+      "start_ticks": "53919013",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2801412,
+      "start_ticks": "53919314",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2802253,
+      "start_ticks": "53920132",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2802338,
+      "start_ticks": "53920175",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2802905,
+      "start_ticks": "53920407",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "407a59fa-27c3-46d0-bf3d-c3e71928ada8",
+      "pid_namespace": 4026539787,
+      "state": "absent"
+    },
+    {
+      "pid": 2803155,
+      "start_ticks": "53920444",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b5226b98-948b-42a1-b8f2-982b63677713",
+      "pid_namespace": 4026539871,
+      "state": "absent"
+    },
+    {
+      "pid": 2803856,
+      "start_ticks": "53920934",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2803861,
+      "start_ticks": "53920961",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "0dd16199-8c6e-49ef-867b-4bd202c8894c",
+      "pid_namespace": 4026540037,
+      "state": "absent"
+    },
+    {
+      "pid": 2803863,
+      "start_ticks": "53920962",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "dca1f3ba-834c-4ac6-867a-06649b8872ac",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2803881,
+      "start_ticks": "53920994",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540037,
+      "state": "absent"
+    },
+    {
+      "pid": 2803883,
+      "start_ticks": "53920994",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2804348,
+      "start_ticks": "53921015",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "d5b34d01-d331-429c-a5ce-acaee34af298",
+      "pid_namespace": 4026540450,
+      "state": "absent"
+    },
+    {
+      "pid": 2804351,
+      "start_ticks": "53921016",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "bddc8f6f-a514-4c54-b9a4-35fd7bf2e764",
+      "pid_namespace": 4026540533,
+      "state": "absent"
+    },
+    {
+      "pid": 2804387,
+      "start_ticks": "53921049",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540450,
+      "state": "absent"
+    },
+    {
+      "pid": 2804391,
+      "start_ticks": "53921049",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540533,
+      "state": "absent"
+    },
+    {
+      "pid": 2804963,
+      "start_ticks": "53921116",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6b96f261-afc1-4699-be6a-f2b40fefe9e9",
+      "pid_namespace": 4026539812,
+      "state": "absent"
+    },
+    {
+      "pid": 2805197,
+      "start_ticks": "53921154",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "a4bf3467-358f-4536-ac6f-9a33d7d1f2bb",
+      "pid_namespace": 4026539794,
+      "state": "absent"
+    },
+    {
+      "pid": 2805774,
+      "start_ticks": "53921357",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2806070,
+      "start_ticks": "53922155",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2807288,
+      "start_ticks": "53922960",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2807304,
+      "start_ticks": "53922987",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "faf5b99d-e9e9-4898-964b-273e192032f3",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2807307,
+      "start_ticks": "53922989",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6aa42049-f2a3-49ab-a985-10f9cff21fd5",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2807327,
+      "start_ticks": "53923019",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2807328,
+      "start_ticks": "53923019",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2807899,
+      "start_ticks": "53923042",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6220fc44-04c3-4a6b-8a45-3aee4b8f4bee",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2808084,
+      "start_ticks": "53923076",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2809253,
+      "start_ticks": "53923178",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2813258,
+      "start_ticks": "53923984",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2813637,
+      "start_ticks": "53924232",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2813767,
+      "start_ticks": "53924331",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2815459,
+      "start_ticks": "53924801",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2815552,
+      "start_ticks": "53924828",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "51b6628c-c5c8-4de3-b9f3-6bc8c432aab8",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2815561,
+      "start_ticks": "53924830",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "fefe84aa-1c26-4079-adde-ebf7360b2b4d",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2815733,
+      "start_ticks": "53924858",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2815795,
+      "start_ticks": "53924859",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2816332,
+      "start_ticks": "53924882",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3f81a56a-3134-45c4-894d-21e0aaa5e55b",
+      "pid_namespace": 4026539871,
+      "state": "absent"
+    },
+    {
+      "pid": 2816668,
+      "start_ticks": "53924913",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539871,
+      "state": "absent"
+    },
+    {
+      "pid": 2819199,
+      "start_ticks": "53925128",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2821612,
+      "start_ticks": "53925471",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2823057,
+      "start_ticks": "53925950",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2823060,
+      "start_ticks": "53925977",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c50218ae-6836-4719-8551-deb7cbe719c8",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2823062,
+      "start_ticks": "53925978",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b91e55b2-7fc7-4245-b494-5a9a53dc65c4",
+      "pid_namespace": 4026540119,
+      "state": "absent"
+    },
+    {
+      "pid": 2823078,
+      "start_ticks": "53926009",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540119,
+      "state": "absent"
+    },
+    {
+      "pid": 2823079,
+      "start_ticks": "53926009",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2823578,
+      "start_ticks": "53926031",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "19e93a5a-f2d6-4cd2-9a85-83256f0fb6d8",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2823580,
+      "start_ticks": "53926032",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3b58ddf2-05b1-4020-83e1-b840035c1be7",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2823623,
+      "start_ticks": "53926062",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2823624,
+      "start_ticks": "53926062",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2824106,
+      "start_ticks": "53926074",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2824794,
+      "start_ticks": "53926314",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "963e9f9d-a4eb-46e8-bc4a-945954e668f6",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2825648,
+      "start_ticks": "53926952",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "0b59b019-2191-4d2c-b840-de760b308fa2",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2826216,
+      "start_ticks": "53927222",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2826713,
+      "start_ticks": "53927388",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2827515,
+      "start_ticks": "53927697",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2831365,
+      "start_ticks": "53928214",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2832234,
+      "start_ticks": "53928527",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2832726,
+      "start_ticks": "53929031",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2832730,
+      "start_ticks": "53929058",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "22f984ff-7881-423e-a621-360aed986ff3",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2832732,
+      "start_ticks": "53929060",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6db6e406-c564-4ae4-8a80-2a1bdff948a2",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2832739,
+      "start_ticks": "53929093",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2832740,
+      "start_ticks": "53929093",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2833182,
+      "start_ticks": "53929112",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "4174deb9-549d-4581-b36f-c1d3214d6c85",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2833192,
+      "start_ticks": "53929142",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2833702,
+      "start_ticks": "53929332",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2833706,
+      "start_ticks": "53929359",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "747c61fe-8422-4c62-9353-49f7ab31b73a",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2833708,
+      "start_ticks": "53929361",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2a871f5e-42d0-4ed6-b1a4-10b9d1966840",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2833711,
+      "start_ticks": "53929390",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2833712,
+      "start_ticks": "53929390",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2834154,
+      "start_ticks": "53929413",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "e2b53221-c437-4f50-9367-3383ebb824ad",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2834156,
+      "start_ticks": "53929415",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c7fafd37-8aef-4012-8a1c-0c12e54f12dc",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2834166,
+      "start_ticks": "53929444",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2834170,
+      "start_ticks": "53929444",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2835316,
+      "start_ticks": "53930004",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2835701,
+      "start_ticks": "53930303",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2836220,
+      "start_ticks": "53930545",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "a288593d-23d7-4477-8a73-4cf8e123beca",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2836536,
+      "start_ticks": "53930607",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2837064,
+      "start_ticks": "53930841",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "74a5ef66-4855-4686-9a6b-680fdbba9e52",
+      "pid_namespace": 4026540450,
+      "state": "absent"
+    },
+    {
+      "pid": 2837292,
+      "start_ticks": "53930878",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6efd05f9-6755-46c3-97fa-de17063e22b0",
+      "pid_namespace": 4026540533,
+      "state": "absent"
+    },
+    {
+      "pid": 2838649,
+      "start_ticks": "53931180",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "56884ce1-f6b3-4cc8-b38b-6cc5ac407a9d",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2839322,
+      "start_ticks": "53931553",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c2696da4-3039-4bf4-8144-19e77b4f7385",
+      "pid_namespace": 4026540524,
+      "state": "absent"
+    },
+    {
+      "pid": 2839560,
+      "start_ticks": "53931590",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ddc55eaf-fd5a-4ae2-a8dd-e632ed4ad52e",
+      "pid_namespace": 4026540456,
+      "state": "absent"
+    },
+    {
+      "pid": 2840419,
+      "start_ticks": "53931927",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2841459,
+      "start_ticks": "53932712",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2841460,
+      "start_ticks": "53932729",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2842107,
+      "start_ticks": "53933530",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2842110,
+      "start_ticks": "53933534",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2842174,
+      "start_ticks": "53933561",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ef7b7a2e-c7f8-451a-b023-049d0f92e3ec",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2842176,
+      "start_ticks": "53933563",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "14abeb34-8ce2-4c38-99b4-3870715b6cbd",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2842189,
+      "start_ticks": "53933592",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2842190,
+      "start_ticks": "53933592",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2842636,
+      "start_ticks": "53933615",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2b9ea6eb-b6cb-4dfe-9885-f7cd398ab8e8",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2842638,
+      "start_ticks": "53933617",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6c67ecbb-1d3a-4b6c-b6eb-0606b38bc820",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2842777,
+      "start_ticks": "53933646",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2842778,
+      "start_ticks": "53933646",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2844146,
+      "start_ticks": "53934328",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2844162,
+      "start_ticks": "53934355",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "a657ae9f-6353-4c36-a402-bf1ecba0f5f0",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2844164,
+      "start_ticks": "53934356",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2b67231f-23a8-47ca-955c-4471e1aa08c0",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2844292,
+      "start_ticks": "53934386",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2844293,
+      "start_ticks": "53934386",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2844737,
+      "start_ticks": "53934409",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "728a6a18-8d79-47bf-af77-f0831d6c0a4b",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2844770,
+      "start_ticks": "53934439",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2845489,
+      "start_ticks": "53934842",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2846101,
+      "start_ticks": "53935075",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "477b2534-b189-4e6d-8581-1e7acb896e23",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2846438,
+      "start_ticks": "53935112",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "efe60f1b-ece4-4f3f-91e6-6e0f04cd8def",
+      "pid_namespace": 4026540450,
+      "state": "absent"
+    },
+    {
+      "pid": 2847023,
+      "start_ticks": "53935491",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2847263,
+      "start_ticks": "53935784",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9cb6706f-919c-4113-bf3c-00d724cb4b77",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2847496,
+      "start_ticks": "53935821",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2fef30a9-e8d3-4e46-bbcb-ace7e6b2a4b1",
+      "pid_namespace": 4026540454,
+      "state": "absent"
+    },
+    {
+      "pid": 2848310,
+      "start_ticks": "53936026",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2849028,
+      "start_ticks": "53936137",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2853134,
+      "start_ticks": "53936828",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2853263,
+      "start_ticks": "53936947",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2854544,
+      "start_ticks": "53937634",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2854546,
+      "start_ticks": "53937660",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "24ea3e05-9f39-4905-95b8-4d522de371f4",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2854548,
+      "start_ticks": "53937662",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9ba513b5-e700-4784-af5b-ca954847ac47",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2854552,
+      "start_ticks": "53937691",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2854553,
+      "start_ticks": "53937691",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2855002,
+      "start_ticks": "53937714",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "31c65871-d185-4542-a677-ff38391a3962",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2855125,
+      "start_ticks": "53937745",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2855436,
+      "start_ticks": "53937764",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2855544,
+      "start_ticks": "53937791",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "249d480c-1dbe-443f-a0ba-64538f823412",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2855546,
+      "start_ticks": "53937793",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "634ea931-cf63-4c0b-b825-7aa46574cfc0",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2855554,
+      "start_ticks": "53937821",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2855780,
+      "start_ticks": "53937824",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2856004,
+      "start_ticks": "53937846",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6fef7313-aa18-404b-b6cf-993eff40fa82",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2856009,
+      "start_ticks": "53937847",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "fd8cb5fc-b988-4463-b9d4-f38d14fdc960",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2856127,
+      "start_ticks": "53937876",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2856128,
+      "start_ticks": "53937876",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2857051,
+      "start_ticks": "53938324",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2857270,
+      "start_ticks": "53938326",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2857991,
+      "start_ticks": "53938924",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2858016,
+      "start_ticks": "53939023",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2858685,
+      "start_ticks": "53939566",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2858923,
+      "start_ticks": "53939828",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2859334,
+      "start_ticks": "53940388",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2859487,
+      "start_ticks": "53940634",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2859489,
+      "start_ticks": "53940661",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "dd6cbe13-b089-4526-a5bb-f2e39ecdd7dd",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2859491,
+      "start_ticks": "53940663",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "1b140a65-5db0-4ad8-8442-83edfc5bddcf",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2859501,
+      "start_ticks": "53940693",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2859503,
+      "start_ticks": "53940693",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2860016,
+      "start_ticks": "53940715",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "66bfa15d-8eb8-4a96-8c13-c8aa06114670",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2860019,
+      "start_ticks": "53940717",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "0c479f93-8a57-45d2-b978-01226ed774ee",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2860138,
+      "start_ticks": "53940746",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2860139,
+      "start_ticks": "53940746",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2860925,
+      "start_ticks": "53941194",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2861039,
+      "start_ticks": "53941221",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b638c10f-f3c4-4c66-aac4-c2f7e946748b",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2861041,
+      "start_ticks": "53941222",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "27251815-3f98-4bda-a3e3-977c659599ed",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2861047,
+      "start_ticks": "53941252",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2861048,
+      "start_ticks": "53941252",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2861491,
+      "start_ticks": "53941275",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "95ab3896-dbff-48a0-8315-fbcd99b84777",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2861538,
+      "start_ticks": "53941303",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2861860,
+      "start_ticks": "53941329",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2862116,
+      "start_ticks": "53941331",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2862907,
+      "start_ticks": "53942062",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2865796,
+      "start_ticks": "53942698",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2869144,
+      "start_ticks": "53942888",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2880208,
+      "start_ticks": "53943511",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2881591,
+      "start_ticks": "53943698",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2881752,
+      "start_ticks": "53943725",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c9e7b6e4-f163-47c2-ac44-5938216df70e",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2881763,
+      "start_ticks": "53943726",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "4f1b79ed-e354-4652-a4ef-11fbd361982c",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2881967,
+      "start_ticks": "53943759",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2881970,
+      "start_ticks": "53943759",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2882535,
+      "start_ticks": "53943779",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "110e8304-c418-4ae9-8fa3-e27b62cc80aa",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2882705,
+      "start_ticks": "53943808",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2885704,
+      "start_ticks": "53944309",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2885852,
+      "start_ticks": "53944336",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "13412e79-a809-44d1-aa9d-0a14ef18a183",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2885874,
+      "start_ticks": "53944338",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3d7516b4-7a68-44f3-b031-cbd7511ba018",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2885877,
+      "start_ticks": "53944367",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2885880,
+      "start_ticks": "53944367",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2885881,
+      "start_ticks": "53944367",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2886358,
+      "start_ticks": "53944390",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "53d59633-573d-4d11-ac15-5ab6e22bb8b5",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2886373,
+      "start_ticks": "53944419",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2893160,
+      "start_ticks": "53945017",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2900010,
+      "start_ticks": "53945766",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2900554,
+      "start_ticks": "53945843",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2902413,
+      "start_ticks": "53946580",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2902421,
+      "start_ticks": "53946641",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2902770,
+      "start_ticks": "53946668",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "eb8365d8-2440-4167-967b-f622fbc46a07",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2902772,
+      "start_ticks": "53946669",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "bf13d531-370b-40d1-8704-6f213102b93b",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2903349,
+      "start_ticks": "53946721",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c817dff4-8a2d-4947-8c5b-b6101247dcf9",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2903351,
+      "start_ticks": "53946723",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "76d4253f-ab11-47b0-92bc-9b884641a744",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2904641,
+      "start_ticks": "53947312",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2904705,
+      "start_ticks": "53947386",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2904777,
+      "start_ticks": "53947413",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c73a5141-59c4-4096-a12d-44e87d74f199",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2904805,
+      "start_ticks": "53947414",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "4888c5ce-212e-4857-a33a-b34496e80b94",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2904844,
+      "start_ticks": "53947448",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2904845,
+      "start_ticks": "53947448",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2905290,
+      "start_ticks": "53947467",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "21c6fd31-dbcb-4349-8101-a4c3827df76c",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2905292,
+      "start_ticks": "53947468",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "e3d63c68-497b-4da5-a670-3c300e718ee9",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2905377,
+      "start_ticks": "53947498",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2905378,
+      "start_ticks": "53947498",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2907302,
+      "start_ticks": "53948846",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2912468,
+      "start_ticks": "53949665",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2913209,
+      "start_ticks": "53949768",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2913878,
+      "start_ticks": "53950462",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2913891,
+      "start_ticks": "53950489",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "74b66b59-7c88-472c-8d82-fcf56e25306b",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2913893,
+      "start_ticks": "53950491",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "bb1517af-aaa1-447b-ae9c-56acfd11ec5a",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2913909,
+      "start_ticks": "53950519",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2913910,
+      "start_ticks": "53950519",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2914463,
+      "start_ticks": "53950543",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "52f1f88a-8929-4557-aead-78a5191a619b",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2914464,
+      "start_ticks": "53950570",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2914468,
+      "start_ticks": "53950571",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2915542,
+      "start_ticks": "53951396",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2915544,
+      "start_ticks": "53951423",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "5f0d8c5d-bf76-465d-8477-532cffa08df9",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2915546,
+      "start_ticks": "53951424",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "cefe7d9d-2042-4099-b224-61fd0f5592de",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2915558,
+      "start_ticks": "53951452",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2915559,
+      "start_ticks": "53951452",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2916064,
+      "start_ticks": "53951477",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "66a11cb9-eb06-469d-b4ee-90d2a668f886",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2916121,
+      "start_ticks": "53951504",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2916685,
+      "start_ticks": "53951757",
+      "kind": "fixture_owned_service",
+      "name": "controller-cleanup-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2916734,
+      "start_ticks": "53951921",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2917584,
+      "start_ticks": "53952706",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2917909,
+      "start_ticks": "53952747",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2917926,
+      "start_ticks": "53952853",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2918522,
+      "start_ticks": "53953558",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2918526,
+      "start_ticks": "53953585",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2a7b6e09-0160-4513-93d6-8b665b966716",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2918528,
+      "start_ticks": "53953586",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c57318a2-44ad-41d2-8c18-baf5e2b4fbb9",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2918544,
+      "start_ticks": "53953616",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2918545,
+      "start_ticks": "53953616",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2919099,
+      "start_ticks": "53953639",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "0f4bdc62-769d-4329-a94f-a05ed702cf4a",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2919101,
+      "start_ticks": "53953640",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9ba338af-3569-49a9-ac89-4aa1fba74061",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2919162,
+      "start_ticks": "53953655",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2919172,
+      "start_ticks": "53953670",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2919173,
+      "start_ticks": "53953670",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2920402,
+      "start_ticks": "53954461",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2920404,
+      "start_ticks": "53954488",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "0529a141-18f9-4fd7-aeae-9a878d80641d",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2920406,
+      "start_ticks": "53954489",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3a3670c0-8272-452a-9c8b-e37665a3f3de",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2920423,
+      "start_ticks": "53954518",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2920424,
+      "start_ticks": "53954518",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2920869,
+      "start_ticks": "53954542",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "bc9206e4-bcb9-44a0-95d6-ac1067cb081a",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2920877,
+      "start_ticks": "53954543",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "fa891231-2b55-4900-9b8c-c1e4c0ad4c89",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2920896,
+      "start_ticks": "53954571",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2920897,
+      "start_ticks": "53954571",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2921852,
+      "start_ticks": "53954853",
+      "kind": "fixture_owned_service",
+      "name": "controller-cleanup-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2921929,
+      "start_ticks": "53955017",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2923547,
+      "start_ticks": "53955770",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2923903,
+      "start_ticks": "53955835",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2924040,
+      "start_ticks": "53955921",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2924484,
+      "start_ticks": "53956645",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2924524,
+      "start_ticks": "53956672",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ed0cd266-751b-47f8-935e-097f327301be",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2924526,
+      "start_ticks": "53956673",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "1d1a1004-7527-4efa-ab32-572983fe7339",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2924555,
+      "start_ticks": "53956703",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2924557,
+      "start_ticks": "53956703",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2925004,
+      "start_ticks": "53956725",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "e52515f1-bf41-4b09-94ac-b05e8bbd681b",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2925020,
+      "start_ticks": "53956739",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2925024,
+      "start_ticks": "53956756",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2925651,
+      "start_ticks": "53957327",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2925870,
+      "start_ticks": "53957329",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2926038,
+      "start_ticks": "53957545",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2926041,
+      "start_ticks": "53957572",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "06eccec5-0766-4c94-ae25-eb95c0c33fd1",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2926043,
+      "start_ticks": "53957573",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c94e852d-2afd-4dae-aea5-08d1697f3c83",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2926065,
+      "start_ticks": "53957603",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2926066,
+      "start_ticks": "53957603",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2926510,
+      "start_ticks": "53957625",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "a31983da-71a6-4eb9-b694-3ff80757c32d",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2926523,
+      "start_ticks": "53957656",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2927017,
+      "start_ticks": "53958020",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2927130,
+      "start_ticks": "53958213",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2927755,
+      "start_ticks": "53958818",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2927756,
+      "start_ticks": "53958818",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2928246,
+      "start_ticks": "53959061",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "72fcdb19-b4d8-4e5f-9b95-2099c338dfd4",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2928980,
+      "start_ticks": "53959636",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2928985,
+      "start_ticks": "53959663",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "d1a9eaf7-9283-46fd-8d1a-c3547f07f5a6",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2928987,
+      "start_ticks": "53959664",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ca9c3861-0c9f-40cf-b3c3-dd293cde23c9",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2928998,
+      "start_ticks": "53959694",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2928999,
+      "start_ticks": "53959694",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2929437,
+      "start_ticks": "53959697",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ec024138-b141-4ff3-bd54-8e95770e36f2",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2929445,
+      "start_ticks": "53959717",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "5874458d-60ac-433a-b575-1418fe4e74b4",
+      "pid_namespace": 4026540286,
+      "state": "absent"
+    },
+    {
+      "pid": 2929452,
+      "start_ticks": "53959718",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "6f5163cf-669c-4b72-9be6-376e2b4ceaf8",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2929723,
+      "start_ticks": "53959748",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2929724,
+      "start_ticks": "53959748",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540286,
+      "state": "absent"
+    },
+    {
+      "pid": 2930984,
+      "start_ticks": "53960320",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540286,
+      "state": "absent"
+    },
+    {
+      "pid": 2931204,
+      "start_ticks": "53960323",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2931279,
+      "start_ticks": "53960449",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2932052,
+      "start_ticks": "53961157",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2932176,
+      "start_ticks": "53961272",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2933732,
+      "start_ticks": "53961962",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2933784,
+      "start_ticks": "53962073",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2933847,
+      "start_ticks": "53962100",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "81b7a55a-07aa-4de5-a95c-241bf47dba1b",
+      "pid_namespace": 4026539686,
+      "state": "absent"
+    },
+    {
+      "pid": 2933849,
+      "start_ticks": "53962102",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ed5e0612-2c04-47a8-b374-9ff2b08e1a32",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2933869,
+      "start_ticks": "53962131",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539786,
+      "state": "absent"
+    },
+    {
+      "pid": 2933870,
+      "start_ticks": "53962131",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539686,
+      "state": "absent"
+    },
+    {
+      "pid": 2934321,
+      "start_ticks": "53962154",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9d915fd5-a283-49b8-a509-3af65f7cd644",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2934323,
+      "start_ticks": "53962156",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "7684f382-c613-4ff9-866e-c72bea3b57aa",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2934334,
+      "start_ticks": "53962185",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2934335,
+      "start_ticks": "53962185",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2935467,
+      "start_ticks": "53962745",
+      "kind": "fixture_owned_service",
+      "name": "controller-confirm-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2935481,
+      "start_ticks": "53962780",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2935486,
+      "start_ticks": "53962807",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "eb50a509-799d-440e-8676-afcfbadbbe60",
+      "pid_namespace": 4026540119,
+      "state": "absent"
+    },
+    {
+      "pid": 2935488,
+      "start_ticks": "53962808",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b8efae5c-eb5f-49d4-baa2-3f191419afcc",
+      "pid_namespace": 4026540202,
+      "state": "absent"
+    },
+    {
+      "pid": 2935492,
+      "start_ticks": "53962838",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540119,
+      "state": "absent"
+    },
+    {
+      "pid": 2935510,
+      "start_ticks": "53962839",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540202,
+      "state": "absent"
+    },
+    {
+      "pid": 2935947,
+      "start_ticks": "53962861",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "80610dc8-3675-426a-b284-def616658881",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2935961,
+      "start_ticks": "53962893",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2936703,
+      "start_ticks": "53963347",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2937274,
+      "start_ticks": "53963581",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2af68775-84b6-467a-b546-f14e4b421692",
+      "pid_namespace": 4026540368,
+      "state": "absent"
+    },
+    {
+      "pid": 2937610,
+      "start_ticks": "53963618",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3f6cf86d-6037-4130-8957-e5244d8f758d",
+      "pid_namespace": 4026540451,
+      "state": "absent"
+    },
+    {
+      "pid": 2938272,
+      "start_ticks": "53964051",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2938806,
+      "start_ticks": "53964289",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c62d8df9-5615-49f6-9287-8c3ea9db83d7",
+      "pid_namespace": 4026540369,
+      "state": "absent"
+    },
+    {
+      "pid": 2938807,
+      "start_ticks": "53964305",
+      "kind": "fixture_owned_service",
+      "name": "controller-after-turn-crash",
+      "state": "absent"
+    },
+    {
+      "pid": 2939146,
+      "start_ticks": "53964327",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "374c522b-54b9-45e7-a5c7-f44f9b9177fd",
+      "pid_namespace": 4026540454,
+      "state": "absent"
+    },
+    {
+      "pid": 2939580,
+      "start_ticks": "53964520",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2939581,
+      "start_ticks": "53964530",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2940323,
+      "start_ticks": "53965322",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2940387,
+      "start_ticks": "53965336",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2941027,
+      "start_ticks": "53966120",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2941031,
+      "start_ticks": "53966147",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "881ed59d-3d31-4454-bfb0-7d93f5a99ecd",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2941033,
+      "start_ticks": "53966148",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b270839b-4cd6-4853-8bde-3fe65e77a8c1",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2941034,
+      "start_ticks": "53966150",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2941062,
+      "start_ticks": "53966177",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "eb00226e-2a8b-4b21-a304-8d0021d408ad",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2941066,
+      "start_ticks": "53966178",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2941067,
+      "start_ticks": "53966178",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2941068,
+      "start_ticks": "53966178",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "0796357d-d3dc-4903-acb6-6ac8f36ff703",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2941523,
+      "start_ticks": "53966200",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "05d69dd7-2fc7-4335-a966-2ed8d780728f",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2941529,
+      "start_ticks": "53966202",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c3675635-65b9-45e1-93d0-6abe925b95fd",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2941623,
+      "start_ticks": "53966208",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2941624,
+      "start_ticks": "53966208",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2942111,
+      "start_ticks": "53966231",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "53082e76-8f65-4b80-9d17-e422395692c3",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2942123,
+      "start_ticks": "53966232",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2942124,
+      "start_ticks": "53966232",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2942681,
+      "start_ticks": "53966260",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2944522,
+      "start_ticks": "53967394",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2945155,
+      "start_ticks": "53967523",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2945379,
+      "start_ticks": "53967663",
+      "kind": "fixture_owned_service",
+      "name": "controller-after-turn-crash",
+      "state": "absent"
+    },
+    {
+      "pid": 2945723,
+      "start_ticks": "53967883",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2946134,
+      "start_ticks": "53968329",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2946466,
+      "start_ticks": "53968680",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2946860,
+      "start_ticks": "53969127",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2946864,
+      "start_ticks": "53969154",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "41ffd392-0bf0-4a02-a33b-b4cfc672e1e5",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2946866,
+      "start_ticks": "53969155",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "b49054a1-c5f6-493f-bb1c-f179f721e868",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2946891,
+      "start_ticks": "53969185",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2946892,
+      "start_ticks": "53969185",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2947362,
+      "start_ticks": "53969208",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "3734c022-9fe2-40bf-a68e-f506b15af7ca",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2947367,
+      "start_ticks": "53969209",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "300f8925-83ae-4b33-b057-11da2b01a0df",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2947474,
+      "start_ticks": "53969239",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2947475,
+      "start_ticks": "53969239",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2949919,
+      "start_ticks": "53969502",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2950261,
+      "start_ticks": "53969529",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "54e0ad11-92b1-435a-92c7-c66085b51da8",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2950269,
+      "start_ticks": "53969531",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ea8863aa-bc8e-4cab-8b35-b367868d181d",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2950556,
+      "start_ticks": "53969560",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2950557,
+      "start_ticks": "53969560",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2951310,
+      "start_ticks": "53969584",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "75ec9966-cca5-4609-a905-f9b8c41f6424",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2951687,
+      "start_ticks": "53969613",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2956125,
+      "start_ticks": "53970555",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2956336,
+      "start_ticks": "53970775",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2957068,
+      "start_ticks": "53971015",
+      "kind": "fixture_owned_service",
+      "name": "controller-after-turn-crash",
+      "state": "absent"
+    },
+    {
+      "pid": 2957381,
+      "start_ticks": "53971221",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2957524,
+      "start_ticks": "53971361",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2958029,
+      "start_ticks": "53972035",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2958353,
+      "start_ticks": "53972171",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2958388,
+      "start_ticks": "53972198",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "feaa3dd5-4901-4e43-8656-5c88a0565e45",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2958390,
+      "start_ticks": "53972199",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "46a35de4-db99-49ce-b306-855c3e4a20bc",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2958393,
+      "start_ticks": "53972228",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2958394,
+      "start_ticks": "53972228",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2958845,
+      "start_ticks": "53972252",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "68b95f83-35ba-471f-a9a4-b0a34ee32499",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2958851,
+      "start_ticks": "53972280",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 2959747,
+      "start_ticks": "53972848",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2959764,
+      "start_ticks": "53972875",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c7fbefd8-6f99-4ae6-ba44-1c8b847676af",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2959766,
+      "start_ticks": "53972877",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "207965ac-8d39-41cf-97cd-178ec8582b7a",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2959771,
+      "start_ticks": "53972905",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2959772,
+      "start_ticks": "53972905",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2960231,
+      "start_ticks": "53972929",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "99398d9d-1bcd-4fd4-a6b5-8c1468c0e540",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2960233,
+      "start_ticks": "53972931",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "4a79e620-3401-468b-b329-6d1cee87752a",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2960243,
+      "start_ticks": "53972958",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2960244,
+      "start_ticks": "53972958",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2961531,
+      "start_ticks": "53973442",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2962513,
+      "start_ticks": "53973684",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "cade143c-1f4b-4395-ad6e-3bf93815bd3d",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2962522,
+      "start_ticks": "53973712",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540367,
+      "state": "absent"
+    },
+    {
+      "pid": 2963544,
+      "start_ticks": "53974122",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2964034,
+      "start_ticks": "53974354",
+      "kind": "fixture_owned_service",
+      "name": "controller-after-turn-crash",
+      "state": "absent"
+    },
+    {
+      "pid": 2964236,
+      "start_ticks": "53974561",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2964246,
+      "start_ticks": "53974642",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "da0fc281-fff2-4e8e-a110-694a0bc62c95",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2965058,
+      "start_ticks": "53975364",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2965077,
+      "start_ticks": "53975397",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2965493,
+      "start_ticks": "53976178",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2965494,
+      "start_ticks": "53976195",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2965496,
+      "start_ticks": "53976205",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c7193a5b-49ad-4fb5-8b7c-9a20b062f8af",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2965498,
+      "start_ticks": "53976206",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "d5c4429b-ab22-45c0-b28e-13969b91503c",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2965521,
+      "start_ticks": "53976237",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2965522,
+      "start_ticks": "53976237",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2965964,
+      "start_ticks": "53976259",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "581caced-09c3-4e1a-b569-e3a353c445c7",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2965969,
+      "start_ticks": "53976289",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2966908,
+      "start_ticks": "53976992",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2966911,
+      "start_ticks": "53977019",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "fb23f764-2821-439b-9c0d-a6f7aa1ab8df",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2966913,
+      "start_ticks": "53977021",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "cea167bb-bd7a-4919-b5f3-b9422e678c10",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2966923,
+      "start_ticks": "53977050",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 2966924,
+      "start_ticks": "53977050",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 2967367,
+      "start_ticks": "53977073",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9c1a1123-a239-44e1-bc0e-dc4b60f1ac05",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2967369,
+      "start_ticks": "53977075",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "230568ac-7c33-4012-8e8b-427fb9853e05",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2967378,
+      "start_ticks": "53977103",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 2967418,
+      "start_ticks": "53977104",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540284,
+      "state": "absent"
+    },
+    {
+      "pid": 2968400,
+      "start_ticks": "53977427",
+      "kind": "fixture_owned_service",
+      "name": "workers-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2969184,
+      "start_ticks": "53978245",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2969249,
+      "start_ticks": "53978265",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2969805,
+      "start_ticks": "53978498",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9dfd00bb-1108-4e4f-b083-997a01e20184",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2969812,
+      "start_ticks": "53978527",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2970145,
+      "start_ticks": "53978535",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "936b2a70-3a09-4b07-889b-92b61bcda610",
+      "pid_namespace": 4026539789,
+      "state": "absent"
+    },
+    {
+      "pid": 2970962,
+      "start_ticks": "53979061",
+      "kind": "fixture_owned_service",
+      "name": "workers-invalid-receipt",
+      "state": "absent"
+    },
+    {
+      "pid": 2971217,
+      "start_ticks": "53979435",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "a1c4115b-9464-4224-a191-2fc4bd27dd2b",
+      "pid_namespace": 4026539689,
+      "state": "absent"
+    },
+    {
+      "pid": 2971451,
+      "start_ticks": "53979472",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "9a54e383-5300-4487-8d3b-9c237bf210d7",
+      "pid_namespace": 4026539794,
+      "state": "absent"
+    },
+    {
+      "pid": 2972638,
+      "start_ticks": "53979677",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2973055,
+      "start_ticks": "53979880",
+      "kind": "fixture_owned_service",
+      "name": "workers-linked-receipt",
+      "state": "absent"
+    },
+    {
+      "pid": 2973637,
+      "start_ticks": "53980499",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2973828,
+      "start_ticks": "53980788",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2974383,
+      "start_ticks": "53981296",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2974385,
+      "start_ticks": "53981323",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "54bcb52c-69bf-43c4-844c-238c8c05d517",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2974387,
+      "start_ticks": "53981325",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "ae612627-fe08-4ead-8d33-4879acd73bc7",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2974398,
+      "start_ticks": "53981354",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2974400,
+      "start_ticks": "53981355",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2974956,
+      "start_ticks": "53981377",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2dfe089c-0c69-4e78-a336-341fb7221520",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2974966,
+      "start_ticks": "53981408",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2975350,
+      "start_ticks": "53981597",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2976060,
+      "start_ticks": "53982395",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2976070,
+      "start_ticks": "53982422",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "1e6ee07a-7822-47e7-8451-a703e9102ca5",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2976072,
+      "start_ticks": "53982423",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "37c2dfd9-ab96-4be9-9233-b6a3c22648ca",
+      "pid_namespace": 4026540119,
+      "state": "absent"
+    },
+    {
+      "pid": 2976079,
+      "start_ticks": "53982453",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540119,
+      "state": "absent"
+    },
+    {
+      "pid": 2976080,
+      "start_ticks": "53982453",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 2976522,
+      "start_ticks": "53982476",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "7c173fc8-ac69-4497-9c84-44c1c49eef0e",
+      "pid_namespace": 4026540202,
+      "state": "absent"
+    },
+    {
+      "pid": 2976530,
+      "start_ticks": "53982477",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "f698c78e-512c-4cc9-bb32-c28f96bb6b6b",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2976612,
+      "start_ticks": "53982499",
+      "kind": "fixture_owned_service",
+      "name": "workers-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2976619,
+      "start_ticks": "53982506",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540202,
+      "state": "absent"
+    },
+    {
+      "pid": 2976663,
+      "start_ticks": "53982507",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540285,
+      "state": "absent"
+    },
+    {
+      "pid": 2977952,
+      "start_ticks": "53983301",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2978246,
+      "start_ticks": "53983645",
+      "kind": "fixture_owned_service",
+      "name": "workers-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2978782,
+      "start_ticks": "53984107",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted-unknown",
+      "state": "absent"
+    },
+    {
+      "pid": 2978883,
+      "start_ticks": "53984191",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2979218,
+      "start_ticks": "53984454",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2979614,
+      "start_ticks": "53984992",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2979833,
+      "start_ticks": "53985263",
+      "kind": "fixture_owned_service",
+      "name": "workers-invalid-receipt",
+      "state": "absent"
+    },
+    {
+      "pid": 2981126,
+      "start_ticks": "53985802",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2981137,
+      "start_ticks": "53985829",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "490ff17b-4cf7-49bc-b446-ef0a7a8bbde7",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2981139,
+      "start_ticks": "53985830",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "675251af-b23c-4a8a-a70c-86e35d787982",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2981255,
+      "start_ticks": "53985861",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 2981257,
+      "start_ticks": "53985861",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 2981699,
+      "start_ticks": "53985883",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "55af53ff-8e57-4236-9d3f-8573541f7c74",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2981701,
+      "start_ticks": "53985884",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c8ba5db6-68f3-4968-b29e-7ff65c677023",
+      "pid_namespace": 4026540038,
+      "state": "absent"
+    },
+    {
+      "pid": 2981710,
+      "start_ticks": "53985914",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540038,
+      "state": "absent"
+    },
+    {
+      "pid": 2981711,
+      "start_ticks": "53985914",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2982467,
+      "start_ticks": "53986072",
+      "kind": "fixture_owned_service",
+      "name": "workers-linked-receipt",
+      "state": "absent"
+    },
+    {
+      "pid": 2984024,
+      "start_ticks": "53986957",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 2984633,
+      "start_ticks": "53987042",
+      "kind": "fixture_owned_service",
+      "name": "workers-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2988939,
+      "start_ticks": "53987767",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 2989499,
+      "start_ticks": "53987856",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2993692,
+      "start_ticks": "53988585",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 2993697,
+      "start_ticks": "53988612",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "fc6c298d-e384-43b9-a1d3-baf2c2b886eb",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2993699,
+      "start_ticks": "53988614",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "06e45d8c-e646-4254-9b30-5dd5aa7070c8",
+      "pid_namespace": 4026539789,
+      "state": "absent"
+    },
+    {
+      "pid": 2993707,
+      "start_ticks": "53988646",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539687,
+      "state": "absent"
+    },
+    {
+      "pid": 2993708,
+      "start_ticks": "53988646",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539789,
+      "state": "absent"
+    },
+    {
+      "pid": 2994149,
+      "start_ticks": "53988651",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted-unknown",
+      "state": "absent"
+    },
+    {
+      "pid": 2994213,
+      "start_ticks": "53988666",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "10e99fb2-500d-4b09-9d63-507af8debdb8",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2994223,
+      "start_ticks": "53988695",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539870,
+      "state": "absent"
+    },
+    {
+      "pid": 2996943,
+      "start_ticks": "53989856",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 2999553,
+      "start_ticks": "53990173",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "263df2c1-7cc9-4781-b1ff-fbce4ff486ec",
+      "pid_namespace": 4026540035,
+      "state": "absent"
+    },
+    {
+      "pid": 3002604,
+      "start_ticks": "53990810",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "4964900c-be10-4f09-97c8-693a79968497",
+      "pid_namespace": 4026540114,
+      "state": "absent"
+    },
+    {
+      "pid": 3006145,
+      "start_ticks": "53991557",
+      "kind": "fixture_owned_service",
+      "name": "workers",
+      "state": "absent"
+    },
+    {
+      "pid": 3007652,
+      "start_ticks": "53992374",
+      "kind": "fixture_owned_service",
+      "name": "controlplanes",
+      "state": "absent"
+    },
+    {
+      "pid": 3008460,
+      "start_ticks": "53993200",
+      "kind": "fixture_owned_service",
+      "name": "controller",
+      "state": "absent"
+    },
+    {
+      "pid": 3008580,
+      "start_ticks": "53993227",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "18f91664-7121-43a4-91e5-c5826225f86b",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 3008585,
+      "start_ticks": "53993229",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "05f5f51c-39b8-4ab7-a596-1e0468e90f1b",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 3008626,
+      "start_ticks": "53993258",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539685,
+      "state": "absent"
+    },
+    {
+      "pid": 3008627,
+      "start_ticks": "53993258",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539785,
+      "state": "absent"
+    },
+    {
+      "pid": 3009069,
+      "start_ticks": "53993281",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "4d2afcc7-296a-4086-9d63-11aebb03683e",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 3009071,
+      "start_ticks": "53993282",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "c78f972c-12a3-4f0e-90a5-b4bebc2d64c9",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 3009079,
+      "start_ticks": "53993311",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026539869,
+      "state": "absent"
+    },
+    {
+      "pid": 3009083,
+      "start_ticks": "53993312",
+      "kind": "qualified_native_child",
+      "pid_namespace": 4026540036,
+      "state": "absent"
+    },
+    {
+      "pid": 3010642,
+      "start_ticks": "53994473",
+      "kind": "fixture_owned_service",
+      "name": "controller-restarted",
+      "state": "absent"
+    },
+    {
+      "pid": 3011317,
+      "start_ticks": "53994780",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "084e8ed2-faf6-4a25-b081-6e36cc02e7f0",
+      "pid_namespace": 4026540118,
+      "state": "absent"
+    },
+    {
+      "pid": 3011542,
+      "start_ticks": "53994816",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "2c4f2cf6-cbe3-439d-947b-b85d81ef319d",
+      "pid_namespace": 4026540201,
+      "state": "absent"
+    },
+    {
+      "pid": 3012616,
+      "start_ticks": "53995485",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "86fedae4-c7fd-410c-800c-5a1ddf4f4351",
+      "pid_namespace": 4026540120,
+      "state": "absent"
+    },
+    {
+      "pid": 3012846,
+      "start_ticks": "53995523",
+      "kind": "retained_owned_namespace_identity",
+      "handle": "29f57f6a-c22d-4e3c-9808-942b7a4d3e87",
+      "pid_namespace": 4026540205,
+      "state": "absent"
+    }
+  ],
+  "retained_owned_identities": 549,
+  "matching_live": 0,
+  "whole_process_disposal_receipts": 199,
+  "all_disposal_receipts_terminated": true,
+  "disposal_receipts": [
+    {
+      "log": "root-test.log",
+      "pid": 2778201,
+      "start_ticks": "53908452",
+      "execution_handle": "088ffd7c-a40e-432c-aa7c-f351ee5b33a2",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2778203,
+      "start_ticks": "53908453",
+      "execution_handle": "91129817-7eca-4911-a267-ad65215f6d01",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2779115,
+      "start_ticks": "53908506",
+      "execution_handle": "c3b79c4e-0233-430f-85a4-9976e55d102f",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2784365,
+      "start_ticks": "53911433",
+      "execution_handle": "ec0fed04-4f31-40c9-a646-8e4f7ccb5d3b",
+      "pid_namespace": 4026539686,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2784368,
+      "start_ticks": "53911435",
+      "execution_handle": "c56a2f01-c7eb-428f-ba85-3fed8f5a4df6",
+      "pid_namespace": 4026539786,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2784839,
+      "start_ticks": "53911487",
+      "execution_handle": "ec851be8-fbdf-445c-bce2-ab826c97d567",
+      "pid_namespace": 4026539870,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2784841,
+      "start_ticks": "53911489",
+      "execution_handle": "c3580d07-8095-4aae-8384-d05a6d50724c",
+      "pid_namespace": 4026540036,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2778208,
+      "start_ticks": "53908455",
+      "execution_handle": "eb5848cf-22a8-43f8-9251-1086bcf5cc2b",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2778210,
+      "start_ticks": "53908457",
+      "execution_handle": "38e48ece-4f4a-41b7-b912-ac41751d25a1",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2779117,
+      "start_ticks": "53908510",
+      "execution_handle": "b008b45a-fd9c-44a1-b4d3-9528fc2b37d5",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2782347,
+      "start_ticks": "53909993",
+      "execution_handle": "710fc4af-40b9-46aa-b99b-4853bac288e1",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2783196,
+      "start_ticks": "53910630",
+      "execution_handle": "84a64261-49d9-4eab-aef8-7672721edb86",
+      "pid_namespace": 4026539687,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2787582,
+      "start_ticks": "53913011",
+      "execution_handle": "3a69b514-200d-4d51-a445-e179f5f894ac",
+      "pid_namespace": 4026539686,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2787584,
+      "start_ticks": "53913013",
+      "execution_handle": "b5142d9c-a859-43f3-a6c5-ee70d3cd626a",
+      "pid_namespace": 4026539786,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2788037,
+      "start_ticks": "53913065",
+      "execution_handle": "6fecb6ae-8b31-4689-9d88-23d29ff01af8",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2788043,
+      "start_ticks": "53913066",
+      "execution_handle": "cdb45415-d6d9-4ec9-89a7-6c3bf220886e",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2791328,
+      "start_ticks": "53914567",
+      "execution_handle": "9dc9bd1c-f6f3-4275-a654-296ccd959029",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2791619,
+      "start_ticks": "53914603",
+      "execution_handle": "38bf017c-da16-4ff6-b9b3-b93d91ff70a6",
+      "pid_namespace": 4026540450,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2792624,
+      "start_ticks": "53915271",
+      "execution_handle": "463d9183-0901-4020-9498-ddbd3b88ee30",
+      "pid_namespace": 4026540369,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2792853,
+      "start_ticks": "53915307",
+      "execution_handle": "41222fd4-c246-4c37-aae8-56336d1840f2",
+      "pid_namespace": 4026540454,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2790506,
+      "start_ticks": "53914462",
+      "execution_handle": "c3379e03-53b8-44bf-8c17-132b8fee4688",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2790508,
+      "start_ticks": "53914463",
+      "execution_handle": "63c196ac-a94c-4127-b2d8-3d5995ee9c26",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2790977,
+      "start_ticks": "53914516",
+      "execution_handle": "f50a015b-61c1-4c51-8b4b-af404c0e736a",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2794077,
+      "start_ticks": "53915922",
+      "execution_handle": "49c89843-b45f-498b-b71e-b8f85da57063",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2795029,
+      "start_ticks": "53916560",
+      "execution_handle": "da37359e-1810-4d7f-9d61-cdff5849d47d",
+      "pid_namespace": 4026539687,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2799884,
+      "start_ticks": "53918928",
+      "execution_handle": "e1643cd0-888f-4591-98cd-ce21d536aee4",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2799886,
+      "start_ticks": "53918929",
+      "execution_handle": "df410ed9-1b5f-43d3-83bd-4c3a5f62eb4b",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2800408,
+      "start_ticks": "53918982",
+      "execution_handle": "a5c2aca2-f5a3-44fa-b246-0dfaf8b03152",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2800410,
+      "start_ticks": "53918983",
+      "execution_handle": "906b6be4-e694-425d-b3c4-d1f679847e1a",
+      "pid_namespace": 4026540285,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2802905,
+      "start_ticks": "53920407",
+      "execution_handle": "407a59fa-27c3-46d0-bf3d-c3e71928ada8",
+      "pid_namespace": 4026539787,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2803155,
+      "start_ticks": "53920444",
+      "execution_handle": "b5226b98-948b-42a1-b8f2-982b63677713",
+      "pid_namespace": 4026539871,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2804963,
+      "start_ticks": "53921116",
+      "execution_handle": "6b96f261-afc1-4699-be6a-f2b40fefe9e9",
+      "pid_namespace": 4026539812,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2805197,
+      "start_ticks": "53921154",
+      "execution_handle": "a4bf3467-358f-4536-ac6f-9a33d7d1f2bb",
+      "pid_namespace": 4026539794,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2795820,
+      "start_ticks": "53917154",
+      "execution_handle": "8e1f4c2b-4884-41d5-ab5f-923756d9525a",
+      "pid_namespace": 4026539787,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2795824,
+      "start_ticks": "53917155",
+      "execution_handle": "de5d7e95-7af3-4cdd-99b7-645970f8c6da",
+      "pid_namespace": 4026539871,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2796296,
+      "start_ticks": "53917208",
+      "execution_handle": "af31f78a-c5cd-4947-86b9-0769ae5d588b",
+      "pid_namespace": 4026540037,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2803861,
+      "start_ticks": "53920961",
+      "execution_handle": "0dd16199-8c6e-49ef-867b-4bd202c8894c",
+      "pid_namespace": 4026540037,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2803863,
+      "start_ticks": "53920962",
+      "execution_handle": "dca1f3ba-834c-4ac6-867a-06649b8872ac",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2804348,
+      "start_ticks": "53921015",
+      "execution_handle": "d5b34d01-d331-429c-a5ce-acaee34af298",
+      "pid_namespace": 4026540450,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2804351,
+      "start_ticks": "53921016",
+      "execution_handle": "bddc8f6f-a514-4c54-b9a4-35fd7bf2e764",
+      "pid_namespace": 4026540533,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2807304,
+      "start_ticks": "53922987",
+      "execution_handle": "faf5b99d-e9e9-4898-964b-273e192032f3",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2807307,
+      "start_ticks": "53922989",
+      "execution_handle": "6aa42049-f2a3-49ab-a985-10f9cff21fd5",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2807899,
+      "start_ticks": "53923042",
+      "execution_handle": "6220fc44-04c3-4a6b-8a45-3aee4b8f4bee",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2823060,
+      "start_ticks": "53925977",
+      "execution_handle": "c50218ae-6836-4719-8551-deb7cbe719c8",
+      "pid_namespace": 4026540036,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2823062,
+      "start_ticks": "53925978",
+      "execution_handle": "b91e55b2-7fc7-4245-b494-5a9a53dc65c4",
+      "pid_namespace": 4026540119,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2823578,
+      "start_ticks": "53926031",
+      "execution_handle": "19e93a5a-f2d6-4cd2-9a85-83256f0fb6d8",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2823580,
+      "start_ticks": "53926032",
+      "execution_handle": "3b58ddf2-05b1-4020-83e1-b840035c1be7",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2815552,
+      "start_ticks": "53924828",
+      "execution_handle": "51b6628c-c5c8-4de3-b9f3-6bc8c432aab8",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2815561,
+      "start_ticks": "53924830",
+      "execution_handle": "fefe84aa-1c26-4079-adde-ebf7360b2b4d",
+      "pid_namespace": 4026539786,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2816332,
+      "start_ticks": "53924882",
+      "execution_handle": "3f81a56a-3134-45c4-894d-21e0aaa5e55b",
+      "pid_namespace": 4026539871,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2824794,
+      "start_ticks": "53926314",
+      "execution_handle": "963e9f9d-a4eb-46e8-bc4a-945954e668f6",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2825648,
+      "start_ticks": "53926952",
+      "execution_handle": "0b59b019-2191-4d2c-b840-de760b308fa2",
+      "pid_namespace": 4026540369,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2833706,
+      "start_ticks": "53929359",
+      "execution_handle": "747c61fe-8422-4c62-9353-49f7ab31b73a",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2833708,
+      "start_ticks": "53929361",
+      "execution_handle": "2a871f5e-42d0-4ed6-b1a4-10b9d1966840",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2834154,
+      "start_ticks": "53929413",
+      "execution_handle": "e2b53221-c437-4f50-9367-3383ebb824ad",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2834156,
+      "start_ticks": "53929415",
+      "execution_handle": "c7fafd37-8aef-4012-8a1c-0c12e54f12dc",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2837064,
+      "start_ticks": "53930841",
+      "execution_handle": "74a5ef66-4855-4686-9a6b-680fdbba9e52",
+      "pid_namespace": 4026540450,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2837292,
+      "start_ticks": "53930878",
+      "execution_handle": "6efd05f9-6755-46c3-97fa-de17063e22b0",
+      "pid_namespace": 4026540533,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2839322,
+      "start_ticks": "53931553",
+      "execution_handle": "c2696da4-3039-4bf4-8144-19e77b4f7385",
+      "pid_namespace": 4026540524,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2839560,
+      "start_ticks": "53931590",
+      "execution_handle": "ddc55eaf-fd5a-4ae2-a8dd-e632ed4ad52e",
+      "pid_namespace": 4026540456,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2832730,
+      "start_ticks": "53929058",
+      "execution_handle": "22f984ff-7881-423e-a621-360aed986ff3",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2832732,
+      "start_ticks": "53929060",
+      "execution_handle": "6db6e406-c564-4ae4-8a80-2a1bdff948a2",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2833182,
+      "start_ticks": "53929112",
+      "execution_handle": "4174deb9-549d-4581-b36f-c1d3214d6c85",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2836220,
+      "start_ticks": "53930545",
+      "execution_handle": "a288593d-23d7-4477-8a73-4cf8e123beca",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2838649,
+      "start_ticks": "53931180",
+      "execution_handle": "56884ce1-f6b3-4cc8-b38b-6cc5ac407a9d",
+      "pid_namespace": 4026540369,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2842174,
+      "start_ticks": "53933561",
+      "execution_handle": "ef7b7a2e-c7f8-451a-b023-049d0f92e3ec",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2842176,
+      "start_ticks": "53933563",
+      "execution_handle": "14abeb34-8ce2-4c38-99b4-3870715b6cbd",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2842636,
+      "start_ticks": "53933615",
+      "execution_handle": "2b9ea6eb-b6cb-4dfe-9885-f7cd398ab8e8",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2842638,
+      "start_ticks": "53933617",
+      "execution_handle": "6c67ecbb-1d3a-4b6c-b6eb-0606b38bc820",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2846101,
+      "start_ticks": "53935075",
+      "execution_handle": "477b2534-b189-4e6d-8581-1e7acb896e23",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2846438,
+      "start_ticks": "53935112",
+      "execution_handle": "efe60f1b-ece4-4f3f-91e6-6e0f04cd8def",
+      "pid_namespace": 4026540450,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2847263,
+      "start_ticks": "53935784",
+      "execution_handle": "9cb6706f-919c-4113-bf3c-00d724cb4b77",
+      "pid_namespace": 4026540369,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2847496,
+      "start_ticks": "53935821",
+      "execution_handle": "2fef30a9-e8d3-4e46-bbcb-ace7e6b2a4b1",
+      "pid_namespace": 4026540454,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2844162,
+      "start_ticks": "53934355",
+      "execution_handle": "a657ae9f-6353-4c36-a402-bf1ecba0f5f0",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2844164,
+      "start_ticks": "53934356",
+      "execution_handle": "2b67231f-23a8-47ca-955c-4471e1aa08c0",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2844737,
+      "start_ticks": "53934409",
+      "execution_handle": "728a6a18-8d79-47bf-af77-f0831d6c0a4b",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2854546,
+      "start_ticks": "53937660",
+      "execution_handle": "24ea3e05-9f39-4905-95b8-4d522de371f4",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2854548,
+      "start_ticks": "53937662",
+      "execution_handle": "9ba513b5-e700-4784-af5b-ca954847ac47",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2855002,
+      "start_ticks": "53937714",
+      "execution_handle": "31c65871-d185-4542-a677-ff38391a3962",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2855544,
+      "start_ticks": "53937791",
+      "execution_handle": "249d480c-1dbe-443f-a0ba-64538f823412",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2855546,
+      "start_ticks": "53937793",
+      "execution_handle": "634ea931-cf63-4c0b-b825-7aa46574cfc0",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2856004,
+      "start_ticks": "53937846",
+      "execution_handle": "6fef7313-aa18-404b-b6cf-993eff40fa82",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2856009,
+      "start_ticks": "53937847",
+      "execution_handle": "fd8cb5fc-b988-4463-b9d4-f38d14fdc960",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2859489,
+      "start_ticks": "53940661",
+      "execution_handle": "dd6cbe13-b089-4526-a5bb-f2e39ecdd7dd",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2859491,
+      "start_ticks": "53940663",
+      "execution_handle": "1b140a65-5db0-4ad8-8442-83edfc5bddcf",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2860016,
+      "start_ticks": "53940715",
+      "execution_handle": "66bfa15d-8eb8-4a96-8c13-c8aa06114670",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2860019,
+      "start_ticks": "53940717",
+      "execution_handle": "0c479f93-8a57-45d2-b978-01226ed774ee",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2861039,
+      "start_ticks": "53941221",
+      "execution_handle": "b638c10f-f3c4-4c66-aac4-c2f7e946748b",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2861041,
+      "start_ticks": "53941222",
+      "execution_handle": "27251815-3f98-4bda-a3e3-977c659599ed",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2861491,
+      "start_ticks": "53941275",
+      "execution_handle": "95ab3896-dbff-48a0-8315-fbcd99b84777",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2881752,
+      "start_ticks": "53943725",
+      "execution_handle": "c9e7b6e4-f163-47c2-ac44-5938216df70e",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2881763,
+      "start_ticks": "53943726",
+      "execution_handle": "4f1b79ed-e354-4652-a4ef-11fbd361982c",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2882535,
+      "start_ticks": "53943779",
+      "execution_handle": "110e8304-c418-4ae9-8fa3-e27b62cc80aa",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2885852,
+      "start_ticks": "53944336",
+      "execution_handle": "13412e79-a809-44d1-aa9d-0a14ef18a183",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2885874,
+      "start_ticks": "53944338",
+      "execution_handle": "3d7516b4-7a68-44f3-b031-cbd7511ba018",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2886358,
+      "start_ticks": "53944390",
+      "execution_handle": "53d59633-573d-4d11-ac15-5ab6e22bb8b5",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2904777,
+      "start_ticks": "53947413",
+      "execution_handle": "c73a5141-59c4-4096-a12d-44e87d74f199",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2904805,
+      "start_ticks": "53947414",
+      "execution_handle": "4888c5ce-212e-4857-a33a-b34496e80b94",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2905290,
+      "start_ticks": "53947467",
+      "execution_handle": "21c6fd31-dbcb-4349-8101-a4c3827df76c",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2905292,
+      "start_ticks": "53947468",
+      "execution_handle": "e3d63c68-497b-4da5-a670-3c300e718ee9",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2902770,
+      "start_ticks": "53946668",
+      "execution_handle": "eb8365d8-2440-4167-967b-f622fbc46a07",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2902772,
+      "start_ticks": "53946669",
+      "execution_handle": "bf13d531-370b-40d1-8704-6f213102b93b",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2903349,
+      "start_ticks": "53946721",
+      "execution_handle": "c817dff4-8a2d-4947-8c5b-b6101247dcf9",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2903351,
+      "start_ticks": "53946723",
+      "execution_handle": "76d4253f-ab11-47b0-92bc-9b884641a744",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2913891,
+      "start_ticks": "53950489",
+      "execution_handle": "74b66b59-7c88-472c-8d82-fcf56e25306b",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2913893,
+      "start_ticks": "53950491",
+      "execution_handle": "bb1517af-aaa1-447b-ae9c-56acfd11ec5a",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2914463,
+      "start_ticks": "53950543",
+      "execution_handle": "52f1f88a-8929-4557-aead-78a5191a619b",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2915544,
+      "start_ticks": "53951423",
+      "execution_handle": "5f0d8c5d-bf76-465d-8477-532cffa08df9",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2915546,
+      "start_ticks": "53951424",
+      "execution_handle": "cefe7d9d-2042-4099-b224-61fd0f5592de",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2916064,
+      "start_ticks": "53951477",
+      "execution_handle": "66a11cb9-eb06-469d-b4ee-90d2a668f886",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2918526,
+      "start_ticks": "53953585",
+      "execution_handle": "2a7b6e09-0160-4513-93d6-8b665b966716",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2918528,
+      "start_ticks": "53953586",
+      "execution_handle": "c57318a2-44ad-41d2-8c18-baf5e2b4fbb9",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2919099,
+      "start_ticks": "53953639",
+      "execution_handle": "0f4bdc62-769d-4329-a94f-a05ed702cf4a",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2919101,
+      "start_ticks": "53953640",
+      "execution_handle": "9ba338af-3569-49a9-ac89-4aa1fba74061",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2920404,
+      "start_ticks": "53954488",
+      "execution_handle": "0529a141-18f9-4fd7-aeae-9a878d80641d",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2920406,
+      "start_ticks": "53954489",
+      "execution_handle": "3a3670c0-8272-452a-9c8b-e37665a3f3de",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2920869,
+      "start_ticks": "53954542",
+      "execution_handle": "bc9206e4-bcb9-44a0-95d6-ac1067cb081a",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2920877,
+      "start_ticks": "53954543",
+      "execution_handle": "fa891231-2b55-4900-9b8c-c1e4c0ad4c89",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2924524,
+      "start_ticks": "53956672",
+      "execution_handle": "ed0cd266-751b-47f8-935e-097f327301be",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2924526,
+      "start_ticks": "53956673",
+      "execution_handle": "1d1a1004-7527-4efa-ab32-572983fe7339",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2925004,
+      "start_ticks": "53956725",
+      "execution_handle": "e52515f1-bf41-4b09-94ac-b05e8bbd681b",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2926041,
+      "start_ticks": "53957572",
+      "execution_handle": "06eccec5-0766-4c94-ae25-eb95c0c33fd1",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2926043,
+      "start_ticks": "53957573",
+      "execution_handle": "c94e852d-2afd-4dae-aea5-08d1697f3c83",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2926510,
+      "start_ticks": "53957625",
+      "execution_handle": "a31983da-71a6-4eb9-b694-3ff80757c32d",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2928246,
+      "start_ticks": "53959061",
+      "execution_handle": "72fcdb19-b4d8-4e5f-9b95-2099c338dfd4",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2929437,
+      "start_ticks": "53959697",
+      "execution_handle": "ec024138-b141-4ff3-bd54-8e95770e36f2",
+      "pid_namespace": 4026539687,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2928985,
+      "start_ticks": "53959663",
+      "execution_handle": "d1a9eaf7-9283-46fd-8d1a-c3547f07f5a6",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2928987,
+      "start_ticks": "53959664",
+      "execution_handle": "ca9c3861-0c9f-40cf-b3c3-dd293cde23c9",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2929445,
+      "start_ticks": "53959717",
+      "execution_handle": "5874458d-60ac-433a-b575-1418fe4e74b4",
+      "pid_namespace": 4026540286,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2929452,
+      "start_ticks": "53959718",
+      "execution_handle": "6f5163cf-669c-4b72-9be6-376e2b4ceaf8",
+      "pid_namespace": 4026540369,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2935486,
+      "start_ticks": "53962807",
+      "execution_handle": "eb50a509-799d-440e-8676-afcfbadbbe60",
+      "pid_namespace": 4026540119,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2935488,
+      "start_ticks": "53962808",
+      "execution_handle": "b8efae5c-eb5f-49d4-baa2-3f191419afcc",
+      "pid_namespace": 4026540202,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2935947,
+      "start_ticks": "53962861",
+      "execution_handle": "80610dc8-3675-426a-b284-def616658881",
+      "pid_namespace": 4026540285,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2933847,
+      "start_ticks": "53962100",
+      "execution_handle": "81b7a55a-07aa-4de5-a95c-241bf47dba1b",
+      "pid_namespace": 4026539686,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2933849,
+      "start_ticks": "53962102",
+      "execution_handle": "ed5e0612-2c04-47a8-b374-9ff2b08e1a32",
+      "pid_namespace": 4026539786,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2934321,
+      "start_ticks": "53962154",
+      "execution_handle": "9d915fd5-a283-49b8-a509-3af65f7cd644",
+      "pid_namespace": 4026539870,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2934323,
+      "start_ticks": "53962156",
+      "execution_handle": "7684f382-c613-4ff9-866e-c72bea3b57aa",
+      "pid_namespace": 4026540036,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2937274,
+      "start_ticks": "53963581",
+      "execution_handle": "2af68775-84b6-467a-b546-f14e4b421692",
+      "pid_namespace": 4026540368,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2937610,
+      "start_ticks": "53963618",
+      "execution_handle": "3f6cf86d-6037-4130-8957-e5244d8f758d",
+      "pid_namespace": 4026540451,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2938806,
+      "start_ticks": "53964289",
+      "execution_handle": "c62d8df9-5615-49f6-9287-8c3ea9db83d7",
+      "pid_namespace": 4026540369,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2939146,
+      "start_ticks": "53964327",
+      "execution_handle": "374c522b-54b9-45e7-a5c7-f44f9b9177fd",
+      "pid_namespace": 4026540454,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2941062,
+      "start_ticks": "53966177",
+      "execution_handle": "eb00226e-2a8b-4b21-a304-8d0021d408ad",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2941068,
+      "start_ticks": "53966178",
+      "execution_handle": "0796357d-d3dc-4903-acb6-6ac8f36ff703",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2942111,
+      "start_ticks": "53966231",
+      "execution_handle": "53082e76-8f65-4b80-9d17-e422395692c3",
+      "pid_namespace": 4026540285,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2941031,
+      "start_ticks": "53966147",
+      "execution_handle": "881ed59d-3d31-4454-bfb0-7d93f5a99ecd",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2941033,
+      "start_ticks": "53966148",
+      "execution_handle": "b270839b-4cd6-4853-8bde-3fe65e77a8c1",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2941523,
+      "start_ticks": "53966200",
+      "execution_handle": "05d69dd7-2fc7-4335-a966-2ed8d780728f",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2941529,
+      "start_ticks": "53966202",
+      "execution_handle": "c3675635-65b9-45e1-93d0-6abe925b95fd",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2946864,
+      "start_ticks": "53969154",
+      "execution_handle": "41ffd392-0bf0-4a02-a33b-b4cfc672e1e5",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2946866,
+      "start_ticks": "53969155",
+      "execution_handle": "b49054a1-c5f6-493f-bb1c-f179f721e868",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2947362,
+      "start_ticks": "53969208",
+      "execution_handle": "3734c022-9fe2-40bf-a68e-f506b15af7ca",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2947367,
+      "start_ticks": "53969209",
+      "execution_handle": "300f8925-83ae-4b33-b057-11da2b01a0df",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2950261,
+      "start_ticks": "53969529",
+      "execution_handle": "54e0ad11-92b1-435a-92c7-c66085b51da8",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2950269,
+      "start_ticks": "53969531",
+      "execution_handle": "ea8863aa-bc8e-4cab-8b35-b367868d181d",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2951310,
+      "start_ticks": "53969584",
+      "execution_handle": "75ec9966-cca5-4609-a905-f9b8c41f6424",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2959764,
+      "start_ticks": "53972875",
+      "execution_handle": "c7fbefd8-6f99-4ae6-ba44-1c8b847676af",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2959766,
+      "start_ticks": "53972877",
+      "execution_handle": "207965ac-8d39-41cf-97cd-178ec8582b7a",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2960231,
+      "start_ticks": "53972929",
+      "execution_handle": "99398d9d-1bcd-4fd4-a6b5-8c1468c0e540",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2960233,
+      "start_ticks": "53972931",
+      "execution_handle": "4a79e620-3401-468b-b329-6d1cee87752a",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2958388,
+      "start_ticks": "53972198",
+      "execution_handle": "feaa3dd5-4901-4e43-8656-5c88a0565e45",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2958390,
+      "start_ticks": "53972199",
+      "execution_handle": "46a35de4-db99-49ce-b306-855c3e4a20bc",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2958845,
+      "start_ticks": "53972252",
+      "execution_handle": "68b95f83-35ba-471f-a9a4-b0a34ee32499",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2962513,
+      "start_ticks": "53973684",
+      "execution_handle": "cade143c-1f4b-4395-ad6e-3bf93815bd3d",
+      "pid_namespace": 4026540367,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2964246,
+      "start_ticks": "53974642",
+      "execution_handle": "da0fc281-fff2-4e8e-a110-694a0bc62c95",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2966911,
+      "start_ticks": "53977019",
+      "execution_handle": "fb23f764-2821-439b-9c0d-a6f7aa1ab8df",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2966913,
+      "start_ticks": "53977021",
+      "execution_handle": "cea167bb-bd7a-4919-b5f3-b9422e678c10",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2967367,
+      "start_ticks": "53977073",
+      "execution_handle": "9c1a1123-a239-44e1-bc0e-dc4b60f1ac05",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2967369,
+      "start_ticks": "53977075",
+      "execution_handle": "230568ac-7c33-4012-8e8b-427fb9853e05",
+      "pid_namespace": 4026540284,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2969805,
+      "start_ticks": "53978498",
+      "execution_handle": "9dfd00bb-1108-4e4f-b083-997a01e20184",
+      "pid_namespace": 4026539687,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2970145,
+      "start_ticks": "53978535",
+      "execution_handle": "936b2a70-3a09-4b07-889b-92b61bcda610",
+      "pid_namespace": 4026539789,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2971217,
+      "start_ticks": "53979435",
+      "execution_handle": "a1c4115b-9464-4224-a191-2fc4bd27dd2b",
+      "pid_namespace": 4026539689,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2971451,
+      "start_ticks": "53979472",
+      "execution_handle": "9a54e383-5300-4487-8d3b-9c237bf210d7",
+      "pid_namespace": 4026539794,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2965496,
+      "start_ticks": "53976205",
+      "execution_handle": "c7193a5b-49ad-4fb5-8b7c-9a20b062f8af",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2965498,
+      "start_ticks": "53976206",
+      "execution_handle": "d5c4429b-ab22-45c0-b28e-13969b91503c",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2965964,
+      "start_ticks": "53976259",
+      "execution_handle": "581caced-09c3-4e1a-b569-e3a353c445c7",
+      "pid_namespace": 4026539870,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2974385,
+      "start_ticks": "53981323",
+      "execution_handle": "54bcb52c-69bf-43c4-844c-238c8c05d517",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2974387,
+      "start_ticks": "53981325",
+      "execution_handle": "ae612627-fe08-4ead-8d33-4879acd73bc7",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2974956,
+      "start_ticks": "53981377",
+      "execution_handle": "2dfe089c-0c69-4e78-a336-341fb7221520",
+      "pid_namespace": 4026539870,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2976070,
+      "start_ticks": "53982422",
+      "execution_handle": "1e6ee07a-7822-47e7-8451-a703e9102ca5",
+      "pid_namespace": 4026540036,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2976072,
+      "start_ticks": "53982423",
+      "execution_handle": "37c2dfd9-ab96-4be9-9233-b6a3c22648ca",
+      "pid_namespace": 4026540119,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2976522,
+      "start_ticks": "53982476",
+      "execution_handle": "7c173fc8-ac69-4497-9c84-44c1c49eef0e",
+      "pid_namespace": 4026540202,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2976530,
+      "start_ticks": "53982477",
+      "execution_handle": "f698c78e-512c-4cc9-bb32-c28f96bb6b6b",
+      "pid_namespace": 4026540285,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2981137,
+      "start_ticks": "53985829",
+      "execution_handle": "490ff17b-4cf7-49bc-b446-ef0a7a8bbde7",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2981139,
+      "start_ticks": "53985830",
+      "execution_handle": "675251af-b23c-4a8a-a70c-86e35d787982",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2981699,
+      "start_ticks": "53985883",
+      "execution_handle": "55af53ff-8e57-4236-9d3f-8573541f7c74",
+      "pid_namespace": 4026539870,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2981701,
+      "start_ticks": "53985884",
+      "execution_handle": "c8ba5db6-68f3-4968-b29e-7ff65c677023",
+      "pid_namespace": 4026540038,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2993697,
+      "start_ticks": "53988612",
+      "execution_handle": "fc6c298d-e384-43b9-a1d3-baf2c2b886eb",
+      "pid_namespace": 4026539687,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2993699,
+      "start_ticks": "53988614",
+      "execution_handle": "06e45d8c-e646-4254-9b30-5dd5aa7070c8",
+      "pid_namespace": 4026539789,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2994213,
+      "start_ticks": "53988666",
+      "execution_handle": "10e99fb2-500d-4b09-9d63-507af8debdb8",
+      "pid_namespace": 4026539870,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 2999553,
+      "start_ticks": "53990173",
+      "execution_handle": "263df2c1-7cc9-4781-b1ff-fbce4ff486ec",
+      "pid_namespace": 4026540035,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3002604,
+      "start_ticks": "53990810",
+      "execution_handle": "4964900c-be10-4f09-97c8-693a79968497",
+      "pid_namespace": 4026540114,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3008580,
+      "start_ticks": "53993227",
+      "execution_handle": "18f91664-7121-43a4-91e5-c5826225f86b",
+      "pid_namespace": 4026539685,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3008585,
+      "start_ticks": "53993229",
+      "execution_handle": "05f5f51c-39b8-4ab7-a596-1e0468e90f1b",
+      "pid_namespace": 4026539785,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3009069,
+      "start_ticks": "53993281",
+      "execution_handle": "4d2afcc7-296a-4086-9d63-11aebb03683e",
+      "pid_namespace": 4026539869,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3009071,
+      "start_ticks": "53993282",
+      "execution_handle": "c78f972c-12a3-4f0e-90a5-b4bebc2d64c9",
+      "pid_namespace": 4026540036,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3011317,
+      "start_ticks": "53994780",
+      "execution_handle": "084e8ed2-faf6-4a25-b081-6e36cc02e7f0",
+      "pid_namespace": 4026540118,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3011542,
+      "start_ticks": "53994816",
+      "execution_handle": "2c4f2cf6-cbe3-439d-947b-b85d81ef319d",
+      "pid_namespace": 4026540201,
+      "terminated_after_service_cleanup": true,
+      "fixture_cleanup_signalled": false,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3012616,
+      "start_ticks": "53995485",
+      "execution_handle": "86fedae4-c7fd-410c-800c-5a1ddf4f4351",
+      "pid_namespace": 4026540120,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    },
+    {
+      "log": "root-test.log",
+      "pid": 3012846,
+      "start_ticks": "53995523",
+      "execution_handle": "29f57f6a-c22d-4e3c-9808-942b7a4d3e87",
+      "pid_namespace": 4026540205,
+      "terminated_after_service_cleanup": false,
+      "fixture_cleanup_signalled": true,
+      "whole_process_terminated": true
+    }
+  ],
+  "temporary_roots": [
+    {
+      "path": "/tmp/cnr-0y0pppjh",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-24d9hpab",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-2r00lg8_",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-3y4p9fip",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-4b906ao2",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-4h_ekssw",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-6mwq4int",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-72knh6vd",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-74n2ch1a",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-7q1c5zh6",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-9f1k20_b",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-d8z24t3z",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-gag5rdnw",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-gmslyi2e",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-gtq34hwc",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-gxic2laz",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-h2yt5d4o",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-htn6d5w1",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-iovafkoy",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-iozm0h0y",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-iudfl2jd",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-jqdnhqw2",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-kboqrn6f",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-l1o0zcms",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-l3nve776",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-lprm1biz",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-mynvcr_9",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-n6g9t9md",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-nmrqs4kf",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-rsxco4el",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-s5cbqi1b",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-t94tiojc",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-upe0ovhl",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-vh_80ob1",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-vms7nzal",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-w3on3hf_",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-w59ai2bn",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-w87fjqh9",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-wgnuebjb",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-wweavkh4",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-x14nbct7",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-xqx3513t",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-xsa0cxfc",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-yjucahdx",
+      "exists": false
+    },
+    {
+      "path": "/tmp/cnr-z8s97eji",
+      "exists": false
+    }
+  ],
+  "provenance_limit": "Interrupted cargo runs without emitted fixture resource identities are not included or claimed as complete inventories. This read-only audit inspects only positively retained owned identities; no foreign process enumeration/signalling."
+}

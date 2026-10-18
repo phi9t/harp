@@ -1,0 +1,16 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling syn v3.0.6
+   Compiling serde_derive v1.0.229
+   Compiling serde v1.0.229
+   Compiling corenius-sqlite-controller v0.1.0 (/data02/home/philip.yang/workspace/corenius-sqlite01-storage/crates/sqlite-controller)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.85s
+     Running tests/public.rs (crates/sqlite-controller/target/debug/deps/public-71954cf30dfe09a5)
+
+running 1 test
+test controller_files_have_private_permissions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.01s
+
+
+# Recorded command exit status: 0

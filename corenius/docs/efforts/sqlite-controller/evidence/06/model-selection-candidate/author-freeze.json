@@ -1,0 +1,228 @@
+{
+  "at": "2026-10-05T05:40:13.412709+00:00",
+  "actor": "/root/sqlite06_model_link_author",
+  "thread": "01a10a86-8959-7022-a25a-8504f165f2a0",
+  "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
+  "branch": "sqlite06/happy-path",
+  "fixed_base": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "source_commit": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+  "source_tree": "cc14262c740c935ebfbbfee4285c1710f6c7f6ec",
+  "source_files_sha256": {
+    "crates/sqlite-controller/src/codex.rs": "680598070634abac04d97571a1fce15d20ca9c26d4f03d18e71ffdf241adbd1a",
+    "crates/sqlite-controller/src/native_ui.rs": "a90230118c24fd0aad50782474d131392f8d7502689e184d9c93e8ae9b6b19ba",
+    "tools/agents/sqlite_baseline.py": "52cf7036fe270847451b2b9a324ee1b3ad7ac8aaa1fc1618b67de0389f4883d9",
+    "tools/agents/test_sqlite_baseline.py": "59a1a0d21c31c6403da191fd42943f5a27f5878aa305a2dd838a2c64a1cec2e4"
+  },
+  "dirty": false,
+  "fixed_base_diff": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/candidate-fixed-base.diff",
+  "fixed_base_diff_sha256": "f60c730b56022ad2d108a78432dbcfcd09f42782b3b804d627ad273ab75a8a45",
+  "writer_results": [
+    {
+      "name": "focused-final",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        ".scratch/sqlite06-happy-path/model-link/target",
+        "--locked",
+        "--offline",
+        "--lib",
+        "selected_model",
+        "--",
+        "--nocapture"
+      ],
+      "actual_exit": 0,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-check-focused-final.log",
+      "elapsed_seconds": 1.3732666969299316,
+      "log_sha256": "211fb425a8ba4874a6c77405a14b98f983ca9935b4b7cd179b198c3853dcf01b",
+      "kind": "writer verification; real Controller and owned Unix NativeWs frame adapter",
+      "result_lines": [
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.06s"
+      ]
+    },
+    {
+      "name": "durable_native_configuration_refuses_retargeted_topology",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        ".scratch/sqlite06-happy-path/model-link/target",
+        "--locked",
+        "--offline",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "durable_native_configuration_refuses_retargeted_topology",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "actual_exit": 0,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-check-durable_native_configuration_refuses_retargeted_topology.log",
+      "elapsed_seconds": 62.01267766952515,
+      "log_sha256": "5398a333052c1d9ed30bffd4909c3f1f821f83150da2a60be67577685f0baafc",
+      "kind": "writer verification; real native services with fixture provider",
+      "result_lines": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 40 filtered out; finished in 60.78s"
+      ]
+    },
+    {
+      "name": "actual_native_scoped_tui_attachment_and_literal_input",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        ".scratch/sqlite06-happy-path/model-link/target",
+        "--locked",
+        "--offline",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "actual_native_scoped_tui_attachment_and_literal_input",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "actual_exit": 0,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-check-actual_native_scoped_tui_attachment_and_literal_input.log",
+      "elapsed_seconds": 91.09035634994507,
+      "log_sha256": "bfc7252a9cc911425a3716170818941cf0cbd34e2c65d58b9234c62917e891ee",
+      "kind": "writer verification; real native services with fixture provider",
+      "result_lines": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 40 filtered out; finished in 91.04s"
+      ]
+    },
+    {
+      "name": "unknown_native_start_refuses_new_turn_until_reconciled",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "crates/sqlite-controller/Cargo.toml",
+        "--target-dir",
+        ".scratch/sqlite06-happy-path/model-link/target",
+        "--locked",
+        "--offline",
+        "--features",
+        "fault-injection",
+        "--test",
+        "codex",
+        "unknown_native_start_refuses_new_turn_until_reconciled",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "actual_exit": 0,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-check-unknown_native_start_refuses_new_turn_until_reconciled.log",
+      "elapsed_seconds": 84.8114287853241,
+      "log_sha256": "46365b0eae9068df7a73f09ba9d036b52d4873e5abf4065277bc6fe3c8db74aa",
+      "kind": "writer verification; real native services with fixture provider",
+      "result_lines": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 40 filtered out; finished in 84.76s"
+      ]
+    },
+    {
+      "name": "controller-library-and-control-center",
+      "actual_exit": 0,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-adjacent-controller.log",
+      "counts": {
+        "library_passed": 24,
+        "control_center_passed": 9,
+        "failed": 0
+      },
+      "log_sha256": "c0336e3a10fbffb81038ed3b033e7b8fe2b0f424bdd0fe3374856ac2e70e6c7b"
+    },
+    {
+      "name": "harness-full",
+      "actual_exit": 0,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-harness-green.log",
+      "counts": {
+        "passed": 4,
+        "failed": 0
+      },
+      "log_sha256": "6af2389aec9ed4c00af610b47658f749b17b26da36f2d8e3dfb87b12d81dc0d0"
+    },
+    {
+      "name": "harness-unsupported-selector",
+      "actual_exit": 2,
+      "expected_exit": 2,
+      "log": ".scratch/sqlite06-happy-path/model-link/harness-unsupported-model.log",
+      "effects": "argument rejection before build or run creation",
+      "log_sha256": "7581a3c6d351c7c1fbcb15885703d70fdc29fb75ec75bb60f11989c1157e9308"
+    }
+  ],
+  "red_preservation": {
+    "original_log_sha256": "40a2ccde67175defb17813ebd898399629cc8da90d4381bd8b951a02c361b5f4",
+    "inherited_diff_sha256": "f761d552601a340f7033a1db17363641664324fb2f1779ac3b60aa42acaf918f",
+    "author_replay_sha256": "fecddadce8c1d62a0e68d569448e291f6d29b236e689cb2ea0a62bd776051392",
+    "actual_exit": 101,
+    "passed": 0,
+    "failed": 3
+  },
+  "failed_green_attempts": [
+    {
+      "actual_exit": 101,
+      "passed": 1,
+      "failed": 2,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-green.log",
+      "log_sha256": "b5324d650ea4afbf21afbd3d53fb8a885a8e002c16a9434d85f0c3c363f0604f"
+    },
+    {
+      "actual_exit": 101,
+      "passed": 2,
+      "failed": 1,
+      "log": ".scratch/sqlite06-happy-path/model-link/author-green-fixture-complete.log",
+      "log_sha256": "3846ec6e3ac485612e4e0828ac4528968d0006ec6871213f98fdb91cdb54db34"
+    }
+  ],
+  "fixture_corrections": {
+    "diff": ".scratch/sqlite06-happy-path/model-link/fixture-corrections.diff",
+    "diff_sha256": "2fc8b3edd8345aaa9ae11fb9f7b2037b45ba6df2391d44a47e66b48235b0dba4",
+    "rationale": ".scratch/sqlite06-happy-path/model-link/fixture-corrections.json",
+    "rationale_sha256": "17bd9c60b12ac962580bbbbdf47a785f9007c68629ce7b1cf1288d4f537b76b9",
+    "authority": "Root separately adopted exact replay, monitor provenance, and authorization wording corrections."
+  },
+  "independent_review": {
+    "standards": "pending root disposition",
+    "spec": "pending root disposition"
+  },
+  "continuation_argv": [
+    "python3",
+    "tools/agents/sqlite_baseline.py",
+    "start",
+    "--session",
+    "corenius-team",
+    "--reuse-kata",
+    "/tmp/cb-20261005T050033Z-84eb5a/kata.json",
+    "--target-dir",
+    "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/continuation-target",
+    "--model",
+    "gpt-6.1-sol"
+  ],
+  "continuation_command": "python3 tools/agents/sqlite_baseline.py start --session corenius-team --reuse-kata /tmp/cb-20261005T050033Z-84eb5a/kata.json --target-dir /data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/continuation-target --model gpt-6.1-sol",
+  "launch_performed": false,
+  "provider_probe_performed": false,
+  "acceptance_changed": false,
+  "caps_reset": false,
+  "effects": "All current writer test commands ended; no running writer job. Existing live services, panes, runs, evidence and acceptance state preserved. No shared push or fast-forward.",
+  "context_checkpoint": {
+    "usage": {
+      "at": "2026-10-05T05:39:18.483Z",
+      "input": 120852,
+      "cached": 120064,
+      "output": 479,
+      "window": 258400
+    },
+    "actual_compaction": false,
+    "next": "Quiescent author handoff; root uses separate contexts for independent review and any live continuation."
+  },
+  "scope": "Only validated model-selection link and focused tests/harness. Original extra C1/C2 round remains consumed, 05 unaccepted; unrelated findings untouched."
+}
