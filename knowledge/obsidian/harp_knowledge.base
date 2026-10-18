@@ -15,7 +15,7 @@ properties:
 views:
   - type: cards
     name: Reader routes
-    filters: 'type == "research-index" || type == "benchmark-guide" || type == "reference-architecture"'
+    filters: 'type == "knowledge-index" || type == "reading-survey" || type == "benchmark-guide" || type == "reference-architecture"'
     order: [file.link, title, status, confidence, tags]
   - type: table
     name: Technical deep dives

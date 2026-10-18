@@ -11,11 +11,6 @@ pub(super) enum RouteTarget {
     Reader {
         route_id: String,
     },
-    Chapter {
-        concept_id: String,
-        document_id: String,
-        heading_ids: BTreeMap<String, String>,
-    },
     Document {
         document_id: String,
         heading_ids: BTreeMap<String, String>,
@@ -29,8 +24,7 @@ pub(super) fn compile_document(
 ) -> Result<CanonicalDocument, AppError> {
     let body = markdown_body(&source.markdown, &source.path)?;
     debug_assert_eq!(source.body_sha256, sha256(body.as_bytes()));
-    let metadata =
-        super::contracts::document_metadata(&source.markdown, &source.path, &source.entries)?;
+    let metadata = super::contracts::document_metadata(&source.markdown, &source.path)?;
     let title = first_heading(body).ok_or_else(|| {
         invalid(
             "knowledge.rsi.heading",
@@ -57,36 +51,15 @@ fn source_document_id(
     registered_document_ids
         .get(&source.path)
         .cloned()
-        .or_else(|| {
-            source
-                .entries
-                .iter()
-                .find(|entry| entry.section_id.is_none())
-                .or_else(|| source.entries.first())
-                .map(|entry| entry.concept_id.clone())
-        })
         .unwrap_or_else(|| fallback_document_id(&source.path))
 }
 
 fn fallback_document_id(path: &str) -> String {
     Path::new(path)
         .file_stem()
-        .and_then(|stem| stem.to_str())
-        .and_then(|stem| {
-            if path.starts_with("knowledge/rsi/systems/") {
-                return Some(stem.to_owned());
-            }
-            if path.starts_with("knowledge/rsi/lessons/") {
-                return stem
-                    .split_once('-')
-                    .filter(|(prefix, _)| prefix.bytes().all(|byte| byte.is_ascii_digit()))
-                    .map(|(_, section)| format!("lesson-{section}"));
-            }
-            stem.split_once('-')
-                .filter(|(prefix, _)| prefix.bytes().all(|byte| byte.is_ascii_digit()))
-                .map(|(_, section)| format!("weng-{section}"))
-        })
-        .unwrap_or_default()
+        .and_then(|s| s.to_str())
+        .unwrap_or("document")
+        .replace('_', "-")
 }
 
 pub(crate) fn markdown_body<'a>(markdown: &'a str, path: &str) -> Result<&'a str, AppError> {
@@ -108,10 +81,6 @@ fn first_heading(markdown: &str) -> Option<String> {
         .find_map(|line| line.strip_prefix("# ").map(str::trim))
         .filter(|title| !title.is_empty())
         .map(str::to_owned)
-}
-
-pub(super) fn heading_ids(markdown: &str) -> BTreeSet<String> {
-    parsed_heading_ids(markdown, "").into_iter().collect()
 }
 
 pub(super) fn heading_ids_for_source(
@@ -188,40 +157,11 @@ fn slug(value: &str) -> String {
 }
 
 pub(super) fn route_targets(
-    coverage: &[CoverageEntry],
     canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
     registered_document_ids: &BTreeMap<String, String>,
 ) -> BTreeMap<String, RouteTarget> {
     let mut targets = BTreeMap::new();
 
-    for chapter in coverage
-        .iter()
-        .filter(|entry| entry.coverage_depth == CoverageDepth::Chapter)
-    {
-        let heading_ids = canonical_sources
-            .get(&chapter.canonical_markdown_path)
-            .map(|source| {
-                let body =
-                    markdown_body(&source.markdown, &source.path).unwrap_or(&source.markdown);
-                addressable_heading_ids(body, &source.path)
-            })
-            .unwrap_or_default();
-        let target = if let Some(document_id) =
-            registered_document_ids.get(&chapter.canonical_markdown_path)
-        {
-            RouteTarget::Document {
-                document_id: document_id.clone(),
-                heading_ids,
-            }
-        } else {
-            RouteTarget::Chapter {
-                concept_id: chapter.concept_id.clone(),
-                document_id: chapter.concept_id.clone(),
-                heading_ids,
-            }
-        };
-        targets.insert(chapter.canonical_markdown_path.clone(), target);
-    }
     for (path, source) in canonical_sources {
         targets.entry(path.clone()).or_insert_with(|| {
             document_target(source_document_id(source, registered_document_ids), source)
@@ -254,11 +194,7 @@ fn addressable_heading_ids(markdown: &str, source_path: &str) -> BTreeMap<String
 }
 
 #[cfg(test)]
-pub(super) fn render_markdown(
-    markdown: &str,
-    source_path: &str,
-    _coverage: &[CoverageEntry],
-) -> String {
+pub(super) fn render_markdown(markdown: &str, source_path: &str) -> String {
     render_markdown_with_targets(markdown, source_path, &BTreeMap::new())
 }
 
@@ -395,16 +331,6 @@ fn render_wiki_link(
     let destination = if let Some(route) = route_targets.get(target_text.as_ref()) {
         match route {
             RouteTarget::Reader { route_id } => format!("#{route_id}"),
-            RouteTarget::Chapter {
-                concept_id,
-                document_id,
-                heading_ids,
-            } => route_destination(
-                format!("#chapters/{concept_id}"),
-                document_id,
-                heading_ids,
-                link.subpath.as_ref(),
-            ),
             RouteTarget::Document {
                 document_id,
                 heading_ids,
@@ -583,40 +509,6 @@ fn escape_html_text(value: &str) -> String {
         .replace('>', "&gt;")
 }
 
-#[cfg(test)]
-pub(super) fn offline_link_destination(
-    value: &str,
-    source_parent: &Path,
-    coverage: &[CoverageEntry],
-) -> String {
-    let targets = coverage
-        .iter()
-        .filter(|entry| entry.coverage_depth == CoverageDepth::Chapter)
-        .map(|entry| {
-            (
-                entry.canonical_markdown_path.clone(),
-                RouteTarget::Chapter {
-                    concept_id: entry.concept_id.clone(),
-                    document_id: entry.concept_id.clone(),
-                    heading_ids: BTreeMap::new(),
-                },
-            )
-        })
-        .collect();
-    offline_link_destination_with_targets(value, source_parent, &targets)
-}
-
-#[cfg(test)]
-pub(super) fn offline_link_destination_with_sources(
-    value: &str,
-    source_parent: &Path,
-    coverage: &[CoverageEntry],
-    canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
-) -> String {
-    let targets = route_targets(coverage, canonical_sources, &BTreeMap::new());
-    offline_link_destination_with_targets(value, source_parent, &targets)
-}
-
 pub(super) fn offline_link_destination_with_targets(
     value: &str,
     source_parent: &Path,
@@ -644,16 +536,6 @@ pub(super) fn offline_link_destination_with_targets(
     if let Some(target) = route_targets.get(resolved.as_ref()) {
         return match target {
             RouteTarget::Reader { route_id } => format!("#{route_id}"),
-            RouteTarget::Chapter {
-                concept_id,
-                document_id,
-                heading_ids,
-            } => markdown_route_destination(
-                format!("#chapters/{concept_id}"),
-                document_id,
-                heading_ids,
-                fragment,
-            ),
             RouteTarget::Document {
                 document_id,
                 heading_ids,

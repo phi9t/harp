@@ -9,15 +9,11 @@ use crate::fs::HeldDirectory;
 use crate::knowledge::WikiLinkResolution;
 
 mod contracts;
-mod lessons;
 mod obsidian;
 mod registration;
 mod render;
-mod rules;
 
-use contracts::ValidatedRsiInputs;
-#[cfg(test)]
-use contracts::{SYSTEM_READINGS_PATH, WENG_MAP_PATH};
+use contracts::ValidatedInputs;
 
 pub(crate) fn canonical_frontmatter_identity(
     markdown: &str,
@@ -37,20 +33,10 @@ pub(crate) fn canonical_heading_ids(markdown: &str, path: &str) -> Result<Vec<St
     render::validated_heading_ids(markdown, path)
 }
 
-pub(super) const COVERAGE_PATH: &str = "content/coverage-map.tsv";
-pub(super) const COVERAGE_HEADER: &str =
-    "concept_id\tcoverage_depth\tcanonical_markdown_path\tsection_id\tparent_concept_id";
-pub(super) const RETAINED_CONCEPTS_PATH: &str = "content/retained-concepts.tsv";
 pub(super) const CONTENT_ROOT: &str = "content";
-const RETAINED_CONCEPTS_HEADER: &str = "concept_id\tsource_ids";
 const SOURCE_SUMMARY: &str = "<summary>Original sources for this mechanism</summary>";
 const REFERENCE_SUMMARY: &str = "<summary>Reference records and operational metadata</summary>";
-const MAX_COVERAGE_BYTES: usize = 256 * 1024;
 const MAX_MARKDOWN_BYTES: usize = 512 * 1024;
-const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
-const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
-pub(super) const EVIDENCE_GRAPH_HEADER: &str =
-    "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
 pub(crate) fn resolve_wiki_links(
     repository_root: &Path,
     source_path: &Path,
@@ -94,42 +80,11 @@ pub(crate) fn resolve_wiki_links(
         .collect()
 }
 
-pub(super) const READER_ROUTES: [(&str, &str, &str); 17] = [
-    (
-        "thesis",
-        "Thesis",
-        "knowledge/rsi/chapters/recursive-improvement-loop.md",
-    ),
-    (
-        "loop",
-        "Loop",
-        "knowledge/rsi/concepts/system-state-and-notation.md",
-    ),
-    (
-        "methods",
-        "Methods",
-        "knowledge/rsi/concepts/harness-search-methods.md",
-    ),
-    (
-        "harnesses",
-        "Harnesses",
-        "knowledge/rsi/chapters/harness-engineering.md",
-    ),
-    (
-        "weng",
-        "Weng",
-        "knowledge/rsi/rsi_harness_by_lil_log_deconstructed.md",
-    ),
-    (
-        "experiment",
-        "Experiment",
-        "knowledge/rsi/evaluator_integrity_and_promotion.md",
-    ),
-    ("sources", "Sources", "knowledge/rsi/source_registry.md"),
+pub(super) const READER_ROUTES: &[(&str, &str, &str)] = &[
     (
         "agentic-eval-apply",
         "Agentic eval/apply",
-        "knowledge/rsi/sicp/agentic_eval_apply.md",
+        "knowledge/sicp/agentic_eval_apply.md",
     ),
     (
         "benchmarks",
@@ -140,16 +95,6 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 17] = [
         "evaluator-integrity",
         "Evaluator integrity",
         "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
-    ),
-    (
-        "survey",
-        "Survey",
-        "knowledge/self_improving_agents_survey/synthesis.md",
-    ),
-    (
-        "verified-coevolution",
-        "Verified coevolution",
-        "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md",
     ),
     (
         "agentic-engineering",
@@ -176,35 +121,38 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 17] = [
         "Autodiff geometry",
         "knowledge/autodiff_geometry/autodiff_geometry_index.md",
     ),
-];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 82] = [
     (
-        "agentic-eval-apply",
-        "knowledge/rsi/sicp/agentic_eval_apply.md",
+        "article-survey",
+        "Article survey",
+        "knowledge/article_survey.md",
     ),
+    ("sicp", "SICP", "knowledge/sicp/sicp_index.md"),
+];
+pub(super) const AUXILIARY_DOCUMENTS: &[(&str, &str)] = &[
+    ("agentic-eval-apply", "knowledge/sicp/agentic_eval_apply.md"),
     (
         "sicp-seminar-09-eval-apply",
-        "knowledge/rsi/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
+        "knowledge/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
     ),
     (
         "sicp-evaluator-deep-dive",
-        "knowledge/rsi/sicp/metacircular_evaluator_deep_dive.md",
+        "knowledge/sicp/metacircular_evaluator_deep_dive.md",
     ),
     (
         "pi-harness-deep-dive",
-        "knowledge/rsi/pi_harness_deep_dive.md",
+        "knowledge/agentic_engineering/pi_harness_deep_dive.md",
     ),
     (
         "hermes-harness-deep-dive",
-        "knowledge/rsi/hermes_harness_deep_dive.md",
+        "knowledge/agentic_engineering/hermes_harness_deep_dive.md",
     ),
     (
         "codex-harness-deep-dive",
-        "knowledge/rsi/codex_harness_deep_dive.md",
+        "knowledge/agentic_engineering/codex_harness_deep_dive.md",
     ),
     (
         "deepseek-harness-deep-dive",
-        "knowledge/rsi/deepseek_harness_deep_dive.md",
+        "knowledge/agentic_engineering/deepseek_harness_deep_dive.md",
     ),
     (
         "deepseek-harness-study-index",
@@ -260,23 +208,11 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 82] = [
     ),
     (
         "agent-harness-architecture-dossier",
-        "knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier.md",
+        "knowledge/sicp/course/capstone/agent_harness_architecture_dossier.md",
     ),
     (
         "codex-state-continuity",
-        "knowledge/rsi/codex_state_continuity_and_compaction.md",
-    ),
-    (
-        "rsi-standalone-consolidation",
-        "knowledge/rsi/standalone_consolidation.md",
-    ),
-    (
-        "context-engineering-deep-dive",
-        "knowledge/rsi/context_engineering_deep_dive.md",
-    ),
-    (
-        "meta-harness-deep-dive",
-        "knowledge/meta_harness/meta_harness_deep_dive.md",
+        "knowledge/agentic_engineering/codex_state_continuity_and_compaction.md",
     ),
     (
         "harness-benchmark-field-guide",
@@ -285,38 +221,6 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 82] = [
     (
         "evaluator-integrity-benchmark-suite",
         "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
-    ),
-    (
-        "self-improving-agents-survey-synthesis",
-        "knowledge/self_improving_agents_survey/synthesis.md",
-    ),
-    (
-        "self-improving-agents-survey-source-registry",
-        "knowledge/self_improving_agents_survey/source_registry.md",
-    ),
-    (
-        "self-improving-agents-survey-claim-evidence-ledger",
-        "knowledge/self_improving_agents_survey/claim_evidence_ledger.md",
-    ),
-    (
-        "self-improving-agents-survey-gap-map",
-        "knowledge/self_improving_agents_survey/gap_map.md",
-    ),
-    (
-        "verified-coevolution-source-registry",
-        "knowledge/verified_coevolution_agenda/source_registry.md",
-    ),
-    (
-        "verified-coevolution-claim-evidence-ledger",
-        "knowledge/verified_coevolution_agenda/claim_evidence_ledger.md",
-    ),
-    (
-        "verified-coevolution-experiment-protocol",
-        "knowledge/verified_coevolution_agenda/experiment_protocol.md",
-    ),
-    (
-        "verified-coevolution-maintenance",
-        "knowledge/verified_coevolution_agenda/maintenance.md",
     ),
     (
         "agentic-engineering-index",
@@ -398,36 +302,6 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 82] = [
         "crouzeix-claim-evidence-ledger",
         "knowledge/crouzeix_conjecture/claim_evidence_ledger.md",
     ),
-    ("darwinx-index", "knowledge/darwinx/darwinx_index.md"),
-    (
-        "darwinx-mechanism-and-selection",
-        "knowledge/darwinx/01_mechanism_and_selection.md",
-    ),
-    (
-        "darwinx-evaluation-audit",
-        "knowledge/darwinx/02_evaluation_audit.md",
-    ),
-    (
-        "darwinx-critical-review",
-        "knowledge/darwinx/03_critical_review.md",
-    ),
-    (
-        "darwinx-comparative-synthesis",
-        "knowledge/darwinx/04_comparative_synthesis.md",
-    ),
-    (
-        "darwinx-successor-experiment",
-        "knowledge/darwinx/05_successor_experiment.md",
-    ),
-    (
-        "darwinx-claim-evidence-ledger",
-        "knowledge/darwinx/claim_evidence_ledger.md",
-    ),
-    (
-        "darwinx-source-registry",
-        "knowledge/darwinx/source_registry.md",
-    ),
-    ("darwinx-maintenance", "knowledge/darwinx/maintenance.md"),
     (
         "math-foundations-index",
         "knowledge/mathematical_foundations/mathematical_foundations_index.md",
@@ -500,69 +374,79 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 82] = [
         "autodiff-geometry-layered-curriculum-tracker",
         "knowledge/autodiff_geometry/layered_curriculum_tracker.md",
     ),
+    (
+        "sicp-dialogue-state",
+        "knowledge/sicp/course/dialogue_state.md",
+    ),
+    ("sicp-exercise-map", "knowledge/sicp/course/exercise_map.md"),
+    (
+        "sicp-scheme-reading-primer",
+        "knowledge/sicp/course/scheme_reading_primer.md",
+    ),
+    (
+        "sicp-01-process-shape-and-higher-order-abstraction",
+        "knowledge/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md",
+    ),
+    (
+        "sicp-02-data-abstraction-and-immutable-representation",
+        "knowledge/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md",
+    ),
+    (
+        "sicp-03-trees-sequences-and-functional-interfaces",
+        "knowledge/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md",
+    ),
+    (
+        "sicp-04-symbols-sets-compression-and-generic-dispatch",
+        "knowledge/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md",
+    ),
+    (
+        "sicp-05-state-identity-and-environments",
+        "knowledge/sicp/course/seminars/05-state-identity-and-environments.md",
+    ),
+    (
+        "sicp-06-mutation-simulation-and-constraints",
+        "knowledge/sicp/course/seminars/06-mutation-simulation-and-constraints.md",
+    ),
+    (
+        "sicp-07-concurrency-serialization-and-interleavings",
+        "knowledge/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md",
+    ),
+    (
+        "sicp-08-streams-delay-and-infinite-processes",
+        "knowledge/sicp/course/seminars/08-streams-delay-and-infinite-processes.md",
+    ),
+    (
+        "sicp-10-lazy-evaluation-and-nondeterministic-search",
+        "knowledge/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md",
+    ),
+    (
+        "sicp-11-logic-programming-and-declarative-query",
+        "knowledge/sicp/course/seminars/11-logic-programming-and-declarative-query.md",
+    ),
+    (
+        "sicp-12-machines-storage-control-and-compilation",
+        "knowledge/sicp/course/seminars/12-machines-storage-control-and-compilation.md",
+    ),
+    (
+        "sicp-sicp-course-guide",
+        "knowledge/sicp/course/sicp_course_guide.md",
+    ),
+    (
+        "sicp-domain-orientation",
+        "knowledge/sicp/domain_orientation.md",
+    ),
+    (
+        "sicp-eval-apply-reader-companion",
+        "knowledge/sicp/eval-apply-reader-companion.md",
+    ),
+    (
+        "sicp-missing-evidence",
+        "knowledge/sicp/missing_evidence.md",
+    ),
+    ("sicp-index", "knowledge/sicp/sicp_index.md"),
 ];
 const KNOWLEDGE_HOME: (&str, &str, &str) =
     ("knowledge", "Knowledge", "knowledge/harp_knowledge_home.md");
-pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [
-    (
-        "recursive-improvement-loop",
-        "knowledge/rsi/chapters/recursive-improvement-loop.md",
-    ),
-    (
-        "foundation-model-inside-the-loop",
-        "knowledge/rsi/chapters/foundation-model-inside-the-loop.md",
-    ),
-    (
-        "harness-engineering",
-        "knowledge/rsi/chapters/harness-engineering.md",
-    ),
-    (
-        "durable-improvement-workflows",
-        "knowledge/rsi/chapters/durable-improvement-workflows.md",
-    ),
-    (
-        "procedure-internalization",
-        "knowledge/rsi/chapters/procedure-internalization.md",
-    ),
-    ("harness-search", "knowledge/rsi/chapters/harness-search.md"),
-    (
-        "automated-research",
-        "knowledge/rsi/chapters/automated-research.md",
-    ),
-    (
-        "joint-harness-weight-adaptation",
-        "knowledge/rsi/chapters/joint-harness-weight-adaptation.md",
-    ),
-    (
-        "evaluation-promotion-containment",
-        "knowledge/rsi/chapters/evaluation-promotion-containment.md",
-    ),
-];
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "kebab-case")]
-pub(super) enum CoverageDepth {
-    Chapter,
-    SupportingPage,
-    SystemReading,
-    WorkedExample,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct CoverageEntry {
-    pub(super) concept_id: String,
-    pub(super) coverage_depth: CoverageDepth,
-    pub(super) canonical_markdown_path: String,
-    pub(super) section_id: Option<String>,
-    pub(super) parent_concept_id: Option<String>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct RetainedConcept {
-    pub(super) concept_id: String,
-    pub(super) source_ids: Vec<String>,
-}
-
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub(super) struct CanonicalDocument {
     pub(super) concept_id: String,
@@ -583,7 +467,6 @@ pub(super) struct DocumentMetadata {
     pub(super) confidence: String,
     pub(super) mode: Option<String>,
     pub(super) source_ids: Vec<String>,
-    pub(super) coverage_keys: Vec<String>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -600,247 +483,54 @@ pub(super) struct DocumentAlias {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct WengSectionProjection {
-    pub(super) order: u8,
-    pub(super) section_id: String,
-    pub(super) title: String,
-    pub(super) public_url: String,
-    pub(super) captured_locator: String,
-    pub(super) companion_document_id: String,
-    pub(super) companion_section: String,
-    pub(super) system_ids: Vec<String>,
-    pub(super) exercise_ids: Vec<String>,
-    pub(super) figure_locators: Vec<String>,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, serde::Deserialize)]
-#[serde(rename_all = "kebab-case")]
-pub(super) enum SystemTreatment {
-    Full,
-    Card,
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, serde::Deserialize)]
-#[serde(rename_all = "kebab-case")]
-pub(super) enum PublicationState {
-    Planned,
-    Published,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct SystemProjection {
-    pub(super) system_id: String,
-    pub(super) title: String,
-    pub(super) source_ids: Vec<String>,
-    pub(super) treatment: SystemTreatment,
-    pub(super) publication_state: PublicationState,
-    pub(super) canonical_markdown_path: String,
-    pub(super) weng_section_ids: Vec<String>,
-    pub(super) paper_routes: Vec<PaperRouteProjection>,
-    pub(super) diagnostic_case_path: Option<String>,
-    pub(super) related_system_ids: Vec<String>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct PaperRouteProjection {
-    pub(super) source_id: String,
-    pub(super) public_url: String,
-    pub(super) captured_locator: String,
-    pub(super) reading_sequence: ReadingSequenceProjection,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct ReadingSequenceProjection {
-    pub(super) method: String,
-    pub(super) algorithm: String,
-    pub(super) main_evaluation: String,
-    pub(super) ablation: String,
-    pub(super) limitations: String,
-    pub(super) appendix: String,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-pub(super) struct RsiCorpus {
+pub(super) struct KnowledgeCorpus {
     pub(super) schema_version: &'static str,
-    pub(super) retained_concepts: Vec<RetainedConcept>,
-    pub(super) coverage: Vec<CoverageEntry>,
     pub(super) reader_routes: Vec<ReaderRoute>,
     pub(super) document_aliases: Vec<DocumentAlias>,
     pub(super) documents: Vec<CanonicalDocument>,
-    pub(super) systems: Vec<SystemProjection>,
-    pub(super) weng_sections: Vec<WengSectionProjection>,
-    diagnostics: rules::DiagnosticProjection,
-    lessons: Vec<lessons::Lesson>,
 }
 
-pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
-    let repository = HeldDirectory::open(repo_root, "RSI repository")?;
+pub(super) fn compile(repo_root: &Path) -> Result<KnowledgeCorpus, AppError> {
+    let repository = HeldDirectory::open(repo_root, "Harp repository")?;
     let registration = registration::static_registration()?;
-    let ValidatedRsiInputs {
-        retained_concepts,
-        coverage,
-        registered_sources: _registered_sources,
+    let ValidatedInputs {
         canonical_sources,
         registered_document_ids,
         registered_document_aliases,
-        weng_map,
-        system_registry,
     } = contracts::load(&repository)?;
-    let diagnostics = rules::load(&repository, &_registered_sources, system_registry.as_ref())?;
-    let validated_lessons = lessons::load(
-        &repository,
-        &retained_concepts,
-        system_registry.as_ref(),
-        &diagnostics,
-    )?;
-    let lesson_manifest = validated_lessons.manifest;
-    let mut all_sources = canonical_sources;
-    all_sources.extend(validated_lessons.sources);
-    let route_targets = render::route_targets(&coverage, &all_sources, &registered_document_ids);
-    let mut documents = all_sources
+    let route_targets = render::route_targets(&canonical_sources, &registered_document_ids);
+    let documents = canonical_sources
         .values()
         .map(|source| {
             render::compile_document(source, &route_targets, &registered_document_ids)
                 .map(|document| (source.path.clone(), document))
         })
         .collect::<Result<BTreeMap<_, _>, AppError>>()?;
-    for lesson in &lesson_manifest.lessons {
-        let document = documents
-            .get_mut(&lesson.canonical_markdown_path)
-            .ok_or_else(|| {
-                invalid(
-                    "knowledge.rsi.lesson_document",
-                    format!("compiled lesson {} is missing", lesson.lesson_id),
-                )
-            })?;
-        document.concept_id = format!("lesson-{}", lesson.lesson_id);
-    }
-
-    let mut registered_routes = registration
+    let mut reader_routes = registration
         .reader_routes()
         .map(|document| {
             let reader = document.reader.as_ref().expect("reader registration");
-            (
-                reader.route_id.clone(),
-                reader.label.clone(),
-                document.path.clone(),
-            )
+            ReaderRoute {
+                route_id: reader.route_id.clone(),
+                label: reader.label.clone(),
+                canonical_markdown_path: document.path.clone(),
+            }
         })
         .collect::<Vec<_>>();
-    if repository
-        .read_optional_regular_file_bounded(
-            Path::new(KNOWLEDGE_HOME.2),
-            "Harp knowledge home",
-            MAX_MARKDOWN_BYTES,
-        )?
-        .is_some()
-    {
-        registered_routes.push((
-            KNOWLEDGE_HOME.0.to_owned(),
-            KNOWLEDGE_HOME.1.to_owned(),
-            KNOWLEDGE_HOME.2.to_owned(),
-        ));
+    if canonical_sources.contains_key(KNOWLEDGE_HOME.2) {
+        reader_routes.push(ReaderRoute {
+            route_id: KNOWLEDGE_HOME.0.into(),
+            label: KNOWLEDGE_HOME.1.into(),
+            canonical_markdown_path: KNOWLEDGE_HOME.2.into(),
+        });
     }
-    let reader_routes = registered_routes
-        .into_iter()
-        .map(|(route_id, label, path)| {
-            let document = documents.get_mut(&path).ok_or_else(|| {
-                invalid(
-                    "knowledge.rsi.canonical_missing",
-                    format!("reader route source is missing: {path}"),
-                )
-            })?;
-            if document.concept_id.is_empty() {
-                document.concept_id = route_id.clone();
-            }
-            Ok(ReaderRoute {
-                route_id,
-                label,
-                canonical_markdown_path: path,
-            })
-        })
-        .collect::<Result<Vec<_>, AppError>>()?;
     validate_document_namespace(
         &documents,
-        &coverage,
         &registered_document_ids,
         &registered_document_aliases,
     )?;
-    let systems = system_registry
-        .map(|registry| {
-            registry
-                .systems
-                .into_iter()
-                .map(|system| SystemProjection {
-                    system_id: system.system_id,
-                    title: system.title,
-                    source_ids: system.source_ids,
-                    treatment: system.treatment,
-                    publication_state: system.publication_state,
-                    canonical_markdown_path: system.canonical_markdown_path,
-                    weng_section_ids: system.weng_section_ids,
-                    paper_routes: system
-                        .paper_routes
-                        .into_iter()
-                        .map(|route| PaperRouteProjection {
-                            source_id: route.source_id,
-                            public_url: route.public_url,
-                            captured_locator: route.captured_locator,
-                            reading_sequence: ReadingSequenceProjection {
-                                method: route.reading_sequence.method,
-                                algorithm: route.reading_sequence.algorithm,
-                                main_evaluation: route.reading_sequence.main_evaluation,
-                                ablation: route.reading_sequence.ablation,
-                                limitations: route.reading_sequence.limitations,
-                                appendix: route.reading_sequence.appendix,
-                            },
-                        })
-                        .collect(),
-                    diagnostic_case_path: system.diagnostic_case_path,
-                    related_system_ids: system.related_system_ids,
-                })
-                .collect()
-        })
-        .unwrap_or_default();
-    let weng_sections = weng_map
-        .map(|map| {
-            map.sections
-                .into_iter()
-                .map(|section| {
-                    let companion_document_id = documents
-                        .get(&section.companion_path)
-                        .map(|document| document.concept_id.clone())
-                        .ok_or_else(|| {
-                            invalid(
-                                "knowledge.rsi.weng_companion",
-                                format!(
-                                    "compiled Weng companion is missing: {}",
-                                    section.companion_path
-                                ),
-                            )
-                        })?;
-                    Ok(WengSectionProjection {
-                        order: section.order,
-                        section_id: section.section_id,
-                        title: section.title,
-                        public_url: section.public_url,
-                        captured_locator: section.captured_locator,
-                        companion_document_id,
-                        companion_section: section.companion_section,
-                        system_ids: section.system_ids,
-                        exercise_ids: section.exercise_ids,
-                        figure_locators: section.figure_locators,
-                    })
-                })
-                .collect::<Result<Vec<_>, AppError>>()
-        })
-        .transpose()?
-        .unwrap_or_default();
-
-    Ok(RsiCorpus {
-        schema_version: "rsi-technical-atlas/v6",
-        retained_concepts,
-        coverage,
+    Ok(KnowledgeCorpus {
+        schema_version: "harp-knowledge/v1",
         reader_routes,
         document_aliases: registered_document_aliases
             .into_iter()
@@ -850,10 +540,6 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
             })
             .collect(),
         documents: documents.into_values().collect(),
-        systems,
-        weng_sections,
-        diagnostics,
-        lessons: lesson_manifest.lessons,
     })
 }
 
@@ -873,10 +559,6 @@ pub(super) fn validate_build_output(output: &Path) -> Result<PathBuf, AppError> 
     Ok(output.to_path_buf())
 }
 
-fn optional_cell(value: &str) -> Option<String> {
-    (!value.is_empty()).then(|| value.to_owned())
-}
-
 fn valid_id(value: &str) -> bool {
     !value.is_empty()
         && value.split('-').all(|group| {
@@ -889,7 +571,6 @@ fn valid_id(value: &str) -> bool {
 
 fn validate_document_namespace(
     documents: &BTreeMap<String, CanonicalDocument>,
-    coverage: &[CoverageEntry],
     registered_document_ids: &BTreeMap<String, String>,
     registered_document_aliases: &BTreeMap<String, String>,
 ) -> Result<(), AppError> {
@@ -950,32 +631,6 @@ fn validate_document_namespace(
             return Err(invalid(
                 "knowledge.rsi.document_identity",
                 format!("document alias {alias} collides with a canonical document"),
-            ));
-        }
-        let canonical_path = canonical_paths
-            .get(canonical_id.as_str())
-            .expect("canonical alias target was validated above");
-        if let Some(entry) = coverage.iter().find(|entry| {
-            entry.concept_id == *alias
-                && (alias != canonical_id || entry.canonical_markdown_path != **canonical_path)
-        }) {
-            return Err(invalid(
-                "knowledge.rsi.document_identity",
-                format!(
-                    "document alias {alias} collides with coverage identity at {}",
-                    entry.canonical_markdown_path
-                ),
-            ));
-        }
-        if let Some(entry) = coverage.iter().find(|entry| {
-            entry.concept_id == *canonical_id && entry.canonical_markdown_path != **canonical_path
-        }) {
-            return Err(invalid(
-                "knowledge.rsi.document_identity",
-                format!(
-                    "canonical document ID {canonical_id} collides with coverage identity at {}",
-                    entry.canonical_markdown_path
-                ),
             ));
         }
     }

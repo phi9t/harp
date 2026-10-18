@@ -383,8 +383,8 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
             Ok((
                 "check",
                 format!(
-                    "Harp corpus checked: {} documents, {} concepts",
-                    summary.canonical_documents, summary.retained_concepts
+                    "Harp corpus checked: {} documents, {} reader routes",
+                    summary.canonical_documents, summary.reader_routes
                 ),
                 serde_json::to_value(summary).expect("summary serializes"),
             ))

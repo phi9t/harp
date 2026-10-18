@@ -276,22 +276,11 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
     assert_eq!(envelope["command"], "check");
     assert_eq!(envelope["status"], "ok");
     assert_eq!(envelope["warnings"], serde_json::json!([]));
-    assert_eq!(
-        envelope["data"],
-        serde_json::json!({
-            "retained_concepts": 76,
-            "coverage_entries": 76,
-            "canonical_documents": 186,
-            "systems": 17,
-            "weng_sections": 9,
-            "diagnostic_fields": 28,
-            "diagnostic_rules": 29,
-            "diagnostic_cases": 12,
-            "lessons": 6,
-            "source_registry_rows": 89,
-            "evidence_edges": 107
-        })
-    );
+    let data = envelope["data"].as_object().expect("corpus summary");
+    assert_eq!(data.len(), 3);
+    assert!(data["canonical_documents"].as_u64().unwrap() > 0);
+    assert!(data["reader_routes"].as_u64().unwrap() > 0);
+    assert!(data["document_aliases"].as_u64().unwrap() > 0);
 }
 
 #[test]
@@ -392,12 +381,12 @@ fn crouzeix_textbook_cli_requires_the_receipt_argument() {
 #[test]
 fn search_status_rejects_a_missing_index() {
     let repo = TempDir::new().expect("temp repository");
-    fs::create_dir_all(repo.path().join("knowledge/rsi")).expect("RSI knowledge");
+    fs::create_dir_all(repo.path().join("knowledge/sicp")).expect("SICP knowledge");
     fs::write(
-        repo.path().join("knowledge/rsi/intro.md"),
-        "# Recursive improvement\n\nA bounded improvement loop.\n",
+        repo.path().join("knowledge/sicp/intro.md"),
+        "# SICP\n\nA bounded improvement loop.\n",
     )
-    .expect("RSI document");
+    .expect("SICP document");
 
     harp()
         .current_dir(repo.path())
@@ -410,27 +399,28 @@ fn search_status_rejects_a_missing_index() {
 #[test]
 fn search_refresh_status_and_query_share_a_digest_receipt() {
     let repo = TempDir::new().expect("temp repository");
-    fs::create_dir_all(repo.path().join("knowledge/rsi")).expect("RSI knowledge");
-    fs::create_dir_all(repo.path().join("knowledge/darwin_godel_machine")).expect("DGM packet");
-    fs::create_dir_all(repo.path().join("knowledge/meta_harness")).expect("knowledge");
+    fs::create_dir_all(repo.path().join("knowledge/sicp")).expect("SICP knowledge");
+    fs::create_dir_all(repo.path().join("knowledge/deepseek_harness"))
+        .expect("implementation packet");
+    fs::create_dir_all(repo.path().join("knowledge/agentic_engineering")).expect("knowledge");
     fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks")).expect("benchmark packet");
-    fs::create_dir_all(repo.path().join("knowledge/self_improving_agents_survey"))
-        .expect("survey packet");
-    fs::create_dir_all(repo.path().join("knowledge/verified_coevolution_agenda"))
+    fs::create_dir_all(repo.path().join("knowledge/agentic_engineering")).expect("survey packet");
+    fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks"))
         .expect("verified coevolution packet");
     fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).expect("Crouzeix packet");
-    fs::create_dir_all(repo.path().join("knowledge/darwinx")).expect("DarwinX packet");
+    fs::create_dir_all(repo.path().join("knowledge/evaluator_integrity"))
+        .expect("evaluator packet");
     fs::create_dir_all(repo.path().join("knowledge/mathematical_foundations"))
         .expect("mathematical foundations packet");
     fs::create_dir_all(repo.path().join("knowledge/autodiff_geometry"))
         .expect("autodiff geometry packet");
     fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
-    fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
+    fs::create_dir_all(repo.path().join("evidence/sicp")).expect("evidence");
     fs::write(
-        repo.path().join("knowledge/rsi/intro.md"),
-        "# Recursive improvement\n\nA bounded recursive improvement loop.\n",
+        repo.path().join("knowledge/sicp/intro.md"),
+        "# SICP\n\nA bounded SICP loop.\n",
     )
-    .expect("RSI document");
+    .expect("SICP document");
     fs::write(
         repo.path().join("knowledge/private/draft.md"),
         "# Private draft\n\nThis must not enter the search index.\n",
@@ -438,22 +428,22 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     .expect("loose document");
     fs::write(
         repo.path()
-            .join("knowledge/meta_harness/meta_harness_deep_dive.md"),
-        "# Meta Harness\n\nPackage identity is an executable candidate contract.\n",
+            .join("knowledge/agentic_engineering/codex_harness_deep_dive.md"),
+        "# Codex harness\n\nPackage identity is an executable candidate contract.\n",
     )
     .expect("knowledge file");
     fs::write(
         repo.path()
-            .join("knowledge/self_improving_agents_survey/synthesis.md"),
-        "# Survey\n\nModern self-improving agents pair model parameters with scaffold state.\n",
+            .join("knowledge/agentic_engineering/source_registry.md"),
+        "# Engineering sources\n\nProvider contracts separate model parameters from scaffold state.\n",
     )
     .expect("survey file");
     fs::write(
         repo.path()
-            .join("knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"),
-        "# Verified coevolution\n\nRecursive closure makes model-harness coevolution falsifiable.\n",
+            .join("knowledge/harness_benchmarks/dynamic_workflow_need_and_eval.md"),
+        "# Dynamic workflow\n\nDurable replay must preserve effect receipts.\n",
     )
-    .expect("verified coevolution file");
+    .expect("workflow file");
     fs::write(
         repo.path()
             .join("knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md"),
@@ -466,10 +456,11 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     )
     .expect("knowledge home");
     fs::write(
-        repo.path().join("knowledge/darwinx/darwinx_index.md"),
-        "# DarwinX\n\nPopulation selection preserves diverse harness candidates.\n",
+        repo.path()
+            .join("knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md"),
+        "# Evaluator integrity\n\nProtected scoring preserves evaluation independence.\n",
     )
-    .expect("DarwinX index");
+    .expect("evaluator guide");
     fs::write(
         repo.path()
             .join("knowledge/mathematical_foundations/03_probability_and_gaussian_models.md"),
@@ -483,8 +474,8 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     )
     .expect("autodiff geometry file");
     fs::write(
-        repo.path().join("evidence/weng/text/source.txt"),
-        "Harness evidence for recursive improvement.",
+        repo.path().join("evidence/sicp/source.txt"),
+        "Harness evidence for SICP.",
     )
     .expect("source text");
 
@@ -503,17 +494,11 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         ));
     harp()
         .current_dir(repo.path())
-        .args([
-            "--format",
-            "json",
-            "search",
-            "query",
-            "recursive improvement",
-        ])
+        .args(["--format", "json", "search", "query", "SICP"])
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/rsi/intro.md\"",
+            "\"path\":\"knowledge/sicp/intro.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -534,7 +519,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/meta_harness/meta_harness_deep_dive.md\"",
+            "\"path\":\"knowledge/agentic_engineering/codex_harness_deep_dive.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -542,21 +527,15 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/self_improving_agents_survey/synthesis.md\"",
+            "\"path\":\"knowledge/agentic_engineering/source_registry.md\"",
         ));
     harp()
         .current_dir(repo.path())
-        .args([
-            "--format",
-            "json",
-            "search",
-            "query",
-            "\"recursive closure\"",
-        ])
+        .args(["--format", "json", "search", "query", "\"durable replay\""])
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md\"",
+            "\"path\":\"knowledge/harness_benchmarks/dynamic_workflow_need_and_eval.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -573,12 +552,12 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
             "json",
             "search",
             "query",
-            "\"population selection\"",
+            "\"protected scoring\"",
         ])
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/darwinx/darwinx_index.md\"",
+            "\"path\":\"knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -604,10 +583,10 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         ));
 
     fs::write(
-        repo.path().join("knowledge/rsi/intro.md"),
-        "# Recursive improvement\n\nThe corpus changed.\n",
+        repo.path().join("knowledge/sicp/intro.md"),
+        "# SICP\n\nThe corpus changed.\n",
     )
-    .expect("mutated RSI document");
+    .expect("mutated SICP document");
     harp()
         .current_dir(repo.path())
         .args(["search", "status"])

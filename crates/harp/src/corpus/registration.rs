@@ -92,11 +92,11 @@ impl KnowledgeRegistration {
 pub(super) fn static_registration() -> Result<KnowledgeRegistration, AppError> {
     let mut documents = Vec::new();
     let mut index_by_path = BTreeMap::new();
-    for (route_id, label, path) in READER_ROUTES {
+    for &(route_id, label, path) in READER_ROUTES {
         index_by_path.insert(path.to_owned(), documents.len());
         documents.push(RegisteredDocument::reader(route_id, label, path));
     }
-    for (id, path) in AUXILIARY_DOCUMENTS {
+    for &(id, path) in AUXILIARY_DOCUMENTS {
         if let Some(index) = index_by_path.get(path).copied() {
             documents[index].auxiliary = true;
             if documents[index].id != id {

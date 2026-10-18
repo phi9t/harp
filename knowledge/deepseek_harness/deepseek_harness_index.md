@@ -16,7 +16,7 @@ Mode: `DESIGN DECISION STUDY`.
 
 This packet studies DeepSeek Harness (`dsh`) as a public, pinned implementation
 of a composition-first agent harness. It is separate from
-[[knowledge/rsi/deepseek_harness_deep_dive|the RSI-facing overlay]], which keeps
+[[knowledge/agentic_engineering/deepseek_harness_deep_dive|the RSI-facing overlay]], which keeps
 the short recursive-self-improvement interpretation. This packet is the larger
 design-decision study.
 

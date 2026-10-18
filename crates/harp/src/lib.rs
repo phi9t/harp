@@ -9,7 +9,6 @@ pub mod repository;
 pub mod search;
 pub mod sources;
 
-use std::fs as std_fs;
 use std::path::{Path, PathBuf};
 
 use serde::Serialize;
@@ -25,17 +24,9 @@ const MAX_GENERATED_BYTES: usize = 4 * 1024 * 1024;
 
 #[derive(Debug, Serialize)]
 pub struct CorpusSummary {
-    pub retained_concepts: usize,
-    pub coverage_entries: usize,
     pub canonical_documents: usize,
-    pub systems: usize,
-    pub weng_sections: usize,
-    pub diagnostic_fields: usize,
-    pub diagnostic_rules: usize,
-    pub diagnostic_cases: usize,
-    pub lessons: usize,
-    pub source_registry_rows: usize,
-    pub evidence_edges: usize,
+    pub reader_routes: usize,
+    pub document_aliases: usize,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -53,30 +44,10 @@ pub struct BuildResult {
 
 pub fn check_corpus(repo_root: &Path) -> Result<CorpusSummary, AppError> {
     let value = compile_corpus_value(repo_root)?;
-    let diagnostics = &value["diagnostics"];
     Ok(CorpusSummary {
-        retained_concepts: array_len(&value, "retained_concepts")?,
-        coverage_entries: array_len(&value, "coverage")?,
         canonical_documents: array_len(&value, "documents")?,
-        systems: array_len(&value, "systems")?,
-        weng_sections: array_len(&value, "weng_sections")?,
-        diagnostic_fields: diagnostics["worksheet"]["fields"]
-            .as_array()
-            .map(Vec::len)
-            .ok_or_else(|| invalid_generated("diagnostics worksheet fields"))?,
-        diagnostic_rules: diagnostics["rules"]["rules"]
-            .as_array()
-            .map(Vec::len)
-            .ok_or_else(|| invalid_generated("diagnostic rules"))?,
-        diagnostic_cases: diagnostics["cases"]
-            .as_array()
-            .map(Vec::len)
-            .ok_or_else(|| invalid_generated("diagnostic cases"))?,
-        lessons: array_len(&value, "lessons")?,
-        source_registry_rows: tsv_data_rows(
-            &repo_root.join("content/sources/source_registry.tsv"),
-        )?,
-        evidence_edges: tsv_data_rows(&repo_root.join("content/sources/evidence_graph.tsv"))?,
+        reader_routes: array_len(&value, "reader_routes")?,
+        document_aliases: array_len(&value, "document_aliases")?,
     })
 }
 
@@ -159,10 +130,4 @@ fn invalid_generated(field: &str) -> AppError {
         "corpus.generated_shape",
         format!("compiled corpus is missing {field}"),
     )
-}
-
-fn tsv_data_rows(path: &Path) -> Result<usize, AppError> {
-    let text = std_fs::read_to_string(path)
-        .map_err(|error| AppError::io("corpus.tsv", &path.display().to_string(), error))?;
-    Ok(text.lines().skip(1).filter(|line| !line.is_empty()).count())
 }
