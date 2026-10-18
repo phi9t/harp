@@ -1,0 +1,12 @@
+{
+  "name": "swe_bench",
+  "extends": "toolchains.json",
+  "policy": {
+    "workspace_aliases": [
+      "/testbed"
+    ],
+    "workspace_path_aliases": {
+      "/logs": "verifier_logs"
+    }
+  }
+}

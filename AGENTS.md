@@ -48,6 +48,10 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   version together, and `tools/test_sync_agentic_workflow.py` must pass.
 - Reference and inventory documents state a commit read and mark inference; keep
   that discipline when editing them.
+- For new local directories and file names, prefer snake_case with underscores
+  over dash-separated names. Preserve existing paths, upstream project names,
+  external benchmark identifiers, and quoted source paths exactly when changing
+  them would obscure provenance or break compatibility.
 - Host worker launches keep `TMPDIR`, `TMUX_TMPDIR` and `TMPPREFIX` under the
   owned run directory. Capsule workers use the private `/run/corenius-tmp` tmpfs
   for temporary files and mount retained run outputs at `/home/bench/run`.

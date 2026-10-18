@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -39,6 +40,20 @@ class CapsuleTest(unittest.TestCase):
         self.ws = self.root / "ws"
         self.ws.mkdir()
 
+    def busybox_rootfs(self):
+        rootfs = self.root / "rootfs"
+        (rootfs / "usr/bin").mkdir(parents=True)
+        (rootfs / "lib/x86_64-linux-gnu").mkdir(parents=True)
+        (rootfs / "lib64").mkdir()
+        shutil.copy2("/usr/bin/busybox", rootfs / "usr/bin/busybox")
+        for applet in ("cat", "grep", "id", "mkdir", "sh"):
+            (rootfs / "usr/bin" / applet).symlink_to("busybox")
+        (rootfs / "bin").symlink_to("usr/bin")
+        for src in ("/lib/x86_64-linux-gnu/libresolv.so.2", "/lib/x86_64-linux-gnu/libc.so.6"):
+            shutil.copy2(src, rootfs / src.lstrip("/"))
+        shutil.copy2("/lib64/ld-linux-x86-64.so.2", rootfs / "lib64/ld-linux-x86-64.so.2")
+        return rootfs
+
     def tearDown(self):
         os.environ.pop("CORENIUS_CAPSULES", None)
         self.tmp.cleanup()
@@ -61,7 +76,15 @@ class CapsuleTest(unittest.TestCase):
     def sh(self, record, script, **kw):
         out = self.root / "out.txt"
         with out.open("w") as handle:
-            argv = capsule.run_argv(record, str(self.ws), kw.get("rw", []), kw.get("env", {}), False, kw.get("net"))
+            argv = capsule.run_argv(
+                record,
+                str(self.ws),
+                kw.get("rw", []),
+                kw.get("env", {}),
+                False,
+                kw.get("net"),
+                host_aliases=kw.get("host_aliases"),
+            )
             proc = subprocess.run(argv + ["--", "/bin/sh", "-c", script], stdout=handle, stderr=subprocess.STDOUT,
                                   env={"PATH": "/usr/bin:/bin"})
         return proc.returncode, out.read_text()
@@ -82,6 +105,136 @@ class CapsuleTest(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("hello-from-layer", out)
         self.assertEqual((self.ws / "made").read_text(), "x\n")
+
+    def test_prepared_rootfs_can_replace_the_host_usr_base(self):
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(self.busybox_rootfs())}]
+        record = capsule.build(self.request(layers=layers))
+        code, out = self.sh(record, "echo rootfs > /workspace/from-rootfs; cat /workspace/from-rootfs; test ! -e /cap/tree/tool")
+        self.assertEqual((code, out), (0, "rootfs\n"))
+        self.assertEqual((self.ws / "from-rootfs").read_text(), "rootfs\n")
+
+    def test_prepared_rootfs_has_current_user_identity(self):
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(self.busybox_rootfs())}]
+        record = capsule.build(self.request(layers=layers))
+        code, out = self.sh(record, "grep \"^bench:x:$(id -u):$(id -g):\" /etc/passwd; grep \"^bench:x:$(id -g):\" /etc/group")
+        self.assertEqual(code, 0, out)
+
+    def test_prepared_rootfs_preserves_package_identities(self):
+        rootfs = self.busybox_rootfs()
+        (rootfs / "etc").mkdir()
+        (rootfs / "etc/passwd").write_text(
+            "root:x:0:0:root:/root:/bin/sh\n"
+            "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n"
+        )
+        (rootfs / "etc/group").write_text(
+            "root:x:0:\n"
+            "www-data:x:33:\n"
+        )
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(rootfs)}]
+        record = capsule.build(self.request(layers=layers))
+        code, out = self.sh(record, "grep '^www-data:x:33:33:' /etc/passwd; grep '^www-data:x:33:' /etc/group")
+        self.assertEqual(code, 0, out)
+
+    def test_prepared_rootfs_can_have_declared_runtime_identities(self):
+        try:
+            capsule.select_subid_range("uid", 2003)
+            capsule.select_subid_range("gid", 2003)
+        except capsule.CapsuleError as exc:
+            self.skipTest(str(exc))
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(self.busybox_rootfs())}]
+        record = capsule.build(self.request(layers=layers, policy={
+            "net": "none",
+            "user": "root",
+            "identity": {
+                "groups": [
+                    {"name": "research", "gid": 2000, "members": ["alice", "bob"]},
+                    {"name": "alice", "gid": 2001, "members": []},
+                    {"name": "bob", "gid": 2002, "members": []},
+                    {"name": "mallory", "gid": 2003, "members": []},
+                ],
+                "users": [
+                    {"name": "alice", "uid": 2001, "gid": 2001, "home": "/home/alice", "shell": "/bin/sh"},
+                    {"name": "bob", "uid": 2002, "gid": 2002, "home": "/home/bob", "shell": "/bin/sh"},
+                    {"name": "mallory", "uid": 2003, "gid": 2003, "home": "/home/mallory", "shell": "/bin/sh"},
+                ],
+            },
+        }))
+        code, out = self.sh(record, "cat /proc/self/uid_map; cat /proc/self/gid_map; "
+                            "grep '^alice:x:2001:2001:' /etc/passwd; "
+                            "grep '^research:x:2000:alice,bob' /etc/group")
+        self.assertEqual(code, 0, out)
+        self.assertIn(" 1 ", out)
+        self.assertIn(" 2003", out)
+
+    def test_identity_requires_prepared_rootfs(self):
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={
+                "net": "none",
+                "user": "root",
+                "identity": {"users": [{"name": "alice", "uid": 2001, "gid": 2001}], "groups": []},
+            }))
+
+    def test_prepared_rootfs_can_receive_runtime_hosts_aliases(self):
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(self.busybox_rootfs())}]
+        record = capsule.build(self.request(layers=layers))
+        code, out = self.sh(record, "grep '^127.0.0.1 db$' /etc/hosts", host_aliases=["db"])
+        self.assertEqual(code, 0, out)
+
+    def test_prepared_rootfs_has_localhost_runtime_hosts(self):
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(self.busybox_rootfs())}]
+        record = capsule.build(self.request(layers=layers))
+        code, out = self.sh(record, "grep '^127.0.0.1 localhost$' /etc/hosts")
+        self.assertEqual(code, 0, out)
+
+    def test_host_net_capsule_uses_runtime_hosts(self):
+        record = capsule.build(self.request())
+        code, out = self.sh(
+            record,
+            "grep '^127.0.0.1 localhost$' /etc/hosts; grep '^127.0.0.1 api$' /etc/hosts",
+            net="host",
+            host_aliases=["api"],
+        )
+        self.assertEqual(code, 0, out)
+
+    def test_policy_can_grant_net_bind_service_to_root_user(self):
+        record = capsule.build(self.request(policy={
+            "net": "none",
+            "user": "root",
+            "cap_add": ["CAP_NET_BIND_SERVICE"],
+        }))
+        code, out = self.sh(record, "id -u; python3 - <<'PY'\n"
+                            "import socket\n"
+                            "sock = socket.socket()\n"
+                            "sock.bind(('127.0.0.1', 443))\n"
+                            "print('bound')\n"
+                            "PY")
+        self.assertEqual(code, 0, out)
+        self.assertIn("0\nbound\n", out)
+
+    def test_policy_cap_add_is_validated(self):
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={"net": "none", "cap_add": ["CAP_NET_BIND_SERVICE"]}))
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={"net": "none", "user": "root", "cap_add": ["CAP_SYS_ADMIN"]}))
+
+    def test_prepared_rootfs_does_not_shadow_workspace_aliases(self):
+        rootfs = self.busybox_rootfs()
+        (rootfs / "app").mkdir()
+        (rootfs / "logs/artifacts").mkdir(parents=True)
+        (rootfs / "app/from-image").write_text("image\n")
+        layers = [{"kind": "rootfs", "name": "busybox", "source": str(rootfs)}]
+        record = capsule.build(self.request(layers=layers, policy={
+            "net": "none",
+            "workspace_aliases": ["/app"],
+            "workspace_path_aliases": {"/logs": "logs"},
+        }))
+        code, out = self.sh(record, "echo workspace > /app/from-workspace; "
+                            "mkdir -p /logs/artifacts; "
+                            "echo log > /logs/artifacts/out; "
+                            "cat /workspace/from-workspace /workspace/logs/artifacts/out; "
+                            "test ! -e /app/from-image")
+        self.assertEqual((code, out), (0, "workspace\nlog\n"))
+        self.assertEqual((self.ws / "from-workspace").read_text(), "workspace\n")
 
     def test_usr_and_layers_are_read_only_and_home_is_hidden(self):
         record = capsule.build(self.request())
@@ -113,6 +266,9 @@ class CapsuleTest(unittest.TestCase):
         self.assertNotIn("LIBRARY_PATH", out)
         self.assertNotIn("s3cr3t", out)
         self.assertIn("CORENIUS_IN_INSULA=1", out)
+        self.assertIn("TMPDIR=/run/corenius-tmp", out)
+        self.assertIn("TMUX_TMPDIR=/run/corenius-tmp", out)
+        self.assertIn("TMPPREFIX=/run/corenius-tmp/zsh", out)
         with self.assertRaises(capsule.CapsuleError):
             capsule.build(self.request(env={"LIBRARY_PATH": "/x"}))
 
@@ -147,6 +303,15 @@ class CapsuleTest(unittest.TestCase):
         self.assertTrue(result["identity"].startswith("FAIL"))
         self.assertFalse(result["ok"])
 
+    def test_tree_layer_can_stage_regular_files_as_hardlinks(self):
+        record = capsule.build(self.request(layers=[
+            {"kind": "base"},
+            {"kind": "tree", "name": "tool", "source": str(self.tool), "link_mode": "hardlink"},
+        ]))
+        layer = next(l for l in record["layers"] if l["name"] == "tool")
+        target = capsule.store_root() / "layers" / layer["digest"] / "tree" / "bin" / "hello"
+        self.assertEqual(os.stat(self.tool / "bin" / "hello").st_ino, os.stat(target).st_ino)
+
     def test_probe_passes_on_a_clean_capsule(self):
         result = capsule.probe(capsule.build(self.request()))
         failing = {k: v for k, v in result.items() if isinstance(v, str) and v.startswith("FAIL")}
@@ -162,6 +327,73 @@ class CapsuleTest(unittest.TestCase):
         code, out = self.sh(record, "echo c > /home/bench/cache/f", rw=[(str(self.root / "cache"), "/home/bench/cache")])
         self.assertEqual(code, 0, out)
         self.assertEqual((self.root / "cache" / "f").read_text(), "c\n")
+
+    def test_workspace_alias_points_at_workspace(self):
+        record = capsule.build(self.request(policy={
+            "net": "none",
+            "workspace_aliases": ["/app"],
+            "workspace_path_aliases": {"/tests": "tests"},
+        }))
+        (self.ws / "tests").mkdir()
+        code, out = self.sh(record, "echo alias > /app/from-alias; echo test > /tests/from-tests; "
+                            "cat /workspace/from-alias /workspace/tests/from-tests")
+        self.assertEqual((code, out), (0, "alias\ntest\n"))
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={"net": "none", "workspace_aliases": ["/usr"]}))
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={"net": "none", "workspace_path_aliases": {"/tests": "../escape"}}))
+
+    def test_workspace_writable_overlays_bind_dirs_and_files(self):
+        record = capsule.build(self.request(policy={
+            "net": "none",
+            "workspace_writable_overlays": [
+                {"dest": "/etc/corenius.d", "path": ".insula_overlays/etc/corenius.d", "kind": "dir"},
+                {"dest": "/etc/corenius.conf", "path": ".insula_overlays/etc/corenius.conf", "kind": "file"},
+            ],
+        }))
+        code, out = self.sh(record, "echo dir > /etc/corenius.d/value; "
+                            "echo file > /etc/corenius.conf; "
+                            "cat /etc/corenius.d/value /etc/corenius.conf")
+        self.assertEqual((code, out), (0, "dir\nfile\n"))
+        self.assertEqual((self.ws / ".insula_overlays/etc/corenius.d/value").read_text(), "dir\n")
+        self.assertEqual((self.ws / ".insula_overlays/etc/corenius.conf").read_text(), "file\n")
+
+    def test_rootfs_workspace_writable_overlay_can_replace_root_path(self):
+        rootfs = self.busybox_rootfs()
+        (rootfs / "srv").mkdir()
+        (rootfs / "srv/image").write_text("image\n")
+        record = capsule.build(self.request(layers=[
+            {"kind": "rootfs", "name": "busybox", "source": str(rootfs)}
+        ], policy={
+            "net": "none",
+            "workspace_writable_overlays": [
+                {"dest": "/srv", "path": ".insula_overlays/srv", "kind": "dir"},
+            ],
+        }))
+        code, out = self.sh(record, "mkdir -p /srv/shared; echo value > /srv/shared/file; "
+                            "test ! -e /srv/image; cat /srv/shared/file")
+        self.assertEqual((code, out), (0, "value\n"))
+        self.assertEqual((self.ws / ".insula_overlays/srv/shared/file").read_text(), "value\n")
+
+    def test_workspace_writable_overlays_are_validated(self):
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={
+                "net": "none",
+                "workspace_writable_overlays": [{"dest": "/workspace/evil", "path": "evil", "kind": "dir"}],
+            }))
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={
+                "net": "none",
+                "workspace_writable_overlays": [{"dest": "/etc/x", "path": "../escape", "kind": "dir"}],
+            }))
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(policy={
+                "net": "none",
+                "workspace_writable_overlays": [
+                    {"dest": "/etc/app", "path": "app", "kind": "dir"},
+                    {"dest": "/etc/app/conf", "path": "conf", "kind": "dir"},
+                ],
+            }))
 
     def test_timeout_kills_and_record_is_written(self):
         record = capsule.build(self.request())
