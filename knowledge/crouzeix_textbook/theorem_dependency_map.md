@@ -24,7 +24,7 @@ graph together with the book contracts, compiles a fresh Lean receipt, switches
 one immutable generation, and checks the selected generation.
 
 The validated pointer is
-`content/generated/crouzeix_textbook/publication/current.json`. Its
+`publications/crouzeix_textbook/current.json`. Its
 generation identifies `pedagogical_dependency_ledger.md`, which gives the
 direct prerequisites for every CFT theorem identity. Follow edges backward to
 recover what a chapter expects and forward through the chapter routes to see

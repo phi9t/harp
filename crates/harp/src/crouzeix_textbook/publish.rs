@@ -15,11 +15,11 @@ use crate::fs::{
 };
 use crate::AppError;
 
-const PUBLICATION_ROOT: &str = "content/generated/crouzeix_textbook/publication";
-const GENERATIONS_ROOT: &str = "content/generated/crouzeix_textbook/publication/generations";
-const CURRENT_PATH: &str = "content/generated/crouzeix_textbook/publication/current.json";
+const PUBLICATION_ROOT: &str = "publications/crouzeix_textbook";
+const GENERATIONS_ROOT: &str = "publications/crouzeix_textbook/generations";
+const CURRENT_PATH: &str = "publications/crouzeix_textbook/current.json";
 #[cfg(test)]
-const LOCK_PATH: &str = "content/generated/crouzeix_textbook/publication/publication.lock";
+const LOCK_PATH: &str = "publications/crouzeix_textbook/publication.lock";
 const CURRENT_NAME: &str = "current.json";
 const LOCK_NAME: &str = "publication.lock";
 const MANIFEST_SCHEMA: &str = "crouzeix-textbook-publication/v1";
@@ -1457,7 +1457,7 @@ mod tests {
         install_generation(&directories, &prepared).expect("install generation");
         let generation = root
             .path()
-            .join("content/generated/crouzeix_textbook/publication/generations")
+            .join("publications/crouzeix_textbook/generations")
             .join(&prepared.generation);
         let displaced = generation.with_extension("displaced");
 
@@ -1553,7 +1553,7 @@ mod tests {
         install_generation(&directories, &prepared).expect("install generation");
         let generation = root
             .path()
-            .join("content/generated/crouzeix_textbook/publication/generations")
+            .join("publications/crouzeix_textbook/generations")
             .join(&prepared.generation);
         let mut inserted = false;
 
@@ -1723,7 +1723,7 @@ mod tests {
         assert!(
             fs::read_dir(
                 root.path()
-                    .join("content/generated/crouzeix_textbook/publication")
+                    .join("publications/crouzeix_textbook")
             )
             .expect("publication directory")
             .all(|entry| !entry
@@ -1886,7 +1886,7 @@ mod tests {
 
             let generations = root
                 .path()
-                .join("content/generated/crouzeix_textbook/publication/generations");
+                .join("publications/crouzeix_textbook/generations");
             assert!(
                 fs::read_dir(&generations)
                     .expect("enumerate generations")
@@ -1918,7 +1918,7 @@ mod tests {
             assert!(result.is_err(), "{ledger} fault must be observable");
             let generations = root
                 .path()
-                .join("content/generated/crouzeix_textbook/publication/generations");
+                .join("publications/crouzeix_textbook/generations");
             assert!(
                 fs::read_dir(&generations)
                     .expect("enumerate generations")
@@ -1953,7 +1953,7 @@ mod tests {
         );
         let generations = root
             .path()
-            .join("content/generated/crouzeix_textbook/publication/generations");
+            .join("publications/crouzeix_textbook/generations");
         assert!(
             fs::read_dir(&generations)
                 .expect("enumerate generations")
@@ -1981,7 +1981,7 @@ mod tests {
 
         let generation = root
             .path()
-            .join("content/generated/crouzeix_textbook/publication/generations")
+            .join("publications/crouzeix_textbook/generations")
             .join(&prepared.generation);
         assert!(
             generation.is_dir(),
@@ -2056,7 +2056,7 @@ mod tests {
     #[test]
     fn publication_accepts_secure_repository_ancestors_and_keeps_owned_directories_exact() {
         let root = tempfile::tempdir().expect("publication transaction root");
-        let secure_ancestor = root.path().join("content");
+        let secure_ancestor = root.path().join("publications");
         fs::create_dir(&secure_ancestor).expect("secure repository ancestor");
         let mut permissions = fs::metadata(&secure_ancestor)
             .expect("secure ancestor metadata")

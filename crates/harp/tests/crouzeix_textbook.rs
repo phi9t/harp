@@ -536,7 +536,7 @@ fn assert_lean_receipt_failure(
 }
 
 fn publication_manifest(root: &Path) -> PathBuf {
-    root.join("content/generated/crouzeix_textbook/publication/current.json")
+    root.join("publications/crouzeix_textbook/current.json")
 }
 
 fn publication_bytes(root: &Path, outputs: &[PathBuf]) -> Vec<Vec<u8>> {
@@ -550,7 +550,7 @@ fn publication_file_snapshot(
     root: &Path,
     outputs: &[PathBuf],
 ) -> BTreeMap<PathBuf, (Vec<u8>, u32, u64, i64, i64)> {
-    let publication = root.join("content/generated/crouzeix_textbook/publication");
+    let publication = root.join("publications/crouzeix_textbook");
     let mut paths = vec![
         publication.join("current.json"),
         publication.join("publication.lock"),
@@ -1170,7 +1170,7 @@ fn deletion_guard_ignores_git_replace_objects_for_index_blobs() {
 
 #[test]
 fn runtime_publication_state_is_untracked_and_precisely_ignored() {
-    const RUNTIME_ROOT: &str = "content/generated/crouzeix_textbook/publication";
+    const RUNTIME_ROOT: &str = "publications/crouzeix_textbook";
     let tracked = Command::new("git")
         .args(["ls-files", "--", RUNTIME_ROOT])
         .current_dir(workspace_root())
@@ -1205,7 +1205,7 @@ fn runtime_publication_state_is_untracked_and_precisely_ignored() {
             "--no-index",
             "--quiet",
             "--",
-            "content/generated/crouzeix_textbook/canonical.json",
+            "publications/other/canonical.json",
         ])
         .current_dir(workspace_root())
         .status()
@@ -1222,7 +1222,7 @@ fn publication_check_is_read_only_and_write_switches_the_complete_generation() {
     let receipt_path = write_lean_receipt(&receipt_dir, &receipt);
     let publication = fixture
         .path()
-        .join("content/generated/crouzeix_textbook/publication");
+        .join("publications/crouzeix_textbook");
     assert!(
         !publication.exists(),
         "a clean checkout fixture starts without runtime publication state"
@@ -1367,14 +1367,14 @@ fn publication_rejects_symlinked_and_multiply_linked_outputs() {
     fs::create_dir_all(
         ancestor_fixture
             .path()
-            .join("content/generated/crouzeix_textbook"),
+            .join("publications"),
     )
     .expect("create publication parent");
     symlink(
         outside.path(),
         ancestor_fixture
             .path()
-            .join("content/generated/crouzeix_textbook/publication"),
+            .join("publications/crouzeix_textbook"),
     )
     .expect("symlink publication ancestor");
     publish_crouzeix_textbook(
@@ -1500,7 +1500,7 @@ fn publication_lock_serializes_the_generation_switch() {
     let pointer_before = fs::read(publication_manifest(fixture.path())).expect("pointer");
     let lock_path = fixture
         .path()
-        .join("content/generated/crouzeix_textbook/publication/publication.lock");
+        .join("publications/crouzeix_textbook/publication.lock");
     let lock = OpenOptions::new()
         .read(true)
         .write(true)
@@ -1555,7 +1555,7 @@ fn publication_objects_have_exact_owner_mode_and_link_contracts() {
     let owner = unsafe { libc::geteuid() };
     let publication = fixture
         .path()
-        .join("content/generated/crouzeix_textbook/publication");
+        .join("publications/crouzeix_textbook");
     let generations = publication.join("generations");
     let generation = fixture
         .path()

@@ -12,7 +12,7 @@ documentation dependencies on another local checkout.
 - `content/generated/corpus.json` is derived and must be regenerated with
   its canonical inputs. The Atlas browser reader and HTML export are retired.
 - Crouzeix publication outputs live under
-  `content/generated/crouzeix_textbook/publication/` and remain ignored.
+  `publications/crouzeix_textbook/` and remain ignored.
 - `evidence/` contains captured upstream bytes, source-specific licenses,
   manifests, and narrow public-source snapshots.
 - Captured files under `evidence/*/artifacts/` must not be rewritten for
