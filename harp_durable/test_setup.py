@@ -108,6 +108,39 @@ class NativeAdmission(unittest.TestCase):
         self.assertFalse(execution.exists())
         self.assertFalse((state / "runtime.sqlite").exists())
 
+    def test_prepare_creates_private_inputs_before_delegation_check(self):
+        state = self.root / "state"
+        with self.assertRaisesRegex(RuntimeError, "cgroup"):
+            prepare(state, self.rootfs, self.root, self.root / "execution.json")
+        self.assertEqual(stat.S_IMODE((state / "inputs").stat().st_mode), 0o700)
+        self.assertEqual(list((state / "inputs").iterdir()), [])
+
+    def test_prepare_does_not_replace_existing_inputs(self):
+        state = self.root / "state"
+        state.mkdir(mode=0o700)
+        inputs = state / "inputs"
+        inputs.write_bytes(b"existing-file")
+        with self.assertRaises(OSError):
+            prepare(state, self.rootfs, self.root, self.root / "execution.json")
+        self.assertEqual(inputs.read_bytes(), b"existing-file")
+        inputs.unlink()
+        outside = self.root / "outside"
+        outside.mkdir(mode=0o700)
+        inputs.symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, "symlinked ancestry"):
+            prepare(state, self.rootfs, self.root, self.root / "execution.json")
+        self.assertTrue(inputs.is_symlink())
+        self.assertEqual(list(outside.iterdir()), [])
+
+    def test_prepare_rejects_nonprivate_existing_input_directory(self):
+        state = self.root / "state"
+        state.mkdir(mode=0o700)
+        inputs = state / "inputs"
+        inputs.mkdir(mode=0o755)
+        with self.assertRaisesRegex(ValueError, "private directory"):
+            prepare(state, self.rootfs, self.root, self.root / "execution.json")
+        self.assertEqual(stat.S_IMODE(inputs.stat().st_mode), 0o755)
+
     def test_prepare_refuses_public_state_without_mutating_it(self):
         state = self.root / "state"
         state.mkdir(mode=0o755)

@@ -119,8 +119,8 @@ def _stage_code(destination: Path) -> Path:
 
 
 def _private_state(state: Path) -> Path:
-    if state.is_symlink():
-        raise ValueError("state must not be symlinked")
+    if any(path.is_symlink() for path in (state, *state.parents)):
+        raise ValueError("state or input root must not have symlinked ancestry")
     durable_mkdir(state)
     info = state.stat()
     if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
@@ -136,6 +136,7 @@ def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) 
     separate execution file; existing records are never replaced.
     """
     state = _private_state(state)
+    inputs_root = _private_state(state / "inputs")
     os.environ["CORENIUS_CAPSULES"] = str(state / "capsules")
     Cgroup.validate_root(cgroup_root)
     manifest = native_manifest(rootfs)
@@ -184,7 +185,7 @@ def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) 
             else:
                 _publish_new(manifest_path, manifest_bytes)
             execution = InsulaExecution.create(record, code, state, backend="cgroup",
-                cgroup_root=cgroup_root, inputs_root=state / "inputs", native_manifest=binding)
+                cgroup_root=cgroup_root, inputs_root=inputs_root, native_manifest=binding)
             execution.verify()
             _publish_new(execution_file, encode(execution.config).encode())
             return execution.config
