@@ -1,6 +1,6 @@
 # 02: Operate the durable runtime through Harp’s CLI
 
-Status: in-progress
+Status: blocked
 Owner: Codex
 Branch: codex/harp-durable-runtime
 Worktree: harp-corenius-consolidation/harp
@@ -78,4 +78,15 @@ harp durable --state /absolute/private/project-state status example
 The long-lived foreground form omits `--until-idle`; another invocation requests
 `stop` for that exact runtime instance. State persists after shutdown. No service
 is installed. Coding admission, providers, verification and landing remain later
-tickets, and this ticket remains in progress until composed Linux acceptance.
+tickets, and this ticket remains incomplete until composed Linux acceptance.
+
+### Current blocked precondition
+
+Revalidated using the pinned Rust 1.92.0 on devx: the locked offline Harp build
+still refuses missing `pulldown-cmark-escape`. Existing default registry source,
+archive and index caches do not contain it; there is no live build to wait on.
+The owner-facing Cargo-cache authorization request is pending. No cache was
+hydrated and no package pins changed. Next action on authorization: populate a
+task-owned cache with the locked dependencies, build the Linux Harp executable,
+then run all five lifecycle tests with `HARP_DURABLE_BIN` selecting that binary.
+Ticket 01 is done; all later tickets transitively depend on this acceptance.
