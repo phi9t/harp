@@ -1,6 +1,6 @@
 ---
 id: harp-knowledge-home
-title: Harp research atlas
+title: Harp knowledge library
 type: research-index
 status: active
 tags: [harp, knowledge, navigation, obsidian]
@@ -46,8 +46,6 @@ they do not establish that the agent's answer is correct.
 The implementation guide is [Agent workflows](https://github.com/phi9t/harp/blob/master/docs/agent-workflows.md)
   It covers
 the durable Codex task graph and the separate Codex or Trae provider wrapper.
-The Atlas's Workstreams view is an offline reference snapshot, not a live
-monitor or a control panel for running jobs.
 
 ## Mathematics and Lean
 
@@ -86,18 +84,17 @@ establish a general capability gain.
 The [SICP systems and evaluator course](https://github.com/phi9t/harp/blob/master/knowledge/rsi/sicp/sicp_index.md) develops
 the foundations of state, evaluation, authority, concurrency, and compilation.
 [Implementation studies](https://github.com/phi9t/harp/blob/master/knowledge/rsi/implementation_harnesses.md) compare
-concrete agent architectures. The full Atlas library also includes
+concrete agent architectures. The knowledge library also includes
 [[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness]],
 [Darwin Gödel Machine](https://github.com/phi9t/harp/blob/master/knowledge/darwin_godel_machine/darwin_godel_machine_index.md),
 and source-specific research packets.
 
 ## Reading and provenance
 
-The Atlas reads a compiled snapshot of maintained Markdown. Article metadata
+The CLI compiles a snapshot of maintained Markdown. Article metadata
 describes the document; it is not an independent proof or benchmark verdict.
 Source sections and exact Markdown receipts remain available within each
-reading. Captured evidence and repository files are not bundled into the
-standalone HTML; use their repository locations when inspecting original bytes.
+reading. Use repository evidence locations when inspecting original bytes.
 
 For local reading, open the repository root as an Obsidian vault. Use the
 [[knowledge/obsidian/harp_knowledge.base|Knowledge Base]] or

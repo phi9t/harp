@@ -9,9 +9,10 @@ documentation dependencies on another local checkout.
   `knowledge/` are the only authorities for technical prose. `content/` is
   reserved for structured machine-readable contracts and diagnostics; do not
   add Markdown beneath it.
-- `atlas/src/content/generated/corpus.json` and
-  `atlas/dist/harp-atlas.html` are derived and must be regenerated together
-  with their canonical inputs.
+- `content/generated/corpus.json` is derived and must be regenerated with
+  its canonical inputs. The Atlas browser reader and HTML export are retired.
+- Crouzeix publication outputs live under
+  `content/generated/crouzeix_textbook/publication/` and remain ignored.
 - `evidence/` contains captured upstream bytes, source-specific licenses,
   manifests, and narrow public-source snapshots.
 - Captured files under `evidence/*/artifacts/` must not be rewritten for

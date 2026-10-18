@@ -2,11 +2,9 @@
 
 [Documentation](README.md) / Getting started
 
-Open the [Harp Atlas](https://phi9t.github.io/harp/) to start reading in your
-browser. No clone or build is needed. To read offline or use the CLI, follow the
-setup below. Running the
-full contributor gate also needs the pinned Lean toolchain and a warm
-dependency cache.
+Read the maintained Markdown directly or open the repository root as an
+Obsidian vault. Build the CLI for validation and local search. The complete
+release gate also needs the pinned Lean toolchain and a warm dependency cache.
 
 ## Get the repository
 
@@ -18,40 +16,15 @@ cd harp
 Captured PDFs, images, and some archives use Git LFS. If Git LFS was already
 installed and configured when you cloned, Git normally downloads those objects.
 Otherwise, follow the tool setup below and run `mise exec -- git lfs pull`.
-Missing LFS objects do not prevent reading the self-contained Atlas, but they
-do prevent opening the affected evidence files and passing full verification.
+Missing LFS objects prevent opening the affected evidence files and passing
+full verification. Markdown reading remains available.
 
-## Read the Atlas
+## Read the knowledge library
 
-Use the [hosted reader](https://phi9t.github.io/harp/), or open
-`atlas/dist/harp-atlas.html` from the cloned checkout in your browser.
-On macOS:
+Read Markdown under `knowledge/`, including the preserved mathematics, Crouzeix,
+SICP and educational material. The Atlas reader and HTML export are retired.
 
-```sh
-open atlas/dist/harp-atlas.html
-```
-
-The single file contains the compiled corpus, scripts, and styles. It does not
-need a development server. External source links still need a network
-connection; the export does not bundle every file under `evidence/`.
-The hosted reader also excludes those files. For repository-relative evidence
-locators, use a local checkout or browse the
-[source repository](https://github.com/phi9t/harp).
-
-The home page offers four reading paths: RSI research, durable execution,
-mathematics and Lean, and evaluation and evidence. Use Library to search
-compiled titles and topic tags. More contains system comparisons, the Weng
-reader, lessons, diagnosis tools, and Workstreams.
-
-Within an article, open In this reading to jump to a section. Provenance and
-checksums remain available in expandable panels; source folds stay closed
-until opened. Wide code blocks, schematics, tables, and equations scroll
-within the reading column on small screens.
-
-Workstreams shows the checked-in reference snapshot of research and proof
-work, not current process status.
-
-### Use Obsidian instead
+### Use Obsidian
 
 Open the repository root as a vault, not just `knowledge/`. Begin at
 [Harp knowledge home](../knowledge/harp_knowledge_home.md). Root-qualified
@@ -82,8 +55,7 @@ mise run build
 ```
 
 Mise installs the pinned Rust, Node, and Git LFS versions. Bootstrap configures
-local LFS filters, fetches locked Cargo dependencies, and installs the pinned
-pnpm dependencies through Corepack. These setup steps need network access.
+local LFS filters and fetches locked Cargo dependencies. These setup steps need network access.
 They do not materialize research-source repositories.
 
 The executable is `.build/harp-target/size/harp`. The examples below run it
@@ -133,19 +105,6 @@ implementations. These commands use the network and write to ignored
 `.sources/`. Tracked snapshots under `evidence/implementations/` remain the
 offline evidence.
 
-## Work on the reader
-
-After tool setup, start the Atlas development server:
-
-```sh
-cd atlas
-mise exec -- corepack pnpm run dev
-```
-
-Follow the local URL printed by Vite. The development command compiles the
-corpus first. To regenerate and test the single-file export, use
-`mise exec -- corepack pnpm run test:export` from `atlas/`.
-
 ## Common setup problems
 
 | Symptom | What to check |
@@ -153,7 +112,7 @@ corpus first. To regenerate and test the single-file export, use
 | A PDF or image is a short text file beginning with `version https://git-lfs.github.com/spec/v1` | Run `mise exec -- git lfs pull` from the checkout. |
 | A tool is missing or has the wrong version | Run `mise install`; use `mise run` or `mise exec --` so the pinned tools are on PATH. |
 | A search has no index or reflects old content | Run `harp search refresh` using the built executable above. |
-| `build --check` reports stale generated content | Follow the [content-change workflow](contributing.md#content-changes) to regenerate the corpus and Atlas together. |
+| `build --check` reports stale generated content | Follow the [content-change workflow](contributing.md#content-changes) to regenerate the headless corpus. |
 | `lean-env`, proof-evidence checks, or the full gate fail on a fresh machine | The Lean cache is a separate prerequisite. Follow [verification](contributing.md#verification); do not run cache hydration as a routine repair. |
 
 ## Next steps

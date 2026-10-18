@@ -32,7 +32,7 @@ GIT_POLL_INTERVAL_SECONDS = 0.01
 PLAN_BYTES_CAP = 1024 * 1024
 LEDGER_BYTES_CAP = 256 * 1024
 ARTIFACT_BYTES_CAP = 1024 * 1024
-# The 36-chapter single-file reader exceeds 4 MiB; retain a fixed upper bound.
+# The compiled mathematical corpus remains bounded independently of source files.
 READER_ARTIFACT_BYTES_CAP = 8 * 1024 * 1024
 FOOTER_ORDER = (
     "goal_status",
@@ -54,20 +54,8 @@ FIXED_LEDGER_PATH = Path(
     "docs/workstream/crouzeix-proof-reproduction/execution-ledger-003.tsv"
 )
 GIT_ID_RE = re.compile(r"[0-9a-f]{40,64}\Z")
-READER_EVIDENCE_PATHS = (
-    "atlas/src/content/generated/corpus.json",
-    "atlas/dist/harp-atlas.html",
-    "atlas/dist/harp-atlas.receipt.json",
-)
+READER_EVIDENCE_PATHS = ("content/generated/corpus.json",)
 HISTORICAL_LANDING_EVIDENCE_PHASES = frozenset({"cpfr-088", "cpfr-089"})
-ATLAS_APP_INPUT_PATHS = (
-    "index.html",
-    "package.json",
-    "scripts/export-static.mjs",
-    "tsconfig.json",
-    "vite.config.ts",
-    "vitest.config.ts",
-)
 PHASE_ORDER = (
     "cpfr-085",
     "cpfr-086",
@@ -804,9 +792,14 @@ def _read_landed_row_evidence(
     *,
     session: GitSession,
 ) -> bytes:
-    current = _read_bounded_artifact(repository_root, row.verifier)
+    try:
+        current = _read_bounded_artifact(repository_root, row.verifier)
+    except ValueError as error:
+        if str(error) != "landed row evidence is missing" or row.phase not in HISTORICAL_LANDING_EVIDENCE_PHASES:
+            raise
+        current = None
     expected = row.evidence_digest.removeprefix("sha256:")
-    if _sha256_bytes(current) == expected or row.phase not in HISTORICAL_LANDING_EVIDENCE_PHASES:
+    if current is not None and (_sha256_bytes(current) == expected or row.phase not in HISTORICAL_LANDING_EVIDENCE_PHASES):
         return current
     if not _git_commit_exists(repository_root, row.landing_commit, session=session):
         raise ValueError("landed row landing_commit does not exist")
@@ -849,103 +842,22 @@ def _validate_phase8_review_artifact(repository_root: Path, relative: str) -> No
         raise ValueError("Phase 8 plan-review row is invalid")
 
 
-def _atlas_input_digest(repository_root: Path) -> str | None:
-    atlas_root = Path(repository_root) / "atlas"
-    source_root = atlas_root / "src"
-    if not atlas_root.exists() or not source_root.exists():
-        return None
-    if any(not (atlas_root / relative).exists() for relative in ATLAS_APP_INPUT_PATHS):
-        return None
-    inputs: list[tuple[str, bytes]] = []
-    for relative in ATLAS_APP_INPUT_PATHS:
-        inputs.append(
-            (
-                relative,
-                _read_repository_artifact(
-                    atlas_root,
-                    relative,
-                    label="atlas artifact",
-                    max_bytes=ARTIFACT_BYTES_CAP,
-                    missing_message="generated-reader receipt is required",
-                ),
-            )
-        )
-    for path in sorted(source_root.rglob("*")):
-        if not path.is_file() or path.suffix not in {".css", ".ts", ".tsx"}:
-            continue
-        relative = path.relative_to(atlas_root).as_posix()
-        inputs.append(
-            (
-                relative,
-                _read_repository_artifact(
-                    atlas_root,
-                    relative,
-                    label="atlas artifact",
-                    max_bytes=ARTIFACT_BYTES_CAP,
-                    missing_message="generated-reader receipt is required",
-                ),
-            )
-        )
-    inputs.sort(key=lambda item: item[0])
-    digest = hashlib.sha256()
-    for relative, content in inputs:
-        digest.update(relative.encode("utf-8"))
-        digest.update(b"\0")
-        digest.update(content)
-    return digest.hexdigest()
-
-
 def _validate_reader_surfaces(repository_root: Path) -> tuple[str, ...]:
-    missing = [
-        relative
-        for relative in READER_EVIDENCE_PATHS
-        if not (Path(repository_root) / relative).exists()
-    ]
-    if missing:
-        raise ValueError("generated-reader receipt is required")
-    corpus_path = Path(repository_root) / READER_EVIDENCE_PATHS[0]
-    html_path = Path(repository_root) / READER_EVIDENCE_PATHS[1]
-    receipt_path = Path(repository_root) / READER_EVIDENCE_PATHS[2]
-    try:
-        receipt = json.loads(
-            _read_repository_artifact(
-                repository_root,
-                READER_EVIDENCE_PATHS[2],
-                label="atlas artifact",
-                max_bytes=ARTIFACT_BYTES_CAP,
-                missing_message="generated-reader receipt is required",
-            ).decode("utf-8")
-        )
-    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
-        if isinstance(error, ValueError) and str(error) == "atlas artifact exceeds cap":
-            raise
-        raise ValueError("generated-reader receipt is invalid") from error
-    if not isinstance(receipt, dict) or receipt.get("schema_version") != "harp-atlas-export/v1":
-        raise ValueError("generated-reader receipt is invalid")
-    corpus_bytes = _read_repository_artifact(
+    # The browser/export was retired. Historical landing records above retain
+    # their original evidence identities; current validation uses the corpus.
+    content = _read_repository_artifact(
         repository_root,
         READER_EVIDENCE_PATHS[0],
-        label="atlas artifact",
+        label="corpus artifact",
         max_bytes=READER_ARTIFACT_BYTES_CAP,
-        missing_message="generated-reader receipt is required",
+        missing_message="generated corpus is required",
     )
-    html_bytes = _read_repository_artifact(
-        repository_root,
-        READER_EVIDENCE_PATHS[1],
-        label="atlas artifact",
-        max_bytes=READER_ARTIFACT_BYTES_CAP,
-        missing_message="generated-reader receipt is required",
-    )
-    if receipt.get("corpus_sha256") != _sha256_bytes(corpus_bytes):
-        raise ValueError("atlas receipt corpus_sha256 mismatch")
-    if receipt.get("html_sha256") != _sha256_bytes(html_bytes):
-        raise ValueError("atlas receipt html_sha256 mismatch")
-    app_inputs_sha256 = _atlas_input_digest(repository_root)
-    if (
-        app_inputs_sha256 is not None
-        and receipt.get("app_inputs_sha256") != app_inputs_sha256
-    ):
-        raise ValueError("atlas receipt app_inputs_sha256 mismatch")
+    try:
+        corpus = json.loads(content.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("generated corpus is invalid") from error
+    if not isinstance(corpus, dict) or corpus.get("schema_version") != "rsi-technical-atlas/v6":
+        raise ValueError("generated corpus is invalid")
     return READER_EVIDENCE_PATHS
 
 

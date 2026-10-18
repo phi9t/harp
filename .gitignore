@@ -9,10 +9,6 @@
 /formalization/nng4_intro/.lake/
 /formalization/autodiff_geometry/.lake/
 /formalization/lean/.lake
-/atlas/node_modules/
-/atlas/dist/client/
-/atlas/.vite/
-/atlas/src/content/generated/crouzeix_textbook/publication/
 /output/pdf/
 /tmp/pdfs/
 /tools/textbook_pdf/node_modules/
@@ -32,3 +28,5 @@
 !/.scratch/
 !/.scratch/**/
 !/.scratch/**/*.md
+
+/content/generated/crouzeix_textbook/publication/

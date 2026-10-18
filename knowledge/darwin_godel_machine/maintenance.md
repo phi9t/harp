@@ -366,7 +366,7 @@ corepack pnpm run export:html
 This rebuilds the canonical corpus and the offline single-file Atlas export.
 Do not hand-edit:
 
-- `atlas/src/content/generated/corpus.json`;
+- `content/generated/corpus.json`;
 - `atlas/dist/harp-atlas.html`; or
 - `atlas/dist/harp-atlas.receipt.json`.
 

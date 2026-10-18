@@ -859,7 +859,7 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
 
 pub(super) fn validate_build_output(output: &Path) -> Result<PathBuf, AppError> {
     if output.is_absolute()
-        || !output.starts_with("atlas/src/content/generated")
+        || !output.starts_with("content/generated")
         || output.extension().and_then(|value| value.to_str()) != Some("json")
         || !output
             .components()
@@ -867,7 +867,7 @@ pub(super) fn validate_build_output(output: &Path) -> Result<PathBuf, AppError> 
     {
         return Err(invalid(
             "corpus.output_path",
-            "output must stay beneath atlas/src/content/generated",
+            "output must stay beneath content/generated",
         ));
     }
     Ok(output.to_path_buf())

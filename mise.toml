@@ -17,8 +17,6 @@ run = """
 set -euo pipefail
 git lfs install --local
 cargo fetch --locked
-cd atlas
-corepack pnpm install --frozen-lockfile
 """
 
 [tasks.test]
@@ -49,7 +47,6 @@ scripts/test_check_no_dwarf.sh
 sh scripts/test_harp_xdg_env.sh
 sh scripts/test_lean_task_graph.sh
 python3 -m unittest discover -s scripts/tests -p test_release_candidate.py -v
-python3 -m unittest discover -s scripts/tests -p test_prepare_pages.py -v
 python3 -m unittest discover -s scripts/tests -p test_textbook_publication_task.py -v
 python3 -m unittest discover -s scripts/tests -p test_sync_textbook_counts.py -v
 python3 -m unittest discover -s scripts/tests -p test_refresh_import_receipt.py -v
@@ -93,31 +90,6 @@ mise run no-dwarf
 "$HARP_TARGET_DIR/size/harp" search query "recursive improvement" --limit 5 >/dev/null
 python3 -m unittest discover -s labs/meta_harness_trae/tests -v
 python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v
-"""
-
-[tasks.verify-atlas]
-description = "Run Atlas lint, types, tests, production build, and decoded export test"
-run = """
-set -euo pipefail
-config_root="{{config_root}}"
-atlas_dir="$config_root/atlas"
-"$config_root/scripts/check_atlas_dependencies.sh" "$atlas_dir"
-mise run build
-(
-  cd "$config_root"
-  "$HARP_TARGET_DIR/size/harp" build
-  "$HARP_TARGET_DIR/size/harp" build --check
-)
-(
-  cd "$atlas_dir"
-  "$atlas_dir/node_modules/.bin/eslint" . --ignore-pattern dist --ignore-pattern target
-  "$atlas_dir/node_modules/.bin/tsc" -b
-  "$atlas_dir/node_modules/.bin/vitest" run --configLoader runner --no-cache
-  "$atlas_dir/node_modules/.bin/tsc" -b
-  "$atlas_dir/node_modules/.bin/vite" build --configLoader runner
-  node scripts/export-static.mjs
-  node tests/static-export.test.mjs
-)
 """
 
 [tasks.lean-env]
@@ -302,7 +274,7 @@ run = "python3 scripts/verify_changes.py"
 
 [tasks.verify-all]
 description = "Provider-neutral Harp release gate across all surfaces"
-run = "mise run crouzeix-textbook-publication && mise run verify-atlas && mise run verify-rust && mise run lean-all && sh scripts/check_cauchy_schwarz_audit.sh && mise run verify-repository"
+run = "mise run crouzeix-textbook-publication && mise run verify-rust && mise run lean-all && sh scripts/check_cauchy_schwarz_audit.sh && mise run verify-repository"
 
 [tasks.release-candidate]
 description = "Verify, package, and smoke-test a clean native release candidate"

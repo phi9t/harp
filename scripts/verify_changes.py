@@ -71,7 +71,7 @@ def plan(root, paths):
             # Imported historical prose and artifacts retain their original bytes.
             # Check their pinned source instead of rewriting old links or formatting.
             add("corenius-import", "python3", "scripts/verify_corenius_import.py")
-        elif path == "docs/import-receipt.md" or path.startswith("evidence/") or path == ".gitattributes":
+        elif path in ("docs/import-receipt.md", "docs/import-map.tsv") or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith(("knowledge/", "content/", "lessons/")):
             for command in ("check", "build"):
@@ -90,16 +90,12 @@ def plan(root, paths):
                 if route in path:
                     target = task
             add("lean", "mise", "run", target)
+        elif path == ".github/workflows/pages.yml" and not (root / path).exists():
+            add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_verify_changes.py")
         elif path.endswith(".md") and not path.startswith(("crates/", "labs/", "tools/textbook_pdf/")):
             docs.append(path)
-        elif path in ("atlas/dist/harp-atlas.html", "atlas/dist/harp-atlas.receipt.json", "atlas/tests/static-export.test.mjs"):
-            add("atlas-export", "node", "--test", "atlas/tests/static-export.test.mjs")
-        elif path == "atlas/src/content/generated/corpus.json":
-            add("corpus", "cargo", "run", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--", "check")
-            add("corpus", "cargo", "run", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--", "build", "--check")
-            add("atlas-export", "node", "--test", "atlas/tests/static-export.test.mjs")
-        elif path.startswith("atlas/"):
-            add("atlas", "mise", "run", "verify-atlas")
+        elif path.startswith("atlas/") and not (root / path).exists():
+            add("repository", "mise", "run", "verify-repository")
         elif path.startswith("crates/") or path in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml") or path.startswith(".cargo/"):
             rust_paths.append(path)
         elif path.startswith("labs/") and path.endswith(".rs"):
@@ -117,6 +113,8 @@ def plan(root, paths):
             tests = sorted(str(p.relative_to(root)) for p in (root / "tools/textbook_pdf").glob("*.test.cjs"))
             add("pdf", "node", "--test", *tests)
         elif path == "mise.toml" or path.startswith("scripts/"):
+            if not (root / path).exists():
+                continue
             if path == "mise.toml" or path in ("scripts/verify_changes.py", "scripts/tests/test_verify_changes.py"):
                 add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_verify_changes.py")
             elif path.endswith(".sh"):

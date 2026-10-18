@@ -31,7 +31,7 @@ use serde_json::Value;
 use sha2::Digest;
 
 #[derive(Parser)]
-#[command(name = "harp", version, about = "Standalone RSI technical atlas")]
+#[command(name = "harp", version, about = "Local knowledge and agent runtime")]
 struct Cli {
     #[arg(long, value_enum, default_value_t = OutputFormat::Text, global = true)]
     format: OutputFormat,
@@ -49,11 +49,11 @@ enum OutputFormat {
 enum Command {
     /// Validate the canonical corpus and evidence contracts.
     Check,
-    /// Compile canonical Markdown into the Atlas payload.
+    /// Compile canonical Markdown into the headless corpus.
     Build {
         #[arg(long)]
         check: bool,
-        #[arg(long, default_value = "atlas/src/content/generated/corpus.json")]
+        #[arg(long, default_value = "content/generated/corpus.json")]
         output: PathBuf,
     },
     /// Check or publish the verified Crouzeix textbook ledgers.

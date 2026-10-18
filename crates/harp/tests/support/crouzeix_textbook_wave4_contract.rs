@@ -2218,7 +2218,7 @@ fn chapter_28_power_family_keeps_every_power_and_the_sharp_extraction_visible() 
     );
 
     let corpus: serde_json::Value = serde_json::from_str(
-        &fs::read_to_string(workspace_root().join("atlas/src/content/generated/corpus.json"))
+        &fs::read_to_string(workspace_root().join("content/generated/corpus.json"))
             .expect("generated Atlas corpus"),
     )
     .expect("valid generated Atlas corpus");
@@ -2290,7 +2290,7 @@ fn chapter_29_normalization_and_sharpness_separate_exact_attainment_from_limits(
     );
 
     let corpus: serde_json::Value = serde_json::from_str(
-        &fs::read_to_string(workspace_root().join("atlas/src/content/generated/corpus.json"))
+        &fs::read_to_string(workspace_root().join("content/generated/corpus.json"))
             .expect("generated Atlas corpus"),
     )
     .expect("valid generated Atlas corpus");
@@ -2924,7 +2924,7 @@ fn chapter_26_congruence_exercise_rejects_the_mathlib_shortcut_transitively() {
 fn chapter_26_nilpotent_example_tracks_cauchy_and_measure_normalization() {
     let markdown = chapter_markdown(26);
     let corpus: serde_json::Value = serde_json::from_str(
-        &fs::read_to_string(workspace_root().join("atlas/src/content/generated/corpus.json"))
+        &fs::read_to_string(workspace_root().join("content/generated/corpus.json"))
             .expect("generated Atlas corpus"),
     )
     .expect("valid generated Atlas corpus");

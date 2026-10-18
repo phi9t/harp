@@ -6,15 +6,14 @@ The first release milestone is a locally installable native Harp executable
 whose manifest identifies the verified Git commit. The packaging command does
 not create a GitHub repository, push commits, create a tag, or publish a release.
 
-To read the Atlas or build the CLI without packaging, use
+To read the library or build the CLI without packaging, use
 [getting started](getting-started.md).
 
 ## Prepare the checkout
 
 Follow [CLI setup](getting-started.md#build-the-cli), including reviewing and
 trusting Mise configuration before installing tools. Fetch the LFS objects.
-Mise pins Rust, Node, and Git LFS; bootstrap installs locked Cargo and Atlas
-dependencies.
+Mise pins Rust, Node, and Git LFS; bootstrap installs locked Cargo dependencies.
 
 The full gate also requires the pinned Lean toolchain and an already populated
 Lean dependency cache. Follow the Lean cache discipline in `AGENTS.md` and
@@ -69,11 +68,10 @@ workflow supports native Unix builds; it does not establish compatibility with
 older operating-system versions or other architectures. macOS signing and
 notarization are separate release work.
 
-The binary archive does not include the knowledge corpus, evidence, Atlas,
+The binary archive does not include the knowledge corpus, evidence,
 Lean cache, or provider CLIs. Run repository commands such as `harp check`,
 `harp build --check`, and `harp search refresh` from a matching content checkout.
-The offline Atlas is `atlas/dist/harp-atlas.html` in that checkout. Live provider
-commands require a separately configured provider installation; passing the
+Live provider commands require a separately configured provider installation; passing the
 offline gate does not verify a live provider session.
 
 ## GitHub publication

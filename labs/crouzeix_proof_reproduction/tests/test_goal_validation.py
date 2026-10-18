@@ -963,87 +963,28 @@ class GoalValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Phase 8 plan-review row is invalid"):
                 goal_validation.validate_goal(goal, execution_ledger_path=ledger, repository_root=root)
 
-    def test_reader_receipt_validation_rejects_corrupt_receipt_and_member_bytes(self) -> None:
+    def test_current_corpus_validation_rejects_malformed_and_wrong_schema(self) -> None:
         from labs.crouzeix_proof_reproduction import goal_validation
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "atlas/src/content/generated").mkdir(parents=True)
-            (root / "atlas/dist").mkdir(parents=True)
-            corpus = root / "atlas/src/content/generated/corpus.json"
-            html = root / "atlas/dist/harp-atlas.html"
-            receipt = root / "atlas/dist/harp-atlas.receipt.json"
-            corpus.write_text("{\"ok\":true}\n", encoding="utf-8")
-            html.write_text("<html></html>\n", encoding="utf-8")
-            receipt.write_text(
-                json.dumps(
-                    {
-                        "schema_version": "harp-atlas-export/v1",
-                        "corpus_sha256": sha256_bytes(corpus.read_bytes()),
-                        "app_inputs_sha256": "0" * 64,
-                        "html_sha256": "0" * 64,
-                    }
-                )
-                + "\n",
-                encoding="utf-8",
-            )
+            for content in ("invalid", "[]", '{"schema_version":"unsupported"}'):
+                self.write_text(root, "content/generated/corpus.json", content)
+                with self.assertRaisesRegex(ValueError, "generated corpus is invalid"):
+                    goal_validation._validate_reader_surfaces(root)
 
-            with self.assertRaisesRegex(ValueError, "atlas receipt html_sha256 mismatch"):
-                goal_validation._validate_reader_surfaces(root)
-
-            receipt.write_text(
-                json.dumps(
-                    {
-                        "schema_version": "harp-atlas-export/v1",
-                        "corpus_sha256": sha256_bytes(corpus.read_bytes()),
-                        "app_inputs_sha256": "0" * 64,
-                        "html_sha256": sha256_bytes(html.read_bytes()),
-                    }
-                )
-                + "\n",
-                encoding="utf-8",
-            )
-            corpus.write_text("{\"ok\":false}\n", encoding="utf-8")
-
-            with self.assertRaisesRegex(ValueError, "atlas receipt corpus_sha256 mismatch"):
-                goal_validation._validate_reader_surfaces(root)
-
-    def test_reader_surfaces_accept_current_sized_members_but_remain_bounded(self) -> None:
+    def test_current_corpus_accepts_current_size_but_remains_bounded(self) -> None:
         from labs.crouzeix_proof_reproduction import goal_validation
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             corpus = self.write_bytes(
-                root,
-                "atlas/src/content/generated/corpus.json",
-                b"c" * (goal_validation.ARTIFACT_BYTES_CAP + 1),
+                root, "content/generated/corpus.json",
+                b'{"schema_version":"rsi-technical-atlas/v6"}' + b" " * goal_validation.ARTIFACT_BYTES_CAP,
             )
-            html = self.write_bytes(
-                root,
-                "atlas/dist/harp-atlas.html",
-                b"h" * (4 * goal_validation.ARTIFACT_BYTES_CAP + 1),
-            )
-            self.write_text(
-                root,
-                "atlas/dist/harp-atlas.receipt.json",
-                json.dumps(
-                    {
-                        "schema_version": "harp-atlas-export/v1",
-                        "corpus_sha256": sha256_bytes(corpus.read_bytes()),
-                        "app_inputs_sha256": "0" * 64,
-                        "html_sha256": sha256_bytes(html.read_bytes()),
-                    }
-                )
-                + "\n",
-            )
-
-            self.assertEqual(
-                goal_validation._validate_reader_surfaces(root),
-                goal_validation.READER_EVIDENCE_PATHS,
-            )
-
-            html.write_bytes(b"h" * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1))
-            with self.assertRaisesRegex(ValueError, "atlas artifact exceeds cap"):
+            self.assertEqual(goal_validation._validate_reader_surfaces(root), goal_validation.READER_EVIDENCE_PATHS)
+            corpus.write_bytes(b" " * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1))
+            with self.assertRaisesRegex(ValueError, "corpus artifact exceeds cap"):
                 goal_validation._validate_reader_surfaces(root)
 
     def test_git_adapter_rejects_timeout_overflow_and_malformed_output(self) -> None:
@@ -1270,23 +1211,10 @@ class GoalValidationTests(unittest.TestCase):
             root = Path(directory)
             self.write_bytes(
                 root,
-                "atlas/src/content/generated/corpus.json",
+                "content/generated/corpus.json",
                 b"a" * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1),
             )
-            self.write_text(root, "atlas/dist/harp-atlas.html", "<html></html>\n")
-            self.write_text(
-                root,
-                "atlas/dist/harp-atlas.receipt.json",
-                json.dumps(
-                    {
-                        "schema_version": "harp-atlas-export/v1",
-                        "corpus_sha256": "0" * 64,
-                        "app_inputs_sha256": "0" * 64,
-                        "html_sha256": "0" * 64,
-                    }
-                ) + "\n",
-            )
-            with self.assertRaisesRegex(ValueError, "atlas artifact exceeds cap"):
+            with self.assertRaisesRegex(ValueError, "corpus artifact exceeds cap"):
                 goal_validation._validate_reader_surfaces(root)
 
         with tempfile.TemporaryDirectory() as directory:

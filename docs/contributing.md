@@ -8,7 +8,7 @@ for repository rules and the [product contract](product-contract.md) for
 ownership and behavior. Harp must remain standalone; do not depend on another
 local checkout.
 
-The locked Cargo and pnpm registries may be used during bootstrap. Normal
+The locked Cargo registry may be used during bootstrap. Normal
 build, validation, reading, search, and offline source verification must not
 contact research sites.
 
@@ -19,12 +19,11 @@ Use focused checks while iterating:
 ```sh
 mise exec -- cargo test -p harp corpus::tests --lib -- --test-threads=1
 mise exec -- cargo test -p harp --test cli
-mise exec -- corepack pnpm --dir atlas run test
 ```
 
 Some CLI and source-verification tests require the Lean evidence environment.
-The full landing gate requires the pinned Lean toolchain and an already
-populated dependency cache. Check those prerequisites without invoking Lake:
+Selected proof checks and the release gate require the pinned Lean toolchain
+and an already populated dependency cache. Check those prerequisites without invoking Lake:
 
 ```sh
 mise run lean-env
@@ -42,8 +41,8 @@ Once the changes are settled, run:
 mise run verify
 ```
 
-This runs the Atlas, Rust, shell, Python, Lean, LFS, and repository checks. It
-can take substantially longer than a focused test. It uses fake provider
+This selects checks for the changed surfaces; inspect `mise run verify -- --plan`.
+Use `mise run verify-all` for the complete release gate. The gate uses fake provider
 fixtures, not live model sessions. A local Lean build is not a claim of
 hermetic proof execution.
 
@@ -59,7 +58,7 @@ The import receipt covers the tracked payload, including documentation:
 2. Run `.build/harp-target/size/harp repository verify` from the worktree.
 3. If it reports a stale payload digest, copy the expected digest into
    `docs/import-receipt.md`, stage that file, and rerun the verifier.
-4. Run the full `mise run verify` gate before committing and landing locally.
+4. Run the changed-surface `mise run verify` gate before committing and landing locally.
 
 Use Mise for Git commands that invoke LFS hooks, such as
 `mise exec -- git commit`. Push only when the project owner explicitly asks.
@@ -105,9 +104,7 @@ inform later distillation but are not themselves project guidance.
 4. Run `.build/harp-target/size/harp check`.
 5. Run `.build/harp-target/size/harp build`.
 6. Refresh search with `.build/harp-target/size/harp search refresh`.
-7. Rebuild and test the offline Atlas with
-   `mise exec -- corepack pnpm --dir atlas run test:export`.
-8. Follow [the landing checklist](#land-a-change), including the full gate.
+7. Follow [the landing checklist](#land-a-change), including the full gate.
 
 Do not duplicate technical explanations in TypeScript. New canonical Markdown
 must have one stable role, one source/claim ceiling, valid local links, and
@@ -148,7 +145,7 @@ not a second source of truth.
   `python3 scripts/validate_obsidian_assets.py`.
 - A registered packet must define valid metadata, add its first-class route or
   auxiliary-document registration as appropriate, extend search roots, add
-  packet tests, and regenerate the corpus and Atlas projection. Do not make
+  packet tests, and regenerate the headless corpus. Do not make
   a packet canonical merely to make it discoverable.
 
 ## Evidence changes
@@ -182,22 +179,6 @@ repository-relative, symlink-safe, atomic, and race-aware. Add a failing test
 before production behavior changes. The inherited corpus tests cover malformed
 registries, unknown systems, incomplete routes, diagnostic contracts, duplicate
 IDs, source mapping, escapes, symlink output, and byte stability.
-
-## Atlas changes
-
-Preserve strict TypeScript, boundary parsing from `unknown`, branded IDs,
-discriminated unions, and exhaustive matching. Run:
-
-```sh
-cd atlas
-mise exec -- corepack pnpm run lint
-mise exec -- corepack pnpm run typecheck
-mise exec -- corepack pnpm run test
-mise exec -- corepack pnpm run test:export
-```
-
-The decoded export test must inspect the inlined JavaScript rather than only
-checking that an HTML file exists.
 
 ## Context-control changes
 

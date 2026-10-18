@@ -16,7 +16,7 @@ Each chapter header links to its accompanying Lean chapter module. Discovery req
 
 ## Dependencies
 
-Use Node 22 or newer and the exact direct package versions in `package.json`. Install packages into this directory, or expose a machine-local package cache through standard `NODE_PATH`; no other checkout is a dependency. Atlas's installed packages are an optional fallback. Use locally installed Chromium compatible with Playwright. The builder never installs packages or browsers and blocks HTTP resources while printing.
+Use Node 22 or newer and the exact direct package versions in `package.json`. Install packages into this directory, or expose a machine-local package cache through standard `NODE_PATH`; no other checkout is a dependency. Use locally installed Chromium compatible with Playwright. The builder never installs packages or browsers and blocks HTTP resources while printing.
 
 Python checks require `pypdf` and `pdfplumber`. Visual review uses Poppler's `pdfinfo` and `pdftoppm`. No package lockfile or Python environment lock is supplied; direct JavaScript versions are enforced at build time. Record Python tool versions with review evidence. Package installation is a separate environment preparation step.
 
@@ -40,6 +40,6 @@ The checker verifies all PDF pages' basic content and glyph boundaries, contents
 
 ## Publication boundary
 
-This export performs no Lean compilation, receipt/ledger updates, Atlas regeneration or independent proof certification. Working-draft labels remain visible. Run the repository's full gate before committing; PDF tests/build/checks are additional checks, not included in that gate.
+This export performs no Lean compilation, receipt/ledger updates, independent proof certification. Working-draft labels remain visible. Run the repository's full gate before committing; PDF tests/build/checks are additional checks, not included in that gate.
 
 Generated outputs are ignored. Public distribution requires a separate audit of the actual snapshot and embedded font/asset licenses and any required notices. The builder does not automatically bundle license files or grant a repository-wide license.

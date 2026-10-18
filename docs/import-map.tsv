@@ -11,54 +11,54 @@ docs%2Fsuperpowers%2Fspecs%2F2026-08-01-sicp-agent-harness-reader-course-design.
 docs%2Fsuperpowers%2Fspecs%2F2026-08-02-rsi-weng-reader-diagnostic-atlas-design.md	omitted-%74arocco-specific	-	obsolete implementation plan or design
 docs%2Fsuperpowers%2Fspecs%2F2026-08-07-sicp-under-rsi-migration-design.md	omitted-%74arocco-specific	-	obsolete implementation plan or design
 knowledge%2Frsi%2FAGENTS.md	replaced	AGENTS.md	standalone repository instructions
-knowledge%2Frsi%2Fatlas%2Fapp%2F.gitignore	rewritten	atlas/.gitignore	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2FREADME.md	rewritten	atlas/README.md	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fdist%2Frsi-atlas.html	generated	atlas/dist/harp-atlas.html	offline Atlas export
-knowledge%2Frsi%2Fatlas%2Fapp%2Feslint.config.mjs	rewritten	atlas/eslint.config.mjs	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Findex.html	rewritten	atlas/index.html	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fpackage.json	rewritten	atlas/package.json	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fpnpm-lock.yaml	rewritten	atlas/pnpm-lock.yaml	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fpnpm-workspace.yaml	rewritten	atlas/pnpm-workspace.yaml	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fscripts%2Fexport-static.mjs	rewritten	atlas/scripts/export-static.mjs	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FAtlasApp.tsx	rewritten	atlas/src/app/AtlasApp.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FChapterReader.tsx	rewritten	atlas/src/app/ChapterReader.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FDecisionBrief.tsx	rewritten	atlas/src/app/DecisionBrief.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FDiagnosticWorkbench.test.tsx	rewritten	atlas/src/app/DiagnosticWorkbench.test.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FDiagnosticWorkbench.tsx	rewritten	atlas/src/app/DiagnosticWorkbench.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FExportPanel.test.tsx	rewritten	atlas/src/app/ExportPanel.test.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FExportPanel.tsx	rewritten	atlas/src/app/ExportPanel.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FLessonRunner.test.tsx	rewritten	atlas/src/app/LessonRunner.test.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FLessonRunner.tsx	rewritten	atlas/src/app/LessonRunner.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FLineageLoom.tsx	rewritten	atlas/src/app/LineageLoom.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FReaderApp.test.tsx	rewritten	atlas/src/app/ReaderApp.test.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FReaderApp.tsx	rewritten	atlas/src/app/ReaderApp.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FSystemArticle.tsx	rewritten	atlas/src/app/SystemArticle.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FSystemLibrary.test.tsx	rewritten	atlas/src/app/SystemLibrary.test.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FSystemLibrary.tsx	rewritten	atlas/src/app/SystemLibrary.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FWengReader.test.tsx	rewritten	atlas/src/app/WengReader.test.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FWengReader.tsx	rewritten	atlas/src/app/WengReader.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2Froutes.test.ts	rewritten	atlas/src/app/routes.test.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2Froutes.ts	rewritten	atlas/src/app/routes.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.test.ts	rewritten	atlas/src/content/canonical.test.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.ts	rewritten	atlas/src/content/canonical.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcontracts.ts	rewritten	atlas/src/content/contracts.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fgenerated%2Fchapters.json	generated	atlas/src/content/generated/corpus.json	compiled v5 corpus
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Ftypes.ts	rewritten	atlas/src/content/types.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fcontracts.ts	rewritten	atlas/src/diagnostics/contracts.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fengine.test.ts	rewritten	atlas/src/diagnostics/engine.test.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fengine.ts	rewritten	atlas/src/diagnostics/engine.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fexports.test.ts	rewritten	atlas/src/diagnostics/exports.test.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fexports.ts	rewritten	atlas/src/diagnostics/exports.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fmain.tsx	rewritten	atlas/src/main.tsx	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fstyles%2Fcomponents.css	rewritten	atlas/src/styles/components.css	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fstyles%2Flayout.css	rewritten	atlas/src/styles/layout.css	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fstyles%2Ftokens.css	rewritten	atlas/src/styles/tokens.css	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Ffixtures%2Frsi-diagnosis-v1-aflow.json	rewritten	atlas/tests/fixtures/rsi-diagnosis-v1-aflow.json	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Fsetup.ts	rewritten	atlas/tests/setup.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Fstatic-export.test.mjs	rewritten	atlas/tests/static-export.test.mjs	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Ftsconfig.json	rewritten	atlas/tsconfig.json	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fvite.config.ts	rewritten	atlas/vite.config.ts	standalone Atlas path and package identity
-knowledge%2Frsi%2Fatlas%2Fapp%2Fvitest.config.ts	rewritten	atlas/vitest.config.ts	standalone Atlas path and package identity
+knowledge%2Frsi%2Fatlas%2Fapp%2F.gitignore	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2FREADME.md	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fdist%2Frsi-atlas.html	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Feslint.config.mjs	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Findex.html	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fpackage.json	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fpnpm-lock.yaml	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fpnpm-workspace.yaml	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fscripts%2Fexport-static.mjs	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FAtlasApp.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FChapterReader.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FDecisionBrief.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FDiagnosticWorkbench.test.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FDiagnosticWorkbench.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FExportPanel.test.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FExportPanel.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FLessonRunner.test.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FLessonRunner.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FLineageLoom.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FReaderApp.test.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FReaderApp.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FSystemArticle.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FSystemLibrary.test.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FSystemLibrary.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FWengReader.test.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2FWengReader.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2Froutes.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2Froutes.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcontracts.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fgenerated%2Fchapters.json	generated	content/generated/corpus.json	compiled headless corpus
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Ftypes.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fcontracts.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fengine.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fengine.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fexports.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fexports.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fmain.tsx	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fstyles%2Fcomponents.css	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fstyles%2Flayout.css	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fstyles%2Ftokens.css	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Ffixtures%2Frsi-diagnosis-v1-aflow.json	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Fsetup.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Fstatic-export.test.mjs	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Ftsconfig.json	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fvite.config.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
+knowledge%2Frsi%2Fatlas%2Fapp%2Fvitest.config.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fbounded_transitive_closure.md	rewritten	knowledge/rsi/bounded_transitive_closure.md	canonical path and standalone links
 knowledge%2Frsi%2Fchapters%2Fautomated-research.md	rewritten	knowledge/rsi/chapters/automated-research.md	canonical path and standalone links
 knowledge%2Frsi%2Fchapters%2Fdurable-improvement-workflows.md	rewritten	knowledge/rsi/chapters/durable-improvement-workflows.md	canonical path and standalone links

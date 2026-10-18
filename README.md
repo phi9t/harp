@@ -1,12 +1,11 @@
 # Harp
 
-A local-first research atlas and agent runtime for recursive self-improvement.
+A local-first agent runtime with a maintained knowledge and mathematics library.
 
 Harp brings research notes, captured sources, and runnable experiments into one
 repository. Use it to compare self-improving systems, trace claims to evidence,
 or run restartable agent tasks with recorded results.
 
-[Open the Atlas](https://phi9t.github.io/harp/) ·
 [Get started](docs/getting-started.md) ·
 [Agent workflows](docs/agent-workflows.md) ·
 [Documentation](docs/README.md) ·
@@ -14,23 +13,12 @@ or run restartable agent tasks with recorded results.
 
 ## Start reading
 
-Read the [Harp Atlas online](https://phi9t.github.io/harp/). No installation or
-model account is needed. GitHub Pages serves the checked-in export from
-`master`; see [Atlas publication](docs/publishing-atlas.md) for how updates
-reach the site.
-
-For offline reading, clone the repository and open
-[`atlas/dist/harp-atlas.html`](atlas/dist/harp-atlas.html) from your local
-filesystem in a browser. It includes the compiled research corpus, JavaScript,
-and styles. No server or build tools are needed to read it.
-GitHub displays the HTML source; it does not run the reader.
-
-Prefer Markdown? Start with the
-[RSI orientation index](knowledge/rsi/rsi_index.md), or open the repository root
-as an Obsidian vault and visit the
-[knowledge home](knowledge/harp_knowledge_home.md). The
-[reading guide](docs/getting-started.md#read-the-atlas) covers both options and
-Git LFS setup for captured evidence.
+Open the repository root as an Obsidian vault and visit the
+[knowledge home](knowledge/harp_knowledge_home.md), or read Markdown directly.
+The library includes SICP, educational materials, mathematical foundations,
+and Crouzeix proof studies. The browser Atlas and offline HTML export are retired.
+See the [reading guide](docs/getting-started.md#read-the-knowledge-library) for
+local reading and evidence setup.
 
 ## What you can do
 
@@ -43,8 +31,7 @@ Git LFS setup for captured evidence.
 | Run Codex or Trae CLI with recorded context and output | [Provider workflows](docs/agent-workflows.md#provider-workflows) |
 
 The research collection also covers harness benchmarks, agentic engineering,
-SICP, mathematical foundations, and proof-reproduction studies. The Atlas
-Workstreams view is an offline reference snapshot, not a live job monitor.
+SICP, mathematical foundations, and proof-reproduction studies. Workstream records describe checked-in research and proof work.
 
 ## Build the CLI
 
@@ -64,8 +51,7 @@ mise run build
 .build/harp-target/size/harp check
 ```
 
-Mise pins Rust, Node, and Git LFS; bootstrap installs locked Cargo and Atlas
-dependencies. See [getting started](docs/getting-started.md) for cloning,
+Mise pins Rust, Node, and Git LFS; bootstrap installs locked Cargo dependencies. See [getting started](docs/getting-started.md) for cloning,
 search, JSON output, and troubleshooting. Reading and ordinary CLI use do not
 require the full contributor verification gate.
 
@@ -75,12 +61,11 @@ require the full contributor verification gate.
 - `evidence/` holds captured source bytes, manifests, and source-specific
   license records.
 - `content/` holds machine-readable contracts and diagnostics.
-- `atlas/` holds the browser reader and its generated offline export.
+- `content/generated/` holds the compiled headless corpus and local publication outputs.
 - `crates/` holds the CLI, contracts, and durable execution engine.
 - `labs/` and `formalization/` hold experiments and Lean companions.
 
-Markdown is the authority for technical prose. The compiled corpus and offline
-Atlas are generated from it. The
+Markdown is the authority for technical prose. The compiled headless corpus is generated from it. The
 [product contract](docs/product-contract.md) records the detailed boundaries;
 the [contributor guide](docs/contributing.md) explains how to change them.
 

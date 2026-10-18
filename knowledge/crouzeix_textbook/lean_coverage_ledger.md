@@ -24,7 +24,7 @@ publishes one immutable six-ledger generation, and then checks the same
 generation without rewriting it.
 
 The validated pointer is
-`atlas/src/content/generated/crouzeix_textbook/publication/current.json`. Its
+`content/generated/crouzeix_textbook/publication/current.json`. Its
 generation identifies `theorem_coverage_ledger.md`, which records each CFT
 identity, publication and proof status, Lean mode, declaration locator, and
 prose anchor. The pointer and output digests, rather than this guide, determine

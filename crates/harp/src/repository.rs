@@ -2,18 +2,13 @@ use std::collections::BTreeSet;
 use std::fs;
 use std::path::{Component, Path, PathBuf};
 
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use sha2::{Digest as _, Sha256};
-use walkdir::WalkDir;
 
 use crate::error::AppError;
 
 const IMPORT_MAP: &str = "docs/import-map.tsv";
 const IMPORT_RECEIPT: &str = "docs/import-receipt.md";
-const CORPUS_PATH: &str = "atlas/src/content/generated/corpus.json";
-const ATLAS_HTML_PATH: &str = "atlas/dist/harp-atlas.html";
-const ATLAS_RECEIPT_PATH: &str = "atlas/dist/harp-atlas.receipt.json";
-
 #[derive(Debug, Serialize)]
 pub struct RepositoryReport {
     pub import_rows: usize,
@@ -27,18 +22,10 @@ pub struct RepositoryReport {
     pub payload_sha256: String,
 }
 
-#[derive(Debug, Deserialize)]
-struct AtlasReceipt {
-    schema_version: String,
-    corpus_sha256: String,
-    app_inputs_sha256: String,
-    html_sha256: String,
-}
-
 pub fn verify(repo_root: &Path) -> Result<RepositoryReport, AppError> {
     let import = verify_import_map(repo_root)?;
     let forbidden_references = verify_forbidden_references(repo_root)?;
-    verify_atlas_artifacts(repo_root)?;
+    crate::build_corpus(repo_root, None, crate::BuildMode::Check)?;
     let payload_sha256 = payload_digest(repo_root)?;
     verify_import_receipt(repo_root, &payload_sha256)?;
     Ok(RepositoryReport {
@@ -49,7 +36,7 @@ pub fn verify(repo_root: &Path) -> Result<RepositoryReport, AppError> {
         original_compiler_files: import.compiler,
         original_auxiliary_files: import.auxiliary,
         forbidden_references,
-        generated_artifacts: 2,
+        generated_artifacts: 1,
         payload_sha256,
     })
 }
@@ -108,6 +95,7 @@ fn verify_import_map(repo_root: &Path) -> Result<ImportCounts, AppError> {
         "rewritten".to_owned(),
         "generated".to_owned(),
         "replaced".to_owned(),
+        "retired".to_owned(),
         expected_omitted.clone(),
     ]);
     let mut sources = BTreeSet::new();
@@ -144,11 +132,11 @@ fn verify_import_map(repo_root: &Path) -> Result<ImportCounts, AppError> {
                 format!("invalid disposition for {source}: {disposition}"),
             ));
         }
-        if disposition == expected_omitted {
+        if disposition == expected_omitted || disposition == "retired" {
             if columns[2] != "-" {
                 return Err(AppError::invalid_input(
                     "repository.import_map",
-                    format!("omitted source has a destination: {source}"),
+                    format!("omitted or retired source has a destination: {source}"),
                 ));
             }
         } else {
@@ -244,99 +232,6 @@ fn verify_forbidden_references(repo_root: &Path) -> Result<usize, AppError> {
         ));
     }
     Ok(0)
-}
-
-fn verify_atlas_artifacts(repo_root: &Path) -> Result<(), AppError> {
-    crate::build_corpus(repo_root, None, crate::BuildMode::Check)?;
-    let receipt: AtlasReceipt = serde_json::from_slice(
-        &fs::read(repo_root.join(ATLAS_RECEIPT_PATH))
-            .map_err(|error| AppError::io("repository.atlas", ATLAS_RECEIPT_PATH, error))?,
-    )
-    .map_err(|error| {
-        AppError::invalid_input(
-            "repository.atlas",
-            format!("invalid Atlas export receipt: {error}"),
-        )
-    })?;
-    if receipt.schema_version != "harp-atlas-export/v1" {
-        return Err(AppError::invalid_input(
-            "repository.atlas",
-            "unsupported Atlas export receipt",
-        ));
-    }
-    let corpus = sha256_file(&repo_root.join(CORPUS_PATH))?;
-    let html = sha256_file(&repo_root.join(ATLAS_HTML_PATH))?;
-    let app_inputs = atlas_input_digest(repo_root)?;
-    if receipt.corpus_sha256 != corpus
-        || receipt.html_sha256 != html
-        || receipt.app_inputs_sha256 != app_inputs
-    {
-        return Err(AppError::invalid_input(
-            "repository.atlas",
-            format!(
-                "Atlas export receipt is stale: corpus {}/{}, app {}/{}, html {}/{}",
-                receipt.corpus_sha256,
-                corpus,
-                receipt.app_inputs_sha256,
-                app_inputs,
-                receipt.html_sha256,
-                html
-            ),
-        ));
-    }
-    Ok(())
-}
-
-fn atlas_input_digest(repo_root: &Path) -> Result<String, AppError> {
-    let atlas = repo_root.join("atlas");
-    let mut inputs = [
-        "index.html",
-        "package.json",
-        "scripts/export-static.mjs",
-        "tsconfig.json",
-        "vite.config.ts",
-        "vitest.config.ts",
-    ]
-    .into_iter()
-    .map(PathBuf::from)
-    .collect::<Vec<_>>();
-    for entry in WalkDir::new(atlas.join("src")).follow_links(false) {
-        let entry = entry.map_err(|error| {
-            AppError::external(
-                "repository.atlas",
-                format!("could not walk Atlas source: {error}"),
-            )
-        })?;
-        if entry.file_type().is_file()
-            && matches!(
-                entry.path().extension().and_then(|value| value.to_str()),
-                Some("css" | "ts" | "tsx")
-            )
-        {
-            inputs.push(
-                entry
-                    .path()
-                    .strip_prefix(&atlas)
-                    .expect("Atlas file is relative")
-                    .to_path_buf(),
-            );
-        }
-    }
-    inputs.sort();
-    let mut digest = Sha256::new();
-    for relative in inputs {
-        let bytes = fs::read(atlas.join(&relative)).map_err(|error| {
-            AppError::io(
-                "repository.atlas",
-                &format!("read Atlas input {}", relative.display()),
-                error,
-            )
-        })?;
-        digest.update(slash_path(&relative));
-        digest.update([0]);
-        digest.update(bytes);
-    }
-    Ok(format!("{:x}", digest.finalize()))
 }
 
 fn verify_import_receipt(repo_root: &Path, payload_sha256: &str) -> Result<(), AppError> {
@@ -463,12 +358,6 @@ fn safe_relative(value: &str, label: &str) -> Result<PathBuf, AppError> {
         ));
     }
     Ok(path.to_path_buf())
-}
-
-fn sha256_file(path: &Path) -> Result<String, AppError> {
-    let bytes = fs::read(path)
-        .map_err(|error| AppError::io("repository.digest", &path.display().to_string(), error))?;
-    Ok(format!("{:x}", Sha256::digest(bytes)))
 }
 
 fn slash_path(path: &Path) -> String {

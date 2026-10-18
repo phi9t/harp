@@ -154,7 +154,7 @@ mise run verify
 
 The build must regenerate both:
 
-- `atlas/src/content/generated/corpus.json`; and
+- `content/generated/corpus.json`; and
 - `atlas/dist/harp-atlas.html`.
 
 If `harp repository verify` reports a stale payload digest, update

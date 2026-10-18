@@ -31,8 +31,6 @@ request to add a focused mapping rather than running every prerequisite.
 | Agent guidance, skills, ordinary Markdown | Diff whitespace; changed local links and skill frontmatter; no Rust, Lean or React dependency |
 | Corpus contracts and canonical knowledge/lessons | Rust corpus validation and generated corpus freshness, without proof builds or React |
 | Rust | Affected workspace packages and transitive consumers; Harp corpus/context modules where isolated; changed integration targets and CLI entry point checks |
-| Delivered Atlas HTML/receipt and export smoke test | Node offline artifact checks; generated corpus also requires Rust corpus checks; no React/Lean |
-| Atlas code and config | `verify-atlas`: existing dependencies, lint, types, tests, build and offline export; no Lean publication dependency |
 | Python labs/scripts | Corresponding test module or existing family discovery when shared inputs have no narrower module |
 | Shell helpers | Syntax and matching behavior test, or the shell policy suite |
 | Gate configuration/selector | Changed-surface dispatch regression tests |
@@ -51,13 +49,12 @@ Tests/builds can still produce their normal ignored local outputs.
 
 ## Prerequisites and release
 
-A selected React check requires the existing frontend dependency cache. A
-selected proof check requires the pinned toolchain and canonical cache. Report
+A selected proof check requires the pinned toolchain and canonical cache. Report
 the exact missing dependency and affected operation; continue independent checks.
 Unrelated missing prerequisites do not widen the local gate. A relevant check
 that cannot run is a blocker unless the owner explicitly narrows that acceptance.
 
-The full gate includes textbook publication, Atlas, Rust, all Lean libraries,
+The full gate includes textbook publication, Rust, all Lean libraries,
 Cauchy audit, and repository verification. It can require all their prerequisites.
 Local readiness does not claim release readiness. Historical instructions calling
 `mise run verify` a universal release gate are superseded by this contract.

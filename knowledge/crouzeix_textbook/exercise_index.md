@@ -24,7 +24,7 @@ publishes one immutable ledger generation, and checks it before static
 consumption.
 
 The validated pointer is
-`atlas/src/content/generated/crouzeix_textbook/publication/current.json`. Its
+`content/generated/crouzeix_textbook/publication/current.json`. Its
 generation identifies `exercise_ledger.md`, which records exercise identity,
 chapter, kind, difficulty, prerequisite skills, starter location, and any
 distinct checked Lean solution. An absent solution remains visibly incomplete;

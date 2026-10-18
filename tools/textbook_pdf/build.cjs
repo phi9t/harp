@@ -4,7 +4,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
-const { createRequire } = require('node:module');
 const { pathToFileURL } = require('node:url');
 const crypto = require('node:crypto');
 
@@ -12,13 +11,7 @@ const { bookRoot, sourcePath, readSource, discoverChapters, candidateHash, chapt
 const { readingEditions } = require('./editions.cjs');
 const root = path.resolve(__dirname, '../..');
 const out = path.join(root, 'output/pdf');
-const requireAtlas = createRequire(path.join(root, 'atlas/package.json'));
-function dependency(name) {
-  try { return require(name); } catch (error) {
-    if (error.code !== 'MODULE_NOT_FOUND') throw error;
-    return requireAtlas(name);
-  }
-}
+const dependency = require;
 const { marked } = dependency('marked');
 const katex = dependency('katex');
 const { chromium } = dependency('playwright');
@@ -169,9 +162,7 @@ function contents(list, full, supplementDocs) {
   }).join('');
   return `<section class="frontmatter contents"><div class="eyebrow">Reader's map</div><h1>Contents</h1>${rows}${supplementDocs.length?'<div class="toc-part">Harp supplements</div>'+supplementDocs.map(doc=>entry(doc,doc.title)).join(''):''}<div class="toc-part">Reference</div>${entry(glossary,'Notation and glossary')}${full?entry(sources,'Sources and attribution'):''}</section>`;
 }
-let katexCSSPath;
-try { katexCSSPath=require.resolve('katex/dist/katex.min.css'); }
-catch { katexCSSPath=requireAtlas.resolve('katex/dist/katex.min.css'); }
+const katexCSSPath=require.resolve('katex/dist/katex.min.css');
 const katexCSS=fs.readFileSync(katexCSSPath,'utf8').replace(/url\(([^)]+)\)/g, (_,url)=> {
   const p=path.resolve(path.dirname(katexCSSPath),url.replace(/["']/g,''));
   return `url(data:font/${p.endsWith('.woff2')?'woff2':p.endsWith('.woff')?'woff':'ttf'};base64,${fs.readFileSync(p).toString('base64')})`;

@@ -59,7 +59,7 @@ artifact and update the receipt instead of rewriting the old one.
 
 When changing canonical Markdown or route registration, regenerate both:
 
-- `atlas/src/content/generated/corpus.json`
+- `content/generated/corpus.json`
 - `atlas/dist/harp-atlas.html`
 
 Then run `cargo run -p harp -- repository verify`, copy the reported digest into

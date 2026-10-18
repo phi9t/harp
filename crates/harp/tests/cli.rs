@@ -296,7 +296,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
 
 #[test]
 fn build_check_accepts_the_checked_in_payload_without_writing() {
-    let generated = repo_root().join("atlas/src/content/generated/corpus.json");
+    let generated = repo_root().join("content/generated/corpus.json");
     let before = fs::read(&generated).expect("checked-in payload");
 
     harp()
@@ -317,7 +317,7 @@ fn build_rejects_outputs_outside_the_generated_directory() {
         .assert()
         .failure()
         .stderr(predicate::str::contains(
-            "output must stay beneath atlas/src/content/generated",
+            "output must stay beneath content/generated",
         ));
 }
 

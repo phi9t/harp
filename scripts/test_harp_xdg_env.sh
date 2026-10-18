@@ -13,7 +13,7 @@ trap 'rm -rf "$tmp_root"' EXIT HUP INT TERM
 capture() {
   /usr/bin/env -i "$@" /bin/sh -eu <<EOF
 . "$helper"
-printf '%s\n' "\$HARP_DATA_ROOT" "\$HARP_CACHE_ROOT" "\$HARP_LEAN_CACHE_ROOT" "\$HARP_ELAN_HOME" "\$HARP_LEAN_TOOLCHAIN_BIN" "\$HARP_ATLAS_NODE_MODULES"
+printf '%s\n' "\$HARP_DATA_ROOT" "\$HARP_CACHE_ROOT" "\$HARP_LEAN_CACHE_ROOT" "\$HARP_ELAN_HOME" "\$HARP_LEAN_TOOLCHAIN_BIN"
 EOF
 }
 
@@ -23,8 +23,7 @@ expected_default=$(printf '%s\n' \
   /home/alice/.cache/harp \
   /home/alice/.cache/harp/lean/lean-4.32.1 \
   /home/alice/.cache/harp/lean/elan \
-  /home/alice/.cache/harp/lean/elan/toolchains/leanprover--lean4---v4.32.1/bin \
-  /home/alice/.cache/harp/node/atlas-node_modules)
+  /home/alice/.cache/harp/lean/elan/toolchains/leanprover--lean4---v4.32.1/bin)
 [ "$default_output" = "$expected_default" ]
 
 explicit_output=$(capture HOME=/home/alice XDG_DATA_HOME=/data XDG_CACHE_HOME=/cache)
@@ -33,8 +32,7 @@ expected_explicit=$(printf '%s\n' \
   /cache/harp \
   /cache/harp/lean/lean-4.32.1 \
   /cache/harp/lean/elan \
-  /cache/harp/lean/elan/toolchains/leanprover--lean4---v4.32.1/bin \
-  /cache/harp/node/atlas-node_modules)
+  /cache/harp/lean/elan/toolchains/leanprover--lean4---v4.32.1/bin)
 [ "$explicit_output" = "$expected_explicit" ]
 
 for assignment in XDG_DATA_HOME=relative XDG_CACHE_HOME=relative; do

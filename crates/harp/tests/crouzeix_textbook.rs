@@ -536,7 +536,7 @@ fn assert_lean_receipt_failure(
 }
 
 fn publication_manifest(root: &Path) -> PathBuf {
-    root.join("atlas/src/content/generated/crouzeix_textbook/publication/current.json")
+    root.join("content/generated/crouzeix_textbook/publication/current.json")
 }
 
 fn publication_bytes(root: &Path, outputs: &[PathBuf]) -> Vec<Vec<u8>> {
@@ -550,7 +550,7 @@ fn publication_file_snapshot(
     root: &Path,
     outputs: &[PathBuf],
 ) -> BTreeMap<PathBuf, (Vec<u8>, u32, u64, i64, i64)> {
-    let publication = root.join("atlas/src/content/generated/crouzeix_textbook/publication");
+    let publication = root.join("content/generated/crouzeix_textbook/publication");
     let mut paths = vec![
         publication.join("current.json"),
         publication.join("publication.lock"),
@@ -765,9 +765,7 @@ fn scan_retired_references_at(root: &Path, paths: &[PathBuf]) -> Result<Vec<Stri
 }
 
 fn deletion_guard_excludes(path: &Path) -> bool {
-    path.starts_with("docs")
-        || path == Path::new("atlas/src/content/generated/corpus.json")
-        || path == Path::new("atlas/dist/harp-atlas.html")
+    path.starts_with("docs") || path == Path::new("content/generated/corpus.json")
 }
 
 fn retired_reference_in(text: &str) -> Option<String> {
@@ -822,7 +820,7 @@ fn retired_reference_in(text: &str) -> Option<String> {
 
 fn non_documentation_source_paths() -> Result<Vec<PathBuf>, String> {
     let mut child = Command::new("git")
-        .args(["ls-files", "-z", "--"])
+        .args(["ls-files", "-z", "--", ".", ":(exclude)corenius"])
         .current_dir(workspace_root())
         .stdout(Stdio::piped())
         .spawn()
@@ -993,30 +991,6 @@ fn deletion_mise_publication_uses_a_fresh_receipt_then_rust_write_and_check() {
 }
 
 #[test]
-fn deletion_atlas_release_depends_on_publication_before_static_consumption() {
-    let mise = fs::read_to_string(workspace_root().join("mise.toml")).expect("mise config");
-    let config: toml::Value = toml::from_str(&mise).expect("parse mise config");
-    let dependencies = config["tasks"]["verify-atlas"]["depends"]
-        .as_array()
-        .expect("verify-atlas dependencies")
-        .iter()
-        .map(|value| value.as_str().expect("dependency string"))
-        .collect::<BTreeSet<_>>();
-    assert!(
-        dependencies.contains("crouzeix-textbook-publication"),
-        "Atlas verification can consume static inputs before textbook publication"
-    );
-    assert!(
-        !config["tasks"]["crouzeix-textbook-publication"]["depends"]
-            .as_array()
-            .expect("publication dependencies")
-            .iter()
-            .any(|dependency| dependency.as_str() == Some("verify-atlas")),
-        "publication must not recurse through Atlas verification"
-    );
-}
-
-#[test]
 fn deletion_guard_matches_retired_spellings_including_knowledge() {
     let fixture = tempfile::tempdir().expect("deletion guard fixture");
     let cases = [
@@ -1076,9 +1050,8 @@ fn deletion_guard_excludes_only_docs_and_exact_task8_artifacts() {
         .into_owned();
     let paths = [
         PathBuf::from("docs/retired-reference.md"),
-        PathBuf::from("atlas/src/content/generated/corpus.json"),
-        PathBuf::from("atlas/dist/harp-atlas.html"),
-        PathBuf::from("atlas/src/content/generated/not-corpus.json"),
+        PathBuf::from("content/generated/corpus.json"),
+        PathBuf::from("content/generated/not-corpus.json"),
     ];
     for relative in &paths {
         let path = fixture.path().join(relative);
@@ -1090,7 +1063,7 @@ fn deletion_guard_excludes_only_docs_and_exact_task8_artifacts() {
     let violations = scan_retired_references_at(fixture.path(), &paths).expect("bounded scan");
     assert_eq!(
         violations,
-        vec![format!("{} names {retired}", paths[3].display())],
+        vec![format!("{} names {retired}", paths[2].display())],
         "the exclusion boundary must not widen beyond docs and exact Task8 artifacts"
     );
 }
@@ -1197,7 +1170,7 @@ fn deletion_guard_ignores_git_replace_objects_for_index_blobs() {
 
 #[test]
 fn runtime_publication_state_is_untracked_and_precisely_ignored() {
-    const RUNTIME_ROOT: &str = "atlas/src/content/generated/crouzeix_textbook/publication";
+    const RUNTIME_ROOT: &str = "content/generated/crouzeix_textbook/publication";
     let tracked = Command::new("git")
         .args(["ls-files", "--", RUNTIME_ROOT])
         .current_dir(workspace_root())
@@ -1232,7 +1205,7 @@ fn runtime_publication_state_is_untracked_and_precisely_ignored() {
             "--no-index",
             "--quiet",
             "--",
-            "atlas/src/content/generated/crouzeix_textbook/canonical.json",
+            "content/generated/crouzeix_textbook/canonical.json",
         ])
         .current_dir(workspace_root())
         .status()
@@ -1249,7 +1222,7 @@ fn publication_check_is_read_only_and_write_switches_the_complete_generation() {
     let receipt_path = write_lean_receipt(&receipt_dir, &receipt);
     let publication = fixture
         .path()
-        .join("atlas/src/content/generated/crouzeix_textbook/publication");
+        .join("content/generated/crouzeix_textbook/publication");
     assert!(
         !publication.exists(),
         "a clean checkout fixture starts without runtime publication state"
@@ -1394,14 +1367,14 @@ fn publication_rejects_symlinked_and_multiply_linked_outputs() {
     fs::create_dir_all(
         ancestor_fixture
             .path()
-            .join("atlas/src/content/generated/crouzeix_textbook"),
+            .join("content/generated/crouzeix_textbook"),
     )
     .expect("create publication parent");
     symlink(
         outside.path(),
         ancestor_fixture
             .path()
-            .join("atlas/src/content/generated/crouzeix_textbook/publication"),
+            .join("content/generated/crouzeix_textbook/publication"),
     )
     .expect("symlink publication ancestor");
     publish_crouzeix_textbook(
@@ -1527,7 +1500,7 @@ fn publication_lock_serializes_the_generation_switch() {
     let pointer_before = fs::read(publication_manifest(fixture.path())).expect("pointer");
     let lock_path = fixture
         .path()
-        .join("atlas/src/content/generated/crouzeix_textbook/publication/publication.lock");
+        .join("content/generated/crouzeix_textbook/publication/publication.lock");
     let lock = OpenOptions::new()
         .read(true)
         .write(true)
@@ -1582,7 +1555,7 @@ fn publication_objects_have_exact_owner_mode_and_link_contracts() {
     let owner = unsafe { libc::geteuid() };
     let publication = fixture
         .path()
-        .join("atlas/src/content/generated/crouzeix_textbook/publication");
+        .join("content/generated/crouzeix_textbook/publication");
     let generations = publication.join("generations");
     let generation = fixture
         .path()
@@ -9202,7 +9175,7 @@ fn chapter_33_release_freeze_exposes_complete_reader_and_lean_audits() {
         "Chapter 33 must not call the six-ledger pointer a compiler receipt"
     );
     assert!(
-        !markdown.contains("[[atlas/src/content/generated"),
+        !markdown.contains("[[content/generated"),
         "Atlas is not a vault-root wikilink namespace"
     );
 
@@ -10306,7 +10279,7 @@ fn chapter_30_e06_builds_the_ordered_identity_from_smaller_bridges() {
 
 #[test]
 fn chapter_30_atlas_render_preserves_adjoint_and_matrix_notation() {
-    let corpus = read_json(&workspace_root().join("atlas/src/content/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("content/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -10703,7 +10676,7 @@ fn chapter_31_ml_contract_names_exact_transfer_limits_and_diagnostic() {
 
 #[test]
 fn chapter_31_atlas_preserves_kernel_and_block_math() {
-    let corpus = read_json(&workspace_root().join("atlas/src/content/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("content/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -11023,7 +10996,7 @@ fn chapter_32_history_ml_and_running_example_are_concrete() {
 
 #[test]
 fn chapter_32_atlas_preserves_endpoint_and_limit_math() {
-    let corpus = read_json(&workspace_root().join("atlas/src/content/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("content/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -12440,9 +12413,8 @@ fn chapter_25_lean_exercises_are_distinct_reconstructions_without_shortcuts() {
 
 #[test]
 fn chapter_25_atlas_contains_the_equations_and_compiler_validated_links() {
-    let corpus =
-        fs::read_to_string(workspace_root().join("atlas/src/content/generated/corpus.json"))
-            .expect("generated Atlas corpus");
+    let corpus = fs::read_to_string(workspace_root().join("content/generated/corpus.json"))
+        .expect("generated Atlas corpus");
     for required in [
         "CFT-25-001",
         "CFT-25-006",

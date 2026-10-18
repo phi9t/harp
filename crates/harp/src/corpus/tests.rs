@@ -211,7 +211,7 @@ fn fixture() -> TempDir {
     let root = repo.path().join("knowledge/rsi");
     fs::create_dir_all(root.join("chapters")).unwrap();
     fs::create_dir_all(root.join("concepts")).unwrap();
-    fs::create_dir_all(repo.path().join("atlas/src/content/generated")).unwrap();
+    fs::create_dir_all(repo.path().join("content/generated")).unwrap();
     repo
 }
 
@@ -895,51 +895,6 @@ fn diagnostic_contract_matches_the_approved_fields_and_rules() {
             rule_ids.contains(required),
             "missing required rule {required}"
         );
-    }
-}
-
-#[test]
-fn handwritten_typescript_does_not_own_canonical_technical_prose() {
-    fn visit(directory: &Path, files: &mut Vec<PathBuf>) {
-        for entry in fs::read_dir(directory).unwrap() {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            if path.is_dir() {
-                if path.file_name().and_then(|name| name.to_str()) != Some("generated") {
-                    visit(&path, files);
-                }
-            } else if matches!(
-                path.extension().and_then(|extension| extension.to_str()),
-                Some("ts" | "tsx")
-            ) && !path
-                .file_name()
-                .and_then(|name| name.to_str())
-                .is_some_and(|name| name.contains(".test."))
-            {
-                files.push(path);
-            }
-        }
-    }
-
-    let root = workspace_root().join("atlas/src");
-    let mut files = Vec::new();
-    visit(&root, &mut files);
-    for path in files {
-        let source = fs::read_to_string(&path).unwrap();
-        for forbidden in [
-            "EVIDENCE —",
-            "CLAIM —",
-            "INFERENCE —",
-            "MISSING.",
-            "Original sources for this mechanism",
-            "Author-reported results",
-        ] {
-            assert!(
-                !source.contains(forbidden),
-                "{} owns canonical technical prose marker {forbidden:?}",
-                path.display()
-            );
-        }
     }
 }
 
@@ -2932,7 +2887,7 @@ fn build_rejects_a_symlinked_output_without_changing_its_target() {
     write_complete_fixture(repo.path());
     let victim = repo.path().join("victim.json");
     fs::write(&victim, b"do not overwrite\n").unwrap();
-    let output = PathBuf::from("atlas/src/content/generated/corpus.json");
+    let output = PathBuf::from("content/generated/corpus.json");
     symlink(&victim, repo.path().join(&output)).unwrap();
 
     let error =
@@ -2949,11 +2904,11 @@ fn build_rejects_a_symlinked_output_ancestor_without_writing_outside() {
 
     let repo = fixture();
     write_complete_fixture(repo.path());
-    let generated = repo.path().join("atlas/src/content/generated");
+    let generated = repo.path().join("content/generated");
     fs::remove_dir(&generated).unwrap();
     let outside = tempfile::tempdir().unwrap();
     symlink(outside.path(), &generated).unwrap();
-    let output = PathBuf::from("atlas/src/content/generated/corpus.json");
+    let output = PathBuf::from("content/generated/corpus.json");
 
     let error =
         crate::build_corpus(repo.path(), Some(&output), crate::BuildMode::Write).unwrap_err();

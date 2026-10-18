@@ -20,7 +20,7 @@ pub use crouzeix_textbook::{
 };
 pub use error::AppError;
 
-const DEFAULT_CORPUS_OUTPUT: &str = "atlas/src/content/generated/corpus.json";
+const DEFAULT_CORPUS_OUTPUT: &str = "content/generated/corpus.json";
 const MAX_GENERATED_BYTES: usize = 4 * 1024 * 1024;
 
 #[derive(Debug, Serialize)]

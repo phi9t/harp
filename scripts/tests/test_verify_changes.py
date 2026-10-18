@@ -61,12 +61,12 @@ class VerificationTests(unittest.TestCase):
         self.assertIn(["python3", "scripts/verify_corenius_import.py"], [j["command"] for j in jobs])
 
     def test_staged_untracked_and_both_rename_surfaces_are_selected(self):
-        (self.root / "atlas").mkdir()
-        self.git("mv", "AGENTS.md", "atlas/renamed.md")
+        (self.root / "docs").mkdir()
+        self.git("mv", "AGENTS.md", "docs/renamed.md")
         self.write("formalization/lean/TrainingDynamics/New.lean", "theorem x : True := by trivial\n")
         result = self.selected()
         self.assertIn("AGENTS.md", result["paths"])
-        self.assertIn("atlas/renamed.md", result["paths"])
+        self.assertIn("docs/renamed.md", result["paths"])
         self.assertIn("formalization/lean/TrainingDynamics/New.lean", result["paths"])
         self.assertIn(["mise", "run", "lean-training"], [j["command"] for j in result["checks"]])
 
@@ -78,25 +78,18 @@ class VerificationTests(unittest.TestCase):
         self.assertIn("docs/agents/policy.md", self.selected()["paths"])
         self.assertEqual(self.selected("--base", before)["base"], before)
 
-    def test_atlas_and_corpus_changes_do_not_select_proof_builds(self):
-        self.write("atlas/src/example.ts", "export const value = 1;\n")
+    def test_corpus_changes_do_not_select_proof_builds(self):
         self.write("content/example.json", "{}\n")
         jobs = self.selected()["checks"]
-        self.assertEqual({j["surface"] for j in jobs}, {"diff", "atlas", "corpus"})
+        self.assertEqual({j["surface"] for j in jobs}, {"diff", "corpus"})
         self.assertFalse(any("lean-all" in j["command"] for j in jobs))
 
-    def test_delivered_html_check_does_not_require_frontend_or_proof_builds(self):
-        self.write("atlas/dist/harp-atlas.html", "<html>fixture</html>")
-        jobs = self.selected()["checks"]
-        self.assertEqual({j["surface"] for j in jobs}, {"diff", "atlas-export"})
-        self.assertFalse(any(j["command"][0] in ("mise", "cargo") for j in jobs))
-
     def test_affected_failure_blocks_gate_and_does_not_run_later_check(self):
-        self.write("atlas/src/example.ts", "export const value = 1;\n")
+        self.write("content/example.json", "{}\n")
         self.write("AGENTS.md", "# New guidance\n")
         tools = self.root / "fake-tools"
         tools.mkdir()
-        mise = tools / "mise"
+        mise = tools / "cargo"
         mise.write_text("#!/bin/sh\nexit 7\n")
         mise.chmod(0o755)
         self.env["PATH"] = str(tools) + os.pathsep + self.env["PATH"]
@@ -104,7 +97,7 @@ class VerificationTests(unittest.TestCase):
         self.write(".gitignore", "fake-tools/\n")
         result = self.run_gate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("verify-atlas", result.stderr)
+        self.assertIn("cargo", result.stderr)
         self.assertNotIn("[verify:docs]", result.stdout)
 
     def test_changed_skill_frontmatter_and_links_are_checked(self):

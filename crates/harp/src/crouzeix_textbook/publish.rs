@@ -15,13 +15,11 @@ use crate::fs::{
 };
 use crate::AppError;
 
-const PUBLICATION_ROOT: &str = "atlas/src/content/generated/crouzeix_textbook/publication";
-const GENERATIONS_ROOT: &str =
-    "atlas/src/content/generated/crouzeix_textbook/publication/generations";
-const CURRENT_PATH: &str = "atlas/src/content/generated/crouzeix_textbook/publication/current.json";
+const PUBLICATION_ROOT: &str = "content/generated/crouzeix_textbook/publication";
+const GENERATIONS_ROOT: &str = "content/generated/crouzeix_textbook/publication/generations";
+const CURRENT_PATH: &str = "content/generated/crouzeix_textbook/publication/current.json";
 #[cfg(test)]
-const LOCK_PATH: &str =
-    "atlas/src/content/generated/crouzeix_textbook/publication/publication.lock";
+const LOCK_PATH: &str = "content/generated/crouzeix_textbook/publication/publication.lock";
 const CURRENT_NAME: &str = "current.json";
 const LOCK_NAME: &str = "publication.lock";
 const MANIFEST_SCHEMA: &str = "crouzeix-textbook-publication/v1";
@@ -1459,7 +1457,7 @@ mod tests {
         install_generation(&directories, &prepared).expect("install generation");
         let generation = root
             .path()
-            .join("atlas/src/content/generated/crouzeix_textbook/publication/generations")
+            .join("content/generated/crouzeix_textbook/publication/generations")
             .join(&prepared.generation);
         let displaced = generation.with_extension("displaced");
 
@@ -1555,7 +1553,7 @@ mod tests {
         install_generation(&directories, &prepared).expect("install generation");
         let generation = root
             .path()
-            .join("atlas/src/content/generated/crouzeix_textbook/publication/generations")
+            .join("content/generated/crouzeix_textbook/publication/generations")
             .join(&prepared.generation);
         let mut inserted = false;
 
@@ -1725,7 +1723,7 @@ mod tests {
         assert!(
             fs::read_dir(
                 root.path()
-                    .join("atlas/src/content/generated/crouzeix_textbook/publication")
+                    .join("content/generated/crouzeix_textbook/publication")
             )
             .expect("publication directory")
             .all(|entry| !entry
@@ -1888,7 +1886,7 @@ mod tests {
 
             let generations = root
                 .path()
-                .join("atlas/src/content/generated/crouzeix_textbook/publication/generations");
+                .join("content/generated/crouzeix_textbook/publication/generations");
             assert!(
                 fs::read_dir(&generations)
                     .expect("enumerate generations")
@@ -1920,7 +1918,7 @@ mod tests {
             assert!(result.is_err(), "{ledger} fault must be observable");
             let generations = root
                 .path()
-                .join("atlas/src/content/generated/crouzeix_textbook/publication/generations");
+                .join("content/generated/crouzeix_textbook/publication/generations");
             assert!(
                 fs::read_dir(&generations)
                     .expect("enumerate generations")
@@ -1955,7 +1953,7 @@ mod tests {
         );
         let generations = root
             .path()
-            .join("atlas/src/content/generated/crouzeix_textbook/publication/generations");
+            .join("content/generated/crouzeix_textbook/publication/generations");
         assert!(
             fs::read_dir(&generations)
                 .expect("enumerate generations")
@@ -1983,7 +1981,7 @@ mod tests {
 
         let generation = root
             .path()
-            .join("atlas/src/content/generated/crouzeix_textbook/publication/generations")
+            .join("content/generated/crouzeix_textbook/publication/generations")
             .join(&prepared.generation);
         assert!(
             generation.is_dir(),
@@ -2058,7 +2056,7 @@ mod tests {
     #[test]
     fn publication_accepts_secure_repository_ancestors_and_keeps_owned_directories_exact() {
         let root = tempfile::tempdir().expect("publication transaction root");
-        let secure_ancestor = root.path().join("atlas");
+        let secure_ancestor = root.path().join("content");
         fs::create_dir(&secure_ancestor).expect("secure repository ancestor");
         let mut permissions = fs::metadata(&secure_ancestor)
             .expect("secure ancestor metadata")
