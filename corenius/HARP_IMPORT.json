@@ -4,7 +4,7 @@
   "source_main": "e045d4a6ae2a5efaa53fab93a129b3a57098f7ad",
   "destination": "corenius",
   "license_status": "No repository-wide license identified in Corenius; retained source-specific terms and status records apply.",
-  "postgresql_temporal": "parked source retained; adoption and service execution excluded",
+  "postgresql_temporal": "Active experiment and launcher retired; originals retained in source ancestry; adoption and service execution excluded.",
   "branches": [
     {
       "name": "codex/collab-lite",
@@ -1829,6 +1829,330 @@
     "tools/insula/test_docker_image_rootfs.py": {
       "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
       "sha256": "76761eeabfabdd38e53b0e1e6a40faea6f677e112a6b774c24573c911815c0a3"
+    },
+    "Cargo.lock": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "47031cad404afad1f811fc8d78f44814900542a409f4751ff5ff4f79405de161"
+    },
+    "Cargo.toml": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "73446ce1d4eb6b564d7b5f05702d915d7096008bb87d0968ddb8a4a49b9f6b3a"
+    },
+    "README.md": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "4e064970cc119b564e2171fd0daf7d137d21dda93a763b9c914facb024a75f9d"
+    },
+    "tools/agents/checks.d/README.md": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "629154dad67209a0b2700ddecba13abe10d7aa568f44d47aca329f45cdd04f12"
+    },
+    "tools/agents/test_check.py": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "1025439ed844a968e472466815d51c42ce0b1845e1b7910ca7cbb4448e9c2a44"
+    },
+    "tools/test_temp_root.py": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "1622a2abd3745f61bfe9cb412963d6023a4ab33e6e48a528674baace60de078d"
+    },
+    "docs/efforts/engineering-profile-labs/README.md": {
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
+      "sha256": "99d7c6620e4998eb8af377a3e85caa2beba9c8ff03df107f73e32a400901d938"
+    }
+  },
+  "retirements": {
+    "experiments/team_control_plane/Cargo.toml": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "98cbe025304bd88913e4da95a6d71d926633abb9",
+      "source_mode": "100644",
+      "source_sha256": "4364b27e406aa54258ec1fbae135a2820bd45d3e364321a8018ed8669f9706aa"
+    },
+    "experiments/team_control_plane/README.md": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "3293cf50c6a0fd2fe04169eac09768c2f0103ff5",
+      "source_mode": "100644",
+      "source_sha256": "08da46fa19c9d5df2fe43d1875f6b5bf87f0536a5ed11cea14f9f73fac540b9a"
+    },
+    "experiments/team_control_plane/migrations/0001.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "e01a349ec540cce1d875faad7da65db18a5f4b28",
+      "source_mode": "100644",
+      "source_sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce"
+    },
+    "experiments/team_control_plane/migrations/0002.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "bf9146d75b08a7574312969c991df7862b7cc2c3",
+      "source_mode": "100644",
+      "source_sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd"
+    },
+    "experiments/team_control_plane/migrations/0003.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "6470f6c93df28d34c244e6b07abd4c1a922b13a4",
+      "source_mode": "100644",
+      "source_sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb"
+    },
+    "experiments/team_control_plane/migrations/0004.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "f8d533c4e1373e858a789e13ecbef8dcab7280cd",
+      "source_mode": "100644",
+      "source_sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc"
+    },
+    "experiments/team_control_plane/migrations/0005.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "0427263f09ea379f14c54f7d6b2e40233a28c7d7",
+      "source_mode": "100644",
+      "source_sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f"
+    },
+    "experiments/team_control_plane/migrations/0006.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "14a6a75aa0e564188a275455748fa8061d4531c9",
+      "source_mode": "100644",
+      "source_sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85"
+    },
+    "experiments/team_control_plane/migrations/0007.sql": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "71baf657ec160c71155e516508d9c3df0b9ae582",
+      "source_mode": "100644",
+      "source_sha256": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742"
+    },
+    "experiments/team_control_plane/src/admission.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d8732886b79c59a3ac7e0d37b1aef8aab8d23dca",
+      "source_mode": "100644",
+      "source_sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c"
+    },
+    "experiments/team_control_plane/src/artifacts.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "3eb87a1a4b88b9456485184754783ccaaccdafb0",
+      "source_mode": "100644",
+      "source_sha256": "934fdfd6bf8d091172b576afd716ee33f07fe5a90e92c912c286ae5c377fa7c3"
+    },
+    "experiments/team_control_plane/src/auth.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "f52036f59bddfdece3a41868fc298159cd6429a7",
+      "source_mode": "100644",
+      "source_sha256": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594"
+    },
+    "experiments/team_control_plane/src/domain.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "9c2887c18027ef2ccd0db510ff569eebc9c4e80a",
+      "source_mode": "100644",
+      "source_sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966"
+    },
+    "experiments/team_control_plane/src/episode_runtime.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "fd6715341a32c67aa8635ef5e80d6b9442313c14",
+      "source_mode": "100644",
+      "source_sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a"
+    },
+    "experiments/team_control_plane/src/gateway.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d62b699250f3eb11d511a277288783d853b8b5b3",
+      "source_mode": "100644",
+      "source_sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1"
+    },
+    "experiments/team_control_plane/src/http.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "2cc7015d11327270b5a5e2afb3b464978ffa4ac9",
+      "source_mode": "100644",
+      "source_sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92"
+    },
+    "experiments/team_control_plane/src/kernel.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "cc5cfd33421371e4141de4a4de4e47c77bcf2975",
+      "source_mode": "100644",
+      "source_sha256": "af9c703d6055e669ee998fc8602a40b1aea23dd5221020a862d01e5e3aba5af6"
+    },
+    "experiments/team_control_plane/src/kernel_usage.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "dde6db88b57fee598312807cae0108c323aad8cf",
+      "source_mode": "100644",
+      "source_sha256": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79"
+    },
+    "experiments/team_control_plane/src/lib.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "5fb84c31b8dc16e35b86cfe63eb501b78d5d7137",
+      "source_mode": "100644",
+      "source_sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa"
+    },
+    "experiments/team_control_plane/src/mailbox.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d27a6d827dbca286278d939c92ef736fcf4b1d78",
+      "source_mode": "100644",
+      "source_sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+    },
+    "experiments/team_control_plane/src/main.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d64f2d737d604dc97cdc4fc6003acae83a77e2c8",
+      "source_mode": "100644",
+      "source_sha256": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd"
+    },
+    "experiments/team_control_plane/src/mcp.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "a4a27b581eed4964141a1aa5587ddb4983a92372",
+      "source_mode": "100644",
+      "source_sha256": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc"
+    },
+    "experiments/team_control_plane/src/model_free_runtime.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "95cac43cbe781adddbd5471467cab520945d5c82",
+      "source_mode": "100644",
+      "source_sha256": "88acb41a7b367f7bf513281cb56753ec0f10a5b002757662eb5e0bafbbbdb2ab"
+    },
+    "experiments/team_control_plane/src/storage.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "1d626fcabcc8b0e022a1355329f9b60eff989198",
+      "source_mode": "100644",
+      "source_sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68"
+    },
+    "experiments/team_control_plane/src/supervisor.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d14fcccbdcc8932905ade664759b4381d455c2f9",
+      "source_mode": "100644",
+      "source_sha256": "c481fb745fff4bae33bb5ee320c1d5e878a4cb224649c367100b9c3807dab106"
+    },
+    "experiments/team_control_plane/src/temporal.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "b757886ea56d2682db4d299292e4923b14d70bbc",
+      "source_mode": "100644",
+      "source_sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6"
+    },
+    "experiments/team_control_plane/src/validation.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "45a1478d47a543646d2c40857802bc73fad3e435",
+      "source_mode": "100644",
+      "source_sha256": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83"
+    },
+    "experiments/team_control_plane/tests/artifacts.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "a021f89afd08ea006c93e412d7bd64ef2bcc2797",
+      "source_mode": "100644",
+      "source_sha256": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862"
+    },
+    "experiments/team_control_plane/tests/assembled_cancellation.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "f82c59a6b5795cc5675700e476375fa9bafe1422",
+      "source_mode": "100644",
+      "source_sha256": "bd7b24e14d2c86c3e2966bfb6bff34c9f9690d3ed0e279f15153822d8e60b99f"
+    },
+    "experiments/team_control_plane/tests/assembled_capacity.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "9d38e100714651f3f7a83387e784d2d972cb4a68",
+      "source_mode": "100644",
+      "source_sha256": "094bb570bd8495c485b4878c0f233f1ec236e58e598b2ae174e9d87b689996c6"
+    },
+    "experiments/team_control_plane/tests/assembled_kernel.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "58345b0815144476ebf9fce62f0e23e43f4936c0",
+      "source_mode": "100644",
+      "source_sha256": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557"
+    },
+    "experiments/team_control_plane/tests/assembled_operator.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "f7f5196e232fff77e4a18118ad4a7bc04e5b5126",
+      "source_mode": "100644",
+      "source_sha256": "9d721b4f6ecc5256bb3855e0e5c6040cbdc7a6a5df39642998142d2c1baecc0f"
+    },
+    "experiments/team_control_plane/tests/assembled_vertical.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "8ace6008051160b0fd0bd752b7b1eb0d317d7d4a",
+      "source_mode": "100644",
+      "source_sha256": "31fc57d35aa00422995d6ed4764c5c5c36824fc61857d608dd4a7a86d86ee2d2"
+    },
+    "experiments/team_control_plane/tests/fixtures/fault_runtime.py": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "f4af9010d9f63619c3bd2054619d0ad29db06359",
+      "source_mode": "100644",
+      "source_sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2"
+    },
+    "experiments/team_control_plane/tests/fixtures/mailbox_runtime.py": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "89edfab8f687525d0bf40689df6c8c2cb5f4165e",
+      "source_mode": "100644",
+      "source_sha256": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e"
+    },
+    "experiments/team_control_plane/tests/gateway.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "ecbf7b975adc21c92663779ec922cf8de39bee2a",
+      "source_mode": "100644",
+      "source_sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0"
+    },
+    "experiments/team_control_plane/tests/kernel.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "5b19f5c1b06252d428aad76b1440143c20dce83b",
+      "source_mode": "100644",
+      "source_sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c"
+    },
+    "experiments/team_control_plane/tests/mailbox.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "e033065bdd477607fa4b1019c687d5b9e4d3c90d",
+      "source_mode": "100644",
+      "source_sha256": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5"
+    },
+    "experiments/team_control_plane/tests/mailbox_artifacts.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d0d562b2d5c28dd171e127d6c96fac292e6f9b69",
+      "source_mode": "100644",
+      "source_sha256": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66"
+    },
+    "experiments/team_control_plane/tests/mailbox_delivery.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "31e6a8c2e4cbeb32934da3426d68bd47f87dbbf9",
+      "source_mode": "100644",
+      "source_sha256": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3"
+    },
+    "experiments/team_control_plane/tests/run-postgres.sh": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "5b6e6b865b779f56862ed2541c5b48a49841f15b",
+      "source_mode": "100755",
+      "source_sha256": "fe3f1d2c82d1f57ad0a00b88f894da7ada736a2c55b258b9b9aed4bd1f126dbb"
+    },
+    "experiments/team_control_plane/tests/run-temporal.sh": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d009a8bc03c7800ee60856f74ffea3d6cd246d43",
+      "source_mode": "100755",
+      "source_sha256": "2f39b3108f792cd1c6e1bec79031119b95987714e0c1f8f63e1df1c0ce47177f"
+    },
+    "experiments/team_control_plane/tests/supervisor.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "d4032cea11b6deb26572c129aa8cd2788c9ca618",
+      "source_mode": "100644",
+      "source_sha256": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da"
+    },
+    "experiments/team_control_plane/tests/support/assembled.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "5e7212d2e22de9de039ee7d6945fc148b922aa93",
+      "source_mode": "100644",
+      "source_sha256": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963"
+    },
+    "experiments/team_control_plane/tests/support/episode_native.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "a4cbefe3ca939c15360bdd4e1a2da2f09a5d4977",
+      "source_mode": "100644",
+      "source_sha256": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac"
+    },
+    "experiments/team_control_plane/tests/support/gateway_fault.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "839bedd3150c6844cb88c13f7351ea158608570e",
+      "source_mode": "100644",
+      "source_sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d"
+    },
+    "experiments/team_control_plane/tests/temporal.rs": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "a72e54171968ea8a6f94b1781957b88170ef9ee2",
+      "source_mode": "100644",
+      "source_sha256": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510"
+    },
+    "tools/agents/checks.d/70-team-control-plane.sh": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "899dfa0843ca07161d9c725572d7fab176e18d8d",
+      "source_mode": "100755",
+      "source_sha256": "4028e8d950db5af0f52496a119e3c69fbbd6a195f0f633ff1caee3332fdb0f21"
+    },
+    "docs/efforts/engineering-profile-labs/run.py": {
+      "reason": "Retire the abandoned PostgreSQL/Temporal experiment and service launcher from active builds and gates; preserve original bytes and history in the retained source commit.",
+      "source_blob": "544c105fb66b6aaba042460e79e3b179a7f1e74f",
+      "source_mode": "100644",
+      "source_sha256": "9a2ac333c7cccf64540b1cd7c3b0ac20d6ba95fb5fcfc4a6d079b7d1fb47e103"
     }
   }
 }

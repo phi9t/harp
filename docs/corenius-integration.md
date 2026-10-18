@@ -43,10 +43,16 @@ current repository work. Existing Kata adapters and sibling-policy tools are
 retained source, not a change to Harp's Git-managed Markdown tracker. Do not run
 sibling synchronization or initialize a second ledger as part of the import.
 
-PostgreSQL/Temporal experiments and historical labs remain parked. They are not
-the selected controller, and their service fixtures are not part of this import's
-local runtime checks. The complete live two-worker baseline and native active-turn
-recovery remain unqualified; preserving source does not establish those results.
+Harp selects the lightweight Python + SQLite durable runtime as its execution
+foundation. It is custom operation-journal replay, not an embedded Temporal server.
+The PostgreSQL/Temporal experiment and service-launching gate are retired from the
+active source and Cargo workspace; the workspace lock no longer includes their
+SDK/database dependencies. Exact original source remains recoverable through the
+import manifest's declared retirements and retained Git objects. Historical
+captured evidence and licenses are preserved. This cleanup does not qualify the
+planned Codex/Trae worker integration or replace the remaining controller paths;
+those changes have separate integration tickets. The complete live two-worker
+baseline and native active-turn recovery remain unqualified; preserving source does not establish those results.
 
 Math, proof work, Crouzeix, SICP and other educational material remain in Harp.
 The separate RSI retirement ticket preserves a brief article survey and removes

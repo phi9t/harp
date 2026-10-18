@@ -1,4 +1,5 @@
 """Protect source preservation at the Corenius import boundary."""
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -68,6 +69,64 @@ class ImportTests(unittest.TestCase):
         path.unlink()
         path.symlink_to(SCRIPT)
         self.assertIn("symlinked", self.check().stderr)
+
+    def retire_runtime(self):
+        path = "runtime.py"
+        content = (self.root / "corenius" / path).read_bytes()
+        blob = self.git("rev-parse", self.manifest["source_commit"] + ":" + path)
+        self.manifest["retirements"] = {path: {
+            "reason": "Retire the executable while retaining its exact source history",
+            "source_blob": blob, "source_mode": "100644",
+            "source_sha256": hashlib.sha256(content).hexdigest(),
+        }}
+        self.git("rm", "corenius/runtime.py")
+        self.write_manifest()
+        return self.manifest["retirements"][path]
+
+    def test_declared_retirement_verifies_original_bytes_and_history(self):
+        self.retire_runtime()
+        result = self.check()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("1 declared retirements", result.stdout)
+
+    def test_undeclared_tracked_removal_fails(self):
+        self.git("rm", "corenius/runtime.py")
+        self.assertIn("path set differs", self.check().stderr)
+
+    def test_retirement_cannot_claim_another_source_blob_or_mode(self):
+        record = self.retire_runtime()
+        for field, value in (("source_blob", "0" * 40), ("source_mode", "100755")):
+            with self.subTest(field=field):
+                old = record[field]
+                record[field] = value
+                self.write_manifest()
+                self.assertIn("source identity differs", self.check().stderr)
+                record[field] = old
+
+    def test_retirement_digest_is_checked_against_retained_git_bytes(self):
+        self.retire_runtime()["source_sha256"] = "0" * 64
+        self.write_manifest()
+        self.assertIn("source digest differs", self.check().stderr)
+
+    def test_retired_source_cannot_reappear_as_untracked_payload(self):
+        self.retire_runtime()
+        (self.root / "corenius/runtime.py").write_text("unreviewed replacement")
+        self.assertIn("retired source path is present", self.check().stderr)
+
+    def test_retirement_cannot_exempt_an_unknown_path_or_adaptation(self):
+        record = self.retire_runtime()
+        self.manifest["retirements"]["absent.py"] = record
+        self.write_manifest()
+        self.assertIn("retained source paths", self.check().stderr)
+        del self.manifest["retirements"]["absent.py"]
+        self.manifest["adaptations"]["runtime.py"] = {"sha256": record["source_sha256"]}
+        self.write_manifest()
+        self.assertIn("cannot also be adapted", self.check().stderr)
+
+    def test_retirement_requires_a_recorded_reason(self):
+        self.retire_runtime()["reason"] = ""
+        self.write_manifest()
+        self.assertIn("invalid retirement provenance", self.check().stderr)
 
     def test_source_objects_without_integrated_history_fail(self):
         tree = self.git("rev-parse", self.manifest["source_commit"] + "^{tree}")

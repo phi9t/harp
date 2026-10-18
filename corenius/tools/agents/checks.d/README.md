@@ -3,17 +3,18 @@ One script per feature: `NN-name.sh`, run from the repository root by
 `check.py` selects and supervises suites; `05-gate-dispatch.sh` exercises command
 shims and disposable registrations, so its tests never recursively run the gate.
 
-The default gate includes SQLite and excludes the parked PostgreSQL/Temporal
-integration. `CHECK_TEAM_CONTROL_PLANE=1` enables that integration and requires
-Temporal and Docker. `CHECK_CARGO=0` skips only the root Cargo suite; feature
-Cargo suites still run. `CHECK_BENCH=1` adds benchmark/capsule checks and
+The gate retains SQLite checks. The PostgreSQL/Temporal experiment and its
+service launcher have been retired from the active workspace; the old
+`CHECK_TEAM_CONTROL_PLANE` flag cannot re-enable them. Historical source and
+captured evidence remain recoverable through the import manifest and Git ancestry.
+`CHECK_CARGO=0` skips only the root Cargo suite; feature Cargo suites still run. `CHECK_BENCH=1` adds benchmark/capsule checks and
 `CHECK_SYNC=1` adds sibling policy drift checks. Existing switches still apply
-inside an explicitly selected suite (including the parked services switch).
+inside an explicitly selected surviving suite.
 
 ```sh
 python3 tools/temp_root.py -- tools/agents/check.sh --list
 python3 tools/temp_root.py -- tools/agents/check.sh --suite 00-temp-paths --suite 05-gate-dispatch --timeout 60 --json .scratch/gate.json
-python3 tools/temp_root.py -- env CHECK_TEAM_CONTROL_PLANE=1 CHECK_BENCH=1 CHECK_SYNC=1 tools/agents/check.sh
+python3 tools/temp_root.py -- env CHECK_BENCH=1 CHECK_SYNC=1 tools/agents/check.sh
 ```
 
 Repeated `--suite` selects only the named suites, in registration order. Names

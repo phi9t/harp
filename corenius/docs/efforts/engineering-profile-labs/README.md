@@ -1,3 +1,9 @@
+> Historical record: the PostgreSQL/Temporal lab runner and its experiment
+> have been retired from the active payload. Their original source is retained
+> in Git ancestry and declared in `corenius/HARP_IMPORT.json`. The commands
+> below describe the historical qualification; they are not current setup
+> instructions. Native provider records and captured evidence remain intact.
+
 # Engineering planner and runtime learning labs
 
 These five labs explain the components needed to execute a skill-based plan

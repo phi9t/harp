@@ -1,7 +1,16 @@
-# Corenius
+# Retained Corenius components
 
-Corenius is a standalone Rust terminal agent prototype. It uses a turn-scoped
-runtime, a Codex direct Responses transport, permissioned tools, and an
+Harp selects the lightweight Python + SQLite runtime in
+[`controller/durable/`](controller/durable/README.md) as its execution foundation.
+It is custom operation-journal replay, not a Temporal SDK or server. Integrating
+both coding providers, candidate verification and human-approved landing is tracked
+by [the Harp integration specification](../.scratch/harp-runtime-integration/spec.md).
+The PostgreSQL/Temporal experiment is retired from active source, Cargo resolution
+and gate dispatch. Its source remains recoverable through `HARP_IMPORT.json` and
+Git ancestry; historical captured evidence and license records remain unchanged.
+
+The remaining Corenius Rust terminal agent is a retained prototype. It uses a
+turn-scoped runtime, a Codex direct Responses transport, permissioned tools, and an
 `insula` bubblewrap rootfs boundary.
 
 ## Local engineering team prototype

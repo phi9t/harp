@@ -93,7 +93,7 @@ raise SystemExit(1)
         self.assertEqual(result.returncode, 0)
         self.assertEqual(sum("tools/agents/tracker.py" in call and "lint" in call for call in calls), 1)
 
-    def test_default_retains_sqlite_but_excludes_parked_services(self):
+    def test_default_retains_sqlite_without_retired_services(self):
         result, calls = self.dispatch()
         self.assertEqual(result.returncode, 0)
         self.assertTrue(any("controller/Cargo.toml" in call for call in calls))
@@ -106,15 +106,21 @@ raise SystemExit(1)
         self.assertIn('--test-threads=8', controller)
         self.assertIn(['cargo', 'test', '--offline', '--', '--test-threads=1'], calls)
 
-    def test_all_options_include_parked_integration_and_optional_suites(self):
+    def test_old_service_flag_does_not_restore_retired_integration(self):
         result, calls = self.dispatch(CHECK_TEAM_CONTROL_PLANE="1", CHECK_BENCH="1",
                                       CHECK_SYNC="1", CHECK_CARGO="1")
         self.assertEqual(result.returncode, 0)
-        self.assertEqual(sum("experiments/team_control_plane/tests/run-temporal.sh" in call for call in calls), 1)
+        self.assertFalse(any("team_control_plane" in argument for call in calls for argument in call))
         self.assertEqual(sum("bench/harness/test_lead_driven.py" in call for call in calls), 1)
         self.assertIn(["cargo", "test", "--offline", "--", "--test-threads=1"], calls)
         self.assertIn(["python3", "tools/sync_agentic_workflow.py", "--check"], calls)
         self.assertIn(["python3", "tools/insula/test_capsule.py"], calls)
+
+    def test_retired_service_suite_is_not_dispatchable(self):
+        result, calls = self.dispatch("--suite", "70-team-control-plane", CHECK_TEAM_CONTROL_PLANE="1")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("unknown suite", result.stderr)
+        self.assertFalse(any("team_control_plane" in argument for call in calls for argument in call))
 
     def test_failure_is_reported_and_later_checks_still_run(self):
         result, calls = self.dispatch(GATE_FAIL_MATCH="tools/agents/test_worker.py")
