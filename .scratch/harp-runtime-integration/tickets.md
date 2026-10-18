@@ -4,9 +4,11 @@ Approved breakdown: 14 tickets, published 2026-10-18.
 Parent: [ready specification](spec.md).
 
 Work any ready ticket whose blockers are done. The initial frontier is 01 and 02.
-Ready-for-agent describes specification readiness; implementation, live provider
-runs and setup still require the owner’s authorization. No implementation has
-started as part of publishing these tickets.
+Ready-for-agent describes specification readiness. After publication the owner
+authorized autonomous end-to-end implementation of this index. Execution is on
+`codex/harp-durable-runtime`; individual tickets retain current status and fresh
+evidence. Required prerequisite approvals and exact-candidate human approval
+remain separate boundaries.
 
 | Ticket | Blocked by | Result |
 | --- | --- | --- |
