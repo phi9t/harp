@@ -16,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import controller_mode  # noqa: E402
+import fleet  # noqa: E402
 import results  # noqa: E402
 import run  # noqa: E402
 import tasklib  # noqa: E402
@@ -90,6 +91,17 @@ class RunTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             run.run_fleet_condition(tasklib.load_tasks(only=["t01-log-window"])[0], run.Agent("reference"), self.out, 0, 2)
 
+    def test_fleet_git_commands_are_noninteractive_and_bounded(self):
+        with mock.patch.object(fleet.subprocess, "run") as fake_run:
+            fake_run.side_effect = subprocess.TimeoutExpired(["git", "status"], timeout=0.001)
+            proc = fleet.git(self.out, "status", check=False)
+
+        self.assertEqual(proc.returncode, 124)
+        self.assertIn("git status timed out", proc.stderr)
+        self.assertEqual(fake_run.call_args.kwargs["timeout"], fleet.GIT_TIMEOUT_SECONDS)
+        self.assertEqual(fake_run.call_args.kwargs["env"]["GIT_TERMINAL_PROMPT"], "0")
+        self.assertEqual(fake_run.call_args.kwargs["env"]["GIT_EDITOR"], "true")
+
     def test_validate_rejects_bad_records(self):
         rec = self.solo("t01-log-window", "reference")
         for mutate in (lambda r: r.pop("outcome"), lambda r: r["timing"].update(wall_seconds=math.nan),
@@ -120,7 +132,7 @@ class RunTest(unittest.TestCase):
         task = tasklib.load_tasks(only=["t01-log-window"])[0]
         agent = run.Agent("reference")
         plan = agent.plan("", task, None, self.out / "w")
-        self.assertEqual(json.loads(json.dumps(plan.to_json()))["command"], "sh /run/corenius-tmp/solution/solve.sh")
+        self.assertEqual(json.loads(json.dumps(plan.to_json()))["command"], tasklib.SOLUTION_COMMAND)
         record = agent.capsule_record(task)
         ws = self.out / "ws"
         tasklib.materialize(task, ws)
@@ -129,12 +141,19 @@ class RunTest(unittest.TestCase):
 
     def test_plan_for_cmd_and_traecli_writes_files_into_the_workdir(self):
         task = tasklib.load_tasks(only=["p01-slugger"])[0]
+        task.agent["env"] = {"EXAMPLE": "1"}
+        task.agent["net"] = "host"
         cmd = run.Agent("cmd:true").plan("do the thing", task, None, self.out / "c")
         self.assertEqual((self.out / "c" / "instruction.md").read_text(), "do the thing")
-        self.assertEqual((cmd.net, cmd.gpu), ("none", False))
+        self.assertEqual((cmd.net, cmd.gpu), ("host", False))
+        self.assertEqual(cmd.env["EXAMPLE"], "1")
+        self.assertEqual(cmd.env["TASK_INSTRUCTION"], "/run/corenius-tmp/task/instruction.md")
+        reference = run.Agent("reference").plan("", task, None, self.out / "r")
+        self.assertEqual(reference.net, "host")
         tc = run.Agent("traecli:GPT-5.5", authorized=True).plan("do the thing", task, None, self.out / "t")
         self.assertEqual(tc.net, "host")
         self.assertTrue(tc.capsule.endswith("agent.json"))
+        self.assertEqual(tc.env["EXAMPLE"], "1")
         self.assertIn("do the thing", (self.out / "t" / "prompt.md").read_text())
         self.assertIn("--skip-git-repo-check", tc.command)
 

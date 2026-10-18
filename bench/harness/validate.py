@@ -119,23 +119,29 @@ def check_multi(task: tasklib.Task, record: dict) -> dict:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--task", action="append", default=[])
+    p.add_argument("--tasks-root", default=str(tasklib.TASKS), help="directory containing task subdirectories")
     p.add_argument("--json", help="write the full report here")
     args = p.parse_args(argv)
     (tasklib.ROOT / ".scratch").mkdir(exist_ok=True)
-    tasks = tasklib.load_tasks(only=args.task)
+    tasks = tasklib.load_tasks(root=Path(args.tasks_root), only=args.task)
     report, failed = {}, 0
     records: dict[str, dict] = {}
     started = time.time()
     for task in tasks:
+        request_path = str(tasklib.capsule_request_path(task).resolve())
         name = task.bench.get("capsule", "toolchains")
-        if name not in records:
-            records[name] = tasklib.capsule_for(task)
-            probe = tasklib.capsule.probe(records[name])
-            report.setdefault("_capsules", {})[name] = {"digest": records[name]["capsule_digest"], "probe": probe}
+        if request_path not in records:
+            records[request_path] = tasklib.capsule_for(task)
+            probe = tasklib.capsule.probe(records[request_path])
+            report.setdefault("_capsules", {})[request_path] = {
+                "name": name,
+                "digest": records[request_path]["capsule_digest"],
+                "probe": probe,
+            }
             if not probe["ok"]:
                 print(f"capsule {name}: probe failed: {probe}")
                 failed += 1
-        checks = check_task(task, records[name])
+        checks = check_task(task, records[request_path])
         report[task.id] = checks
         bad = [k for k, v in checks.items() if not v["ok"]]
         failed += bool(bad)

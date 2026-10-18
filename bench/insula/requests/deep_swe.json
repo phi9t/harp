@@ -1,0 +1,13 @@
+{
+  "name": "deep_swe",
+  "extends": "toolchains.json",
+  "policy": {
+    "workspace_aliases": [
+      "/app"
+    ],
+    "workspace_path_aliases": {
+      "/tests": "verifier_tests",
+      "/logs": "verifier_logs"
+    }
+  }
+}
