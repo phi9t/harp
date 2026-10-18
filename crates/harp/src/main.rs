@@ -1,3 +1,5 @@
+mod durable;
+
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use std::fs;
@@ -47,6 +49,12 @@ enum OutputFormat {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Run the project-scoped lightweight durable runtime.
+    #[command(disable_help_flag = true)]
+    Durable {
+        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+        args: Vec<std::ffi::OsString>,
+    },
     /// Validate the canonical corpus and evidence contracts.
     Check,
     /// Compile canonical Markdown into the headless corpus.
@@ -369,8 +377,32 @@ struct Envelope<T> {
     data: T,
 }
 
+fn parse_cli() -> Cli {
+    let argv: Vec<_> = env::args_os().collect();
+    // Parse only Harp's prefix: backend flags (including --format and --)
+    // must remain untouched once the durable subcommand has been selected.
+    if let Some(index) = argv.iter().position(|arg| arg == "durable") {
+        if let Ok(mut cli) = Cli::try_parse_from(&argv[..=index]) {
+            if let Command::Durable { args } = &mut cli.command {
+                *args = argv[index + 1..].to_vec();
+                return cli;
+            }
+        }
+    }
+    Cli::parse_from(argv)
+}
+
 fn main() -> ExitCode {
-    let cli = Cli::parse();
+    let cli = parse_cli();
+    if let Command::Durable { args } = &cli.command {
+        let format = match cli.format {
+            OutputFormat::Text => "text",
+            OutputFormat::Json => "json",
+        };
+        let error = durable::exec(format, args);
+        emit_error(cli.format, &error);
+        return ExitCode::FAILURE;
+    }
     if let Command::Run {
         provider,
         workflow,
@@ -401,6 +433,7 @@ fn main() -> ExitCode {
 fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
     let root = Path::new(".");
     match &cli.command {
+        Command::Durable { .. } => unreachable!("durable runtime replaces the CLI process"),
         Command::Check => {
             let summary = check_corpus(root)?;
             Ok((
