@@ -9,7 +9,7 @@ import stat
 import tempfile
 import unittest
 
-from harp_durable.setup import native_manifest, prepare, verify_native_manifest
+from harp_durable.setup import native_manifest, prepare, verify_native_manifest, verify_required_executables
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -26,6 +26,11 @@ class NativeAdmission(unittest.TestCase):
         (self.rootfs / "usr/bin/tool").write_bytes(b"before")
         (self.rootfs / "usr/bin/tool").chmod(0o755)
         (self.rootfs / "bin").symlink_to("usr/bin")
+        for name in ("python3.11", "git", "sh"):
+            executable = self.rootfs / "usr/bin" / name
+            executable.write_bytes(b"fixture-executable")
+            executable.chmod(0o755)
+        (self.rootfs / "usr/bin/python3").symlink_to("python3.11")
         self.previous_store = os.environ.get("CORENIUS_CAPSULES")
         self.addCleanup(self.restore_environment)
 
@@ -107,6 +112,44 @@ class NativeAdmission(unittest.TestCase):
             prepare(state, self.rootfs, fake_cgroup, execution)
         self.assertFalse(execution.exists())
         self.assertFalse((state / "runtime.sqlite").exists())
+
+    def test_missing_python_alias_refuses_prepare_before_execution_record(self):
+        (self.rootfs / "usr/bin/python3").unlink()
+        execution = self.root / "execution.json"
+        with self.assertRaisesRegex(ValueError, "invalid rootfs executable /usr/bin/python3"):
+            prepare(self.root / "state", self.rootfs, self.root, execution)
+        self.assertFalse(execution.exists())
+        self.assertFalse(execution.with_name("execution.json.native.json").exists())
+
+    def test_executable_absolute_links_resolve_inside_namespace(self):
+        alias = self.rootfs / "usr/bin/python3"
+        alias.unlink()
+        alias.symlink_to("/usr/bin/python3.11")
+        verify_required_executables(self.rootfs)
+        (self.rootfs / "usr/bin/python3.11").unlink()
+        with self.assertRaisesRegex(ValueError, "invalid rootfs executable /usr/bin/python3"):
+            verify_required_executables(self.rootfs)
+
+    def test_non_executable_and_directory_targets_are_refused(self):
+        git = self.rootfs / "usr/bin/git"
+        git.chmod(0o644)
+        with self.assertRaisesRegex(ValueError, "executable regular file"):
+            verify_required_executables(self.rootfs)
+        git.unlink()
+        git.mkdir(mode=0o755)
+        with self.assertRaisesRegex(ValueError, "executable regular file"):
+            verify_required_executables(self.rootfs)
+
+    def test_executable_symlink_escape_and_loop_are_refused(self):
+        alias = self.rootfs / "usr/bin/python3"
+        alias.unlink()
+        alias.symlink_to("../../../outside")
+        with self.assertRaisesRegex(ValueError, "escapes the rootfs"):
+            verify_required_executables(self.rootfs)
+        alias.unlink()
+        alias.symlink_to("python3")
+        with self.assertRaisesRegex(ValueError, "symlink loop"):
+            verify_required_executables(self.rootfs)
 
     def test_prepare_creates_private_inputs_before_delegation_check(self):
         state = self.root / "state"

@@ -21,6 +21,45 @@ from controller.durable.insula import InsulaExecution, snapshot_code
 from tools.insula import capsule
 
 
+def verify_required_executables(rootfs: Path) -> None:
+    """Resolve required paths as the rootfs would, never against the host root."""
+    if rootfs.is_symlink() or not rootfs.is_dir():
+        raise ValueError("rootfs must be an ordinary directory")
+    rootfs = rootfs.resolve(strict=True)
+    for executable in ("/usr/bin/python3", "/usr/bin/git", "/bin/sh"):
+        remaining = executable.split("/")
+        resolved: list[str] = []
+        links = 0
+        try:
+            while remaining:
+                part, *remaining = remaining
+                if part in {"", "."}:
+                    continue
+                if part == "..":
+                    if not resolved:
+                        raise ValueError("required executable link escapes the rootfs")
+                    resolved.pop()
+                    continue
+                candidate = rootfs.joinpath(*resolved, part)
+                info = candidate.lstat()
+                if stat.S_ISLNK(info.st_mode):
+                    links += 1
+                    if links > 40:
+                        raise ValueError("required executable has a symlink loop")
+                    target = os.readlink(candidate)
+                    if target.startswith("/"):
+                        resolved = []
+                    remaining = target.split("/") + remaining
+                else:
+                    resolved.append(part)
+            target = rootfs.joinpath(*resolved)
+            info = target.lstat()
+            if not stat.S_ISREG(info.st_mode) or not info.st_mode & 0o111:
+                raise ValueError("required executable is not an executable regular file")
+        except (OSError, ValueError) as exc:
+            raise ValueError(f"invalid rootfs executable {executable}: {exc}") from exc
+
+
 def native_manifest(rootfs: Path) -> dict[str, Any]:
     """Inventory every native file, mode and link without following links.
 
@@ -138,6 +177,7 @@ def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) 
     state = _private_state(state)
     inputs_root = _private_state(state / "inputs")
     os.environ["CORENIUS_CAPSULES"] = str(state / "capsules")
+    verify_required_executables(rootfs)
     Cgroup.validate_root(cgroup_root)
     manifest = native_manifest(rootfs)
     rootfs = Path(manifest["rootfs"])
