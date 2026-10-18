@@ -60,6 +60,12 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual({j["surface"] for j in jobs}, {"diff", "corenius-import"})
         self.assertIn(["python3", "scripts/verify_corenius_import.py"], [j["command"] for j in jobs])
 
+    def test_durable_runtime_selects_process_lifecycle_checks(self):
+        self.write("harp_durable/__main__.py", "# runtime change\n")
+        jobs = self.selected()["checks"]
+        self.assertEqual({j["surface"] for j in jobs}, {"diff", "durable-runtime"})
+        self.assertIn(["python3", "-m", "unittest", "harp_durable.test_cli"], [j["command"] for j in jobs])
+
     def test_staged_untracked_and_both_rename_surfaces_are_selected(self):
         (self.root / "docs").mkdir()
         self.git("mv", "AGENTS.md", "docs/renamed.md")

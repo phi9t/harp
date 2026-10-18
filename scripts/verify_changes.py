@@ -72,6 +72,8 @@ def plan(root, paths):
             # Article-only projections and reproduction tooling were retired.
             # Repository provenance checks cover their explicit disposition.
             add("repository", "mise", "run", "verify-repository")
+        elif path.startswith("harp_durable/"):
+            add("durable-runtime", "python3", "-m", "unittest", "harp_durable.test_cli")
         elif path.startswith("corenius/"):
             # Imported historical prose and artifacts retain their original bytes.
             # Check their pinned source instead of rewriting old links or formatting.
@@ -192,6 +194,10 @@ def plan(root, paths):
                     continue
                 if p.endswith("/src/main.rs"):
                     add("cli", *prefix, "--test", "cli")
+                    if (root / "crates/harp/tests/durable_cli.rs").exists():
+                        add("rust-contract", *prefix, "--test", "durable_cli")
+                elif p.endswith("/src/durable.rs"):
+                    add("rust-contract", *prefix, "--test", "durable_cli")
                 elif p.startswith("crates/harp/tests/"):
                     target = Path(p).stem if len(Path(p).parts) == 4 else "crouzeix_textbook"
                     add("rust-contract", *prefix, "--test", target)

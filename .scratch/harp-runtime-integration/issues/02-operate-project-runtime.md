@@ -1,7 +1,9 @@
 # 02: Operate the durable runtime through Harp’s CLI
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex
+Branch: codex/harp-durable-runtime
+Worktree: harp-corenius-consolidation/harp
 Parent: [Harp durable coding-worker integration](../spec.md)
 
 ## What to build
@@ -36,3 +38,44 @@ existing contract coverage where sufficient. Run the changed-surface gate agains
 the complete candidate and supplement it for affected consumers. Record exact
 source, selected checks, outcomes and limitations here. Historical qualification,
 missing prerequisites or unavailable required capabilities are not fresh passes.
+
+### Implementation and fresh evidence
+
+- Public `harp durable` replaces its process with the same-checkout Python
+  interface, preserving argv, streams, signals and exit status. It controls the
+  import path rather than depending on another checkout.
+- Foreground `start`, token-addressed `stop`, `status`, `events`, `check`,
+  deterministic `submit` and `cancel` use the selected runtime and guardian.
+  Capacity is bounded to one through four. Trusted demonstration activities use
+  the existing process-group backend; this does not qualify coding isolation.
+- State admission requires private owned local Linux storage and rejects linked
+  database, sidecar, lock, attempt and instance targets before SQLite opens them.
+- Independent review found and repaired a replacement-token overwrite after lock
+  release, and linked database targets. Review of the repairs found no remaining
+  required defect in this slice.
+- Five backend lifecycle tests passed on devx with existing fixed SQLite 3.51.3:
+  retained completion without another attempt, competing controller refusal,
+  explicit stop/reopen, interrupted activity cleanup/reopen, and private-storage
+  and linked-target refusal. Tests use real subprocesses and durable state.
+- `mise run verify -- --base ea50a11f` passed locally: repository verification,
+  verification dispatch tests, 467 library tests, 16 CLI tests, five new bridge
+  process tests and document checks. Linux backend tests explicitly skip on
+  macOS; the separate devx run above supplies execution evidence.
+- Remaining acceptance: run those lifecycle tests through the compiled Linux
+  Harp executable, rather than Python entry alone. The offline devx build refuses
+  missing locked `pulldown-cmark-escape`. Cache authorization has been requested
+  under the prerequisite rule; no dependency hydration was performed. The test
+  runner accepts `HARP_DURABLE_BIN` for this composed public-interface check.
+
+Example trusted demonstration (Linux with the fixed SQLite library available):
+
+```sh
+harp durable --state /absolute/private/project-state submit example --value 7
+harp durable --state /absolute/private/project-state start --until-idle
+harp durable --state /absolute/private/project-state status example
+```
+
+The long-lived foreground form omits `--until-idle`; another invocation requests
+`stop` for that exact runtime instance. State persists after shutdown. No service
+is installed. Coding admission, providers, verification and landing remain later
+tickets, and this ticket remains in progress until composed Linux acceptance.

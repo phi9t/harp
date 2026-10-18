@@ -280,4 +280,4 @@ recursive successor improvement. This extension does not alter the fixed
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`d13932397f940d9d1f75bc188f92ded3293e213c76c0114ae2c99f4602200b31`
+`9c6d2f5acbba24315df4117049d0e2b6f53a2855a47a1846f61b22081a389f0f`
