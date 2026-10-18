@@ -10,13 +10,14 @@ The owner requested consolidation of Harp and Corenius on devx_b200_dbg on
 2026-10-18 and selected Harp as the destination, including the runtime,
 controller, tooling and engineering practice. Preserve both existing checkouts,
 uncommitted work, branches, evidence and live bindings. No push, deployment,
-service startup, dependency installation or retirement is authorized.
+service startup, dependency installation or retirement of the original source
+checkouts is authorized.
 
 ## Harp scope reduction
 
 On 2026-10-18 the owner also requested removing the RSI research material,
 retaining a brief survey of articles previously read and discarding most other
-article-related material. Consolidation is selective, not a union of both repos.
+article-related material. The source import preserves all Corenius work; the Harp research product is reduced.
 
 Retain a compact survey with source links and a short takeaway per article.
 Do not carry over detailed paper deconstructions, duplicated source cards,
@@ -126,5 +127,22 @@ Required remaining repairs: delete the owner-retired Atlas and update its
 consumers; fix nine forbidden temporary-path occurrences introduced by the
 benchmark worktrees. Linux verification has passed 22 of 23 selected Python
 suites, the native parser checks, terminal-agent tests and controller unit tests.
-The benchmark suite is still running. The sole failed Python suite is the real
-no-host-tmp source policy, not an infrastructure prerequisite.
+All six selected benchmark suites passed (168 tests). The failed no-host-tmp policy was repaired with task-owned state; its rerun
+passed, along with all 54 materializer and six rootfs tests.
+
+## Final candidate verification boundary
+
+The candidate removes Atlas and the RSI article product, retains the 54-reading
+survey, all math/proof material and SICP, and incorporates every Corenius source
+branch/worktree. Independent review confirmed all 47 educational aliases resolve
+and no previously compiled retained mathematics/engineering document was lost.
+The proof-goal reader now accepts harp-knowledge/v1; its direct real-artifact
+check passes. Corpus freshness and search are current.
+
+Required final checks are blocked by absent standalone PDF packages and the
+missing primary Lean dependency cache. AGENTS.md requires explicit authorization
+before installing prerequisites or restoring that cache; requests are pending.
+The primary master checkout also has unrelated overlapping uncommitted changes,
+so no safe fast-forward landing has been attempted. No push or source-checkout
+retirement was performed. Continue from this integration branch, not by resetting
+or stashing the primary checkout.

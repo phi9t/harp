@@ -1,13 +1,13 @@
 # Harp contributor guide
 
-Harp is a standalone RSI product. Do not add runtime, build, test, source, or
+Harp is a standalone agent engineering product with a mathematics and education library. Do not add runtime, build, test, source, or
 documentation dependencies on another local checkout.
 
 ## Canonical ownership
 
-- Managed Markdown under `knowledge/rsi/` and registered topic packets under
-  `knowledge/` are the only authorities for technical prose. `content/` is
-  reserved for structured machine-readable contracts and diagnostics; do not
+- Managed Markdown in registered topic packets under `knowledge/` is the
+  authority for technical prose. `content/` is reserved for structured
+  machine-readable contracts and generated output; do not
   add Markdown beneath it.
 - `content/generated/corpus.json` is derived and must be regenerated with
   its canonical inputs. The Atlas browser reader and HTML export are retired.

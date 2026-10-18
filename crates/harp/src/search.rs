@@ -12,7 +12,7 @@ use crate::error::AppError;
 const INDEX_PATH: &str = "target/search/harp.sqlite";
 const RECEIPT_PATH: &str = "target/search/receipt.json";
 const RECEIPT_SCHEMA: &str = "harp-search/v1";
-const SMOKE_QUERY: &str = "recursive improvement";
+const SMOKE_QUERY: &str = "SICP";
 const MAX_DOCUMENT_BYTES: u64 = 16 * 1024 * 1024;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -235,37 +235,26 @@ pub fn query(repo_root: &Path, query: &str, limit: usize) -> Result<Vec<SearchRe
 
 fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), AppError> {
     let roots = [
-        ("knowledge/rsi", "canonical-markdown", "md"),
-        ("knowledge/darwin_godel_machine", "canonical-markdown", "md"),
-        ("knowledge/meta_harness", "canonical-markdown", "md"),
+        ("knowledge/sicp", "canonical-markdown", "md"),
         ("knowledge/deepseek_harness", "canonical-markdown", "md"),
         ("knowledge/harness_benchmarks", "canonical-markdown", "md"),
-        (
-            "knowledge/self_improving_agents_survey",
-            "canonical-markdown",
-            "md",
-        ),
-        (
-            "knowledge/verified_coevolution_agenda",
-            "canonical-markdown",
-            "md",
-        ),
+        ("knowledge/evaluator_integrity", "canonical-markdown", "md"),
         ("knowledge/agentic_engineering", "canonical-markdown", "md"),
         ("knowledge/crouzeix_conjecture", "canonical-markdown", "md"),
-        ("knowledge/darwinx", "canonical-markdown", "md"),
+        ("knowledge/crouzeix_textbook", "canonical-markdown", "md"),
         (
             "knowledge/mathematical_foundations",
             "canonical-markdown",
             "md",
         ),
         ("knowledge/autodiff_geometry", "canonical-markdown", "md"),
+        ("knowledge/obsidian", "canonical-markdown", "md"),
         (
             "knowledge/harp_knowledge_home.md",
             "canonical-markdown",
             "md",
         ),
-        ("evidence/weng/text", "weng-source", "txt"),
-        ("evidence/rlm/text", "rlm-source", "txt"),
+        ("knowledge/article_survey.md", "canonical-markdown", "md"),
     ];
     let mut paths = Vec::new();
     for (root, kind, extension) in roots {

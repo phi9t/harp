@@ -1,6 +1,6 @@
 # Reduce RSI research to a brief article survey
 
-Status: in-progress
+Status: blocked
 Owner: Codex
 Branch: codex/harp-corenius-consolidation
 Parent: [consolidation intent](../spec.md)
@@ -11,8 +11,8 @@ Preserve a brief, source-linked survey of research articles previously read.
 Remove RSI article-related material from the consolidated product, including
 RSI deep dives, source cards, claim ledgers and graphs, article captures and
 RSI-specific supporting code. Preserve Crouzeix and other math/proof work, SICP
-and other educational material. Keep the Atlas and shared machinery required
-by those retained consumers. Extract useful operational documentation before
+and other educational material. Delete the Atlas as subsequently requested; retain the headless machinery required
+by those educational and proof consumers. Extract useful operational documentation before
 retiring the research prose that currently houses it.
 
 ## Acceptance criteria
@@ -31,8 +31,9 @@ retiring the research prose that currently houses it.
 
 No blocker to writing the retained article survey or mapping article consumers.
 The owner explicitly chose to preserve math/proofs (especially Crouzeix), SICP
-and other educational material. Remove only RSI-related content. The Atlas must
-continue supporting retained content. No broader retirement is authorized.
+and other educational material. Remove only RSI-related content. The owner subsequently requested deleting Atlas entirely instead of installing
+frontend prerequisites. Keep the educational and proof content and its headless
+consumers. No broader content retirement is authorized.
 
 ## Verification
 
@@ -59,8 +60,27 @@ appropriate retained home before removing that RSI directory.
 - Condense: previously inspected RSI articles into the brief survey.
 - Inspect before removal: knowledge/rsi/sicp; runtime documentation embedded in
   RSI concepts/chapters; mixed evidence bundles such as evidence/weng; shared
-  corpus/source/search/Atlas code; tests that protect both retained and retired
+  corpus/source/search/publication code; tests that protect both retained and retired
   contracts. Classify by actual responsibility, not directory name alone.
 
 Document verification: run the changed-surface gate for this scope correction.
-No source, evidence, proof or educational file has been deleted.
+The isolated candidate now retires the article-only source/evidence and Atlas
+while preserving the educational and proof material. Originals remain in Git.
+
+## Candidate implementation and checks
+
+Atlas retirement is b156e903; educational corpus retirement is c45f0367.
+The retained survey is knowledge/article_survey.md. All 23 SICP documents are
+registered under knowledge/sicp; implementation deep dives moved into agentic
+engineering. The corpus is harp-knowledge/v1 with 131 documents and 11 routes.
+Research-only registries, article graphs, diagnostics, lesson projections,
+article implementation snapshots and Meta-Harness reproduction tools are removed.
+All mathematical and educational evidence groups were independently reviewed
+and remain intact. The five retained generic source-manifest tests and the
+Crouzeix source suite passed together (120 tests). Corpus freshness, search
+refresh/status/query, Obsidian assets and 15 writing-style structural tests pass.
+
+The source gate currently reports a missing canonical XDG Lean cache; the
+packages symlink targets a nonexistent directory. PDF checks lack their pinned
+standalone Node dependencies. No dependency installation or cache hydration was
+performed; explicit owner authorization is pending. These checks remain required.

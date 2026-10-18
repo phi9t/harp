@@ -1,113 +1,86 @@
 # Claim ledger template
 
-Each `##` heading is a stable link target. Keep IDs stable after publication.
+Each heading is a stable claim target. Replace examples with your own inspected evidence.
 
-## EX-001: Released selector reads the shallow score
+## EX-001: License title identifies the version
 
 - Class: `EVIDENCE`
-- Statement: The released selector reads `overall_performance`.
+- Statement: The captured license is titled Attribution-ShareAlike 4.0 International.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [[source-registry-template#EXAMPLE-REPO: Released DGM implementation|Example implementation registry entry]]
-- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|DGM_outer.py]]
-  ([exact line 63](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63))
-- Scope: Example pinned implementation scope.
-- Reproduction: Source inspected, not executed.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/LICENSE.txt|Captured license]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Direct source-code path.
-- Caveat: The expanded result may be stored under a different field.
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
 
-## EX-002: Authors report the benchmark result
+## EX-002: Capture record describes the edition
 
 - Class: `SOURCE CLAIM`
-- Statement: The authors report 50.0% on a 200-task benchmark subset.
+- Statement: The provenance record describes the captured PDF as an unofficial Texinfo edition.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper registry entry]]
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 317](../../evidence/weng/text/dgm.txt#L317)) and
-  ([exact line 346](../../evidence/weng/text/dgm.txt#L346))
-- Scope: 200-task subset, named model and metric from the source.
-- Reproduction: Not independently reproduced here.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Direct paper result statement.
-- Caveat: Selected-run result; do not generalize to the full benchmark.
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
 
-## EX-003: The result supports harness improvement
+## EX-003: Separate capture metadata from interpretation
 
 - Class: `INFERENCE`
-- Statement: The current corpus supports harness improvement only; it does not
-  establish that accepted children become better producers of later
-  improvements.
-- Source: [[#EX-001: Released selector reads the shallow score|EX-001]] and
-  [[#EX-002: Authors report the benchmark result|EX-002]]
-- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|DGM_outer.py]]
-  ([exact line 63](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63)) and
-  [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 346](../../evidence/weng/text/dgm.txt#L346))
-- Scope: The inspected mechanism and reported experiment only.
-- Reproduction: Source results not independently reproduced here.
-- Confidence: `medium`
-- Confidence basis: Direct mechanism evidence; missing next-cycle experiment.
-- Caveat: The external improvement process may carry unmeasured capability.
-- Weakens if: The reported benchmark gain does not persist under a matched
-  rerun of the evaluated child.
-- Falsified by: An auditable matched next-cycle study shows accepted children
-  outperform their parents at producing later accepted improvements.
+- Statement: Keeping capture metadata separate makes later evidence review easier.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
+- Confidence: `high`
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
+- Weakens if: Separate records make the source route harder to follow.
+- Falsified by: Reader checks show the split prevents reliable source identification.
 
-## EX-004: Next-cycle evidence is missing
+## EX-004: Current remote availability is unverified
 
 - Class: `MISSING`
-- Statement: The inspected corpus contains no matched parent-versus-child
-  next-cycle experiment.
-- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper registry entry]]
-  and [[source-registry-template#EXAMPLE-REPO: Released DGM implementation|example implementation registry entry]]
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 120](../../evidence/weng/text/dgm.txt#L120)) and
-  [[evidence/implementations/dgm/snapshot/README.md|released implementation inventory]]
-  ([exact line 65](../../evidence/implementations/dgm/snapshot/README.md#L65))
-- Scope: Current inspected corpus.
-- Reproduction: Not applicable.
+- Statement: This example does not establish current availability of the remote PDF.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Explicit search of the inspected method and evaluation.
-- Caveat: A non-public experiment may exist outside the corpus.
-- Resolves when: A source reports the matched experiment with auditable
-  artifacts.
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
+- Resolves when: An explicitly requested fresh source check establishes availability.
 
-## EX-005: Repository describes empirical validation
+## EX-005: License title quoted exactly
 
 - Class: `EVIDENCE`
-- Statement: The repository describes DGM as a system that "empirically
-  validates each change using coding benchmarks."
+- Statement: The license title reads "Attribution-ShareAlike 4.0 International".
 - Mode: `quote`
 - Source stability: `pinned`
-- Source: [[source-registry-template#EXAMPLE-REPO: Released DGM implementation|Example implementation registry entry]]
-- Locator: [[evidence/implementations/dgm/snapshot/README.md|README.md]]
-  ([exact line 14](../../evidence/implementations/dgm/snapshot/README.md#L14))
-- Scope: Wording in the pinned repository README.
-- Reproduction: Source wording inspected; behavior not independently reproduced.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/LICENSE.txt|Captured license]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Direct quotation from the inspected artifact.
-- Caveat: The quotation describes intended system behavior, not a reproduced
-  execution.
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
 
-## EX-006: Paper and repository describe the same loop
+## EX-006: Two records name the same license
 
 - Class: `EVIDENCE`
-- Statement: Both pinned sources describe DGM as iteratively modifying its own
-  code and empirically validating changes on coding benchmarks.
+- Statement: The license and provenance record both name Attribution-ShareAlike 4.0 International.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Example paper registry entry](source-registry-template.md#example-paper-darwin-godel-machine-paper) and
-  [example implementation registry entry](source-registry-template.md#example-repo-released-dgm-implementation)
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 29](../../evidence/weng/text/dgm.txt#L29)) and
-  [[evidence/implementations/dgm/snapshot/README.md|README.md]]
-  ([exact line 14](../../evidence/implementations/dgm/snapshot/README.md#L14))
-- Scope: The shared bounded mechanism description; either source independently
-  supports the statement.
-- Reproduction: Source content inspected; system behavior not independently
-  reproduced.
+- Source: [License registry](source-registry-template.md#example-license-sicp-captured-license) and [capture registry](source-registry-template.md#example-capture-sicp-capture-record)
+- Locator: [[evidence/sicp/LICENSE.txt|Captured license]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1)) and [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Two independently sufficient primary-source descriptions.
-- Caveat: Agreement between descriptions does not establish runtime behavior.
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.

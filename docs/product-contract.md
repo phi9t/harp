@@ -2,31 +2,22 @@
 
 ## Product boundary
 
-Harp owns the standalone knowledge compiler and agent runtime:
+Harp owns the agent runtime and maintained education library:
 
-- canonical RSI and SICP Markdown under `knowledge/rsi/`, plus the registered
-  topic packets under `knowledge/darwin_godel_machine/`,
-  `knowledge/meta_harness/`, `knowledge/harness_benchmarks/`, and
-  `knowledge/self_improving_agents_survey/`, and
-  `knowledge/verified_coevolution_agenda/`,
-  `knowledge/deepseek_harness/`, and
-  `knowledge/agentic_engineering/`, together with the auxiliary
-  `knowledge/darwinx/` and `knowledge/mathematical_foundations/` packets and
-  repository-root Obsidian navigation assets;
-- deterministic corpus validation and compilation in `crates/harp/`;
-- deterministic diagnosis contracts under `content/diagnostics/`;
-- Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Verified
-  Coevolution Agenda, Agentic Engineering, and public implementation evidence
-  under `evidence/`;
-- remote-only, hash-pinned Crouzeix proof artifacts and four Harp-local
-  revision-bound verification receipts under
-  `evidence/crouzeix_conjecture/`;
-- the runnable SICP evaluator supplement under `labs/sicp-evaluator/`;
-- the opt-in Meta-Harness TRAE proposal supplement under
-  `labs/meta_harness_trae/`;
-- local SQLite full-text search; and
-- local context-control releases, context selection, provider capability
-  observation, and byte-exact observation of Trae CLI and Codex CLI runs.
+- canonical Markdown under `knowledge/`, including SICP, agent engineering,
+  Crouzeix, mathematical foundations and autodiff geometry;
+- a brief survey of previously read articles at `knowledge/article_survey.md`;
+- deterministic headless corpus validation and compilation in `crates/harp/`;
+- source-specific evidence, licenses and proof receipts under `evidence/`;
+- SICP and proof-reproduction labs and Lean companions;
+- local SQLite full-text search and context-control/provider observation;
+- the imported Corenius terminal agent, SQLite controller, collaboration tools,
+  benchmarks and durable-execution source under `corenius/`.
+
+See [Corenius integration](corenius-integration.md) for its separate pinned Cargo
+workspace, retained branch/worktree provenance and qualification limits.
+PostgreSQL/Temporal remain parked source; no service adoption is implied.
+The RSI research library, article reproduction labs and Atlas are retired.
 
 Hosted model access, provider authentication, provider security enforcement,
 internal infrastructure, and provider-specific CI are outside the product
@@ -38,11 +29,8 @@ change its behavior.
 
 ## Stable interfaces
 
-- Headless corpus schema: `rsi-technical-atlas/v6`. Version 6 requires the
-  bounded `document_aliases` projection; stable v5 inputs are rejected rather
-  than reinterpreted with missing aliases.
-- Diagnosis export schema: `rsi-diagnosis/v2`.
-- Conservative previous-format migration: `rsi-diagnosis/v1`.
+- Headless corpus schema: `harp-knowledge/v1`, containing registered reader
+  routes, canonical documents and document aliases.
 - CLI JSON envelope schema: version `1`, with `command`, `status`, `warnings`,
   and `data`.
 - Search receipt schema: `harp-search/v1`.
@@ -116,123 +104,20 @@ This milestone is observation-only. Normalized learning export, ACE and MCE
 suggestion generation, candidate evaluation, shadowing, canarying, automatic
 promotion, and rollback remain deferred.
 
-## Canonical content
+## Canonical content and search
 
-The required parity contract is:
+Markdown is the authority for technical prose. Registered documents preserve
+stable identities, frontmatter, heading anchors, safe local links and textbook
+aliases. Headless corpus output lives under `content/generated/`. Educational
+and proof publication remain independent of a browser frontend.
 
-- 75 retained concepts;
-- 75 coverage entries;
-- 130 compiled documents;
-- 16 systems;
-- nine Weng sections;
-- 28 diagnostic fields;
-- 29 diagnostic rules;
-- 12 diagnostic cases;
-- six lessons;
-- 87 source-registry rows; and
-- 105 evidence edges.
+The portable Obsidian vault is the repository root; personal `.obsidian/` state
+is ignored. Managed navigation uses root-qualified wikilinks. Exact evidence
+locations retain both an artifact wikilink and a conventional line locator.
 
-Markdown is the only technical-prose authority. Handwritten TypeScript owns
-navigation, state, diagnosis, import/export, and interaction behavior, not
-paper mechanisms or result claims.
-
-`knowledge/crouzeix_conjecture/` is a bounded fourteen-document research
-packet on AI-assisted theorem discovery, source-level formal verification, and
-evidence discipline. It contributes one registered corpus packet and thirteen
-auxiliary documents. It does not enter the RSI retained-concept taxonomy,
-system registry, Weng sections, diagnostic cases, lessons, or evidence graph.
-
-`knowledge/verified_coevolution_agenda/` is a five-document research-agenda
-packet on recursive closure, model-harness coevolution, and assurance for
-self-improving systems. It contributes one registered corpus packet and four
-auxiliary documents. It adds eight source-registry rows and three evidence
-edges while reusing existing Harp evidence for STOP, Meta-Harness, AHE, DGM,
-ADAS, and the Springer Godel Machine record.
-
-`knowledge/darwinx/` is a bounded nine-document research packet on
-population-based harness evolution and constrained capability retention. It is
-compiled as auxiliary technical documents, indexed for search, and surfaced in
-the compiled knowledge corpus. It does not become a seventeenth canonical RSI system
-or alter the retained-concept, system, Weng, diagnostic, lesson, or evidence
-graph counts. `knowledge/harp_knowledge_home.md` is a registered knowledge
-entrypoint, not an additional canonical system or topic packet.
-
-The repository root is a portable Obsidian vault. Managed internal prose and
-evidence navigation use root-qualified wikilinks; exact raw-evidence locations
-retain their accompanying conventional Markdown `#L...` locators. Personal
-`.obsidian/` state is ignored. The reviewed portable profile lives under
-`tools/obsidian/profile/`, and the Base/Canvas/home assets remain canonical
-repository files rather than generated corpus inputs.
-
-`knowledge/mathematical_foundations/` is a twelve-document learning packet
-for ML practitioners. It contributes one registered corpus packet and eleven
-auxiliary documents built from original exposition and problems informed by
-user-supplied Bishop and Lax inputs; those inputs remain local only and are not
-redistributed. A pinned, standalone Lean companion formalizes a bounded
-finite-domain theorem surface in the `Linear`, `Orthogonality`, `Probability`,
-`BayesInformation`, `LinearModels`, and `Optimization` namespaces. Its
-formalization map classifies every original problem as a direct theorem,
-corollary/application, or prose-only; prose-only rows make no Lean-proof
-claim. The packet does not enter the RSI retained-concept taxonomy, coverage
-map, evidence graph, or source-verification counts.
-
-`knowledge/rsi/deepseek_harness_deep_dive.md` is an auxiliary implementation
-overlay for the pinned public DeepSeek Harness snapshot. It increases compiled
-document, source-registry, and evidence-edge counts by one each, but it does
-not become a canonical RSI system or alter retained concepts, coverage entries,
-Weng sections, diagnostic cases, or lessons.
-
-`knowledge/deepseek_harness/` is a thirteen-document design-decision packet for
-the pinned public DeepSeek Harness snapshot, its cited Cordis paper, and a
-local keyless tool-runtime smoke receipt. It contributes thirteen auxiliary
-documents, two additional source-registry rows (`CORDIS-PAPER`, `DSH-SMOKE`),
-and three evidence edges. It remains an implementation-study packet, not a
-DeepSWE score receipt, model-provider run, security proof, or autonomous
-self-improvement result.
-
-## Weng teaching curriculum
-
-`knowledge/rsi/weng-sources/` is the canonical authority for the 42 five-field
-source cards. `content/weng-source-cards.tsv` is the exact roster, order, and
-assignment matrix for 39 numbered references and three substantive body
-links. `content/weng-comparison-matrix.tsv` owns the ordered comparison data,
-and `content/weng-claim-ladder.json` owns the five-level claim ladder and its
-canonical concept links.
-
-`reference/` and `lessons/` are non-authoritative teaching projections.
-`scripts/build_weng_course.py --check` validates the four deterministic
-references, and Rust curriculum tests validate the ten lessons. The course
-state machine is `building` -> `cards-complete` -> `complete`; `complete`
-requires 42 cards, ten lessons, four references, and nine section IDs.
-Retrieval begins at `unseen`, and page exposure does not establish mastery.
-
-Teaching files remain outside canonical corpus compilation unless explicitly
-registered later. They do not change the 130-document, 75-concept, or other
-canonical corpus counts above.
-
-## Search
-
-The search index includes:
-
-- all `knowledge/rsi/**/*.md`;
-- all `knowledge/darwin_godel_machine/**/*.md`;
-- all `knowledge/meta_harness/**/*.md`;
-- all `knowledge/deepseek_harness/**/*.md`;
-- all `knowledge/harness_benchmarks/**/*.md`;
-- all `knowledge/self_improving_agents_survey/**/*.md`;
-- all `knowledge/verified_coevolution_agenda/**/*.md`;
-- all `knowledge/agentic_engineering/**/*.md`;
-- all `knowledge/crouzeix_conjecture/**/*.md`;
-- all `knowledge/darwinx/**/*.md`;
-- all `knowledge/mathematical_foundations/**/*.md`;
-- `knowledge/harp_knowledge_home.md`;
-- all `evidence/weng/text/**/*.txt`; and
-- all `evidence/rlm/text/**/*.txt`.
-
-It excludes captured PDFs and HTML, generated JSON and HTML, source snapshots,
-and operational receipts. Refresh builds a temporary FTS5 database, runs
-integrity and smoke-query checks, publishes atomically, and writes a digest
-receipt. Status and query reject missing or stale indexes.
+Search indexes the retained educational and engineering packets, the knowledge
+home and the brief article survey. Its smoke query is `SICP`. Index freshness
+is bound to the exact indexed paths and bytes.
 
 ## Evidence
 
@@ -243,8 +128,6 @@ receipt. Status and query reject missing or stale indexes.
 - Crouzeix source-receipt identity, rights state, exact evidence-root
   ownership, acquisition-script binding, and local verification-log digests;
 - every narrow public-source snapshot and revision identity;
-- the offline-complete Meta-Harness project page and dated capture receipt;
-- the normalized Meta-Harness TRAE receipt and bounded raw archive;
 - the Agentic Engineering and Clanker Constitution dated captures;
 - the Autodiff Geometry source-acquisition bundle, parser status report, and
   FDG binary evidence digest;
@@ -277,11 +160,10 @@ under `evidence/autodiff_geometry/`. Its parser contract is restartable with
 vendor the full Spivak book text and does not prove JAX implementation
 correctness.
 
-## Release gate
+## Verification and release
 
-`mise run verify` is the complete provider-neutral release gate. A clean
-`git clone --no-local`, followed by `git lfs pull`, `mise run bootstrap`, and
-`mise run verify`, must pass without any other source checkout available. The
-gate includes the offline Weng course-builder check, performs no network fetch,
-and uses fake provider fixtures without launching an installed Trae CLI or
-Codex CLI provider run.
+`mise run verify` selects checks for changed surfaces. Use `--base` to cover a
+whole candidate. `mise run verify-all` is the explicit provider-neutral release
+gate and uses fake providers, not paid sessions. Source and proof checks require
+their pinned artifacts and warm cache; missing prerequisites remain blockers.
+No gate installs dependencies or hydrates proof caches implicitly.

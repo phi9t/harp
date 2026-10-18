@@ -1,41 +1,23 @@
 # Source registry template
 
-Use one heading per source so claim-ledger entries can link to the exact source
-record.
+Use one heading per source. These examples describe retained educational evidence.
 
-## EXAMPLE-PAPER: Darwin Godel Machine paper
+## EXAMPLE-LICENSE: SICP captured license
 
-- Class: `primary paper`
-- Title: Example research paper
-- Artifact: [[evidence/weng/text/dgm.txt|Local paper capture]]
-  ([open conventional path](../../evidence/weng/text/dgm.txt))
+- Class: `license text`
+- Artifact: [[evidence/sicp/LICENSE.txt|Captured legal code]] ([conventional path](../../evidence/sicp/LICENSE.txt))
 - Stability: `pinned`
-- Immutable identity: `arXiv:2505.22954v3`
-- Semantic locators: section, appendix, table, figure, and algorithm.
-- Can prove: Paper method, wording, author-reported results, and limitations.
-- Cannot prove: Independent reproduction or current released-code behavior.
+- Immutable identity: `sha256:28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5`
+- Semantic locators: Line one identifies the license version.
+- Can prove: Wording in the captured legal code.
+- Cannot prove: Legal advice or the current state of the source website.
 
-## EXAMPLE-REPO: Released DGM implementation
+## EXAMPLE-CAPTURE: SICP capture record
 
-- Class: `pinned implementation`
-- Title: Example released implementation
-- Artifact: [[evidence/implementations/dgm/snapshot/README.md|Local implementation snapshot]]
-  ([open conventional path](../../evidence/implementations/dgm/snapshot/README.md))
-- Stability: `pinned`
-- Immutable identity: `git:a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`
-- Semantic locators: file paths and line anchors.
-- Can prove: Source behavior at the pinned revision.
-- Cannot prove: Historical experiment identity, runtime safety, or benchmark
-  reproduction.
-
-## EXAMPLE-MUTABLE-PAGE: Mutable results page
-
-- Class: `mutable first-party page`
-- Title: Example mutable results page
-- Artifact: [[evidence/weng/metadata/dgm-arxiv.html|Local dated capture]]
-  ([open conventional path](../../evidence/weng/metadata/dgm-arxiv.html))
+- Class: `capture provenance`
+- Artifact: [[evidence/sicp/PROVENANCE.md|Capture record]] ([conventional path](../../evidence/sicp/PROVENANCE.md))
 - Stability: `dated observation`
-- Observed: `2026-08-08`
-- Semantic locators: `Abstract page > Description`.
-- Can prove: What the page showed on the observation date.
-- Cannot prove: Current state after that date or historical state before it.
+- Observed: `2026-08-01`
+- Semantic locators: Artifact identity and License sections.
+- Can prove: What Harp recorded about the captured edition.
+- Cannot prove: Current remote availability or any new source verification.

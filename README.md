@@ -2,9 +2,9 @@
 
 A local-first agent runtime with a maintained knowledge and mathematics library.
 
-Harp brings research notes, captured sources, and runnable experiments into one
-repository. Use it to compare self-improving systems, trace claims to evidence,
-or run restartable agent tasks with recorded results.
+Harp combines agent execution and engineering tools with a library of SICP,
+mathematics and proof work. Run restartable agent tasks with recorded results,
+or read the maintained explanations and their source evidence.
 
 [Get started](docs/getting-started.md) ·
 [Agent workflows](docs/agent-workflows.md) ·
@@ -24,13 +24,13 @@ local reading and evidence setup.
 
 | Goal | Where to start |
 | --- | --- |
-| Understand recursive self-improvement and compare systems | [RSI orientation](knowledge/rsi/rsi_index.md) and [system readings](knowledge/rsi/systems/system_readings_index.md) |
-| Check what supports a research claim | [Claim ledger](knowledge/rsi/claim_evidence_ledger.md), [source registry](knowledge/rsi/source_registry.md), and [missing evidence](knowledge/rsi/missing_evidence.md) |
+| Review the articles previously read | [Brief article survey](knowledge/article_survey.md) |
+| Study interpreters and agent engineering | [SICP](knowledge/sicp/sicp_index.md) and [agentic engineering](knowledge/agentic_engineering/agentic_engineering_index.md) |
 | Search and validate the local corpus | [CLI setup and first commands](docs/getting-started.md#build-the-cli) |
 | Run and recover Codex task graphs | [Durable task graphs](docs/agent-workflows.md#durable-task-graphs) |
 | Run Codex or Trae CLI with recorded context and output | [Provider workflows](docs/agent-workflows.md#provider-workflows) |
 
-The research collection also covers harness benchmarks, agentic engineering,
+The library also covers harness benchmarks, agentic engineering,
 SICP, mathematical foundations, and proof-reproduction studies. Workstream records describe checked-in research and proof work.
 
 ## Build the CLI
@@ -57,10 +57,10 @@ require the full contributor verification gate.
 
 ## How the repository fits together
 
-- `knowledge/` holds the maintained research notes.
+- `knowledge/` holds maintained educational and engineering prose.
 - `evidence/` holds captured source bytes, manifests, and source-specific
   license records.
-- `content/` holds machine-readable contracts and diagnostics.
+- `content/` holds machine-readable contracts.
 - `content/generated/` holds the compiled headless corpus and local publication outputs.
 - `crates/` holds the CLI, contracts, and durable execution engine.
 - `labs/` and `formalization/` hold experiments and Lean companions.

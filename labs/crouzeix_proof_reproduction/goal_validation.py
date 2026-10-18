@@ -856,7 +856,7 @@ def _validate_reader_surfaces(repository_root: Path) -> tuple[str, ...]:
         corpus = json.loads(content.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as error:
         raise ValueError("generated corpus is invalid") from error
-    if not isinstance(corpus, dict) or corpus.get("schema_version") != "rsi-technical-atlas/v6":
+    if not isinstance(corpus, dict) or corpus.get("schema_version") != "harp-knowledge/v1":
         raise ValueError("generated corpus is invalid")
     return READER_EVIDENCE_PATHS
 

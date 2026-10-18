@@ -133,6 +133,21 @@ class VerificationTests(unittest.TestCase):
         self.assertIn("-p harp --lib", log.read_text())
         self.assertIn("-p harp-contracts", log.read_text())
 
+    def test_portable_profile_changes_select_real_asset_validation(self):
+        self.write("tools/obsidian/profile/bookmarks.json", "[]\n")
+        jobs = self.selected()["checks"]
+        self.assertIn(["python3", "scripts/validate_obsidian_assets.py"], [job["command"] for job in jobs])
+
+    def test_retired_article_tools_and_projections_select_repository_check(self):
+        for relative in ("reference/weng-source-cards.html", "labs/meta_harness_trae/run.py", "scripts/build_weng_course.py"):
+            self.write(relative, "old projection\n")
+        self.git("add", ".")
+        self.git("commit", "-qm", "old article projections")
+        for relative in ("reference/weng-source-cards.html", "labs/meta_harness_trae/run.py", "scripts/build_weng_course.py"):
+            (self.root / relative).unlink()
+        jobs = self.selected()["checks"]
+        self.assertIn(["mise", "run", "verify-repository"], [job["command"] for job in jobs])
+
     def test_deleted_document_does_not_require_the_deleted_file(self):
         (self.root / "AGENTS.md").unlink()
         self.assertEqual(self.run_gate().returncode, 0)

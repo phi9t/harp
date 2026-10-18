@@ -1,1 +1,0 @@
-initEvoChart(),initParetoChart(),initNav();

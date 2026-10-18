@@ -67,12 +67,19 @@ def plan(root, paths):
     rust_paths = []
     for path in paths:
         parts = Path(path).parts
-        if path.startswith("corenius/"):
+        if path.startswith(("reference/", "labs/meta_harness_trae/")) or path == "scripts/build_weng_course.py":
+            # Article-only projections and reproduction tooling were retired.
+            # Repository provenance checks cover their explicit disposition.
+            add("repository", "mise", "run", "verify-repository")
+        elif path.startswith("corenius/"):
             # Imported historical prose and artifacts retain their original bytes.
             # Check their pinned source instead of rewriting old links or formatting.
             add("corenius-import", "python3", "scripts/verify_corenius_import.py")
         elif path in ("docs/import-receipt.md", "docs/import-map.tsv") or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
+        elif path.startswith("tools/obsidian/") or path in ("scripts/validate_obsidian_assets.py", "scripts/tests/test_obsidian_assets.py") or (path.startswith("knowledge/obsidian/") and not path.endswith(".md")):
+            add("obsidian", "python3", "scripts/validate_obsidian_assets.py")
+            add("obsidian", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_obsidian_assets.py")
         elif path.startswith(("knowledge/", "content/", "lessons/")):
             for command in ("check", "build"):
                 args = ("--check",) if command == "build" else ()

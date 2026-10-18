@@ -3,7 +3,6 @@ mod corpus;
 pub mod crouzeix_textbook;
 mod error;
 mod fs;
-mod json;
 pub mod knowledge;
 pub mod repository;
 pub mod search;

@@ -10,9 +10,8 @@
 | [Agent workflows](agent-workflows.md) | Run Codex or Trae CLI, inspect records, and recover durable task graphs |
 | [Native release candidates](releasing.md) | Build a verified host-native archive and install it locally |
 
-For research, start with the
-[RSI orientation index](../knowledge/rsi/rsi_index.md) or
-[knowledge home](../knowledge/harp_knowledge_home.md). Those notes belong to the
+Start with the [knowledge home](../knowledge/harp_knowledge_home.md) or
+[brief article survey](../knowledge/article_survey.md). Those notes belong to the
 maintained corpus under `knowledge/`; this directory explains how to use and
 contribute to the software.
 

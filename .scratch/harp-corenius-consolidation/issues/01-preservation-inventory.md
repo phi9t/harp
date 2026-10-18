@@ -1,6 +1,6 @@
 # Preserve the full Corenius source inventory
 
-Status: in-progress
+Status: done
 Owner: Codex
 Branch: codex/harp-corenius-consolidation
 Parent: [consolidation intent](../spec.md)
@@ -42,3 +42,12 @@ Full observation: [inventory](../inventory.md).
 Most worktrees have uncommitted work. The combined retro-fixes checkout contains
 changes overlapping durable, gate, handoff and review checkouts; it cannot be
 assumed to supersede them without content comparison.
+
+## Completed preservation
+
+Candidate 7f47dffc includes all 29 source branch tips and all 12 dirty snapshots
+in ancestry through combined source 64f55c72. Thirteen worktrees are recorded,
+including clean main. Independent review checked all 260 dirty-file hashes
+against the retained objects and found no unique implementation loss. The
+source verifier checks all 8,149 files, modes and ancestry; its five subprocess
+boundary tests pass. Source retirement remains unauthorized and was not done.

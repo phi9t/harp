@@ -178,9 +178,9 @@ Use the first available locator in this hierarchy:
 Examples:
 
 ```markdown
-- Locator: [`DGM_outer.py:63`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63)
-- Locator: [DGM Figure 4 value](../../evidence/weng/text/dgm.txt#L461)
-- Locator: [`README.md:14`](../../evidence/implementations/dgm/snapshot/README.md#L14)
+- Locator: [`DGM_outer.py:63`](../../evidence/implementations/pi/snapshot/README.md#L1)
+- Locator: [DGM Figure 4 value](../../evidence/sicp/LICENSE.txt#L1)
+- Locator: [`README.md:14`](../../evidence/implementations/pi/snapshot/README.md#L1)
 ```
 
 _Avoid_: a paper or repository root link when a stable local passage, table,
@@ -215,7 +215,7 @@ Example:
 - Mode: `paraphrase`
 - Source stability: `dated observation`
 - Observed: `2026-08-08`
-- Locator: [Captured abstract description](../../evidence/weng/metadata/dgm-arxiv.html)
+- Locator: [Captured abstract description](../../evidence/sicp/PROVENANCE.md)
 ```
 
 **INFERENCE**:
@@ -320,7 +320,7 @@ Example main prose:
 
 ```markdown
 **[INFERENCE - DGM-050](claim-ledger.md#dgm-050).**
-The result supports harness improvement, but not successor improvement because
+Separate capture metadata from interpretation, but not successor improvement because
 the paper does not compare parent and child as producers of later accepted
 children.
 ```
@@ -344,7 +344,7 @@ Each canonical claim entry records:
 Example:
 
 See the complete, validated
-[EX-001 canonical entry](claim-ledger-template.md#ex-001-released-selector-reads-the-shallow-score).
+[EX-001 canonical entry](claim-ledger-template.md#ex-001-license-title-identifies-the-version).
 
 The heading is the canonical link target. A generated summary table may provide
 a scan-friendly index, but the table is not the authoritative claim record.

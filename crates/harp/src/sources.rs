@@ -1,12 +1,10 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsStr;
 use std::fs;
-use std::io::Read;
 use std::path::{Component, Path, PathBuf};
 use std::process::Command;
 
-use flate2::read::GzDecoder;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use sha2::{Digest as _, Sha256};
 use walkdir::WalkDir;
 
@@ -16,12 +14,7 @@ mod crouzeix;
 
 const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
 const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
-const META_HARNESS_ROOT: &str = "evidence/meta_harness";
 const AGENTIC_ENGINEERING_ROOT: &str = "evidence/agentic_engineering";
-const ENVHARNESS_INVENTORY: &str = "evidence/envharness/artifact_inventory.tsv";
-const META_HARNESS_ARCHIVE_MAX_BYTES: u64 = 16 * 1024 * 1024;
-const META_HARNESS_DECOMPRESSED_MAX_BYTES: u64 = 64 * 1024 * 1024;
-const META_HARNESS_ARCHIVE_MAX_MEMBERS: usize = 256;
 
 #[derive(Debug, Serialize)]
 pub struct SourcesReport {
@@ -66,144 +59,9 @@ struct SourceDefinition {
     rows: Vec<SnapshotRow>,
 }
 
-#[derive(Debug)]
-struct MetaHarnessReport {
-    site_artifacts: usize,
-    normalized_artifacts: usize,
-    raw_archive_members: usize,
-    raw_archive_bytes: u64,
-    expected_digests: BTreeMap<PathBuf, String>,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct MetaHarnessRunReceipt {
-    schema_version: String,
-    source_id: String,
-    repository_source_id: String,
-    repository_revision: String,
-    model: String,
-    candidate_count: usize,
-    valid_candidate_count: usize,
-    first_schema_valid_attempt: usize,
-    first_model_reaching_attempt: usize,
-    command_returncode: i32,
-    proposal_schema_validated: bool,
-    candidate_interfaces_assessed: bool,
-    candidate_interfaces_passed: bool,
-    invalid_candidates_retained: bool,
-    workspace_boundary_validated: bool,
-    benchmark_invoked: bool,
-    held_out_test_invoked: bool,
-    paid_model_evaluation_reproduced: bool,
-    benchmark_score_reproduced: bool,
-    secret_scan: String,
-    raw_archive_sha256: String,
-    raw_archive_bytes: u64,
-    limitations: Vec<String>,
-}
-
-#[derive(Debug, Deserialize, Eq, PartialEq)]
-#[serde(deny_unknown_fields)]
-struct TraeCandidate {
-    name: String,
-    path: String,
-    axis: String,
-    hypothesis: String,
-    #[serde(default)]
-    components: Option<Vec<String>>,
-    #[serde(default)]
-    base_system: Option<String>,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct TraeFinalResponse {
-    schema_version: String,
-    candidates: Vec<TraeCandidate>,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct TraePendingEval {
-    candidates: Vec<TraeCandidate>,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct TraeValidationReport {
-    schema_version: String,
-    candidate_count: usize,
-    valid_candidate_count: usize,
-    candidates: Vec<TraeCandidateValidation>,
-    interface_checks_passed: bool,
-    benchmark_invoked: bool,
-    held_out_test_invoked: bool,
-    workspace_boundary_passed: bool,
-    workspace_files: Vec<String>,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct TraeCandidateValidation {
-    name: String,
-    path: String,
-    sha256: String,
-    valid: bool,
-    error: Option<String>,
-}
-
 pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     let mut expected_digests = BTreeMap::new();
     let crouzeix = crouzeix::verify(repo_root)?;
-    let weng = verify_artifact_inventory(
-        repo_root,
-        Path::new("evidence/weng/artifact_inventory.tsv"),
-        0,
-        2,
-        3,
-        &mut expected_digests,
-    )?;
-    let rlm = verify_artifact_inventory(
-        repo_root,
-        Path::new("evidence/rlm/artifact_inventory.tsv"),
-        0,
-        1,
-        2,
-        &mut expected_digests,
-    )?;
-    let envharness = verify_artifact_inventory(
-        repo_root,
-        Path::new(ENVHARNESS_INVENTORY),
-        0,
-        1,
-        2,
-        &mut expected_digests,
-    )?;
-    let darwinx = verify_artifact_inventory(
-        repo_root,
-        Path::new("evidence/darwinx/artifact_inventory.tsv"),
-        0,
-        1,
-        2,
-        &mut expected_digests,
-    )?;
-    let self_improving_agents_survey = verify_artifact_inventory(
-        repo_root,
-        Path::new("evidence/self_improving_agents_survey/artifact_inventory.tsv"),
-        0,
-        2,
-        3,
-        &mut expected_digests,
-    )?;
-    let verified_coevolution_agenda = verify_artifact_inventory(
-        repo_root,
-        Path::new("evidence/verified_coevolution_agenda/artifact_inventory.tsv"),
-        0,
-        2,
-        3,
-        &mut expected_digests,
-    )?;
     let lean_proof_engineering = verify_artifact_inventory(
         repo_root,
         Path::new("evidence/lean_proof_engineering/artifact_inventory.tsv"),
@@ -239,25 +97,6 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     )?
     .len()
     .saturating_sub(1);
-    let meta_harness = verify_meta_harness_bundle(repo_root)?;
-    let _verified_raw_archive = (
-        meta_harness.raw_archive_members,
-        meta_harness.raw_archive_bytes,
-    );
-    for (path, digest) in &meta_harness.expected_digests {
-        if expected_digests
-            .insert(path.clone(), digest.clone())
-            .is_some()
-        {
-            return Err(AppError::invalid_input(
-                "sources.duplicate_artifact",
-                format!(
-                    "artifact appears in more than one manifest: {}",
-                    path.display()
-                ),
-            ));
-        }
-    }
     let snapshot_rows = load_snapshot_rows(repo_root)?;
     for row in &snapshot_rows {
         verify_file(
@@ -271,7 +110,6 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     verify_implementation_identity(repo_root, &snapshot_rows)?;
     verify_implementation_snapshot_trees(repo_root, &snapshot_rows)?;
     verify_license_status(repo_root)?;
-    verify_capture_receipts(repo_root)?;
 
     let binaries = collect_binary_files(repo_root)?;
     for binary in &binaries {
@@ -299,20 +137,12 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     let local_locators = verify_content_locators(repo_root)?;
 
     Ok(SourcesReport {
-        evidence_artifacts: weng
-            + rlm
-            + envharness
-            + darwinx
-            + self_improving_agents_survey
-            + verified_coevolution_agenda
-            + lean_proof_engineering
+        evidence_artifacts: lean_proof_engineering
             + cordis_paper
             + autodiff_geometry
             + sicp
             + benchmarks
             + agentic_engineering
-            + meta_harness.site_artifacts
-            + meta_harness.normalized_artifacts
             + crouzeix.source_receipts
             + crouzeix.verification_receipts,
         snapshot_files: snapshot_rows.len(),
@@ -325,132 +155,6 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         local_locators,
         crouzeix_source_receipts: crouzeix.source_receipts,
         crouzeix_verification_receipts: crouzeix.verification_receipts,
-    })
-}
-
-fn verify_meta_harness_bundle(repo_root: &Path) -> Result<MetaHarnessReport, AppError> {
-    let root = Path::new(META_HARNESS_ROOT);
-    let mut expected_digests = BTreeMap::new();
-    let site_manifest = root.join("site_manifest.tsv");
-    let site_rows = read_tsv(repo_root, &site_manifest)?;
-    if site_rows.first().map(Vec::as_slice)
-        != Some(
-            [
-                "source_url",
-                "local_path",
-                "captured_at",
-                "last_modified",
-                "bytes",
-                "sha256",
-            ]
-            .map(str::to_owned)
-            .as_slice(),
-        )
-    {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_site",
-            "Meta-Harness site manifest has an unexpected header",
-        ));
-    }
-    for (index, columns) in site_rows.iter().enumerate().skip(1) {
-        if columns.len() != 6
-            || !columns[0].starts_with("https://yoonholee.com/meta-harness/")
-            || columns[2].is_empty()
-            || columns[3] != "Tue, 04 Aug 2026 03:07:36 GMT"
-        {
-            return Err(malformed_manifest(
-                &site_manifest,
-                index + 1,
-                "invalid Meta-Harness site capture row",
-            ));
-        }
-        let relative = safe_relative_path(&columns[1], "Meta-Harness site path")?;
-        if !relative.starts_with(root.join("site")) {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_site",
-                format!("site artifact escaped capture root: {}", relative.display()),
-            ));
-        }
-        let bytes = parse_u64(columns.get(4), &site_manifest, index + 1, "bytes")?;
-        let digest = parse_digest(columns.get(5), &site_manifest, index + 1)?;
-        verify_file(
-            repo_root,
-            &relative,
-            bytes,
-            &digest,
-            "Meta-Harness site artifact",
-        )?;
-        if expected_digests.insert(relative.clone(), digest).is_some() {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_site",
-                format!("duplicate site artifact {}", relative.display()),
-            ));
-        }
-    }
-    if site_rows.len() != 14 {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_site",
-            format!(
-                "Meta-Harness site capture requires 13 artifacts, found {}",
-                site_rows.len().saturating_sub(1)
-            ),
-        ));
-    }
-    verify_meta_harness_capture_receipt(repo_root)?;
-
-    let run_root = root.join("trae_run");
-    let normalized_manifest = run_root.join("normalized_manifest.tsv");
-    let normalized_rows = verify_relative_artifact_manifest(
-        repo_root,
-        &run_root,
-        &normalized_manifest,
-        &mut expected_digests,
-    )?;
-    verify_meta_harness_normalized_run(repo_root, &run_root, &normalized_rows)?;
-
-    let receipt_path = repo_root.join(run_root.join("receipt.json"));
-    let receipt: MetaHarnessRunReceipt =
-        serde_json::from_slice(&fs::read(&receipt_path).map_err(|error| {
-            AppError::io(
-                "sources.meta_harness_run",
-                "read Meta-Harness TRAE run receipt",
-                error,
-            )
-        })?)
-        .map_err(|error| {
-            AppError::invalid_input(
-                "sources.meta_harness_run",
-                format!("invalid Meta-Harness TRAE run receipt: {error}"),
-            )
-        })?;
-    verify_meta_harness_run_receipt(&receipt)?;
-    let archive_relative = run_root.join("raw_traecli_run.tar.gz");
-    verify_file(
-        repo_root,
-        &archive_relative,
-        receipt.raw_archive_bytes,
-        &receipt.raw_archive_sha256,
-        "Meta-Harness raw TRAE archive",
-    )?;
-    if receipt.raw_archive_bytes > META_HARNESS_ARCHIVE_MAX_BYTES {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_archive",
-            "Meta-Harness raw archive exceeds the compressed-size limit",
-        ));
-    }
-    expected_digests.insert(archive_relative.clone(), receipt.raw_archive_sha256);
-    let archive_members = verify_meta_harness_archive(
-        repo_root,
-        &archive_relative,
-        &run_root.join("raw_members.tsv"),
-    )?;
-
-    Ok(MetaHarnessReport {
-        site_artifacts: site_rows.len() - 1,
-        normalized_artifacts: normalized_rows.len() - 1,
-        raw_archive_members: archive_members,
-        raw_archive_bytes: receipt.raw_archive_bytes,
-        expected_digests,
     })
 }
 
@@ -606,55 +310,6 @@ fn verify_artifact_inventory(
     Ok(rows.len().saturating_sub(1))
 }
 
-fn verify_meta_harness_capture_receipt(repo_root: &Path) -> Result<(), AppError> {
-    let root = repo_root.join(META_HARNESS_ROOT);
-    let receipt = read_key_value_tsv(&root.join("capture_receipt.tsv"))?;
-    for (key, expected) in [
-        ("repository", "Harp"),
-        ("source_id", "META-HARNESS-SITE"),
-        ("capture_state", "captured-and-offline-verified"),
-        ("asset_count", "13"),
-        ("http_last_modified", "Tue, 04 Aug 2026 03:07:36 GMT"),
-    ] {
-        if receipt.get(key).map(String::as_str) != Some(expected) {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_receipt",
-                format!("Meta-Harness capture receipt has invalid {key}"),
-            ));
-        }
-    }
-    for (key, relative) in [
-        ("acquisition_script_sha256", "acquire.sh"),
-        ("site_manifest_sha256", "site_manifest.tsv"),
-    ] {
-        let expected = receipt
-            .get(key)
-            .and_then(|value| value.strip_prefix("sha256:"))
-            .ok_or_else(|| {
-                AppError::invalid_input(
-                    "sources.meta_harness_receipt",
-                    format!("Meta-Harness capture receipt is missing {key}"),
-                )
-            })?;
-        if sha256_file(&root.join(relative))? != expected {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_receipt",
-                format!("Meta-Harness capture receipt digest is stale for {relative}"),
-            ));
-        }
-    }
-    if !receipt
-        .get("venue_claim_boundary")
-        .is_some_and(|value| value.contains("dated first-party site claim"))
-    {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_receipt",
-            "Meta-Harness venue claim boundary is missing",
-        ));
-    }
-    Ok(())
-}
-
 fn verify_relative_artifact_manifest(
     repo_root: &Path,
     manifest_root: &Path,
@@ -705,356 +360,6 @@ fn verify_relative_artifact_manifest(
         }
     }
     Ok(rows)
-}
-
-fn verify_meta_harness_normalized_run(
-    repo_root: &Path,
-    run_root: &Path,
-    manifest_rows: &[Vec<String>],
-) -> Result<(), AppError> {
-    if manifest_rows.len() != 9 {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_run",
-            format!(
-                "normalized Meta-Harness run requires 8 artifacts, found {}",
-                manifest_rows.len().saturating_sub(1)
-            ),
-        ));
-    }
-    let normalized = repo_root.join(run_root).join("normalized");
-    let final_response: TraeFinalResponse = read_strict_json(
-        &normalized.join("final_response.json"),
-        "TRAE final response",
-    )?;
-    let pending: TraePendingEval = read_strict_json(
-        &normalized.join("pending_eval.json"),
-        "TRAE pending evaluation",
-    )?;
-    let validation: TraeValidationReport = read_strict_json(
-        &normalized.join("validation.json"),
-        "TRAE validation report",
-    )?;
-    if final_response.schema_version != "harp-meta-harness-trae-final/v1"
-        || final_response.candidates.len() != 3
-        || final_response.candidates != pending.candidates
-    {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_run",
-            "normalized proposal and pending evaluation do not match the v1 contract",
-        ));
-    }
-    let mut names = BTreeSet::new();
-    for candidate in &final_response.candidates {
-        if !valid_snake_case(&candidate.name)
-            || !names.insert(candidate.name.as_str())
-            || candidate.path != format!("agents/{}.py", candidate.name)
-            || candidate.axis.trim().is_empty()
-            || candidate.hypothesis.trim().is_empty()
-            || candidate.components.as_ref().is_some_and(|items| {
-                items.is_empty() || items.iter().any(|item| item.trim().is_empty())
-            })
-            || candidate
-                .base_system
-                .as_ref()
-                .is_some_and(|value| value.trim().is_empty())
-        {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_run",
-                format!("invalid normalized candidate {}", candidate.name),
-            ));
-        }
-    }
-    if validation.schema_version != "harp-meta-harness-trae-validation/v1"
-        || validation.candidate_count != 3
-        || validation.valid_candidate_count != 0
-        || validation.candidates.len() != 3
-        || validation.interface_checks_passed
-        || validation.benchmark_invoked
-        || validation.held_out_test_invoked
-        || !validation.workspace_boundary_passed
-        || validation
-            .workspace_files
-            .iter()
-            .any(|path| path.contains("__pycache__") || path.ends_with(".pyc"))
-    {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_run",
-            "normalized TRAE validation report violates the recorded boundary",
-        ));
-    }
-    for (candidate, result) in final_response
-        .candidates
-        .iter()
-        .zip(validation.candidates.iter())
-    {
-        if result.name != candidate.name
-            || result.path != candidate.path
-            || result.valid
-            || result
-                .error
-                .as_deref()
-                .is_none_or(|error| !error.contains("import or interface failure"))
-            || !valid_digest(&result.sha256)
-            || sha256_file(&normalized.join(&candidate.path))? != result.sha256
-        {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_run",
-                format!("candidate validation mismatch for {}", candidate.name),
-            ));
-        }
-    }
-    let reference: serde_json::Value = read_strict_json(
-        &normalized.join("reference_state.json"),
-        "TRAE reference state",
-    )?;
-    if reference["schema_version"] != "harp-meta-harness-reference-state/v1"
-        || reference["reported_site_state"]["measurement_status"]
-            != "first-party-reported-not-local"
-        || reference["local_measurements"]
-            .as_array()
-            .is_none_or(|items| !items.is_empty())
-        || !reference["missing_inputs"]
-            .as_array()
-            .is_some_and(|items| items.iter().any(|item| item == "frontier_val.json"))
-    {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_run",
-            "TRAE reference state does not preserve the reported-vs-local boundary",
-        ));
-    }
-    let prompt = fs::read_to_string(normalized.join("prompt.md"))
-        .map_err(|error| AppError::io("sources.meta_harness_run", "read TRAE prompt", error))?;
-    for required in [
-        "Do not invent `frontier_val.json`",
-        "Candidate quality is not being benchmarked",
-        "preamble",
-        "Markdown fence",
-        "trailing prose",
-    ] {
-        if !prompt.contains(required) {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_run",
-                format!("normalized TRAE prompt is missing boundary {required:?}"),
-            ));
-        }
-    }
-    Ok(())
-}
-
-fn verify_meta_harness_run_receipt(receipt: &MetaHarnessRunReceipt) -> Result<(), AppError> {
-    if receipt.schema_version != "harp-meta-harness-trae-run/v1"
-        || receipt.source_id != "META-HARNESS-TRAE-RUN"
-        || receipt.repository_source_id != "META-HARNESS-REPO"
-        || receipt.repository_revision != "44b9942127847f7421db70d8c7e48407f09a3c70"
-        || receipt.model != "gpt-5.4"
-        || receipt.candidate_count != 3
-        || receipt.valid_candidate_count != 0
-        || receipt.first_model_reaching_attempt != 2
-        || receipt.first_schema_valid_attempt != 3
-        || receipt.command_returncode != 0
-        || !receipt.proposal_schema_validated
-        || !receipt.candidate_interfaces_assessed
-        || receipt.candidate_interfaces_passed
-        || !receipt.invalid_candidates_retained
-        || !receipt.workspace_boundary_validated
-        || receipt.benchmark_invoked
-        || receipt.held_out_test_invoked
-        || receipt.paid_model_evaluation_reproduced
-        || receipt.benchmark_score_reproduced
-        || receipt.secret_scan != "passed-without-redaction"
-        || !valid_digest(&receipt.raw_archive_sha256)
-        || receipt.raw_archive_bytes == 0
-        || receipt.limitations.len() < 4
-    {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_run",
-            "Meta-Harness TRAE run receipt violates the v1 contract",
-        ));
-    }
-    Ok(())
-}
-
-fn verify_meta_harness_archive(
-    repo_root: &Path,
-    archive_relative: &Path,
-    inventory_relative: &Path,
-) -> Result<usize, AppError> {
-    let inventory_rows = read_tsv(repo_root, inventory_relative)?;
-    if inventory_rows.first().map(|row| row.join("\t")) != Some("path\tbytes\tsha256".to_owned()) {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_archive",
-            "Meta-Harness raw member inventory has an unexpected header",
-        ));
-    }
-    let mut expected = BTreeMap::new();
-    for (index, columns) in inventory_rows.iter().enumerate().skip(1) {
-        if columns.len() != 3 {
-            return Err(malformed_manifest(
-                inventory_relative,
-                index + 1,
-                "expected three columns",
-            ));
-        }
-        let path = safe_relative_path(&columns[0], "raw archive member path")?;
-        let bytes = parse_u64(columns.get(1), inventory_relative, index + 1, "bytes")?;
-        let digest = parse_digest(columns.get(2), inventory_relative, index + 1)?;
-        if expected.insert(path.clone(), (bytes, digest)).is_some() {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_archive",
-                format!("duplicate raw archive member {}", path.display()),
-            ));
-        }
-    }
-    if expected.is_empty() || expected.len() > META_HARNESS_ARCHIVE_MAX_MEMBERS {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_archive",
-            "Meta-Harness raw archive member count is outside the bounded range",
-        ));
-    }
-    let archive_file = fs::File::open(repo_root.join(archive_relative)).map_err(|error| {
-        AppError::io(
-            "sources.meta_harness_archive",
-            "open Meta-Harness raw archive",
-            error,
-        )
-    })?;
-    let mut archive = tar::Archive::new(GzDecoder::new(archive_file));
-    let mut seen = BTreeMap::new();
-    let mut total_bytes = 0u64;
-    for entry in archive.entries().map_err(|error| {
-        AppError::external(
-            "sources.meta_harness_archive",
-            format!("read Meta-Harness raw archive: {error}"),
-        )
-    })? {
-        let entry = entry.map_err(|error| {
-            AppError::external(
-                "sources.meta_harness_archive",
-                format!("read Meta-Harness raw archive member: {error}"),
-            )
-        })?;
-        if !entry.header().entry_type().is_file() {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_archive",
-                "Meta-Harness raw archive may contain regular files only",
-            ));
-        }
-        let path = entry.path().map_err(|error| {
-            AppError::external(
-                "sources.meta_harness_archive",
-                format!("decode Meta-Harness raw archive path: {error}"),
-            )
-        })?;
-        let path = safe_relative_path(
-            path.to_str().ok_or_else(|| {
-                AppError::invalid_input(
-                    "sources.meta_harness_archive",
-                    "raw archive member path is not UTF-8",
-                )
-            })?,
-            "raw archive member path",
-        )?;
-        let declared = entry.size();
-        total_bytes = total_bytes.checked_add(declared).ok_or_else(|| {
-            AppError::invalid_input(
-                "sources.meta_harness_archive",
-                "raw archive decompressed size overflowed",
-            )
-        })?;
-        if total_bytes > META_HARNESS_DECOMPRESSED_MAX_BYTES {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_archive",
-                "Meta-Harness raw archive exceeds the decompressed-size limit",
-            ));
-        }
-        let mut bytes = Vec::new();
-        entry
-            .take(declared.saturating_add(1))
-            .read_to_end(&mut bytes)
-            .map_err(|error| {
-                AppError::io(
-                    "sources.meta_harness_archive",
-                    "read Meta-Harness raw archive member",
-                    error,
-                )
-            })?;
-        if bytes.len() as u64 != declared {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_archive",
-                format!("raw archive member size mismatch: {}", path.display()),
-            ));
-        }
-        reject_sensitive_raw_member(&path, &bytes)?;
-        let digest = format!("{:x}", Sha256::digest(&bytes));
-        if seen.insert(path.clone(), (declared, digest)).is_some() {
-            return Err(AppError::invalid_input(
-                "sources.meta_harness_archive",
-                format!("duplicate raw archive member {}", path.display()),
-            ));
-        }
-    }
-    if seen != expected {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_archive",
-            "Meta-Harness raw archive does not match its member digest inventory",
-        ));
-    }
-    Ok(seen.len())
-}
-
-fn reject_sensitive_raw_member(path: &Path, bytes: &[u8]) -> Result<(), AppError> {
-    let lower = String::from_utf8_lossy(bytes).to_ascii_lowercase();
-    let fixed_markers = [
-        "-----begin private key-----",
-        "-----begin rsa private key-----",
-        "-----begin ec private key-----",
-        "-----begin openssh private key-----",
-        "\"authorization\":\"bearer ",
-        "\"authorization\": \"bearer ",
-        "cookie: session=",
-        "set-cookie: session=",
-    ];
-    let sk_key = lower.match_indices("sk-").any(|(index, _)| {
-        lower[index + 3..]
-            .chars()
-            .take_while(|character| character.is_ascii_alphanumeric() || *character == '_')
-            .take(16)
-            .count()
-            == 16
-    });
-    if sk_key || fixed_markers.iter().any(|marker| lower.contains(marker)) {
-        return Err(AppError::invalid_input(
-            "sources.meta_harness_secret",
-            format!(
-                "sensitive material found in raw archive member {}",
-                path.display()
-            ),
-        ));
-    }
-    Ok(())
-}
-
-fn read_strict_json<T: for<'de> Deserialize<'de>>(path: &Path, label: &str) -> Result<T, AppError> {
-    serde_json::from_slice(
-        &fs::read(path).map_err(|error| AppError::io("sources.meta_harness_run", label, error))?,
-    )
-    .map_err(|error| {
-        AppError::invalid_input(
-            "sources.meta_harness_run",
-            format!("invalid {label}: {error}"),
-        )
-    })
-}
-
-fn valid_snake_case(value: &str) -> bool {
-    let mut parts = value.split('_');
-    parts.clone().count() >= 2
-        && parts.all(|part| {
-            !part.is_empty()
-                && part.bytes().enumerate().all(|(index, byte)| {
-                    byte.is_ascii_lowercase() || byte.is_ascii_digit() && index > 0
-                })
-        })
 }
 
 fn valid_digest(value: &str) -> bool {
@@ -1628,11 +933,7 @@ fn verify_license_status(repo_root: &Path) -> Result<(), AppError> {
             ));
         }
     }
-    for required in [
-        "evidence/sicp/LICENSE.txt",
-        "evidence/rlm/artifacts/git/LICENSE",
-        "evidence/weng/license_assignments.tsv",
-    ] {
+    for required in ["evidence/sicp/LICENSE.txt"] {
         if !repo_root.join(required).is_file() {
             return Err(AppError::invalid_input(
                 "sources.license",
@@ -1739,56 +1040,6 @@ fn verify_lfs_attributes(repo_root: &Path, binaries: &[PathBuf]) -> Result<(), A
                 return Err(AppError::invalid_input(
                     "sources.lfs_attributes",
                     format!("{relative} does not resolve {attribute}"),
-                ));
-            }
-        }
-    }
-    Ok(())
-}
-
-fn verify_capture_receipts(repo_root: &Path) -> Result<(), AppError> {
-    for (bundle, capture_state) in [
-        ("evidence/weng", "imported-and-offline-verified"),
-        ("evidence/rlm", "imported-and-offline-verified"),
-        ("evidence/envharness", "captured-and-offline-verified"),
-    ] {
-        let receipt = read_key_value_tsv(&repo_root.join(bundle).join("run-receipt.tsv"))?;
-        if receipt.get("repository").map(String::as_str) != Some("Harp")
-            || receipt.get("capture_state").map(String::as_str) != Some(capture_state)
-        {
-            return Err(AppError::invalid_input(
-                "sources.capture_receipt",
-                format!("{bundle} has an invalid Harp capture receipt"),
-            ));
-        }
-        let bindings: &[(&str, &str)] = if bundle == "evidence/envharness" {
-            &[
-                ("acquisition_script_sha256", "acquire.sh"),
-                ("source_table_sha256", "sources.tsv"),
-                ("manifest_sha256", "manifest.tsv"),
-                ("artifact_inventory_sha256", "artifact_inventory.tsv"),
-            ]
-        } else {
-            &[
-                ("acquisition_script_sha256", "acquire.sh"),
-                ("source_table_sha256", "sources.tsv"),
-            ]
-        };
-        for &(key, relative) in bindings {
-            let expected = receipt
-                .get(key)
-                .and_then(|value| value.strip_prefix("sha256:"))
-                .ok_or_else(|| {
-                    AppError::invalid_input(
-                        "sources.capture_receipt",
-                        format!("{bundle} receipt is missing {key}"),
-                    )
-                })?;
-            let actual = sha256_file(&repo_root.join(bundle).join(relative))?;
-            if expected != actual {
-                return Err(AppError::invalid_input(
-                    "sources.capture_receipt",
-                    format!("{bundle} receipt digest is stale for {relative}"),
                 ));
             }
         }
@@ -2226,43 +1477,6 @@ mod tests {
     use super::*;
     use tempfile::tempdir;
 
-    fn workspace_root() -> &'static Path {
-        Path::new(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .and_then(Path::parent)
-            .expect("workspace root")
-    }
-
-    #[test]
-    fn verifies_the_offline_meta_harness_evidence_bundle() {
-        let report = verify_meta_harness_bundle(workspace_root()).unwrap();
-
-        assert_eq!(report.site_artifacts, 13);
-        assert!(report.normalized_artifacts >= 8);
-        assert!(report.raw_archive_members >= 7);
-        assert!(report.raw_archive_bytes > 0);
-    }
-
-    #[test]
-    fn verifies_the_envharness_capture_bundle_and_receipt_bindings() {
-        let root = workspace_root();
-        let mut expected_digests = BTreeMap::new();
-
-        let artifact_count = verify_artifact_inventory(
-            root,
-            Path::new(ENVHARNESS_INVENTORY),
-            0,
-            1,
-            2,
-            &mut expected_digests,
-        )
-        .unwrap();
-
-        assert_eq!(artifact_count, 4);
-        assert_eq!(expected_digests.len(), 4);
-        verify_capture_receipts(root).unwrap();
-    }
-
     #[test]
     fn implementation_license_status_accepts_explicit_mit() {
         let repo = tempdir().unwrap();
@@ -2270,11 +1484,7 @@ mod tests {
         fs::create_dir_all(&implementation).unwrap();
         fs::write(implementation.join("LICENSE_STATUS"), "MIT\n").unwrap();
         fs::write(implementation.join("LICENSE"), "MIT License\n").unwrap();
-        for required in [
-            "evidence/sicp/LICENSE.txt",
-            "evidence/rlm/artifacts/git/LICENSE",
-            "evidence/weng/license_assignments.tsv",
-        ] {
+        for required in ["evidence/sicp/LICENSE.txt"] {
             let path = repo.path().join(required);
             fs::create_dir_all(path.parent().unwrap()).unwrap();
             fs::write(path, "fixture\n").unwrap();
@@ -2289,11 +1499,7 @@ mod tests {
         let implementation = repo.path().join("evidence/implementations/example");
         fs::create_dir_all(&implementation).unwrap();
         fs::write(implementation.join("LICENSE_STATUS"), "MIT\n").unwrap();
-        for required in [
-            "evidence/sicp/LICENSE.txt",
-            "evidence/rlm/artifacts/git/LICENSE",
-            "evidence/weng/license_assignments.tsv",
-        ] {
+        for required in ["evidence/sicp/LICENSE.txt"] {
             let path = repo.path().join(required);
             fs::create_dir_all(path.parent().unwrap()).unwrap();
             fs::write(path, "fixture\n").unwrap();

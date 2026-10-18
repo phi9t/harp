@@ -1,115 +1,75 @@
-# Worked example: readable prose with an auditable contradiction
+# Worked example: educational capture metadata
 
-This example shows the complete route:
-
-```text
-main prose
-  -> exact ledger claim
-  -> exact source record and locator
-```
-
-Production documents keep the ledger in a separate file. Main prose and ledger
-entries are shown together only to make the teaching route visible on one page.
+Main prose and ledger entries are shown together only to make the teaching route
+visible on one page. Production documents keep their ledger separately.
 
 ## Main prose
 
-**[[#EX-101: Figure label reports 59.0|EVIDENCE - EX-101]].**
-The figure labels the transferred result as 59.0%. This result has not been
-independently reproduced here.
+**[[#EX-101: License title identifies the version|EVIDENCE - EX-101]].**
+The captured license is titled Attribution-ShareAlike 4.0 International. No new result reproduction is claimed.
 
-**[[#EX-102: Nearby prose reports 59.5|EVIDENCE - EX-102]].**
-The nearby prose reports 59.5%. This result has not been independently
-reproduced here.
+**[[#EX-102: Capture record describes the edition|SOURCE CLAIM - EX-102]].**
+The provenance record describes the captured PDF as an unofficial Texinfo edition. No new result reproduction is claimed.
 
-**[[#EX-103: The exact value is unresolved|MISSING - EX-103]].**
-The exact value remains unresolved without an authoritative result artifact or
-author correction.
+**[[#EX-103: Current remote availability is unverified|MISSING - EX-103]].**
+This example does not establish current availability of the remote PDF. No new result reproduction is claimed.
 
-**[[#EX-104: Rounding could explain the discrepancy|INFERENCE - EX-104]].**
-Rounding could explain the discrepancy, but the inspected source does not
-establish that explanation.
+**[[#EX-104: Separate capture metadata from interpretation|INFERENCE - EX-104]].**
+Keeping capture metadata separate makes later evidence review easier. No new result reproduction is claimed.
 
 ## Ledger entries
 
-## EX-101: Figure label reports 59.0
+## EX-101: License title identifies the version
 
 - Class: `EVIDENCE`
-- Statement: Figure 4 labels the transferred result as 59.0%.
+- Statement: The captured license is titled Attribution-ShareAlike 4.0 International.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper]]
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 461](../../evidence/weng/text/dgm.txt#L461))
-- Scope: Figure 4 label.
-- Reproduction: Not independently reproduced here.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/LICENSE.txt|Captured license]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Direct visible figure label in the inspected source.
-- Caveat: Nearby prose reports a different value.
-- Relationship: `unresolved-with EX-102`
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
 
-## EX-102: Nearby prose reports 59.5
+## EX-102: Capture record describes the edition
 
-- Class: `EVIDENCE`
-- Statement: The prose near Figure 4 reports 59.5%.
+- Class: `SOURCE CLAIM`
+- Statement: The provenance record describes the captured PDF as an unofficial Texinfo edition.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper]]
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 517](../../evidence/weng/text/dgm.txt#L517))
-- Scope: Prose adjacent to Figure 4.
-- Reproduction: Not independently reproduced here.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: Direct source text.
-- Caveat: Figure 4 labels the value as 59.0%.
-- Relationship: `unresolved-with EX-101`
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
 
-## EX-103: The exact value is unresolved
+## EX-103: Current remote availability is unverified
 
 - Class: `MISSING`
-- Statement: Available source materials do not establish whether 59.0% or
-  59.5% is the authoritative result.
-- Source: [[#EX-101: Figure label reports 59.0|EX-101]] and
-  [[#EX-102: Nearby prose reports 59.5|EX-102]]
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 461](../../evidence/weng/text/dgm.txt#L461)) and
-  ([exact line 517](../../evidence/weng/text/dgm.txt#L517))
-- Scope: Exact transferred result.
-- Reproduction: Not independently reproduced here.
+- Statement: This example does not establish current availability of the remote PDF.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
 - Confidence: `high`
-- Confidence basis: The inspected source contains both values.
-- Caveat: Rounding may explain the difference, but the source does not say so.
-- Resolves when: An authoritative result artifact or author correction settles
-  the value.
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
+- Resolves when: An explicitly requested fresh source check establishes availability.
 
-## EX-104: Rounding could explain the discrepancy
+## EX-104: Separate capture metadata from interpretation
 
 - Class: `INFERENCE`
-- Statement: Rounding could explain the 59.0% versus 59.5% discrepancy.
-- Source: [[#EX-101: Figure label reports 59.0|EX-101]] and
-  [[#EX-102: Nearby prose reports 59.5|EX-102]]
-- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
-  ([exact line 461](../../evidence/weng/text/dgm.txt#L461)) and
-  ([exact line 517](../../evidence/weng/text/dgm.txt#L517))
-- Scope: The discrepancy between these two source statements only.
-- Reproduction: Not applicable.
-- Confidence: `low`
-- Confidence basis: Plausible numerical explanation with no source support.
-- Caveat: The values could instead reflect different runs, subsets, or an
-  editorial error.
-- Weakens if: The two values use different hidden accounting boundaries.
-- Falsified by: An authoritative artifact shows both values are exact results
-  from different runs or evaluation scopes.
-
-## Dated observation pattern
-
-For a mutable page without an immutable revision:
-
-```markdown
-- Class: `SOURCE CLAIM`
-- Mode: `paraphrase`
-- Source stability: `dated observation`
-- Observed: `2026-08-08`
-- Source: [[evidence/weng/metadata/dgm-arxiv.html|Local dated capture]]
-- Locator: [[evidence/weng/metadata/dgm-arxiv.html|Captured abstract description]]
-- Caveat: Refresh before presenting this as current.
-```
+- Statement: Keeping capture metadata separate makes later evidence review easier.
+- Source: [[source-registry-template#EXAMPLE-LICENSE: SICP captured license|License registry]] and [[source-registry-template#EXAMPLE-CAPTURE: SICP capture record|Capture registry]]
+- Locator: [[evidence/sicp/PROVENANCE.md|Capture provenance]] ([artifact identity](../../evidence/sicp/PROVENANCE.md#L3))
+- Scope: The retained SICP capture only.
+- Reproduction: Source wording inspected; no fresh remote verification or result reproduction.
+- Confidence: `high`
+- Confidence basis: Direct captured text for observations; the stated boundary for gaps.
+- Caveat: This is an evidence-writing example, not a new source acquisition.
+- Weakens if: Separate records make the source route harder to follow.
+- Falsified by: Reader checks show the split prevents reliable source identification.

@@ -17,7 +17,7 @@ fn validate_no_content_markdown(repository: &HeldDirectory) -> Result<(), AppErr
     let markdown = repository.regular_files_with_extension(
         Path::new(CONTENT_ROOT),
         "md",
-        "structured RSI content",
+        "structured content",
     )?;
     if let Some(path) = markdown.first() {
         return Err(invalid(

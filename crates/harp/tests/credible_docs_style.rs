@@ -1072,8 +1072,8 @@ fn valid_claim_entry(class: &str, extra: &str) -> String {
 
 - Class: `{class}`
 - Statement: Fixture statement.
-- Source: [Registry](source-registry-template.md#example-paper)
-- Locator: [Paper](../../evidence/weng/text/dgm.txt)
+- Source: [Registry](source-registry-template.md#example-license-sicp-captured-license)
+- Locator: [Paper](../../evidence/sicp/LICENSE.txt)
 - Scope: Fixture scope.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -1111,7 +1111,7 @@ fn malformed_claim_entries_are_rejected_structurally() {
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "- Locator: [Paper](../../evidence/weng/text/dgm.txt)",
+        "- Locator: [Paper](../../evidence/sicp/LICENSE.txt)",
         "- Locator: Figure 4",
     );
     assert!(validate_claim_entries(&unlinked_locator)
@@ -1142,7 +1142,7 @@ fn main_claims_must_match_ledger_class_and_id() {
     let valid = fs::read_to_string(&path).expect("read main template");
 
     let native = "\
-**[[claim-ledger-template#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+**[[claim-ledger-template#EX-002: Capture record describes the edition|SOURCE CLAIM - EX-002]].**
 The authors report 50.0%; this result has not been independently reproduced.
 ";
     validate_main_document(&path, native).expect("native wiki claim marker must validate");
@@ -1159,7 +1159,7 @@ Body.
     );
 
     let missing_native_ledger = "\
-**[[knowledge/example/missing_ledger#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+**[[knowledge/example/missing_ledger#EX-002: Capture record describes the edition|SOURCE CLAIM - EX-002]].**
 Body.
 ";
     let error = validate_main_document(&path, missing_native_ledger)
@@ -1169,24 +1169,24 @@ Body.
         "{error}"
     );
 
-    let bad_class = valid.replacen("[EVIDENCE - EX-001]", "[SOURCE CLAIM - EX-001]", 1);
+    let bad_class = valid.replacen("EVIDENCE - EX-001", "SOURCE CLAIM - EX-001", 1);
     assert!(validate_main_document(&path, &bad_class)
         .expect_err("class mismatch must fail")
         .contains("does not match its ledger entry"));
 
-    let bad_id = valid.replacen("[EVIDENCE - EX-001]", "[EVIDENCE - EX-999]", 1);
+    let bad_id = valid.replacen("EVIDENCE - EX-001", "EVIDENCE - EX-999", 1);
     assert!(validate_main_document(&path, &bad_id)
         .expect_err("ID mismatch must fail")
         .contains("main claim ID EX-999 targets ledger claim EX-001"));
 
     let missing_reproduction =
-        "**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-authors-report-the-benchmark-result).**\nThe authors report 50.0%.\n";
+        "**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-capture-record-describes-the-edition).**\nThe authors report 50.0%.\n";
     assert!(validate_main_document(&path, missing_reproduction)
         .expect_err("quantitative claim without reproduction status must fail")
         .contains("requires inline reproduction status"));
 
     let task_count_without_reproduction =
-        "**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-authors-report-the-benchmark-result).**\nThe authors report results on 200 tasks.\n";
+        "**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-capture-record-describes-the-edition).**\nThe authors report results on 200 tasks.\n";
     assert!(
         validate_main_document(&path, task_count_without_reproduction)
             .expect_err("numeric claim without reproduction status must fail")
@@ -1245,8 +1245,8 @@ fn locators_must_target_underlying_evidence() {
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "- Locator: [Paper](../../evidence/weng/text/dgm.txt)",
-        "- Locator: [Prose summary](../../rsi/systems/dgm.md#claim-ceiling)",
+        "- Locator: [Paper](../../evidence/sicp/LICENSE.txt)",
+        "- Locator: [Prose summary](../../knowledge/sicp/sicp_index.md#claim-ceiling)",
     );
     assert!(validate_claim_entries(&prose_locator)
         .expect_err("canonical prose cannot substitute for evidence")
@@ -1260,8 +1260,8 @@ fn immutable_evidence_locators_require_a_markdown_line_anchor() {
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "[Paper](../../evidence/weng/text/dgm.txt)",
-        "[[evidence/weng/text/dgm.txt|MCE extracted text]]",
+        "[Paper](../../evidence/sicp/LICENSE.txt)",
+        "[[evidence/sicp/LICENSE.txt|MCE extracted text]]",
     );
     assert!(validate_claim_entries(&wiki_only)
         .expect_err("wiki navigation alone must not satisfy an immutable locator")
@@ -1272,8 +1272,8 @@ fn immutable_evidence_locators_require_a_markdown_line_anchor() {
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "[Paper](../../evidence/weng/text/dgm.txt)",
-        "[[evidence/weng/text/dgm.txt|MCE extracted text]] ([exact line 1](../../evidence/weng/text/dgm.txt#L1))",
+        "[Paper](../../evidence/sicp/LICENSE.txt)",
+        "[[evidence/sicp/LICENSE.txt|MCE extracted text]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))",
     );
     validate_claim_entries(&dual_link)
         .expect("native navigation plus a Markdown line locator must validate");
@@ -1286,8 +1286,8 @@ fn native_evidence_locators_require_an_evidence_target_and_matching_line_target(
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "[Paper](../../evidence/weng/text/dgm.txt)",
-        "[[knowledge/rsi/systems/dgm|DGM]] ([exact line 1](../../evidence/weng/text/dgm.txt#L1))",
+        "[Paper](../../evidence/sicp/LICENSE.txt)",
+        "[[knowledge/sicp/sicp_index|DGM]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))",
     );
     assert!(validate_claim_entries(&native_knowledge_target)
         .expect_err("native locator cannot target maintained knowledge")
@@ -1298,8 +1298,8 @@ fn native_evidence_locators_require_an_evidence_target_and_matching_line_target(
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "[Paper](../../evidence/weng/text/dgm.txt)",
-        "[[evidence/weng/text/dgm.txt|MCE extracted text]] ([exact line 1](../../evidence/weng/references/dgm.txt#L1))",
+        "[Paper](../../evidence/sicp/LICENSE.txt)",
+        "[[evidence/sicp/LICENSE.txt|MCE extracted text]] ([exact line 1](../../evidence/sicp/PROVENANCE.md#L1))",
     );
     assert!(validate_claim_entries(&mismatched_raw_text)
         .expect_err("raw native locator must retain a line anchor for the same target")
@@ -1360,7 +1360,7 @@ fn required_values_and_observation_dates_are_validated() {
 ## SOURCE-1: Mutable source
 
 - Class: `mutable page`
-- Artifact: [Capture](../../evidence/weng/metadata/dgm-arxiv.html)
+- Artifact: [Capture](../../evidence/sicp/PROVENANCE.md)
 - Stability: `dated observation`
 - Observed: `2026-13-01`
 - Semantic locators: Description.
@@ -1389,7 +1389,7 @@ fn ledger_entries_reject_unowned_visible_content() {
 fn main_claims_support_bullet_groups_without_bypassing_validation() {
     let path = style_root().join("main-document-template.md");
     let valid = "\
-**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-released-selector-reads-the-shallow-score).**
+**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-license-title-identifies-the-version).**
 - The selector reads `overall_performance`.
 - The inspected source was not executed.
 ";
@@ -1398,7 +1398,7 @@ fn main_claims_support_bullet_groups_without_bypassing_validation() {
     assert!(claims[0].body.contains("The selector reads"));
 
     let missing_reproduction = "\
-**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-authors-report-the-benchmark-result).**
+**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-capture-record-describes-the-edition).**
 - The authors report results on 200 tasks.
 - The benchmark result is 50.0%.
 ";
@@ -1407,7 +1407,7 @@ fn main_claims_support_bullet_groups_without_bypassing_validation() {
         .contains("requires inline reproduction status"));
 
     let separated_list = "\
-**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-released-selector-reads-the-shallow-score).**
+**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-license-title-identifies-the-version).**
 
 > An intervening block breaks the claim block.
 
@@ -1442,7 +1442,7 @@ fn evidence_locators_cannot_escape_evidence_through_symlinks() {
     let evidence = workspace_root().join("evidence");
     let inside = tempfile::tempdir_in(&evidence).expect("create evidence temp directory");
     let link = inside.path().join("escape.md");
-    symlink(workspace_root().join("knowledge/rsi/systems/dgm.md"), &link)
+    symlink(workspace_root().join("knowledge/sicp/sicp_index.md"), &link)
         .expect("create evidence escape symlink");
     let relative = link
         .strip_prefix(&evidence)
@@ -1453,7 +1453,7 @@ fn evidence_locators_cannot_escape_evidence_through_symlinks() {
         "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
     )
     .replace(
-        "../../evidence/weng/text/dgm.txt",
+        "../../evidence/sicp/LICENSE.txt",
         &format!("../../evidence/{relative}"),
     );
 

@@ -80,10 +80,9 @@ do not rely on private agent memory as a project interface.
 
 ### Local tools
 
-This repository is bound to the local Kata project `harp` through `.kata.toml`.
-Use Kata as the shared intent ledger for real Harp work; `.kata.local.toml` is
-ignored for per-machine daemon overrides. Do not run `kata init --with-agents`
-because Harp owns its agent guidance directly.
+Git-managed Markdown under `.scratch/` is the shared intent and issue tracker.
+Follow [the tracker contract](agents/issue-tracker.md). Kata is retired; retained
+Corenius adapters do not change that ownership.
 
 roborev may be used for independent local verification, but hooks, daemons,
 GitHub App integration, PR comments, and CI polling require explicit approval.
@@ -151,15 +150,8 @@ not a second source of truth.
 ## Evidence changes
 
 Do not edit captured upstream bytes to normalize formatting, names, or paths.
-Evidence refreshes are explicit:
-
-```sh
-evidence/weng/acquire.sh --refresh
-evidence/rlm/acquire.sh --refresh
-```
-
-Review changed upstream bytes, source identity, licenses, manifests, claim
-ceilings, and generated receipts before accepting a refresh.
+Review changed upstream bytes, source identity, licenses, manifests and claim
+ceilings before accepting an explicit evidence refresh.
 
 For public implementation studies:
 
@@ -176,9 +168,8 @@ For public implementation studies:
 
 Use typed errors and bounded boundary parsing. Keep filesystem writes
 repository-relative, symlink-safe, atomic, and race-aware. Add a failing test
-before production behavior changes. The inherited corpus tests cover malformed
-registries, unknown systems, incomplete routes, diagnostic contracts, duplicate
-IDs, source mapping, escapes, symlink output, and byte stability.
+before production behavior changes. Corpus tests protect canonical identities, source mapping, safe links,
+path escapes, symlink output and byte stability.
 
 ## Context-control changes
 

@@ -980,7 +980,7 @@ class GoalValidationTests(unittest.TestCase):
             root = Path(directory)
             corpus = self.write_bytes(
                 root, "content/generated/corpus.json",
-                b'{"schema_version":"rsi-technical-atlas/v6"}' + b" " * goal_validation.ARTIFACT_BYTES_CAP,
+                b'{"schema_version":"harp-knowledge/v1"}' + b" " * goal_validation.ARTIFACT_BYTES_CAP,
             )
             self.assertEqual(goal_validation._validate_reader_surfaces(root), goal_validation.READER_EVIDENCE_PATHS)
             corpus.write_bytes(b" " * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1))
