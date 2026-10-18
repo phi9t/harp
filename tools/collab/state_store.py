@@ -306,13 +306,20 @@ class StateStore:
         con.execute("UPDATE attempts SET state=?,updated=? WHERE id=?", (state, now(), aid))
         self.event(con, aid, state)
 
-    def no_uncertain_landing(self) -> None:
+    def no_uncertain_landing(self, except_attempt: str | None = None) -> None:
         self.require_initialized()
+        if except_attempt is not None:
+            valid_id(except_attempt)
         with self.db() as con:
             placeholders = ",".join("?" for _ in UNRESOLVED_LANDING)
+            values: list[str] = list(UNRESOLVED_LANDING)
+            predicate = f"state IN ({placeholders})"
+            if except_attempt is not None:
+                predicate += " AND id<>?"
+                values.append(except_attempt)
             row = con.execute(
-                f"SELECT id FROM attempts WHERE state IN ({placeholders}) LIMIT 1",
-                UNRESOLVED_LANDING,
+                f"SELECT id FROM attempts WHERE {predicate} LIMIT 1",
+                values,
             ).fetchone()
         if row:
             raise Refused(f"Unresolved landing {row['id']}; reconcile first")

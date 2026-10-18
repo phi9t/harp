@@ -475,6 +475,56 @@ class CollabTests(unittest.TestCase):
             result = self.cli(command, second["id"], ok=False)
             self.assertIn("Unresolved landing", result.stderr)
 
+    def test_pending_pushed_landing_blocks_corenius_admission_before_tracker_mutation(self):
+        self.init()
+        self.ticket()
+        ticket = self.effort_ticket()
+        self.commit("standalone and tracker tickets")
+        first = self.claim()
+        self.contribute(first)
+        self.cli("submit", first["id"])
+        remote = self.add_bare_remote()
+        checked = self.cli("check", first["id"])
+        crashed = self.cli(
+            "land",
+            first["id"],
+            "--expected-tip",
+            checked["candidate"],
+            failpoint="after_git_push",
+            ok=False,
+        )
+        self.assertEqual(crashed.returncode, 86)
+        self.assertEqual(self.remote_head(remote), checked["integration"])
+        result = self.open_corenius_attempt(ok=False)
+        self.assertIn("Unresolved landing", result.stderr)
+        self.assertIn("Status: open", ticket.read_text())
+        self.assertEqual([row["id"] for row in self.cli("status")["attempts"]], [first["id"]])
+
+    def test_held_lane_blocks_corenius_admission_before_tracker_mutation(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("tracker ticket")
+        with (self.repo / ".git/collab/lane.lock").open("a+") as handle:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            result = self.open_corenius_attempt(ok=False)
+        self.assertIn("lane operation busy", result.stderr)
+        self.assertIn("Status: open", ticket.read_text())
+        self.assertEqual(self.cli("status")["attempts"], [])
+
+    def test_empty_cherry_pick_marker_refuses_before_core_push(self):
+        a = self.prepared()
+        remote = self.add_bare_remote()
+        checked = self.cli("check", a["id"])
+        cherry_pick = self.run_process(["git", "cherry-pick", checked["base"]])
+        self.assertNotEqual(cherry_pick.returncode, 0, cherry_pick.stderr)
+        self.assertTrue((self.repo / ".git/CHERRY_PICK_HEAD").exists())
+        self.assertEqual(self.git("status", "--porcelain=v1"), "")
+        result = self.cli("land", a["id"], "--expected-tip", checked["candidate"], ok=False)
+        self.assertIn("in-progress Git operation", result.stderr)
+        self.assertEqual(self.remote_head(remote), checked["base"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["base"])
+        self.assertEqual(self.cli("show", a["id"])["state"], "verified")
+
     def test_direct_cli_rejects_unsafe_temp_and_output_roots(self):
         for value in (SYSTEM_TMP, "relative", "/"):
             with self.subTest(value=value):
@@ -1042,11 +1092,12 @@ class CollabTests(unittest.TestCase):
         }))
         second = self.cli("open-attempt", "T-two", "--owner", "worker", "--worker-run-dir", str(run_dir))
         self.assertEqual(second["worker_run_dir"], str(run_dir.resolve()))
+        (run_dir / "exit_code").write_text("0\n")
         blocked = self.cli("abandon", second["id"], "--confirm-stopped", ok=False)
         self.assertIn("worker still running", blocked.stderr)
         second_process.terminate()
         second_process.wait(timeout=5)
-        (run_dir / "exit_code").write_text(str(second_process.returncode))
+        (run_dir / "exit_code").write_text("143\n")
         abandoned = self.cli("abandon", second["id"], "--confirm-stopped")
         self.assertEqual(abandoned["state"], "abandoned")
 

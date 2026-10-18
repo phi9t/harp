@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -15,6 +16,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import effort  # noqa: E402
+
+COLLAB_CLI = Path(__file__).resolve().parents[1] / "collab" / "collab.py"
 
 # Apply the repository temporary-root policy before any host allocation.
 import runpy as _temp_policy_runpy
@@ -29,6 +32,10 @@ _temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, 
 
 def run(cwd, *args):
     return subprocess.run(["git", "-C", str(cwd), *args], check=True, capture_output=True, text=True).stdout
+
+
+def git_result(cwd, *args):
+    return subprocess.run(["git", "-C", str(cwd), *args], check=False, capture_output=True, text=True)
 
 
 class EffortTest(unittest.TestCase):
@@ -58,6 +65,39 @@ class EffortTest(unittest.TestCase):
             self.code = effort.main(argv)
         self.err = err.getvalue()
         return out.getvalue()
+
+    def cli(self, repo: Path, *args, ok=True, failpoint=None):
+        env = dict(
+            os.environ,
+            GIT_CONFIG_NOSYSTEM="1",
+            GIT_CONFIG_GLOBAL=os.devnull,
+            GIT_AUTHOR_NAME="Test",
+            GIT_AUTHOR_EMAIL="test@example.invalid",
+            GIT_COMMITTER_NAME="Test",
+            GIT_COMMITTER_EMAIL="test@example.invalid",
+        )
+        if failpoint:
+            env["COLLAB_FAILPOINT"] = failpoint
+        result = subprocess.run(
+            [sys.executable, str(COLLAB_CLI), "--repo", str(repo), *args],
+            check=False,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
+        if ok:
+            self.assertEqual(result.returncode, 0, result.stderr)
+            return json.loads(result.stdout)
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        return result
+
+    def effort_cli(self, repo: Path, *args):
+        return subprocess.run(
+            [sys.executable, str(Path(effort.__file__)), "--repo", str(repo), *args],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
 
     def fill_state(self):
         state = self.wt / "docs/efforts/demo/STATE.md"
@@ -154,6 +194,78 @@ class EffortTest(unittest.TestCase):
         self.assertFalse((self.wt / "docs/efforts/demo").exists())
         self.assertEqual(run(self.wt, "status", "--porcelain", "--untracked-files=all"), "")
         self.assertEqual(run(record_worktree, "status", "--porcelain", "--untracked-files=all"), "")
+
+    def test_move_records_refuses_pending_publication_before_record_worktree_creation(self):
+        run(self.wt, "add", "docs/efforts/demo")
+        run(self.wt, "commit", "-qm", "start effort")
+        self.cli(
+            self.wt,
+            "init",
+            "--trunk",
+            "effort/demo",
+            "--check-json",
+            json.dumps([sys.executable, "-c", "print('checked')"]),
+            "--workspace-root",
+            str(self.repo.parent / "collab-workspaces"),
+        )
+        ticket = self.wt / ".tickets/T-one.md"
+        ticket.parent.mkdir()
+        ticket.write_text("---\nid: T-one\nstatus: open\ndeps: []\n---\n\n# T-one\n\nDo the thing.\n")
+        run(self.wt, "add", ".tickets/T-one.md")
+        run(self.wt, "commit", "-qm", "ticket")
+        attempt = self.cli(self.wt, "open-attempt", "T-one", "--owner", "worker")
+        attempt_path = Path(attempt["path"])
+        (attempt_path / "code.txt").write_text("change\n")
+        run(attempt_path, "add", "code.txt")
+        run(attempt_path, "commit", "-qm", "candidate")
+        self.cli(self.wt, "submit", attempt["id"])
+        checked = self.cli(self.wt, "check", attempt["id"])
+        crashed = self.cli(
+            self.wt,
+            "land",
+            attempt["id"],
+            "--expected-tip",
+            checked["candidate"],
+            "--no-push",
+            failpoint="after_land_started",
+            ok=False,
+        )
+        self.assertEqual(crashed.returncode, 86)
+
+        record_worktree = self.wt.parent / f"{self.wt.name}-demo-records"
+        moved = self.effort_cli(self.wt, "move-records", "demo")
+
+        self.assertNotEqual(moved.returncode, 0)
+        self.assertIn("Unresolved landing", moved.stderr)
+        self.assertFalse(record_worktree.exists())
+        self.assertNotEqual(
+            git_result(self.wt, "rev-parse", "--verify", "-q", "effort/demo-records").returncode,
+            0,
+        )
+
+    def test_move_records_refuses_legacy_pending_publication_without_collab_init(self):
+        run(self.wt, "add", "docs/efforts/demo")
+        run(self.wt, "commit", "-qm", "start effort")
+        common = Path(run(self.wt, "rev-parse", "--path-format=absolute", "--git-common-dir").strip())
+        legacy = common / "legacy-land"
+        legacy.mkdir()
+        (legacy / "legacy-landing.json").write_text(json.dumps({
+            "id": "legacy-landing",
+            "state": "pushed",
+            "events": [],
+        }))
+        record_worktree = self.wt.parent / f"{self.wt.name}-demo-records"
+
+        moved = self.effort_cli(self.wt, "move-records", "demo")
+
+        self.assertNotEqual(moved.returncode, 0)
+        self.assertIn("Unresolved legacy landing legacy-landing", moved.stderr)
+        self.assertFalse(record_worktree.exists())
+        self.assertFalse((common / "collab").exists())
+        self.assertNotEqual(
+            git_result(self.wt, "rev-parse", "--verify", "-q", "effort/demo-records").returncode,
+            0,
+        )
 
     def test_dehydrate_requires_human_part(self):
         self.call(["--repo", str(self.wt), "dehydrate", "demo"])

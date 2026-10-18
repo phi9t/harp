@@ -119,6 +119,38 @@ class CleanupTests(unittest.TestCase):
         self.assertTrue(Path(second["check_path"]).exists())
         self.assertEqual(self.git("rev-parse", "--verify", first_ref, ok=False), "")
 
+    def test_sweep_and_retention_retain_terminal_attempt_with_unknown_worker_evidence(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        run = self.root / "run"
+        run.mkdir()
+        (run / "run.json").write_text(json.dumps({"pid": 2147483647}))
+        attempt = self.cli("open-attempt", "T-one", "--owner", "worker", "--worker-run-dir", str(run))
+        path = Path(attempt["path"])
+        (path / "code.txt").write_text("change\n")
+        self.commit("change", cwd=path)
+        self.cli("submit", attempt["id"])
+        checked = self.cli("check", attempt["id"])
+        log = Path(checked["log"])
+        check_path = Path(checked["check_path"])
+        tag = check_path.name.rsplit("-", 1)[1]
+        ref = "refs/collab/checks/" + attempt["id"] + "/" + tag
+        old_time = 946684800
+        os.utime(log, (old_time, old_time))
+        os.utime(check_path, (old_time, old_time))
+        os.utime(self.repo / ".git" / ref, (old_time, old_time))
+        self.cli("land", attempt["id"], "--no-push")
+        (run / "run.json").write_text("{}")
+
+        result = self.cli("sweep", "--apply", "--retention-days", "0")
+        self.assertIn("state unknown", str(result["skipped"]))
+        self.assertIn("unknown Attempt still needs this evidence", str(result["skipped"]))
+        self.assertTrue(path.exists())
+        self.assertTrue(log.exists())
+        self.assertTrue(check_path.exists())
+        self.assertEqual(self.git("rev-parse", "--verify", ref), checked["integration"])
+
     def test_shim_fresh_gc_metadata_corruption_and_deprecation(self):
         result = self.wt("new", "--agent", "worker", "--topic", "fresh")
         self.assertEqual(result.returncode, 0, result.stderr)

@@ -143,6 +143,38 @@ class LifecycleOpsTests(unittest.TestCase):
         self.cli("recover", attempt["id"], "--confirm-stopped")
         self.assertEqual(self.git("rev-parse", "HEAD"), record_head)
 
+    def test_pushed_local_success_recovers_records_while_remote_offline(self):
+        self.init()
+        ticket = self.effort_ticket()
+        self.commit("effort ticket")
+        attempt = self.open_corenius_attempt()
+        self.contribute(attempt)
+        fixtures.CollabTests.cli(self, "submit", attempt["id"])
+        checked = fixtures.CollabTests.cli(self, "check", attempt["id"])
+        remote = fixtures.CollabTests.add_bare_remote(self)
+        review = json.dumps({"reviewer": "operator", "standards": "passed", "spec": "passed", "criteria": [1]})
+        crashed = fixtures.CollabTests.cli(
+            self,
+            "land",
+            attempt["id"],
+            "--review-json",
+            review,
+            failpoint="after_git_land",
+            ok=False,
+        )
+        self.assertEqual(crashed.returncode, 86)
+        self.assertEqual(fixtures.CollabTests.remote_head(self, remote), checked["integration"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), checked["integration"])
+        remote.rename(remote.with_name("origin-offline.git"))
+        recovered = fixtures.CollabTests.cli(self, "recover", attempt["id"], "--confirm-stopped")
+        self.assertEqual(recovered["state"], "landed")
+        self.assertIn("Status: resolved", ticket.read_text())
+        acceptance = self.repo / "docs/efforts/sample-effort/evidence/acceptance-01.jsonl"
+        self.assertEqual(len(acceptance.read_text().splitlines()), 1)
+        head = self.git("rev-parse", "HEAD")
+        fixtures.CollabTests.cli(self, "recover", attempt["id"], "--confirm-stopped")
+        self.assertEqual(self.git("rev-parse", "HEAD"), head)
+
     def test_override_with_effort_exports_attributed_committed_record(self):
         self.cli("init", "--trunk", "main", "--check-json", '["true"]',
                  "--override-owners-json", '["operator"]')
@@ -171,6 +203,55 @@ class LifecycleOpsTests(unittest.TestCase):
         refused = self.cli("abandon", attempt["id"], "--confirm-stopped", ok=False)
         self.assertIn("unknown", refused.stderr)
         self.assertEqual(self.cli("show", attempt["id"])["state"], "working")
+
+    def test_liveness_decisions_report_bad_evidence_and_block_lifecycle_commands(self):
+        self.init()
+        for index in range(8):
+            self.ticket(f"T-{index}")
+        self.commit("tickets")
+        cases = [
+            ("missing", None, "run.json unusable"),
+            ("malformed", "{broken", "run.json unusable"),
+            ("nonmapping", "[]", "run.json must be a JSON object"),
+            ("missing-identity", "{}", "no usable pid or session"),
+            ("nonpositive-pid", {"pid": 0}, "pid must be a positive integer"),
+            ("invalid-pid", {"pid": "broken"}, "pid must be a positive integer"),
+            ("invalid-session", {"process_session_id": "broken"}, "process_session_id must be a positive integer"),
+            ("malformed-completion", {"pid": 2147483647, "exit_code": "not-an-int"},
+             "completion exit_code must be a non-negative integer"),
+        ]
+        for index, (name, payload, reason) in enumerate(cases):
+            with self.subTest(name=name):
+                run = self.root / f"run-{name}"
+                run.mkdir()
+                if isinstance(payload, str):
+                    (run / "run.json").write_text(payload)
+                elif isinstance(payload, dict):
+                    exit_code = payload.pop("exit_code", None)
+                    (run / "run.json").write_text(json.dumps(payload))
+                    if exit_code is not None:
+                        (run / "exit_code").write_text(exit_code)
+                attempt = self.cli("open-attempt", f"T-{index}", "--owner", "test-worker",
+                                   "--worker-run-dir", str(run))
+                inspected = self.cli("inspect", attempt["id"])
+                self.assertTrue(inspected["blocked"])
+                self.assertEqual(inspected["liveness"]["decision"], "unknown")
+                self.assertEqual(inspected["blockers"][0]["decision"], "unknown")
+                self.assertIn(reason, inspected["blockers"][0]["reason"])
+                for command in ("recover", "abandon", "refresh"):
+                    refused = self.cli(command, attempt["id"], "--confirm-stopped", ok=False)
+                    self.assertIn("state unknown", refused.stderr)
+
+    def test_unbound_attempt_reports_unbound_and_confirmed_abandon_still_works(self):
+        self.init()
+        self.ticket()
+        self.commit("ticket")
+        attempt = self.claim()
+        inspected = self.cli("inspect", attempt["id"])
+        self.assertFalse(inspected["blocked"])
+        self.assertEqual(inspected["liveness"]["decision"], "unbound")
+        abandoned = self.cli("abandon", attempt["id"], "--confirm-stopped")
+        self.assertEqual(abandoned["state"], "abandoned")
 
 
     def test_transferred_corenius_claim_recovers_interrupted_fresh_allocation(self):

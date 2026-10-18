@@ -13,7 +13,7 @@ import tempfile
 import uuid
 
 from common import Refused, digest, now, valid_id
-from landing_protocol import gate_workspace_status, process_group_alive
+from landing_protocol import gate_workspace_status, process_group_alive, require_no_pending_legacy
 from state_store import StateStore
 
 UNCERTAIN = {"prepared", "push_started", "pushed", "local_started", "landed_records_incomplete"}
@@ -25,14 +25,10 @@ class LegacyJournal:
         home = common / "collab"
         self.store = StateStore(home, home / "state.sqlite3")
 
-    def require_no_pending(self) -> None:
+    def require_no_pending(self, except_landing: str | None = None) -> None:
         if self.store.load_config() is not None:
             self.store.no_uncertain_landing()
-        for path in sorted(self.home.glob("*.json")):
-            record = self.read(path.stem)
-            uncertain_failure = record["state"] == "push_failed" and not self.confirmed_push_rejection(record)
-            if record["state"] in UNCERTAIN or uncertain_failure:
-                raise Refused(f"Unresolved legacy landing {record['id']}; use --recover-landing {record['id']}")
+        require_no_pending_legacy(self.home.parent, except_landing=except_landing)
 
     def confirmed_push_rejection(self, record: dict) -> bool:
         return any(

@@ -1,6 +1,7 @@
 """Legacy landing CLI behavior in real disposable Git repositories."""
 from __future__ import annotations
 
+import fcntl
 import os
 import json
 import shlex
@@ -147,6 +148,21 @@ class LegacyLandingTest(unittest.TestCase):
         result = self.call("--gate", f"{shlex.quote(sys.executable)} -c {shlex.quote(code)}")
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_initialized_legacy_landing_honors_busy_collab_meta_lock_before_publication(self):
+        self.collab("init", "--trunk", "main", "--check-json", '["true"]')
+        remote = self.remote()
+        lock = self.repo / ".git/collab/meta.lock"
+
+        with lock.open("a+") as handle:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            result = self.call()
+
+        self.assertEqual(result.returncode, 64, result.stderr)
+        self.assertIn("meta operation busy", result.stderr)
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.base)
+        self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.base)
+        self.assertFalse((self.repo / ".git/legacy-land").exists())
+
     def test_staged_unrelated_change_refuses_local_fast_forward_before_push(self):
         remote = self.remote()
         (self.repo / "README").write_text("staged local work\n")
@@ -156,6 +172,22 @@ class LegacyLandingTest(unittest.TestCase):
         self.assertIn("staged", result.stderr)
         self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.base)
         self.assertEqual(self.git("show", ":README"), "staged local work\n")
+
+    def test_empty_cherry_pick_marker_refuses_before_push(self):
+        remote = self.remote()
+        cherry_pick = subprocess.run(
+            ["git", "-C", str(self.repo), "cherry-pick", self.base],
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(cherry_pick.returncode, 0, cherry_pick.stderr)
+        self.assertTrue((self.repo / ".git/CHERRY_PICK_HEAD").exists())
+        self.assertEqual(self.git("status", "--porcelain=v1"), "")
+        result = self.call()
+        self.assertEqual(result.returncode, 10, result.stderr)
+        self.assertIn("in-progress Git operation", result.stderr)
+        self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.base)
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.base)
 
     def test_recover_after_local_move_requires_its_attributed_exact_tip(self):
         result = self.call(env={"COLLAB_FAILPOINT": "after_legacy_local"})
@@ -167,6 +199,41 @@ class LegacyLandingTest(unittest.TestCase):
         repaired = self.call("--recover-landing", operation["id"])
         self.assertEqual(repaired.returncode, 0, repaired.stderr)
         self.assertEqual(json.loads(path.read_text())["state"], "landed")
+
+    def test_recover_refuses_unrelated_pending_legacy_landing(self):
+        result = self.call(env={"COLLAB_FAILPOINT": "after_legacy_local"})
+        self.assertEqual(result.returncode, 86, result.stderr)
+        path = next((self.repo / ".git/legacy-land").glob("*.json"))
+        operation = json.loads(path.read_text())
+        other = self.repo / ".git/legacy-land/other-landing.json"
+        other.write_text(json.dumps({
+            "id": "other-landing",
+            "state": "pushed",
+            "events": [],
+        }))
+
+        repaired = self.call("--recover-landing", operation["id"])
+
+        self.assertEqual(repaired.returncode, 64, repaired.stderr)
+        self.assertIn("Unresolved legacy landing other-landing", repaired.stderr)
+        self.assertEqual(json.loads(path.read_text())["state"], "local_started")
+
+    def test_recover_repairs_attributed_local_success_while_remote_offline(self):
+        remote = self.remote()
+        result = self.call(env={"COLLAB_FAILPOINT": "after_legacy_local"})
+        self.assertEqual(result.returncode, 86, result.stderr)
+        path = next((self.repo / ".git/legacy-land").glob("*.json"))
+        operation = json.loads(path.read_text())
+        self.assertEqual(operation["state"], "local_started")
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.tip)
+        self.assertEqual(self.git("rev-parse", "main", cwd=remote).strip(), self.tip)
+        remote.rename(remote.with_name("origin-offline.git"))
+
+        repaired = self.call("--recover-landing", operation["id"])
+
+        self.assertEqual(repaired.returncode, 0, repaired.stderr)
+        self.assertEqual(json.loads(path.read_text())["state"], "landed")
+        self.assertEqual(self.git("rev-parse", "main").strip(), self.tip)
 
     def test_push_rejection_reports_actual_cause_without_a_stale_candidate_claim(self):
         remote = self.remote()

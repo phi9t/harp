@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import inspect
 import json
 import os
 from pathlib import Path
@@ -13,6 +14,9 @@ import uuid
 
 from common import Refused, output_path
 from workspace import run_git
+
+
+_TAR_EXTRACT_SUPPORTS_FILTER = "filter" in inspect.signature(tarfile.TarFile.extract).parameters
 
 
 def inventory(root: Path) -> dict:
@@ -71,7 +75,8 @@ def restore_archive(source: str, destination: str) -> dict:
                 raise Refused("Unsupported archive member")
             if any((target / parent).is_symlink() for parent in relative.parents):
                 raise Refused("Archive entry crosses a symlink")
-            stream.extract(member, target, filter="fully_trusted")
+            kwargs = {"filter": "fully_trusted"} if _TAR_EXTRACT_SUPPORTS_FILTER else {}
+            stream.extract(member, target, **kwargs)
     shutil.copyfile(archive / "index", target / ".git" / "index")
     if inventory(target) != manifest["files"]:
         raise Refused("Restored file inventory differs from archive")

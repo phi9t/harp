@@ -7,7 +7,8 @@ from pathlib import Path
 from check_runner import CheckRunner
 from common import Refused, failpoint, output_path, valid_branch_component, valid_id
 from landing import LandingManager
-from liveness import liveness_blockers, normalize_worker_binding
+from landing_protocol import require_no_pending_publication
+from liveness import liveness_blockers, normalize_worker_binding, worker_liveness
 from policy import (
     protect_candidate_paths,
     validate_check_argv,
@@ -49,6 +50,7 @@ class Collab:
 
     def open_refreshed_attempt(self, previous: dict, commits: list[str], head: str) -> dict:
         """Allocate under RefreshManager's locks without rewriting an owned claim."""
+        require_no_pending_publication(self.store, self.workspace.common)
         self.workspace.primary()
         base = self.workspace.trunk()
         self.tickets.require_refresh_claim(previous, base)
@@ -125,7 +127,8 @@ class Collab:
         deps = [valid_id(item) for item in deps]
         if len(deps) != len(set(deps)) or tid in deps:
             raise Refused("Duplicate or self dependency")
-        with self.store.lock("meta"):
+        with self.store.lock("lane"), self.store.lock("meta"):
+            require_no_pending_publication(self.store, self.workspace.common)
             self.workspace.primary()
             directory = Path(self.require_config()["root"]) / ".tickets"
             if directory.is_symlink():
@@ -179,7 +182,8 @@ class Collab:
 
     def open_standalone_attempt(self, tid: str, owner: str, worker: dict | None = None) -> dict:
         worker = worker or normalize_worker_binding(None, None)
-        with self.store.lock("meta"):
+        with self.store.lock("lane"), self.store.lock("meta"):
+            require_no_pending_publication(self.store, self.workspace.common)
             base = self.workspace.trunk()
             meta, _ = self.tickets.ticket(tid, base)
             self.tickets.require_ready(meta, base)
@@ -205,7 +209,8 @@ class Collab:
     ) -> dict:
         worker = worker or normalize_worker_binding(None, None)
         source_id = corenius_ticket_id(effort, tid)
-        with self.store.lock("meta"):
+        with self.store.lock("lane"), self.store.lock("meta"):
+            require_no_pending_publication(self.store, self.workspace.common)
             self.workspace.primary()
             self.tickets.require_corenius_ready(effort, tid)
             base = self.workspace.trunk()
@@ -304,13 +309,15 @@ class Collab:
     def inspect(self, aid: str) -> dict:
         self.require_config()
         attempt = self.store.row(aid)
+        liveness = worker_liveness(attempt)
         blockers = []
-        blockers.extend(liveness_blockers(attempt))
+        blockers.extend(liveness_blockers(attempt, liveness))
         blockers.extend(self.store.busy_locks())
         blockers.extend(self.workspace.attempt_blockers(attempt))
         return {
             "attempt": aid,
             "state": attempt["state"],
+            "liveness": liveness,
             "blockers": blockers,
             "blocked": bool(blockers),
         }

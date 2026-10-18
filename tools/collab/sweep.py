@@ -7,7 +7,7 @@ from pathlib import Path
 from archives import archive_worktree, clear_archived_changes, require_archived_source
 from common import Refused
 from retention import Retention
-from liveness import require_worker_stopped, worker_liveness
+from liveness import require_worker_stopped
 
 
 TERMINAL_STATES = ("landed", "abandoned")
@@ -184,9 +184,6 @@ class SweepManager:
 
     def require_stopped(self, attempt: dict) -> None:
         require_worker_stopped(attempt)
-        status = worker_liveness(attempt)
-        if any(source.get("state") == "unknown" for source in status["sources"]):
-            raise Refused("Worker liveness is unknown; retaining Attempt artifacts")
 
     def is_ancestor(self, older: str, newer: str) -> bool:
         return self.workspace.git("merge-base", older, newer, check=False).strip() == older
