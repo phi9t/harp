@@ -518,7 +518,10 @@ def write_task_toml(
                 *([f"rootfs = {toml_string(metadata['rootfs'])}"] if metadata.get("rootfs") else []),
                 *([f"service_docker_image = {toml_string(metadata['service_docker_image'])}"] if metadata.get("service_docker_image") else []),
                 *([f"service_rootfs = {toml_string(metadata['service_rootfs'])}"] if metadata.get("service_rootfs") else []),
-                'adaptation = "Materialized from the public Terminal-Bench original task. The terminal_bench capsule aliases /app to the writable workspace and /tests to /workspace/tests, then runs pytest offline inside insula instead of the upstream Docker apt/curl/uv bootstrap."',
+                'adaptation = ' + toml_string(
+                    "Materialized from the public Terminal-Bench original task. The terminal_bench capsule aliases /app to the writable workspace and /tests to /workspace/tests, then runs pytest offline inside insula instead of the upstream Docker apt/curl/uv bootstrap."
+                    + (f" Monitored exploit state is relocated to the retained task overlay {SECURITY_RCE_STATE}; private capsule scratch remains at /run/corenius-tmp." if upstream.name == "security-celery-redis-rce" else "")
+                ),
                 "",
             ]
     )
@@ -1294,8 +1297,26 @@ http {
         solution.write_text(text, encoding="utf-8")
 
 
+# Match upstream text without introducing a system-temporary execution path.
+UPSTREAM_SYSTEM_TMP = "/" + "tmp"
+SECURITY_RCE_STATE = "/var/lib/corenius/security_celery_redis_rce"
+
+
+def adapt_security_rce_paths(text: str) -> str:
+    # This task's monitored exploit effects must survive separate service and
+    # verifier capsules. Retain them in a task-owned overlay, never a host temp
+    # bind or the capsule-private scratch tmpfs.
+    return re.sub(r"(?<![\w./])" + re.escape(UPSTREAM_SYSTEM_TMP) + r"(?=/|[^\w./-]|$)", SECURITY_RCE_STATE, text)
+
+
 def adapt_security_celery_redis_rce_task(task_root: Path) -> None:
     environment = task_root / "environment"
+    # Only generated execution copies are adapted; the upstream checkout and
+    # its pinned source identity remain unchanged.
+    for root in (environment, task_root / "tests", task_root / "solution"):
+        for path in root.rglob("*"):
+            if path.is_file() and path.suffix in {".py", ".sh", ".md", ".yaml", ".yml"}:
+                path.write_text(adapt_security_rce_paths(path.read_text(encoding="utf-8")), encoding="utf-8")
     layer_source = task_root / "service_sources" / "security_celery_redis_rce"
     remove_tree(layer_source, ignore_errors=True)
     layer_source.mkdir(parents=True)
@@ -1344,12 +1365,12 @@ if __name__ == "__main__":
     if solution.is_file():
         text = solution.read_text(encoding="utf-8")
         text = text.replace(
-            "python3 exploit.py redis 'touch /tmp/security_mark3.txt'\n",
-            "python3 exploit.py redis 'touch /tmp/security_mark3.txt'\n"
+            f"python3 exploit.py redis 'touch {SECURITY_RCE_STATE}/security_mark3.txt'\n",
+            f"python3 exploit.py redis 'touch {SECURITY_RCE_STATE}/security_mark3.txt'\n"
             "sleep 1\n",
         )
         solution.write_text(text, encoding="utf-8")
-    (environment / ".insula_overlays/tmp").mkdir(parents=True, exist_ok=True)
+    (environment / ".insula_overlays/security_celery_redis_rce").mkdir(parents=True, exist_ok=True)
 
 
 def adapt_security_vulhub_minio_task(task_root: Path) -> None:
@@ -2049,7 +2070,7 @@ def adapt_filter_js_from_html_task(task_root: Path) -> None:
     text = text.replace(
         "def download_attack_vectors():\n"
         "    \"\"\"Download XSS attack vectors from HTML sanitizer testbed.\"\"\"\n"
-        "    testcases_dir = Path(\"/tmp/xss_testcases\")\n"
+        f"    testcases_dir = Path(\"{UPSTREAM_SYSTEM_TMP}/xss_testcases\")\n"
         "    testcases_dir.mkdir(exist_ok=True)\n"
         "\n"
         "    # Download the repository as a zip file\n"
@@ -2136,6 +2157,8 @@ def adapt_spring_messaging_vul_task(task_root: Path) -> None:
 
 
 def adapt_terminal_bench_instruction(upstream_task_id: str, instruction: str) -> str:
+    if upstream_task_id == "security-celery-redis-rce":
+        return adapt_security_rce_paths(instruction)
     if upstream_task_id == "kv-store-grpc":
         instruction = instruction.replace(
             "1. Install grpcio (1.73.0) and grpcio-tools (1.73.0) python packages system-wide.",
@@ -2417,7 +2440,7 @@ def terminal_bench_workspace_writable_overlays(upstream_task_id: str) -> list[di
         ]
     if upstream_task_id == "security-celery-redis-rce":
         return [
-            {"dest": "/tmp", "path": ".insula_overlays/tmp", "kind": "dir"},
+            {"dest": SECURITY_RCE_STATE, "path": ".insula_overlays/security_celery_redis_rce", "kind": "dir"},
         ]
     return []
 

@@ -1813,6 +1813,22 @@
     "docs/reference/agentic-inventory/policy-and-efforts.md": {
       "reason": "Retain exact historical bytes in Git ancestry; keep legacy import-source names out of active payload.",
       "sha256": "669b7dfb2d7477df2500d958003204e3838e1a1f6efd6554ca0ec4b653db0edb"
+    },
+    "bench/README.md": {
+      "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
+      "sha256": "e2de5221cfbd5e910481c27cc7d673400aa4da873b81169c70e72a7fc82ddd1c"
+    },
+    "bench/harness/materialize_public_tasks.py": {
+      "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
+      "sha256": "6611b25031662ad35d3a5cb15a11078cad56091a37a89c73f782de95b3316632"
+    },
+    "bench/harness/test_materialize_public_tasks.py": {
+      "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
+      "sha256": "2020fccd94903e69790ed1059f0f972d3a6498e61413de63f34891774c85a611"
+    },
+    "tools/insula/test_docker_image_rootfs.py": {
+      "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
+      "sha256": "76761eeabfabdd38e53b0e1e6a40faea6f677e112a6b774c24573c911815c0a3"
     }
   }
 }

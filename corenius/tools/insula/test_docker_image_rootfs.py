@@ -51,7 +51,7 @@ class DockerImageRootfsTest(unittest.TestCase):
     def test_apt_package_names_are_conservative(self):
         docker_image_rootfs.validate_apt_package_names(["python3-pip", "libpq-dev", "postgresql-client-16"])
         with self.assertRaises(SystemExit):
-            docker_image_rootfs.validate_apt_package_names(["python3;touch /tmp/nope"])
+            docker_image_rootfs.validate_apt_package_names(["python3;touch /run/corenius-tmp/nope"])
 
     def test_debian_archive_sources_script_is_explicit(self):
         script = docker_image_rootfs.debian_archive_sources_script()

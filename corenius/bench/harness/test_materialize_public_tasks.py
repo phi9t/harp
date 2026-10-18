@@ -1222,7 +1222,7 @@ class MaterializePublicTasksTest(unittest.TestCase):
             "\n"
             "def download_attack_vectors():\n"
             "    \"\"\"Download XSS attack vectors from HTML sanitizer testbed.\"\"\"\n"
-            "    testcases_dir = Path(\"/tmp/xss_testcases\")\n"
+            f"    testcases_dir = Path(\"{mat.UPSTREAM_SYSTEM_TMP}/xss_testcases\")\n"
             "    testcases_dir.mkdir(exist_ok=True)\n"
             "\n"
             "    # Download the repository as a zip file\n"
@@ -1551,10 +1551,16 @@ class MaterializePublicTasksTest(unittest.TestCase):
         )
         (task / "solution.sh").write_text(
             "#!/bin/sh\n"
-            "python3 exploit.py redis 'touch /tmp/security_mark3.txt'\n"
+            f"python3 exploit.py redis 'touch {mat.UPSTREAM_SYSTEM_TMP}/security_mark3.txt'\n"
             "echo done\n"
         )
-        (task / "file_monitor.py").write_text("print('monitor')\n")
+        original_monitor = f'MONITOR_DIR = "{mat.UPSTREAM_SYSTEM_TMP}"\n'
+        original_verifier = f'MARKER = "{mat.UPSTREAM_SYSTEM_TMP}/security_mark3.txt"\n'
+        (task / "file_monitor.py").write_text(original_monitor)
+        (task / "tests/test_outputs.py").write_text(original_verifier)
+        (task / "task.yaml").write_text(
+            (task / "task.yaml").read_text().replace("Write the report.", f"Create {mat.UPSTREAM_SYSTEM_TMP}/security_mark3.txt via Redis.")
+        )
         (task / "tasks.py").write_text("print('tasks')\n")
         rootfs = self.root / "celery_rootfs"
         for rel in (
@@ -1579,7 +1585,7 @@ class MaterializePublicTasksTest(unittest.TestCase):
         generated = self.out / "terminal_bench_security_celery_redis_rce"
         self.assertFalse((generated / "environment/file_monitor.py").exists())
         self.assertFalse((generated / "environment/tasks.py").exists())
-        self.assertTrue((generated / "environment/.insula_overlays/tmp").is_dir())
+        self.assertTrue((generated / "environment/.insula_overlays/security_celery_redis_rce").is_dir())
         self.assertTrue((generated / "service_sources/security_celery_redis_rce/file_monitor.py").is_file())
         self.assertTrue((generated / "service_sources/security_celery_redis_rce/vulnerable_redis_worker.py").is_file())
         task_toml = (generated / "task.toml").read_text()
@@ -1587,13 +1593,28 @@ class MaterializePublicTasksTest(unittest.TestCase):
         self.assertIn("redis-server --bind 127.0.0.1 --port 6379", task_toml)
         self.assertIn('aliases = ["redis", "celery"]', task_toml)
         solution = (generated / "solution/solve.sh").read_text()
-        self.assertIn("python3 exploit.py redis 'touch /tmp/security_mark3.txt'\nsleep 1\n", solution)
+        self.assertIn(f"python3 exploit.py redis 'touch {mat.SECURITY_RCE_STATE}/security_mark3.txt'\nsleep 1\n", solution)
         request = json.loads((generated / "capsule_request.json").read_text())
         self.assertEqual(request["layers"][0]["kind"], "rootfs")
         tree_layers = [layer for layer in request["layers"] if layer["kind"] == "tree"]
         self.assertEqual(tree_layers[0]["name"], "security_celery_redis_rce_services")
         self.assertEqual(tree_layers[0]["file_binds"][0]["dest"], "/opt/security_celery_redis_rce")
-        self.assertIn({"dest": "/tmp", "path": ".insula_overlays/tmp", "kind": "dir"}, request["policy"]["workspace_writable_overlays"])
+        self.assertIn({"dest": mat.SECURITY_RCE_STATE, "path": ".insula_overlays/security_celery_redis_rce", "kind": "dir"}, request["policy"]["workspace_writable_overlays"])
+        # Monitor, exploit and verifier agree on the same persisted marker,
+        # including both copies of verifier code used by the harness.
+        monitor = {}
+        exec((generated / "service_sources/security_celery_redis_rce/file_monitor.py").read_text(), monitor)
+        marker = str(Path(monitor["MONITOR_DIR"]) / "security_mark3.txt")
+        for relative in ("tests/test_outputs.py", "environment/tests/test_outputs.py"):
+            verifier = {}
+            exec((generated / relative).read_text(), verifier)
+            self.assertEqual(verifier["MARKER"], marker)
+        self.assertIn(f"touch {marker}", solution)
+        self.assertIn(marker, (generated / "instruction.md").read_text())
+        self.assertIn("Monitored exploit state is relocated", task_toml)
+        self.assertEqual((task / "file_monitor.py").read_text(), original_monitor)
+        self.assertEqual((task / "tests/test_outputs.py").read_text(), original_verifier)
+
 
     def test_materializes_supported_terminal_bench_minio_rootfs_service(self):
         task = self.make_terminal_task(

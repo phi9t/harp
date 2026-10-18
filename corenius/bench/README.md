@@ -195,8 +195,10 @@ python3 tools/temp_root.py -- python3 bench/harness/run.py --tasks-root .scratch
 `security-celery-redis-rce` uses a prepared `ubuntu:24.04` rootfs customized
 with Redis and Python verifier/client packages. The generated task starts Redis,
 the upstream hidden file-monitor service, and a vulnerable Redis-queue worker as
-same-Insula services, with `/tmp` backed by a workspace overlay so the exploit
-effects survive into the verifier phase.
+same-Insula services. Generated instructions, solution, monitor and verifier
+use `/var/lib/corenius/security_celery_redis_rce` as a retained workspace overlay
+so exploit effects survive into the verifier phase. Ephemeral service files use
+the private `/run/corenius-tmp` tmpfs. The pinned upstream source is unchanged.
 `security-vulhub-minio` uses the public `vulhub/minio:2023-02-27T18-10-45Z`
 image as a prepared rootfs and starts the real MinIO binary as an agent-phase
 service. Because the image is based on an archived Debian release, export it with
