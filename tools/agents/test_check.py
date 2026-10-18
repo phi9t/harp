@@ -12,12 +12,12 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class GateDispatcherTests(unittest.TestCase):
-    def dispatch(self, **options):
+    def dispatch(self, *arguments, **options):
         with tempfile.TemporaryDirectory(prefix="gate-dispatch-") as directory:
             fixture = Path(directory)
             trace = fixture / "trace.jsonl"
             shim = "#!" + sys.executable + "\n" + r'''import json, os, sys
-if len(sys.argv) > 1 and sys.argv[1] == "tools/temp_root.py":
+if len(sys.argv) > 1 and sys.argv[1] in ("tools/temp_root.py", "tools/agents/check.py"):
     os.execv(sys.executable, [sys.executable, *sys.argv[1:]])
 with open(os.environ["GATE_TRACE"], "a") as stream:
     stream.write(json.dumps([os.path.basename(sys.argv[0]), *sys.argv[1:]]) + "\n")
@@ -66,10 +66,15 @@ raise SystemExit(1)
             environment.update(PATH=str(fixture) + os.pathsep + environment["PATH"],
                                GATE_TRACE=str(trace), CHECK_CARGO="0")
             environment.update(options)
-            result = subprocess.run(["/bin/sh", "tools/agents/check.sh"], cwd=ROOT,
+            result = subprocess.run(["/bin/sh", "tools/agents/check.sh", *arguments], cwd=ROOT,
                                     env=environment, text=True, capture_output=True)
-            calls = [json.loads(line) for line in trace.read_text().splitlines()]
+            calls = [json.loads(line) for line in (trace.read_text().splitlines() if trace.exists() else [])]
             return result, calls
+
+    def test_selected_suite_runs_without_default_suites(self):
+        result, calls = self.dispatch('--suite', '15-worker')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(calls, [['python3', 'tools/agents/test_worker.py']])
 
     def collab_suite_count(self, calls):
         return sum(call[:6] == ["python3", "-m", "unittest", "discover", "-s", "tools/collab/tests"]

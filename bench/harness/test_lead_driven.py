@@ -23,12 +23,18 @@ import tasklib  # noqa: E402
 
 class LeadDrivenTest(unittest.TestCase):
     def setUp(self):
-        (tasklib.ROOT / ".scratch").mkdir(exist_ok=True)
-        self.tmp = tempfile.TemporaryDirectory(dir=str(tasklib.ROOT / ".scratch"))
+        self.tmp = tempfile.TemporaryDirectory()
         self.out = Path(self.tmp.name)
 
     def tearDown(self):
         self.tmp.cleanup()
+
+    def test_interactive_tmux_rejects_complete_overlong_socket_before_allocation(self):
+        root = self.out / ('long' * 25)
+        with patch.dict(os.environ, TMPDIR=str(root)):
+            with self.assertRaisesRegex(lead_driven.LeadDrivenError, 'socket path'):
+                lead_driven.interactive_tmux_env(dict(os.environ), self.out)
+        self.assertEqual(list(root.iterdir()), [])
 
     def run_command(self, *args):
         buffer = io.StringIO()

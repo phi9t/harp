@@ -1424,7 +1424,14 @@ def append_scenario_row(
 
 
 def interactive_tmux_env(env: dict, case_dir: Path) -> dict:
-    tmp = case_dir / "tmp"
+    # Scenario names and retained output roots can exceed sockaddr_un's budget.
+    # This private directory belongs to the scenario and is removed after tmux.
+    parent = worker_tool.temp_parent()
+    # Include mkdtemp's random suffix and tmux's own UID/socket-name components.
+    longest_socket = parent / "tmux-XXXXXXXX" / "tmux" / f"tmux-{os.getuid()}" / "default"
+    if len(os.fsencode(longest_socket)) > 107:
+        raise LeadDrivenError("interactive tmux socket path exceeds 107 bytes; select a shorter owned TMPDIR")
+    tmp = Path(tempfile.mkdtemp(prefix="tmux-", dir=parent))
     tmux_tmp = tmp / "tmux"
     tmp.mkdir(parents=True, exist_ok=True)
     tmux_tmp.mkdir(parents=True, exist_ok=True)
@@ -1790,9 +1797,14 @@ def run_interactive_launch_and_monitors_case(scenario: Scenario, case: dict, cas
         if not observed["effort_record_exists_in_record_worktree"]:
             details.append("record-worktree")
     finally:
-        for item in launched_items:
-            stop_launch(item)
-        kill_tmux_session(session, env)
+        try:
+            for item in launched_items:
+                stop_launch(item)
+        finally:
+            try:
+                kill_tmux_session(session, env)
+            finally:
+                shutil.rmtree(env["TMPDIR"])
     return {
         "scenario": scenario.id,
         "case": case["id"],
