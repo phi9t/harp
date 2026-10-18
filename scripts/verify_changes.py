@@ -73,7 +73,8 @@ def plan(root, paths):
             # Repository provenance checks cover their explicit disposition.
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith("harp_durable/"):
-            add("durable-runtime", "python3", "-m", "unittest", "harp_durable.test_cli")
+            add("durable-runtime", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
+                "python3", "-m", "unittest", "discover", "-s", "harp_durable", "-t", ".", "-p", "test_*.py")
         elif path.startswith("corenius/"):
             # Imported historical prose and artifacts retain their original bytes.
             # Check their pinned source instead of rewriting old links or formatting.

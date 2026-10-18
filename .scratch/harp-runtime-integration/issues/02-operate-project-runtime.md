@@ -17,11 +17,11 @@ then four. This ticket does not authorize implementation or live setup by itself
 
 ## Acceptance criteria
 
-- [ ] The public CLI executes a complete deterministic workflow using the existing adapted runtime, records its result, and reports its durable identity and outcome.
-- [ ] Stopping and reopening the same state recovers accepted results without repeating completed activities. A concurrent competing runtime for that state is refused.
-- [ ] Status distinguishes pending, running, completed and blocked work and exposes useful logs without exposing private runtime credentials.
-- [ ] The runtime validates the supported local SQLite/filesystem and execution contract before dispatch. Missing prerequisites are reported before launching an activity.
-- [ ] Explicit runtime lifetime requires no installed always-on service and no dependency on another checkout, the supplied ZIP or a private historical environment.
+- [x] The public CLI executes a complete deterministic workflow using the existing adapted runtime, records its result, and reports its durable identity and outcome.
+- [x] Stopping and reopening the same state recovers accepted results without repeating completed activities. A concurrent competing runtime for that state is refused.
+- [x] Status distinguishes pending, running, completed and blocked work and exposes useful logs without exposing private runtime credentials.
+- [x] The runtime validates the supported local SQLite/filesystem and execution contract before dispatch. Missing prerequisites are reported before launching an activity.
+- [x] Explicit runtime lifetime requires no installed always-on service and no dependency on another checkout, the supplied ZIP or a private historical environment.
 
 ## Blocked by
 

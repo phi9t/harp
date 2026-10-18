@@ -64,7 +64,7 @@ class VerificationTests(unittest.TestCase):
         self.write("harp_durable/__main__.py", "# runtime change\n")
         jobs = self.selected()["checks"]
         self.assertEqual({j["surface"] for j in jobs}, {"diff", "durable-runtime"})
-        self.assertIn(["python3", "-m", "unittest", "harp_durable.test_cli"], [j["command"] for j in jobs])
+        self.assertIn(["env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1", "python3", "-m", "unittest", "discover", "-s", "harp_durable", "-t", ".", "-p", "test_*.py"], [j["command"] for j in jobs])
 
     def test_staged_untracked_and_both_rename_surfaces_are_selected(self):
         (self.root / "docs").mkdir()

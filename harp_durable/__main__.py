@@ -17,7 +17,7 @@ import uuid
 from controller.durable.common import atomic_json, read_json, temporary_environment
 from controller.durable.engine import Runtime, Store
 from controller.durable.insula import InsulaExecution
-from controller.durable.workflows import DEMO_CONTRACT, REGISTRY
+from controller.durable.workflows import DEMO_CONTRACT
 
 
 def parser():
@@ -26,6 +26,21 @@ def parser():
     p.add_argument("--state", type=Path, required=True)
     p.add_argument("--execution", type=Path)
     sub = p.add_subparsers(dest="command", required=True)
+    prepare = sub.add_parser("prepare", help="admit a rootfs, frozen runtime code and delegated cgroup")
+    prepare.add_argument("--rootfs", type=Path, required=True)
+    prepare.add_argument("--cgroup-root", type=Path, required=True)
+    admit = sub.add_parser("admit", help="freeze committed task inputs and submit isolated coding work")
+    admit.add_argument("run_id")
+    admit.add_argument("--repository", type=Path, required=True)
+    admit.add_argument("--task", required=True)
+    admit.add_argument("--acceptance", required=True)
+    admit.add_argument("--base", default="HEAD")
+    admit.add_argument("--task-revision", default="HEAD")
+    admit.add_argument("--provider", choices=("deterministic", "codex", "trae"), required=True)
+    admit.add_argument("--model")
+    admit.add_argument("--fixture-path")
+    admit.add_argument("--fixture-content", default="Harp managed worker\n")
+    admit.add_argument("--fixture-sleep", type=float, default=0)
     submit = sub.add_parser("submit", help="submit a trusted deterministic demonstration")
     submit.add_argument("run_id")
     submit.add_argument("--value", type=int, default=3)
@@ -62,6 +77,7 @@ def instance(root):
 
 
 def start(store, args, execution, contract):
+    from .workflows import REGISTRY
     if not math.isfinite(args.timeout) or args.timeout <= 0:
         raise ValueError("timeout must be finite and positive")
     # Validate host temporary storage before any guardian can be launched.
@@ -148,15 +164,49 @@ def execute(args):
     if not args.state.is_absolute():
         raise ValueError("--state must be an absolute project-owned directory")
     local_state(args.state)
+    if args.command == "prepare":
+        if args.execution is None:
+            raise ValueError("prepare requires --execution for its immutable admission record")
+        from .setup import prepare
+        return prepare(args.state, args.rootfs, args.cgroup_root, args.execution)
+    if args.execution:
+        config = read_json(args.execution)
+        os.environ["CORENIUS_CAPSULES"] = config["capsule_store"]
+        execution = InsulaExecution(config)
+        execution.verify(require_backend=args.command not in {"status", "events", "check", "stop", "cancel"})
+        code = Path(config["code"])
+        if Path(__file__).resolve().parent != (code / "harp_durable").resolve():
+            # Execute the admitted orchestrator and registry, rather than checking
+            # a frozen snapshot while importing mutable checkout code.
+            argv = list(sys.argv[1:])
+            for option in ("--execution", "--repository"):
+                for index, value in enumerate(argv):
+                    if value == option and index + 1 < len(argv):
+                        argv[index + 1] = str(Path(argv[index + 1]).resolve())
+                    elif value.startswith(option + "="):
+                        argv[index] = option + "=" + str(Path(value.split("=", 1)[1]).resolve())
+            env = {**os.environ, "PYTHONPATH": str(code), "PYTHONNOUSERSITE": "1",
+                   "PYTHONDONTWRITEBYTECODE": "1"}
+            os.chdir(code)
+            os.execve(sys.executable, [sys.executable, "-B", "-m", "harp_durable", *argv], env)
     execution = InsulaExecution(read_json(args.execution)) if args.execution else None
     contract = execution.contract if execution else DEMO_CONTRACT
     if execution:
-        execution.verify()
+        execution.verify(require_backend=args.command not in {"status", "events", "check", "stop", "cancel"})
         if execution.config["state"] != str(args.state.resolve()):
             raise ValueError("state disagrees with admitted execution")
     store = Store(args.state)
     try:
+        if args.command == "admit":
+            from .admission import submit
+            fixture = ({"path": args.fixture_path, "content": args.fixture_content,
+                        "sleep": args.fixture_sleep} if args.fixture_path is not None else None)
+            return submit(store, execution, run_id=args.run_id, repository=args.repository,
+                          task=args.task, acceptance_path=args.acceptance, base=args.base,
+                          task_revision=args.task_revision, provider=args.provider,
+                          model=args.model, fixture=fixture)
         if args.command == "submit":
+            from .workflows import REGISTRY
             if not math.isfinite(args.sleep) or not 0 <= args.sleep <= 3600:
                 raise ValueError("sleep must be between zero and 3600 seconds")
             return store.submit(args.run_id, "one", REGISTRY["one"][0],
