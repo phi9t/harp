@@ -38,4 +38,9 @@ Independent review found no actionable defect in the bounded sanitizer repair.
 Fifteen sanitizer cases, four staged-hook cases, a real CLI hook smoke check and
 strict library Clippy passed in the repair worktree. The integrated CLI additionally
 checks stdin redaction/UTF-8/CRLF and read-only checking followed by idempotent scrub.
-The final changed-surface integration gate is pending.
+The final changed-surface integration gate passed: 467 library cases, 16 CLI
+cases, 13 selector cases, four hook cases, shell/XDG, repository/LFS, corpus and
+document checks. Independent review verified captures against snapshot bytes
+and found no lost retained work. Primary master recorded the exact preservation
+commit, then fast-forwarded to reconciled merge 9ac9ce75. The working tree was
+clean after relocating residual Atlas-generated files into ignored build storage.

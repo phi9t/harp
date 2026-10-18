@@ -1,6 +1,6 @@
 # Migrate the committed operational component
 
-Status: in-progress
+Status: done
 Owner: Codex
 Parent: [consolidation intent](../spec.md)
 
@@ -22,9 +22,8 @@ retaining historical evidence without rewriting captured bytes.
 
 ## Blocked by
 
-Final reconciliation verification and local landing remain. The complete imported
-candidate passed its required gate at 838c1ca5; the owner then authorized merging
-the existing primary work. No PostgreSQL/Temporal service run is required.
+None for the authorized source consolidation and local landing. Preserved live
+qualification limits remain explicit; PostgreSQL/Temporal adoption was excluded.
 
 ## Verification
 
@@ -51,4 +50,6 @@ Original source checkouts and worktrees remain unchanged.
 
 The owner authorized and completed prerequisite restoration: pinned PDF packages
 and lockfile without browser downloads, plus the pinned Lean cache. The full
-candidate gate passes; primary reconciliation is now in progress.
+candidate gate passes; primary reconciliation passed its changed-surface gate (467 library and 16 CLI
+cases plus selector/shell/hook/repository/corpus/docs checks). Local master
+fast-forwarded to merge 9ac9ce75, retaining snapshot 85fdb248 as an ancestor.

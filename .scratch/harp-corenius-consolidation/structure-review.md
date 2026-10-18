@@ -1,6 +1,6 @@
 # Consolidation structure review
 
-Reviewed candidate: codex/harp-corenius-consolidation, based on 84fc9bec.
+Reviewed integration: 9ac9ce75 on local master, based on 84fc9bec.
 This review proposes follow-up organization; it does not authorize or perform
 additional moves.
 
@@ -51,9 +51,8 @@ verification.
 
 ## Landing boundary
 
-The isolated candidate preserves the original Corenius work and leaves the
-primary Harp checkout untouched. That checkout has overlapping uncommitted CLI,
-sanitizer, source-registry, proof, documentation and build changes. A primary
-landing needs those changes reconciled explicitly with this candidate. Do not
-reset, stash, overwrite, or automatically commit them to make a fast-forward
-possible.
+The consolidation preserves the original Corenius work and the existing dirty
+Harp work. All 63 primary paths are recoverable in snapshot 85fdb248. After
+reconciliation and verification, local master fast-forwarded to 9ac9ce75.
+The primary working tree is clean. No push or source-checkout retirement occurred.
+The proposed structural changes above remain follow-up design work.

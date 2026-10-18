@@ -1,6 +1,6 @@
 # Consolidate Corenius into Harp
 
-Status: in-progress
+Status: done
 Owner: Codex
 Branch: codex/harp-corenius-consolidation
 
@@ -102,18 +102,14 @@ of the original checkout is authorized.
 - Required checks pass against migrated code. Existing missing qualifications
   remain stated. Source import alone does not complete the consolidation.
 
-## Current evidence and limits
+## Evidence and limits
 
-The pinned committed tree was copied with git archive into ignored local build
-storage for inspection. No remote source or worktree was changed.
-Rust 1.95 is already installed locally. An offline terminal-agent test could not
-resolve tokio-postgres, required by the parked experiment. No dependencies were
-installed. Resolve this by testing against the existing remote cache or by a
-reviewed workspace separation that preserves locks and experimental behavior;
-do not silently skip the check.
-
-See [preservation inventory](issues/01-preservation-inventory.md) and
-[operational migration](issues/02-operational-migration.md).
+All source worktrees were inspected directly; their original checkouts remain
+intact. Linux import tests used existing offline toolchains/caches. The owner
+authorized pinned PDF dependencies and the pinned Lean cache restoration.
+No paid providers, PostgreSQL/Temporal services, delegated-cgroup qualification
+or external publication were used. Retained live-runtime qualification limits
+are documented in the operational ticket and integration guide.
 
 ## Candidate integration checkpoint
 
@@ -122,13 +118,9 @@ combined source ancestry at 64f55c72a6b7a5489cad22a33a923eb10a2228b9. The clean
 main worktree is the thirteenth inventory entry. The candidate contains 8,149
 source files under corenius, with source objects and explicit adaptation records.
 
-This checkpoint is a candidate commit, not a verified landing on Harp master.
-Required remaining repairs: delete the owner-retired Atlas and update its
-consumers; fix nine forbidden temporary-path occurrences introduced by the
-benchmark worktrees. Linux verification has passed 22 of 23 selected Python
-suites, the native parser checks, terminal-agent tests and controller unit tests.
-All six selected benchmark suites passed (168 tests). The failed no-host-tmp policy was repaired with task-owned state; its rerun
-passed, along with all 54 materializer and six rootfs tests.
+The import was followed by Atlas/RSI retirement and the bounded benchmark
+state-path repair. Terminal/controller/parser and six benchmark suites passed
+on Linux; repaired materializer/rootfs/temp-policy checks passed as well.
 
 ## Final candidate verification boundary
 
@@ -146,8 +138,9 @@ Atlas dependency installation occurred.
 
 The owner then explicitly authorized reconciliation of existing primary Harp
 work and local landing. Snapshot 85fdb248a155bf4c7fea2cdfae824f86f7c031aa preserves
-all 63 changed/untracked paths. The isolated candidate merges that history,
-retains useful engineering/education work, preserves captures and repairs the
-optional sanitizer's unsafe file/hook boundaries. Final integration verification
-is pending. See [reconciliation](primary-reconciliation.md) and
-[structure review](structure-review.md). No push or source-checkout retirement.
+all 63 changed/untracked paths. The merged candidate passed its changed-surface
+gate: 467 library tests, 16 CLI cases, selector/shell/hook checks, repository,
+corpus and documentation checks. Local master fast-forwarded to 9ac9ce75.
+See [reconciliation](primary-reconciliation.md), [verification](verification.md)
+and [structure review](structure-review.md). No push or original Corenius
+checkout retirement was performed.
