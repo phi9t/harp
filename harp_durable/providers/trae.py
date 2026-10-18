@@ -12,6 +12,7 @@ from controller.durable.common import atomic_json, read_json
 
 EXECUTABLE = Path("/opt/harp/providers/trae")
 AUTH = Path("/home/bench/credentials/trae-auth.json")
+MAX_FINAL_BYTES = 256 * 1024
 
 
 def _private_directory(path: Path) -> None:
@@ -25,6 +26,8 @@ def _private_directory(path: Path) -> None:
 
 def run(workspace: Path, task: str, admission: dict, attempt: Path) -> dict[str, Any]:
     """Run once; the guardian owns timeout, cancellation and descendant cleanup."""
+    if admission.get("provider") != "trae":
+        raise ValueError("Trae adapter requires a Trae admission")
     if not isinstance(task, str) or not task.strip():
         raise ValueError("Trae task must be nonempty text")
     model = admission.get("model")
@@ -71,8 +74,16 @@ def run(workspace: Path, task: str, admission: dict, attempt: Path) -> dict[str,
         info = os.fstat(stream.fileno())
         if not stat.S_ISREG(info.st_mode):
             raise ValueError("Trae final artifact must be an ordinary file")
-        hasher = hashlib.sha256()
-        for block in iter(lambda: stream.read(1 << 20), b""):
-            hasher.update(block)
+        if not 0 < info.st_size <= MAX_FINAL_BYTES:
+            raise ValueError("Trae final artifact must contain 1..256 KiB of UTF-8 text")
+        content = stream.read(MAX_FINAL_BYTES + 1)
+        if len(content) != info.st_size or len(content) > MAX_FINAL_BYTES:
+            raise ValueError("Trae final artifact changed or exceeds 256 KiB")
+        try:
+            text = content.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError("Trae final artifact must contain valid UTF-8 text") from exc
+        if not text.strip():
+            raise ValueError("Trae final artifact must contain nonempty text")
     return {"provider": "trae", "model": model, "final_artifact": final.name,
-            "final_sha256": hasher.hexdigest(), "final_size": info.st_size, "exit_code": 0}
+            "final_sha256": hashlib.sha256(content).hexdigest(), "final_size": info.st_size, "exit_code": 0}

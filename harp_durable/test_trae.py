@@ -28,14 +28,17 @@ auth.write_text('{{"refreshed":true}}')
 print("provider-json-event")
 print("provider-stderr-event",file=sys.stderr)
 if os.environ.get("HARP_TRAE_FINAL","yes")=="yes":
- pathlib.Path(args[args.index("--output-last-message")+1]).write_text("completed fixture task\\n")
+ kind=os.environ.get("HARP_TRAE_OUTPUT_KIND","text")
+ content={{"text":b"completed fixture task\\n","empty":b"","oversize":b"x"*(256*1024+1),
+          "binary":b"\\xff","whitespace":b" \\n"}}[kind]
+ pathlib.Path(args[args.index("--output-last-message")+1]).write_bytes(content)
 sys.exit(int(os.environ.get("HARP_TRAE_EXIT","0")))
 '''
-WRAPPER = '''import json,pathlib,sys
+WRAPPER = '''import json,os,pathlib,sys
 from harp_durable.providers import trae
 trae.EXECUTABLE=pathlib.Path(sys.argv[1]); trae.AUTH=pathlib.Path(sys.argv[2])
 a=pathlib.Path(sys.argv[3]); model=json.loads(sys.argv[4])
-result=trae.run(a/"workspace",sys.argv[5],{"model":model},a)
+result=trae.run(a/"workspace",sys.argv[5],{"model":model,"provider":os.environ.get("HARP_TRAE_PROVIDER","trae")},a)
 (a/"completion.json").write_text(json.dumps(result))
 '''
 
@@ -123,6 +126,30 @@ class TraeInvocation(unittest.TestCase):
         result = self.call(HARP_TRAE_FINAL="no")
         self.assertNotEqual(result.returncode, 0)
         self.assertFalse((self.attempt / "completion.json").exists())
+
+    def test_empty_oversized_and_binary_finals_refuse_completion(self):
+        for kind in ("empty", "oversize", "binary", "whitespace"):
+            with self.subTest(kind=kind):
+                # Each case is a new attempt; adapters never resume an old home.
+                original_attempt = self.attempt
+                self.attempt = self.root / ("attempt-" + kind)
+                self.attempt.mkdir(mode=0o700)
+                (self.attempt / "workspace").mkdir()
+                try:
+                    result = self.call(HARP_TRAE_OUTPUT_KIND=kind)
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn("Trae final artifact", result.stderr)
+                    self.assertFalse((self.attempt / "completion.json").exists())
+                    self.assertNotIn(self.secret, result.stdout + result.stderr)
+                finally:
+                    self.attempt = original_attempt
+
+    def test_mismatched_provider_refuses_before_creating_home_or_forking(self):
+        result = self.call(HARP_TRAE_PROVIDER="codex")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("requires a Trae admission", result.stderr)
+        self.assertFalse((self.attempt / "home").exists())
+        self.assertFalse(self.record.exists())
 
     def test_second_invocation_refuses_provider_resume(self):
         self.assertEqual(self.call().returncode, 0)
