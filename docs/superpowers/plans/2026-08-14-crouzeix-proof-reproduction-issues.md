@@ -392,5 +392,5 @@ and repository-contract axes, repair findings, and land locally.
 **Commit trailer:**
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```

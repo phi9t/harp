@@ -247,7 +247,7 @@ If the user requests a commit, stage only the essay, navigation, and derived
 artifacts. Use a message whose final trailer block contains exactly:
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```
 
 ## Self-review

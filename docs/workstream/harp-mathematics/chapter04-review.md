@@ -160,7 +160,7 @@ for pkg in .lake/packages/*; do
   HARP_LEAN_PATH="$HARP_LEAN_PATH:$pkg/.lake/build/lib/lean"
 done
 LEAN_PATH="$HARP_LEAN_PATH" \
-  /Users/bytedance/.elan/toolchains/leanprover--lean4---v4.32.1/bin/lean \
+  [REDACTED_USER_HOME]/.elan/toolchains/leanprover--lean4---v4.32.1/bin/lean \
   CrouzeixTextbook/Part01/Chapter04.lean
 ```
 

@@ -22,10 +22,9 @@ retaining historical evidence without rewriting captured bytes.
 
 ## Blocked by
 
-The imported component is present in candidate 7f47dffc. Final Harp gate and
-landing await the authorized Atlas retirement and RSI cleanup. Existing caches
-on devx_b200_dbg resolved the earlier local dependency limitation without any
-installation or PostgreSQL/Temporal service run.
+Final reconciliation verification and local landing remain. The complete imported
+candidate passed its required gate at 838c1ca5; the owner then authorized merging
+the existing primary work. No PostgreSQL/Temporal service run is required.
 
 ## Verification
 
@@ -50,6 +49,6 @@ fixtures. Paid providers, live two-worker acceptance, delegated-cgroup checks,
 full native controller integration and parked database/service labs were not run.
 Original source checkouts and worktrees remain unchanged.
 
-Owner authorization on 2026-10-18: retain PDF publication, install its pinned
-dependencies and create a lockfile without browser downloads, and restore the
-pinned Lean cache. Prerequisite restoration and renewed verification are underway.
+The owner authorized and completed prerequisite restoration: pinned PDF packages
+and lockfile without browser downloads, plus the pinned Lean cache. The full
+candidate gate passes; primary reconciliation is now in progress.

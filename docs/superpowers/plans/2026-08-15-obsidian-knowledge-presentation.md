@@ -198,7 +198,7 @@ URLs remain standard Markdown links.
   Run the supported installer at the pinned revision:
 
   ```sh
-  python3 /Users/bytedance/.trae/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  python3 [REDACTED_USER_HOME]/.trae/skills/.system/skill-installer/scripts/install-skill-from-github.py \
     --repo kepano/obsidian-skills \
     --ref a1dc48e68138490d522c04cbf5822214c6eb1202 \
     --path skills/obsidian-markdown \
@@ -230,7 +230,7 @@ URLs remain standard Markdown links.
     AGENTS.md
   git diff --cached --check
   git commit -m "build: vendor pinned obsidian skills evidence" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 2: Add a typed Obsidian syntax and link-resolution boundary
@@ -395,7 +395,7 @@ URLs remain standard Markdown links.
   git add crates/harp/src/corpus/{mod.rs,obsidian.rs,contracts.rs,render.rs,tests.rs}
   git diff --cached --check
   git commit -m "feat: parse and render Obsidian knowledge links" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 3: Make claim and packet contracts wiki-link aware
@@ -512,7 +512,7 @@ URLs remain standard Markdown links.
     crates/harp/tests/obsidian_knowledge_packet.rs
   git diff --cached --check
   git commit -m "test: validate Obsidian claim and packet contracts" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 4: Build and test the deterministic migration tool
@@ -638,7 +638,7 @@ URLs remain standard Markdown links.
     docs/contributing.md
   git diff --cached --check
   git commit -m "feat: add deterministic Obsidian link migration" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 5: Migrate managed knowledge links and normalize frontmatter
@@ -778,7 +778,7 @@ URLs remain standard Markdown links.
   git add scripts/migrate_obsidian_links.py crates/harp/tests/obsidian_knowledge_packet.rs
   git diff --cached --check
   git commit -m "docs: migrate managed knowledge to Obsidian links" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 6: Add the portable vault home, Base, Canvas, and profile installer
@@ -961,7 +961,7 @@ URLs remain standard Markdown links.
     scripts/validate_obsidian_assets.py
   git diff --cached --check
   git commit -m "feat: add Obsidian knowledge home and navigation" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 7: Register metadata, DarwinX, and the knowledge home in corpus, search, and Atlas
@@ -1121,7 +1121,7 @@ URLs remain standard Markdown links.
   git add atlas/src/app atlas/src/content atlas/src/**/*.css
   git diff --cached --check
   git commit -m "feat: register Obsidian knowledge in Atlas and search" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ### Task 8: Document, regenerate, seal, and verify the complete presentation
@@ -1142,7 +1142,7 @@ URLs remain standard Markdown links.
   Add concise instructions:
 
   ```text
-  Open `/Users/.../harp` (the repository root) as the Obsidian vault.
+  Open `[REDACTED_USER_HOME]/harp` (the repository root) as the Obsidian vault.
   Start at `knowledge/harp_knowledge_home.md`.
   Apply the portable profile with:
   python3 tools/obsidian/apply_profile.py --vault "$(git rev-parse --show-toplevel)"
@@ -1241,7 +1241,7 @@ URLs remain standard Markdown links.
     atlas/dist/harp-atlas.receipt.json
   git diff --cached --check
   git commit -m "build: seal Obsidian knowledge presentation" \
-    -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+    -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
   ```
 
 ## Plan Self-Review

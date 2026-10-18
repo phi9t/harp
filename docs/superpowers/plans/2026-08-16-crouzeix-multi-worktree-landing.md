@@ -130,7 +130,7 @@ Then commit:
 ```sh
 git add docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md
 git commit -m "docs(crouzeix): inventory proof worktrees" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 2: Record Owner Decisions And Preservation Plan
@@ -208,7 +208,7 @@ Run:
 ```sh
 git add docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md docs/workstream/crouzeix-proof-reproduction/worktree-retirement-plan-001.md
 git commit -m "docs(crouzeix): plan proof worktree retirement" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 2A: Preserve Teaching Packet And Capture Amendments
@@ -308,7 +308,7 @@ Refresh `docs/import-receipt.md` if needed, then commit explicit paths:
 ```sh
 git add docs/workstream/crouzeix-proof-reproduction docs/import-receipt.md
 git commit -m "docs(crouzeix): preserve proof teaching and amendments" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 3: Reconcile CPFR Proof-Reproduction Lane
@@ -398,7 +398,7 @@ Expected: focused checks pass before committing.
 ```sh
 git add <explicit paths>
 git commit -m "feat(crouzeix): <specific CPFR concern>" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Repeat Steps 4 through 6 for every accepted CPFR group.
@@ -453,7 +453,7 @@ Commit:
 ```sh
 git add docs/import-receipt.md docs/workstream/crouzeix-proof-reproduction/retrospective-001.md docs/workstream/crouzeix-proof-reproduction/agent-trace-index.md docs/workstream/crouzeix-proof-reproduction/tracker.org
 git commit -m "docs(crouzeix): record proof reproduction retrospective" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 4: Land Crouzeix RSI / Hermetic Runtime Lane
@@ -506,7 +506,7 @@ Refresh receipt if needed and commit:
 ```sh
 git add docs/superpowers/specs/2026-08-15-crouzeix-rsi-workflow-design.md docs/superpowers/plans/2026-08-15-crouzeix-rsi-hermetic-reproduction.md docs/import-receipt.md
 git commit -m "docs(crouzeix): preserve hermetic RSI workflow design" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 - [ ] **Step 4: Split the runtime implementation into required review groups**
@@ -557,7 +557,7 @@ Commit accepted groups with focused messages, for example:
 ```sh
 git add <explicit RSI paths>
 git commit -m "feat(crouzeix): land hermetic RSI proof task runtime" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 4A: Recover `crouzeix-rsi-workflow-design`
@@ -623,7 +623,7 @@ Refresh `docs/import-receipt.md` if needed. Commit recovered content separately:
 ```sh
 git add docs/workstream/crouzeix-proof-reproduction/crouzeix-rsi-workflow-design-recovery-001.md <explicit recovered paths> docs/import-receipt.md
 git commit -m "docs(crouzeix): recover RSI workflow design artifacts" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 5: Final Review And Local Landing

@@ -597,7 +597,7 @@ git add labs/crouzeix_proof_reproduction/lean_suite.py \
   labs/crouzeix_proof_reproduction/tests/test_lean_suite.py \
   docs/workstream/crouzeix-proof-reproduction/tracker.org
 git commit -m "feat(crouzeix): validate lean proof suite contracts" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 2: Add Harp-Owned Fixture Suite And Inventory Checks
@@ -877,7 +877,7 @@ git add labs/crouzeix_proof_reproduction/lean_suite.py \
   labs/crouzeix_proof_reproduction/lean_suite_fixtures \
   docs/workstream/crouzeix-proof-reproduction/tracker.org
 git commit -m "feat(crouzeix): add lean proof suite fixtures" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 3: Implement Declared-Write-Surface Runner And Typed Receipts
@@ -1369,7 +1369,7 @@ git add labs/crouzeix_proof_reproduction/lean_suite.py \
   labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json \
   docs/workstream/crouzeix-proof-reproduction/tracker.org
 git commit -m "feat(crouzeix): run lean proof suite fixtures" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 4: Add CLI, README, And Verify Registration
@@ -1633,7 +1633,7 @@ git add labs/crouzeix_proof_reproduction/lean_suite.py \
   labs/crouzeix_proof_reproduction/tests/test_lean_suite.py \
   docs/workstream/crouzeix-proof-reproduction/tracker.org
 git commit -m "feat(crouzeix): expose lean proof suite gate" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 5: Add Optional Real-Lean Blocked/Ready Probe
@@ -1818,7 +1818,7 @@ git add labs/crouzeix_proof_reproduction/lean_suite.py \
   labs/crouzeix_proof_reproduction/README.md \
   docs/workstream/crouzeix-proof-reproduction/tracker.org
 git commit -m "feat(crouzeix): probe local lean readiness" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 6: Integrate Release Gate And Close The Lean Suite Milestone
@@ -1952,7 +1952,7 @@ Run:
 git diff --check
 git add docs/workstream/crouzeix-proof-reproduction/tracker.org docs/import-receipt.md
 git commit -m "docs(crouzeix): verify lean proof suite gate" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected: commit created. No push.

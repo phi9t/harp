@@ -47,7 +47,8 @@ def check_docs(root, paths):
                 raise ValueError("missing skill description: " + relative)
         # Fence examples are not navigable links. Anchor semantics remain owned
         # by the relevant prose/compiler checks, rather than a second renderer.
-        prose = re.sub(r"(?ms)^```[^\n]*\n.*?^```[^\n]*$", "", text)
+        prose = re.sub(r"(?ms)^[ \t]*```[^\n]*\n.*?^[ \t]*```[^\n]*$", "", text)
+        prose = re.sub(r"(`+)(.*?)\1", "", prose, flags=re.S)
         for link in re.findall(r"\]\(([^)\n]+)\)", prose):
             target = link.split("#", 1)[0].strip("<>")
             if not target or re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", target):

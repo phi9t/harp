@@ -48,43 +48,37 @@ or mathematical documents and no weakened output, namespace or source boundaries
 It caught an old corpus schema in the proof-goal reader; the reader now accepts
 harp-knowledge/v1 and its real-artifact smoke check passes.
 
-## Required checks still blocked
+## Completed prerequisite restoration and candidate gate
 
-`SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk mise run verify -- --base 84fc9bec`
-passes diff, selector, repository/LFS, corpus, import preservation and Obsidian
-checks, then fails the proof-goal suite: 26 passed, two fail on the absent Lean
-cache. The textbook contract suite has 261 passing cases and 34 blocked receipt
-cases. Source verification reports the missing XDG Lean cache root.
+The owner explicitly authorized pinned PDF dependencies and lockfile creation
+without browser downloads, and restoration of the pinned Lean cache. Public
+npm ci passed with integrity hashes. All nine Lean dependency revisions match
+the unchanged manifest; the existing Lean 4.32.1 toolchain was reused and the
+cache task completed. No Atlas dependencies or browser downloads were installed.
 
-The primary cache packages symlink targets the nonexistent directory
-`/Users/bytedance/.cache/harp/lean/lean-4.32.1/packages`. No hydration was attempted.
-PDF checks pass 10 cases but three test modules cannot load absent standalone
-renderer packages (marked/KaTeX). No packages or browsers were installed.
-AGENTS.md requires explicit owner authorization for these prerequisites; requests
-are pending. Do not waive or silently skip these checks.
+The complete candidate gate against 84fc9bec passed at checkpoint 838c1ca5:
+28 proof-goal cases, 25 PDF renderer cases, 452 Rust library cases, 14 CLI cases,
+295 textbook cases, 15 writing-style cases, the public wiki resolver, corpus,
+source import, repository/LFS, selector and Obsidian checks. The CLI command was
+selected twice; that is repeated evidence, not 28 distinct cases.
 
-Master remains at the original base with overlapping unrelated dirty work. No
-reset, stash, primary-checkout overwrite, push or source retirement occurred.
-Continue from the isolated candidate after prerequisites and safe landing state
-are resolved.
+Publication now emits Markdown under ignored publications/crouzeix_textbook,
+keeping content/ free of Markdown. Six ledgers match 174 exact/solved goals and
+513 declarations. The Chrome-based PDF build and bundle checker passed again
+against the final paths: foundations 673 pages, Chapter 1 19 pages, Chapter 36
+48 pages, 145 snapshots and no outside-page glyphs. Visual inspection covered
+the cover, contents and mathematical notation.
 
-Owner authorization on 2026-10-18: retain PDF publication, install its pinned
-dependencies and create a lockfile without browser downloads, and restore the
-pinned Lean cache. Prerequisite restoration and renewed verification are underway.
+The source-locator scan excludes derived JSON from authored raw locators; its
+regression still rejects a missing authored artifact. Independent review found
+no weakened retained contract. The real source verifier reports 142 evidence
+artifacts and 113 snapshot files. The retained source CLI check now verifies
+meaningful count/manifest consistency instead of retired RSI inventory totals.
 
-## Authorized prerequisite restoration
+## Primary-work reconciliation
 
-The pinned PDF packages are installed without browser downloads. The new lockfile
-uses public npm URLs with package integrity hashes; a public-registry `npm ci`
-passed. All 25 renderer tests pass. The existing Chrome produced the foundations
-book (673 pages), Chapter 1 (19 pages) and Chapter 36 (48 pages). The bundle checker
-passed content, source-snapshot, relative-link and page-boundary checks across
-145 snapshots. Cover, contents and mathematical pages were visually inspected.
-
-All nine Lean dependency revisions match the unchanged lockfile. The existing
-Lean 4.32.1 toolchain was reused, and the explicit cache task completed successfully.
-Source verification exposed derived JSON being scanned as raw authored locators;
-the scan now excludes content/generated, whose freshness and canonical links are
-checked by the compiler. Six source-manifest tests pass, including a regression
-that still rejects a missing authored locator. Independent review found no
-weakened retained source contract. Renewed proof checks are in progress.
+The owner subsequently authorized reconciling the existing primary work and
+landing. Snapshot 85fdb248a155bf4c7fea2cdfae824f86f7c031aa preserves all 63 changed
+or untracked paths; creating it left primary files and index unchanged.
+See [the disposition record](primary-reconciliation.md). The final integration
+gate is pending. No push or original Corenius retirement is authorized.

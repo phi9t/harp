@@ -5,6 +5,7 @@ mod error;
 mod fs;
 pub mod knowledge;
 pub mod repository;
+pub mod sanitize;
 pub mod search;
 pub mod sources;
 

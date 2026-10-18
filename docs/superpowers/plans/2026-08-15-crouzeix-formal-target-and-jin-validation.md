@@ -55,7 +55,7 @@ Run the same command; expect PASS. Then:
 
 ```sh
 git add labs/crouzeix_proof_reproduction/formal_target.py labs/crouzeix_proof_reproduction/tests/test_formal_target.py
-git commit -m "feat(crouzeix): add formal target contract" -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+git commit -m "feat(crouzeix): add formal target contract" -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 2: Hermetic Jin runtime lock and provisioner

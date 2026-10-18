@@ -198,7 +198,7 @@ fn verify_forbidden_references(repo_root: &Path) -> Result<usize, AppError> {
         source_name,
         ["third", "party"].join("_") + "/rsi",
         ["source", "graph"].join("_"),
-        ["/Users", "bytedance", "workspace"].join("/"),
+        ["/Users", &["byte", "dance"].concat(), "workspace"].join("/"),
         ["qmd", "index"].join("-"),
         ["qmd", "://"].concat(),
         ["general Knowledge", "Atlas"].join(" "),

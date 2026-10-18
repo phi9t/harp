@@ -19,7 +19,7 @@
 Reproduce the public Crouzeix proof-search task prospectively, then run a
 source-isolated archive search over dedicated mathematical experts. The
 improved treatment uses the parent-selection algorithm documented in Harp's
-[DGM algorithm derivation](../../../knowledge/darwin_godel_machine/03_algorithm_derivation.md#combined-selection-probability):
+The former DGM algorithm derivation (retired RSI packet, retained in Git history):
 
 ```text
 eligible_i = alpha_i < 1
@@ -99,7 +99,7 @@ Execution rules:
     the ticket's other tracked files settle, then include it in that ticket's
     commit.
 11. Every commit ends with
-    `Co-authored-by: TRAE CLI <noreply@bytedance.com>`.
+    `Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>`.
 12. `DONE` means acceptance criteria and verification have passed. A failed or
     blocked experiment may still complete its execution ticket when its
     failure receipt is complete and correctly classified.

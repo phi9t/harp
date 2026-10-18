@@ -92,7 +92,7 @@ sources, and requires iteration until a complete proof survives adversarial
 audit
 ([task and success contract](https://github.com/jinshanmu/CrouzeixConjecture/blob/9df07838327b988e3924453daa29c8cd726d34b0/crouzeix_conjecture_prompt.txt#L28-L47)).
 Its output path is user-specific:
-`/Users/shanmujin/Documents/CrouzeixConjecture/LaTeX`
+`[REDACTED_USER_HOME]/Documents/CrouzeixConjecture/LaTeX`
 ([prompt line 30](https://github.com/jinshanmu/CrouzeixConjecture/blob/9df07838327b988e3924453daa29c8cd726d34b0/crouzeix_conjecture_prompt.txt#L30)).
 
 ### Requested root and worker behavior

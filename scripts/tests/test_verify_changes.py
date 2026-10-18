@@ -108,6 +108,14 @@ class VerificationTests(unittest.TestCase):
         self.write(".agents/skills/example/missing.md", "# Present\n")
         self.assertEqual(self.run_gate().returncode, 0)
 
+    def test_indented_fence_links_are_examples_but_prose_links_are_checked(self):
+        self.write("docs/guide.md", "# Guide\n\n  ```text\n  [example](absent.md)\n  ```\n`[inline example](absent.md)`\n")
+        self.assertEqual(self.run_gate().returncode, 0)
+        self.write("docs/guide.md", "# Guide\n\n[real link](absent.md)\n")
+        result = self.run_gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("broken local link", result.stderr)
+
     def test_unknown_surface_and_invalid_base_fail_before_execution(self):
         self.write("unknown/file.bin", "data")
         result = self.run_gate()

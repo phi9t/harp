@@ -1021,7 +1021,7 @@ Each commit stages explicit paths, passes its focused tests and
 `mise run verify`, and contains the trailer:
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```
 
 The branch will be landed locally only after the release gate passes. It will

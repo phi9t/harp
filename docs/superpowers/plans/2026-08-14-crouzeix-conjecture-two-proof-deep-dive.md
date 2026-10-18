@@ -536,7 +536,7 @@ git add crates/harp/src/sources.rs crates/harp/src/sources/crouzeix.rs \
   crates/harp/tests/cli.rs evidence/crouzeix_conjecture \
   docs/product-contract.md docs/import-receipt.md
 git commit -m "evidence: add Crouzeix proof receipts" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -954,7 +954,7 @@ git add crates/harp/src/corpus/mod.rs crates/harp/src/corpus/contracts.rs \
   atlas/tests/static-export.test.mjs atlas/dist/harp-atlas.html \
   atlas/dist/harp-atlas.receipt.json docs/import-receipt.md
 git commit -m "feat: add addressable math documents to Atlas" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1560,7 +1560,7 @@ git add knowledge/crouzeix_conjecture \
   atlas/dist/harp-atlas.receipt.json docs/product-contract.md \
   docs/import-receipt.md
 git commit -m "docs: add Crouzeix conjecture two-proof packet" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1628,7 +1628,7 @@ Expected:
 - full gate passes;
 - repository verifies 521 import rows;
 - every new commit contains exactly one
-  `Co-authored-by: TRAE CLI <noreply@bytedance.com>` trailer.
+  `Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>` trailer.
 
 - [ ] **Step 5: Report landing-ready state**
 

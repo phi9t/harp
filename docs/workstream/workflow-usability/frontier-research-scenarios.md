@@ -50,8 +50,8 @@ The final report may propose another campaign; it cannot launch unlimited work.
 
 ## What was inspected
 
-Read-only inspection used `devx_b200_dbg`, repository
-`/data02/home/philip.yang/workspace/ferric_continuum`, at commit
+Read-only inspection used `[REDACTED_HOST]`, repository
+`[REDACTED_USER_HOME]/workspace/ferric_continuum`, at commit
 `68700d856834db0753038e5a5ff0680e01e16462`. Untracked local issue and context files
 were left untouched. Source behavior below is grounded in tracked files; local
 context documents were consulted only for vocabulary.

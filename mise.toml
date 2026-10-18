@@ -258,6 +258,14 @@ run = "mise run lean-nng4"
 description = "Build the pinned Autodiff Geometry Lean formalization"
 run = "mise run lean-autodiff"
 
+[tasks.verify-sanitization]
+description = "Verify repository cleanliness against PII, machine identifiable information, and proprietary terms"
+depends = ["build"]
+run = """
+set -euo pipefail
+"$HARP_TARGET_DIR/size/harp" sanitize check .
+"""
+
 [tasks.verify-repository]
 description = "Verify import map, LFS, forbidden references, and generated cleanliness"
 run = """

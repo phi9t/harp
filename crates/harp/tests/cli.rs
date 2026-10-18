@@ -966,3 +966,62 @@ fn workflow_inspection_does_not_create_missing_state() {
         .failure();
     assert!(!repo.path().join(".harp").exists());
 }
+
+#[test]
+fn sanitize_text_scrubs_stdin_and_preserves_clean_utf8_and_line_endings() {
+    let output = harp()
+        .args(["--format", "json", "sanitize", "text"])
+        .write_stdin("Email person@private.dev\r\n数学\r\n")
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+    let envelope: Value = serde_json::from_slice(&output).expect("sanitizer envelope");
+    assert_eq!(
+        envelope["data"]["scrubbed"],
+        "Email [REDACTED_EMAIL]\r\n数学\r\n"
+    );
+}
+
+#[test]
+fn sanitize_check_is_read_only_and_scrub_is_idempotent() {
+    let temporary = TempDir::new().expect("sanitizer fixture");
+    let path = temporary
+        .path()
+        .canonicalize()
+        .unwrap()
+        .join("private note.txt");
+    let input = "Contact person@private.dev\n";
+    fs::write(&path, input).unwrap();
+    harp()
+        .args(["sanitize", "check"])
+        .arg(&path)
+        .assert()
+        .failure();
+    assert_eq!(fs::read_to_string(&path).unwrap(), input);
+    harp()
+        .args(["sanitize", "scrub"])
+        .arg(&path)
+        .assert()
+        .success();
+    assert_eq!(
+        fs::read_to_string(&path).unwrap(),
+        "Contact [REDACTED_EMAIL]\n"
+    );
+    harp()
+        .args(["sanitize", "check"])
+        .arg(&path)
+        .assert()
+        .success();
+    let output = harp()
+        .args(["--format", "json", "sanitize", "scrub"])
+        .arg(&path)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+    let envelope: Value = serde_json::from_slice(&output).unwrap();
+    assert_eq!(envelope["data"]["modified_files"], 0);
+}

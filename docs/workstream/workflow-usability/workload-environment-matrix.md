@@ -33,7 +33,7 @@ Environment profiles:
 | --- | --- | --- |
 | E0: local | Direct local execution with an explicit environment and owned job process | Tiny CPU research campaign; record that no sandbox was used |
 | E1: local Xena | Same eligible local workload under Xena's enforced macOS policy | CPU setup, execution, recovery and artifact collection |
-| E2: remote Vaso | SSH-reachable single host with a qualified Vaso environment; initially `devx_b200_dbg` | CPU control-flow qualification, then a separately qualified GPU workload |
+| E2: remote Vaso | SSH-reachable single host with a qualified Vaso environment; initially `[REDACTED_HOST]` | CPU control-flow qualification, then a separately qualified GPU workload |
 | E3: remote distributed | Multiple allocated hosts and coordinated process groups | Future work requiring gang ownership and collective checkpoint recovery |
 
 E0 and E1 do not promise CUDA execution on macOS. A CPU semantic profile can run
@@ -67,7 +67,7 @@ Read-only inspection found:
   Python command uses an attested Python Build Standalone distribution. Do not
   assume an arbitrary host venv meets that contract. Host interruption and
   observer-detachment behavior still need integration qualification.
-- Vaso at `def472aa05adaf0e637a87d53f446c35c1f6002c` on `devx_b200_dbg` currently
+- Vaso at `def472aa05adaf0e637a87d53f446c35c1f6002c` on `[REDACTED_HOST]` currently
   exposes `doctor` and tiered `validate` commands. The inspected CLI's tier 1
   writes a plan/report and returns failure; it does not provide a general durable
   workload-launch interface. Even `doctor` calls host-layout creation, so it is

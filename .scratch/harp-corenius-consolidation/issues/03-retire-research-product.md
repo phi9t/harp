@@ -1,6 +1,6 @@
 # Reduce RSI research to a brief article survey
 
-Status: in-progress
+Status: done
 Owner: Codex
 Branch: codex/harp-corenius-consolidation
 Parent: [consolidation intent](../spec.md)
@@ -80,11 +80,9 @@ and remain intact. The five retained generic source-manifest tests and the
 Crouzeix source suite passed together (120 tests). Corpus freshness, search
 refresh/status/query, Obsidian assets and 15 writing-style structural tests pass.
 
-The source gate currently reports a missing canonical XDG Lean cache; the
-packages symlink targets a nonexistent directory. PDF checks lack their pinned
-standalone Node dependencies. No dependency installation or cache hydration was
-performed; explicit owner authorization is pending. These checks remain required.
-
-Owner authorization on 2026-10-18: retain PDF publication, install its pinned
-dependencies and create a lockfile without browser downloads, and restore the
-pinned Lean cache. Prerequisite restoration and renewed verification are underway.
+The owner authorized the standalone PDF packages/lockfile and pinned Lean cache
+restoration. Both are complete. The full candidate gate passed at 838c1ca5,
+including 28 proof-goal, 25 PDF renderer, 452 library, 14 CLI and 295 textbook
+cases. Actual PDF export and bundle checks pass. Atlas and the RSI article product
+are retired in the verified candidate; primary-work reconciliation/local landing
+continue under the operational migration ticket.

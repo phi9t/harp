@@ -534,7 +534,7 @@ Land independently reviewable commits in this order:
 Every commit message ends with:
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```
 
 ## 11. Acceptance criteria

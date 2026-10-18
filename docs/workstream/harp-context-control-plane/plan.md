@@ -59,7 +59,7 @@ Record this ownership in `tracker.org` before the first code change:
 Use focused commits. Every commit message in this plan ends with:
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```
 
 The standalone payload digest in `docs/import-receipt.md` will be stale between
@@ -305,7 +305,7 @@ git add README.md docs/product-contract.md \
   crates/harp/src/context_control \
   crates/harp/tests/context_control_cli.rs
 git commit -m "feat: define context control contracts" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -452,7 +452,7 @@ git add content/context_control/workflows \
   crates/harp/src/context_control/workflow.rs \
   crates/harp/src/context_control/mod.rs
 git commit -m "feat: add built-in context workflows" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -485,7 +485,7 @@ fn state_root_precedence_is_explicit_then_xdg_then_home() {
     );
     assert_eq!(
         resolve_state_root(None, None, Path::new("/home")),
-        PathBuf::from("/home/.local/state/harp")
+        PathBuf::from("[REDACTED_USER_HOME]/state/harp")
     );
 }
 
@@ -582,7 +582,7 @@ concurrent-replacement tests pass.
 git add crates/harp/src/context_control/state.rs \
   crates/harp/src/context_control/mod.rs
 git commit -m "feat: secure context control state" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -707,7 +707,7 @@ git add crates/harp/src/context_control/canonical.rs \
   crates/harp/src/main.rs \
   crates/harp/tests/context_control_cli.rs
 git commit -m "feat: compile immutable context releases" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -802,7 +802,7 @@ no-side-effect tests pass.
 git add crates/harp/src/context_control/routing.rs \
   crates/harp/src/context_control/mod.rs
 git commit -m "feat: route context workflows" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -923,7 +923,7 @@ and no-truncation tests pass.
 git add crates/harp/src/context_control/context.rs \
   crates/harp/src/context_control/mod.rs
 git commit -m "feat: resolve bounded workflow context" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1032,7 +1032,7 @@ git add crates/harp/src/context_control/policy.rs \
   crates/harp/src/context_control/repository_state.rs \
   crates/harp/src/context_control/mod.rs
 git commit -m "feat: capture repository control state" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1155,7 +1155,7 @@ git add Cargo.toml Cargo.lock crates/harp/Cargo.toml \
   crates/harp/tests/context_control_cli.rs \
   crates/harp/tests/support/context_control.rs
 git commit -m "feat: probe agent CLI providers" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1268,7 +1268,7 @@ episode, and preflight separation tests pass.
 git add crates/harp/src/context_control/episode.rs \
   crates/harp/src/context_control/mod.rs
 git commit -m "feat: publish context episodes" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1393,7 +1393,7 @@ forbidden-flag tests pass.
 git add crates/harp/src/context_control/provider/invocation.rs \
   crates/harp/src/context_control/provider/mod.rs
 git commit -m "feat: build provider-safe invocations" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1507,7 +1507,7 @@ git add Cargo.toml Cargo.lock crates/harp/Cargo.toml \
   crates/harp/tests/context_control_run.rs \
   crates/harp/tests/support/context_control.rs
 git commit -m "feat: capture provider execution" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1619,7 +1619,7 @@ git add crates/harp/src/context_control/run.rs \
   crates/harp/src/main.rs \
   crates/harp/tests/context_control_run.rs
 git commit -m "feat: run agent CLIs through Harp" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1719,7 +1719,7 @@ git add README.md docs/product-contract.md docs/contributing.md \
   docs/workstream/harp-context-control-plane/tracker.org \
   docs/import-receipt.md
 git commit -m "docs: complete context control observation milestone" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Then run:

@@ -85,3 +85,11 @@ and [labs](../corenius/docs/efforts/engineering-profile-labs/README.md) preserve
 related upstream designs and bounded results. Older proposals for compulsory
 PostgreSQL/Temporal, a second intent ledger, or amending every task into one
 commit do not override current Harp instructions.
+
+## Retained local sanitizer
+
+The existing Harp sanitizer is retained as an explicit CLI operation and optional
+hook script. The hook checks staged Git blobs using an existing Harp binary; it
+is not installed automatically. The repository gate does not scrub or require
+rewriting the imported component or captured evidence. Review heuristic findings
+in the intended authored surface before making edits.

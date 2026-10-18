@@ -10,7 +10,7 @@ The owner requested consolidation of Harp and Corenius on devx_b200_dbg on
 2026-10-18 and selected Harp as the destination, including the runtime,
 controller, tooling and engineering practice. Preserve both existing checkouts,
 uncommitted work, branches, evidence and live bindings. No push, deployment,
-service startup, dependency installation or retirement of the original source
+service startup or retirement of the original source
 checkouts is authorized.
 
 ## Harp scope reduction
@@ -139,14 +139,15 @@ and no previously compiled retained mathematics/engineering document was lost.
 The proof-goal reader now accepts harp-knowledge/v1; its direct real-artifact
 check passes. Corpus freshness and search are current.
 
-Required final checks are blocked by absent standalone PDF packages and the
-missing primary Lean dependency cache. AGENTS.md requires explicit authorization
-before installing prerequisites or restoring that cache; requests are pending.
-The primary master checkout also has unrelated overlapping uncommitted changes,
-so no safe fast-forward landing has been attempted. No push or source-checkout
-retirement was performed. Continue from this integration branch, not by resetting
-or stashing the primary checkout.
+The complete candidate gate passed at 838c1ca5 after the owner authorized pinned
+PDF dependencies and the pinned Lean cache restoration. PDF publication and the
+headless educational/proof consumers remain functional. No browser download or
+Atlas dependency installation occurred.
 
-Owner authorization on 2026-10-18: retain PDF publication, install its pinned
-dependencies and create a lockfile without browser downloads, and restore the
-pinned Lean cache. Prerequisite restoration and renewed verification are underway.
+The owner then explicitly authorized reconciliation of existing primary Harp
+work and local landing. Snapshot 85fdb248a155bf4c7fea2cdfae824f86f7c031aa preserves
+all 63 changed/untracked paths. The isolated candidate merges that history,
+retains useful engineering/education work, preserves captures and repairs the
+optional sanitizer's unsafe file/hook boundaries. Final integration verification
+is pending. See [reconciliation](primary-reconciliation.md) and
+[structure review](structure-review.md). No push or source-checkout retirement.
