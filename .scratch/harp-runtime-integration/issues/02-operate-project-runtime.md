@@ -1,6 +1,6 @@
 # 02: Operate the durable runtime through Harp’s CLI
 
-Status: blocked
+Status: done
 Owner: Codex
 Branch: codex/harp-durable-runtime
 Worktree: harp-corenius-consolidation/harp
@@ -80,7 +80,7 @@ The long-lived foreground form omits `--until-idle`; another invocation requests
 is installed. Coding admission, providers, verification and landing remain later
 tickets, and this ticket remains incomplete until composed Linux acceptance.
 
-### Current blocked precondition
+### Resolved prerequisite and composed acceptance
 
 Revalidated using the pinned Rust 1.92.0 on devx: the locked offline Harp build
 still refuses missing `pulldown-cmark-escape`. Existing default registry source,
@@ -89,4 +89,12 @@ The owner-facing Cargo-cache authorization request is pending. No cache was
 hydrated and no package pins changed. Next action on authorization: populate a
 task-owned cache with the locked dependencies, build the Linux Harp executable,
 then run all five lifecycle tests with `HARP_DURABLE_BIN` selecting that binary.
-Ticket 01 is done; all later tickets transitively depend on this acceptance.
+The owner subsequently authorized all necessary devx setup. A task-owned Cargo
+home was populated from existing cached bytes first, then missing locked crates
+were fetched. No dependency pins changed or service was installed.
+
+The pinned Rust 1.92.0 offline locked Harp build passed on devx. All five lifecycle
+tests then passed through the compiled public Harp executable, using
+`HARP_DURABLE_BIN=/data03/harp-runtime-integration-philip-yang/build/debug/harp`
+and the fixed SQLite 3.51.3 library. This supersedes the blocked precondition above
+and completes the composed CLI acceptance. Ticket 03 is now unblocked.
