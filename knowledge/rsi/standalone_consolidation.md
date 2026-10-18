@@ -30,7 +30,7 @@ frozen upstream `knowledge/rsi/` path. It distinguishes content
 that Harp already carries, portable later changes that Harp merges, and
 source-specific runtime material that needs a separate public-source packet.
 
-Raw Lark captures, internal media, local investigation bundles, generated
+Raw internal captures, internal media, local investigation bundles, generated
 build outputs, and source materializations remain outside this corpus.
 When an internal source informs a retained claim, Harp records the source
 identity, access boundary, revision, and claim ceiling without publishing its

@@ -1,0 +1,675 @@
+ ▐▛███▛█   Claude Code v2.1.270
+▝▜██████▀  Fable 5.1 · Claude Max
+  ▝▝ ▝▝    ~/workspace/harp
+
+
+❯ /plan further progress on the textbook and the crouzeix harp proof project    
+  ⎿  Enabled plan mode
+
+⏺ I'll start by loading the brainstorming skill, since plan mode should begin
+  with it, then read the repo's current state.
+
+⏺ Skill(superpowers:brainstorming)
+  ⎿  Successfully loaded skill
+
+⏺ I'll treat this as an architectural planning task across the two
+  workstreams—first exploring the repo state, then checking the untracked
+  continuation prompt, which likely points to the intended next step. 
+  · summarized
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+⏺ I need to catch up on both workstreams since the continuation prompt predates
+  the latest plans—launching two Explore agents while I read the key docs myself
+  in parallel. · summarized
+
+⏺ 2 background agents launched (↓ to manage)
+   ├ Survey textbook workstream state
+   └ Survey Crouzeix proof project state
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+⏺ Chapters 5-17 are all independently reviewed, leaving Chapter 18 (last of
+  Package 3) as the next unit, currently with zero correspondences and no solved
+  exercises. I'll hold off drafting until the two surveys come in. · summarized
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Chapter 18 is in the same shape Chapter 17 started in: six aliases into the
+  maintained CrouzeixConjecture.MatrixHerglotz module, all checkpoints, no
+  exercises. I have what I need on the textbook side. The remaining unknowns are
+  the Crouzeix proof tracker state and the theorem-graph plan, which the second
+  survey is gathering now. Waiting on both agents.
+
+✻ Sautéed for 1m 23s · done 2:49 PM
+
+⏺ Agent "Survey textbook workstream state" finished · 4m 7s
+
+⏺ The textbook survey is in. Key takeaways: Chapters 1 through 17 and 25 through
+  36 are complete, the backlog is exactly Chapters 18 through 24, and Chapter
+  18's six providers already exist in the maintained Herglotz module. The
+  proof-project survey is still running. I'll draft the plan once it lands.
+
+✻ Worked for 7s · done 2:52 PM
+
+⏺ Agent "Survey Crouzeix proof project state" finished · 6m 37s
+
+⏺ Both surveys are in. The picture is clear enough to need only one decision
+  from you before I write the plan.
+
+  Textbook: Chapters 1 through 17 and 25 through 36 are complete and
+  independently reviewed. The next unit is Chapter 18, the last of Package 3,
+  whose six providers already exist in the maintained Herglotz module. The
+  landing recipe is well established from Chapters 15 through 17.
+
+  Crouzeix proof project: The formal program is done. All three routes validate
+  as complete-local with zero sorries. What remains splits into four different
+  kinds of work, and they lead to materially different plans, so this looks
+  architectural and I need your pick.
+
+⏺ User answered Claude's questions:
+  ⎿  · Which Crouzeix proof-project direction should this plan pursue alongside 
+     Chapter 18 of the textbook? → Close the obligation-graph gaps (Recommended)
+
+⏺ Now I'll dig into the specifics of the three open obligations and pin down
+  what the ledger validator flags as "oversized" or "missing read-back," so the
+  plan can reference real declarations instead of assumptions. · summarized
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 8 shell commands (ctrl+o to expand)
+
+⏺ I have enough on the obligation mechanics now; next I'll dig into route
+  receipt regeneration, the validator rules for passed-local nodes, the
+  oversized Jin node's structure, and the Chapter 18 provider module to pin down
+  exact commands for closing each gap. · summarized
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+⏺ Closing the three open obligations requires adding Harp route nodes and
+  re-publishing the Harp receipt per CPFR-087, since obligations must bind to a
+  route-manifest node and route receipts are immutable. I'll now check how
+  re-publication works and its cost before writing it into the plan. 
+  · summarized
+
+  Searched for 4 patterns, listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+⏺ I confirmed the route validator does a byte-for-byte check on certified Harp
+  files, so editing the two monolithic proof modules would break the certificate
+  — the Sept 7 work sidestepped this by adding new files outside the certified
+  closure. Next I'll examine how those additive modules are built and
+  registered, then ask you one scope question before proceeding. · summarized
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+⏺ Closing the three open obligations requires binding them to a Harp
+  route-manifest node from the immutable receipt, but modifying the certified
+  modules would break the Harp certificate, and marking them passed-local needs
+  a receipt that doesn't exist yet — while the Sept 7 work solved the
+  certified-closure problem, nothing yet addresses this receipt gap. 
+  · summarized
+
+⏺ User answered Claude's questions:
+  ⎿  · How far should the obligation-gap work go in this plan? → Additive 
+     extraction only (Recommended)
+
+⏺ Plan(Design Harp obligation extraction module)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+⏺ Updated plan  ⎿  /plan to preview
+
+⏺ The draft plan is written. The only open slot is the Package C2 design (Lean
+  signatures, module layout, risks), which the Plan agent is still producing.
+  I'll fill it in as soon as that report arrives, then submit the plan for
+  approval.
+
+✻ Brewed for 8m 5s · done 3:10 PM
+
+⏺ Agent "Design Harp obligation extraction module" finished · 5m 16s
+
+⏺ The design report is in. I'll fold it into Package C2 and then submit the
+  plan.
+
+⏺ Updated plan
+  ⎿  /plan to preview
+
+⏺ User approved Claude's plan
+  ⎿  Plan saved to: ~/.claude/plans/quirky-marinating-boot.md · /plan to edit
+     Plan: Chapter 18 of the textbook, and the Crouzeix obligation-graph gaps
+
+     Context
+
+     Two workstreams share this repository. Both are at a clean stopping point
+     on local
+     master 31213ce5, and this plan names the next bounded unit of each.
+
+     Textbook. Chapters 1–17 and 25–36 are complete: full prose, exact Lean
+     correspondence, six distinct checked exercise solutions each, and an
+     independent
+     review recorded under docs/workstream/harp-mathematics/. The backlog is
+     exactly
+     Chapters 18–24 (42 unsolved exercises, 42 summary proofs). Chapter 18 is
+     the last
+     chapter of Package 3 in
+     docs/superpowers/plans/2026-09-08-textbook-remaining-work.md.
+     Its six providers already exist in the maintained CrouzeixConjecture
+     namespace; the
+     chapter is a 22-line alias stub plus a 114-line prose sketch.
+
+     Crouzeix proof project. The formal program is finished: Jin,
+     Lorist–Schwenninger
+     and Harp all validate complete-local with zero sorry. What remains open is
+     the
+     fine-grained audit layer landed on 2026-09-06 (theorem_graph.py, the
+     proof-obligation
+     ledger). Its frontier today:
+
+     ┌──────────────┬──────────────────────────────────────────────────────────┐
+     │  Frontier    │                         Node(s)                          │
+     │     item     │                                                          │
+     ├──────────────┼──────────────────────────────────────────────────────────┤
+     │ open         │ harp-l2-witness-boundary-embedding-data,                 │
+     │ obligations  │ harp-l2-witness-dimension-count,                         │
+     │              │ harp-terminal-witness-to-finite-bound                    │
+     ├──────────────┼──────────────────────────────────────────────────────────┤
+     │ missing      │ harp-terminal-witness-to-finite-bound (unbindable until  │
+     │ read-back    │ proof-bearing)                                           │
+     ├──────────────┼──────────────────────────────────────────────────────────┤
+     │ oversized    │ jin-fixed-outer-domain-convergence (four deps, never     │
+     │ parent       │ expanded)                                                │
+     └──────────────┴──────────────────────────────────────────────────────────┘
+
+     The user chose: additive extraction only. Prove the three proposed
+     declarations
+     in a new Harp module outside the certified route closure, expand the
+     oversized Jin
+     parent in the ledger, and bring the untracked adoption doc up to date. The
+     three
+     obligations stay open in the ledger until a route re-certification
+     mechanism exists;
+     that mechanism is out of scope and is recorded as the follow-on.
+
+     Why additive: route_validation.py::_validate_git_identity compares every
+     one of the
+     59 certified Harp modules byte-for-byte against receipt commit 909b7813,
+     and the
+     route publisher (route_publication.py::_require_unpublished) is
+     create-only. Editing
+     Crouzeix/Harp/FiniteAtomicL2Dilation.lean or MainTheorem.lean would drop
+     the Harp
+     route from complete-local. Commit 4a72888f set the precedent for additive
+     modules
+     (FiniteHorizonRemainder*.lean, built through
+     CrouzeixTextbook/HarpRemainder*Tests.lean).
+
+     Non-goals: Chapters 19–24, the stalled live-provider chain (CPFR-030 →
+     032), Prove2Me
+     submission, CPFR-L007, route-receipt generations, any push.
+
+     ---
+
+     Package T: Chapter 18, positive-real analytic functions
+
+     Kata issue dvm6 (catalog CTB-031) per the backlog inventory; verify before
+     closing.
+     Work in an isolated worktree with the canonical .lake symlink (AGENTS.md,
+     Lean cache
+     discipline). Do not hydrate the cache.
+
+     T0. Read the Lean before the sketch
+
+     The stub prose promises Theorems 18.1–18.4 (Herglotz representation, Cayley
+     correspondence, matrix Cayley). None is compiled. Chapters 16 and 17 were
+     each derailed
+     by a title-driven sketch; do not repeat it. Providers:
+
+     - formalization/lean/CrouzeixConjecture/HerglotzKernel.lean: openUnitDisk,
+       unitCircle, sampledKernelMatrix, IsPositiveMatrixKernelOn,
+       matrixHerglotzKernel
+       (defs), finite_sampling_quadratic_nonneg (theorem, currently unused by
+       the chapter).
+     - formalization/lean/CrouzeixConjecture/MatrixHerglotz.lean:487:
+       matrixHerglotzKernel_isPositiveMatrixKernelOn (the one theorem; read its
+       proof term
+       and the private lemmas above it before narrating anything).
+     - Downstream consumer to name accurately: Chapter 30 (Jin's positive-real
+       completion),
+       not "Chapter 19" as the stub's synthesis paragraph claims.
+
+     Expect the Chapter 17 shape: five definition rows naming their providers
+     (currently
+     checkpoint with underlying_declaration: null) and one reexported-proof row.
+     Correct kind where the registry says theorem for a def.
+
+     T1. Six distinct exercise solutions (Lean first)
+
+     formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean, namespace
+     CrouzeixTextbook.Exercises.Chapter18, one exercise_0k_solution per row,
+     following
+     Part03/Chapter17.lean. Each must be a genuine derivation (eta-alias
+     rejection). The
+     stub's exercise list is a reasonable starting roster, but freeze the
+     statements
+     against what the providers can actually support:
+
+     - E01 retrieval: characterise IsPositiveMatrixKernelOn by finite quadratic
+       tests
+       (unfold, or via finite_sampling_quadratic_nonneg).
+     - E02 calculation: Re ((1+z)/(1-z)) = (1-|z|²)/|1-z|² on the disk.
+     - E03: a rank-one kernel g(z) g(w)* is a positive matrix kernel.
+     - E04: sums and nonnegative scalar multiples of positive kernels are
+       positive.
+     - E05 boundary: repeated sample points are admitted by the definition
+       (state and prove
+       the concrete fact, e.g. positivity survives a duplicated sample, rather
+       than an essay).
+     - E06: the hypotheses of matrixHerglotzKernel_isPositiveMatrixKernelOn are
+       exactly
+       (analytic on the disk, positive real part) — a specialisation that is not
+       a bare
+       alias.
+
+     Narrow build: mise run lean-crouzeix-textbook. If a new Mathlib import is
+     added, add
+     it to write_fake_all_mathlib_artifacts in crates/harp/tests/lean_library.rs
+     in the
+     same change (structural wall; hit at Chapters 5 and 10).
+
+     T2. Register the chapter
+
+     - content/crouzeix_textbook/coverage.json: six CFT-18 rows, providers
+       named, kinds
+       corrected, pedagogical_prerequisites set by reading the definitions
+       (Chapter 17
+       removed two false edges this way). Chapter 18 plausibly depends on 15/16
+       (analyticity
+       on the disk) and 8 (positive semidefinite Gram matrices); verify from the
+       Lean.
+     - content/crouzeix_textbook/exercises.json: six solution declarations; set
+       skills
+       to the cards each solution actually invokes, not E0k → CFT-18-00k.
+     - Regenerate formalization/lean/CrouzeixTextbook/Correspondence.lean with
+       python3 scripts/generate_correspondence.py (--check to confirm).
+     - Red signal is harp crouzeix-textbook check against a fresh receipt, not a
+       pinned
+       count (plan §"Per-packet execution", step 2).
+
+     T3. Prose
+
+     Rewrite knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/
+     18_positive_real_analytic_functions.md
+     to the Chapter 15–17 standard: opening problem, definitions, the six cards
+     with all
+     ten subsections, worked example plus assumption-boundary example, ML bridge
+     labelled as
+     illustration, Lean translation, exercises with solution disclosures per
+     acceptance
+     obligation 8 (name the declaration that checks each displayed step; label
+     anything
+     uncompiled). Keep the uncompiled Herglotz-representation and Cayley
+     material only if
+     labelled uncompiled and kept out of the card count.
+
+     T4. Mechanical pre-review, then two independent reviewers
+
+     1. python3 scripts/check_chapter_prose.py 18 — resolve every finding.
+     2. Diff every touched file against the start commit; re-read each prose
+        sentence that
+        describes a changed row, mode or count (stale self-reference is the top
+        defect class).
+     3. Open the source of every Mathlib declaration the prose describes
+        (asserted-library-
+        semantics is the second class).
+     4. Dispatch two reviewers with non-overlapping briefs, as for Chapter 17:
+        mathematical
+        content against providers and Mathlib; contract/disclosure against the
+        plan's nine
+        obligations. Bar them from Lean builds and from
+        docs/workstream/harp-mathematics/.
+     5. Repair blocking findings; record everything in
+        docs/workstream/harp-mathematics/chapter18-review.md (same sections as
+        chapter17).
+
+     T5. Projections, gate, landing
+
+     Order matters (payload digest is the last commit):
+
+     1. mise run textbook-counts (reprojects ~25 derived sites; -- --audit for
+        duplicates).
+     2. mise run crouzeix-textbook-publication.
+     3. cargo test -p harp --test crouzeix_textbook --no-fail-fast; cd atlas && 
+        corepack pnpm run test.
+     4. Regenerate corpus (harp build) and static export
+        (atlas/scripts/export-static.mjs
+        - atlas/tests/static-export.test.mjs).
+     5. mise run verify from a shell that has not sourced
+        scripts/harp_xdg_env.sh
+        (memory: verify-needs-a-clean-shell). Capture the exit code; never pipe
+        the gate.
+     6. python3 scripts/refresh_import_receipt.py as the final commit; rerun
+        harp repository verify.
+     7. Stage explicit paths only (17-file footprint of 31213ce5 is the
+        template). Land by
+        fast-forward. No push.
+
+     Exit line must state: independently reviewed before landing, counts (expect
+     180 solved,
+     180 exact if nothing else moves), receipt declaration count.
+
+     ---
+
+     Package C1: expand the oversized Jin parent (ledger only, no Lean)
+
+     Files:
+     labs/crouzeix_proof_reproduction/formal_targets/proof-obligations.json,
+     labs/crouzeix_proof_reproduction/formal_targets/theorem-readbacks.json,
+     labs/crouzeix_proof_reproduction/tests/test_theorem_graph.py.
+
+     jin-fixed-outer-domain-convergence
+     (CrouzeixConjecture.holomorphicCrouzeixBound,
+     Jin source locator HolomorphicOuterLimit.lean#L392-L468) has four
+     dependencies, all
+     Jin route nodes already passed-local with current read-backs:
+     jin-numerical-range-convexity, jin-simple-spectrum-approximation,
+     jin-double-layer-realization, jin-function-maximum-convergence.
+
+     1. Add five obligation nodes with parent_node_id: 
+        jin-fixed-outer-domain-convergence,
+        route_ids: ["jin"], claim_ceiling: source-faithful-local-certification:
+        one
+        intermediate per dependency (bound by route_node_id to the existing
+        route node,
+        copying its lean_name, statement_sha256, statement_text_paths,
+        proof_receipt_paths
+        (evidence/crouzeix_conjecture/routes/jin/receipt.json),
+        allowed_axioms, source_locators, exactly as _validate_route_node_binding
+        requires), plus one parent-completion node with covers_parent: true
+        bound to the
+        parent itself, dependency_ids = the four siblings. Kind: use an existing
+        OBLIGATION_KINDS value (shared-obligation or derived-obligation); do not
+        add a
+        kind. prove2me_candidate: false throughout.
+     2. Add read-back entries for all five in theorem-readbacks.json
+        (route-level
+        read-backs exist for these node ids; the obligation ledger needs its
+        own, keyed by the
+        new obligation ids, with readback_status: current and a literal
+        natural-language
+        statement of each Lean type, written from the declaration-types/*.txt
+        artifact).
+     3. TDD: first change the pinned expectations in
+        test_builds_wave_one_harp_proof_obligation_graph (node count 18 → 23,
+        oversized_parent_nodes → [], parents gains
+        jin-fixed-outer-domain-convergence: expanded-current), run, observe red;
+        then edit
+        the ledgers; run green. Check
+        test_prove2me_export_is_deterministic_and_offline
+        still passes with unchanged card/prerequisite sets.
+     4. Verify: python3 -m unittest 
+        labs.crouzeix_proof_reproduction.tests.test_theorem_graph
+        and python3 labs/crouzeix_proof_reproduction/proof_evidence.py 
+        proof-obligation-graph
+        (parse stdout; frontier must show oversized_parent_nodes: []).
+
+     Package C2: additive extraction of the three planned obligations (Lean)
+
+     New module(s) under formalization/lean/Crouzeix/Harp/, not imported by
+     CrouzeixHarp.lean, compiled through a new
+     formalization/lean/CrouzeixTextbook/Harp...Tests.lean
+     in the CrouzeixTextbook target, exactly as FiniteHorizonRemainder*.lean
+     are.
+     Declaration names are fixed by the ledger:
+     CrouzeixConjecture.Harp.finiteAtomicBoundaryEmbeddingData,
+     CrouzeixConjecture.Harp.finiteAtomicL2DimensionCount,
+     CrouzeixConjecture.Harp.normalizedFiniteHorizonBound.
+
+     Module layout
+
+     - formalization/lean/Crouzeix/Harp/FiniteAtomicL2WitnessExtraction.lean —
+       imports only
+       Crouzeix.Harp.FiniteAtomicL2Dilation; holds obligations (1) and (2) and
+       the rebuild.
+     - formalization/lean/Crouzeix/Harp/NormalizedFiniteHorizonBound.lean —
+       imports
+       Crouzeix.Harp.FiniteAtomicL2Dilation and
+       Crouzeix.Harp.FiniteHorizonPerturbation;
+       holds obligation (3). Do not import Crouzeix.Harp.MainTheorem (keeps the
+       obligation independent of the terminal theorem, as the remainder
+       precedent did).
+     - Tests modules
+       formalization/lean/CrouzeixTextbook/HarpL2WitnessExtractionTests.lean
+       and HarpNormalizedBoundTests.lean, copying
+       HarpRemainderApplicationTests.lean:
+       #check each public name, client theorems that re-derive each statement by
+       exact,
+       a fail_if_success guard, #print axioms for every provider and client. Add
+       both
+       imports to formalization/lean/CrouzeixTextbook.lean.
+     - No lakefile change (the CrouzeixTextbook lib builds transitive imports).
+       No
+       ExportReceipt.lean or content/*.json registration (the
+       CrouzeixConjecture.*
+       prefix is already maintained). Import no Mathlib.* directly so
+       write_fake_all_mathlib_artifacts in crates/harp/tests/lean_library.rs:121
+       needs no
+       edit; everything needed is transitively available.
+     - Variable block copied from FiniteAtomicL2Dilation.lean:26-31 minus
+       [Nonempty n]
+       (add per declaration); keep n : Type, not Type*, because the witness
+       structure
+       fixes K : Type.
+
+     Signatures (names fixed by the ledger)
+
+     1. finiteAtomicBoundaryEmbeddingData — a def returning a new structure
+        FiniteAtomicBoundaryEmbeddingData n ι with fields density
+        (PositiveBoundaryDensity over Measure.count), squareRoot,
+        boundaryFunction,
+        embedding, multiplier, and three _eq fields pinning them to
+        LoristSchwenninger.boundarySquareRoot, boundaryEmbedding, bcfMulL (all
+        rfl).
+        Parametrised by an arbitrary finite node type ι (the hypothesis shape of
+        finiteAtomic_compression_eq_of_moments, lines 164-175). Same arguments
+        as the
+        witness: N Gamma B hWB q hCauchy nodes weights hweights hmoments.
+        Companions,
+        each a verbatim lift of the frozen proof: …_multiplier_norm_le_one
+        (lines 371-377),
+        …_perturbation_eq (lines 378-455, needs [Nonempty n]), and
+        def …_dilationData : FiniteHorizonDilationData core (ι →₂[count] 
+        EuclideanVector n) N.
+     2. finiteAtomicL2DimensionCount — a theorem producing a Prop structure
+        FiniteAtomicL2DimensionCount N n ι with nodeCountBound
+        (Fintype.card ι ≤ 2*(N+2)*finrank ℂ (EuclideanVector n)^2 + 1),
+        finiteDimensional,
+        finrank_eq (= card ι * finrank ℂ (EuclideanVector n)), from hypothesis
+        hcard : Fintype.card ι ≤ finrank ℝ (Fin (N+2) → SquareMatrix n) + 1
+        (discharged by
+        cubature.nodeCountBound, provider
+        exists_positive_matrix_moment_cubature).
+        Composes finiteDimensional_countL2 (288), finrank_countL2 (297), and the
+        calc
+        at 352-362, factored as finrank_real_matrixMomentSpace. Instances
+        [MeasurableSpace ι] [DiscreteMeasurableSpace ι] only, matching lines
+        289-290.
+     3. Rebuild (coverage evidence): def finiteAtomicL2DilationWitnessOfCubature
+        … (cubature : FiniteAtomicMatrixMomentCubatureData N Gamma μ B q) : 
+        FiniteAtomicL2DilationWitness (finiteHorizonPolynomialCore …) N, built
+        solely from
+        (1)+(2) with the letI block of lines 319-326 copied verbatim. Try
+        finiteAtomicL2DilationWitness … = …OfCubature … (Classical.choice …) := 
+        rfl; drop
+        it if rfl does not close, keep the same-type rebuild.
+     4. normalizedFiniteHorizonBound — a theorem in the q-normalised form
+        reached at
+        MainTheorem.lean:134: given Gamma μ B hWB q hq and
+        witness : ∀ N, FiniteAtomicL2DilationWitness 
+        (finiteHorizonPolynomialCore …) N,
+        conclude ‖polynomialEval q B‖ ≤ 2. Factor the generic step as
+        norm_target_le_two_of_finiteAtomicL2DilationWitness (core) (witness) : 
+        ‖core.T‖ ≤ 2
+        (lines 120-133), and add the corollary …_of_cauchy that instantiates
+        with
+        finiteAtomicL2DilationWitness under [NeZero μ] (the exact step at
+        117-119). The
+        cM un-normalisation (137-147) stays with the terminal theorem.
+
+     Risks and fallbacks
+
+     - Rebuild rfl through Classical.choice/refine metavariables may fail or be
+       slow:
+       keep only the same-type rebuild, optionally projection-level rfls.
+     - Instance mismatch at the rebuild site (⊤ measurable, ⊥ topology on ι):
+       copy the
+       letI block verbatim and pass (ι := …) explicitly.
+     - change ‖core.T‖ ≤ 2 may not unfold outside the original context: use show
+       with
+       the explicit euclideanOperator (polynomialEval q B) or simpa 
+       [finiteHorizonPolynomialCore].
+     - Expected axiom closure exactly propext, Classical.choice, Quot.sound;
+       verify
+       with #print axioms.
+
+     Quick iteration before the mise task:
+     . scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; 
+     PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; cd formalization/lean && lake build 
+     Crouzeix.Harp.FiniteAtomicL2WitnessExtraction 
+     Crouzeix.Harp.NormalizedFiniteHorizonBound
+     (no lake update, no cache hydration). Also run cargo test -p harp --test 
+     lean_library
+     to confirm the fake-artifact list still covers every Mathlib import under
+     Crouzeix/.
+
+     Ledger handling (honest under the chosen scope): the three nodes stay
+     kind: planned-obligation, proof_status: open, because the validator
+     requires a
+     route_node_id and a route receipt containing the declaration, neither of
+     which the
+     additive module can supply. Record the compiled extraction as evidence
+     elsewhere:
+
+     - a short section in the adoption doc (C3) naming the module, the three
+       declarations,
+       and the exact mise run lean-crouzeix-textbook result;
+     - if the theorem-graph tests would benefit, add a test asserting the three
+       proposed_lean_names now resolve to real declarations in the new module (a
+       def/
+       theorem <name> marker check like _validate_extraction_source), without
+       changing
+       their ledger state.
+
+     Do not add a new evidence kind or a second receipt authority in this
+     package.
+
+     Review: the same two-reviewer pattern as Package T (mathematical content:
+     does each
+     extraction prove what its ledger statement says and compose the
+     dependencies the ledger
+     lists; standards: no certified-closure file touched, no fake receipts,
+     tests). Record
+     under docs/workstream/crouzeix-proof-reproduction/ as an
+     obligation-extraction record.
+
+     Verification order: mise run lean-env; mise run lean-crouzeix-textbook;
+     mise run lean-crouzeix-harp; python3 
+     labs/crouzeix_proof_reproduction/proof_evidence.py validate --route all
+     (all three must still say complete-local; a blob mismatch error means a
+     closure file
+     was touched — revert it); git diff --stat 909b7813 HEAD -- 
+     formalization/lean/Crouzeix/Harp/
+     must show only additions of new files.
+
+     Package C3: bring the adoption doc up to date and track it
+
+     docs/workstream/crouzeix-proof-reproduction/formalizing-flt-prove2me-adopti
+     on.md
+     (untracked, "Observed: 2026-09-05") describes steps 1–3 of its own adoption
+     plan as
+     future work, but they landed on 2026-09-06 (63622f47, 4837b703, f7bf0b49,
+     db52124c, 7bee6435). Update the status line and the "Adoption Plan" section
+     to
+     say what landed (theorem graph, obligation ledger v2, read-backs,
+     prove2me-export --dry-run), what this plan adds (C1, C2), and the explicit
+     residual: obligation
+     closure needs immutable route-receipt generations (mirror of
+     local_formalization_generations/), which is the next design packet. Keep
+     the
+     "do not submit to Prove2Me yet" recommendation. Stage this one path
+     explicitly.
+
+     Leave the other untracked paths alone: docs/superpowers/plans/2026-08-16-cr
+     ouzeix-end-to-end-continuation-prompt.md
+     (stale August prompt), knowledge/capture/ (personal clippings),
+     knowledge/knowledge/ (a zero-byte stray). Never git add knowledge/.
+
+     ---
+
+     Sequencing and landing
+
+     1. Package T first in its own worktree; it is the well-trodden path and
+        touches
+        atlas/corpus/receipt.
+     2. C1 → C3 → C2 in a second worktree (C1 and C3 are cheap and unblock
+        nothing; C2
+        is the long pole). C2 and T can be worked in parallel by different
+        agents since
+        their write sets are disjoint (Part03/Chapter18 vs Crouzeix/Harp + a new
+        CrouzeixTextbook test module), but both build the CrouzeixTextbook
+        target, so
+        serialise shared-output Lean builds through receipt extraction or
+        private output
+        overlays (AGENTS.md).
+     3. Each landing ends with mise run verify and a final
+        scripts/refresh_import_receipt.py commit. Land T, then C; the second
+        landing
+        refreshes the receipt again.
+     4. Subagents per the workstream contract: read-only spec-audit before
+        editing,
+        implementers with disjoint file ownership, spec-review and
+        standards-review before
+        commit. Reviewers never approve their own scope, never land, never push.
+
+     Verification summary
+
+     ┌─────────────────┬───────────────────────────────────────────────────────┐
+     │      Check      │                        Command                        │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Textbook Lean   │ mise run lean-crouzeix-textbook                       │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Textbook receip │ mise run crouzeix-textbook-publication; cargo test -p │
+     │ t/contracts     │  harp --test crouzeix_textbook --no-fail-fast         │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Prose           │ python3 scripts/check_chapter_prose.py 18             │
+     │ pre-review      │                                                       │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Atlas           │ cd atlas && corepack pnpm run test; static export     │
+     │                 │ test                                                  │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Harp route      │ mise run lean-crouzeix-harp; proof_evidence.py        │
+     │ intact          │ validate --route all → complete-local ×3              │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │                 │ python3 -m unittest labs.crouzeix_proof_reproduction. │
+     │ Ledger          │ tests.test_theorem_graph; proof_evidence.py           │
+     │                 │ proof-obligation-graph                                │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Full gate       │ mise run verify from a clean shell, exit code         │
+     │                 │ captured                                              │
+     ├─────────────────┼───────────────────────────────────────────────────────┤
+     │ Receipt         │ python3 scripts/refresh_import_receipt.py last; harp  │
+     │                 │ repository verify                                     │
+     └─────────────────┴───────────────────────────────────────────────────────┘
+
+     Follow-on (not in this plan)
+
+     - Route-receipt generations for Harp, so the three obligations can become
+       passed-local: design spec first (docs/superpowers/specs/), touching
+       route_publication.py, route_validation.py, Rust sources verify, and the
+       route test pins.
+     - Chapter 19 (start of Package 4), same recipe.
+     - Package 5 items surfaced by inventory: forward prerequisite edges in
+       Chapters 28/34,
+       undisclosed duplicate providers CFT-32-002/006.
+  ⎿  You've hit your session limit · resets 7:40pm (America/Los_Angeles)
+     /upgrade to increase your usage limit.
+
+✻ Crunched for 1h 27m 23s · done 4:15 PM

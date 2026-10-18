@@ -1001,7 +1001,7 @@ Use one of these exact messages, keeping the required trailer exactly once:
 ```sh
 git commit -m "refactor: move canonical prose to knowledge" \
   -m "Make knowledge/rsi the managed RSI Markdown authority, retain content for structured contracts and diagnostics, and update corpus, search, Weng projections, and Atlas artifacts." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 If contributor docs and the receipt are a separate verified second commit:
@@ -1009,7 +1009,7 @@ If contributor docs and the receipt are a separate verified second commit:
 ```sh
 git commit -m "docs: publish knowledge prose authority" \
   -m "Document the managed knowledge roots and refresh the import receipt after the canonical prose migration." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Restore the isolated work:

@@ -6,6 +6,7 @@ mod fs;
 mod json;
 pub mod knowledge;
 pub mod repository;
+pub mod sanitize;
 pub mod search;
 pub mod sources;
 

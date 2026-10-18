@@ -76,7 +76,7 @@ accepted. These are syntax and presence checks, not a new Lean name resolver.
 
 ## Focused verification
 
-Commands ran under `PATH=/opt/homebrew/bin:$PATH /Users/bytedance/.local/bin/mise exec -- sh -c '…'`
+Commands ran under `PATH=/opt/homebrew/bin:$PATH [REDACTED_USER_HOME]/.local/bin/mise exec -- sh -c '…'`
 with `CARGO_TARGET_DIR="$HARP_TARGET_DIR"`, resolving to the existing
 worktree-local `.build/harp-target`.
 

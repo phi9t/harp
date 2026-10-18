@@ -1169,7 +1169,7 @@ Apply these phase-entry and commit controls before changing proof metadata:
   No combined claim-transaction command exists in this plan. Add or extend a
   focused assertion test for these conditions rather than inventing a CLI.
 - Before every future commit, validate that the proposed message contains the
-  exact trailer `Co-authored-by: TRAE CLI <noreply@bytedance.com>`; after the
+  exact trailer `Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>`; after the
   commit, read it back and assert the trailer is present. Before publication,
   audit every commit in the candidate range for that trailer. Record any older
   evidence-bound exception as historical debt; never rewrite reviewed or
@@ -1780,7 +1780,7 @@ compatibility probe. Require a precomputed, passing Seatbelt namespace manifest
 and fake-probe matrix before any expensive gate. Run audit helpers with
 repository-root PYTHONPATH or as repository modules with python -m. Audit the
 branch range and require the exact mandatory `Co-authored-by: TRAE CLI
-<noreply@bytedance.com>` trailer on every new commit that is not already bound
+<[REDACTED_EMAIL]>` trailer on every new commit that is not already bound
 by immutable evidence. Identify and disposition every historical
 evidence-bound exception; never silently pass it or rewrite its history.
 Validate ledger evidence for the proposed state. For `release-verified`, require

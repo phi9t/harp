@@ -21,7 +21,7 @@ pipeline progress, recovery, schema enforcement, and side-effect boundaries.
 | Source class | Evidence used | Claim ceiling |
 |-|-|-|
 | Harp-local implementation | `crates/harp-contracts/src/dynamic_workflow.rs`, `crates/harp-engine/src/dynamic_workflow.rs`, `crates/harp/src/main.rs`, and focused tests in this branch | Current Rust IR and durable execution behavior |
-| Harp-local research packet | Ignored Lark capture at `knowledge/investigations/local/lark-doc-parser/bytetech-7666762975667355688-20260812-1059/` in the main checkout | Source-backed interpretation of Dynamic Workflow ideas, not canonical tracked authority |
+| Harp-local research packet | Ignored internal capture in local investigations | Source-backed interpretation of Dynamic Workflow ideas, not canonical tracked authority |
 | Existing Harp benchmark guide | `knowledge/harness_benchmarks/harness_benchmark_field_guide.md` | Evaluation discipline and claim ceilings for harness benchmarks |
 | Weng-derived Harp notes | `knowledge/rsi/weng/02-harness-design-patterns.md`, `knowledge/rsi/lw_rsi_harness.md` | Harness-mechanism framing and benchmark cautions |
 | Supplied benchmark taxonomy | User-provided 47-benchmark operational and reasoning ladder, dated 2026-08-12 | Provisional map from benchmark families to Dynamic Workflow stressors |

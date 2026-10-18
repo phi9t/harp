@@ -27,7 +27,7 @@ worktree untouched.
 Every commit in this plan must end with:
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```
 
 ## Planned file map
@@ -144,7 +144,7 @@ checkouts. The staged diff does not modify the approved spec or plan.
 ```bash
 git commit -m "chore: import standalone Harp baseline" \
   -m "Track the standalone Rust corpus compiler, Atlas, content, and evidence without generated Rust build artifacts." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected: one import commit whose tree contains `Cargo.toml` and
@@ -356,7 +356,7 @@ Expected: tests pass, the size-profile binary contains no `__DWARF` segment, and
 git add .cargo/config.toml mise.toml scripts/check_disk.sh scripts/check_no_dwarf.sh Cargo.toml Cargo.lock crates/harp/tests/build_policy.rs
 git commit -m "build: enforce compact no-DWARF Rust artifacts" \
   -m "Use explicit compact profiles, one target directory, disk preflight, and executable debug-section checks." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -532,7 +532,7 @@ Expected: all contract and schema tests pass.
 git add Cargo.toml Cargo.lock crates/harp-contracts benchmarks/codex-architecture/schemas
 git commit -m "feat: define Codex-RLM execution contracts" \
   -m "Add typed graph, artifact, runtime, result, checkpoint, budget, and evaluation contracts with checked-in schemas." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -645,7 +645,7 @@ Expected: all artifact tests pass.
 git add Cargo.toml Cargo.lock crates/harp-artifacts
 git commit -m "feat: add content-addressed run artifacts" \
   -m "Publish immutable objects and semantic checkpoints with verified digests and atomic replacement." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -826,7 +826,7 @@ Expected: transition ordering, exactly-once acceptance, lease, budget, and reduc
 git add Cargo.toml Cargo.lock crates/harp-state
 git commit -m "feat: add durable TaskGraph state transitions" \
   -m "Persist runs, tasks, attempts, operations, leases, budgets, events, and exactly-once accepted results in SQLite." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -950,7 +950,7 @@ Expected: fake runtime passes the shared conformance suite.
 git add Cargo.toml Cargo.lock crates/harp-runtime
 git commit -m "feat: define the normalized Codex runtime" \
   -m "Add an object-safe adapter contract, normalized events and errors, and a scripted fake for deterministic recovery tests." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1043,7 +1043,7 @@ Expected: all validation and projection tests pass.
 git add Cargo.toml Cargo.lock crates/harp-engine
 git commit -m "feat: validate projected depth-one TaskGraphs" \
   -m "Reject invalid graphs and budgets before execution and construct bounded child contexts without ancestor transcript leakage." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1184,7 +1184,7 @@ which records one indeterminate attempt and bounded duplicate cost.
 git add crates/harp-engine
 git commit -m "feat: resume durable TaskGraph execution" \
   -m "Schedule, reconcile, continue, cancel, and recover graph work from SQLite across the specified crash boundaries." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1344,7 +1344,7 @@ Expected: all transport and runtime conformance tests pass without building Code
 git add Cargo.toml Cargo.lock crates/harp-app-server-process
 git commit -m "feat: add the App Server process adapter" \
   -m "Drive fresh, schema-constrained Codex threads over stdio JSON-RPC with persistent thread recovery and fail-closed approvals." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1463,7 +1463,7 @@ Expected: existing corpus CLI tests and new RLM CLI tests pass.
 git add crates/harp Cargo.lock
 git commit -m "feat: expose durable Codex-RLM commands" \
   -m "Add run, resume, status, checkpoint, cancel, and compare commands over the shared engine." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1578,7 +1578,7 @@ Expected: fake-runtime benchmark reaches a completed run.
 git add benchmarks/codex-architecture crates/harp-engine
 git commit -m "feat: add model-generated Codex architecture graphs" \
   -m "Generate, repair once, validate, persist, and execute the evidence-linked Codex repository benchmark." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1716,7 +1716,7 @@ Expected: deterministic gates, protected semantic input, and normalization tests
 git add Cargo.toml Cargo.lock crates/harp-eval benchmarks/codex-architecture/rubric.json
 git commit -m "feat: evaluate and compare Codex-RLM runs" \
   -m "Add non-tradeable deterministic checks, protected semantic scoring, and normalized adapter comparison metrics." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1833,7 +1833,7 @@ Expected: live process conformance and restart recovery pass. If disk preflight 
 git add scripts/build_codex_app_server.sh scripts/package_codex_app_server.sh mise.toml crates/harp-app-server-process/tests/live_process.rs
 git commit -m "test: verify the sibling Codex process adapter" \
   -m "Build and package a stripped App Server from the live Codex checkout and exercise real thread recovery." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -1950,7 +1950,7 @@ Expected: conformance passes, the packaged runner has no DWARF, and the heavywei
 git add experiments/codex-inprocess scripts/package_inprocess.sh mise.toml
 git commit -m "feat: add the isolated in-process Codex adapter" \
   -m "Bridge the sibling Codex App Server client behind the shared runtime contract without adding Codex to normal Harp builds." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---
@@ -2033,7 +2033,7 @@ Document:
 git add scripts/run_codex_adapter_comparison.sh docs/codex-rlm-stage-1-2-operations.md mise.toml
 git commit -m "docs: operationalize the Codex-RLM comparison" \
   -m "Document compact builds, durable recovery, matched adapter execution, cleanup, and comparison interpretation." \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ---

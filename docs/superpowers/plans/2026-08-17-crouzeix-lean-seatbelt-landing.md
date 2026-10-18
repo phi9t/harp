@@ -206,7 +206,7 @@ If `docs/import-receipt.md` changed after cherry-picks:
 ```bash
 git add docs/import-receipt.md
 git commit -m "docs(crouzeix): refresh lean suite integration receipt" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected: focused receipt-only commit, or no commit if receipt already matched.

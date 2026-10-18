@@ -113,6 +113,29 @@ enum Command {
         #[arg(last = true, required = true, num_args = 1..)]
         task: Vec<String>,
     },
+    /// Sanitize and scrub PII, machine identifiable information, and proprietary data.
+    Sanitize {
+        #[command(subcommand)]
+        command: SanitizeCommand,
+    },
+}
+
+#[derive(Subcommand)]
+enum SanitizeCommand {
+    /// Scrub text from a file or standard input.
+    Text {
+        #[arg(long)]
+        input: Option<PathBuf>,
+        #[arg(long)]
+        output: Option<PathBuf>,
+    },
+    /// Check a file or directory for unredacted PII, machine info, or proprietary terms.
+    Check {
+        #[arg(default_value = ".")]
+        path: PathBuf,
+    },
+    /// Scrub a file in place.
+    Scrub { path: PathBuf },
 }
 
 #[derive(Subcommand)]
@@ -575,6 +598,81 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
                     "releases.inspect",
                     format!("validated context release {release_id}"),
                     serde_json::to_value(release).expect("release inspection serializes"),
+                ))
+            }
+        },
+        Command::Sanitize { command } => match command {
+            SanitizeCommand::Text { input, output } => {
+                let content = if let Some(path) = input {
+                    fs::read_to_string(path)
+                        .map_err(|e| AppError::io("sanitize.text", "read input", e))?
+                } else {
+                    use std::io::Read;
+                    let mut buffer = String::new();
+                    std::io::stdin()
+                        .read_to_string(&mut buffer)
+                        .map_err(|e| AppError::io("sanitize.text", "read stdin", e))?;
+                    buffer
+                };
+                let sanitizer = harp::sanitize::Sanitizer::with_default_config();
+                let scrubbed = sanitizer.scrub_str(&content);
+                if let Some(path) = output {
+                    fs::write(path, &scrubbed)
+                        .map_err(|e| AppError::io("sanitize.text", "write output", e))?;
+                    Ok((
+                        "sanitize.text",
+                        format!("scrubbed content written to {}", path.display()),
+                        serde_json::json!({ "output": path.display().to_string() }),
+                    ))
+                } else {
+                    Ok((
+                        "sanitize.text",
+                        scrubbed.clone(),
+                        serde_json::json!({ "scrubbed": scrubbed }),
+                    ))
+                }
+            }
+            SanitizeCommand::Check { path } => {
+                let sanitizer = harp::sanitize::Sanitizer::with_default_config();
+                let report = sanitizer.scan_path(path)?;
+                if !report.clean {
+                    let mut summary = format!(
+                        "Sanitization check failed: {} violation(s) across {} file(s)\n",
+                        report.total_findings,
+                        report.file_reports.len()
+                    );
+                    for file_report in &report.file_reports {
+                        summary.push_str(&format!("  {}:\n", file_report.path.display()));
+                        for finding in &file_report.findings {
+                            summary.push_str(&format!(
+                                "    line {}:{}: [{}] {} ({})\n",
+                                finding.line_number,
+                                finding.start_col,
+                                finding.category,
+                                finding.rule_name,
+                                finding.snippet
+                            ));
+                        }
+                    }
+                    Err(AppError::invalid_input("sanitize.check", summary))
+                } else {
+                    Ok((
+                        "sanitize.check",
+                        format!(
+                            "Sanitization check passed: {} file(s) clean",
+                            report.scanned_files
+                        ),
+                        serde_json::to_value(&report).expect("report serializes"),
+                    ))
+                }
+            }
+            SanitizeCommand::Scrub { path } => {
+                let sanitizer = harp::sanitize::Sanitizer::with_default_config();
+                let count = sanitizer.scrub_path(path)?;
+                Ok((
+                    "sanitize.scrub",
+                    format!("scrubbed {} file(s) under {}", count, path.display()),
+                    serde_json::json!({ "path": path.display().to_string(), "modified_files": count }),
                 ))
             }
         },

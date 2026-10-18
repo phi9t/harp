@@ -124,7 +124,7 @@ MLS-Bench, WebArena, MINT, GAIA, and ToolEmu.
 
 ## Harness boundary checklist from an internal synthesis
 
-**EVIDENCE. [LARK-HARNESS-BOUNDARY], docx
+**EVIDENCE. [INTERNAL-HARNESS-BOUNDARY], docx
 `NCc2dbhZgovy1pxdTa1cMClinmf`, revision `80`, read 2026-08-28 under
 user-authorized access.** The source offers a useful review vocabulary:
 separate the target Harness that performs work, the evaluation Harness that

@@ -217,7 +217,7 @@ Stage explicitly:
 
 ```sh
 git add labs/crouzeix_proof_reproduction/proof_slice.py labs/crouzeix_proof_reproduction/tests/test_proof_slice.py
-git commit -m "fix(crouzeix): run proof slices in shared Lean environment" -m "Co-authored-by: TRAE CLI <traecli@bytedance.com>"
+git commit -m "fix(crouzeix): run proof slices in shared Lean environment" -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 2: Add Crouzeix Focus Target to Shared Lean Root
@@ -375,7 +375,7 @@ Stage explicitly:
 
 ```sh
 git add formalization/lean/lakefile.toml formalization/lean/Crouzeix.lean formalization/lean/Crouzeix/Jin/MaxPolynomialModulus.lean scripts/check_lean_library.sh mise.toml crates/harp/tests/lean_library.rs
-git commit -m "feat(crouzeix): add shared Lean target" -m "Co-authored-by: TRAE CLI <traecli@bytedance.com>"
+git commit -m "feat(crouzeix): add shared Lean target" -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 3: Materialize and Run `attempt-003`
@@ -519,7 +519,7 @@ git add labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices
 git add labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-003/build/axioms.json
 git add labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-003/result.json
 git add labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-003/receipt.json
-git commit -m "test(crouzeix): record Jin proof slice shared-root attempt" -m "Co-authored-by: TRAE CLI <traecli@bytedance.com>"
+git commit -m "test(crouzeix): record Jin proof slice shared-root attempt" -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 4: Record Tracker Evidence and Refresh Repository Receipt
@@ -622,7 +622,7 @@ Stage explicitly:
 
 ```sh
 git add docs/workstream/crouzeix-proof-reproduction/tracker.org docs/import-receipt.md
-git commit -m "docs(crouzeix): record Jin shared-root proof attempt" -m "Co-authored-by: TRAE CLI <traecli@bytedance.com>"
+git commit -m "docs(crouzeix): record Jin shared-root proof attempt" -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ## Task 5: Handoff to the Mathematical Proof Slice

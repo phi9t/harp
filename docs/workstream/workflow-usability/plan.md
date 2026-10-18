@@ -425,7 +425,7 @@ fixture `research/tests/test_workflow_remote.py`.
 - [ ] Exercise partition after submission, partition during collection, agent
   replacement, host identity drift and cancellation while unreachable using an
   isolated transport fault seam. Ordinary execution ignores test-only overrides.
-- [ ] Run W0 CPU on the admitted `devx_b200_dbg` profile. Drop only its test
+- [ ] Run W0 CPU on the admitted `[REDACTED_HOST]` profile. Drop only its test
   connection, never the host network or unrelated sessions. Verify same job ID
   and complete evidence after reconnection.
 

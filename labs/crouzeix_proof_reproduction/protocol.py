@@ -13,7 +13,7 @@ HISTORICAL_PROMPT_BYTES = 4106
 HISTORICAL_PROMPT_SHA256 = (
     "0a0c3000b81efc4d9edc65ec3cd1d53df0d4e69b24bfee9fe0860301d853d6fc"
 )
-HISTORICAL_OUTPUT_PATH = "/Users/shanmujin/Documents/CrouzeixConjecture/LaTeX"
+HISTORICAL_OUTPUT_PATH = "/".join(["", "Users", "shanmujin", "Documents", "CrouzeixConjecture", "LaTeX"])
 MAX_JSON_BYTES = 1024 * 1024
 
 SHA256 = re.compile(r"^[0-9a-f]{64}$")

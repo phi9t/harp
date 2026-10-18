@@ -146,7 +146,7 @@ git commit -m "feat: formalize linear models and optimization"
 
 - [ ] **Step 1: Write the failing corpus contract**
 
-Add a corpus test requiring `math-foundations-formalization-map` as an auxiliary document. It must parse all `MF-01-01` through `MF-06-08` identifiers, reject duplicates/missing rows, require exactly one of `Direct theorem`, `Corollary/application`, or `Prose-only`, require a `Lean:` identifier for the first two statuses, and reject one for prose-only rows. It must scan the map and formalization sources for `/Users/` and `file://`.
+Add a corpus test requiring `math-foundations-formalization-map` as an auxiliary document. It must parse all `MF-01-01` through `MF-06-08` identifiers, reject duplicates/missing rows, require exactly one of `Direct theorem`, `Corollary/application`, or `Prose-only`, require a `Lean:` identifier for the first two statuses, and reject one for prose-only rows. It must scan the map and formalization sources for `[REDACTED_USER_HOME] and `file://`.
 
 - [ ] **Step 2: Run the red test**
 

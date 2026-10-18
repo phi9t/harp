@@ -1324,7 +1324,7 @@ git add crates/harp/tests/weng_teaching_curriculum.rs MISSION.md RESOURCES.md \
   NOTES.md content/weng-source-cards.tsv content/weng-course-status.json \
   scripts/build_weng_course.py assets
 git commit -m "feat: scaffold Weng teaching curriculum" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 3: Research historical RSI and model self-improvement sources
@@ -1413,7 +1413,7 @@ git add content/weng-sources content/weng-source-cards.tsv \
   content/sources/source_registry.tsv content/sources/evidence_graph.tsv \
   RESOURCES.md
 git commit -m "docs: interpret Weng RSI foundation sources" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 4: Research workflow and prompt-evolution sources
@@ -1480,7 +1480,7 @@ git add content/weng-sources content/weng-source-cards.tsv \
   content/sources/source_registry.tsv content/sources/evidence_graph.tsv \
   RESOURCES.md
 git commit -m "docs: interpret Weng workflow evolution sources" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected curriculum count after commit: 12 of 42 cards.
@@ -1540,7 +1540,7 @@ git add content/weng-sources content/weng-source-cards.tsv \
   content/sources/source_registry.tsv content/sources/evidence_graph.tsv \
   RESOURCES.md
 git commit -m "docs: interpret Weng discovery search sources" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected curriculum count after commit: 16 of 42 cards.
@@ -1602,7 +1602,7 @@ git add content/weng-sources content/weng-source-cards.tsv \
   content/sources/source_registry.tsv content/sources/evidence_graph.tsv \
   RESOURCES.md
 git commit -m "docs: interpret Weng research benchmark sources" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected curriculum count after commit: 20 of 42 cards and zero identity-only
@@ -1732,7 +1732,7 @@ fail because teaching HTML does not exist.
 git add content/weng-sources content/weng-source-cards.tsv \
   content/sources/source_registry.tsv RESOURCES.md
 git commit -m "docs: complete Weng source card corpus" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 8: Generate reference surfaces
@@ -1823,7 +1823,7 @@ cargo test -p harp --test weng_teaching_curriculum -- --nocapture
 git add scripts/build_weng_course.py reference assets \
   content/weng-course-status.json
 git commit -m "feat: add Weng course reference surfaces" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Expected: reference checks pass; lesson checks remain red.
@@ -2004,7 +2004,7 @@ Expected: all curriculum tests pass.
 ```sh
 git add lessons content/weng-course-status.json
 git commit -m "feat: add Weng harness teaching lessons" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 ### Task 10: Integrate release verification and complete the audit
@@ -2133,7 +2133,7 @@ git add docs/product-contract.md docs/import-receipt.md \
   atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json \
   mise.toml
 git commit -m "chore: verify Weng teaching curriculum" \
-  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+  -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 
 Omit generated paths from `git add` when they are unchanged.

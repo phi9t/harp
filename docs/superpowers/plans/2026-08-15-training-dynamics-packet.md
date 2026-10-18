@@ -39,7 +39,7 @@ state it as a clearly scoped Harp derivation under explicit assumptions.
 - [ ] **Step 2: Write the self-containment contract test**
 
 Add a focused corpus test that scans the Training Dynamics packet and Lean
-project source files. It must reject absolute local paths (`/Users/`),
+project source files. It must reject absolute local paths (`[REDACTED_USER_HOME]
 `file://` links, and any source-registry or claim-ledger locator that does not
 resolve to packet-local prose or a public source identity.
 
@@ -63,7 +63,7 @@ the already-landed Mathematical Foundations packet.
 Run the focused corpus test and:
 
 ```sh
-rg -n -i '/Users/|file://' knowledge/training_dynamics formalization/training_dynamics scripts/check_training_dynamics_lean.sh
+rg -n -i '[REDACTED_USER_HOME]://' knowledge/training_dynamics formalization/training_dynamics scripts/check_training_dynamics_lean.sh
 ```
 
 Expected: the test passes and the scan reports no matches.

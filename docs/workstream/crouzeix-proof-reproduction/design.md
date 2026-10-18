@@ -99,7 +99,7 @@ Execution rules:
     the ticket's other tracked files settle, then include it in that ticket's
     commit.
 11. Every commit ends with
-    `Co-authored-by: TRAE CLI <noreply@bytedance.com>`.
+    `Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>`.
 12. `DONE` means acceptance criteria and verification have passed. A failed or
     blocked experiment may still complete its execution ticket when its
     failure receipt is complete and correctly classified.

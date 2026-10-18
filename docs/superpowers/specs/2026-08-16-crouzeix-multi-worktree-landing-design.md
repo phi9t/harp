@@ -302,7 +302,7 @@ Before landing a lane to `master`:
 
 - run `mise run verify`, unless the owner explicitly accepts a narrower gate;
 - ensure every new commit has exactly one
-  `Co-authored-by: TRAE CLI <noreply@bytedance.com>` trailer;
+  `Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>` trailer;
 - fast-forward local `master` only after the gate passes;
 - do not push.
 

@@ -245,7 +245,7 @@ node -p "require('./atlas/node_modules/lucide-react/package.json').version"
 git diff -- atlas/package.json atlas/pnpm-lock.yaml
 git add atlas/package.json atlas/pnpm-lock.yaml
 git diff --cached --check
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "build(atlas): pin lucide icons"
 ```
 
@@ -308,7 +308,7 @@ node_modules/.bin/vitest run src/app/routes.test.ts --configLoader runner --no-c
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/app/routes.ts atlas/src/app/routes.test.ts
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): add workstreams route"
 ```
 
@@ -552,7 +552,7 @@ node_modules/.bin/vitest run src/content/workstreams.test.ts --configLoader runn
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/content/workstreams.ts atlas/src/content/workstreams.test.ts
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): define workstreams snapshot"
 ```
 
@@ -641,7 +641,7 @@ cd atlas
 node_modules/.bin/vitest run src/app/workstreamsSession.test.ts --configLoader runner --no-cache
 cd ..
 git add atlas/src/app/workstreamsSession.ts atlas/src/app/workstreamsSession.test.ts
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): persist local workstream queue"
 ```
 
@@ -821,7 +821,7 @@ node_modules/.bin/vitest run src/app/WorkstreamsDashboard.test.tsx --configLoade
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/app/workstreamsPresentation.ts atlas/src/app/WorkstreamCard.tsx atlas/src/app/WorkstreamsDashboard.tsx atlas/src/app/WorkstreamsDashboard.test.tsx
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): render workstream schematics"
 ```
 
@@ -931,7 +931,7 @@ node_modules/.bin/vitest run src/app/WorkstreamsDashboard.test.tsx --configLoade
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/app/AgentVelocityCard.tsx atlas/src/app/WorkstreamsDashboard.tsx atlas/src/app/WorkstreamsDashboard.test.tsx
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): add agent velocity controls"
 ```
 
@@ -1136,7 +1136,7 @@ node_modules/.bin/vitest run src/app/WorkstreamsDashboard.test.tsx --configLoade
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/app/ResearchInsights.tsx atlas/src/app/WatchlistTable.tsx atlas/src/app/WorkstreamsDashboard.tsx atlas/src/app/WorkstreamsDashboard.test.tsx
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): add workstream insights and search"
 ```
 
@@ -1209,7 +1209,7 @@ node_modules/.bin/vitest run src/app --configLoader runner --no-cache
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/app/AtlasApp.tsx atlas/src/app/ReaderApp.test.tsx atlas/src/app/WorkstreamsDashboard.test.tsx
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): integrate workstreams console"
 ```
 
@@ -1300,7 +1300,7 @@ node_modules/.bin/eslint . --ignore-pattern dist --ignore-pattern target
 node_modules/.bin/tsc -b
 cd ..
 git add atlas/src/styles/workstreams.css atlas/src/app/WorkstreamsDashboard.tsx atlas/src/app/WorkstreamsDashboard.test.tsx
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "style(atlas): add schematic workstreams console"
 ```
 
@@ -1380,7 +1380,7 @@ Expected: lint, typecheck, all Vitest suites, production build, HTML export, and
 git add README.md atlas/README.md atlas/tests/static-export.test.mjs atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json
 if ! git diff --quiet -- atlas/src/content/generated/corpus.json; then git add atlas/src/content/generated/corpus.json; fi
 git diff --cached --check
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "docs(atlas): publish workstreams console"
 ```
 
@@ -1531,7 +1531,7 @@ gate.
 
 ```sh
 git diff --cached --check
-git -c user.name=phi9t -c user.email=phissenschaft@gmail.com \
+git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "chore: record dashboard review and receipt"
 git status --short --branch
 ```

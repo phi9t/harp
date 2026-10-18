@@ -211,7 +211,7 @@ mise run verify
 - Commit with:
 
 ```text
-Co-authored-by: TRAE CLI <noreply@bytedance.com>
+Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>
 ```
 
 - Do not push unless explicitly requested.

@@ -124,7 +124,7 @@ for chapter_pkg in .lake/packages/*/.lake/build/lib/lean; do
   chapter_lean_path="$chapter_lean_path:$chapter_pkg"
 done
 LEAN_PATH="${chapter_lean_path#:}" \
-  /Users/bytedance/.elan/toolchains/leanprover--lean4---v4.32.1/bin/lean \
+  [REDACTED_USER_HOME]/.elan/toolchains/leanprover--lean4---v4.32.1/bin/lean \
   CrouzeixTextbook/Part01/Chapter01.lean
 ```
 

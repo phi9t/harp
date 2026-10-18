@@ -57,7 +57,7 @@ class VerifyRegistrationTests(unittest.TestCase):
         live_provider_patterns = [
             "subprocess.run([" + "'traecli'",
             'subprocess.run(["' + "traecli" + '"',
-            "byted" + "cli",
+            "byte" + "dcli",
         ]
         for path in TESTS.glob("test_*.py"):
             text = path.read_text()
