@@ -11,6 +11,8 @@ Commands
   new <slug>          create the effort branch, worktree and durable files
   move-records <slug> move an effort's tracked records to a record branch
   decide <slug> <t>   add a decision file (append-only; supersede, never edit)
+  snapshot <slug>     refresh STATE.md without staging or committing; dirty
+                      contents remain local and are not backed up
   dehydrate <slug>    refresh STATE.md's machine block from git and run dirs,
                       require the human part, refuse dirty worktrees, commit
   rehydrate <slug>    verify every pointer in STATE.md, restore missing
@@ -24,6 +26,7 @@ library only; reuses the git helpers in worker.py.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -216,8 +219,13 @@ def human_problems(text: str) -> list[str]:
 
 def dirty_paths(worktree: Path) -> list[str]:
     paths = []
-    for line in git(worktree, "status", "--porcelain", "-uall").splitlines():
-        paths.append(line[3:].split(" -> ")[-1].strip().strip('"'))
+    entries = iter(git(worktree, "--no-optional-locks", "status", "--porcelain", "-z", "-uall").split("\0"))
+    for entry in entries:
+        if not entry:
+            continue
+        paths.append(entry[3:])
+        if "R" in entry[:2] or "C" in entry[:2]:
+            next(entries)  # -z reports the destination first, then the old path.
     return paths
 
 
@@ -388,6 +396,65 @@ def cmd_decide(args: argparse.Namespace) -> int:
     return OK
 
 
+def cmd_snapshot(args: argparse.Namespace) -> int:
+    root = repo_root(args.repo)
+    edir = effort_record_dir(root, args.slug)
+    record_root = edir.parent.parent.parent
+    if record_root.resolve() != root.resolve():
+        raise WorkerError(f"snapshot must run in the record worktree {record_root}")
+    state_path = edir / "STATE.md"
+    if not state_path.is_file():
+        raise WorkerError(f"no STATE.md at {state_path}")
+    previous, stripped = split_state(state_path.read_text())
+    problems = human_problems(stripped)
+    wanted = {str(root)} | {str(Path(w).resolve()) for w in args.worktree}
+    wanted.update(w["path"] for w in previous.get("worktrees", []))
+    old_worktrees = {w["path"]: w for w in previous.get("worktrees", [])}
+    worktrees = []
+    for path in sorted(wanted):
+        if not Path(path).exists():
+            if path not in old_worktrees:
+                problems.append(f"worktree {path} does not exist and has no prior snapshot")
+                continue
+            info = dict(old_worktrees[path], missing=True)
+        else:
+            info = describe_worktree(root, path, edir)
+            # Writing this snapshot itself leaves local state that Git cannot restore.
+            if path == str(record_root):
+                info["dirty"] = sorted(set(info["dirty"]) | {str(state_path.relative_to(root))})
+        info["dirty_contents"] = "local-only; not backed up" if info["dirty"] else "none"
+        worktrees.append(info)
+    evidence = {item["path"]: item for item in previous.get("evidence", [])}
+    for value in args.evidence:
+        path = Path(value).resolve()
+        if path == state_path.resolve():
+            problems.append("STATE.md cannot reference itself as verification evidence")
+            continue
+        if not path.is_file():
+            problems.append(f"evidence file missing: {path}")
+            continue
+        evidence[str(path)] = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+    runs = {r["run_dir"]: r for r in previous.get("runs", [])}
+    for value in args.run:
+        path = str(Path(value).resolve())
+        runs[path] = read_run(path)
+    if problems:
+        for problem in problems:
+            print(f"BLOCKED: {problem}", file=sys.stderr)
+        return ERROR
+    machine = {
+        "effort": args.slug, "mode": "snapshot", "dehydrated": now(),
+        "base_branch": args.base,
+        "base_commit": git(root, "merge-base", args.base, "HEAD").strip(),
+        "worktrees": worktrees, "runs": sorted(runs.values(), key=lambda r: r["run_dir"]),
+        "evidence": sorted(evidence.values(), key=lambda item: item["path"]),
+    }
+    state_path.write_text(join_state(stripped, machine))
+    print(json.dumps({"snapshot": args.slug, "state": str(state_path),
+                      "dirty_contents": "local-only; not backed up", "committed": False}))
+    return OK
+
+
 def cmd_dehydrate(args: argparse.Namespace) -> int:
     root = repo_root(args.repo)
     edir = effort_record_dir(root, args.slug)
@@ -492,6 +559,11 @@ def cmd_rehydrate(args: argparse.Namespace) -> int:
                 )
             if dirty_paths(Path(path)):
                 warnings.append(f"{path} has uncommitted changes")
+            if w.get("dirty"):
+                warnings.append(f"{path}: recorded dirty contents are local-only, not backed up; verify them before continuing")
+            continue
+        if w.get("dirty"):
+            errors.append(f"{path} is missing: dirty contents were not backed up; refusing to restore a clean tree")
             continue
         tip = rev(root, branch)
         if tip is None:
@@ -514,6 +586,12 @@ def cmd_rehydrate(args: argparse.Namespace) -> int:
         if not Path(r["run_dir"]).exists():
             lost.append(f"run {Path(r['run_dir']).name}: logs lost, recorded verdict {r.get('verdict')}")
     warnings.extend(lost)
+    for item in machine.get("evidence", []):
+        path = Path(item["path"])
+        if not path.is_file():
+            errors.append(f"verification evidence missing: {path}")
+        elif hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
+            errors.append(f"verification evidence changed: {path}")
     scratch_dir(root, args.slug).mkdir(parents=True, exist_ok=True)
 
     sections = human_sections(stripped)
@@ -615,6 +693,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("slug")
     p.add_argument("title")
     p.set_defaults(fn=cmd_decide)
+    p = sub.add_parser("snapshot")
+    p.add_argument("slug")
+    p.add_argument("--base", default="main")
+    p.add_argument("--worktree", action="append", default=[])
+    p.add_argument("--run", action="append", default=[])
+    p.add_argument("--evidence", action="append", default=[], help="verification file to reference with SHA-256")
+    p.set_defaults(fn=cmd_snapshot)
     p = sub.add_parser("dehydrate")
     p.add_argument("slug")
     p.add_argument("--base", default="main")

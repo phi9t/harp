@@ -7,6 +7,8 @@ contract in ``docs/efforts/agentic-engineering/milestone-b/contracts``.
 Commands
   new EFFORT SLUG --title T [--type feature|bug|task] [--blocked-by NN,NN]
   claim EFFORT NN --owner NAME [--ttl-hours H]
+  handoff EFFORT NN --owner NAME --evidence PATH [--evidence PATH...]
+  resume EFFORT NN --owner NAME [--ttl-hours H]
   release EFFORT NN --owner NAME --attempt ID --expected-sha256 HASH [--dry-run]
   resolve EFFORT NN --owner NAME [--force]
   add-finding EFFORT NN --to NN --text TEXT
@@ -41,6 +43,8 @@ OK, REFUSED, USAGE = 0, 1, 64
 HEADER_KEYS = ("Type", "Status", "Owner", "Blocked by", "Claimed")
 TYPES = {"feature", "bug", "task"}
 STATUSES = {"open", "claimed", "resolved"}
+AWAITING_ACCEPTANCE = "implemented-awaiting-acceptance"
+HANDOFF_KEYS = ("Implementation", "Handoff evidence")
 TRIAGES = {"needs-triage", "needs-info", "ready-for-agent", "ready-for-human", "wontfix"}
 EFFORT_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
@@ -96,6 +100,8 @@ class Ticket:
     triage: str = ""
     triage_line: int | None = None
     claimed: str = ""
+    implementation: str = ""
+    handoff_evidence: list[dict] = field(default_factory=list)
     acceptance: list[tuple[int, bool]] = field(default_factory=list)
     later_findings: list[LaterFinding] = field(default_factory=list)
     comments_line: int | None = None
@@ -301,6 +307,35 @@ def parse_ticket(path: Path) -> Ticket:
         problems.append(Problem(path, 7, f"Status {ticket.status} must leave Claimed empty"))
     if ticket.claimed and parse_claimed(ticket.claimed) is None:
         problems.append(Problem(path, 7, "malformed Claimed line"))
+
+    handoff = {}
+    for index, line in enumerate(lines[7:], start=8):
+        if line.startswith("## "):
+            break
+        for key in HANDOFF_KEYS:
+            if line.startswith(key + ":"):
+                if key in handoff:
+                    problems.append(Problem(path, index, f"duplicate {key} line"))
+                handoff[key] = line[len(key) + 1:].strip()
+    ticket.implementation = handoff.get("Implementation", "")
+    if ticket.implementation and (ticket.implementation != AWAITING_ACCEPTANCE or ticket.status != "claimed"):
+        problems.append(Problem(path, 8, "Implementation must be implemented-awaiting-acceptance on a claimed ticket"))
+    if "Handoff evidence" in handoff:
+        try:
+            evidence = json.loads(handoff["Handoff evidence"])
+            if not isinstance(evidence, list) or not evidence or any(
+                not isinstance(item, dict) or not isinstance(item.get("path"), str)
+                or not Path(item["path"]).is_absolute()
+                or not isinstance(item.get("sha256"), str)
+                or not re.fullmatch(r"[a-f0-9]{64}", item["sha256"])
+                for item in evidence
+            ):
+                raise ValueError("invalid evidence references")
+            ticket.handoff_evidence = evidence
+        except (ValueError, TypeError):
+            problems.append(Problem(path, 8, "malformed Handoff evidence"))
+    if bool(ticket.implementation) != bool(ticket.handoff_evidence):
+        problems.append(Problem(path, 8, "Implementation requires Handoff evidence and vice versa"))
 
     for index, line in enumerate(lines, start=1):
         if not line.startswith("Triage:"):
@@ -717,6 +752,14 @@ def transition_bytes(ticket: Ticket, updates: dict[str, str], actor: str, text: 
         raise WorkerError(f"{ticket.path} has no Comments section")
     lines = list(ticket.lines)
     for key, value in updates.items():
+        if key in HANDOFF_KEYS:
+            header_end = next((i for i, line in enumerate(lines) if line.startswith("## ")), len(lines))
+            index = next((i for i in range(7, header_end) if lines[i].startswith(key + ":")), None)
+            if index is not None:
+                del lines[index]
+            if value:
+                lines.insert(7, f"{key}: {value}")
+            continue
         if key not in HEADER_KEYS:
             raise WorkerError(f"unknown header key {key}")
         index = 2 + HEADER_KEYS.index(key)
@@ -883,6 +926,9 @@ def cmd_claim(args: argparse.Namespace) -> int:
     stamp = current_time()
     expires = stamp + timedelta(hours=args.ttl_hours)
     ticket, by_id = find_ticket(root, args.effort, args.ticket)
+    if ticket.implementation:
+        print(f"ticket {ticket.id} is {ticket.implementation}; owner must resume for repairs", file=sys.stderr)
+        return REFUSED
     if ticket.status == "resolved":
         print(f"ticket {ticket.id} is resolved", file=sys.stderr)
         return REFUSED
@@ -906,9 +952,54 @@ def cmd_claim(args: argparse.Namespace) -> int:
     return OK
 
 
+def cmd_handoff(args: argparse.Namespace) -> int:
+    root = effort_record_root(repo_root(args.repo), args.effort)
+    ticket, _ = find_ticket(root, args.effort, args.ticket)
+    stamp = current_time()
+    expiry = claimed_until(ticket)
+    if ticket.status != "claimed" or ticket.owner != args.owner or expiry is None or stamp >= expiry:
+        print("handoff requires a live claim owned by --owner", file=sys.stderr)
+        return REFUSED
+    if ticket.implementation:
+        print("ticket already handed off; resume before submitting again", file=sys.stderr)
+        return REFUSED
+    evidence = []
+    for value in args.evidence:
+        path = Path(value).resolve()
+        if not path.is_file() or path == ticket.path.resolve():
+            print(f"handoff evidence must be an existing separate file: {path}", file=sys.stderr)
+            return REFUSED
+        evidence.append({"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    encoded = json.dumps(evidence, sort_keys=True)
+    write_transition(ticket, {"Implementation": AWAITING_ACCEPTANCE, "Handoff evidence": encoded},
+                     args.owner, f"{AWAITING_ACCEPTANCE}; evidence {encoded}", stamp)
+    print(str(ticket.path.relative_to(root)))
+    return OK
+
+
+def cmd_resume(args: argparse.Namespace) -> int:
+    if args.ttl_hours <= 0:
+        raise WorkerError("--ttl-hours must be positive")
+    root = effort_record_root(repo_root(args.repo), args.effort)
+    ticket, _ = find_ticket(root, args.effort, args.ticket)
+    if ticket.status != "claimed" or ticket.owner != args.owner or not ticket.implementation:
+        print("resume requires the handed-off claim's owner", file=sys.stderr)
+        return REFUSED
+    stamp = current_time()
+    expires = stamp + timedelta(hours=args.ttl_hours)
+    write_transition(ticket, {"Implementation": "", "Handoff evidence": "",
+                             "Claimed": f"{format_utc(stamp)} expires {format_utc(expires)}"},
+                     args.owner, "resumed implementation for repairs; prior handoff withdrawn", stamp)
+    print(str(ticket.path.relative_to(root)))
+    return OK
+
+
 def cmd_release(args: argparse.Namespace) -> int:
     root = effort_record_root(repo_root(args.repo), args.effort)
     ticket, _ = find_ticket(root, args.effort, args.ticket)
+    if ticket.implementation:
+        print("handed-off implementation must be resumed before releasing its claim", file=sys.stderr)
+        return REFUSED
     if not re.fullmatch(r"a-[a-f0-9]{16}", args.attempt):
         raise WorkerError("release requires an exact collab Attempt identity")
     if not re.fullmatch(r"[a-f0-9]{64}", args.expected_sha256):
@@ -947,6 +1038,9 @@ def cmd_resolve(args: argparse.Namespace) -> int:
         return REFUSED
     missing_landed = not has_accepted_landed_candidate(root, args.effort, ticket)
     unchecked_acceptance = not all_acceptance_checked(ticket)
+    if ticket.implementation and missing_landed:
+        print("handoff requires an accepted, landed Candidate before resolution", file=sys.stderr)
+        return REFUSED
     if unchecked_acceptance and getattr(args, "mark_reviewed", False):
         if missing_landed:
             print("cannot mark acceptance without accepted, landed evidence", file=sys.stderr)
@@ -957,7 +1051,7 @@ def cmd_resolve(args: argparse.Namespace) -> int:
         ticket.path.write_text("\n".join(lines) + "\n")
         ticket, _ = find_ticket(root, args.effort, args.ticket)
         unchecked_acceptance = not all_acceptance_checked(ticket)
-    if unchecked_acceptance and not args.force:
+    if unchecked_acceptance and (not args.force or ticket.implementation):
         print(f"ticket {ticket.id} has unchecked acceptance", file=sys.stderr)
         return REFUSED
     if missing_landed and not args.force:
@@ -971,7 +1065,8 @@ def cmd_resolve(args: argparse.Namespace) -> int:
         forced_reasons.append("missing accepted, landed Candidate")
     if forced_reasons:
         text = f"resolved with --force despite {' and '.join(forced_reasons)}"
-    write_transition(ticket, {"Status": "resolved", "Claimed": ""}, args.owner, text, stamp)
+    write_transition(ticket, {"Status": "resolved", "Claimed": "", "Implementation": "", "Handoff evidence": ""},
+                     args.owner, text, stamp)
     print(str(ticket.path.relative_to(root)))
     return OK
 
@@ -1031,6 +1126,8 @@ def ticket_row(root: Path, effort: str, ticket: Ticket, by_id: dict[str, Ticket]
         "blocked_by": ticket.blocked_by,
         "triage": ticket.triage,
         "claimed": ticket.claimed,
+        "implementation": ticket.implementation,
+        "handoff_evidence": ticket.handoff_evidence,
         "category": category,
         "path": path,
     }
@@ -1055,7 +1152,8 @@ def cmd_list(args: argparse.Namespace) -> int:
         owner = row["owner"] or "-"
         blockers = ",".join(row["blocked_by"]) or "-"
         triage = row["triage"] or "-"
-        print(f"{row['id']} {row['category']} owner={owner} triage={triage} blockers={blockers} {row['slug']}: {row['title']}")
+        implementation = f" implementation={row['implementation']}" if row["implementation"] else ""
+        print(f"{row['id']} {row['category']} owner={owner} triage={triage} blockers={blockers}{implementation} {row['slug']}: {row['title']}")
     return OK
 
 
@@ -1162,6 +1260,22 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--ttl-hours", type=float, default=24.0)
     add_repo_arg(p)
     p.set_defaults(fn=cmd_claim)
+
+    p = sub.add_parser("handoff")
+    p.add_argument("effort")
+    p.add_argument("ticket")
+    p.add_argument("--owner", required=True)
+    p.add_argument("--evidence", action="append", required=True)
+    add_repo_arg(p)
+    p.set_defaults(fn=cmd_handoff)
+
+    p = sub.add_parser("resume")
+    p.add_argument("effort")
+    p.add_argument("ticket")
+    p.add_argument("--owner", required=True)
+    p.add_argument("--ttl-hours", type=float, default=24.0)
+    add_repo_arg(p)
+    p.set_defaults(fn=cmd_resume)
 
     p = sub.add_parser("release", help="release an exact owned collab claim; --dry-run returns its plan")
     p.add_argument("effort")

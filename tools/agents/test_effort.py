@@ -272,6 +272,34 @@ class EffortTest(unittest.TestCase):
         self.assertEqual(self.code, effort.ERROR)
         self.assertIn("Where we are", self.err)
 
+    def test_snapshot_preserves_human_text_dirty_files_index_and_refs(self):
+        self.fill_state()
+        state = self.wt / "docs/efforts/demo/STATE.md"
+        human = effort.split_state(state.read_text())[1]
+        (self.wt / "README").write_text("staged\n")
+        run(self.wt, "add", "README")
+        (self.wt / "README").write_text("unstaged\n")
+        (self.wt / "untracked file").write_bytes(b"\x00binary")
+        evidence = self.wt / "docs/efforts/demo/evidence/check.txt"
+        evidence.write_text("focused checks passed\n")
+        index = Path(run(self.wt, "rev-parse", "--path-format=absolute", "--git-path", "index").strip())
+        before = (index.read_bytes(), run(self.wt, "rev-parse", "HEAD"), run(self.wt, "show-ref"))
+
+        out = self.call(["--repo", str(self.wt), "snapshot", "demo", "--evidence", str(evidence)])
+
+        self.assertEqual(self.code, effort.OK, self.err)
+        self.assertEqual(before, (index.read_bytes(), run(self.wt, "rev-parse", "HEAD"), run(self.wt, "show-ref")))
+        machine, after_human = effort.split_state(state.read_text())
+        self.assertEqual(after_human, human)
+        self.assertEqual(machine["mode"], "snapshot")
+        self.assertEqual(machine["evidence"][0]["path"], str(evidence))
+        self.assertEqual(len(machine["evidence"][0]["sha256"]), 64)
+        self.assertIn("README", machine["worktrees"][0]["dirty"])
+        self.assertIn("untracked file", machine["worktrees"][0]["dirty"])
+        self.assertIn("not backed up", out)
+        self.assertEqual((self.wt / "README").read_text(), "unstaged\n")
+        self.assertEqual((self.wt / "untracked file").read_bytes(), b"\x00binary")
+
     def test_dirty_worktree_blocks_dehydrate(self):
         self.fill_state()
         other = self.second_worktree()
@@ -279,6 +307,53 @@ class EffortTest(unittest.TestCase):
         self.call(["--repo", str(self.wt), "dehydrate", "demo", "--worktree", str(other)])
         self.assertEqual(self.code, effort.ERROR)
         self.assertIn("uncommitted", self.err)
+
+    def test_rehydrate_refuses_to_recreate_missing_dirty_snapshot_worktree(self):
+        self.fill_state()
+        other = self.second_worktree()
+        (other / "f.txt").write_text("uncommitted work\n")
+        self.call(["--repo", str(self.wt), "snapshot", "demo", "--worktree", str(other)])
+        self.assertEqual(self.code, effort.OK, self.err)
+        run(self.repo, "worktree", "remove", "--force", str(other))
+
+        out = self.call(["--repo", str(self.wt), "rehydrate", "demo"])
+
+        self.assertEqual(self.code, effort.ERROR, out)
+        self.assertIn("dirty contents were not backed up", out)
+        self.assertFalse(other.exists())
+
+    def test_snapshot_retains_missing_dirty_worktree_and_evidence_drift(self):
+        self.fill_state()
+        other = self.second_worktree()
+        (other / "f.txt").write_text("uncommitted work\n")
+        evidence = self.wt / "docs/efforts/demo/evidence/check.txt"
+        evidence.write_text("passed\n")
+        self.call(["--repo", str(self.wt), "snapshot", "demo", "--worktree", str(other), "--evidence", str(evidence)])
+        run(self.repo, "worktree", "remove", "--force", str(other))
+        evidence.write_text("changed after verification\n")
+        self.call(["--repo", str(self.wt), "snapshot", "demo"])
+        self.assertEqual(self.code, effort.OK, self.err)
+        out = self.call(["--repo", str(self.wt), "rehydrate", "demo"])
+        self.assertEqual(self.code, effort.ERROR, out)
+        self.assertIn("dirty contents were not backed up", out)
+        self.assertIn("evidence changed", out)
+        self.assertFalse(other.exists())
+
+    def test_snapshot_refuses_self_referential_evidence_without_writing(self):
+        self.fill_state()
+        state = self.wt / "docs/efforts/demo/STATE.md"
+        before = state.read_bytes()
+        self.call(["--repo", str(self.wt), "snapshot", "demo", "--evidence", str(state)])
+        self.assertEqual(self.code, effort.ERROR, self.err)
+        self.assertEqual(state.read_bytes(), before)
+
+    def test_snapshot_refuses_unknown_missing_worktree_without_writing(self):
+        self.fill_state()
+        state = self.wt / "docs/efforts/demo/STATE.md"
+        before = state.read_bytes()
+        self.call(["--repo", str(self.wt), "snapshot", "demo", "--worktree", str(self.repo.parent / "missing")])
+        self.assertEqual(self.code, effort.ERROR, self.err)
+        self.assertEqual(state.read_bytes(), before)
 
     def test_round_trip_restores_worktree_and_briefs(self):
         self.fill_state()

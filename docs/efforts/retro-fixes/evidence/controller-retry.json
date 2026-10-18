@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "selected_suites": [
+    "70-sqlite-controller"
+  ],
+  "remaining_suites": [],
+  "duration_seconds": 582.6466739370007,
+  "timeout_seconds": 1800,
+  "results": [
+    {
+      "suite": "70-sqlite-controller",
+      "command": [
+        "sh",
+        "tools/agents/checks.d/70-sqlite-controller.sh"
+      ],
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 582.6466351900017
+    }
+  ]
+}

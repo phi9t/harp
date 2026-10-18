@@ -1,4 +1,4 @@
-<!-- Agentic Engineering Workflow v2026.09.29.3. Canonical source: corenius/docs/agents/agentic-engineering.md. Sibling copies are managed by Corenius. -->
+<!-- Agentic Engineering Workflow v2026.10.13.1. Canonical source: corenius/docs/agents/agentic-engineering.md. Sibling copies are managed by Corenius. -->
 # Agentic Engineering Workflow
 
 > Scale agent execution, not agent authority.
@@ -108,9 +108,16 @@ Complete these gates in order:
 7. **Ticket conformance:** Review every ticket on both Matt axes: repository
    Standards and ticket Spec. This satisfies the Superpowers request-review
    phase only when neither axis has unresolved blocking findings.
-8. **Independent verification:** Run `roborev review --branch`. If branch review
-   is unavailable, use a separate-context reviewer against the fixed base and
-   spec. Passing tests do not replace this gate.
+8. **Independent verification:** For committed work, run `roborev review
+   --branch`. For uncommitted work in Corenius, capture a complete subject with
+   `python3 -m tools.agents.review_snapshot --base <base> --output <directory>`
+   and give that artifact to a separate-context reviewer with the spec. It
+   includes staged, unstaged and untracked content; a branch-only diff is
+   insufficient. In sibling repositories without this tool, explicitly inventory
+   and review all three kinds of local change alongside the fixed-base diff.
+   If branch review is unavailable, use the same separate-context fallback.
+   Passing tests do not replace this gate. WIP review does not grant landing
+   acceptance or Git authority.
 9. **Repair:** Fix findings and re-review for at most three iterations. Run
    `roborev refine --max-iterations 3` only on a clean isolated branch or
    worktree; otherwise repair through the implementing agent and submit a fresh
@@ -138,11 +145,18 @@ in scratch.
   `decisions/` (one file each, append-only; supersede, never edit), `tickets/`,
   `evidence/`, and `STATE.md`, the dehydrated snapshot.
 - Scratch: worktree build output, worker run logs, drafts, probes, kata notes.
-- **Dehydrate** at every session end and handoff: `tools/agents/effort.py
-  dehydrate <effort>` refreshes the machine block of `STATE.md` (base commit,
-  worktrees with branch and head, worker verdicts) and commits it. It refuses
-  when a worktree has uncommitted changes or the human sections are empty, so
-  nothing lives only on disk.
+- **Snapshot** at every session end and handoff without Git authorization:
+  `tools/agents/effort.py snapshot <effort>` refreshes `STATE.md` without staging
+  or committing. Include verification evidence and every participating worktree.
+  Dirty contents remain local: the snapshot records their presence and does not
+  claim they can be reconstructed from commit pointers. Preserve those worktrees.
+- **Dehydrate** when committing is explicitly authorized:
+  `tools/agents/effort.py dehydrate <effort>` refreshes the machine block of
+  `STATE.md` (base commit, worktrees with branch and head, worker verdicts) and
+  commits it. It refuses unrelated uncommitted changes or empty human sections.
+- Record implementation handoff with `tracker.py handoff` when verification is
+  ready for human acceptance. This preserves the claim and the requirement for
+  an accepted, landed Candidate before resolution; dependent tickets stay blocked.
 - **Rehydrate** at every session start: `effort.py rehydrate <effort>` verifies
   every pointer, restores missing worktrees, prints a briefing and a drift
   report, and exits non-zero on drift it cannot repair. Do not proceed on a

@@ -12,12 +12,12 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class GateDispatcherTests(unittest.TestCase):
-    def dispatch(self, **options):
+    def dispatch(self, *arguments, **options):
         with tempfile.TemporaryDirectory(prefix="gate-dispatch-") as directory:
             fixture = Path(directory)
             trace = fixture / "trace.jsonl"
             shim = "#!" + sys.executable + "\n" + r'''import json, os, sys
-if len(sys.argv) > 1 and sys.argv[1] == "tools/temp_root.py":
+if len(sys.argv) > 1 and sys.argv[1] in ("tools/temp_root.py", "tools/agents/check.py"):
     os.execv(sys.executable, [sys.executable, *sys.argv[1:]])
 with open(os.environ["GATE_TRACE"], "a") as stream:
     stream.write(json.dumps([os.path.basename(sys.argv[0]), *sys.argv[1:]]) + "\n")
@@ -59,17 +59,22 @@ raise SystemExit(1)
             git_executable.write_text(git)
             git_executable.chmod(0o700)
             environment = dict(os.environ)
-            for variable in ("CHECK_BENCH", "CHECK_SYNC", "CHECK_CARGO", "CHECK_TEAM_CONTROL_PLANE",
+            for variable in ("CHECK_BENCH", "CHECK_SYNC", "CHECK_CARGO", "CHECK_TEAM_CONTROL_PLANE", "CHECK_CONTROLLER_THREADS",
                              "GATE_CHANGED_FILES", "GATE_GIT_MODE", "GATE_INDEX_CHANGED_FILES",
                              "GATE_WORKTREE_CHANGED_FILES"):
                 environment.pop(variable, None)
             environment.update(PATH=str(fixture) + os.pathsep + environment["PATH"],
                                GATE_TRACE=str(trace), CHECK_CARGO="0")
             environment.update(options)
-            result = subprocess.run(["/bin/sh", "tools/agents/check.sh"], cwd=ROOT,
+            result = subprocess.run(["/bin/sh", "tools/agents/check.sh", *arguments], cwd=ROOT,
                                     env=environment, text=True, capture_output=True)
-            calls = [json.loads(line) for line in trace.read_text().splitlines()]
+            calls = [json.loads(line) for line in (trace.read_text().splitlines() if trace.exists() else [])]
             return result, calls
+
+    def test_selected_suite_runs_without_default_suites(self):
+        result, calls = self.dispatch('--suite', '15-worker')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(calls, [['python3', 'tools/agents/test_worker.py']])
 
     def collab_suite_count(self, calls):
         return sum(call[:6] == ["python3", "-m", "unittest", "discover", "-s", "tools/collab/tests"]
@@ -93,6 +98,13 @@ raise SystemExit(1)
         self.assertEqual(result.returncode, 0)
         self.assertTrue(any("controller/Cargo.toml" in call for call in calls))
         self.assertFalse(any("experiments/team_control_plane/tests/run-temporal.sh" in call for call in calls))
+
+    def test_controller_thread_budget_is_configurable_without_changing_root_cargo(self):
+        result, calls = self.dispatch(CHECK_CONTROLLER_THREADS="8", CHECK_CARGO="1")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        controller = next(call for call in calls if 'controller/Cargo.toml' in call)
+        self.assertIn('--test-threads=8', controller)
+        self.assertIn(['cargo', 'test', '--offline', '--', '--test-threads=1'], calls)
 
     def test_all_options_include_parked_integration_and_optional_suites(self):
         result, calls = self.dispatch(CHECK_TEAM_CONTROL_PLANE="1", CHECK_BENCH="1",
