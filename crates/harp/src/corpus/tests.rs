@@ -456,7 +456,7 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
 fn compiles_the_mathematical_foundations_formalization_map() {
     const MAP_ID: &str = "math-foundations-formalization-map";
     const MAP_PATH: &str = "knowledge/mathematical_foundations/formalization_map.md";
-    const MANIFEST_PATH: &str = "formalization/lean/MathematicalFoundations/PublicTheorems.lean";
+    const MANIFEST_PATH: &str = "lab/math/lean/MathematicalFoundations/PublicTheorems.lean";
     const STATUSES: [&str; 3] = ["Direct theorem", "Corollary/application", "Prose-only"];
     const INVENTORY_NAMESPACES: [&str; 6] = [
         "MathematicalFoundations.Linear",
@@ -482,10 +482,9 @@ fn compiles_the_mathematical_foundations_formalization_map() {
         .expect("formalization map must be canonical Markdown");
     let manifest = fs::read_to_string(workspace_root().join(MANIFEST_PATH))
         .expect("formalization map must have a Lean-owned public-theorem manifest");
-    let root_module = fs::read_to_string(
-        workspace_root().join("formalization/lean/MathematicalFoundations.lean"),
-    )
-    .expect("formalization root module must be readable");
+    let root_module =
+        fs::read_to_string(workspace_root().join("lab/math/lean/MathematicalFoundations.lean"))
+            .expect("formalization root module must be readable");
     assert!(
         root_module.contains("import MathematicalFoundations.PublicTheorems"),
         "formalization root module must compile the public-theorem manifest"
@@ -617,7 +616,7 @@ fn compiles_the_mathematical_foundations_formalization_map() {
         !contains_nonportable_path_reference(&map),
         "{MAP_PATH} must not contain a nonportable local-path reference"
     );
-    let formalization_root = workspace_root().join("formalization/lean/MathematicalFoundations");
+    let formalization_root = workspace_root().join("lab/math/lean/MathematicalFoundations");
     let lean_sources = formalization_lean_sources(&formalization_root);
     let manifest_suffix =
         Path::new("MathematicalFoundations").join(["Public", "Theorems.lean"].concat());
@@ -878,14 +877,13 @@ fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
 #[test]
 fn renders_chapter_33_formalization_wikilinks_from_the_vault_root() {
     let rendered = render::render_markdown_with_targets(
-        "[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]",
+        "[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]",
         "knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
         &BTreeMap::new(),
     );
 
     assert!(
-        rendered
-            .contains("href=\"../../formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean\""),
+        rendered.contains("href=\"../../lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean\""),
         "rendered Chapter 33 link: {rendered}"
     );
     assert!(
@@ -988,7 +986,7 @@ fn validates_local_links_in_product_roots() {
     let evidence = repo.path().join("evidence/sicp/sicp.pdf");
     fs::create_dir_all(evidence.parent().unwrap()).unwrap();
     fs::write(evidence, b"captured source").unwrap();
-    fs::create_dir_all(repo.path().join("labs/sicp-evaluator")).unwrap();
+    fs::create_dir_all(repo.path().join("lab/sicp")).unwrap();
     let source = repo.path().join("crates/harp/src/sources.rs");
     fs::create_dir_all(source.parent().unwrap()).unwrap();
     fs::write(source, b"// materializer\n").unwrap();
@@ -996,7 +994,7 @@ fn validates_local_links_in_product_roots() {
 
     validate_local_links(
         "knowledge/rsi/sicp/course/capstone/guide.md",
-        "[source](../../../../../evidence/sicp/sicp.pdf)\n[lab](../../../../../labs/sicp-evaluator/)\n[materializer](../../../../../crates/harp/src/sources.rs)\n",
+        "[source](../../../../../evidence/sicp/sicp.pdf)\n[lab](../../../../../lab/sicp/)\n[materializer](../../../../../crates/harp/src/sources.rs)\n",
         &repository,
     )
     .unwrap();
@@ -1008,7 +1006,7 @@ fn validates_obsidian_wikilinks_in_product_roots() {
     let target = repo.path().join("knowledge/rsi/target.md");
     fs::create_dir_all(target.parent().unwrap()).unwrap();
     fs::write(target, "# Target\n\n## Result boundary\n\nText.\n").unwrap();
-    let lean_target = repo.path().join("formalization/lean/Example.lean");
+    let lean_target = repo.path().join("lab/math/lean/Example.lean");
     fs::create_dir_all(lean_target.parent().unwrap()).unwrap();
     fs::write(lean_target, "theorem example : True := by trivial\n").unwrap();
     let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
@@ -1022,7 +1020,7 @@ fn validates_obsidian_wikilinks_in_product_roots() {
 
     validate_local_links(
         "knowledge/rsi/chapters/guide.md",
-        "[[formalization/lean/Example.lean|Lean proof]]",
+        "[[lab/math/lean/Example.lean|Lean proof]]",
         &repository,
     )
     .unwrap();

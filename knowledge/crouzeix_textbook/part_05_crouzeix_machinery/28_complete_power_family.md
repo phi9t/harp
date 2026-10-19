@@ -59,7 +59,7 @@ member cannot recover.
 
 This truncation is checked independently in Lean: supporting theorem
 `CrouzeixTextbook.Part05.a_zero_two_power_truncation`
-([code](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L264)).
+([code](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L264)).
 Its focused compiler receipt records the standard project axioms
 `Classical.choice`, `Quot.sound`, and `propext`; it is supporting evidence for
 the example, not an additional CFT correspondence row.
@@ -159,7 +159,7 @@ Public declaration: `CrouzeixTextbook.Part05.power_cauchy_formula`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ContourParameter, CrouzeixConjecture.HasParametricPowerCauchyFormula, CrouzeixConjecture.PositivePeriodicRadialData, CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary, CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.hasParametricPowerCauchyFormula_of_holomorphic_of_simpleDiagonalization, CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary, CrouzeixConjecture.SimpleDiagonalization, CrouzeixConjecture.SimpleDiagonalization.functionEval, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.contourParameterMeasure, CrouzeixConjecture.contourPeriod, CrouzeixConjecture.numericalRange, CrouzeixConjecture.parametricContractiveBoundaryFunctionOfContinuousOn`.
 Readable type map: the radial data, domain, open neighborhood, compact closure, holomorphic scalar function, bound, matrix, diagonalization, and numerical-range containment match the statement above.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L11).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L11).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] (R : CrouzeixConjecture.PositivePeriodicRadialData) (c : Complex) {Omega V : Set.{0} Complex} (G : R.OrientedRadialConvexBoundary c Omega), IsOpen.{0} V → IsCompact.{0} (closure.{0} Omega) → ∀ (hclosure : LE.le.{0} (closure.{0} Omega) V) {f : Complex → Complex} (hf : DifferentiableOn.{0, 0, 0} Complex f V) (hbound : ∀ (z : Complex), Membership.mem.{0, 0} (closure.{0} Omega) z → LE.le.{0} (Norm.norm.{0} (f z)) (OfNat.ofNat.{0} 1)) (B : CrouzeixConjecture.SquareMatrix.{u_1} n) (hB : CrouzeixConjecture.SimpleDiagonalization.{u_1} B), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} B) Omega → CrouzeixConjecture.HasParametricPowerCauchyFormula.{0, u_1} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R c G) CrouzeixConjecture.contourParameterMeasure B (CrouzeixConjecture.parametricContractiveBoundaryFunctionOfContinuousOn.{0} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R c G) f ⋯ hbound) (CrouzeixConjecture.SimpleDiagonalization.functionEval.{u_1} hB f)`.
 Type SHA-256: `258dcd40effc3e1c87075f12ed8e7b33594385efb646067ebd90517af2e3238f`.
@@ -257,7 +257,7 @@ Public declaration: `CrouzeixTextbook.Part05.power_cauchy_mass_one`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ContractiveBoundaryFunction, CrouzeixConjecture.ContractiveBoundaryFunction.function, CrouzeixConjecture.HasParametricPowerCauchyFormula, CrouzeixConjecture.ParametricConvexBoundary, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.parametricBoundaryFirstPart`.
 Readable type map: `hCauchy` is the common power formula and the conclusion is the identity mass of its analytic first part.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L35).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L35).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [inst_1 : MeasurableSpace.{u_1} i] [inst_2 : Fintype.{u_2} n] [inst_3 : DecidableEq.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} {Omega : Set.{0} Complex} {Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega} {B : CrouzeixConjecture.SquareMatrix.{u_2} n} {f : CrouzeixConjecture.ContractiveBoundaryFunction.{u_1} i} {T : CrouzeixConjecture.SquareMatrix.{u_2} n}, CrouzeixConjecture.HasParametricPowerCauchyFormula.{u_1, u_2} Gamma mu B f T → Eq.{u_2 + 1} (MeasureTheory.integral.{u_1, u_2} mu fun x => CrouzeixConjecture.parametricBoundaryFirstPart.{u_1, u_2} Gamma B x) (OfNat.ofNat.{u_2} 1)`.
 Type SHA-256: `af7ffea07579ffc73817d257712c98a60596ed2a7df38403d75cee67224d96dd`.
@@ -356,7 +356,7 @@ Public declaration: `CrouzeixTextbook.Part05.contractive_boundary_function`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ContractiveBoundaryFunction, CrouzeixConjecture.ContractiveBoundaryFunction.function, CrouzeixConjecture.ContractiveBoundaryFunction.norm_le_one, CrouzeixConjecture.ParametricConvexBoundary, CrouzeixConjecture.ParametricConvexBoundary.point, CrouzeixConjecture.parametricContractiveBoundaryFunctionOfContinuousOn`.
 Readable type map: the constructed boundary object is paired with its exact application identity and its bounded-continuous-function norm estimate.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L50).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L50).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} [inst : TopologicalSpace.{u_1} i] [CompactSpace.{u_1} i] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (f : Complex → Complex), ContinuousOn.{0, 0} f (closure.{0} Omega) → (∀ (z : Complex), Membership.mem.{0, 0} (closure.{0} Omega) z → LE.le.{0} (Norm.norm.{0} (f z)) (OfNat.ofNat.{0} 1)) → Exists.{u_1 + 1} fun h => And (∀ (x : i), Eq.{1} (DFunLike.coe.{u_1 + 1, u_1 + 1, 1} (CrouzeixConjecture.ContractiveBoundaryFunction.function.{u_1} h) x) (f (DFunLike.coe.{u_1 + 1, u_1 + 1, 1} (CrouzeixConjecture.ParametricConvexBoundary.point.{u_1} Gamma) x))) (LE.le.{0} (Norm.norm.{u_1} (CrouzeixConjecture.ContractiveBoundaryFunction.function.{u_1} h)) (OfNat.ofNat.{0} 1))`.
 Type SHA-256: `89cd7ac55f8eef42107167ebd2bc6310d339d9a3a319ed58ca3ceba31f31e907`.
@@ -493,7 +493,7 @@ Public declaration: `CrouzeixTextbook.Part05.power_cayley_companion`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ContractiveBoundaryFunction, CrouzeixConjecture.HasParametricPowerCauchyFormula, CrouzeixConjecture.ParametricConvexBoundary, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.closedUnitDisk, CrouzeixConjecture.doubleLayerCayleySeries, CrouzeixConjecture.doubleLayerCayleySeries_rePart_posSemidef, CrouzeixConjecture.generatedAlgebra, CrouzeixConjecture.matrixCayleyTransform, CrouzeixConjecture.matrixSpectrum, CrouzeixConjecture.numericalRange, CrouzeixConjecture.parametricPositiveBoundaryDensityOfMass, CrouzeixConjecture.parametricPowerCayleyCompanion, CrouzeixConjecture.parametricPowerCayleyCompanion_mem_generatedAlgebra, CrouzeixConjecture.parametric_direct_cayley_identity_of_powerCauchy, CrouzeixConjecture.rePart, CrouzeixConjecture.unitDisk, CrouzeixTextbook.Part05.power_cauchy_mass_one`.
 Readable type map: the theorem universally constructs the companion and positive function, then records algebra membership, positive semidefinite real part, and the direct Cayley identity for each disk point.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L68).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L68).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [inst_1 : CompactSpace.{u_1} i] [inst_2 : MeasurableSpace.{u_1} i] [inst_3 : OpensMeasurableSpace.{u_1} i] [inst_4 : Fintype.{u_2} n] [inst_5 : DecidableEq.{u_2 + 1} n] [Nonempty.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} [inst_7 : MeasureTheory.IsFiniteMeasure.{u_1} mu] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (B : CrouzeixConjecture.SquareMatrix.{u_2} n) (hWB : LE.le.{0} (CrouzeixConjecture.numericalRange.{u_2} B) Omega) (f : CrouzeixConjecture.ContractiveBoundaryFunction.{u_1} i) (T : CrouzeixConjecture.SquareMatrix.{u_2} n) (hCauchy : CrouzeixConjecture.HasParametricPowerCauchyFormula.{u_1, u_2} Gamma mu B f T), LE.le.{0} (CrouzeixConjecture.matrixSpectrum.{u_2} T) CrouzeixConjecture.closedUnitDisk → Exists.{u_2 + 1} fun g => And (∀ (z : Complex), Membership.mem.{0, 0} CrouzeixConjecture.unitDisk z → Membership.mem.{u_2, u_2} (CrouzeixConjecture.generatedAlgebra.{u_2} B) (g z)) (And (∀ (z : Complex), Membership.mem.{0, 0} CrouzeixConjecture.unitDisk z → Matrix.PosSemidef.{u_2, 0} (CrouzeixConjecture.rePart.{u_2} (CrouzeixConjecture.doubleLayerCayleySeries.{u_1, u_2} (CrouzeixConjecture.parametricPositiveBoundaryDensityOfMass.{u_1, u_2} Gamma B hWB ⋯) f z))) (∀ (z : Complex), Membership.mem.{0, 0} CrouzeixConjecture.unitDisk z → Eq.{u_2 + 1} (HSMul.hSMul.{0, u_2, u_2} (OfNat.ofNat.{0} 2) (CrouzeixConjecture.doubleLayerCayleySeries.{u_1, u_2} (CrouzeixConjecture.parametricPositiveBoundaryDensityOfMass.{u_1, u_2} Gamma B hWB ⋯) f z)) (HAdd.hAdd.{u_2, u_2, u_2} (CrouzeixConjecture.matrixCayleyTransform.{u_2} z T) (Matrix.conjTranspose.{0, u_2, u_2} (g z)))))`.
 Type SHA-256: `b8f10ac0cc5db54f484a749ec7b303f346a9d9803d1a9bab62062bbefc2099dc`.
@@ -600,7 +600,7 @@ Public declaration: `CrouzeixTextbook.Part05.positive_completion_from_power_fami
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ContractiveBoundaryFunction, CrouzeixConjecture.HasParametricPowerCauchyFormula, CrouzeixConjecture.IsPositiveRealCompletion, CrouzeixConjecture.ParametricConvexBoundary, CrouzeixConjecture.PositiveBoundaryDensity, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.closedUnitDisk, CrouzeixConjecture.doubleLayerCayleySeries, CrouzeixConjecture.doubleLayerCayleySeries_analyticOnNhd, CrouzeixConjecture.doubleLayerCayleySeries_zero, CrouzeixConjecture.generatedAlgebra, CrouzeixConjecture.isPositiveRealCompletion_of_direct_cayley_identity, CrouzeixConjecture.matrixCayleyTransform, CrouzeixConjecture.matrixSpectrum, CrouzeixConjecture.numericalRange, CrouzeixConjecture.parametricPositiveBoundaryDensityOfMass, CrouzeixConjecture.rePart, CrouzeixConjecture.unitDisk, CrouzeixTextbook.Part05.power_cauchy_mass_one, CrouzeixTextbook.Part05.power_cayley_companion`.
 Readable type map: the contour, matrix, containment, contractive boundary function, full family, and spectral inclusion produce an explicit existential positive-real completion.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L102).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L102).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [CompactSpace.{u_1} i] [inst_2 : MeasurableSpace.{u_1} i] [OpensMeasurableSpace.{u_1} i] [inst_4 : Fintype.{u_2} n] [inst_5 : DecidableEq.{u_2 + 1} n] [Nonempty.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} [MeasureTheory.IsFiniteMeasure.{u_1} mu] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (B : CrouzeixConjecture.SquareMatrix.{u_2} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_2} B) Omega → ∀ (f : CrouzeixConjecture.ContractiveBoundaryFunction.{u_1} i) (T : CrouzeixConjecture.SquareMatrix.{u_2} n), CrouzeixConjecture.HasParametricPowerCauchyFormula.{u_1, u_2} Gamma mu B f T → LE.le.{0} (CrouzeixConjecture.matrixSpectrum.{u_2} T) CrouzeixConjecture.closedUnitDisk → Exists.{u_2 + 1} fun H => CrouzeixConjecture.IsPositiveRealCompletion.{u_2} B T H`.
 Type SHA-256: `655425bab338ed249ed27b699808957c6fddbfb80f2a31fdfa72e65852a6ccb0`.
@@ -721,7 +721,7 @@ Public declaration: `CrouzeixTextbook.Part05.power_family_norm_two`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ContractiveBoundaryFunction, CrouzeixConjecture.HasParametricPowerCauchyFormula, CrouzeixConjecture.IsPositiveRealCompletion, CrouzeixConjecture.ParametricConvexBoundary, CrouzeixConjecture.SimpleDiagonalization, CrouzeixConjecture.SimpleDiagonalization.changeBasis, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.closedUnitDisk, CrouzeixConjecture.innerConjugation, CrouzeixConjecture.matrixSpectrum, CrouzeixConjecture.matrixSpectrum.eq_1, CrouzeixConjecture.numericalRange, CrouzeixConjecture.positiveRealCompletionStatement, CrouzeixTextbook.Part05.positive_completion_from_power_family`.
 Readable type map: the family, containment, diagonalization, similarity representation, and eigenvalue bound build the Jin provider's hypotheses and then yield `‖T‖≤2`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L129).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L129).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [CompactSpace.{u_1} i] [inst_2 : MeasurableSpace.{u_1} i] [OpensMeasurableSpace.{u_1} i] [inst_4 : Fintype.{u_2} n] [inst_5 : DecidableEq.{u_2 + 1} n] [Nonempty.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} [MeasureTheory.IsFiniteMeasure.{u_1} mu] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (B T : CrouzeixConjecture.SquareMatrix.{u_2} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_2} B) Omega → ∀ (f : CrouzeixConjecture.ContractiveBoundaryFunction.{u_1} i), CrouzeixConjecture.HasParametricPowerCauchyFormula.{u_1, u_2} Gamma mu B f T → ∀ (hB : CrouzeixConjecture.SimpleDiagonalization.{u_2} B) (lambda : n → Complex), Eq.{u_2 + 1} T (DFunLike.coe.{u_2 + 1, u_2 + 1, u_2 + 1} (CrouzeixConjecture.innerConjugation.{u_2} (CrouzeixConjecture.SimpleDiagonalization.changeBasis.{u_2} hB)) (Matrix.diagonal.{0, u_2} lambda)) → (∀ (j : n), LE.le.{0} (Norm.norm.{0} (lambda j)) (OfNat.ofNat.{0} 1)) → LE.le.{0} (Norm.norm.{u_2} T) (OfNat.ofNat.{0} 2)`.
 Type SHA-256: `a505f972d0a99bda91d63ea153feeadbea85c3112034679470c5e48b4da9f7bc`.
@@ -767,7 +767,7 @@ error, model mismatch, and finite-data effects remain outside its hypotheses.
 ## Lean translation
 
 The six public declarations in
-[[formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean|Chapter28.lean]]
+[[lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean|Chapter28.lean]]
 are proved in the textbook namespace and have no underlying alias. They expose,
 in order, the oriented-radial Cauchy construction, the direct zeroth-power
 specialization, the boundary sup-norm bound, the disk-wide Cayley companion,
@@ -796,7 +796,7 @@ five objects.
 #### Lean solution
 
 Declaration: `CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_01_solution`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L152).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L152).
 Normalized type: `∀ (i n : Type) [inst : TopologicalSpace.{0} i] [CompactSpace.{0} i] [inst_2 : MeasurableSpace.{0} i] [OpensMeasurableSpace.{0} i] [inst_4 : Fintype.{0} n] [inst_5 : DecidableEq.{1} n] [Nonempty.{1} n] (mu : MeasureTheory.Measure.{0} i) [MeasureTheory.IsFiniteMeasure.{0} mu] (Omega : Set.{0} Complex) (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{0} Omega) (B : CrouzeixConjecture.SquareMatrix.{0} n) (f : CrouzeixConjecture.ContractiveBoundaryFunction.{0} i) (T : CrouzeixConjecture.SquareMatrix.{0} n), Iff (CrouzeixConjecture.HasParametricPowerCauchyFormula.{0, 0} Gamma mu B f T) (∀ (m : Nat), Eq.{1} (MeasureTheory.integral.{0, 0} mu fun x => HSMul.hSMul.{0, 0, 0} (HPow.hPow.{0, 0, 0} (DFunLike.coe.{1, 1, 1} (CrouzeixConjecture.ContractiveBoundaryFunction.function.{0} f) x) m) (CrouzeixConjecture.parametricBoundaryFirstPart.{0, 0} Gamma B x)) (HPow.hPow.{0, 0, 0} T m))`.
 Type SHA-256: `d60e7a320e248d34ac0bc0538f91b9e73f70c4a13a0dfed2b08b86e5b614b87b`.
 Axioms: `Classical.choice, Quot.sound, propext`.
@@ -821,7 +821,7 @@ number `‖f(x)‖≤1`.
 #### Lean solution
 
 Declaration: `CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_02_solution`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L170).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L170).
 Normalized type: `∀ (i : Type) [inst : TopologicalSpace.{0} i] (f : CrouzeixConjecture.ContractiveBoundaryFunction.{0} i) (m : Nat) (x : i), LE.le.{0} (Norm.norm.{0} (HPow.hPow.{0, 0, 0} (DFunLike.coe.{1, 1, 1} (CrouzeixConjecture.ContractiveBoundaryFunction.function.{0} f) x) m)) (OfNat.ofNat.{0} 1)`.
 Type SHA-256: `a9aef25e6854b94c3da4a46b2804a3c1f3571142ad88dac47781881686084661`.
 Axioms: `Classical.choice, Quot.sound, propext`.
@@ -847,7 +847,7 @@ $$1+2\sum_{m≥0}(zw)^{m+1}=1+\frac{2zw}{1-zw}
 #### Lean solution
 
 Declaration: `CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_03_solution`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L178).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L178).
 Normalized type: `∀ (z w : Complex), LT.lt.{0} (Norm.norm.{0} (HMul.hMul.{0, 0, 0} z w)) (OfNat.ofNat.{0} 1) → Eq.{1} (CrouzeixConjecture.cayleyTransform z w) (HAdd.hAdd.{0, 0, 0} (OfNat.ofNat.{0} 1) (HMul.hMul.{0, 0, 0} (OfNat.ofNat.{0} 2) (tsum.{0, 0} fun m => HPow.hPow.{0, 0, 0} (HMul.hMul.{0, 0, 0} z w) (HAdd.hAdd.{0, 0, 0} m (OfNat.ofNat.{0} 1)))))`.
 Type SHA-256: `de80e6e778a5dd402323a69c8ec31582f63fd1794ca2f38e67d19b9f25a5d638`.
 Axioms: `Classical.choice, Quot.sound, propext`.
@@ -872,7 +872,7 @@ right side is `I`. Hence `∫F_Γ(B,x)dμ(x)=I`.
 #### Lean solution
 
 Declaration: `CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_04_solution`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L201).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L201).
 Normalized type: `∀ (i n : Type) [inst : TopologicalSpace.{0} i] [CompactSpace.{0} i] [inst_2 : MeasurableSpace.{0} i] [OpensMeasurableSpace.{0} i] [inst_4 : Fintype.{0} n] [inst_5 : DecidableEq.{1} n] [Nonempty.{1} n] (mu : MeasureTheory.Measure.{0} i) [MeasureTheory.IsFiniteMeasure.{0} mu] (Omega : Set.{0} Complex) (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{0} Omega) (B : CrouzeixConjecture.SquareMatrix.{0} n) (f : CrouzeixConjecture.ContractiveBoundaryFunction.{0} i) (T : CrouzeixConjecture.SquareMatrix.{0} n), CrouzeixConjecture.HasParametricPowerCauchyFormula.{0, 0} Gamma mu B f T → Eq.{1} (MeasureTheory.integral.{0, 0} mu fun x => CrouzeixConjecture.parametricBoundaryFirstPart.{0, 0} Gamma B x) (OfNat.ofNat.{0} 1)`.
 Type SHA-256: `c52cb4db0682cde318061df6e401cc47f4703d9785021336732f05802bd8c8b4`.
 Axioms: `Classical.choice, Quot.sound, propext`.
@@ -898,7 +898,7 @@ Retain this family as the first conjunct. At `m=0` it simplifies directly to
 #### Lean solution
 
 Declaration: `CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_05_solution`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L215).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L215).
 Normalized type: `∀ (i n : Type) [inst : TopologicalSpace.{0} i] [CompactSpace.{0} i] [inst_2 : MeasurableSpace.{0} i] [OpensMeasurableSpace.{0} i] [inst_4 : Fintype.{0} n] [inst_5 : DecidableEq.{1} n] [Nonempty.{1} n] (mu : MeasureTheory.Measure.{0} i) [MeasureTheory.IsFiniteMeasure.{0} mu] (Omega : Set.{0} Complex) (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{0} Omega) (B : CrouzeixConjecture.SquareMatrix.{0} n) (f : CrouzeixConjecture.ContractiveBoundaryFunction.{0} i) (T : CrouzeixConjecture.SquareMatrix.{0} n), CrouzeixConjecture.HasParametricPowerCauchyFormula.{0, 0} Gamma mu B f T → And (∀ (m : Nat), Eq.{1} (MeasureTheory.integral.{0, 0} mu fun x => HSMul.hSMul.{0, 0, 0} (HPow.hPow.{0, 0, 0} (DFunLike.coe.{1, 1, 1} (CrouzeixConjecture.ContractiveBoundaryFunction.function.{0} f) x) m) (CrouzeixConjecture.parametricBoundaryFirstPart.{0, 0} Gamma B x)) (HPow.hPow.{0, 0, 0} T m)) (Eq.{1} (MeasureTheory.integral.{0, 0} mu fun x => CrouzeixConjecture.parametricBoundaryFirstPart.{0, 0} Gamma B x) (OfNat.ofNat.{0} 1))`.
 Type SHA-256: `cf9f1ed4ba7cbe2b2f52a5ce61b9b0e88bbc7e945c9e30e72ee66da7cb7d9c03`.
 Axioms: `Classical.choice, Quot.sound, propext`.
@@ -931,7 +931,7 @@ coefficient identity; removing eigenvalue bounds loses spectral containment.
 #### Lean solution
 
 Declaration: `CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_06_solution`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean#L234).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean#L234).
 Normalized type: `∀ (i n : Type) [inst : TopologicalSpace.{0} i] [CompactSpace.{0} i] [inst_2 : MeasurableSpace.{0} i] [OpensMeasurableSpace.{0} i] [inst_4 : Fintype.{0} n] [inst_5 : DecidableEq.{1} n] [Nonempty.{1} n] (mu : MeasureTheory.Measure.{0} i) [MeasureTheory.IsFiniteMeasure.{0} mu] (Omega : Set.{0} Complex) (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{0} Omega) (B T : CrouzeixConjecture.SquareMatrix.{0} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{0} B) Omega → ∀ (f : CrouzeixConjecture.ContractiveBoundaryFunction.{0} i), CrouzeixConjecture.HasParametricPowerCauchyFormula.{0, 0} Gamma mu B f T → ∀ (hB : CrouzeixConjecture.SimpleDiagonalization.{0} B) (lambda : n → Complex), Eq.{1} T (DFunLike.coe.{1, 1, 1} (CrouzeixConjecture.innerConjugation.{0} (CrouzeixConjecture.SimpleDiagonalization.changeBasis.{0} hB)) (Matrix.diagonal.{0, 0} lambda)) → (∀ (j : n), LE.le.{0} (Norm.norm.{0} (lambda j)) (OfNat.ofNat.{0} 1)) → LE.le.{0} (Norm.norm.{0} T) (OfNat.ofNat.{0} 2)`.
 Type SHA-256: `8c621531e36aa52df03ccb1d9abbbf215e78182b93e1343e41ae3d90535c6f6a`.
 Axioms: `Classical.choice, Quot.sound, propext`.

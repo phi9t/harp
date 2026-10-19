@@ -86,7 +86,7 @@ particular the symmetry hypothesis is not consumed anywhere.
 **Boundary and Lean provider.** This card records the shape of the
 positive-definiteness assumption used downstream, not a new inequality: its
 conclusion is its own hypothesis instantiated. Saying so is the honest reading.
-[`positive_definite_quadratic_positive`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L19)
+[`positive_definite_quadratic_positive`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L19)
 is proved here, and its checked proof is exactly that single instantiation. The
 symmetry argument is carried as an explicitly unused binder so that the
 statement matches the interface the later chapters expect. The real work of the
@@ -108,15 +108,15 @@ $$
 No hypothesis on $S$ is needed, and no invertibility is assumed.
 
 **Boundary and Lean provider.**
-[`gram_matrix_positive`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L67)
+[`gram_matrix_positive`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L67)
 re-exports `CrouzeixConjecture.completionGramMatrix_posSemidef`, whose checked
 proof is the single library result `Matrix.posSemidef_conjTranspose_mul_self`
 — that is, the whole displayed argument is packaged once in the library and the
 provider applies it. The real-scalar version of the same computation is proved
 here as
-[`real_gram_quadratic_form`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L28)
+[`real_gram_quadratic_form`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L28)
 and
-[`real_gram_nonneg`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L34),
+[`real_gram_nonneg`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L34),
 where the transpose replaces the conjugate transpose and the two steps are
 visible separately.
 
@@ -130,7 +130,7 @@ unit. That is the entire argument — it does not compute $G^{-1}$, and it does
 not go through the determinant.
 
 **Boundary and Lean provider.**
-[`invertible_gram_matrix_invertible`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L70)
+[`invertible_gram_matrix_invertible`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L70)
 re-exports `CrouzeixConjecture.completionGramMatrix_isUnit`, whose checked proof
 unfolds the Gram matrix and applies `IsUnit.star` followed by `IsUnit.mul`.
 Chapter 5's determinant criterion would give an alternative route through
@@ -148,7 +148,7 @@ if the value were $0$ for some $x\neq0$ then $\|Sx\|=0$, so $Sx=0$ and $G$ would
 annihilate a nonzero vector, contradicting invertibility.
 
 **Boundary and Lean provider.**
-[`invertible_gram_matrix_positive_definite`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L73)
+[`invertible_gram_matrix_positive_definite`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L73)
 re-exports `CrouzeixConjecture.completionGramMatrix_posDef`. Its checked proof
 is the composition the paragraph describes: it feeds CFT-08-002's conclusion
 and CFT-08-003's conclusion into the library equivalence
@@ -173,7 +173,7 @@ Congruence is also not similarity: $S^{\mathsf H}AS$ and $S^{-1}AS$ agree for
 For a particular $A$ they can of course coincide without that — at $A=0$ both
 are $0$ — so what fails in general is the preservation of the spectrum, which
 congruence does not give even though it preserves positivity.
-[`positivity_preserved_by_congruence`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L76)
+[`positivity_preserved_by_congruence`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L76)
 re-exports `CrouzeixConjecture.posSemidef_congruence`, whose checked proof is
 the single library application `PosSemidef.conjTranspose_mul_mul_same`.
 
@@ -197,16 +197,16 @@ matrix is self-adjoint.
 **Boundary and Lean provider.** All five conditions are *conclusions*; none
 remains an assumption, which is what makes this card usable as an input to the
 Part VI completion argument.
-[`positive_square_root_data`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L79)
+[`positive_square_root_data`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L79)
 re-exports `CrouzeixConjecture.completionSquareRootData_of_isUnit`, whose
 checked proof discharges the five fields in the order above, using
 `CFC.sqrt` for the construction, `CFC.isUnit_sqrt_iff` for invertibility, and
 `Matrix.nonneg_iff_posSemidef` to recover self-adjointness from nonnegativity.
 The three conclusions this book uses most are also exposed separately as
-[`completion_square_root_squares`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L89),
-[`completion_square_root_selfAdjoint`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L96)
+[`completion_square_root_squares`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L89),
+[`completion_square_root_selfAdjoint`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L96)
 and
-[`completion_square_root_inverse`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L101).
+[`completion_square_root_inverse`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L101).
 Uniqueness of the nonnegative square root is true and is not claimed here; the
 card supplies the named square root with the listed properties. The continuous
 functional calculus it rests on is library machinery, used here ahead of the
@@ -219,7 +219,7 @@ The distinctions promised in the conceptual model are compiled, not asserted.
 Take $S=\begin{bmatrix}1&1\\0&0\end{bmatrix}$ and $x=(1,-1)$. Then $Sx=0$, so
 the real Gram matrix $S^{\mathsf T}S$ satisfies $\langle x,Gx\rangle=0$ at a
 nonzero $x$: semidefinite, not definite. This is
-[`real_gram_semidefinite_not_definite`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L41),
+[`real_gram_semidefinite_not_definite`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L41),
 and it is exactly the failure mode CFT-08-004 excludes by assuming $S$
 invertible.
 
@@ -227,7 +227,7 @@ Take $A=\begin{bmatrix}1&2\\2&1\end{bmatrix}$, all of whose entries are
 positive. At the same $x=(1,-1)$ the quadratic form is
 $1-2-2+1=-2<0$. Entrywise positivity therefore does not imply semidefiniteness
 in any direction; this is
-[`entrywise_positive_not_semidefinite`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L53).
+[`entrywise_positive_not_semidefinite`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L53).
 The converse fails too: the identity is positive definite and has zero entries
 off the diagonal.
 
@@ -314,7 +314,7 @@ not be checked as an alias target.
 
 The six exercise theorems live in
 `CrouzeixTextbook.Part02.Exercises.Chapter08` in the
-[chapter Lean source](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean).
+[chapter Lean source](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean).
 
 ## Exercises
 
@@ -328,7 +328,7 @@ nonzero vector.
 is nonnegative by the pairing axiom of Chapter 7 and vanishes only at $x=0$ by
 positive definiteness, so at a nonzero $x$ it is nonzero and nonnegative, hence
 strictly positive.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L112)
+[`exercise_01_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L112)
 discharges the universally quantified hypothesis of CFT-08-001 by exactly that
 argument and then instantiates the card.
 
@@ -340,7 +340,7 @@ is the squared length of $Sx$, and deduce nonnegativity.
 **Solution.** Moving one factor across the real pairing gives
 $\langle x,S^{\mathsf T}Sx\rangle=\langle Sx,Sx\rangle$, and a self-pairing is
 nonnegative.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L122)
+[`exercise_02_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L122)
 states both conjuncts, and the first is proved by the transpose-and-associate
 rewriting rather than by citing the complex card, so the real case stands on
 its own.
@@ -353,7 +353,7 @@ $G=S^{\mathsf H}S$: semidefinite, invertible, definite.
 **Solution.** Semidefiniteness is CFT-08-002 and needs no hypothesis;
 invertibility is CFT-08-003 and consumes the hypothesis on $S$; definiteness is
 CFT-08-004, which combines the two.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L128)
+[`exercise_03_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L128)
 states all three together so the reader can see which of them uses the
 invertibility assumption and which does not.
 
@@ -369,7 +369,7 @@ application. It does *not* state the iterated form
 $T^{\mathsf H}(S^{\mathsf H}AS)T$, and no `conjTranspose_mul` step appears in
 it, so the identification of the composite reading with the twice-iterated one
 is left to the reader rather than checked.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L136)
+[`exercise_04_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L136)
 states both conclusions for arbitrary $S$ and $T$ with no invertibility
 assumption, which is the point: definiteness would need one and
 semidefiniteness does not.
@@ -382,7 +382,7 @@ all entries positive whose quadratic form takes a negative value.
 **Solution.** For $S=\begin{bmatrix}1&1\\0&0\end{bmatrix}$ and $x=(1,-1)$,
 $Sx=0$, so the Gram quadratic form vanishes at a nonzero vector. For
 $A=\begin{bmatrix}1&2\\2&1\end{bmatrix}$ and the same $x$, the form is $-2$.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L143)
+[`exercise_05_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L143)
 states both. Together they separate the three meanings of "positive" listed in
 the conceptual model, and they are the reason this chapter never uses the word
 without qualification.
@@ -395,7 +395,7 @@ self-adjoint, and that the supplied inverse works on one side.
 
 **Solution.** All three are fields of the structure produced by CFT-08-006;
 extracting them is projection, not further proof.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L152)
+[`exercise_06_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean#L152)
 states the three together. Reading it beside the card shows that nothing in
 the square-root data remains hypothetical: an invertible generator is the only
 input.

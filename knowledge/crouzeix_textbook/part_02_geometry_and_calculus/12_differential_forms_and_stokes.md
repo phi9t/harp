@@ -180,7 +180,7 @@ Formal mode: `proved-here`.
 
 Substantive provider: `none` as an underlying declaration; the maintained `complexRealInner_eq_re_mul_conj` is an eta-alias of `Complex.inner` and is used as a rewrite step, not as a provider.
 Readable type map: `z` and `w` are the two complex vectors, read through their real and imaginary parts.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L14).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L14).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (z w : Complex), Eq.{1} (Inner.inner.{0, 0} Real z w) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} z.re w.re) (HMul.hMul.{0, 0, 0} z.im w.im))`.
 Type SHA-256: `bcd9dc783e3441cb9fd4bb908dc62253885b9ab13d3cb5729b2a9ff75fa29be0`.
@@ -268,7 +268,7 @@ Underlying declaration: `CrouzeixConjecture.complexAreaForm_I_mul_right`.
 
 Substantive provider: `CrouzeixConjecture.complexAreaForm_I_mul_right`, itself one application of Mathlib's `areaForm_rightAngleRotation_right` after unfolding `Complex.rightAngleRotation`.
 Readable type map: `z` and `w` are the two vectors; `i w` is the quarter turn of the second.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L20).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L20).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (z w : Complex), Eq.{1} (DFunLike.coe.{1, 1, 1} (DFunLike.coe.{1, 1, 1} (Orientation.areaForm.{0} Complex.orientation) z) (HMul.hMul.{0, 0, 0} Complex.I w)) (Inner.inner.{0, 0} Real z w)`.
 Type SHA-256: `d352bcd37e0f0cd0d277be348b019272c42954c4f73c766861824e6876d27fa0`.
@@ -396,7 +396,7 @@ Underlying declaration: `CrouzeixConjecture.complexAreaForm_radialTangent_pos`.
 
 Substantive provider: `CrouzeixConjecture.complexAreaForm_radialTangent_pos`, a genuine multi-step proof: frame expansion, orthogonality relation, area expansion, the unit Pythagorean identity, one `ring` rearrangement, then a positive quotient.
 Readable type map: `u` is the ray direction, `n` the unit outward normal, `v` the tangent, `a` and `rho` its radial coordinates.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L22).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L22).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {a rho : Real} {u n v : Complex}, Eq.{1} v (HMul.hMul.{0, 0, 0} (HAdd.hAdd.{0, 0, 0} (Complex.ofReal a) (HMul.hMul.{0, 0, 0} Complex.I (Complex.ofReal rho))) u) → Eq.{1} (Norm.norm.{0} u) (OfNat.ofNat.{0} 1) → LT.lt.{0} (OfNat.ofNat.{0} 0) rho → Eq.{1} (Norm.norm.{0} n) (OfNat.ofNat.{0} 1) → Eq.{1} (Inner.inner.{0, 0} Real n v) (OfNat.ofNat.{0} 0) → LT.lt.{0} (OfNat.ofNat.{0} 0) (Inner.inner.{0, 0} Real n u) → LT.lt.{0} (OfNat.ofNat.{0} 0) (DFunLike.coe.{1, 1, 1} (DFunLike.coe.{1, 1, 1} (Orientation.areaForm.{0} Complex.orientation) n) v)`.
 Type SHA-256: `73f2f5bbf40269700259b1e09984c373263f89264e1f45f3f8885a2a1e4cf0fc`.
@@ -490,7 +490,7 @@ Underlying declaration: `CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_no
 
 Substantive provider: `CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_norm`, which composes the frame decomposition, CFT-12-003's positivity through `im_div_radialTangent_pos`, and a norm computation.
 Readable type map: `v` is the tangent, `n` the unit outward normal, and `‖v‖` the parametric speed.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L24).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L24).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {a rho : Real} {u n v : Complex}, Eq.{1} v (HMul.hMul.{0, 0, 0} (HAdd.hAdd.{0, 0, 0} (Complex.ofReal a) (HMul.hMul.{0, 0, 0} Complex.I (Complex.ofReal rho))) u) → Eq.{1} (Norm.norm.{0} u) (OfNat.ofNat.{0} 1) → LT.lt.{0} (OfNat.ofNat.{0} 0) rho → Eq.{1} (Norm.norm.{0} n) (OfNat.ofNat.{0} 1) → Eq.{1} (Inner.inner.{0, 0} Real n v) (OfNat.ofNat.{0} 0) → LT.lt.{0} (OfNat.ofNat.{0} 0) (Inner.inner.{0, 0} Real n u) → Eq.{1} v (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} Complex.I n) (Complex.ofReal (Norm.norm.{0} v)))`.
 Type SHA-256: `71497b4822c51a78398ff46b4e6c77996da483dd69639fb9aa7d14dde5e60464`.
@@ -589,7 +589,7 @@ Underlying declaration: `CrouzeixConjecture.contDiff_one_parallelRadialParameter
 
 Substantive provider: `CrouzeixConjecture.contDiff_one_parallelRadialParameterPoint`, built from `contDiff_fst`, `contDiff_snd`, `Complex.ofRealCLM.contDiff`, `.cexp`, and the sum and product closure of `ContDiff`.
 Readable type map: `c` is the centre; the pair `(t,s)` is angle and radius.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L26).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L26).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (c : Complex), ContDiff.{0, 0, 0} Real (OfNat.ofNat.{0} 1) (CrouzeixConjecture.parallelRadialParameterPoint c)`.
 Type SHA-256: `9e899523fc6feffedc4882e54856a4773afe294163cce87075ca13315a7f1c6b`.
@@ -674,7 +674,7 @@ Underlying declaration: `CrouzeixConjecture.parallelRadialParameterPoint_slice_h
 
 Substantive provider: `CrouzeixConjecture.parallelRadialParameterPoint_slice_hasDerivAt`, which is `Complex.ofRealCLM.hasDerivAt` followed by `mul_const` and `const_add`.
 Readable type map: `c` is the centre, `t` the fixed angle, `s` the point of differentiation, and `e^{it}` the derivative.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L28).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L28).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (c : Complex) (t s : Real), HasDerivAt.{0, 0} (fun y => CrouzeixConjecture.parallelRadialParameterPoint c (Prod.mk.{0, 0} t y)) (CrouzeixConjecture.parallelRadialDirection t) s`.
 Type SHA-256: `b8d15a11ffebc20213434306ff59b3beb264f4cec85b501a95d6fb796936b71c`.
@@ -795,7 +795,7 @@ recorded here as conjuncts, citing `complexAreaForm_I_mul_right` and
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_01_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.complexAreaForm_I_mul_right` and `CrouzeixConjecture.complexRealInner_I_mul_left`; both are maintained providers and neither is reproved here.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L33).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L33).
 Type SHA-256: `33b530e5fbc458ac294e0f4c71181ce037fe3751bfcb3f8e17aa812f468176e1`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -823,7 +823,7 @@ branch by `simp`.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_02_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib's `Complex.areaForm` and `CrouzeixConjecture.complexRealInner_eq_re_mul_conj`; no card is cited for the arithmetic.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L39).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L39).
 Type SHA-256: `8243fdaa203d38f69967282df6f2d3943bf2d99a5ce6e57e2df7e981259ebf5f`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -855,7 +855,7 @@ be the fundamental theorem of calculus, which this chapter does not compile.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_03_solution`.
 Formal mode: `proved-here`.
 Provider boundary: the definition of `parallelRadialParameterPoint` together with `sub_smul` and `ring`; it does not call CFT-12-006, and no integral appears.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L47).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L47).
 Type SHA-256: `78b3aef3508f9e70399ffc67b3127dd1db31d702af4d9863d0e3e143df9f5488`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -882,7 +882,7 @@ two-vector algebra it rests on.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_04_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib's `Orientation.areaForm_swap` and `Orientation.areaForm_apply_self`; no maintained Crouzeix provider and no triangulation argument.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L54).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L54).
 Type SHA-256: `2c8fce124ad489938bc316f6ec2034d8f1ebfafa2415fea7f262b99c1917a2a8`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -908,7 +908,7 @@ integrand's orientation factor. The checked solution discharges both conjuncts b
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_05_solution`.
 Formal mode: `proved-here`.
 Provider boundary: bilinearity of `Orientation.areaForm` through `simp`; no integral and no maintained Crouzeix provider.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L61).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L61).
 Type SHA-256: `015c0aef452189bda8269965f9d36dde2a8709d8732df73cfe122ef6289a4163`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -941,7 +941,7 @@ and the exercise restates them together because Part V consumes them as a pair.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_06_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.complexAreaForm_radialTangent_pos` and `CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_norm`, the two card providers; the exercise adds the pairing, not a proof.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean#L69).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean#L69).
 Type SHA-256: `d5d1528110dc44d2d2b2a679fc62b2da737fdbc2660c9c745f85e62674dc2228`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.

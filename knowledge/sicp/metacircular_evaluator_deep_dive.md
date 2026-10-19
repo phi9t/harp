@@ -52,7 +52,7 @@ p. 494, PDF p. 522).
 ## Executable algorithm and systems realization
 
 **EVIDENCE — runnable companion.** The dependency-free Rust crate at
-[[labs/sicp-evaluator/README|`labs/sicp-evaluator/`]] implements the
+[[lab/sicp/README|`lab/sicp/`]] implements the
 kernel as `Evaluator::eval` and `Evaluator::apply`; it includes an S-expression
 parser, mutable environment frames, lexical closures, primitives, special
 forms, instrumentation, and six behavior tests.
@@ -101,7 +101,7 @@ G
 ```
 
 **EVIDENCE — observed result.** `cargo run --quiet --manifest-path
-labs/sicp-evaluator/Cargo.toml` returns `11` for the final expression and
+lab/sicp/Cargo.toml` returns `11` for the final expression and
 reports 10 expression dispatches, 3 applications, 7 visited frames, and 16
 binding comparisons. The corresponding unit test passes.
 

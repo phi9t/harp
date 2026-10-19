@@ -57,7 +57,7 @@ exercises. The entries below fix topic lineage and claim ceilings.
 ## MATHLIB-4.32.1
 
 - Identity: Mathlib revision pinned by
-  `formalization/lean/lakefile.toml` for Lean 4.32.1.
+  `lab/math/lean/lakefile.toml` for Lean 4.32.1.
 - Role: definitions, theorem interfaces, tactics, and compiled dependency
   artifacts used by the chapter formalizations.
 - Boundary: compilation is relative to Lean's kernel, compiler/runtime, and
@@ -71,12 +71,12 @@ exercises. The entries below fix topic lineage and claim ceilings.
 - Boundary: a locally compiled theorem is not peer review, and the packet's
   comparison language is not automatically terminology of an upstream author.
 - Chapter 36 provenance: the local Harp construction in
-  [[formalization/lean/Crouzeix/Harp/MainTheorem.lean|Harp MainTheorem.lean]]
+  [[lab/math/lean/Crouzeix/Harp/MainTheorem.lean|Harp MainTheorem.lean]]
   and its finite cubature, atomic dilation, and finite-horizon recurrence
   modules. This is a derived local route sharing lower-level
   Lorist–Schwenninger machinery, not a third source manuscript or a priority
   claim. Its chapter statements and exercises are exposed in
-  [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Chapter36.lean]].
+  [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Chapter36.lean]].
 
 ## JIN-V4-AUDITED
 
@@ -100,7 +100,7 @@ exercises. The entries below fix topic lineage and claim ceilings.
   - Source Equation (4) and the scalar contradiction:
     `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L90-L98`.
 - Status reconciliation: the
-  [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|LS source graph]]
+  [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|LS source graph]]
   remains the locator authority, but its blocked-node fields are a dated status
   snapshot. They are superseded for current local proof status by the
   maintained compiled `CrouzeixLoristSchwenninger` aggregate and its fresh

@@ -23,7 +23,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.LinearTransformation",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean",
         "line": 11,
         "column": 8,
         "verification_target": "CrouzeixTextbook",
@@ -56,7 +56,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.basis_image_columns",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean",
         "line": 43,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -94,7 +94,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.basis_coordinate_action",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean",
         "line": 53,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -131,7 +131,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.basis_change_conjugacy",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean",
         "line": 80,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -168,7 +168,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.similarity_preserves_charpoly",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean",
         "line": 102,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -206,7 +206,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.nonunitary_similarity_norm_counterexample",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean",
         "line": 143,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -241,7 +241,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.span_minimality",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean",
         "line": 9,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -275,7 +275,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.mem_subspace_intersection_iff",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean",
         "line": 15,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -311,7 +311,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.basis_coordinates_unique",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean",
         "line": 25,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -348,7 +348,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.dimension_invariant_under_linear_equiv",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean",
         "line": 31,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -386,7 +386,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.direct_sum_coordinates_unique",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean",
         "line": 38,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -422,7 +422,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.quotient_projection_surjective",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean",
         "line": 58,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -460,7 +460,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.mem_kernel_iff",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean",
         "line": 9,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -497,7 +497,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.mem_range_iff",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean",
         "line": 15,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -536,7 +536,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.rank_nullity",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean",
         "line": 21,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -573,7 +573,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.injective_iff_kernel_bottom",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean",
         "line": 28,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -611,7 +611,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.invariantRestriction",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean",
         "line": 44,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -647,7 +647,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.composition_range_le",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean",
         "line": 52,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -685,7 +685,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.dual_map_apply",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean",
         "line": 11,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -722,7 +722,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.dual_map_composition",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean",
         "line": 18,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -760,7 +760,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.coordinate_change_conjugacy",
         "underlying_declaration": "CrouzeixTextbook.Part01.change_basis_action",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean",
         "line": 26,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -798,7 +798,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.duality_similarity_preserves_charpoly",
         "underlying_declaration": "CrouzeixTextbook.Part01.similarity_preserves_charpoly",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean",
         "line": 30,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -835,7 +835,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.similarity_preserves_determinant",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean",
         "line": 33,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -872,7 +872,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.similarity_preserves_trace",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean",
         "line": 39,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -909,7 +909,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.determinant_multiplicative",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter05.lean",
         "line": 10,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -946,7 +946,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.determinant_diagonal",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter05.lean",
         "line": 16,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -984,7 +984,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.determinant_similarity",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter05.lean",
         "line": 22,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1021,7 +1021,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.trace_cyclic",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter05.lean",
         "line": 28,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1059,7 +1059,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.trace_similarity",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter05.lean",
         "line": 34,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1096,7 +1096,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.trace_diagonal",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter05.lean",
         "line": 40,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1132,7 +1132,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.polynomial_action_diagonal",
         "underlying_declaration": "CrouzeixConjecture.polynomialEval_diagonal",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 21,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1170,7 +1170,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.diagonalizable_polynomial_calculus",
         "underlying_declaration": "CrouzeixConjecture.SimpleDiagonalization.polynomialEval_eq_innerConjugation_diagonal",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1208,7 +1208,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.diagonalization_eigenvalue_mem_spectrum",
         "underlying_declaration": "CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 27,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1245,7 +1245,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.polynomial_action_mem_generated_algebra",
         "underlying_declaration": "CrouzeixConjecture.polynomialEval_mem_generatedAlgebra",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 30,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1283,7 +1283,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.generated_algebra_polynomial_representation",
         "underlying_declaration": "CrouzeixConjecture.generatedAlgebra_mem_iff_exists_polynomial",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 33,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1321,7 +1321,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.simple_spectrum_dense",
         "underlying_declaration": "CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 36,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1358,7 +1358,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.projection_residual_decomposition",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean",
         "line": 42,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1395,7 +1395,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.projection_residual_orthogonal",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean",
         "line": 48,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1433,7 +1433,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.adjoint_coordinate_identity",
         "underlying_declaration": "CrouzeixConjecture.inner_euclideanOperator_eq_star_dotProduct",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean",
         "line": 118,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1471,7 +1471,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.adjoint_matrix_is_conjugate_transpose",
         "underlying_declaration": "CrouzeixConjecture.euclideanOperator_conjTranspose",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean",
         "line": 121,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1509,7 +1509,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.matrix_norm_is_operator_norm",
         "underlying_declaration": "CrouzeixConjecture.matrix_norm_eq_euclidean_operator_norm",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean",
         "line": 124,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1544,7 +1544,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.norm_is_nonnegative",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean",
         "line": 127,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1581,7 +1581,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.positive_definite_quadratic_positive",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean",
         "line": 19,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -1619,7 +1619,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.gram_matrix_positive",
         "underlying_declaration": "CrouzeixConjecture.completionGramMatrix_posSemidef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean",
         "line": 67,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1657,7 +1657,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.invertible_gram_matrix_invertible",
         "underlying_declaration": "CrouzeixConjecture.completionGramMatrix_isUnit",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean",
         "line": 70,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1695,7 +1695,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.invertible_gram_matrix_positive_definite",
         "underlying_declaration": "CrouzeixConjecture.completionGramMatrix_posDef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean",
         "line": 73,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1733,7 +1733,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.positivity_preserved_by_congruence",
         "underlying_declaration": "CrouzeixConjecture.posSemidef_congruence",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean",
         "line": 76,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1771,7 +1771,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.positive_square_root_data",
         "underlying_declaration": "CrouzeixConjecture.completionSquareRootData_of_isUnit",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter08.lean",
         "line": 79,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1808,7 +1808,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.induced_matrix_norm_identity",
         "underlying_declaration": "CrouzeixConjecture.matrix_norm_eq_euclidean_operator_norm",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean",
         "line": 14,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1846,7 +1846,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.polar_factor_is_unitary",
         "underlying_declaration": "CrouzeixConjecture.completionPolarUnitary_mem_unitaryGroup",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1884,7 +1884,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.polar_similarity_norm_transfer",
         "underlying_declaration": "CrouzeixConjecture.completionDiagonalizableMatrix_norm_eq_completionSimilarity_norm",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean",
         "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1922,7 +1922,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.polar_operator_norm_transfer",
         "underlying_declaration": "CrouzeixConjecture.completionDiagonalizableMatrix_euclideanOperator_norm_eq",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean",
         "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1960,7 +1960,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.quadratic_bound_implies_norm_two",
         "underlying_declaration": "CrouzeixConjecture.matrix_norm_le_two_of_four_sub_conjTranspose_mul_self_posSemidef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean",
         "line": 28,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -1997,7 +1997,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.norm_triangle_kernel",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean",
         "line": 32,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2035,7 +2035,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.bilinear_pairing_duality",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean",
         "line": 17,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2073,7 +2073,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.transpose_coordinate_action",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean",
         "line": 26,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2111,7 +2111,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.determinant_top_degree_multiplicative",
         "underlying_declaration": "CrouzeixTextbook.Part01.determinant_multiplicative",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean",
         "line": 33,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2149,7 +2149,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.alternating_diagonal_volume",
         "underlying_declaration": "CrouzeixTextbook.Part01.determinant_diagonal",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean",
         "line": 36,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2187,7 +2187,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.contraction_trace_cyclic",
         "underlying_declaration": "CrouzeixTextbook.Part01.trace_cyclic",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean",
         "line": 39,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2224,7 +2224,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.wedge_sign_kernel",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean",
         "line": 42,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2260,7 +2260,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.gradient_component_contract",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean",
         "line": 55,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2297,7 +2297,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.derivative_action_is_jvp",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean",
         "line": 70,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2335,7 +2335,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.derivative_pullback_is_vjp",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean",
         "line": 77,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2373,7 +2373,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.hessian_vector_action",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean",
         "line": 143,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2412,7 +2412,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.jvp_vjp_duality",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean",
         "line": 84,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2450,7 +2450,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.linear_approximation_chain_kernel",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean",
         "line": 99,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2487,7 +2487,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.real_inner_complex_coordinates",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean",
         "line": 14,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -2525,7 +2525,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.area_form_quarter_turn",
         "underlying_declaration": "CrouzeixConjecture.complexAreaForm_I_mul_right",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean",
         "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2563,7 +2563,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.oriented_radial_tangent_positive",
         "underlying_declaration": "CrouzeixConjecture.complexAreaForm_radialTangent_pos",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean",
         "line": 22,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2601,7 +2601,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.oriented_tangent_formula",
         "underlying_declaration": "CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_norm",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean",
         "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2639,7 +2639,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.boundary_parameter_is_smooth",
         "underlying_declaration": "CrouzeixConjecture.contDiff_one_parallelRadialParameterPoint",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean",
         "line": 26,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2677,7 +2677,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.boundary_slice_derivative",
         "underlying_declaration": "CrouzeixConjecture.parallelRadialParameterPoint_slice_hasDerivAt",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part02/Chapter12.lean",
         "line": 28,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2714,7 +2714,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.max_modulus_on_compact_set",
         "underlying_declaration": "CrouzeixConjecture.maxFunctionModulusOnSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2751,7 +2751,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.compact_maximum_exists",
         "underlying_declaration": "CrouzeixConjecture.exists_maxFunctionModulusOnSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2788,7 +2788,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.pointwise_norm_le_maximum",
         "underlying_declaration": "CrouzeixConjecture.norm_function_le_maxFunctionModulusOnSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2826,7 +2826,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.compact_maximum_nonnegative",
         "underlying_declaration": "CrouzeixConjecture.maxFunctionModulusOnSet_nonneg",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2864,7 +2864,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.compact_maximum_monotone",
         "underlying_declaration": "CrouzeixConjecture.maxFunctionModulusOnSet_mono",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2903,7 +2903,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.outer_maxima_converge",
         "underlying_declaration": "CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2941,7 +2941,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeries",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean",
         "line": 10,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -2978,7 +2978,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_coefficient",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeries_apply",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean",
         "line": 12,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3016,7 +3016,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_radius",
         "underlying_declaration": "CrouzeixConjecture.one_le_matrixPowerSeries_radius",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean",
         "line": 14,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3054,7 +3054,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_sum",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeriesSum",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean",
         "line": 16,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3093,7 +3093,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_analytic",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeriesSum_analyticOnNhd_unitDisk",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean",
         "line": 18,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3132,7 +3132,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_converges",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeries_hasSum",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean",
         "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3170,7 +3170,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.parametric_boundary_integral",
         "underlying_declaration": "CrouzeixConjecture.parametricBoundaryIntegral",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3207,7 +3207,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.boundary_integral_continuous",
         "underlying_declaration": "CrouzeixConjecture.continuousOn_parametricBoundaryIntegral",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3244,7 +3244,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.boundary_integral_is_function_eval",
         "underlying_declaration": "CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3282,7 +3282,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.simple_spectrum_holomorphic_eval",
         "underlying_declaration": "CrouzeixConjecture.simpleSpectrumHolomorphicEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3321,7 +3321,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.simple_spectrum_boundary_limit",
         "underlying_declaration": "CrouzeixConjecture.tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3359,7 +3359,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.simple_spectrum_eval_limit",
         "underlying_declaration": "CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3397,7 +3397,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.holomorphic_matrix_eval",
         "underlying_declaration": "CrouzeixConjecture.holomorphicMatrixEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3436,7 +3436,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.contour_eval_agrees",
         "underlying_declaration": "CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3474,7 +3474,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.polynomial_compatibility",
         "underlying_declaration": "CrouzeixConjecture.holomorphicMatrixEval_polynomial",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3511,7 +3511,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.locality_on_neighborhood",
         "underlying_declaration": "CrouzeixConjecture.holomorphicMatrixEval_congr_on_neighborhood",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3549,7 +3549,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.functional_calculus_additive",
         "underlying_declaration": "CrouzeixConjecture.holomorphicMatrixEval_add",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3587,7 +3587,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.functional_calculus_multiplicative",
         "underlying_declaration": "CrouzeixConjecture.holomorphicMatrixEval_mul",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3622,7 +3622,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_pole_set",
         "underlying_declaration": "CrouzeixConjecture.rationalPoleSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3659,7 +3659,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_poles_finite",
         "underlying_declaration": "CrouzeixConjecture.rationalPoleSet_finite",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3697,7 +3697,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.pole_complement_open",
         "underlying_declaration": "CrouzeixConjecture.isOpen_compl_rationalPoleSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3734,7 +3734,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_pole_free_on",
         "underlying_declaration": "CrouzeixConjecture.RationalPoleFreeOn",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3772,7 +3772,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_scalar_eval",
         "underlying_declaration": "CrouzeixConjecture.rationalScalarEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3810,7 +3810,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_matrix_eval",
         "underlying_declaration": "CrouzeixConjecture.rationalMatrixEval",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3845,7 +3845,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.open_unit_disk",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter18.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3882,7 +3882,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.unit_circle",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter18.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3920,7 +3920,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.sampled_kernel_matrix",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter18.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3958,7 +3958,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.positive_matrix_kernel_on",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter18.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -3995,7 +3995,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_herglotz_kernel",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter18.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4034,7 +4034,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_herglotz_kernel_positive",
         "underlying_declaration": "CrouzeixConjecture.matrixHerglotzKernel_isPositiveMatrixKernelOn",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter18.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part03/Chapter18.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4072,7 +4072,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.simple_spectrum_approximation",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter19.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter19.lean",
         "line": 10,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4109,7 +4109,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.simple_spectrum_approximation_distinct",
         "underlying_declaration": "CrouzeixConjecture.simpleSpectrumApproximation_hasDistinctEigenvalues",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter19.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter19.lean",
         "line": 12,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4147,7 +4147,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.simple_spectrum_approximation_close",
         "underlying_declaration": "CrouzeixConjecture.norm_simpleSpectrumApproximation_sub_lt",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter19.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter19.lean",
         "line": 14,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4184,7 +4184,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.simple_spectrum_approximation_converges",
         "underlying_declaration": "CrouzeixConjecture.tendsto_simpleSpectrumApproximation",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter19.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter19.lean",
         "line": 16,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4222,7 +4222,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.distinct_spectrum_dense",
         "underlying_declaration": "CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter19.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter19.lean",
         "line": 18,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4260,7 +4260,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.diagonal_polynomial_action",
         "underlying_declaration": "CrouzeixConjecture.polynomialEval_diagonal",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter19.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter19.lean",
         "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4297,7 +4297,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.numerical_range_nonempty",
         "underlying_declaration": "CrouzeixConjecture.numericalRange_nonempty",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter20.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter20.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4335,7 +4335,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.numerical_range_as_sphere_image",
         "underlying_declaration": "CrouzeixConjecture.numericalRange_eq_image_sphere",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter20.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter20.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4373,7 +4373,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.numerical_range_compact",
         "underlying_declaration": "CrouzeixConjecture.isCompact_numericalRange",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter20.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter20.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4411,7 +4411,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.numerical_range_convex",
         "underlying_declaration": "CrouzeixConjecture.numericalRange_convex",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter20.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter20.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4449,7 +4449,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.numerical_range_perturbation_bound",
         "underlying_declaration": "CrouzeixConjecture.numericalRange_perturbation",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter20.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter20.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4487,7 +4487,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.spectrum_lies_in_numerical_range",
         "underlying_declaration": "CrouzeixConjecture.matrixSpectrum_subset_numericalRange",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter20.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter20.lean",
         "line": 21,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4525,7 +4525,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.operator_numerical_range_convex",
         "underlying_declaration": "CrouzeixConjecture.operatorNumericalRange_convex",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter21.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter21.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4563,7 +4563,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.closed_operator_numerical_range",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter21.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter21.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4600,7 +4600,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.closed_operator_numerical_range_nonempty",
         "underlying_declaration": "CrouzeixConjecture.closedOperatorNumericalRange_nonempty",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter21.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter21.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4638,7 +4638,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.closed_operator_numerical_range_compact",
         "underlying_declaration": "CrouzeixConjecture.closedOperatorNumericalRange_isCompact",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter21.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter21.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4676,7 +4676,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.hilbert_rational_spectral_set_statement",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter21.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter21.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4714,7 +4714,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.closed_numerical_range_two_spectral_set",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter21.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter21.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4752,7 +4752,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.boundary_positive_map",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter22.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter22.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4790,7 +4790,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.boundary_positive_linear_map",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter22.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter22.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4828,7 +4828,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.boundary_positive_map_norm",
         "underlying_declaration": "CrouzeixConjecture.boundaryPhi_norm_le",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter22.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter22.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4866,7 +4866,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.boundary_positive_map_unital",
         "underlying_declaration": "CrouzeixConjecture.boundaryPhi_one",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter22.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter22.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4904,7 +4904,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.boundary_positive_map_star",
         "underlying_declaration": "CrouzeixConjecture.boundaryPhi_star",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter22.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter22.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4942,7 +4942,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.boundary_positive_map_preserves_psd",
         "underlying_declaration": "CrouzeixConjecture.boundaryPhi_posSemidef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter22.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter22.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -4980,7 +4980,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.compressed_adjoint_power",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter23.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter23.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5018,7 +5018,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.compressed_adjoint_power_contractive",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.compressedAdjointPower_norm_le_one",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter23.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter23.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5055,7 +5055,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.doubled_compression_norm_two",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.doubledCompressedAdjointPower_norm_le_two",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter23.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter23.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5093,7 +5093,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.adjacent_power_defect_factorization",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.adjacentPowerDefect_factorization",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter23.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter23.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5131,7 +5131,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.perturbation_commutes",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.perturbation_commutes_with_target",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter23.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter23.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5170,7 +5170,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.target_power_bound",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.target_power_norm_le_two_add_bound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter23.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter23.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5208,7 +5208,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.gramian_term",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter24.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter24.lean",
         "line": 9,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5246,7 +5246,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.gramian_term_positive",
         "underlying_declaration": "CrouzeixConjecture.gramianTerm_posSemidef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter24.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter24.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5284,7 +5284,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.gramian_terms_summable",
         "underlying_declaration": "CrouzeixConjecture.summable_gramianTerm",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter24.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter24.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5321,7 +5321,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.weighted_gramian",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter24.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter24.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5359,7 +5359,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.weighted_gramian_positive",
         "underlying_declaration": "CrouzeixConjecture.gramian_posSemidef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter24.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter24.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5397,7 +5397,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part04.gramian_difference_positive",
         "underlying_declaration": "CrouzeixConjecture.gramian_two_sub_gramian_four_posSemidef",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part04/Chapter24.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part04/Chapter24.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5435,7 +5435,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.convex_projection",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean",
         "line": 14,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5473,7 +5473,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.convex_projection_variational",
         "underlying_declaration": "CrouzeixConjecture.convexProjection_variational",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean",
         "line": 47,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5511,7 +5511,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.convex_projection_nonexpansive",
         "underlying_declaration": "CrouzeixConjecture.norm_convexProjection_sub_le",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean",
         "line": 56,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5549,7 +5549,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.outer_approximation_radius",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean",
         "line": 65,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5587,7 +5587,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.outer_radius_tends_to_zero",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean",
         "line": 71,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5625,7 +5625,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.parallel_outer_domain_data",
         "underlying_declaration": "CrouzeixConjecture.canonicalParallelOrientedRadialBoundaryStatement",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean",
         "line": 114,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5663,7 +5663,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.support_point_outside_numerical_range",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
         "line": 15,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5701,7 +5701,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.support_resolvent_invertible",
         "underlying_declaration": "CrouzeixConjecture.scalar_sub_matrix_isUnit_of_outwardBoundarySupport",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
         "line": 29,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5739,7 +5739,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.double_layer_support_positive",
         "underlying_declaration": "CrouzeixConjecture.doubleLayerSupportMatrix_posSemidef_of_outwardBoundarySupport",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
         "line": 33,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5777,7 +5777,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.double_layer_resolvent",
         "underlying_declaration": "CrouzeixConjecture.doubleLayerResolvent",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
         "line": 37,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5816,7 +5816,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.double_layer_congruence",
         "underlying_declaration": "CrouzeixConjecture.doubleLayerResolvent_congruence_density",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
         "line": 41,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -5853,7 +5853,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.double_layer_density_positive",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
         "line": 46,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5888,7 +5888,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.sqrt_two_nonnegative",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean",
         "line": 12,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5925,7 +5925,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.sqrt_two_squared",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean",
         "line": 16,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -5963,7 +5963,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.one_plus_sqrt_two_positive",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean",
         "line": 20,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6001,7 +6001,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.one_plus_sqrt_two_barrier",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean",
         "line": 31,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6039,7 +6039,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.triangle_barrier_kernel",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean",
         "line": 46,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6077,7 +6077,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.positive_map_norm_kernel",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean",
         "line": 57,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6116,7 +6116,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.power_cauchy_formula",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean",
         "line": 11,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6154,7 +6154,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.power_cauchy_mass_one",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean",
         "line": 35,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6192,7 +6192,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.contractive_boundary_function",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean",
         "line": 50,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6230,7 +6230,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.power_cayley_companion",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean",
         "line": 68,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6269,7 +6269,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.positive_completion_from_power_family",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean",
         "line": 102,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6310,7 +6310,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part05.power_family_norm_two",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean",
         "line": 129,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6348,7 +6348,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.max_polynomial_modulus",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean",
         "line": 150,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6387,7 +6387,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.polynomial_crouzeix_bound",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean",
         "line": 162,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6424,7 +6424,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.main_theorem_statement",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean",
         "line": 180,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6463,7 +6463,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.jordan_two_maximum",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean",
         "line": 188,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6501,7 +6501,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.jordan_two_attains_two",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean",
         "line": 197,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6539,7 +6539,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.constant_two_is_least",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean",
         "line": 213,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6578,7 +6578,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.positive_real_completion",
         "underlying_declaration": "CrouzeixConjecture.IsPositiveRealCompletion",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6616,7 +6616,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.positive_real_completion_statement",
         "underlying_declaration": "CrouzeixConjecture.positiveRealCompletionStatement",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         "line": 16,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6656,7 +6656,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_gramian_four",
         "underlying_declaration": "CrouzeixConjecture.completionP_congruence_eq_gramian_four",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6696,7 +6696,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_gramian_two",
         "underlying_declaration": "CrouzeixConjecture.completionR_congruence_eq_gramian_two",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         "line": 22,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6735,7 +6735,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_gramian_difference",
         "underlying_declaration": "CrouzeixConjecture.completionX_congruence_eq_gramian_difference",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6775,7 +6775,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_gramian_source_positive",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         "line": 27,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6814,7 +6814,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_kernel_model",
         "underlying_declaration": "CrouzeixConjecture.completionKernelModel",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "line": 10,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6852,7 +6852,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "line": 41,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -6891,7 +6891,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.sample_origin_quadratic_identity",
         "underlying_declaration": "CrouzeixConjecture.completionResolventKernel_sampling_quadratic_eq",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "line": 51,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6930,7 +6930,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.correction_sampling_identity",
         "underlying_declaration": "CrouzeixConjecture.completionCorrectionKernel_sampling_quadratic_eq",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "line": 53,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -6969,7 +6969,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.correction_sampling_cancels",
         "underlying_declaration": "CrouzeixConjecture.completionCorrectionKernel_sampling_eq_zero",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "line": 55,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7009,7 +7009,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.kernel_positivity_implies_X",
         "underlying_declaration": "CrouzeixConjecture.completion_X_inequality_of_positiveKernel",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "line": 57,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7048,7 +7048,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.completion_implies_norm_two",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         "line": 17,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -7087,7 +7087,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.jin_polynomial_constant_two",
         "underlying_declaration": "CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         "line": 31,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7126,7 +7126,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.jin_rational_spectral_set",
         "underlying_declaration": "CrouzeixTextbook.Part06.jin_rational_spectral_set_provider",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         "line": 44,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7164,7 +7164,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.jin_rational_constant_two",
         "underlying_declaration": "CrouzeixConjecture.holomorphicCrouzeixRationalBound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         "line": 46,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7203,7 +7203,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.holomorphic_constant_two",
         "underlying_declaration": "CrouzeixConjecture.holomorphicCrouzeixBound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         "line": 48,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7242,7 +7242,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.polynomial_from_holomorphic",
         "underlying_declaration": "CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         "line": 50,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7282,7 +7282,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.recurrence_difference_identity",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.recurrence_difference_identity",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean",
         "line": 18,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -7321,7 +7321,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.recurrence_difference_lower_bound",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.recurrence_difference_lower_bound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean",
         "line": 32,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -7360,7 +7360,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.equation_three_lower_bound",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean",
         "line": 46,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7398,7 +7398,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.scalar_combined_inequality",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.scalar_combined_inequality_of_recurrence_bounds",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean",
         "line": 49,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -7437,7 +7437,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.scalar_endpoint_two",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean",
         "line": 60,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -7477,7 +7477,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.perturbation_lemma",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean",
         "line": 72,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7517,7 +7517,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.boundary_dilation_data",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.dilationDataOfParametricPolynomial",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7556,7 +7556,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.boundary_compression_first_moment",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_comp_boundaryEmbedding",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7596,7 +7596,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.boundary_compression_power_moments",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7634,7 +7634,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.boundary_multiplier_powers",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.bcfMulL_pow",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7672,7 +7672,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.boundary_multiplier_contractive",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.bcfMulL_norm_le_one",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7711,7 +7711,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.realization_norm_two",
         "underlying_declaration": "CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         "line": 21,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7750,7 +7750,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.lorist_schwenninger_main",
         "underlying_declaration": "CrouzeixConjecture.loristSchwenningerMainTheorem",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         "line": 11,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7789,7 +7789,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.lorist_schwenninger_finite_matrix",
         "underlying_declaration": "CrouzeixConjecture.loristSchwenningerFiniteMatrixMainTheorem",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         "line": 13,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7828,7 +7828,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.lorist_schwenninger_rational",
         "underlying_declaration": "CrouzeixConjecture.loristSchwenningerRationalSpectralSetCorollary",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         "line": 15,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7867,7 +7867,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.lorist_schwenninger_hilbert",
         "underlying_declaration": "CrouzeixConjecture.loristSchwenningerHilbertSpacePolynomialCrouzeix",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7906,7 +7906,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.lorist_schwenninger_two_spectral_set",
         "underlying_declaration": "CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         "line": 19,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -7947,7 +7947,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.three_route_terminal_bundle",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         "line": 25,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -7985,7 +7985,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.harp_positive_moment_cubature",
         "underlying_declaration": "CrouzeixConjecture.Harp.exists_positive_matrix_moment_cubature",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean",
         "line": 25,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -8023,7 +8023,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.harp_finite_dilation_exists",
         "underlying_declaration": null,
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean",
         "line": 29,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -8061,7 +8061,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.harp_finite_recurrence",
         "underlying_declaration": "CrouzeixConjecture.Harp.FiniteHorizonDilationData.equation_three_finite_lower_bound",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean",
         "line": 47,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -8099,7 +8099,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.harp_normalized_norm_two",
         "underlying_declaration": "CrouzeixConjecture.Harp.norm_target_le_two_of_finiteHorizonDilationData",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean",
         "line": 58,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
@@ -8137,7 +8137,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.harp_polynomial_constant_two",
         "underlying_declaration": "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean",
         "line": 63,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
@@ -8175,7 +8175,7 @@
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part06.harp_two_spectral_set",
         "underlying_declaration": "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean",
         "line": 68,
         "column": 9,
         "verification_target": "CrouzeixTextbook",

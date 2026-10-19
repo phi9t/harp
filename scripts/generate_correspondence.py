@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate `formalization/lean/CrouzeixTextbook/Correspondence.lean`.
+"""Regenerate `lab/math/lean/CrouzeixTextbook/Correspondence.lean`.
 
 Correspondence.lean is the generated Lean surface the receipt exporter reads: one
 `#check` and one `ReceiptMarker` definition per declaration named by the contracts.
@@ -19,7 +19,7 @@ Mirrored behaviour, which must match the Rust renderer exactly:
   * modules come from `lean_declaration.source_path` on theorem rows and
     `lean_solution.source_path` on exercise rows, restricted to rows whose
     `verification_target` is `CrouzeixTextbook`, mapped from a path under
-    `formalization/lean/` to a dotted module name;
+    `lab/math/lean/` to a dotted module name;
   * declarations are the card `name`, its `underlying_declaration` when present,
     and the exercise `declaration`;
   * both sets are `BTreeSet<String>`, so both are sorted by code point, and the
@@ -41,16 +41,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 COVERAGE = ROOT / "content/crouzeix_textbook/coverage.json"
 EXERCISES = ROOT / "content/crouzeix_textbook/exercises.json"
-OUTPUT = ROOT / "formalization/lean/CrouzeixTextbook/Correspondence.lean"
+OUTPUT = ROOT / "lab/math/lean/CrouzeixTextbook/Correspondence.lean"
 TARGET = "CrouzeixTextbook"
-PREFIX = ("formalization", "lean")
+PREFIX = ("lab", "math", "lean")
 
 
 def module_from_path(path: str) -> str | None:
     parts = path.split("/")
-    if tuple(parts[:2]) != PREFIX:
+    if tuple(parts[:3]) != PREFIX:
         return None
-    relative = "/".join(parts[2:])
+    relative = "/".join(parts[3:])
     if not relative.endswith(".lean"):
         return None
     return relative[: -len(".lean")].replace("/", ".")

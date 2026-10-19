@@ -21,9 +21,9 @@ const ALLOWED_AXIOMS: [&str; 3] = ["Classical.choice", "Quot.sound", "propext"];
 const MAX_ARTIFACT_BYTES: u64 = 2 * 1024 * 1024;
 const MAX_CACHE_ARTIFACT_BYTES: u64 = 8 * 1024 * 1024;
 const ROUTE_MANIFESTS: [&str; 3] = [
-    "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
-    "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json",
-    "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
+    "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+    "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json",
+    "lab/math/proof_reproduction/formal_targets/harp/route-manifest.json",
 ];
 const LS_ROUTE_MANIFEST_PATH: &str = ROUTE_MANIFESTS[1];
 const LS_ROUTE_MANIFEST_SHA256: &str =
@@ -33,8 +33,8 @@ const LS_ROUTE_RECEIPT_PATH: &str =
 const LS_ROUTE_RECEIPT_SHA256: &str =
     "f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b";
 const LS_ARTIFACT_MANIFEST_PATH: &str =
-    "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json";
-const LS_TARGET_ROOT: &str = "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger";
+    "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json";
+const LS_TARGET_ROOT: &str = "lab/math/proof_reproduction/formal_targets/lorist-schwenninger";
 const LS_NODE_IDS: [&str; 6] = [
     "ls-equation-one-terminal-bound",
     "ls-power-recurrence",
@@ -1827,7 +1827,7 @@ fn validate_ls_attempt(
     let stdout = String::from_utf8(stdout).map_err(|_| "LS stdout is not UTF-8")?;
     for line in [
         "[lean] target=CrouzeixLoristSchwenninger",
-        "[lean] root=formalization/lean",
+        "[lean] root=lab/math/lean",
         "[lean] outcome=passed",
     ] {
         if stdout.lines().filter(|actual| *actual == line).count() != 1 {
@@ -1860,19 +1860,19 @@ fn validate_ls_attempt(
 fn ls_build_target(node_id: &str) -> Result<&'static str, String> {
     Ok(match node_id {
         "ls-equation-one-terminal-bound" => {
-            "formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean"
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean"
         }
         "ls-power-recurrence" => {
-            "formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean"
+            "lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean"
         }
-        "ls-scalar-contradiction" => "formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
+        "ls-scalar-contradiction" => "lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
         "ls-perturbation-lemma" => {
-            "formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean"
+            "lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean"
         }
         "ls-double-layer-realization" => {
-            "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean"
+            "lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean"
         }
-        "ls-terminal-crouzeix" => "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
+        "ls-terminal-crouzeix" => "lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
         _ => return Err("unknown LS node id".into()),
     })
 }
@@ -1944,7 +1944,7 @@ fn validate_mathlib_roster(
             (
                 module.as_str(),
                 format!(
-                    "formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean/{}.olean",
+                    "lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean/{}.olean",
                     module.replace('.', "/")
                 ),
             )
@@ -2016,7 +2016,7 @@ fn validate_git_identity(
         return Err("candidate Git tree mismatch".into());
     }
     for module in closure {
-        let relative = format!("formalization/lean/{}.lean", module.replace('.', "/"));
+        let relative = format!("lab/math/lean/{}.lean", module.replace('.', "/"));
         let current = read_bounded_regular(repo_root, &relative, "route source")?;
         let candidate = Command::new("git")
             .args([
@@ -2056,7 +2056,7 @@ fn active_route_closure(
     route: RouteId,
     aggregate: &str,
 ) -> Result<Vec<String>, String> {
-    let root = format!("formalization/lean/{}.lean", aggregate.replace('.', "/"));
+    let root = format!("lab/math/lean/{}.lean", aggregate.replace('.', "/"));
     let closure = super::local_source_closure(
         repo_root,
         &[root.as_str()],
@@ -2111,7 +2111,7 @@ fn active_mathlib_closure(
     let cache_root = resolve_approved_cache_root(repo_root)?;
     let mut pending = Vec::new();
     for module in local_modules {
-        let relative = format!("formalization/lean/{}.lean", module.replace('.', "/"));
+        let relative = format!("lab/math/lean/{}.lean", module.replace('.', "/"));
         let source = String::from_utf8(read_bounded_regular(
             repo_root,
             &relative,
@@ -2220,8 +2220,8 @@ fn resolve_approved_cache_root_with_expected_packages(
         return Err("Git common-dir is not .git".into());
     }
     let primary = common.parent().ok_or("Git common-dir lacks parent")?;
-    let approved = primary.join("formalization/lean/.lake");
-    let worktree = repo_root.join("formalization/lean/.lake");
+    let approved = primary.join("lab/math/lean/.lake");
+    let worktree = repo_root.join("lab/math/lean/.lake");
     if repo_root
         .canonicalize()
         .map_err(|error| error.to_string())?
@@ -2279,7 +2279,7 @@ fn resolve_approved_cache_root_with_expected_packages(
 fn cache_contract_identity(repo_root: &Path) -> Result<String, String> {
     let toolchain = String::from_utf8(read_bounded_regular(
         repo_root,
-        "formalization/lean/lean-toolchain",
+        "lab/math/lean/lean-toolchain",
         "lean-toolchain",
     )?)
     .map_err(|_| "lean-toolchain is not UTF-8")?;
@@ -2288,7 +2288,7 @@ fn cache_contract_identity(repo_root: &Path) -> Result<String, String> {
     }
     let manifest = read_json_value(
         repo_root,
-        "formalization/lean/lake-manifest.json",
+        "lab/math/lean/lake-manifest.json",
         "lake manifest",
     )?;
     let payload = serde_json::json!({
@@ -2416,7 +2416,7 @@ fn validate_source_provenance(
                 return Ok(());
             }
             let artifact_path =
-                "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json";
+                "lab/math/proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json";
             let artifact = read_json_value(repo_root, artifact_path, "Jin artifact manifest")?;
             if artifact["source_commit"].as_str() != Some(commit)
                 || artifact["archive"]["sha256"].as_str() != Some(archive_sha)
@@ -3007,7 +3007,7 @@ mod tests {
             "schema_version": "crouzeix-route-proof-receipt/v1",
             "route_id": "jin", "aggregate_module": "CrouzeixJin",
             "build_target": "CrouzeixJin",
-            "manifest_path": "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+            "manifest_path": "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
             "manifest_sha256": "1".repeat(64),
             "candidate_commit": "1".repeat(40), "candidate_tree": "2".repeat(40),
             "command_artifact_path": "evidence/crouzeix_conjecture/routes/jin/command.json",
@@ -3053,7 +3053,7 @@ mod tests {
             "reviewer_model": "review-model", "reviewer_run_id": "run-001",
             "verdict": "complete", "outcome": "approved",
             "source_fidelity_check": "passed", "derivation_reuse_check": "not-applicable",
-            "findings": [{"finding_id": "F-001", "severity": "Minor", "resolved": true, "locator": "formalization/lean/CrouzeixJin.lean", "statement": "note", "falsifying_test_or_gap": "none"}],
+            "findings": [{"finding_id": "F-001", "severity": "Minor", "resolved": true, "locator": "lab/math/lean/CrouzeixJin.lean", "statement": "note", "falsifying_test_or_gap": "none"}],
             "review_sha256": "e".repeat(64)
         });
         review["manifest_sha256"] = receipt["manifest_sha256"].clone();
@@ -3118,8 +3118,7 @@ mod tests {
         let root = TempDir::new().unwrap();
         verify_published_routes(root.path()).unwrap();
 
-        let relative =
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json";
+        let relative = "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json";
         let path = root.path().join(relative);
         fs::create_dir_all(path.parent().unwrap()).unwrap();
         fs::write(&path, b"{\"route_id\":\"jin\",\"route_id\":\"harp\"}\n").unwrap();
@@ -3446,26 +3445,25 @@ mod tests {
             .unwrap();
         fs::create_dir_all(
             root.path()
-                .join("formalization/lean/.lake/packages/mathlib/Mathlib"),
+                .join("lab/math/lean/.lake/packages/mathlib/Mathlib"),
         )
         .unwrap();
-        fs::create_dir_all(root.path().join("formalization/lean/Crouzeix/Jin")).unwrap();
-        fs::write(root.path().join("formalization/lean/CrouzeixJin.lean"), b"module\nprelude\n/- nested /- import Crouzeix.Harp.Hidden -/ comment -/\npublic import Crouzeix.Jin.Main\n").unwrap();
+        fs::create_dir_all(root.path().join("lab/math/lean/Crouzeix/Jin")).unwrap();
+        fs::write(root.path().join("lab/math/lean/CrouzeixJin.lean"), b"module\nprelude\n/- nested /- import Crouzeix.Harp.Hidden -/ comment -/\npublic import Crouzeix.Jin.Main\n").unwrap();
         fs::write(
-            root.path()
-                .join("formalization/lean/Crouzeix/Jin/Main.lean"),
+            root.path().join("lab/math/lean/Crouzeix/Jin/Main.lean"),
             b"-- import Crouzeix.Harp.Hidden\nimport Mathlib.A\n",
         )
         .unwrap();
         fs::write(
             root.path()
-                .join("formalization/lean/.lake/packages/mathlib/Mathlib/A.lean"),
+                .join("lab/math/lean/.lake/packages/mathlib/Mathlib/A.lean"),
             b"module\npublic import Mathlib.B\n",
         )
         .unwrap();
         fs::write(
             root.path()
-                .join("formalization/lean/.lake/packages/mathlib/Mathlib/B.lean"),
+                .join("lab/math/lean/.lake/packages/mathlib/Mathlib/B.lean"),
             b"\n",
         )
         .unwrap();
@@ -3476,14 +3474,13 @@ mod tests {
             vec!["Mathlib.A", "Mathlib.B"]
         );
         fs::write(
-            root.path().join("formalization/lean/CrouzeixJin.lean"),
+            root.path().join("lab/math/lean/CrouzeixJin.lean"),
             b"module\nprelude\npublic import Crouzeix.Harp.Hidden\n",
         )
         .unwrap();
-        fs::create_dir_all(root.path().join("formalization/lean/Crouzeix/Harp")).unwrap();
+        fs::create_dir_all(root.path().join("lab/math/lean/Crouzeix/Harp")).unwrap();
         fs::write(
-            root.path()
-                .join("formalization/lean/Crouzeix/Harp/Hidden.lean"),
+            root.path().join("lab/math/lean/Crouzeix/Harp/Hidden.lean"),
             b"\n",
         )
         .unwrap();
@@ -3554,7 +3551,7 @@ mod tests {
             .current_dir(primary.path())
             .status()
             .unwrap();
-        let lake_root = primary.path().join("formalization/lean/.lake");
+        let lake_root = primary.path().join("lab/math/lean/.lake");
         fs::create_dir_all(&lake_root).unwrap();
         let xdg_root = TempDir::new().unwrap();
         let expected_packages = xdg_root
@@ -3591,7 +3588,7 @@ mod tests {
             .current_dir(primary.path())
             .status()
             .unwrap();
-        let lake_root = primary.path().join("formalization/lean/.lake");
+        let lake_root = primary.path().join("lab/math/lean/.lake");
         fs::create_dir_all(&lake_root).unwrap();
         let xdg_root = TempDir::new().unwrap();
         let expected_packages = xdg_root
@@ -3628,7 +3625,7 @@ mod tests {
             .current_dir(primary.path())
             .status()
             .unwrap();
-        let lake_root = primary.path().join("formalization/lean/.lake");
+        let lake_root = primary.path().join("lab/math/lean/.lake");
         fs::create_dir_all(&lake_root).unwrap();
         let xdg_root = TempDir::new().unwrap();
         let expected_packages = xdg_root
@@ -3666,12 +3663,7 @@ mod tests {
             .current_dir(primary.path())
             .status()
             .unwrap();
-        fs::create_dir_all(
-            primary
-                .path()
-                .join("formalization/lean/.lake/packages/mathlib"),
-        )
-        .unwrap();
+        fs::create_dir_all(primary.path().join("lab/math/lean/.lake/packages/mathlib")).unwrap();
         fs::write(primary.path().join("tracked"), b"x").unwrap();
         Command::new("git")
             .args(["add", "."])
@@ -3705,34 +3697,30 @@ mod tests {
             .current_dir(primary.path())
             .status()
             .unwrap();
-        fs::create_dir_all(linked_root.join("formalization/lean")).unwrap();
+        fs::create_dir_all(linked_root.join("lab/math/lean")).unwrap();
         symlink(
-            primary.path().join("formalization/lean/.lake"),
-            linked_root.join("formalization/lean/.lake"),
+            primary.path().join("lab/math/lean/.lake"),
+            linked_root.join("lab/math/lean/.lake"),
         )
         .unwrap();
         assert_eq!(
             super::resolve_approved_cache_root(&linked_root).unwrap(),
             primary
                 .path()
-                .join("formalization/lean/.lake")
+                .join("lab/math/lean/.lake")
                 .canonicalize()
                 .unwrap()
         );
         fs::rename(
+            primary.path().join("lab/math/lean/.lake/packages/mathlib"),
             primary
                 .path()
-                .join("formalization/lean/.lake/packages/mathlib"),
-            primary
-                .path()
-                .join("formalization/lean/.lake/packages/mathlib-real"),
+                .join("lab/math/lean/.lake/packages/mathlib-real"),
         )
         .unwrap();
         symlink(
             "mathlib-real",
-            primary
-                .path()
-                .join("formalization/lean/.lake/packages/mathlib"),
+            primary.path().join("lab/math/lean/.lake/packages/mathlib"),
         )
         .unwrap();
         assert!(super::resolve_approved_cache_root(&linked_root)
@@ -3770,7 +3758,7 @@ mod tests {
         use std::os::unix::fs::symlink;
 
         let (_primary, _linked_parent, linked, _, _) = linked_published_fixture();
-        let link = linked.join("formalization/lean/.lake");
+        let link = linked.join("lab/math/lean/.lake");
         fs::remove_file(&link).unwrap();
         let hostile = linked.join("hostile-cache");
         fs::create_dir(&hostile).unwrap();
@@ -3814,7 +3802,7 @@ mod tests {
 
         let (_primary, _linked_parent, linked, _basic, _transitive) = linked_published_fixture();
         mutate_linked_receipt(&linked, |receipt| {
-            receipt["mathlib_artifacts"][0]["path"] = json!("formalization/lean/.lake/wrong.olean");
+            receipt["mathlib_artifacts"][0]["path"] = json!("lab/math/lean/.lake/wrong.olean");
         });
         assert!(verify_published_routes(&linked)
             .unwrap_err()
@@ -3839,7 +3827,7 @@ mod tests {
     ) {
         use std::os::unix::fs::symlink;
         let (primary, _) = repository_fixture();
-        let cache = primary.path().join("formalization/lean/.lake");
+        let cache = primary.path().join("lab/math/lean/.lake");
         let mathlib_source = cache.join("packages/mathlib/Mathlib/Data/Matrix/Basic.lean");
         let mathlib_transitive = cache.join("packages/mathlib/Mathlib/Data/Matrix/Transitive.lean");
         fs::create_dir_all(mathlib_source.parent().unwrap()).unwrap();
@@ -3866,8 +3854,8 @@ mod tests {
             .current_dir(primary.path())
             .status()
             .unwrap();
-        fs::create_dir_all(linked.join("formalization/lean")).unwrap();
-        let linked_cache = linked.join("formalization/lean/.lake");
+        fs::create_dir_all(linked.join("lab/math/lean")).unwrap();
+        let linked_cache = linked.join("lab/math/lean/.lake");
         if linked_cache.exists() {
             fs::remove_dir_all(&linked_cache).unwrap();
         }
@@ -3885,9 +3873,9 @@ mod tests {
 
     fn copy_untracked_fixture_files(primary: &Path, linked: &Path) {
         for relative in [
-            "formalization/lean/lean-toolchain",
-            "formalization/lean/lake-manifest.json",
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+            "lab/math/lean/lean-toolchain",
+            "lab/math/lean/lake-manifest.json",
+            "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
             "evidence/crouzeix_conjecture/routes/jin/receipt.json",
             "evidence/crouzeix_conjecture/routes/jin/provider.json",
             "evidence/crouzeix_conjecture/routes/jin/command.json",
@@ -3910,13 +3898,13 @@ mod tests {
 
     fn rewrite_linked_receipt_mathlib(linked: &Path, entries: &[(&str, &Path)]) {
         let manifest_path =
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json";
+            "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json";
         let mut manifest = read_json_value(linked, manifest_path, "manifest").unwrap();
         let receipt_path = manifest["receipt_path"].as_str().unwrap();
         let mut receipt = read_json_value(linked, receipt_path, "receipt").unwrap();
         let roster = entries.iter().map(|(module, path)| json!({
             "module": module,
-            "path": format!("formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean/{}.olean", module.replace('.', "/")),
+            "path": format!("lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean/{}.olean", module.replace('.', "/")),
             "sha256": format!("{:x}", Sha256::digest(fs::read(path).unwrap())),
         })).collect::<Vec<_>>();
         receipt["mathlib_artifacts"] = json!(roster);
@@ -3940,7 +3928,7 @@ mod tests {
 
     fn mutate_linked_receipt(linked: &Path, mutate: impl FnOnce(&mut Value)) {
         let manifest_path =
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json";
+            "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json";
         let mut manifest = read_json_value(linked, manifest_path, "manifest").unwrap();
         let receipt_path = manifest["receipt_path"].as_str().unwrap().to_owned();
         let mut receipt = read_json_value(linked, &receipt_path, "receipt").unwrap();
@@ -3998,9 +3986,9 @@ mod tests {
     #[test]
     fn jin_git_locator_requires_exactly_one_registered_artifact_path() {
         let root = TempDir::new().unwrap();
-        let artifact_path = root.path().join(
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json",
-        );
+        let artifact_path = root
+            .path()
+            .join("lab/math/proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json");
         fs::create_dir_all(artifact_path.parent().unwrap()).unwrap();
         let commit = "a".repeat(40);
         let archive = "b".repeat(64);
@@ -4036,9 +4024,9 @@ mod tests {
             .unwrap_err()
             .contains("exactly one artifact record must match Git source path"));
 
-        let artifact_path = root.path().join(
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json",
-        );
+        let artifact_path = root
+            .path()
+            .join("lab/math/proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json");
         fs::write(
             artifact_path,
             serde_json::to_vec(&json!({
@@ -4103,7 +4091,7 @@ mod tests {
         let root = TempDir::new().unwrap();
         fs::create_dir_all(
             root.path()
-                .join("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger"),
+                .join("lab/math/proof_reproduction/formal_targets/lorist-schwenninger"),
         )
         .unwrap();
         fs::write(
@@ -4384,7 +4372,7 @@ mod tests {
     #[test]
     fn route_manifest_schema_declares_dependency_and_nullable_reuse_id() {
         let schema: Value = serde_json::from_str(include_str!(
-            "../../../../../labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json"
+            "../../../../../lab/math/proof_reproduction/schemas/route_manifest.schema.json"
         ))
         .unwrap();
         let dependency = &schema["$defs"]["routeDependency"];
@@ -4436,7 +4424,7 @@ mod tests {
     #[test]
     fn route_manifest_schema_validates_full_harp_and_legacy_instances() {
         let schema: Value = serde_json::from_str(include_str!(
-            "../../../../../labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json"
+            "../../../../../lab/math/proof_reproduction/schemas/route_manifest.schema.json"
         ))
         .unwrap();
         let (mut harp, _, _) = harp_reuse_fixture();
@@ -4584,22 +4572,21 @@ mod tests {
             .current_dir(root.path())
             .status()
             .unwrap();
-        fs::create_dir_all(root.path().join("formalization/lean/Crouzeix/Jin")).unwrap();
-        fs::create_dir_all(root.path().join("formalization/lean/CrouzeixConjecture")).unwrap();
+        fs::create_dir_all(root.path().join("lab/math/lean/Crouzeix/Jin")).unwrap();
+        fs::create_dir_all(root.path().join("lab/math/lean/CrouzeixConjecture")).unwrap();
         fs::write(
-            root.path().join("formalization/lean/CrouzeixJin.lean"),
+            root.path().join("lab/math/lean/CrouzeixJin.lean"),
             b"import Crouzeix.Jin.Main\n",
         )
         .unwrap();
         fs::write(
-            root.path()
-                .join("formalization/lean/Crouzeix/Jin/Main.lean"),
+            root.path().join("lab/math/lean/Crouzeix/Jin/Main.lean"),
             b"import CrouzeixConjecture.Foundation\n",
         )
         .unwrap();
         fs::write(
             root.path()
-                .join("formalization/lean/CrouzeixConjecture/Foundation.lean"),
+                .join("lab/math/lean/CrouzeixConjecture/Foundation.lean"),
             b"import Mathlib.Data.Matrix.Basic\n",
         )
         .unwrap();
@@ -4619,7 +4606,7 @@ mod tests {
             json!(["CrouzeixConjecture.Foundation", "CrouzeixJin"]);
         let manifest_path = manifest["receipt_path"].as_str().unwrap().replace(
             "evidence/crouzeix_conjecture/routes/jin/receipt.json",
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+            "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
         );
         fs::create_dir_all(root.path().join(&manifest_path).parent().unwrap()).unwrap();
         fs::write(
@@ -4676,12 +4663,12 @@ mod tests {
         receipt["axiom_results"] = json!([receipt["axiom_results"][1].clone()]);
         receipt["manifest_sha256"] = json!(manifest_digest(&manifest));
         fs::write(
-            root.path().join("formalization/lean/lean-toolchain"),
+            root.path().join("lab/math/lean/lean-toolchain"),
             b"leanprover/lean4:v4.32.1\n",
         )
         .unwrap();
         fs::write(
-            root.path().join("formalization/lean/lake-manifest.json"),
+            root.path().join("lab/math/lean/lake-manifest.json"),
             b"{\"name\":\"fixture\",\"packages\":[]}\n",
         )
         .unwrap();
@@ -4804,13 +4791,13 @@ mod tests {
             .status()
             .unwrap();
         let authority = [
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json",
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/library-inventory.json",
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/promotion.json",
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001/receipt.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/library-inventory.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/promotion.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001/receipt.json",
         ];
-        let source = "formalization/lean/CrouzeixLoristSchwenninger.lean";
+        let source = "lab/math/lean/CrouzeixLoristSchwenninger.lean";
         for path in authority.iter().chain(std::iter::once(&source)) {
             let file = root.path().join(path);
             fs::create_dir_all(file.parent().unwrap()).unwrap();

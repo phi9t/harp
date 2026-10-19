@@ -27,8 +27,8 @@ fn fixture(card: &str) -> tempfile::TempDir {
         root.path(),
     );
     for relative in [
-        "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
-        "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+        "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+        "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
     ] {
         let target = root.path().join(relative);
         fs::create_dir_all(target.parent().unwrap()).unwrap();
@@ -181,7 +181,7 @@ fn narrative_correspondence_requires_named_lean_information() {
 #[test]
 fn narrative_accepts_a_lean_source_link_as_provider() {
     let (before, _) = NARRATIVE.split_once("**Formal correspondence.**").unwrap();
-    let root = fixture(&format!("{before}**Formal correspondence.** [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean)."));
+    let root = fixture(&format!("{before}**Formal correspondence.** [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean)."));
     check(root.path()).expect("a concrete Lean code link identifies the provider");
 }
 

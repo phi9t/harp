@@ -147,7 +147,7 @@ Public declaration: `CrouzeixTextbook.Part05.convex_projection`.
 Formal mode: `proved-here`.
 Substantive provider: `none` among maintained Crouzeix declarations; the proof uses Mathlib `exists_norm_eq_iInf_of_complete_convex` with `IsClosed.isComplete`, and proves uniqueness locally.
 Readable type map: `K,z,p,w` are exactly the set, input, unique projection, and competitors above.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L14).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L14).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (K : Set.{0} Complex), Set.Nonempty.{0} K → IsClosed.{0} K → Convex.{0, 0} Real K → ∀ (z : Complex), ExistsUnique.{1} fun p => And (Membership.mem.{0, 0} K p) (∀ (w : Complex), Membership.mem.{0, 0} K w → LE.le.{0} (Norm.norm.{0} (HSub.hSub.{0, 0, 0} z p)) (Norm.norm.{0} (HSub.hSub.{0, 0, 0} z w)))`.
 Type SHA-256: `4ffef37c950b39279846aeb028511a0d8f18a945e1d8888379d849d8096a6100`.
@@ -233,7 +233,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.convexProjection_variational`.
 Substantive provider: `CrouzeixConjecture.convexProjection_variational`.
 Readable type map: feasible `w` produces the real-inner-product inequality at the chosen projection.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L47).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L47).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (K : Set.{0} Complex) (hKne : Set.Nonempty.{0} K) (hKcompact : IsCompact.{0} K) (hKconvex : Convex.{0, 0} Real K) (z w : Complex), Membership.mem.{0, 0} K w → LE.le.{0} (Inner.inner.{0, 0} Real (HSub.hSub.{0, 0, 0} z (CrouzeixConjecture.convexProjection K hKne hKcompact hKconvex z)) (HSub.hSub.{0, 0, 0} w (CrouzeixConjecture.convexProjection K hKne hKcompact hKconvex z))) (OfNat.ofNat.{0} 0)`.
 Type SHA-256: `e5ff9225c14b24a0bc391ce2d438e1f6d80e2f0e1fe4075becb75d5ac2fe160a`.
@@ -308,7 +308,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.norm_convexProjection_sub_le`.
 Substantive provider: `CrouzeixConjecture.norm_convexProjection_sub_le`.
 Readable type map: two points are projected onto one set and output distance is bounded by input distance.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L56).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L56).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (K : Set.{0} Complex) (hKne : Set.Nonempty.{0} K) (hKcompact : IsCompact.{0} K) (hKconvex : Convex.{0, 0} Real K) (x y : Complex), LE.le.{0} (Norm.norm.{0} (HSub.hSub.{0, 0, 0} (CrouzeixConjecture.convexProjection K hKne hKcompact hKconvex x) (CrouzeixConjecture.convexProjection K hKne hKcompact hKconvex y))) (Norm.norm.{0} (HSub.hSub.{0, 0, 0} x y))`.
 Type SHA-256: `6491d411e634da59fa43f86b95c536274c4f53474e95382ada98b49cc76f6fc5`.
@@ -388,7 +388,7 @@ Public declaration: `CrouzeixTextbook.Part05.outer_approximation_radius`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.outerApproximationRadius, CrouzeixConjecture.outerApproximationRadius_le_one, CrouzeixConjecture.outerApproximationRadius_pos`.
 Readable type map: every natural index has a strictly positive radius at most one.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L65).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L65).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (k : Nat), And (LT.lt.{0} (OfNat.ofNat.{0} 0) (CrouzeixConjecture.outerApproximationRadius k)) (LE.le.{0} (CrouzeixConjecture.outerApproximationRadius k) (OfNat.ofNat.{0} 1))`.
 Type SHA-256: `b2294ee6be90f9259c5d55fcb89f02182b9ba7feeeb8124179e51fabf7056ce8`.
@@ -472,7 +472,7 @@ Public declaration: `CrouzeixTextbook.Part05.outer_radius_tends_to_zero`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.outerApproximationRadius, CrouzeixConjecture.parallelOuterDomain, CrouzeixConjecture.parallelOuterDomain_closure_subset_fixedNeighborhood, CrouzeixConjecture.tendsto_hausdorffDist_parallelOuterDomain_closure, CrouzeixConjecture.tendsto_outerApproximationRadius`.
 Readable type map: compact `K` receives scalar decay, Hausdorff decay, and fixed-neighborhood containment.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L71).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L71).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (K : Set.{0} Complex), IsCompact.{0} K → And (Filter.Tendsto.{0, 0} CrouzeixConjecture.outerApproximationRadius Filter.atTop.{0} (nhds.{0} (OfNat.ofNat.{0} 0))) (And (Filter.Tendsto.{0, 0} (fun k => Metric.hausdorffDist.{0} (closure.{0} (CrouzeixConjecture.parallelOuterDomain K k)) K) Filter.atTop.{0} (nhds.{0} (OfNat.ofNat.{0} 0))) (∀ (k : Nat), LE.le.{0} (closure.{0} (CrouzeixConjecture.parallelOuterDomain K k)) (Metric.cthickening.{0} (OfNat.ofNat.{0} 1) K)))`.
 Type SHA-256: `1f2d7a4b929e101df48496466ae11483b7aa7f7328ffe49b5c0d95c34335b000`.
@@ -575,7 +575,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.canonicalParallelOrientedRadialBoundaryStatement`.
 Substantive provider: `CrouzeixConjecture.canonicalParallelOrientedRadialBoundaryStatement`; strict speed is checked by `CrouzeixTextbook.Part05.parallel_radial_speed_pos`.
 Readable type map: every nonempty finite matrix dimension receives the quantified canonical boundary statement.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L114).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L114).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [Nonempty.{u_1 + 1} n], CrouzeixConjecture.CanonicalParallelOrientedRadialBoundaryStatement.{u_1}`.
 Type SHA-256: `e0c090a879dce8bda6dbcd5297ac2597904ac6646e0fff4ebdae2e33e4f846b9`.
@@ -618,7 +618,7 @@ Lean expresses the same argument through completeness of a closed set and the co
 Public declaration: `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_01_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib `exists_norm_eq_iInf_of_complete_convex` via `IsClosed.isComplete`; no maintained Crouzeix provider and no reconstruction shortcut.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L122).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L122).
 Type SHA-256: `ee6bd57fe174d7239540f948a6a03855a9a066eda912a472dad2534fc28e890b`.
 Axioms: `Classical.choice, Quot.sound, propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -639,7 +639,7 @@ Comparison with the independently derived condition for the chosen minimizer for
 Public declaration: `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_02_solution`.
 Formal mode: `proved-here`.
 Provider boundary: uses the compact projection definition, membership, and infimum identity; it does not call the public variational card or a disk-projection shortcut.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L136).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L136).
 Type SHA-256: `c7a7cb6d472ecdae80c1536ce80998d0a8f0357ef6736888c94d3734b1c1fe0a`.
 Axioms: `Classical.choice, Quot.sound, propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -660,7 +660,7 @@ A squared norm is nonnegative, hence zero, so `p=q`. The Lean proof is pure inne
 Public declaration: `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_03_solution`.
 Formal mode: `proved-here`.
 Provider boundary: elementary real-inner-product expansion only; there is no direct maintained provider and no uniqueness shortcut.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L204).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L204).
 Type SHA-256: `a98e82a390fe2b59c39f83f0fb2347b59f1c2dbd20a41d098256a00edbaf3a88`.
 Axioms: `Classical.choice, Quot.sound, propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -681,7 +681,7 @@ If `‖d‖=0` we are done; otherwise cancel the positive factor to obtain `‖p
 Public declaration: `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_04_solution`.
 Formal mode: `proved-here`.
 Provider boundary: elementary inner-product algebra and Cauchy--Schwarz only; it does not call either maintained nonexpansiveness theorem.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L219).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L219).
 Type SHA-256: `257db097066a44c31c2934e6dadb37742f14c665296df8d49441c382c2533884`.
 Axioms: `Classical.choice, Quot.sound, propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -704,7 +704,7 @@ This must not be inflated into “a polygon has no `C¹` parametrization”: deg
 Public declaration: `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_05_solution`.
 Formal mode: `proved-here`.
 Provider boundary: one-sided derivative uniqueness from Mathlib calculus; no maintained Crouzeix provider and no polygon regularity shortcut.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L243).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L243).
 Type SHA-256: `8ae57520a57476a45463626e2493efd5cf74e168730249e50887e59438fff1db`.
 Axioms: `Classical.choice, Quot.sound, propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -725,7 +725,7 @@ Frontier membership comes from gauge normalization; radial `C¹` regularity come
 Public declaration: `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_06_solution`.
 Formal mode: `proved-here`.
 Provider boundary: lower-level numerical-range facts, `parallelPositivePeriodicRadialData`, and `orientedRadialConvexBoundary_thickening`; it does not call `canonicalParallelOrientedRadialBoundaryStatement` or the public CFT-25-006 theorem.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L282).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L282).
 Type SHA-256: `9a64eacc8aaba37cbac9d770626aac85e112e005a0fd27a38cee7b3ea047fcf8`.
 Axioms: `Classical.choice, Quot.sound, propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.

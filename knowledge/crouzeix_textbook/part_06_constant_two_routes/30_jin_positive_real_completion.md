@@ -151,13 +151,13 @@ resolvents from Chapter 28.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionStatement.lean|CompletionStatement.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionStatement.lean|CompletionStatement.lean]].
 This is an exact local definition alias of
 `CrouzeixConjecture.IsPositiveRealCompletion`. Its compiler provider is a
 definition, and no proof or existence theorem is claimed here.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.positive_real_completion; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.IsPositiveRealCompletion; provider-file=formalization/lean/CrouzeixConjecture/CompletionStatement.lean; type-sha256=d72a6d691c4c807c0b20b620c2e030345c8d923a1c9b31d1a2a2e9fb07732523; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.positive_real_completion; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.IsPositiveRealCompletion; provider-file=lab/math/lean/CrouzeixConjecture/CompletionStatement.lean; type-sha256=d72a6d691c4c807c0b20b620c2e030345c8d923a1c9b31d1a2a2e9fb07732523; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -300,13 +300,13 @@ from Chapter 5, and CFT-30-001.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionDiagonalization.lean|CompletionDiagonalization.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionDiagonalization.lean|CompletionDiagonalization.lean]].
 This is an exact reexport of the theorem
 `CrouzeixConjecture.positiveRealCompletionStatement`, whose conclusion is the
 proposition `PositiveRealCompletionStatement` displayed above.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.positive_real_completion_statement; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.positiveRealCompletionStatement; provider-file=formalization/lean/CrouzeixConjecture/CompletionDiagonalization.lean; type-sha256=720010d2fd3b19be340951f1fda1fd0e02a095476a0bdd4a60e8af086352deb2; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.positive_real_completion_statement; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.positiveRealCompletionStatement; provider-file=lab/math/lean/CrouzeixConjecture/CompletionDiagonalization.lean; type-sha256=720010d2fd3b19be340951f1fda1fd0e02a095476a0bdd4a60e8af086352deb2; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -399,10 +399,10 @@ CFT-30-001.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_four; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completionP_congruence_eq_gramian_four; provider-file=formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=d999ab712880d5363dbc792dfeaa9c208ec4eae8435b470a1c25b4344c83fbdc; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_four; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completionP_congruence_eq_gramian_four; provider-file=lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=d999ab712880d5363dbc792dfeaa9c208ec4eae8435b470a1c25b4344c83fbdc; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -490,10 +490,10 @@ Use CFT-30-003 and the same geometric-series and congruence facts.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_two; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completionR_congruence_eq_gramian_two; provider-file=formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=e9a78b5db14824f47398ed1a8a9cdbfcc1bbfae558930039ddbbb5d431dd3f84; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_two; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completionR_congruence_eq_gramian_two; provider-file=lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=e9a78b5db14824f47398ed1a8a9cdbfcc1bbfae558930039ddbbb5d431dd3f84; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -572,10 +572,10 @@ Use CFT-30-003, CFT-30-004, and matrix distributivity.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_difference; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completionX_congruence_eq_gramian_difference; provider-file=formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=2e7c01edefeb5dc2a3212ae85afc54e9caea46aaacf62c7996ad3de1ab1c1b67; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_difference; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completionX_congruence_eq_gramian_difference; provider-file=lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=2e7c01edefeb5dc2a3212ae85afc54e9caea46aaacf62c7996ad3de1ab1c1b67; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -668,13 +668,13 @@ Use PSD congruence from Chapter 8 and CFT-30-003 through CFT-30-005.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean|CompletionGramianBridge.lean]].
 The public declaration is a local theorem proved here. It exposes the
 congruenced PSD intermediate and then invokes the provider for the final
 Gramian PSD conclusion.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_source_positive; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completion_gramian_expression_posSemidef_of_source; provider-file=formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=2c90dd2e81251f789c757fc791515b9d4889f0c5c8f0e74fc1b7ce75e8f17356; provider-type-sha256=54e0b92ee477409a1b741eb87362322c7a801bb9c9ecdb4b61a1320140728baa; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_gramian_source_positive; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean; provider-declaration=CrouzeixConjecture.completion_gramian_expression_posSemidef_of_source; provider-file=lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean; type-sha256=2c90dd2e81251f789c757fc791515b9d4889f0c5c8f0e74fc1b7ce75e8f17356; provider-type-sha256=54e0b92ee477409a1b741eb87362322c7a801bb9c9ecdb4b61a1320140728baa; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -859,7 +859,7 @@ contracts.
 ### CFT-30-E01 -- unpack the completion {#exercise-cft-30-e01}
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_01_solution]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_01_solution]]
 is `CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_01_solution`.
 Return the four completion conjuncts in order. Copyable Lean starter:
 
@@ -875,7 +875,7 @@ Return the four completion conjuncts in order. Copyable Lean starter:
 ### CFT-30-E02 -- shared-basis commutation {#exercise-cft-30-e02}
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_02_solution]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_02_solution]]
 is `CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_02_solution`.
 Prove this exact signature; do not use the norm theorem:
 
@@ -891,7 +891,7 @@ Prove this exact signature; do not use the norm theorem:
 ### CFT-30-E03 -- P and Gramian_4 {#exercise-cft-30-e03}
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_03_solution]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_03_solution]]
 is `CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_03_solution`.
 Prove the entry formula and its series congruence with every binder shown:
 
@@ -908,7 +908,7 @@ Prove the entry formula and its series congruence with every binder shown:
 ### CFT-30-E04 -- R and Gramian_2 {#exercise-cft-30-e04}
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_04_solution]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_04_solution]]
 is `CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_04_solution`.
 Repeat E03 with the denominator and weight changed to two:
 
@@ -925,7 +925,7 @@ Repeat E03 with the denominator and weight changed to two:
 ### CFT-30-E05 -- X as a difference {#exercise-cft-30-e05}
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_05_solution]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_05_solution]]
 is `CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_05_solution`.
 Unfold X, distribute the congruence, and prove the exact conjunction:
 
@@ -942,7 +942,7 @@ Unfold X, distribute the congruence, and prove the exact conjunction:
 ### CFT-30-E06 -- positivity congruence {#exercise-cft-30-e06}
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_06_solution]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|exercise_06_solution]]
 is `CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_06_solution`.
 From source PSD, prove the congruenced PSD and the exact ordered-matrix
 identity that turns it into the final Gramian expression:
@@ -1074,7 +1074,7 @@ entire equality being exercised.
 ## Lean exercise audit
 
 The six distinct solutions are in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]]
 under CrouzeixTextbook.Part06.Exercises.Chapter30. Their compiler types are
 matched to the six contract probes. The exporter rejects aliases, extra
 namespace declarations, parent-provider shortcuts, and terminal shortcuts.

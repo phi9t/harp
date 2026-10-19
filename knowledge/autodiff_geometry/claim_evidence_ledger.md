@@ -88,11 +88,11 @@ Material claims use one of these classes:
 ## ADG-006: Harp compiles finite-coordinate autodiff operator contracts
 
 - Class: `EVIDENCE`
-- Statement: The Lean library `formalization/lean/AutodiffGeometry` compiles
+- Statement: The Lean library `lab/math/lean/AutodiffGeometry` compiles
   theorem declarations for gradient component selection, JVP as matrix-vector
   multiplication, VJP as transposed matrix-vector multiplication,
   Hessian-vector multiplication, and finite-coordinate JVP/VJP duality.
-- Source: `formalization/lean/AutodiffGeometry/FiniteCoordinates.lean`
+- Source: `lab/math/lean/AutodiffGeometry/FiniteCoordinates.lean`
 - Locator: Lean declarations `grad_arg_eq_component`, `jvp_eq_matVec`,
   `vjp_eq_transpose_matVec`, `hvp_eq_matVec`, and `dot_jvp_eq_dot_vjp`.
 - Scope: Finite coordinate vectors over a commutative semiring. No analytic

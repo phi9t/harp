@@ -70,8 +70,8 @@ fn crouzeix_textbook_cli_fixture() -> (TempDir, std::path::PathBuf) {
     fs::write(&exercises_path, exercise_bytes).expect("write CLI exercises");
     let compile = fixture.path().join("fixture/Compile.lean");
     for relative in [
-        "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
-        "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+        "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+        "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
     ] {
         let target = fixture.path().join(relative);
         fs::create_dir_all(target.parent().expect("Lean source parent"))
@@ -82,7 +82,7 @@ fn crouzeix_textbook_cli_fixture() -> (TempDir, std::path::PathBuf) {
         serde_json::json!({
             "name": "CrouzeixTextbook.Part01.matrix_column_is_basis_image",
             "kind": "theorem",
-            "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+            "source_path": "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
             "line": 10,
             "column": 1,
             "normalized_type": "theorem fixture type",
@@ -93,7 +93,7 @@ fn crouzeix_textbook_cli_fixture() -> (TempDir, std::path::PathBuf) {
         serde_json::json!({
             "name": "CrouzeixTextbook.Part01.LinearTransformation",
             "kind": "definition",
-            "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+            "source_path": "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
             "line": 4,
             "column": 1,
             "normalized_type": "definition fixture type",
@@ -104,7 +104,7 @@ fn crouzeix_textbook_cli_fixture() -> (TempDir, std::path::PathBuf) {
         serde_json::json!({
             "name": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution",
             "kind": "theorem",
-            "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+            "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
             "line": 12,
             "column": 1,
             "normalized_type": "exercise one fixture type",
@@ -115,7 +115,7 @@ fn crouzeix_textbook_cli_fixture() -> (TempDir, std::path::PathBuf) {
         serde_json::json!({
             "name": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution",
             "kind": "theorem",
-            "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+            "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
             "line": 20,
             "column": 1,
             "normalized_type": "exercise two fixture type",

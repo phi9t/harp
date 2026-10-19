@@ -141,7 +141,7 @@ The prerequisites are compact convex hulls and finite-dimensional integration. F
 
 `harp_positive_moment_cubature` is a reexport of `Harp.exists_positive_matrix_moment_cubature`. Its card bound is stated using real `finrank`; the explicit $2(N+2)d^2+1$ count is also a checked field of the later witness.
 
-Sources: [[formalization/lean/Crouzeix/Harp/PositiveCubature.lean|compact convex hull and positive cubature]], [proof](../../../formalization/lean/Crouzeix/Harp/PositiveCubature.lean#L28); [[formalization/lean/Crouzeix/Harp/FiniteMeasureCubature.lean|finite-measure rescaling]], [proof](../../../formalization/lean/Crouzeix/Harp/FiniteMeasureCubature.lean#L24); [[formalization/lean/Crouzeix/Harp/FiniteAtomicDilation.lean|matrix moment observable]], [definition and theorem](../../../formalization/lean/Crouzeix/Harp/FiniteAtomicDilation.lean#L33).
+Sources: [[lab/math/lean/Crouzeix/Harp/PositiveCubature.lean|compact convex hull and positive cubature]], [proof](../../../lab/math/lean/Crouzeix/Harp/PositiveCubature.lean#L28); [[lab/math/lean/Crouzeix/Harp/FiniteMeasureCubature.lean|finite-measure rescaling]], [proof](../../../lab/math/lean/Crouzeix/Harp/FiniteMeasureCubature.lean#L24); [[lab/math/lean/Crouzeix/Harp/FiniteAtomicDilation.lean|matrix moment observable]], [definition and theorem](../../../lab/math/lean/Crouzeix/Harp/FiniteAtomicDilation.lean#L33).
 
 #### Historical context
 
@@ -262,7 +262,7 @@ Prerequisites are positive square roots, Cauchy evaluation, CFT-36-001, and the 
 
 The chapter theorem `harp_finite_dilation_exists` is proved here only as `Nonempty` packaging of `Harp.finiteAtomicL2DilationWitness`. The mathematical construction belongs to that provider; the packaging is not an original route proof.
 
-Sources: [[formalization/lean/CrouzeixConjecture/ParametricBoundary.lean|boundary hypotheses and normalization]], [geometry](../../../formalization/lean/CrouzeixConjecture/ParametricBoundary.lean#L25), [Cauchy hypothesis](../../../formalization/lean/CrouzeixConjecture/ParametricBoundary.lean#L239); [[formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean|finite atomic witness]], [compression](../../../formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean#L164), [witness fields](../../../formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean#L198), [construction](../../../formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean#L308).
+Sources: [[lab/math/lean/CrouzeixConjecture/ParametricBoundary.lean|boundary hypotheses and normalization]], [geometry](../../../lab/math/lean/CrouzeixConjecture/ParametricBoundary.lean#L25), [Cauchy hypothesis](../../../lab/math/lean/CrouzeixConjecture/ParametricBoundary.lean#L239); [[lab/math/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean|finite atomic witness]], [compression](../../../lab/math/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean#L164), [witness fields](../../../lab/math/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean#L198), [construction](../../../lab/math/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean#L308).
 
 #### Historical context
 
@@ -369,7 +369,7 @@ Prerequisites are Cauchy–Schwarz, adjoints, finite telescoping, CFT-36-002, an
 
 `harp_finite_recurrence` reexports `equation_three_finite_lower_bound`. The provider proves the adjacent identity first, then its square bound and finite iteration.
 
-Source: [[formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean|finite operator recurrence]], [defect](../../../formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L97), [identity](../../../formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L154), [finite inequality](../../../formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L224).
+Source: [[lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean|finite operator recurrence]], [defect](../../../lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L97), [identity](../../../lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L154), [finite inequality](../../../lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L224).
 
 #### Historical context
 
@@ -477,7 +477,7 @@ Prerequisites are norm attainment, real limits, CFT-36-003, and the scalar endpo
 
 `harp_normalized_norm_two` reexports `Harp.norm_target_le_two_of_finiteHorizonDilationData`. Its dependent family `L : ℕ → Type*` permits a different space at each horizon.
 
-Sources: [[formalization/lean/Crouzeix/Harp/FiniteHorizonPerturbation.lean|Harp terminal perturbation theorem]], [proof](../../../formalization/lean/Crouzeix/Harp/FiniteHorizonPerturbation.lean#L18); [[formalization/lean/Crouzeix/Harp/FiniteHorizonRecurrence.lean|scalar limit bridge]], [proof](../../../formalization/lean/Crouzeix/Harp/FiniteHorizonRecurrence.lean#L20); [[formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean|displacement upper bound]], [proof](../../../formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L277).
+Sources: [[lab/math/lean/Crouzeix/Harp/FiniteHorizonPerturbation.lean|Harp terminal perturbation theorem]], [proof](../../../lab/math/lean/Crouzeix/Harp/FiniteHorizonPerturbation.lean#L18); [[lab/math/lean/Crouzeix/Harp/FiniteHorizonRecurrence.lean|scalar limit bridge]], [proof](../../../lab/math/lean/Crouzeix/Harp/FiniteHorizonRecurrence.lean#L20); [[lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean|displacement upper bound]], [proof](../../../lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean#L277).
 
 #### Historical context
 
@@ -554,7 +554,7 @@ Prerequisites are simple-spectrum density, polynomial continuity, compact outer 
 
 `harp_polynomial_constant_two` reexports `Harp.harpFiniteHorizonMainTheorem`.
 
-Source: [[formalization/lean/Crouzeix/Harp/MainTheorem.lean|Harp matrix endpoint]], [complete provider proof](../../../formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25).
+Source: [[lab/math/lean/Crouzeix/Harp/MainTheorem.lean|Harp matrix endpoint]], [complete provider proof](../../../lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25).
 
 #### Historical context
 
@@ -621,7 +621,7 @@ Prerequisites are CFT-36-005, the spectral-set formulation in CFT-21-005, finite
 
 `harp_two_spectral_set` reexports `harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet`.
 
-Sources: [[formalization/lean/Crouzeix/Harp/Consequences.lean|Harp consequence providers]], [finite and rational providers](../../../formalization/lean/Crouzeix/Harp/Consequences.lean#L22), [closed spectral-set provider](../../../formalization/lean/Crouzeix/Harp/Consequences.lean#L57); [[formalization/lean/CrouzeixConjecture/HilbertSpectralSetCore.lean|neutral spectral-set contract]], [exact conjunction](../../../formalization/lean/CrouzeixConjecture/HilbertSpectralSetCore.lean#L484).
+Sources: [[lab/math/lean/Crouzeix/Harp/Consequences.lean|Harp consequence providers]], [finite and rational providers](../../../lab/math/lean/Crouzeix/Harp/Consequences.lean#L22), [closed spectral-set provider](../../../lab/math/lean/Crouzeix/Harp/Consequences.lean#L57); [[lab/math/lean/CrouzeixConjecture/HilbertSpectralSetCore.lean|neutral spectral-set contract]], [exact conjunction](../../../lab/math/lean/CrouzeixConjecture/HilbertSpectralSetCore.lean#L484).
 
 #### Historical context
 
@@ -656,7 +656,7 @@ $$
 For $x=[x_1\ x_2]^\mathsf T$ of norm one,
 $\langle x,Ax\rangle=2\bar x_1x_2$, whose modulus is at most one. Varying the magnitudes and relative phase fills the unit disk. Thus $\max_{W(A)}|p|=1$, whereas $\|p(A)\|=2$. The endpoint permits equality. Both eigenvalues are zero, yet $p(A)\ne0$, which also shows why the zero-maximum branch in CFT-36-005 explicitly uses diagonalizability.
 
-This is the sharp example from [[knowledge/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness|Chapter 29]]. Its exact formal support is [[formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean|the Chapter 29 sharpness provider]], [`jordan_two_attains_two`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean#L197).
+This is the sharp example from [[knowledge/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness|Chapter 29]]. Its exact formal support is [[lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean|the Chapter 29 sharpness provider]], [`jordan_two_attains_two`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean#L197).
 
 ### A horizon-two calculation
 
@@ -679,16 +679,16 @@ Likewise, checking a finite list of rollout horizons does not establish the asse
 
 ## Lean translation
 
-The file [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Chapter 36 teaching interfaces]] imports the Harp consequences provider. Its six correspondences distinguish theorem aliases from the existence wrapper:
+The file [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Chapter 36 teaching interfaces]] imports the Harp consequences provider. Its six correspondences distinguish theorem aliases from the existence wrapper:
 
 | Card | Chapter declaration | Proof provenance |
 | --- | --- | --- |
-| CFT-36-001 | [`harp_positive_moment_cubature`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L25) | Reexport of positive matrix-moment cubature |
-| CFT-36-002 | [`harp_finite_dilation_exists`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L29) | `Nonempty` packaging of a provider data witness |
-| CFT-36-003 | [`harp_finite_recurrence`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L47) | Reexport of the finite weighted inequality |
-| CFT-36-004 | [`harp_normalized_norm_two`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L58) | Reexport of the horizon-indexed endpoint |
-| CFT-36-005 | [`harp_polynomial_constant_two`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L63) | Reexport of the Harp matrix theorem |
-| CFT-36-006 | [`harp_two_spectral_set`](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L68) | Reexport of the Harp Hilbert consequence |
+| CFT-36-001 | [`harp_positive_moment_cubature`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L25) | Reexport of positive matrix-moment cubature |
+| CFT-36-002 | [`harp_finite_dilation_exists`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L29) | `Nonempty` packaging of a provider data witness |
+| CFT-36-003 | [`harp_finite_recurrence`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L47) | Reexport of the finite weighted inequality |
+| CFT-36-004 | [`harp_normalized_norm_two`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L58) | Reexport of the horizon-indexed endpoint |
+| CFT-36-005 | [`harp_polynomial_constant_two`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L63) | Reexport of the Harp matrix theorem |
+| CFT-36-006 | [`harp_two_spectral_set`](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L68) | Reexport of the Harp Hilbert consequence |
 
 `CommutingPerturbationData` stores `T`, the perturbations, their common bound, and commutation. `FiniteHorizonDilationData core K N` separately stores `V`, `Q`, isometry, contractivity, and identities only when `k ≤ N + 1`. `FiniteAtomicL2DilationWitness` hides the chosen node type and Hilbert-space instances while retaining the node count and dimension equations. These types prevent an accidental change of core between horizons.
 
@@ -704,7 +704,7 @@ Statement. Let $J$ be a finite type, $N\in\mathbb N$, and let the matrix index t
 
 Solution. Apply the function $f\mapsto f(k)$ to both sides. Evaluation commutes with finite sums and scalar multiplication, producing the claimed identity. Commuting an integral with evaluation is a separate fact needed by the cubature provider, not part of this exercise.
 
-Exact correspondence: `Exercises.Chapter36.exercise_01_solution`, [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L77).
+Exact correspondence: `Exercises.Chapter36.exercise_01_solution`, [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L77).
 
 ### CFT-36-E02 — Use the normalized inner-product calculation {#exercise-cft-36-e02}
 
@@ -718,7 +718,7 @@ Prove $\|Vx\|=\|x\|$. The finite matrix index type has decidable equality; neith
 
 Solution. Substitute $2I$ into the displayed premise. Linearity in the second slot cancels the factor two, giving $\langle Vx,Vx\rangle=\langle x,x\rangle$. Taking real parts yields equality of squared norms. Both norms are nonnegative, so their squares determine them uniquely. The exercise does not construct square roots or derive its `hinner` premise; those calculations appear in CFT-36-002.
 
-Exact correspondence: `Exercises.Chapter36.exercise_02_solution`, [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L89).
+Exact correspondence: `Exercises.Chapter36.exercise_02_solution`, [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L89).
 
 ### CFT-36-E03 — Prove finite weighted telescoping by induction {#exercise-cft-36-e03}
 
@@ -731,7 +731,7 @@ $$
 Solution. At $N=0$, this is equality. For the successor case, the induction hypothesis bounds $r^Nm_{N+1}$ plus the first $N$ weights. Multiply the last step by $r^N\ge0$ to obtain
 $r^{N+1}m_{N+2}+r^{N+1}c\le r^Nm_{N+1}$. Substitute this lower expression for the terminal term in the induction inequality. Adding the new weight gives the required sum through $j=N$. No assumption $r<1$ is needed for a finite induction.
 
-Exact correspondence: `Exercises.Chapter36.exercise_03_solution`, [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L105).
+Exact correspondence: `Exercises.Chapter36.exercise_03_solution`, [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L105).
 
 ### CFT-36-E04 — Replace the displacement with the correct sign {#exercise-cft-36-e04}
 
@@ -739,7 +739,7 @@ Statement. For real $b,C,d,w,t,m$, assume $b\le C$, $d>0$, $w\ge0$, and $t+w(-b/
 
 Solution. Negation reverses $b\le C$, giving $-C\le-b$. Division by positive $d$ preserves the resulting order, as does multiplication by $w\ge0$. Adding $t$ and using transitivity proves the claim. Taking $t$ to be the terminal term makes this exactly the common-error substitution used before the horizon limit.
 
-Exact correspondence: `Exercises.Chapter36.exercise_04_solution`, [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L118).
+Exact correspondence: `Exercises.Chapter36.exercise_04_solution`, [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L118).
 
 ### CFT-36-E05 — Undo positive normalization {#exercise-cft-36-e05}
 
@@ -747,7 +747,7 @@ Statement. For real $a,s$, suppose $s>0$ and $a/s\le2$. Prove $a\le2s$.
 
 Solution. Multiply the inequality by positive $s$. The order is preserved and $(a/s)s=a$. The premise does not require $a\ge0$. The matrix application sets $a=\|p(B)\|$, but the exercise is the more general real inequality. At $s=0$ this derivation is unavailable; the polynomial theorem handles that case separately.
 
-Exact correspondence: `Exercises.Chapter36.exercise_05_solution`, [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L126).
+Exact correspondence: `Exercises.Chapter36.exercise_05_solution`, [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L126).
 
 ### CFT-36-E06 — Complete the scalar limit {#exercise-cft-36-e06}
 
@@ -769,7 +769,7 @@ $$
 
 Since $\kappa\ne0$, $\kappa-1\ne0$, and $\kappa^2-\kappa=\kappa(\kappa-1)$, this is (36.2). Combining it with the assumed upper bound gives the same final sign contradiction as CFT-36-004. In Lean, the proof combines `bounded_recurrence_terminal_tendsto_zero` and `inverse_power_weight_sum_tendsto` with `Tendsto.add`, `mul_const`, and `le_of_tendsto'`, then invokes `scalar_endpoint_le_two`. It never invokes the operator endpoint to prove this scalar exercise.
 
-Exact correspondence: `Exercises.Chapter36.exercise_06_solution`, [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L132).
+Exact correspondence: `Exercises.Chapter36.exercise_06_solution`, [[lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean|Lean exercise source]], [declaration](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean#L132).
 
 ## Synthesis and forward dependencies
 

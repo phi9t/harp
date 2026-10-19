@@ -117,9 +117,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.boundary_dilation_data",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         provider_declaration: "CrouzeixConjecture.LoristSchwenninger.dilationDataOfParametricPolynomial",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
         baseline_type_sha256: "6a6fc2824a8faaa4dc9cd85fb9fe476145818054e33772c18188d7a5d253e612",
         compiler_public_type_sha256: "b8dabd71a831f9daaa373f3d7938aa9bc00087592d81975e00a97061af17cb7e",
         completed_kind: "definition",
@@ -172,9 +172,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.boundary_compression_first_moment",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         provider_declaration: "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_comp_boundaryEmbedding",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean",
         baseline_type_sha256: "c239874c55c1aed80e22529c2a780b3a0728e561c65e677a28505ac45511965e",
         compiler_public_type_sha256: "2a414f51546bd96dd1afcd5d0bbe93fea39684dff0c35843da4b85b9282c1e14",
         completed_kind: "theorem",
@@ -196,9 +196,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.boundary_compression_power_moments",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         provider_declaration: "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean",
         baseline_type_sha256: "fd451caedfa1808e5ce7a824522d7fb5a613eb3add9e988b47d1d851b5ceee55",
         compiler_public_type_sha256: "4fb3020149c49a8b8a0a126673e03400b99e295b8bab79a60ea8adfcffafcc73",
         completed_kind: "theorem",
@@ -219,9 +219,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.boundary_multiplier_powers",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         provider_declaration: "CrouzeixConjecture.LoristSchwenninger.bcfMulL_pow",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean",
         baseline_type_sha256: "f723bad3e2f1b0cfed8531b208a8de1492201fdf88439726d83fcb8166a738c3",
         compiler_public_type_sha256: "735335a245a1a4b3bac89546d203b2b856f97029284167c36259e5f6fbc805e3",
         completed_kind: "theorem",
@@ -238,9 +238,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.boundary_multiplier_contractive",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         provider_declaration: "CrouzeixConjecture.LoristSchwenninger.bcfMulL_norm_le_one",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean",
         baseline_type_sha256: "20864fd4143c209116e93458a00e0f812db607dd0c84a5bea02cbe9334155c37",
         compiler_public_type_sha256: "1ae87992f1e7a9b66a79358fcafa7247061979381845fc4132e07b5768ce67f1",
         completed_kind: "theorem",
@@ -257,9 +257,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.realization_norm_two",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
         provider_declaration: "CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
         baseline_type_sha256: "5726b7d2562ac08d0a520d8ccc5440f9a72b6f9aa978ac2da5c723a552ef4596",
         compiler_public_type_sha256: "84ab420a345d504769f8df1067adfc0424dad4b18d2e58e4ef3d4c71ebc3654f",
         completed_kind: "theorem",
@@ -276,9 +276,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.lorist_schwenninger_main",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         provider_declaration: "CrouzeixConjecture.loristSchwenningerMainTheorem",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
         baseline_type_sha256: "eaa8ca24d59d173f34972e80bdb20acf20d1c78178f2171ac28bbc6688a1960b",
         compiler_public_type_sha256: "eaa8ca24d59d173f34972e80bdb20acf20d1c78178f2171ac28bbc6688a1960b",
         completed_kind: "theorem",
@@ -295,9 +295,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.lorist_schwenninger_finite_matrix",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         provider_declaration: "CrouzeixConjecture.loristSchwenningerFiniteMatrixMainTheorem",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
         baseline_type_sha256: "606baa75394270e977e5ddb6e843205dd71e60ae005c408ea5a71884c1907776",
         compiler_public_type_sha256: "606baa75394270e977e5ddb6e843205dd71e60ae005c408ea5a71884c1907776",
         completed_kind: "theorem",
@@ -314,9 +314,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.lorist_schwenninger_rational",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         provider_declaration: "CrouzeixConjecture.loristSchwenningerRationalSpectralSetCorollary",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
         baseline_type_sha256: "a68683384ff3984804bccbfaf7f5dea8ca6128d26a0618984bc5d293837f0144",
         compiler_public_type_sha256: "a68683384ff3984804bccbfaf7f5dea8ca6128d26a0618984bc5d293837f0144",
         completed_kind: "theorem",
@@ -339,9 +339,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.lorist_schwenninger_hilbert",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         provider_declaration: "CrouzeixConjecture.loristSchwenningerHilbertSpacePolynomialCrouzeix",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
         baseline_type_sha256: "d93d63c731ea1723a81d71d06845c000a240f960e67c6f3114079e64fff4627a",
         compiler_public_type_sha256: "ff3d2b377c9cc61c89686022d9e9146cf351ae90293d4036a9e12c4a2b2cc17d",
         completed_kind: "theorem",
@@ -358,9 +358,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.lorist_schwenninger_two_spectral_set",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         provider_declaration: "CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet",
-        provider_file: "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
+        provider_file: "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
         baseline_type_sha256: "d12d0a2f2deb6ce66f803a1ca394b125f2c16d3756570d5b63ab701e933dad77",
         compiler_public_type_sha256: "391ee68292160554f5ba1ad54719f4bdab6266357b767a99ff690a17ad111904",
         completed_kind: "theorem",
@@ -385,9 +385,9 @@ const CFT_SPECS: [CftSpec; 12] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.jin_final_comparator",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean",
         provider_declaration: "CrouzeixConjecture.jinFinalCrouzeixConjecture",
-        provider_file: "formalization/lean/CrouzeixConjecture/FinalTheorems.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/FinalTheorems.lean",
         baseline_type_sha256: "0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d",
         compiler_public_type_sha256: "5a08b37106dc806e9cb5f69cb03f5e13bd850055d67cb410ad615924faaab9c2",
         completed_kind: "theorem",
@@ -641,23 +641,23 @@ fn row_provenance(item_id: &str) -> (&'static str, &'static str) {
         ),
         "CFT-35-002" => (
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24",
         ),
         "CFT-35-003" => (
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33",
         ),
         "CFT-35-004" => (
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45",
         ),
         "CFT-35-005" => (
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61",
         ),
         "CFT-35-006" => (
             "comparison-only; Harp-derived component",
-            "formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25-L172",
+            "lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25-L172",
         ),
         _ => panic!("missing row provenance for {item_id}"),
     }
@@ -1009,7 +1009,7 @@ run_cmd do
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .map_err(|error| error.to_string())?;
     if !output.status.success() {
@@ -1037,7 +1037,7 @@ fn compile_wave3_lean_fixture(source: &str) -> Output {
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("compile Wave 3 Lean fixture")
 }
@@ -1160,7 +1160,7 @@ end CrouzeixTextbook.Wave3ActiveDependencyProbe
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .map_err(|error| error.to_string())?;
     if !output.status.success() {
@@ -1586,7 +1586,7 @@ fn promote_fixture(coverage: &mut Value, exercises: &mut Value, phase: Wave3Phas
         row["lean_solution"] = json!({
             "declaration": spec.solution,
             "source_path": format!(
-                "formalization/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
+                "lab/math/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
                 spec.chapter
             ),
             "type_sha256": exercise_metadata_hash(&spec, phase),
@@ -1723,7 +1723,7 @@ fn phase_metadata_errors(coverage: &Value, exercises: &Value, phase: Wave3Phase)
                 || solution["source_path"].as_str()
                     != Some(
                         format!(
-                            "formalization/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
+                            "lab/math/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
                             spec.chapter
                         )
                         .as_str(),
@@ -2187,7 +2187,7 @@ fn ls_route_contract_active_state_matches_all_twelve_rows_anchors_and_exercises(
         phase.label()
     );
     let exporter = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/ExportReceipt.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/ExportReceipt.lean"),
     )
     .expect("textbook receipt exporter");
     let exported =
@@ -2615,8 +2615,8 @@ fn chapter_34_boundary_data_card_states_history_ml_transfer_and_formal_boundary(
     for exact in [
         "CrouzeixTextbook.Part06.boundary_dilation_data",
         "CrouzeixConjecture.LoristSchwenninger.dilationDataOfParametricPolynomial",
-        "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
-        "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
+        "lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
         "formal_mode `definition`",
         "standard axioms `Classical.choice`, `Quot.sound`, and `propext`",
         "does not formalize the finite atomic example as a separate theorem",
@@ -2687,9 +2687,9 @@ fn chapter_34_boundary_data_exercises_have_full_prompts_solutions_and_exact_lean
         assert!(visible.contains(exact), "Chapter 34 exercises omit `{exact}`");
     }
     for file in [
-        "[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryEmbedding.lean|BoundaryEmbedding.lean]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]]",
+        "[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryEmbedding.lean|BoundaryEmbedding.lean]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]]",
     ] {
         assert!(markdown.contains(file), "Chapter 34 exercises omit code link `{file}`");
     }
@@ -2931,16 +2931,16 @@ fn chapter_34_moments_exercises_match_scalar_cauchy_and_induction_compiler_targe
         );
     }
     for file in [
-        "[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]]",
+        "[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]]",
         "[Mathlib CircleIntegral.lean](https://github.com/leanprover-community/mathlib4/blob/v4.32.1/Mathlib/MeasureTheory/Integral/CircleIntegral.lean)",
     ] {
         assert!(markdown.contains(file), "Chapter 34 moment exercises omit `{file}`");
     }
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean"),
     )
     .expect("Chapter 34 Lean module");
     let e03 = lean
@@ -3442,14 +3442,14 @@ fn chapter_34_realization_exercises_have_exact_prompts_distinct_compiler_proofs_
         );
     }
     assert!(markdown.contains(
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]]"
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]]"
     ));
     assert!(markdown.contains(
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]]"
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]]"
     ));
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean"),
     )
     .expect("Chapter 34 Lean module");
     let e05_lean = lean
@@ -3475,7 +3475,7 @@ fn chapter_34_realization_exercises_have_exact_prompts_distinct_compiler_proofs_
         !e06_lean.contains("norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary")
     );
     let chapter_33 = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
     )
     .expect("Chapter 33 Lean module");
     let e33_lean = chapter_33
@@ -3920,22 +3920,22 @@ fn chapter_35_consequences_have_row_provenance_and_four_field_ml_diagnostics() {
         (
             "CFT-35-002",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24",
         ),
         (
             "CFT-35-003",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33",
         ),
         (
             "CFT-35-004",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45",
         ),
         (
             "CFT-35-005",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61",
         ),
     ];
     for (item_id, classification, locator) in expected {
@@ -3990,7 +3990,7 @@ fn chapter_35_exercises_match_final_compiler_targets_without_terminal_shortcuts(
         );
     }
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean"),
     )
     .expect("Chapter 35 Lean module");
     for index in 1..=6 {
@@ -4213,7 +4213,7 @@ fn chapter_35_comparison_e06_transports_all_three_route_witnesses() {
     }
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean"),
     )
     .expect("Chapter 35 Lean module");
     assert!(lean.contains("theorem exercise_06_solution"));
@@ -4934,7 +4934,7 @@ fn ls_route_contract_pedagogical_graph_keeps_ls_independent_until_cft_35_006() {
 
 fn run_preflight_all() -> Value {
     let output = Command::new("python3")
-        .arg("labs/crouzeix_proof_reproduction/proof_evidence.py")
+        .arg("lab/math/proof_reproduction/proof_evidence.py")
         .arg("preflight")
         .arg("--route")
         .arg("all")
@@ -5092,10 +5092,10 @@ fn ls_route_contract_binds_exact_source_provenance_and_compiler_valid_code_links
         "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124",
         "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128",
         "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:preprint/the_numerical_range_is_a_2_spectral_set_v4.tex#L854-L910",
-        "formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25",
-        "formalization/lean/Crouzeix/Harp/Consequences.lean#L22-L61",
+        "lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25",
+        "lab/math/lean/Crouzeix/Harp/Consequences.lean#L22-L61",
         "evidence/crouzeix_conjecture/source_manifest.tsv#L25-L28",
-        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json#L1",
+        "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json#L1",
     ] {
         assert!(contract.contains(locator), "missing exact provenance locator `{locator}`");
     }
@@ -5176,9 +5176,10 @@ fn ls_route_contract_binds_exact_source_provenance_and_compiler_valid_code_links
         }
     }
 
-    let provenance_graph = read_json(&workspace_root().join(
-        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
-    ));
+    let provenance_graph =
+        read_json(&workspace_root().join(
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+        ));
     assert_eq!(provenance_graph["source_identity"], "arxiv:2608.03841v1");
     assert_eq!(
         provenance_graph["nodes"]
@@ -5236,27 +5237,27 @@ fn ls_route_contract_binds_row_specific_provenance_without_global_harp_history()
         (
             "CFT-35-002",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24",
         ),
         (
             "CFT-35-003",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33",
         ),
         (
             "CFT-35-004",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45",
         ),
         (
             "CFT-35-005",
             "provider-clean consequence",
-            "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61",
         ),
         (
             "CFT-35-006",
             "comparison-only; Harp-derived component",
-            "formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25-L172",
+            "lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25-L172",
         ),
     ];
     let terminal_source_rows = expected
@@ -5331,7 +5332,7 @@ fn ls_route_contract_public_map_is_exact_compiler_evidence_in_every_phase() {
         .expect("public fixture name")
         .to_owned();
     for (field, replacement) in [
-        ("source_path", json!("formalization/lean/Wrong.lean")),
+        ("source_path", json!("lab/math/lean/Wrong.lean")),
         ("normalized_type", json!("False")),
         ("type_sha256", json!("00")),
         ("kind", json!("axiom")),

@@ -39,7 +39,7 @@ function candidateHash(sources) {
 }
 function chapterModule(root,chapter) {
   if(!Number.isInteger(chapter)||chapter<1||chapter>36)throw new Error(`Invalid chapter number: ${chapter}`);
-  const base='formalization/lean/CrouzeixTextbook';
+  const base='lab/math/lean/CrouzeixTextbook';
   const filename=`Chapter${String(chapter).padStart(2,'0')}.lean`;
   const matches=[];
   for(const part of fs.readdirSync(sourcePath(root,base)).filter(name=>/^Part\d\d$/.test(name))) {

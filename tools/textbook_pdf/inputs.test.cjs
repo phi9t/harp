@@ -34,10 +34,10 @@ test('candidate hash is order-independent and changes with source bytes',()=>{
 
 test('Lean chapter module discovery uses the actual module directory and rejects ambiguity',t=>{
   const {root}=fixture(t);
-  const base=path.join(root,'formalization/lean/CrouzeixTextbook');
+  const base=path.join(root,'lab/math/lean/CrouzeixTextbook');
   fs.mkdirSync(path.join(base,'Part06'),{recursive:true});
   fs.writeFileSync(path.join(base,'Part06/Chapter29.lean'),'namespace Example');
-  assert.equal(chapterModule(root,29),'formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean');
+  assert.equal(chapterModule(root,29),'lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean');
   assert.throws(()=>chapterModule(root,1),/Expected exactly one Lean module/);
   fs.mkdirSync(path.join(base,'Part05'));
   fs.writeFileSync(path.join(base,'Part05/Chapter29.lean'),'namespace Duplicate');
@@ -46,7 +46,7 @@ test('Lean chapter module discovery uses the actual module directory and rejects
 
 test('Lean chapter module discovery rejects symlinked module files',t=>{
   const {root,dir}=fixture(t);
-  const part=path.join(root,'formalization/lean/CrouzeixTextbook/Part01');
+  const part=path.join(root,'lab/math/lean/CrouzeixTextbook/Part01');
   fs.mkdirSync(part,{recursive:true});
   fs.symlinkSync(path.join(dir,'01_chapter.md'),path.join(part,'Chapter01.lean'));
   assert.throws(()=>chapterModule(root,1),/Symlink/);
@@ -54,9 +54,9 @@ test('Lean chapter module discovery rejects symlinked module files',t=>{
 
 test('Chapter 36 has a discoverable module and Chapter 37 is rejected',t=>{
   const {root}=fixture(t);
-  const part=path.join(root,'formalization/lean/CrouzeixTextbook/Part06');
+  const part=path.join(root,'lab/math/lean/CrouzeixTextbook/Part06');
   fs.mkdirSync(part,{recursive:true});
   fs.writeFileSync(path.join(part,'Chapter36.lean'),'namespace Example');
-  assert.equal(chapterModule(root,36),'formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean');
+  assert.equal(chapterModule(root,36),'lab/math/lean/CrouzeixTextbook/Part06/Chapter36.lean');
   assert.throws(()=>chapterModule(root,37),/Invalid chapter number/);
 });

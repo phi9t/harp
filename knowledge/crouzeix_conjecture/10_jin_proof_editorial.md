@@ -293,13 +293,13 @@ everywhere. In Harp's Lean port, the shared terminal assembly is factored as
 `polynomialCrouzeixBound_of_holomorphicCrouzeixBound`, which applies the
 holomorphic bound on the universal domain and rewrites holomorphic polynomial
 evaluation to `polynomialEval`. The source is
-`formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean`,
+`lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean`,
 starting at the declaration for
 `polynomialCrouzeixBound_of_holomorphicCrouzeixBound`.
 The Jin terminal surface delegates to that shared theorem
-in `formalization/lean/Crouzeix/Jin/Terminal.lean`, and the public final
+in `lab/math/lean/Crouzeix/Jin/Terminal.lean`, and the public final
 theorem uses the same assembly point in
-`formalization/lean/CrouzeixConjecture/FinalTheorems.lean`.
+`lab/math/lean/CrouzeixConjecture/FinalTheorems.lean`.
 
 ## What Lean changed about the proof conversation {#what-lean-changed-about-the-proof-conversation}
 
@@ -315,14 +315,14 @@ The social question "is the proof done?" becomes several sharper questions:
 Harp's formal target lock binds the terminal target to Jin's audited commit
 `565b6a3e0659b6e0785f783b016c3f6d9f171fa5`, its source tree, the expected
 declaration `CrouzeixConjecture.crouzeixConjecture`, and the statement digest
-([formal_target.lock.json](../../labs/crouzeix_proof_reproduction/formal_target.lock.json#L55)).
+([formal_target.lock.json](../../lab/math/proof_reproduction/formal_target.lock.json#L55)).
 The terminal proof-slice receipt records that the expected Lean declaration
 passed and that its axiom audit passed
-([receipt.json](../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/receipt.json#L1)).
+([receipt.json](../../lab/math/proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/receipt.json#L1)).
 The supporting polynomial-bound and maximum-modulus slices also have passing
 receipts
-([polynomial receipt](../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-polynomial-bound/attempt-001/receipt.json#L1),
-[maximum-modulus receipt](../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-004/receipt.json#L1)).
+([polynomial receipt](../../lab/math/proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-polynomial-bound/attempt-001/receipt.json#L1),
+[maximum-modulus receipt](../../lab/math/proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-004/receipt.json#L1)).
 
 This does not mean every surrounding mathematical or publication question is
 settled. It means the proof discussion now has a machine-checkable spine:

@@ -53,7 +53,7 @@ $$
 The formula is valid at $N=0$ too. No convergence theorem is involved.
 
 Lean correspondence: inverse_power_weight_sum_exact in
-[FiniteHorizonRemainder.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonRemainder.lean).
+[FiniteHorizonRemainder.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonRemainder.lean).
 All scalar declarations in this supplement are in the
 CrouzeixConjecture.Harp namespace. Their scope is real scalar inequalities;
 they do not assume a terminal Crouzeix bound.
@@ -105,7 +105,7 @@ Lean correspondence: finite_terminal_abs_le proves the terminal estimate;
 finite_lower_bound_with_remainder proves R.3;
 finite_lower_bound_with_abs_remainder proves R.4. Their exact statements
 and proofs are in
-[FiniteHorizonRemainder.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonRemainder.lean).
+[FiniteHorizonRemainder.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonRemainder.lean).
 The terminal bound and weighted inequality are explicit hypotheses.
 
 ## A tolerance and an eventual horizon
@@ -189,15 +189,15 @@ $$
 
 Lean correspondence: the application
 finite_horizon_scalar_lower_bound_with_remainder is in
-[FiniteHorizonRemainderApplication.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonRemainderApplication.lean).
+[FiniteHorizonRemainderApplication.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonRemainderApplication.lean).
 Its providers equation_three_finite_lower_bound and displacementSq_le are
-in [FiniteHorizonOperatorRecurrence.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean).
+in [FiniteHorizonOperatorRecurrence.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean).
 The terminal bound is in
-[FiniteHorizonDilation.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonDilation.lean).
+[FiniteHorizonDilation.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonDilation.lean).
 No terminal norm theorem is needed for this application.
 The companion helper finite_horizon_displacement_envelope_nonneg proves
 $C\ge0$ from this witness. The two exact interface clients are in
-[HarpRemainderApplicationTests.lean](../../formalization/lean/CrouzeixTextbook/HarpRemainderApplicationTests.lean).
+[HarpRemainderApplicationTests.lean](../../lab/math/lean/CrouzeixTextbook/HarpRemainderApplicationTests.lean).
 
 The budget depends on $\kappa$, and $C$ itself contains $m_1$.
 This is an implicit scalar recurrence estimate, not an independently
@@ -248,7 +248,7 @@ premise would have excluded this sequence.
 
 The proof-only checks, including rejected applications missing essential
 premises, are in
-[HarpRemainderTests.lean](../../formalization/lean/CrouzeixTextbook/HarpRemainderTests.lean).
+[HarpRemainderTests.lean](../../lab/math/lean/CrouzeixTextbook/HarpRemainderTests.lean).
 These examples are unindexed and do not count as new solved textbook exercises.
 
 The following names, in namespace CrouzeixTextbook.HarpRemainderTests, locate

@@ -73,7 +73,7 @@ Thus $T^\vee$ is a linear map between dual spaces. The stated evaluation
 equation is its definition.
 
 **Boundary and Lean provider.** No metric or finite dimension is
-needed. [`dual_map_apply`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L11)
+needed. [`dual_map_apply`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L11)
 checks evaluation; Mathlib's `LinearMap.dualMap` supplies the linearity data.
 The public declaration permits a commutative semiring and semimodules,
 specializing to our real or complex vector spaces.
@@ -94,7 +94,7 @@ $\phi$ gives equality of the two linear maps. The domains force the order:
 the output measurement first meets $T$, then $S$.
 
 **Boundary and Lean provider.**
-[`dual_map_composition`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L18)
+[`dual_map_composition`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L18)
 uses `LinearMap.dualMap_comp_dualMap` over a commutative semiring with no
 metric or dimension assumptions. The displayed proof supplies both
 extensionality steps independently of that provider name.
@@ -118,9 +118,9 @@ on basis vectors; finite combinations of coordinate functionals do not
 exhaust the algebraic dual. That is why this argument uses finiteness.
 
 **Formal correspondence.**
-[`dual_basis_exists`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L50)
+[`dual_basis_exists`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L50)
 uses `Module.Basis.dualBasis` and `dualBasis_apply_self` for existence and
-evaluation. [`dual_basis_expansion`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L55)
+evaluation. [`dual_basis_expansion`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L55)
 checks the expansion with `sum_dual_apply_smul_coord`. These named support
 declarations assume a field and a finite basis.
 
@@ -133,7 +133,7 @@ $$
 $$
 This derives transpose action from dual-basis evaluations. It works over
 $\mathbb C$ with no conjugation because the functional is complex-linear.
-[`pullback_basis_coefficients`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L102)
+[`pullback_basis_coefficients`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L102)
 checks the equality for finite bases over any field.
 
 ### Annihilators and their dimension
@@ -164,15 +164,15 @@ $$
 
 **Boundary and Lean provider.** The argument assumes a field and
 finite-dimensional $V$.
-[`dualityExtendedBasis`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L60),
-[`annihilator_of_basis_span`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L63),
-[`annihilator_expansion`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L79),
-and [`annihilator_coefficients_unique`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L89)
+[`dualityExtendedBasis`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L60),
+[`annihilator_of_basis_span`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L63),
+[`annihilator_expansion`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L79),
+and [`annihilator_coefficients_unique`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L89)
 provide the extension construction, the vanishing criterion on the first
 block, the remaining-block expansion, and its coefficient independence.
 The extension construction uses `Module.Basis.sumExtend`; the other lemmas
 take an extended basis indexed by a sum as input.
-[`annihilator_dimension`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L97)
+[`annihilator_dimension`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L97)
 uses `Subspace.finrank_add_finrank_dualAnnihilator_eq` for the numerical
 identity. That provider is separate from the explicit basis-extension
 argument; a rank-nullity checkpoint alone would not check its spanning
@@ -195,7 +195,7 @@ column and express its result in new coordinates. Entries may change even
 though the action represents the same operator.
 
 **Boundary and Lean provider.**
-[`coordinate_change_conjugacy`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L26)
+[`coordinate_change_conjugacy`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L26)
 retains its compatibility definition alias to Chapter 1's `change_basis_action`.
 It accepts separate $S,R$ with $RS=I$, and does not require any metric or
 spectral result. For covector columns the same convention gives
@@ -221,7 +221,7 @@ and the same calculation is carried out in the proof of
 neither is a prerequisite of the duality core.
 
 **Boundary and Lean provider.**
-[`duality_similarity_preserves_charpoly`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L30)
+[`duality_similarity_preserves_charpoly`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L30)
 retains the exact alias to `similarity_preserves_charpoly`, using
 `Matrix.charpoly_units_conj`. The index is finite with decidable equality
 and the ring commutative. This is an exact statement with summary exposition,
@@ -243,7 +243,7 @@ field it vanishes exactly for singular matrices. These meanings are developed
 there, rather than used to prove the preceding duality results.
 
 **Boundary and Lean provider.**
-[`similarity_preserves_determinant`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L33)
+[`similarity_preserves_determinant`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L33)
 uses `Matrix.det_units_conj` over a commutative ring with a finite index and
 decidable equality. Its proof exposition remains a summary preview.
 
@@ -264,7 +264,7 @@ scalar attached to the operator despite being computed from one basis's
 diagonal entries.
 
 **Boundary and Lean provider.**
-[`similarity_preserves_trace`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L39)
+[`similarity_preserves_trace`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L39)
 uses `Matrix.trace_units_conj`. It needs only a commutative semiring and a
 finite index with decidable equality. This third summary preview is outside
 the self-contained duality proof path.
@@ -344,15 +344,15 @@ vector differs from the differential's coefficients $(1,2)$. It is unique:
 if $q,q'$ both represent the covector, their difference pairs to zero with
 every $h$; choosing $h=q-q'$ and using positivity forces $q=q'$.
 
-[`weightedMetric_symmetric`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L137),
-[`weightedMetric_linear_right`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L141),
-and [`weightedMetric_positive`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L146)
+[`weightedMetric_symmetric`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L137),
+[`weightedMetric_linear_right`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L141),
+and [`weightedMetric_positive`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L146)
 check the local metric properties. E05 checks positivity, the exact increment,
 universal pairing, and coordinate inequality. The generic derivative chain
 rule is background motivation, not an additional compiled theorem here.
 For the redundant predictor, $(a,b)$ pulls back to $(a,b,a+b)$ and pairs
 to zero with $(-1,-1,1)$.
-[`redundant_predictor_pullback`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L161)
+[`redundant_predictor_pullback`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L161)
 checks both equalities using Chapter 2's actual map and null direction.
 
 ## Lean translation
@@ -373,7 +373,7 @@ classification; the explanatory links do not substitute for that receipt.
 
 The six exercise theorems live in
 `CrouzeixTextbook.Part01.Exercises.Chapter04` in the
-[chapter Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean).
+[chapter Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean).
 They establish the tasks below with distinct statements rather than aliases
 to the public cards.
 
@@ -388,7 +388,7 @@ $T^\vee\phi(v)$ for $T(x,y)=(x+2y,3y)$.
 **Solution.** The dual is the space of linear maps to the scalar field.
 Expanding coordinates proves the linearity identity; substitution gives
 $2(x+2y)-9y=2x-5y$.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L170)
+[`exercise_01_solution`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L170)
 checks both universal identities. The definition is explanatory background,
 not an extra theorem claim.
 
@@ -399,7 +399,7 @@ $T(x,y)=(x+2y,3y)$ equals the covector $(4,5)$.
 
 **Solution.** At every input the pullback gives $4(x+2y)-3y=4x+5y$.
 Equality at every vector proves equality of functionals.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L176)
+[`exercise_02_solution`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L176)
 states this equality of linear maps, not a sample evaluation.
 
 ### CFT-04-E03 -- written-proof {#exercise-cft-04-e03}
@@ -412,7 +412,7 @@ $Ae_i$. Explain the absence of conjugation over $\mathbb C$.
 **Solution.** Since $Ae_i=\sum_j A_{ji}e_j$, evaluation gives
 $\sum_j A_{ji}a_j$, the required transpose component. Complex linearity
 leaves the scalars unchanged.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L183)
+[`exercise_03_solution`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L183)
 checks all matrices, functionals, and indices using the general basis theorem.
 Lean uses zero-based `Fin 2` indices; displayed subscripts are one-based.
 
@@ -424,7 +424,7 @@ plane of coefficient triples.
 
 **Solution.** Vanishing on the generator is necessary. It is sufficient
 since $\phi(t(1,1,0))=t(a+b)$. The plane is $(a,-a,c)$.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L192)
+[`exercise_04_solution`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L192)
 checks the equivalence for all coefficients. The dual-basis expansion explains
 why every functional on $\mathbb R^3$ has such a triple.
 
@@ -439,7 +439,7 @@ $(1/2,2)\ne(1,2)$ and explain the differential/gradient distinction.
 linear loss cancels its base-point terms. The metric pairing is
 $2(1/2)h_1+2h_2$, exactly the differential. Finally $1/2\ne1$.
 These are the four conjuncts of
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L208).
+[`exercise_05_solution`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L208).
 The differential has coefficients $(1,2)$; the gradient under $g$ is $(1/2,2)$.
 
 ### CFT-04-E06 -- lean-proof {#exercise-cft-04-e06}
@@ -454,7 +454,7 @@ Pulling through $T$ gives $(4,5)$, then through $S$ gives $(13,5)$.
 Pulling through $S$ first gives $(7,-1)$, then through $T$ gives $(7,11)$,
 hence $7x+11y$. These functionals differ, for example at $(1,0)$, although
 they agree on some vectors. All three universal calculations are checked by
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L222).
+[`exercise_06_solution`](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter04.lean#L222).
 
 ## Synthesis and forward dependencies
 

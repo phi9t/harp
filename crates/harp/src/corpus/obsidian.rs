@@ -424,16 +424,7 @@ fn has_vault_root(path: &Path) -> bool {
             _ => None,
         })
         .is_some_and(|root| {
-            [
-                "knowledge",
-                "evidence",
-                "content",
-                "labs",
-                "crates",
-                "docs",
-                "formalization",
-            ]
-            .contains(&root)
+            ["knowledge", "evidence", "content", "lab", "crates", "docs"].contains(&root)
         })
 }
 

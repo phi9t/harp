@@ -24,8 +24,8 @@ done
 lean_env=$(task_block lean-env)
 printf '%s\n' "$lean_env" | grep -F '. scripts/harp_xdg_env.sh' >/dev/null
 printf '%s\n' "$lean_env" | grep -F 'if [ "$config_root" = "$primary" ]; then' >/dev/null
-printf '%s\n' "$lean_env" | grep -F 'test ! -L formalization/lean/.lake' >/dev/null
-printf '%s\n' "$lean_env" | grep -F 'test -L formalization/lean/.lake' >/dev/null
+printf '%s\n' "$lean_env" | grep -F 'test ! -L lab/math/lean/.lake' >/dev/null
+printf '%s\n' "$lean_env" | grep -F 'test -L lab/math/lean/.lake' >/dev/null
 if printf '%s\n' "$lean_env" | grep -E '(^|[;&|[:space:]])lake[[:space:]]|mkdir|cache get|lake update' >/dev/null; then
   printf '%s\n' 'lean-env must remain a non-hydrating preflight' >&2
   exit 1

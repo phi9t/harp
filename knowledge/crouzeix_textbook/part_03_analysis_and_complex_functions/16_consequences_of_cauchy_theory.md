@@ -224,7 +224,7 @@ Formal mode: `checkpoint`.
 Underlying declaration: `CrouzeixConjecture.holomorphicMatrixEval`.
 Substantive provider: none — this is a definition, so there is no proof to narrate. `CrouzeixConjecture` is a maintained prefix, so the alias names its target and the definition carries a receipt entry of its own.
 Readable type map: `A` is the matrix, `f` the scalar function, and the value a matrix of the same size. No hypotheses appear.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L9).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L9).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `{n : Type u_1} → [Fintype.{u_1} n] → [DecidableEq.{u_1 + 1} n] → [Nonempty.{u_1 + 1} n] → CrouzeixConjecture.SquareMatrix.{u_1} n → (Complex → Complex) → CrouzeixConjecture.SquareMatrix.{u_1} n`.
 Type SHA-256: `f1e22464e5b075a93017529bf5d7b9acaf1e15a022a5956c8ba242f925f0b260`.
@@ -345,7 +345,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval`.
 Substantive provider: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval`, a four-line proof that quotes `tendsto_simpleSpectrumHolomorphicEval` for this contour and identifies its limit with the definition by `limUnder_eq`. Every analytic step lives in the quoted theorem and its supporting modules, not here.
 Readable type map: `R`, `c` and `G` present the contour, `V` is the open convex set carrying holomorphy, `Omega` the region whose boundary is integrated, and `A` the matrix whose numerical range lies in `Omega`.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L11).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L11).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (R : CrouzeixConjecture.PositivePeriodicRadialData) (c : Complex) {Omega V : Set.{0} Complex} (G : R.OrientedRadialConvexBoundary c Omega), IsOpen.{0} V → Convex.{0, 0} Real V → LE.le.{0} (closure.{0} Omega) V → ∀ {f : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f V → ∀ (A : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) Omega → Eq.{u_1 + 1} (CrouzeixConjecture.parametricBoundaryIntegral.{0, u_1} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R c G) CrouzeixConjecture.contourParameterMeasure f A) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f)`.
 Type SHA-256: `37b0f8603441665ec04b58f40567ce1dbfb89d5960d3be2d374aa456f3910750`.
@@ -463,7 +463,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.holomorphicMatrixEval_polynomial`.
 Substantive provider: `CrouzeixConjecture.holomorphicMatrixEval_polynomial`, a genuine two-step proof: the approximating sequence is identified with polynomial evaluation at the approximating matrices via `SimpleDiagonalization.functionEval_polynomial`, then `Polynomial.continuous_aeval` composed with `tendsto_simpleSpectrumApproximation` supplies convergence.
 Readable type map: `p` is the polynomial, `A` the matrix; `polynomialEval p A` is `Polynomial.aeval A p`. No set and no analytic hypothesis appear.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L13).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L13).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) (p : Polynomial.{0} Complex), Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => Polynomial.eval.{0} z p) (CrouzeixConjecture.polynomialEval.{u_1} p A)`.
 Type SHA-256: `40b1b85968c33231bba9d1ab05835841a984f09d53e943e881fcae2dd598b8b1`.
@@ -576,7 +576,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.holomorphicMatrixEval_congr_on_neighborhood`.
 Substantive provider: `CrouzeixConjecture.holomorphicMatrixEval_congr_on_neighborhood`, a genuine multi-step proof: the approximants' numerical ranges are eventually inside `U`, the two eigenvalue-recipe sequences are then equal entrywise, and `Filter.map_congr` concludes by equality of pushforward filters rather than by uniqueness of limits.
 Readable type map: `U` is the open neighborhood of the numerical range, and `f`, `g` the two functions required to agree on it and nowhere else.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L15).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L15).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) {U : Set.{0} Complex}, IsOpen.{0} U → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) U → ∀ {f g : Complex → Complex}, (∀ (z : Complex), Membership.mem.{0, 0} U z → Eq.{1} (f z) (g z)) → Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A g)`.
 Type SHA-256: `1adea35fde8d82277038fa66e3033cc5fc973b77a854fe6edb36b99c4601e5f5`.
@@ -692,7 +692,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.holomorphicMatrixEval_add`.
 Substantive provider: `CrouzeixConjecture.holomorphicMatrixEval_add`, a genuine multi-step proof: three invocations of `tendsto_simpleSpectrumHolomorphicEval_of_differentiableOn_neighborhood`, the pointwise additivity `SimpleDiagonalization.functionEval_add`, and `tendsto_nhds_unique`.
 Readable type map: `U` is the common open neighborhood, `f` and `g` the two functions differentiable on it.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L17).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L17).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) {U : Set.{0} Complex}, IsOpen.{0} U → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) U → ∀ {f g : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f U → DifferentiableOn.{0, 0, 0} Complex g U → Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => HAdd.hAdd.{0, 0, 0} (f z) (g z)) (HAdd.hAdd.{u_1, u_1, u_1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A g))`.
 Type SHA-256: `ef16b5d5c7fdc111416f8e8b37f0a93a985e463a53d649af716188935f2dc938`.
@@ -795,7 +795,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.holomorphicMatrixEval_mul`.
 Substantive provider: `CrouzeixConjecture.holomorphicMatrixEval_mul`, a genuine multi-step proof of the same shape as CFT-16-005, with `SimpleDiagonalization.functionEval_mul` — whose content is that a single shared diagonalization handles both factors — in place of the additive step.
 Readable type map: `U` is the common open neighborhood, `f` and `g` the two functions differentiable on it; the conclusion's factor order is the one shown.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L19).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L19).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) {U : Set.{0} Complex}, IsOpen.{0} U → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) U → ∀ {f g : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f U → DifferentiableOn.{0, 0, 0} Complex g U → Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => HMul.hMul.{0, 0, 0} (f z) (g z)) (HMul.hMul.{u_1, u_1, u_1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A g))`.
 Type SHA-256: `25e1b1b73070577dda1993394216345d2c368966717bf75147dd6676b609ee70`.
@@ -923,7 +923,7 @@ the definition really is the limit and not something else.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_01_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L29).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L29).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) (f : Complex → Complex), Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (Filter.limUnder.{u_1, 0} Filter.atTop.{0} (CrouzeixConjecture.simpleSpectrumHolomorphicEval.{u_1} A f))`.
 Type SHA-256: `948547b6d9e71d06745aef600230ced14166651197532babcec5c1609d1ab9a4`.
 Direct maintained dependencies: `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.holomorphicMatrixEval`, `CrouzeixConjecture.simpleSpectrumHolomorphicEval`.
@@ -954,7 +954,7 @@ CFT-16-003 at `p = X`, closed by simplification; it contributes no argument of i
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_02_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L34).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L34).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n), Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => z) A`.
 Type SHA-256: `0282d0805d73680dea5da3fa6738a51693ec184a61224008c1daa9a9de812ffe`.
 Direct maintained dependencies: `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.holomorphicMatrixEval`, `CrouzeixConjecture.holomorphicMatrixEval_polynomial`, `CrouzeixConjecture.polynomialEval`.
@@ -998,7 +998,7 @@ the right-to-left reading of that card, which is the point being taught.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_03_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L40).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L40).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [Nonempty.{u_1 + 1} n] (R₁ R₂ : CrouzeixConjecture.PositivePeriodicRadialData) (c₁ c₂ : Complex) {Ω₁ Ω₂ V₁ V₂ : Set.{0} Complex} (G₁ : R₁.OrientedRadialConvexBoundary c₁ Ω₁) (G₂ : R₂.OrientedRadialConvexBoundary c₂ Ω₂), IsOpen.{0} V₁ → Convex.{0, 0} Real V₁ → LE.le.{0} (closure.{0} Ω₁) V₁ → IsOpen.{0} V₂ → Convex.{0, 0} Real V₂ → LE.le.{0} (closure.{0} Ω₂) V₂ → ∀ {f : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f V₁ → DifferentiableOn.{0, 0, 0} Complex f V₂ → ∀ (A : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) Ω₁ → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) Ω₂ → Eq.{u_1 + 1} (CrouzeixConjecture.parametricBoundaryIntegral.{0, u_1} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R₁ c₁ G₁) CrouzeixConjecture.contourParameterMeasure f A) (CrouzeixConjecture.parametricBoundaryIntegral.{0, u_1} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R₂ c₂ G₂) CrouzeixConjecture.contourParameterMeasure f A)`.
 Type SHA-256: `fb3142adbf592bfce648a49b04de3760e47c602e62ee787fe508fed14bfca4e4`.
 Direct maintained dependencies: `CrouzeixConjecture.ContourParameter`, `CrouzeixConjecture.PositivePeriodicRadialData`, `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary`, `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary`, `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval`, `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.contourParameterMeasure`, `CrouzeixConjecture.holomorphicMatrixEval`, `CrouzeixConjecture.numericalRange`, `CrouzeixConjecture.parametricBoundaryIntegral`.
@@ -1031,7 +1031,7 @@ sequence diverges, `f(A)` and `g(A)` are both meaningless — and still equal.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_04_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L57).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L57).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) {U : Set.{0} Complex}, IsOpen.{0} U → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) U → ∀ (f : Complex → Complex) (c : Complex), Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => ite.{1} (Membership.mem.{0, 0} U z) (f z) c)`.
 Type SHA-256: `270bbdba76559035aeb765f2a372eb8804874031cd1cb11af00359e17e3dbeb8`.
 Direct maintained dependencies: `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.holomorphicMatrixEval`, `CrouzeixConjecture.holomorphicMatrixEval_congr_on_neighborhood`, `CrouzeixConjecture.numericalRange`.
@@ -1072,7 +1072,7 @@ proof.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_05_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L66).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L66).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) {U V : Set.{0} Complex}, IsOpen.{0} U → IsOpen.{0} V → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) (Inter.inter.{0} U V) → ∀ {f g : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f U → DifferentiableOn.{0, 0, 0} Complex g V → Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => HAdd.hAdd.{0, 0, 0} (f z) (g z)) (HAdd.hAdd.{u_1, u_1, u_1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A g))`.
 Type SHA-256: `f04b6e686d38cd3abf759b72bd1825cc1a0f852515c04d88e91a33f08bbe9be1`.
 Direct maintained dependencies: `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.holomorphicMatrixEval`, `CrouzeixConjecture.holomorphicMatrixEval_add`, `CrouzeixConjecture.numericalRange`.
@@ -1103,7 +1103,7 @@ be read as evidence that they do.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_06_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean#L76).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter16.lean#L76).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (A : CrouzeixConjecture.SquareMatrix.{u_1} n) {U : Set.{0} Complex}, IsOpen.{0} U → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) U → ∀ {f : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f U → Eq.{u_1 + 1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A fun z => HMul.hMul.{0, 0, 0} (f z) (f z)) (HMul.hMul.{u_1, u_1, u_1} (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f) (CrouzeixConjecture.holomorphicMatrixEval.{u_1} A f))`.
 Type SHA-256: `ff5f460028cae4619402e6d56bcfe25585979bf6f4d029150c043f751c4f299d`.
 Direct maintained dependencies: `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.holomorphicMatrixEval`, `CrouzeixConjecture.holomorphicMatrixEval_mul`, `CrouzeixConjecture.numericalRange`.

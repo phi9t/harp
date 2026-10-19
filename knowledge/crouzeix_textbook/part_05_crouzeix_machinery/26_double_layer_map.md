@@ -158,7 +158,7 @@ Public declaration: `CrouzeixTextbook.Part05.support_point_outside_numerical_ran
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.EuclideanVector, CrouzeixConjecture.OutwardBoundarySupport, CrouzeixConjecture.OutwardBoundarySupport.sigma_not_mem, CrouzeixConjecture.OutwardBoundarySupport.support_inequality, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.euclideanOperator, CrouzeixConjecture.numericalRange, CrouzeixConjecture.numericalRange._proof_1, CrouzeixConjecture.numericalRange._proof_2, CrouzeixConjecture.numericalRange._proof_3, CrouzeixConjecture.numericalRange._proof_4, CrouzeixConjecture.numericalRange._proof_5`.
 Readable type map: `Omega,sigma,nu,B,x` are the domain, supported point, outward normal, matrix, and unit vector; the paired conclusion is `sigma ∉ numericalRange B` together with the scalar support inequality for every unit `x`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L15).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L15).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] {Omega : Set.{0} Complex} {sigma nu : Complex}, CrouzeixConjecture.OutwardBoundarySupport Omega sigma nu → ∀ (B : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} B) Omega → And (Not (Membership.mem.{0, 0} (CrouzeixConjecture.numericalRange.{u_1} B) sigma)) (∀ (x : CrouzeixConjecture.EuclideanVector.{u_1} n), Eq.{1} (Norm.norm.{u_1} x) (OfNat.ofNat.{0} 1) → LE.le.{0} (OfNat.ofNat.{0} 0) (DFunLike.coe.{1, 1, 1} RCLike.re.{0} (HMul.hMul.{0, 0, 0} (Star.star.{0} nu) (HSub.hSub.{0, 0, 0} sigma (Inner.inner.{0, u_1} Complex x (DFunLike.coe.{u_1 + 1, u_1 + 1, u_1 + 1} (DFunLike.coe.{u_1 + 1, u_1 + 1, u_1 + 1} CrouzeixConjecture.euclideanOperator.{u_1} B) x))))))`.
 Type SHA-256: `c81aa6c33f155d60b3ea289c9683b19f669b9b37f5b0fa0e1afbe8be12f42086`.
@@ -237,7 +237,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.scalar_sub_matrix_isUnit_of_outwardBoundarySupport`.
 Substantive provider: `CrouzeixConjecture.scalar_sub_matrix_isUnit_of_outwardBoundarySupport`.
 Readable type map: support and containment hypotheses return `IsUnit (sigma • 1 - B)`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L29).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L29).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] {Omega : Set.{0} Complex} {sigma nu : Complex}, CrouzeixConjecture.OutwardBoundarySupport Omega sigma nu → ∀ (B : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} B) Omega → IsUnit.{u_1} (HSub.hSub.{u_1, u_1, u_1} (HSMul.hSMul.{0, u_1, u_1} sigma (OfNat.ofNat.{u_1} 1)) B)`.
 Type SHA-256: `ba925bdd2b8af209941855dc71402f2fc0d602598e38bb205a1282955c8e5866`.
@@ -320,7 +320,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.doubleLayerSupportMatrix_posSemidef_of_outwardBoundarySupport`.
 Substantive provider: `CrouzeixConjecture.doubleLayerSupportMatrix_posSemidef_of_outwardBoundarySupport`.
 Readable type map: support and containment yield `PosSemidef (doubleLayerSupportMatrix B sigma nu)`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L33).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L33).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] {Omega : Set.{0} Complex} {sigma nu : Complex}, CrouzeixConjecture.OutwardBoundarySupport Omega sigma nu → ∀ (B : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} B) Omega → Matrix.PosSemidef.{u_1, 0} (CrouzeixConjecture.doubleLayerSupportMatrix.{u_1} B sigma nu)`.
 Type SHA-256: `669c3561a5e2fa2329dbac180de86d6b8ac4f22a91c3d0ab2b827e9570dbd577`.
@@ -411,9 +411,9 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.doubleLayerResolvent`.
 Substantive provider: `CrouzeixConjecture.doubleLayerResolvent`.
 Readable type map: a square matrix and complex shift map to a square-matrix resolvent.
-Code: [Lean definition](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L37).
-Supporting normalization definitions: [`parametricBoundaryFirstPart`](../../../formalization/lean/CrouzeixConjecture/ParametricBoundary.lean#L72) and [`parametricDoubleLayerDensity`](../../../formalization/lean/CrouzeixConjecture/ParametricBoundary.lean#L79).
-Supporting oriented Cauchy bridge: [`parametricBoundaryFirstPart_eq_cauchyIntegrand`](../../../formalization/lean/CrouzeixConjecture/RadialContour.lean#L398).
+Code: [Lean definition](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L37).
+Supporting normalization definitions: [`parametricBoundaryFirstPart`](../../../lab/math/lean/CrouzeixConjecture/ParametricBoundary.lean#L72) and [`parametricDoubleLayerDensity`](../../../lab/math/lean/CrouzeixConjecture/ParametricBoundary.lean#L79).
+Supporting oriented Cauchy bridge: [`parametricBoundaryFirstPart_eq_cauchyIntegrand`](../../../lab/math/lean/CrouzeixConjecture/RadialContour.lean#L398).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `{n : Type u_1} → [Fintype.{u_1} n] → [DecidableEq.{u_1 + 1} n] → CrouzeixConjecture.SquareMatrix.{u_1} n → Complex → CrouzeixConjecture.SquareMatrix.{u_1} n`.
 Type SHA-256: `2576ccb833b38fce237c0923d56df69609bf656489d5f61e0ab3427e4486ec09`.
@@ -502,7 +502,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.doubleLayerResolvent_congruence_density`.
 Substantive provider: `CrouzeixConjecture.doubleLayerResolvent_congruence_density`.
 Readable type map: support and containment imply the exact resolvent-support-resolvent density identity.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L41).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L41).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] {Omega : Set.{0} Complex} {sigma nu : Complex}, CrouzeixConjecture.OutwardBoundarySupport Omega sigma nu → ∀ (B : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} B) Omega → Eq.{u_1 + 1} (HMul.hMul.{u_1, u_1, u_1} (HMul.hMul.{u_1, u_1, u_1} (Matrix.conjTranspose.{0, u_1, u_1} (CrouzeixConjecture.doubleLayerResolvent.{u_1} B sigma)) (CrouzeixConjecture.doubleLayerSupportMatrix.{u_1} B sigma nu)) (CrouzeixConjecture.doubleLayerResolvent.{u_1} B sigma)) (CrouzeixConjecture.doubleLayerDensity.{u_1} (CrouzeixConjecture.doubleLayerResolvent.{u_1} B sigma) nu)`.
 Type SHA-256: `3ca440cf9415bc7043af96c8f7c9292238e56809c47f535ee2f896ccbb9006b1`.
@@ -592,7 +592,7 @@ Public declaration: `CrouzeixTextbook.Part05.double_layer_density_positive`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixConjecture.ParametricConvexBoundary, CrouzeixConjecture.SquareMatrix, CrouzeixConjecture.integrable_parametricDoubleLayerDensity, CrouzeixConjecture.integral_posSemidef, CrouzeixConjecture.numericalRange, CrouzeixConjecture.parametricDoubleLayerDensity, CrouzeixConjecture.parametricDoubleLayerDensity_posSemidef`.
 Readable type map: `Gamma,B,mu` produce integrability, PSD of the integral, and equality with every entry integral.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L46).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L46).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [CompactSpace.{u_1} i] [inst_2 : MeasurableSpace.{u_1} i] [OpensMeasurableSpace.{u_1} i] [inst_4 : Fintype.{u_2} n] [inst_5 : DecidableEq.{u_2 + 1} n] [Nonempty.{u_2 + 1} n] (mu : MeasureTheory.Measure.{u_1} i) [MeasureTheory.IsFiniteMeasure.{u_1} mu] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (B : CrouzeixConjecture.SquareMatrix.{u_2} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_2} B) Omega → And (MeasureTheory.Integrable.{u_2, u_1} (CrouzeixConjecture.parametricDoubleLayerDensity.{u_1, u_2} Gamma B) mu) (And (Matrix.PosSemidef.{u_2, 0} (MeasureTheory.integral.{u_1, u_2} mu fun x => CrouzeixConjecture.parametricDoubleLayerDensity.{u_1, u_2} Gamma B x)) (∀ (a b : n), Eq.{1} (MeasureTheory.integral.{u_1, u_2} mu (fun x => CrouzeixConjecture.parametricDoubleLayerDensity.{u_1, u_2} Gamma B x) a b) (MeasureTheory.integral.{u_1, 0} mu fun x => CrouzeixConjecture.parametricDoubleLayerDensity.{u_1, u_2} Gamma B x a b)))`.
 Type SHA-256: `acfa9886104dc38842086a82b8fe579c01f2b5ebf959a35159b37f1b76cea4b4`.
@@ -659,7 +659,7 @@ We transport numerical-range containment into the scalar real-part inequality at
 $$0\le\operatorname{Re}(\barν(σ-z))=\operatorname{Re}(\barν(σ-\langle Bx,x\rangle)).$$
 This is the requested direct proof.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_01_solution` in [Chapter26.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L75).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_01_solution` in [Chapter26.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L75).
 Formal mode: `proved-here`; the proof calls the scalar support inequality, not CFT-26-001.
 Compiler locator: line 75, column 9.
 Type SHA-256: `ad9414c12426fa0b86b5d53d95b51c8cc4ab9fa8704f994c534390026b9680cb`.
@@ -682,7 +682,7 @@ that the whole matrix is PSD. In CFT-26-003 and E06, the adjoint identity
 normalizing `y=x/‖x‖` and multiplying by `‖x‖²` upgrades the unit-vector result
 to the all-vector quadratic-form condition required by PSD.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_02_solution` in [Chapter26.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L88).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_02_solution` in [Chapter26.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L88).
 Formal mode: `proved-here`; the proof performs the adjoint and real-part expansion explicitly.
 Compiler locator: line 88, column 9.
 Type SHA-256: `fa517c6187ce2ab93447446f63434b8d3eedaa99135d5b021040e843996e63f0`.
@@ -702,7 +702,7 @@ Also
 $$(B^*MB)^*=B^*M^*B=B^*MB,$$
 so the congruence is Hermitian as well as nonnegative.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_03_solution` in [Chapter26.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L129).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_03_solution` in [Chapter26.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L129).
 Formal mode: `proved-here`; its proposition is the abstract PSD congruence rule, distinct from every public card. The Lean proof unfolds the defining Hermitian and quadratic-form obligations and does not call `Matrix.PosSemidef.conjTranspose_mul_mul_same` or the project wrapper.
 Compiler locator: line 129, column 9.
 Type SHA-256: `a249c97397a895cd7686c23e9d18b972a390f48e7ebe52ee6751d3cfd4140baf`.
@@ -720,7 +720,7 @@ We use the right-inverse identity, its adjoint, and all scalar factors to identi
 $$R^*(\barνQ+νQ^*)R=\barνR^*(QR)+ν(R^*Q^*)R=\barνR^*+νR.$$
 No matrices are commuted.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_04_solution` in [Chapter26.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L142).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_04_solution` in [Chapter26.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L142).
 Formal mode: `proved-here`; the proof derives the adjoint inverse and cancels both support terms.
 Compiler locator: line 142, column 9.
 Type SHA-256: `1213c8d0db5a5822300d7344cc97899f0843943f1b0d97310ed8cdaf69452b27`.
@@ -736,7 +736,7 @@ Explain why a supported boundary point gives resolvent invertibility.
 
 We turn a hypothetical spectral/kernel witness into a numerical-range witness and contradict strict containment. Openness gives `σ∉Ω`; containment gives `σ∉W(B)`. Since `spectrum(B)⊆W(B)`, `σ∉spectrum(B)`, hence `σI-B` is invertible. For an exterior shift a normalized kernel vector contradicts a strict support margin; at the boundary the open-domain argument replaces that lost margin.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_05_solution` in [Chapter26.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L159).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_05_solution` in [Chapter26.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L159).
 Formal mode: `proved-here`; the proof uses open-boundary exclusion and spectral inclusion directly.
 Compiler locator: line 159, column 9.
 Type SHA-256: `d80cfa6b4f3279d04d4d2122d027233a345d27ffb43c4177ebdb91cf0a3a0997`.
@@ -752,7 +752,7 @@ Reconstruct positivity of the double-layer resolvent density.
 
 We compose support positivity, resolvent inversion, the exact congruence, and congruence preservation without calling the terminal density theorem. E02 plus normalization proves `S\succeq0`; E05 supplies `R`; E04 gives `D=R*SR`; E03 gives `R*SR\succeq0`. Therefore `D\succeq0`, with every dependency exposed.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_06_solution` in [Chapter26.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L177).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_06_solution` in [Chapter26.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L177).
 Formal mode: `proved-here`; the proof reconstructs the density result from E02--E05 and avoids terminal density providers.
 Compiler locator: line 177, column 9.
 Type SHA-256: `ab76766d5649e5bfb7842181fabf6b97389fbb4aa81464c960e16964bcd0a7b8`.

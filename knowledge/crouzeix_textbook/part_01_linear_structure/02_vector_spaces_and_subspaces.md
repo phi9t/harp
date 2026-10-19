@@ -104,7 +104,7 @@ $\mathbb R$, the vector $2$ is both $2\cdot1+0\cdot2$ and $0\cdot1+1\cdot2$.
 identify it with finitely supported sums. `finite_combination_closure` checks
 addition and scaling of those coefficients. The indexed theorem allows
 semirings and semimodules; its field specialization is exactly the statement
-above. [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+above. [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### CFT-02-002: intersections {#cft-02-002}
 
@@ -125,7 +125,7 @@ axes, but their sum $(1,1)$ does not. Exercise E05 checks this failure.
 **Formal correspondence.** `mem_subspace_intersection_iff` proves both
 implications locally; `intersection_closure` checks the three subspace laws.
 The indexed semiring/semimodule theorem specializes to the field statement
-here. [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+here. [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### CFT-02-003: basis coordinates {#cft-02-003}
 
@@ -158,7 +158,7 @@ coefficient lists whose sums have no algebraic meaning.
 `basis_expansion_exists_unique`, using `Module.Basis.linearCombination_repr`
 and `Module.Basis.repr_linearCombination`. It states existence and uniqueness
 of `ι →₀ 𝕜` coefficients. The indexed semiring theorem is specialized here
-to a field. [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+to a field. [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### CFT-02-004: dimension and transport {#cft-02-004}
 
@@ -198,7 +198,7 @@ dimension.
 `LinearEquiv.finrank_eq` with a division ring and no finite-dimensional
 typeclass. `basis_transport` uses `Module.Basis.map_apply` to record the
 transported family. Real and complex spaces are field specializations.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### CFT-02-005: direct-sum uniqueness {#cft-02-005}
 
@@ -224,7 +224,7 @@ existence but not uniqueness: $v=v+0=0+v$ when $v\ne0$.
 subtraction and intersection proof and also allows division rings.
 `direct_sum_existence` separately assumes `U ⊔ W = ⊤` and extracts summands
 using `Submodule.mem_sup`. The symbol `⊔` denotes subspace sum, not union.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### CFT-02-006: quotient representatives {#cft-02-006}
 
@@ -280,7 +280,7 @@ constructs a linear map using `Submodule.liftQ` and `Submodule.liftQ_mkQ`,
 then proves uniqueness using representatives. Linearity is part of its `→ₗ`
 type, not a consequence of surjectivity. These helpers use fields, including
 $\mathbb R$ and $\mathbb C$.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ## Worked examples
 
@@ -303,7 +303,7 @@ since equal outputs have difference in the kernel. This directly identifies
 this quotient with $\mathbb R^2$, without a later isomorphism theorem.
 
 The kernel calculation is `redundantPredictor_kernel`; the equal-output
-criterion is E06 in the [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+criterion is E06 in the [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### A diagonal quotient
 
@@ -347,7 +347,7 @@ The off-diagonal term disappears in the quotient while remaining in the full
 map. `triangularAction_structure`, `triangularAction_eigenline`, and
 `triangularAction_no_invariant_complement` compile these coordinate identities
 and the obstruction for every normalized candidate $(t,1)$.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ## ML bridge
 
@@ -400,7 +400,7 @@ Lean's `ℝ × ℝ × ℝ` means `ℝ × (ℝ × ℝ)`.
 
 Each prompt has a distinct theorem in namespace
 `CrouzeixTextbook.Part01.Exercises.Chapter02` in the
-[Lean solutions](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean).
+[Lean solutions](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter02.lean).
 
 ### CFT-02-E01 -- retrieval {#exercise-cft-02-e01}
 

@@ -34,7 +34,7 @@ sequential course for dependencies the shorter path omits.
   then use the [[knowledge/sicp/eval-apply-reader-companion|eval/apply companion]] or the
   [[knowledge/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]].
 - **Trace an evaluator down to a machine.** Follow the [[knowledge/sicp/course/sicp_course_guide#Runtime and compiler mechanisms|runtime and compiler mechanisms]] route
-  before using the [[labs/sicp-evaluator/README|runnable Rust evaluator lab]].
+  before using the [[lab/sicp/README|runnable Rust evaluator lab]].
 - **Transfer the material into an agent harness.** Follow the [[knowledge/sicp/course/sicp_course_guide#Agent-harness design|agent-harness design]] route, complete the
   optional [[knowledge/sicp/agentic_eval_apply|agentic eval/apply MTS synthesis]] as the
   bridge from Seminar 9 to effectful runtime semantics, then complete the
@@ -94,7 +94,7 @@ prerequisite for a focused question.
   replace either or establish source authority.
 - [[knowledge/sicp/eval-apply-reader-companion|Eval/apply compatibility pointer]] and
   [[knowledge/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]]
-  provide the maintained evaluator supplements; the [[labs/sicp-evaluator/README|runnable Rust evaluator lab]] is executable learning code, not source
+  provide the maintained evaluator supplements; the [[lab/sicp/README|runnable Rust evaluator lab]] is executable learning code, not source
   evidence.
 - [[knowledge/agentic_engineering/pi_harness_deep_dive|Pi harness deep dive]], [[knowledge/agentic_engineering/hermes_harness_deep_dive|Hermes harness deep dive]], and [[knowledge/agentic_engineering/codex_harness_deep_dive|Codex harness deep dive]] are implementation overlays for
   comparison, with their own revisions and evidence contracts.
@@ -117,7 +117,7 @@ understanding.
   authority
 - [[knowledge/sicp/eval-apply-reader-companion|Eval/apply compatibility pointer]]
 - [[knowledge/sicp/metacircular_evaluator_deep_dive|Metacircular evaluator deep dive]]
-- [[labs/sicp-evaluator/README|Runnable Rust evaluator lab]]
+- [[lab/sicp/README|Runnable Rust evaluator lab]]
 - [[knowledge/agentic_engineering/pi_harness_deep_dive|Pi harness deep dive]]
 - [[knowledge/agentic_engineering/hermes_harness_deep_dive|Hermes harness deep dive]]
 - [[knowledge/agentic_engineering/codex_harness_deep_dive|Codex harness deep dive]]

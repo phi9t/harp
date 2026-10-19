@@ -70,19 +70,19 @@ route, not yet a claim that every proof can be reconstructed from the prose.
 The maintained Jin route has a bounded compiled terminal receipt. The checked
 Lorist--Schwenninger terminal provider is
 `CrouzeixConjecture.loristSchwenningerMainTheorem` in
-`formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`; its
+`lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`; its
 fixed-domain kernel uses
 `CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two`.
 The separately checked finite-horizon terminal is
 `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem` in
-`formalization/lean/Crouzeix/Harp/MainTheorem.lean`. That theorem is
+`lab/math/lean/Crouzeix/Harp/MainTheorem.lean`. That theorem is
 Harp-derived and not source-derived: its local compilation is evidence only
 for the maintained formal provider and does not assign it to Jin or
 Lorist--Schwenninger. These boundaries are recorded by
 [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]].
 The pinned theorem attribution is recorded separately by
 [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]].
-The maintained [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|source graph]]
+The maintained [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|source graph]]
 remains the locator and dated historical-status authority; its older node
 statuses do not override a fresh aggregate build. Neither record establishes
 publication beyond its pinned source version or independent peer review.
@@ -90,7 +90,7 @@ publication beyond its pinned source version or independent peer review.
 ## Lorist--Schwenninger verification boundary:
 
 - Checked terminal provider: `CrouzeixConjecture.loristSchwenningerMainTheorem`
-- Terminal source: `formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`
+- Terminal source: `lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`
 - Fixed-domain provider: `CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two`
 - Current verification: [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]]
 - Pinned source claim: [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]]
@@ -101,7 +101,7 @@ publication beyond its pinned source version or independent peer review.
 ## Harp finite-horizon verification boundary:
 
 - Checked terminal provider: `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem`
-- Terminal source: `formalization/lean/Crouzeix/Harp/MainTheorem.lean`
+- Terminal source: `lab/math/lean/Crouzeix/Harp/MainTheorem.lean`
 - Provenance class: `Harp-derived; not source-derived`
 - Current verification: `mise run lean-crouzeix-harp` and the aggregate
   `mise run lean-crouzeix-textbook`
@@ -120,8 +120,8 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `52e14d81e53adbf479aaced5ee467ccc1ba6b7c98a2df031b5087e3037b69a42`
-- Compiler receipt bytes: `599445`
+  `91fd102247f65d14995b1615d442a8bb4e4b21682e36fd1a6187f15fbfa3b1e7`
+- Compiler receipt bytes: `596736`
 - Compiler receipt declarations: `513`
 
 Those 513 unique declarations comprise 216 public coverage declarations,

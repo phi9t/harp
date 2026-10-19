@@ -86,7 +86,7 @@ fact about the abelian group structure and not about the projection formula.
 
 **Boundary and Lean provider.** No nonvanishing hypothesis appears, which is
 what makes this card weaker than the next one and safe to state first.
-[`projection_residual_decomposition`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L42)
+[`projection_residual_decomposition`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L42)
 is the public declaration; its checked proof discharges
 $P_ux+(x-P_ux)=x$ by `abel` and then applies `.symm`, `abel` being exactly the
 abelian-group cancellation the paragraph describes. The
@@ -110,17 +110,17 @@ $x\cdot u-x\cdot u=0$. The nonvanishing hypothesis is used exactly once, to
 license that cancellation.
 
 **Boundary and Lean provider.**
-[`projection_residual_orthogonal`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L48)
+[`projection_residual_orthogonal`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L48)
 runs those steps in that order: it derives $u\cdot u\neq0$ from
 `dotProduct_self_eq_zero`, rewrites with `sub_dotProduct` and
 `smul_dotProduct`, and closes by clearing the denominator. Positive
 definiteness itself is
-[`real_inner_self_eq_zero_iff`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L38);
+[`real_inner_self_eq_zero_iff`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L38);
 the other three pairing axioms are
-[`real_inner_comm`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L21),
-[`real_inner_add_left`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L25)
+[`real_inner_comm`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L21),
+[`real_inner_add_left`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L25)
 and
-[`real_inner_smul_left`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L29).
+[`real_inner_smul_left`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L29).
 
 ### Pythagoras, best approximation, and the zero line
 
@@ -135,18 +135,18 @@ $$
 x\cdot x=P_ux\cdot P_ux+(x-P_ux)\cdot(x-P_ux),
 $$
 checked as
-[`projection_pythagoras`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L57).
+[`projection_pythagoras`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L57).
 
 The same cancellation proves best approximation. For any scalar $t$ write
 $x-tu=(x-P_ux)+(P_ux-tu)$. The second summand is again a multiple of $u$, so it
 pairs to zero with the residual, and expanding gives the residual's own square
 plus a nonnegative term. Hence no point of the line beats $P_ux$; this is
-[`projection_minimizes`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L77).
+[`projection_minimizes`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L77).
 Note which hypothesis each result consumes: the splitting needs none,
 orthogonality needs $u\neq0$, and both consequences inherit that requirement.
 
 The hypothesis is not decorative.
-[`lineProjection_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L95)
+[`lineProjection_zero`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L95)
 records that $P_0x=0$ for every $x$, so with $u=0$ the residual is $x$ itself
 and orthogonality would assert $x\cdot0=0$ — true but vacuous, and best
 approximation would degenerate to a statement about the single point $0$.
@@ -163,10 +163,10 @@ vanishes, that is when $x$ lies on the line.
 This book does not reprove that inequality here. The maintained foundations
 laboratory proves it by four independent routes with a compiled dependency
 audit, and this chapter reuses the quadratic route:
-[`cauchy_schwarz_real`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L101)
+[`cauchy_schwarz_real`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L101)
 restates it in the pairing notation used here and is discharged by
 `TextbookBench.cauchySchwarzQuadratic`. The equality case is
-[`cauchy_schwarz_real_equality_iff`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L107),
+[`cauchy_schwarz_real_equality_iff`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L107),
 discharged by `TextbookBench.cauchySchwarzEqualityIffProportional`, and its
 conclusion is the proportionality statement $x=0$ or $y=tx$ rather than a
 vaguer "linear dependence". Reuse is labeled, not silent: those two
@@ -194,7 +194,7 @@ conventions for which factor is conjugated and which is written first.
 **Boundary and Lean provider.** The index type is finite with decidable
 equality and the scalars are complex; no positivity, normality or spectral
 hypothesis appears.
-[`adjoint_coordinate_identity`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L118)
+[`adjoint_coordinate_identity`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L118)
 re-exports `CrouzeixConjecture.inner_euclideanOperator_eq_star_dotProduct`,
 whose checked proof is exactly the two steps above:
 `EuclideanSpace.inner_eq_star_dotProduct` followed by `dotProduct_comm`.
@@ -212,7 +212,7 @@ star operation, which is the adjoint. The statement is that homomorphism's
 compatibility with the star, applied to $A$.
 
 **Boundary and Lean provider.**
-[`adjoint_matrix_is_conjugate_transpose`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L121)
+[`adjoint_matrix_is_conjugate_transpose`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L121)
 re-exports `CrouzeixConjecture.euclideanOperator_conjTranspose`, whose checked
 proof is the single application `map_star (euclideanOperator)`. The prose above
 is a description of that one step; the work sits in the star-algebra structure
@@ -223,7 +223,7 @@ Two conventions must be kept apart here. Chapter 4's pullback of a covector
 uses no metric and introduces no conjugation; the adjoint of this chapter uses
 the Hermitian metric and does. Over $\mathbb R$ they coincide, which is why the
 distinction is invisible until complex scalars appear.
-[`transpose_ne_conjTranspose_complex`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L134)
+[`transpose_ne_conjTranspose_complex`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L134)
 settles it with one matrix: for $\operatorname{diag}(i,0)$ the transpose has
 $i$ in the corner and the conjugate transpose has $-i$, and $i\neq-i$.
 
@@ -238,7 +238,7 @@ book is *defined* to be the operator norm of the induced Euclidean map, so the
 two sides are the same object under different notation.
 
 **Boundary and Lean provider.**
-[`matrix_norm_is_operator_norm`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L124)
+[`matrix_norm_is_operator_norm`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L124)
 re-exports `CrouzeixConjecture.matrix_norm_eq_euclidean_operator_norm`, whose
 checked proof is `rfl` — definitional equality, which is the formal reading of
 "nothing to compute". The card is worth stating because later chapters bound
@@ -257,7 +257,7 @@ $0=\|x-x\|\le\|x\|+\|x\|$, hence $0\le\|x\|$.
 **Boundary and Lean provider.** The hypothesis is a seminormed additive group,
 which is weaker than the normed spaces of the rest of the chapter: it allows
 nonzero vectors of zero length.
-[`norm_is_nonnegative`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L127)
+[`norm_is_nonnegative`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L127)
 runs exactly that argument: it applies `norm_sub_le` at $y=x$, rewrites
 $\|x-x\|$ to $0$ with `sub_self` and `norm_zero`, and closes with `linarith`.
 It is proved locally rather than re-exported, deliberately: Mathlib's
@@ -340,7 +340,7 @@ the foundations laboratory and are support declarations, not indexed cards.
 
 The six exercise theorems live in
 `CrouzeixTextbook.Part02.Exercises.Chapter07` in the
-[chapter Lean source](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean).
+[chapter Lean source](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean).
 
 ## Exercises
 
@@ -352,7 +352,7 @@ compute the projection of $(3,4)$ onto the direction $(1,0)$.
 **Solution.** The splitting is the abelian-group identity of CFT-07-001 and
 needs no hypothesis. The computation gives $x\cdot u=3$, $u\cdot u=1$, hence
 $P_ux=3\,(1,0)=(3,0)$.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L148)
+[`exercise_01_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L148)
 states the general splitting for that direction and the explicit projected
 vector; its checked proof is `abel` for the first conjunct and a coordinatewise
 expansion of the definition for the second.
@@ -364,7 +364,7 @@ squared length $x\cdot x$.
 
 **Solution.** The residual is $(0,4)$, so its pairing with $(1,0)$ is $0$, and
 $x\cdot x=9+16=25$.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L157)
+[`exercise_02_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L157)
 states both numbers; its checked proof expands the two-term sums and evaluates,
 which is the arithmetic displayed here rather than an appeal to CFT-07-002.
 
@@ -377,7 +377,7 @@ residual, and the Pythagoras identity.
 **Solution.** Cauchy–Schwarz is the reused laboratory result; orthogonality is
 CFT-07-002 with $u=y$; Pythagoras is the cancellation of the two cross terms
 described above.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L166)
+[`exercise_03_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L166)
 states the three conclusions together for every dimension, every $x$ and every
 nonzero $y$, so the shared hypothesis is visible in one statement.
 
@@ -391,7 +391,7 @@ equality holds exactly when $x=0$ or $y=tx$ for some scalar $t$. For the
 converse direction one does not need it: substituting $y=t\,x$ and pulling the
 scalar out of both sides gives $t^2(x\cdot x)^2$ on the left and
 $t^2(x\cdot x)(x\cdot x)$ on the right.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L175)
+[`exercise_04_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L175)
 states the characterization and that direct verification as two conjuncts; the
 second is proved by pulling scalars through the pairing and normalizing, not by
 citing the first.
@@ -405,7 +405,7 @@ $\mathbb C$ the transpose is not the adjoint.
 direction is zero. For the second, $\operatorname{diag}(i,0)$ equals its own
 transpose but its conjugate transpose is $\operatorname{diag}(-i,0)$, and
 $i\neq-i$.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L183)
+[`exercise_05_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L183)
 states both. Together they mark the two hypotheses this chapter cannot drop:
 the direction must be nonzero, and the scalars determine which transpose is the
 metric one.
@@ -418,7 +418,7 @@ that it agrees with the operator norm of the induced Euclidean map.
 **Solution.** Nonnegativity is the same statement as CFT-07-006, though the
 checked solution discharges it with Mathlib's `norm_nonneg` rather than by
 citing the card; the agreement is CFT-07-005, which holds definitionally.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L190)
+[`exercise_06_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter07.lean#L190)
 states both for every finite index type. Reading it beside the two cards shows
 which norm every later bound in this book is about.
 

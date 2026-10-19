@@ -12,7 +12,7 @@ The mathematical audit and finite-horizon remainder are unnumbered supplements,
 with their own contents entries and bookmarks. They do not add chapters or
 indexed proof coverage. Their canonical status labels remain visible in print.
 
-Each chapter header links to its accompanying Lean chapter module. Discovery requires exactly one `ChapterNN.lean` beneath `formalization/lean/CrouzeixTextbook/PartXX/`, independently of prose part numbering. Missing, ambiguous or symlinked modules fail. These source links provide access to the module; they do not assert compilation or certification.
+Each chapter header links to its accompanying Lean chapter module. Discovery requires exactly one `ChapterNN.lean` beneath `lab/math/lean/CrouzeixTextbook/PartXX/`, independently of prose part numbering. Missing, ambiguous or symlinked modules fail. These source links provide access to the module; they do not assert compilation or certification.
 
 ## Dependencies
 

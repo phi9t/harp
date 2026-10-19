@@ -195,12 +195,12 @@ resolvents from Chapter 28.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
 The public definition reexports `CrouzeixConjecture.completionKernelModel`.
 The entry calculation is proved by `completionKernelModel_apply`.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_kernel_model; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionKernelModel; provider-file=formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=b6f13ba7834ee232d6361bbf95f939ad00760f82d267ffde7b3c22ed1b5a48b1; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_kernel_model; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionKernelModel; provider-file=lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=b6f13ba7834ee232d6361bbf95f939ad00760f82d267ffde7b3c22ed1b5a48b1; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -288,14 +288,14 @@ diagonal matrices.
 #### Lean correspondence
 
 Public code and provider bridge:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
 `completion_kernel_normalization_forces_correction_zero` is proved here and
 depends on the local theorem
 `completion_kernel_normalization_forces_correction_zero_bridge`. The older
 provider theorem `completionKernelModel_zero` proves the opposite direction
 and is not used as this card's proof.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero_bridge; provider-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; type-sha256=c366aa91bab218699594028032e0feca8e1d84f06804e10dd48e71a7625ccb49; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook; provider-type-sha256=22fb9474d934ab848aa65584ab7f1a7122b901afc9aae3553554bd415ac1eefe}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero_bridge; provider-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; type-sha256=c366aa91bab218699594028032e0feca8e1d84f06804e10dd48e71a7625ccb49; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook; provider-type-sha256=22fb9474d934ab848aa65584ab7f1a7122b901afc9aae3553554bd415ac1eefe}
 
 #### Historical context
 
@@ -438,11 +438,11 @@ forms from Chapters 8, 18, and 24.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
 The provider proves each selected block and then the complete finite sum.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.sample_origin_quadratic_identity; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionResolventKernel_sampling_quadratic_eq; provider-file=formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=a19830b823dec21c68e5ab7b248b9d78c9b03518b8605d869ee888192c2db7db; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.sample_origin_quadratic_identity; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionResolventKernel_sampling_quadratic_eq; provider-file=lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=a19830b823dec21c68e5ab7b248b9d78c9b03518b8605d869ee888192c2db7db; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -580,8 +580,8 @@ finite sums.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
 The provider's selected-entry scope is explicit in
 `completionCorrectionKernel_sample_sample_apply`,
 `completionCorrectionKernel_sample_zero_apply`, and
@@ -592,7 +592,7 @@ checkpoint. The regrouping into Θ plus its conjugate is proved by
 checked independently by the textbook theorem
 `CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_04_solution`.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.correction_sampling_identity; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionCorrectionKernel_sampling_quadratic_eq; provider-file=formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=3fbcbf6aba9f45dc919a68fa512cb886899febda58461c932c11d93054a74053; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.correction_sampling_identity; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionCorrectionKernel_sampling_quadratic_eq; provider-file=lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=3fbcbf6aba9f45dc919a68fa512cb886899febda58461c932c11d93054a74053; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -689,12 +689,12 @@ formula for Θ from CFT-31-004.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
 The provider first proves `completionUnknownHalfContribution_eq_zero`, then
 uses it in `completionCorrectionKernel_sampling_eq_zero`.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.correction_sampling_cancels; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionCorrectionKernel_sampling_eq_zero; provider-file=formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=3883ecf653a417da1c0aceb9c8ee7dd5f2c9444bf7fa7936660051df5e071234; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.correction_sampling_cancels; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completionCorrectionKernel_sampling_eq_zero; provider-file=lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=3883ecf653a417da1c0aceb9c8ee7dd5f2c9444bf7fa7936660051df5e071234; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -836,14 +836,14 @@ the P, R, X definitions from Chapter 30.
 
 #### Lean correspondence
 
-Public code: [[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
-Analytic bridge: [[formalization/lean/CrouzeixConjecture/MatrixHerglotz.lean|MatrixHerglotz.lean]].
+Public code: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]].
+Analytic bridge: [[lab/math/lean/CrouzeixConjecture/MatrixHerglotz.lean|MatrixHerglotz.lean]].
 `completionSampleCoefficient_quadratic_nonneg_of_positiveKernel` proves the
 universal scalar inequality. `completion_X_inequality_of_positiveKernel`
 applies the Hermitian quadratic-form criterion.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.kernel_positivity_implies_X; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completion_X_inequality_of_positiveKernel; provider-file=formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=8ea6a00ebbb6a7326410c88a8d764396afc51794cde409a6c5f3b44855ce7e04; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.kernel_positivity_implies_X; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean; provider-declaration=CrouzeixConjecture.completion_X_inequality_of_positiveKernel; provider-file=lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean; type-sha256=8ea6a00ebbb6a7326410c88a8d764396afc51794cde409a6c5f3b44855ce7e04; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -1006,7 +1006,7 @@ checkpoints, and gives six distinct exercise theorems. In particular,
 Exercise E02 returns the matrix equality D(0)=0 before its coordinate
 consequence d(0)=0, while E05 explicitly uses
 `completionUnknownHalfContribution_eq_zero`. The checked source is
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]].
 
 ## Exercises
 
@@ -1019,7 +1019,7 @@ Prove both the sparse-column identity for `completionKernelModel` and its
 entry formula. Then expand the two diagonal products in the selected entry.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_01_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_01_solution`]].
 
 ```lean
 theorem exercise_01_solution
@@ -1042,7 +1042,7 @@ coordinate consequence `d 0 = 0`. Do not invoke the forward theorem
 `completionKernelModel_zero`.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_02_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_02_solution`]].
 
 ```lean
 theorem exercise_02_solution
@@ -1059,7 +1059,7 @@ Prove the sample/sample, sample/origin, origin/sample, and origin/origin
 entries as one fourfold conjunction.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_03_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_03_solution`]].
 
 ```lean
 theorem exercise_03_solution
@@ -1083,7 +1083,7 @@ theorem exercise_03_solution
 Show that the full correction sample is Θ plus its conjugate.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_04_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_04_solution`]].
 
 ```lean
 theorem exercise_04_solution
@@ -1107,7 +1107,7 @@ sum all vanish. With E04's Hermiticity hypothesis and d(0)=0, this becomes the
 complete correction contribution.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_05_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_05_solution`]].
 
 ```lean
 theorem exercise_05_solution
@@ -1127,7 +1127,7 @@ Prove that a Hermitian matrix whose quadratic form is nonnegative on every
 vector is positive semidefinite. Do not invoke the final Jin endpoint.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_06_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|`CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_06_solution`]].
 
 ```lean
 theorem exercise_06_solution

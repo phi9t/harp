@@ -365,10 +365,10 @@ than suggesting a temporal reading order.
 
 The public definition
 `CrouzeixTextbook.Part06.boundary_dilation_data` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]]. It
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]]. It
 is an exact eta reexport of
 `CrouzeixConjecture.LoristSchwenninger.dilationDataOfParametricPolynomial` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean|ConcreteDilation.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean|ConcreteDilation.lean]].
 The coverage contract records kind `definition`, formal_mode `definition`, the
 provider declaration, its normalized type, and the standard axioms
 `Classical.choice`, `Quot.sound`, and `propext` under target `CrouzeixTextbook`.
@@ -619,11 +619,11 @@ Chapter 33 terminal norm bound, or any later realization result.
 Coverage classifies this card as a theorem with formal_mode
 `reexported-proof`. The public declaration is
 `CrouzeixTextbook.Part06.boundary_compression_first_moment` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean]].
 Its exact provider is
 `CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_comp_boundaryEmbedding`
 in
-[[formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean]].
 The compiler receipt records no project axiom and exactly the standard axioms
 `Classical.choice`, `Quot.sound`, and `propext`. The Lean theorem formalizes
 the operator identity and all type conversions. It does not formalize the
@@ -637,7 +637,7 @@ This is an LS source-derived first compression moment. Its source locator is
 `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124`. The captured-byte
 identity and digest are in
 [[evidence/crouzeix_conjecture/source_manifest.tsv|the Crouzeix source manifest]],
-and [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
+and [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
 records the locator chain.
 Harp reconstructs the measure-theoretic calculation in Lean. This description
 makes no priority claim and no peer-review, acceptance, or journal-publication
@@ -820,13 +820,13 @@ appears in the proof term.
 Coverage classifies this card as a theorem with formal_mode
 `reexported-proof`. The public declaration
 `CrouzeixTextbook.Part06.boundary_compression_power_moments` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean]].
 Its exact provider is
 `CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding`
 in
-[[formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean]].
 The induction bridge `bcfMulL_pow` is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean]].
 The compiler records exactly `Classical.choice`, `Quot.sound`, and `propext`
 and no project axiom. Exercise 34-E04 proves the applied identity from the two
 smaller provider lemmas; it does not invoke this parent power-moment theorem.
@@ -839,7 +839,7 @@ source locator is
 `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124`. Its captured-byte
 digest is registered in
 [[evidence/crouzeix_conjecture/source_manifest.tsv|source_manifest.tsv]], and
-[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
+[[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
 records the exact source interval.
 The local term power-moment compression describes the formal factorization;
 it is not a historical priority claim. There is no local receipt for
@@ -1016,10 +1016,10 @@ theorem.
 Coverage classifies this theorem as an exact `reexported-proof`. The stable
 public declaration
 `CrouzeixTextbook.Part06.boundary_multiplier_powers` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Its exact provider is
 `CrouzeixConjecture.LoristSchwenninger.bcfMulL_pow` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]].
 That provider proves the result from `bcfMulL_one` and `bcfMulL_mul`, whose
 body contains both `Lp.ext` and `ContinuousLinearMap.ext`. The compiled
 receipt records the standard axioms `Classical.choice`, `Quot.sound`, and
@@ -1031,7 +1031,7 @@ This is LS source-derived boundary multiplier algebra. The exact captured
 locator is `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124`. The byte
 identity is recorded in
 [[evidence/crouzeix_conjecture/source_manifest.tsv|the source manifest]], and
-[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
+[[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
 records its route position. Harp expands the representation argument because
 the source can use standard multiplier notation without discussing Lean's
 `L2` quotient. This is a reconstruction claim, not a priority or publication
@@ -1178,10 +1178,10 @@ compression identity and no Chapter 33 terminal theorem enters this proof.
 Coverage classifies the card as an exact theorem in `reexported-proof` mode.
 The public declaration
 `CrouzeixTextbook.Part06.boundary_multiplier_contractive` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Its provider
 `CrouzeixConjecture.LoristSchwenninger.bcfMulL_norm_le_one` is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]].
 The provider applies `bcfMulL_norm_le` and transitivity. Exercise 34-E05 has a
 different type: it proves the bound after applying the multiplier to one
 `L2` vector and calls `bcfMulL_norm_le`, not this parent theorem. The receipt
@@ -1192,7 +1192,7 @@ records only `Classical.choice`, `Quot.sound`, and `propext`.
 This contractive boundary multiplier is LS source-derived. The precise
 captured span is `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124`.
 The source manifest and
-[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
+[[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
 bind that span to the local provider. The pointwise-to-`L2` norm chain is
 expanded here for teaching. No claim is made about priority, peer review, or
 journal status.
@@ -1489,14 +1489,14 @@ the Jin providers from Chapters 30 through 32.
 
 Coverage classifies this theorem as exact and `reexported-proof`. The public
 declaration `CrouzeixTextbook.Part06.realization_norm_two` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Its exact provider is
 `CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary`
 in
-[[formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean|ConcreteDilation.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean|ConcreteDilation.lean]].
 That provider constructs `dilationDataOfParametricPolynomial` and invokes
 `DilationData.norm_target_le_two` from
-[[formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]].
 Exercise 34-E06 instantiates the concrete boundary constructor, identifies its
 stored target definitionally, and then applies the abstract endpoint to that
 specific record. It does not call this parent theorem or either terminal
@@ -1509,7 +1509,7 @@ This is the LS source-derived factor-two realization endpoint. Its exact
 captured locator is
 `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124`. The source manifest
 records the captured bytes and digest, while
-[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
+[[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|the LS source graph]]
 binds the local concrete-dilation theorem to that span. Harp's Lean theorem
 reconstructs the fixed-domain endpoint. It does not assert peer-review status,
 acceptance, journal publication, or historical priority.
@@ -1593,7 +1593,7 @@ and measure-theoretic assumption; `#check
 CrouzeixTextbook.Part06.realization_norm_two` shows the final Chapter 33
 application. The exact declarations and source lines are linked from the six
 cards above and from
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 The import graph contains no Jin endpoint, so route independence is a checked
 formal boundary rather than a prose convention.
 
@@ -1605,7 +1605,7 @@ Given D : PositiveBoundaryDensity μ and x : EuclideanVector n, prove ‖boundar
 
 The corresponding checked statement is
 `CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_01_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Do not invoke `boundary_dilation_data`; calculate the isometry field itself.
 
 ### CFT-34-E02 -- calculation {#exercise-cft-34-e02}
@@ -1615,7 +1615,7 @@ Given D, h, and x, prove (V* M_h V)x = euclideanOperator (boundaryPhiCLM D h)x b
 Here `V=boundaryEmbedding D` and `M_h=bcfMulL h`. The corresponding checked
 statement is
 `CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_02_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Do not invoke the completed compression theorem; expose the pointwise fields
 and integral calculation.
 
@@ -1639,7 +1639,7 @@ to the unique surviving exponent `-1`. In the checked finite-sum form, prove
 
 The corresponding checked statement is
 `CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_03_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Use the circle-integral kernel itself, not either compression theorem.
 
 ### CFT-34-E04 -- written-proof {#exercise-cft-34-e04}
@@ -1654,7 +1654,7 @@ Given `D`, `h`, `k`, and `x`, derive the pointwise power-compression identity
 First rewrite bcfMulL_pow, then apply the first-moment compression theorem to
 h^k. The corresponding checked statement is
 `CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_04_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 Do not call the completed power-compression theorem.
 
 ### CFT-34-E05 -- boundary {#exercise-cft-34-e05}
@@ -1676,7 +1676,7 @@ and finally the operator-norm inequality on `f`. Do not call
 `bcfMulL_norm_le_one`, which is the provider of the parent card. The checked
 statement is
 `CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_05_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 
 ### CFT-34-E06 -- lean-proof {#exercise-cft-34-e06}
 
@@ -1703,7 +1703,7 @@ specific record. Do not call `realization_norm_two` or
 exercise therefore checks the final Chapter 34 assembly boundary rather than
 repeating the abstract Chapter 33 endpoint. Its checked statement is
 `CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_06_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter34.lean|Chapter34.lean]].
 
 ### Solution sketches
 
@@ -1722,7 +1722,7 @@ Integrating and applying `integral_normalized_boundaryQuadraticForm` yields
 `‖boundaryEmbeddingToLp D x‖²=‖x‖²`. Both norms are nonnegative, so equality of
 squares gives equality of norms. The Lean solution uses the compiled provider
 `norm_boundaryEmbeddingToLp`; its proof in
-[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryEmbedding.lean|BoundaryEmbedding.lean]]
+[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryEmbedding.lean|BoundaryEmbedding.lean]]
 contains these steps.
 
 #### Solution to CFT-34-E02
@@ -1748,7 +1748,7 @@ Finally `boundaryPhiCLM_apply` identifies the result with
 `⟪y,euclideanOperator (boundaryPhiCLM D h)x⟫`. Equality of inner products
 against every `y` proves the vector equality. This proof is written directly
 in the exercise theorem; it does not call the parent compression theorem in
-[[formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]].
 
 #### Solution to CFT-34-E03
 
@@ -1800,9 +1800,9 @@ continuous function `h^k`. Apply
 evaluate the resulting equality of continuous linear maps at `x` using
 `congrArg`. The proof depends on the smaller multiplier and first-compression
 lemmas in
-[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]]
+[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]]
 and
-[[formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean|CompressionMoments.lean]].
 It does not use
 `boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding`, which is
 the parent theorem this exercise is meant to reconstruct.
@@ -1825,7 +1825,7 @@ Multiply its inequality and `hh : ‖h‖≤1` by the nonnegative number `‖f�
 Transitivity proves the goal. The solution is distinct from CFT-34-005: its
 conclusion is an inequality for one input vector, and its proof body depends
 on `bcfMulL_norm_le`, not `bcfMulL_norm_le_one`. The provider is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryMultiplier.lean|BoundaryMultiplier.lean]].
 
 #### Solution to CFT-34-E06
 
@@ -1853,9 +1853,9 @@ boundary realization data and its conclusion also identifies the constructed
 target. It invokes neither `realization_norm_two` nor
 `norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary`. The
 constructor is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean|ConcreteDilation.lean]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean|ConcreteDilation.lean]],
 and the endpoint proof is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]].
 
 ## Synthesis and forward dependencies
 

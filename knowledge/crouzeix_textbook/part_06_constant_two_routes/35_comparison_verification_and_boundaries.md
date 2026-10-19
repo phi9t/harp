@@ -235,12 +235,12 @@ provider for the sharp local bound.
 The coverage row is a theorem in `reexported-proof` mode. The public
 declaration is
 `CrouzeixTextbook.Part06.lorist_schwenninger_main` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 It reexports `CrouzeixConjecture.loristSchwenningerMainTheorem` from
-[[formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean|MainTheorem.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean|MainTheorem.lean]].
 The compiler receipt binds the exact files
-`formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean` and
-`formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`, the
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean` and
+`lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`, the
 normalized declaration type, and its standard axioms.
 
 #### Historical context
@@ -342,18 +342,18 @@ the theorem for an arbitrary finite nonempty index type.
 
 The theorem is an exact `reexported-proof`. Public declaration:
 `CrouzeixTextbook.Part06.lorist_schwenninger_finite_matrix` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 Provider: `CrouzeixConjecture.loristSchwenningerFiniteMatrixMainTheorem` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
 The receipt records
-`formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean` and
-`formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean` and
+`lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
 
 #### Historical context
 
 This finite-matrix consequence adapter is a provider-clean consequence, not a
 second LS proof. Exact locator:
-`formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L20-L24`.
 Its small proof is valuable because it fixes the positive-dimension and
 standard-index conventions used by downstream adapters.
 
@@ -496,21 +496,21 @@ control the operator-evaluation sequence.
 
 The exact theorem is in `reexported-proof` mode. Public declaration:
 `CrouzeixTextbook.Part06.lorist_schwenninger_rational` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 Provider: `CrouzeixConjecture.loristSchwenningerRationalSpectralSetCorollary`
 in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
 The provider delegates to the neutral proof
 `CrouzeixConjecture.rationalSpectralSetCorollary_of_mainTheorem` in
-[[formalization/lean/CrouzeixConjecture/RationalApproximation.lean|RationalApproximation.lean]].
-The receipt binds `formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean`
-and `formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
+[[lab/math/lean/CrouzeixConjecture/RationalApproximation.lean|RationalApproximation.lean]].
+The receipt binds `lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean`
+and `lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
 
 #### Historical context
 
 This rational approximation consequence is a provider-clean consequence.
 Exact locator:
-`formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L28-L33`.
 The local neutral adapter expands the approximation route so the rational
 statement does not masquerade as a source theorem proved by a rescaling trick.
 
@@ -661,21 +661,21 @@ CFT-35-002 supplies the positive-dimensional finite matrix theorem.
 
 The theorem is an exact `reexported-proof`. Public declaration:
 `CrouzeixTextbook.Part06.lorist_schwenninger_hilbert` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 Provider:
 `CrouzeixConjecture.loristSchwenningerHilbertSpacePolynomialCrouzeix` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
 The neutral transport is
 `CrouzeixConjecture.hilbertSpacePolynomialCrouzeix_of_mainTheorem` in
-[[formalization/lean/CrouzeixConjecture/HilbertSpaceCore.lean|HilbertSpaceCore.lean]].
-The receipt records `formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean`
-and `formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
+[[lab/math/lean/CrouzeixConjecture/HilbertSpaceCore.lean|HilbertSpaceCore.lean]].
+The receipt records `lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean`
+and `lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
 
 #### Historical context
 
 This Hilbert-space transport consequence is a provider-clean consequence.
 Exact locator:
-`formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L37-L45`.
 The local consequence is broader in ambient dimension than the finite-matrix
 source endpoint, but its proof boundary is explicit and independently checked.
 
@@ -798,21 +798,21 @@ rational and spectrum adapters.
 
 The theorem is an exact `reexported-proof`. Public declaration:
 `CrouzeixTextbook.Part06.lorist_schwenninger_two_spectral_set` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 Provider:
 `CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet`
 in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean|Consequences.lean]].
 The neutral package is checked in
-[[formalization/lean/CrouzeixConjecture/HilbertSpectralSetCore.lean|HilbertSpectralSetCore.lean]].
-The receipt records `formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean`
-and `formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
+[[lab/math/lean/CrouzeixConjecture/HilbertSpectralSetCore.lean|HilbertSpectralSetCore.lean]].
+The receipt records `lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean`
+and `lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean`.
 
 #### Historical context
 
 This closed numerical-range spectral-set consequence is a provider-clean
 consequence. Exact locator:
-`formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean#L55-L61`.
 The local theorem keeps the compactness and spectrum claims visible rather
 than using "spectral set" as an unexplained synonym for one norm inequality.
 
@@ -922,17 +922,17 @@ comparison; CFT-30–32 never become prerequisites of the LS or Harp proofs.
 
 The exact `proved-here` public theorem is
 `CrouzeixTextbook.Part06.three_route_terminal_bundle` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 The stable Jin compatibility declaration
 `CrouzeixTextbook.Part06.jin_final_comparator` remains a direct alias of
 `CrouzeixConjecture.jinFinalCrouzeixConjecture` in
-[[formalization/lean/CrouzeixConjecture/FinalTheorems.lean|FinalTheorems.lean]].
+[[lab/math/lean/CrouzeixConjecture/FinalTheorems.lean|FinalTheorems.lean]].
 The bundle also links the LS provider
 `CrouzeixConjecture.loristSchwenningerMainTheorem` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean|MainTheorem.lean]]
+[[lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean|MainTheorem.lean]]
 and the Harp provider
 `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem` in
-[[formalization/lean/Crouzeix/Harp/MainTheorem.lean|Harp MainTheorem.lean]].
+[[lab/math/lean/Crouzeix/Harp/MainTheorem.lean|Harp MainTheorem.lean]].
 
 The compiler target is `CrouzeixTextbook`. Its receipt classifies the bundle
 as a theorem, records no underlying declaration, and records direct proof-body
@@ -956,14 +956,14 @@ Lean terminal compiles under the pinned toolchain and its receipt has the
 maintained dependency and axiom checks.
 
 The third component is the Harp-derived finite-horizon route at
-`formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25`. It is a local derived
+`lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25`. It is a local derived
 formalization, not another source-faithful manuscript route. This account does
 not assert priority or acceptance for Jin, LS, or Harp. It states source
 identity and local verification status only.
 
 The row classification is `comparison-only; Harp-derived component`. The
 contract locator is
-`formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25-L172`; the narrower
+`lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25-L172`; the narrower
 line-27 link above resolves the terminal declaration itself.
 
 #### ML analogy
@@ -1027,7 +1027,7 @@ PolynomialCrouzeixBound A p.
 Apply the quantified hypothesis to its two arguments. Do not call the LS
 terminal theorem. The checked solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_01_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 
 ### CFT-35-E02 -- calculation {#exercise-cft-35-e02}
 
@@ -1042,7 +1042,7 @@ prove `FiniteMatrixMainTheoremStatement` by unfolding the definition. Explain
 why `Nonempty (Fin d)` carries the positive-dimension convention. The checked
 solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_02_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 
 ### CFT-35-E03 -- written-proof {#exercise-cft-35-e03}
 
@@ -1057,7 +1057,7 @@ Use `rationalSpectralSetCorollary_of_mainTheorem hmain`. In prose, list the
 five limiting steps from polynomial approximants through the final
 inequality. The checked solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_03_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 
 ### CFT-35-E04 -- written-proof {#exercise-cft-35-e04}
 
@@ -1073,7 +1073,7 @@ Let `H` be a complete nontrivial complex Hilbert space. Given
 Use `hilbertSpacePolynomialCrouzeix_of_mainTheorem hfinite A p`. Identify the
 finite Krylov subspace used by the provider. The checked solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_04_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 
 ### CFT-35-E05 -- boundary {#exercise-cft-35-e05}
 
@@ -1088,7 +1088,7 @@ Use `closedOperatorNumericalRange_isTwoSpectralSet_of_mainTheorem hfinite A`.
 Then unfold the result and name its compactness, spectrum-containment, and
 rational-bound components. The checked solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_05_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 
 ### CFT-35-E06 -- lean-proof {#exercise-cft-35-e06}
 
@@ -1130,7 +1130,7 @@ exact ⟨hJinNormalized ▸ hJin,
 
 The checked theorem is
 `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_06_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter35.lean|Chapter35.lean]].
 Its signature and proof use only the supplied propositions, equalities, and
 witnesses. No terminal theorem or comparison bundle is a proof dependency.
 The `CrouzeixTextbook` compiler receipt records normalized type hash

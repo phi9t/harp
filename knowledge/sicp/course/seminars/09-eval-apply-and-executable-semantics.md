@@ -125,7 +125,7 @@ The result is `11`, not `101`. Using `Fcaller` instead of the closure's saved `G
 
 ## Rust lens
 
-The existing [[knowledge/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]] gives the fuller kernel, representation, cost, and falsification account. The runnable [[labs/sicp-evaluator/README|`labs/sicp-evaluator/` crate]] is a semantic supplement: it models a Scheme subset's eval/apply cycle, lexical closures, selected special forms, primitive procedures, and observable linear environment lookup in Rust.
+The existing [[knowledge/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]] gives the fuller kernel, representation, cost, and falsification account. The runnable [[lab/sicp/README|`lab/sicp/` crate]] is a semantic supplement: it models a Scheme subset's eval/apply cycle, lexical closures, selected special forms, primitive procedures, and observable linear environment lookup in Rust.
 
 Because Rust is not the language being interpreted, the crate is not metacircular. It also has no analyzed evaluator and no compilation stage, so it cannot demonstrate §4.1.7's execution-procedure split or the compiler path developed later in SICP. Its six tests are useful evidence for the modeled semantic invariants, not evidence that it implements full Scheme.
 

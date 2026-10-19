@@ -6,9 +6,9 @@ case "$0" in
   *) script_path=$PWD/$0 ;;
 esac
 script_dir=${script_path%/*}
-canonical_project_dir=$(CDPATH= cd -- "$script_dir/../formalization/lean" && pwd -P)
+canonical_project_dir=$(CDPATH= cd -- "$script_dir/../lab/math/lean" && pwd -P)
 canonical_repository_dir=$(CDPATH= cd -- "$script_dir/.." && pwd -P)
-relative_root=formalization/lean
+relative_root=lab/math/lean
 receipt_output=
 
 resolve_default_lean_cache_root() {
@@ -234,7 +234,7 @@ if [ "$normal_build" = true ] && is_route_isolated_target "$target"; then
     report_failure "$scan_label" preflight 0 0 0 0
     exit 1
   }
-  if ! preflight_output=$(cd "$script_dir/.." && python3 labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route "$preflight_route" 2>&1); then
+  if ! preflight_output=$(cd "$script_dir/.." && python3 lab/math/proof_reproduction/proof_evidence.py preflight --route "$preflight_route" 2>&1); then
     printf '%s\n' "$preflight_output" >&2
     report_failure "$scan_label" preflight 0 0 0 0
     exit 1

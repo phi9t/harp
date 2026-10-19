@@ -178,7 +178,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.parametricBoundaryIntegral`.
 Substantive provider: `none`; a definition has no proof obligation. The named declaration is an alias of the definition, which the underlying-declaration line names.
 Readable type map: `Gamma` is the parametrized boundary, `mu` the parameter measure, `f` the scalar function, `B` the matrix.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L9).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L9).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `{i : Type u_1} → {n : Type u_2} → [inst : TopologicalSpace.{u_1} i] → [inst_1 : MeasurableSpace.{u_1} i] → [Fintype.{u_2} n] → [DecidableEq.{u_2 + 1} n] → {Omega : Set.{0} Complex} → CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega → MeasureTheory.Measure.{u_1} i → (Complex → Complex) → CrouzeixConjecture.SquareMatrix.{u_2} n → CrouzeixConjecture.SquareMatrix.{u_2} n`.
 Type SHA-256: `db42d2cc78e2548dc4e32779200458704022a64a442f32f34441ec2a39f9a3b6`.
@@ -292,7 +292,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.continuousOn_parametricBoundaryIntegral`.
 Substantive provider: `CrouzeixConjecture.continuousOn_parametricBoundaryIntegral`, a genuine multi-step proof: `continuousOn_integral_of_compact_support`, then joint continuity of the integrand split into its scalar and matrix factors.
 Readable type map: `Gamma` is the contour, `f` the scalar function continuous on the closure, and the set is the matrices whose numerical range lies in `Omega`.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L11).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L11).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [CompactSpace.{u_1} i] [inst_2 : MeasurableSpace.{u_1} i] [OpensMeasurableSpace.{u_1} i] [inst_4 : Fintype.{u_2} n] [inst_5 : DecidableEq.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} [MeasureTheory.IsFiniteMeasure.{u_1} mu] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (f : Complex → Complex), ContinuousOn.{0, 0} f (closure.{0} Omega) → ContinuousOn.{u_2, u_2} (CrouzeixConjecture.parametricBoundaryIntegral.{u_1, u_2} Gamma mu f) (setOf.{u_2} fun B => LE.le.{0} (CrouzeixConjecture.numericalRange.{u_2} B) Omega)`.
 Type SHA-256: `963da44a67bc224363d41d3a83934eefd3ce72483cb4703321565ec0e2fa8f8b`.
@@ -430,7 +430,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval`.
 Substantive provider: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval`, a five-step `calc` whose analytic content is the imported `integral_holomorphic_cauchy_resolvent_of_simpleDiagonalization`.
 Readable type map: `R` and `c` fix the radial data, `G` the oriented boundary, `V` the holomorphy domain, `B` the matrix, and `hB` the diagonalization witness that `functionEval` consumes as data.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L13).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L13).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] (R : CrouzeixConjecture.PositivePeriodicRadialData) (c : Complex) {Omega V : Set.{0} Complex} (G : R.OrientedRadialConvexBoundary c Omega), IsOpen.{0} V → Convex.{0, 0} Real V → LE.le.{0} (closure.{0} Omega) V → ∀ {f : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f V → ∀ (B : CrouzeixConjecture.SquareMatrix.{u_1} n) (hB : CrouzeixConjecture.SimpleDiagonalization.{u_1} B), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} B) Omega → Eq.{u_1 + 1} (CrouzeixConjecture.parametricBoundaryIntegral.{0, u_1} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R c G) CrouzeixConjecture.contourParameterMeasure f B) (CrouzeixConjecture.SimpleDiagonalization.functionEval.{u_1} hB f)`.
 Type SHA-256: `74acdb3127b3924d38eb938c0934826e0ff23e1aa7c6eb4ec4a7e63c496d534e`.
@@ -525,7 +525,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.simpleSpectrumHolomorphicEval`.
 Substantive provider: `none`; a definition has no proof obligation. The named declaration is an alias of the definition, which the underlying-declaration line names.
 Readable type map: `A` is the target matrix, `f` the scalar function, `k` the approximation index.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L15).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L15).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `{n : Type u_1} → [Fintype.{u_1} n] → [DecidableEq.{u_1 + 1} n] → [Nonempty.{u_1 + 1} n] → CrouzeixConjecture.SquareMatrix.{u_1} n → (Complex → Complex) → Nat → CrouzeixConjecture.SquareMatrix.{u_1} n`.
 Type SHA-256: `f74b567c4c68920453b562c528c09954e6ebe2600c879b384eee872eb58b2fea`.
@@ -623,7 +623,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation`.
 Substantive provider: `CrouzeixConjecture.tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation`, which chains eventual membership, `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within`, and CFT-15-002's continuity.
 Readable type map: `Gamma` is the contour, `A` the target matrix, and `A_k` Chapter 6's approximants.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L17).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L17).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [CompactSpace.{u_1} i] [inst_2 : MeasurableSpace.{u_1} i] [OpensMeasurableSpace.{u_1} i] [inst_4 : Fintype.{u_2} n] [inst_5 : DecidableEq.{u_2 + 1} n] [inst_6 : Nonempty.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} [MeasureTheory.IsFiniteMeasure.{u_1} mu] {Omega : Set.{0} Complex} (Gamma : CrouzeixConjecture.ParametricConvexBoundary.{u_1} Omega) (f : Complex → Complex), ContinuousOn.{0, 0} f (closure.{0} Omega) → ∀ (A : CrouzeixConjecture.SquareMatrix.{u_2} n), IsOpen.{0} Omega → LE.le.{0} (CrouzeixConjecture.numericalRange.{u_2} A) Omega → Filter.Tendsto.{0, u_2} (fun k => CrouzeixConjecture.parametricBoundaryIntegral.{u_1, u_2} Gamma mu f (CrouzeixConjecture.simpleSpectrumApproximation.{u_2} A k)) Filter.atTop.{0} (nhds.{u_2} (CrouzeixConjecture.parametricBoundaryIntegral.{u_1, u_2} Gamma mu f A))`.
 Type SHA-256: `486e395c4946e9143d989e8d08dbb5ec1cafcfa3b625fe421b5881d3fa179b2e`.
@@ -730,7 +730,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval`.
 Substantive provider: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval`, which composes CFT-15-005's convergence with an eventual application of CFT-15-003 through `Tendsto.congr'`.
 Readable type map: `A` is the arbitrary target matrix, `S_k` the simple-spectrum evaluations, and the limit is the contour integral at `A`.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L19).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L19).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [inst_2 : Nonempty.{u_1 + 1} n] (R : CrouzeixConjecture.PositivePeriodicRadialData) (c : Complex) {Omega V : Set.{0} Complex} (G : R.OrientedRadialConvexBoundary c Omega), IsOpen.{0} V → Convex.{0, 0} Real V → LE.le.{0} (closure.{0} Omega) V → ∀ {f : Complex → Complex}, DifferentiableOn.{0, 0, 0} Complex f V → ∀ (A : CrouzeixConjecture.SquareMatrix.{u_1} n), LE.le.{0} (CrouzeixConjecture.numericalRange.{u_1} A) Omega → Filter.Tendsto.{0, u_1} (CrouzeixConjecture.simpleSpectrumHolomorphicEval.{u_1} A f) Filter.atTop.{0} (nhds.{u_1} (CrouzeixConjecture.parametricBoundaryIntegral.{0, u_1} (CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundary R c G) CrouzeixConjecture.contourParameterMeasure f A))`.
 Type SHA-256: `686e54ee644104f71a77067fd770780a508573e5b613bc07f69b3cf2afef3f11`.
@@ -849,7 +849,7 @@ finite-measure instances.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_01_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `rfl`; a definitional unfolding with no provider and no hypothesis on `f`, `B` or the contour.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L33).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L33).
 Type SHA-256: `05097994711b6fa8226b8a2962e9c3a57029dd64cb0597f63ee051ea7d1e0b33`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -878,7 +878,7 @@ The checked solution unfolds the definition and closes by `simp`.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_02_solution`.
 Formal mode: `proved-here`.
 Provider boundary: the definition of `parametricBoundaryIntegral` and `simp`; no provider and no hypotheses.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L41).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L41).
 Type SHA-256: `38e14ac8dd819d33fa238e2c4ed188ad60cbe530a1aafccd03b8624139554ec7`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -908,7 +908,7 @@ solution is the pair of card applications and adds no proof.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_03_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.continuousOn_parametricBoundaryIntegral` and `tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation`, the providers of CFT-15-002 and CFT-15-005; the exercise adds the pairing, not a proof.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L48).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L48).
 Type SHA-256: `19a55e7da2f7a20491ce66dbb2f0e7bd11148c0703319e21389633a6581e0377`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -946,7 +946,7 @@ sketch of this chapter that survives.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_04_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval`, CFT-15-003's provider; the exercise restates it and does not reprove it.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L65).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L65).
 Type SHA-256: `f731421e4d7dc8f66aca392a1f32a8d0cc0edcddc2cea87693c8a8130f86d565`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -974,7 +974,7 @@ that uses it.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_05_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `rfl`; a definitional unfolding of `simpleSpectrumHolomorphicEval`, with no hypothesis on `A`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L78).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L78).
 Type SHA-256: `c6cb463a3a9785d0cc83589b23c2fcec35ce67a3814b6121c1e4e87f35f1b503`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -1006,7 +1006,7 @@ distinct eigenvalues.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_06_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval`, CFT-15-006's provider; the exercise restates it and does not reprove it.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean#L85).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter15.lean#L85).
 Type SHA-256: `6f0dbf4ed2df6911fe363700cb3a1cb7ebdf8f9081514fb5f4b720c7a99db56a`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.

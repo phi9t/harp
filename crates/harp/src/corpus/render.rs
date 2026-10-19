@@ -380,17 +380,7 @@ fn has_vault_root(path: &Path) -> bool {
             std::path::Component::Normal(value) => value.to_str(),
             _ => None,
         })
-        .is_some_and(|root| {
-            [
-                "knowledge",
-                "evidence",
-                "content",
-                "labs",
-                "crates",
-                "formalization",
-            ]
-            .contains(&root)
-        })
+        .is_some_and(|root| ["knowledge", "evidence", "content", "lab", "crates"].contains(&root))
 }
 
 fn markdown_options(source_path: &str) -> Options {

@@ -104,7 +104,7 @@ sums and commuting each product identifies them.
 **Boundary and Lean provider.** Only finiteness of the two index sets and
 commutativity of the real product are used; no invertibility, no square shape,
 and no metric beyond the coordinate pairing itself.
-[`bilinear_pairing_duality`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L17)
+[`bilinear_pairing_duality`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L17)
 is proved here, and its checked proof is exactly the displayed expansion: it
 distributes both pairings into double sums, applies `Finset.sum_comm` for the
 interchange, and closes by commuting the products. The card previously aliased a
@@ -126,7 +126,7 @@ function of $j$.
 theorem about geometry: it says the two notations for the same computation
 agree. It is what makes CFT-10-001 readable as "the pairing moves $A$ across",
 and it is the reverse-mode rule of Chapter 4 in coordinates.
-[`transpose_coordinate_action`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L26)
+[`transpose_coordinate_action`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L26)
 is proved here, by rewriting with `Matrix.vecMul_transpose` and cancelling the
 double transpose. The component computation displayed above is not what the
 checked proof runs: it is the reason the rewrite is available, and no
@@ -144,7 +144,7 @@ function by precomposition, and the scalar by which it rescales is
 multiplicative because precomposing twice rescales twice.
 
 **Boundary and Lean provider.**
-[`determinant_top_degree_multiplicative`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L33)
+[`determinant_top_degree_multiplicative`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L33)
 re-exports `CrouzeixTextbook.Part01.determinant_multiplicative` and names it as
 its underlying declaration, so the two carry the same type. No new content is
 claimed. The top-degree exterior reading is
@@ -161,7 +161,7 @@ the scaled axes is the product of the scalings, which is the normalization that
 pins the alternating form down.
 
 **Boundary and Lean provider.**
-[`alternating_diagonal_volume`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L36)
+[`alternating_diagonal_volume`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L36)
 re-exports `CrouzeixTextbook.Part01.determinant_diagonal`, named as its
 underlying declaration. No new content is claimed.
 
@@ -175,7 +175,7 @@ two-index array $A_{ij}B_{ji}$ over both of its indices, and the order in which
 the two contractions are performed does not change the result.
 
 **Boundary and Lean provider.**
-[`contraction_trace_cyclic`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L39)
+[`contraction_trace_cyclic`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L39)
 re-exports `CrouzeixTextbook.Part01.trace_cyclic`, named as its underlying
 declaration. The shapes are deliberately rectangular: $AB$ and $BA$ are square
 of different sizes, and the equality is between two contractions rather than
@@ -191,7 +191,7 @@ between two matrices.
 one arithmetic fact behind every sign in an alternating expression, so that the
 signs elsewhere are bookkeeping rather than a separate argument. It proves
 nothing about wedge products themselves.
-[`wedge_sign_kernel`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L42)
+[`wedge_sign_kernel`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L42)
 is discharged by `ring`.
 
 ### The tensor product, and what a reshape is not
@@ -203,7 +203,7 @@ $$
 \widetilde f(x\otimes y)=f(x,y).
 $$
 Of that statement, the computation rule is what is compiled here:
-[`bilinear_factors_through_tensor`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L49),
+[`bilinear_factors_through_tensor`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L49),
 supplied by Mathlib's `TensorProduct.lift.tmul`, takes $f$ already in curried
 linear form and states $\widetilde f(x\otimes y)=f(x)(y)$. Neither the existence
 of the factorization nor its uniqueness is stated by that declaration or by any
@@ -214,7 +214,7 @@ with no basis and no finiteness.
 
 Reshaping is something else entirely. It is the relabeling
 $\iota\times\kappa\simeq\{1,\dots,mn\}$ and nothing more, recorded as
-[`reshape_is_index_relabeling`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L58).
+[`reshape_is_index_relabeling`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L58).
 A bijection of index sets carries no algebra with it.
 
 The sharpest way to see that the two notions differ is that an array of the
@@ -222,7 +222,7 @@ product shape need not be a product of vectors. The identity matrix is such an
 array, and there are no vectors $x,y$ with $I_{ij}=x_iy_j$: any such array has
 vanishing two-by-two determinant, since $x_0y_0\,x_1y_1-x_0y_1\,x_1y_0=0$, while
 $\det I=1$. That is
-[`identity_is_not_a_pure_tensor`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L65),
+[`identity_is_not_a_pure_tensor`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L65),
 whose proof detects rank with `Matrix.det_fin_two` and `Matrix.det_one` from the
 library rather than with any Chapter 5 declaration.
 
@@ -239,13 +239,13 @@ is the single counterexample.
 
 Summing a repeated index is contraction. Which index is summed is carried by the
 types:
-[`contractMiddle`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L83)
+[`contractMiddle`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L83)
 takes a three-index array and sums the middle axis, and no other reading of it
 typechecks. Contracting the outer product of two matrices over their shared axis
 recovers matrix multiplication exactly, which is
-[`contract_middle_eq_mul`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L88);
+[`contract_middle_eq_mul`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L88);
 contraction is additive in the array, which is
-[`contract_middle_add`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L94);
+[`contract_middle_add`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L94);
 scalar homogeneity, the other half of linearity, is not compiled here.
 
 ### Basis dependence: congruence, not similarity
@@ -257,7 +257,7 @@ $$
 \langle Sx,\ G\,Sy\rangle=\langle x,\ S^{\mathsf T}GS\,y\rangle ,
 $$
 which is
-[`bilinear_components_change_by_congruence`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L108).
+[`bilinear_components_change_by_congruence`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L108).
 This is exactly the transformation whose positivity Chapter 8 proved stable
 under.
 
@@ -266,9 +266,9 @@ $S^{\mathsf T}GS$. These agree for *every* matrix exactly when
 $S^{\mathsf T}=S^{-1}$, that is when $S$ is orthogonal; for a particular matrix
 they may coincide without it, as at $G=0$. The running shear is not:
 $S^{\mathsf T}S\neq I$ for $S=\begin{bmatrix}1&1\\0&1\end{bmatrix}$, recorded as
-[`congruence_is_not_similarity`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L122)
+[`congruence_is_not_similarity`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L122)
 with the transpose written out in
-[`shear_transpose`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L115).
+[`shear_transpose`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L115).
 So "change of basis" must always say which object is being transported. A
 spectrum is preserved by similarity and not by congruence; positivity is
 preserved by congruence and not by similarity.
@@ -347,7 +347,7 @@ because their previous providers were in an unmaintained namespace.
 
 The six exercise theorems live in
 `CrouzeixTextbook.Part02.Exercises.Chapter10` in the
-[chapter Lean source](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean).
+[chapter Lean source](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean).
 
 ## Exercises
 
@@ -359,7 +359,7 @@ action is the transpose action.
 
 **Solution.** Both are CFT-10-001 and CFT-10-002 at a concrete shape; the point
 of stating them together is that the second is what makes the first readable.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L134)
+[`exercise_01_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L134)
 fixes a $2\times3$ matrix, so the two vector arguments have genuinely different
 lengths and no square-shape assumption can hide.
 
@@ -370,7 +370,7 @@ identify the result.
 
 **Solution.** The contraction gives
 $\begin{bmatrix}19&22\\43&50\end{bmatrix}$.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L139)
+[`exercise_02_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L139)
 proves it by rewriting the contraction as the matrix product and then evaluating
 entrywise, which is the checked form of "einsum `ij,jk->ik` is matmul".
 
@@ -382,7 +382,7 @@ multiplication on an outer product, and that it is additive in the array.
 **Solution.** The first is the definition of the matrix product read as a sum
 over the shared index. The second is the interchange of a finite sum with
 addition.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L148)
+[`exercise_03_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L148)
 states both for arbitrary shapes, so the axis lengths are independent and the
 shape check is visible in the statement rather than assumed.
 
@@ -394,7 +394,7 @@ change of basis.
 **Solution.** Substitute $x\mapsto Sx$ and $y\mapsto Sy$ and move the first $S$
 across the pairing with CFT-10-001, then associate the remaining product. The
 result is congruence by $S$.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L157)
+[`exercise_04_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L157)
 states it for every dimension, every form and every change of basis, with no
 invertibility assumption — congruence needs none, which is exactly why it
 differs from similarity.
@@ -408,7 +408,7 @@ product shape need not be a pure tensor.
 $\mathrm{Fin}\,2\times\mathrm{Fin}\,3\simeq\mathrm{Fin}\,6$, which is bijective
 by construction. For the second, any array of the form $x_iy_j$ has vanishing
 two-by-two determinant, while the identity has determinant one.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L163)
+[`exercise_05_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L163)
 states both. Together they are the chapter's central distinction: relabeling
 indices is not forming a tensor product.
 
@@ -419,7 +419,7 @@ State the universal property's computation rule and the sign kernel.
 **Solution.** The factorization of a bilinear map through the tensor product
 computes on pure tensors as $\widetilde f(x\otimes y)=f(x,y)$; the sign kernel
 is integer ring arithmetic.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L170)
+[`exercise_06_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter10.lean#L170)
 states them together over an arbitrary commutative ring and arbitrary modules,
 so the universal property appears without any finiteness or basis assumption.
 

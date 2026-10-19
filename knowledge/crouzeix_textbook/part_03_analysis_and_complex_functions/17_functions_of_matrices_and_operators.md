@@ -187,7 +187,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.rationalPoleSet`.
 Substantive provider: none — this is a definition, so there is no proof to narrate; `CrouzeixConjecture` is a maintained prefix, so the alias names its target and the definition carries a receipt entry of its own.
 Readable type map: `r` is the rational function; the value is the zero set of its reduced denominator.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L9).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L9).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `RatFunc.{0} Complex → Set.{0} Complex`.
 Type SHA-256: `df698834284278b6673d92defe7d321fca0fcc2d07036d8d14f241e1f415eb30`.
@@ -270,7 +270,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.rationalPoleSet_finite`.
 Substantive provider: `CrouzeixConjecture.rationalPoleSet_finite`, one line: `Polynomial.finite_setOf_isRoot` applied to `RatFunc.denom_ne_zero`, matched to the pole set by `simpa`. The content is Mathlib's finiteness of roots; the card contributes the identification.
 Readable type map: `r` is the rational function; the conclusion is `Set.Finite` of its pole set.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L11).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L11).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (r : RatFunc.{0} Complex), Set.Finite.{0} (CrouzeixConjecture.rationalPoleSet r)`.
 Type SHA-256: `195c96f457562510229e4480cd2d03272c0b82e2a89787efa3ae280ecfbde8bf`.
@@ -354,7 +354,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.isOpen_compl_rationalPoleSet`.
 Substantive provider: `CrouzeixConjecture.isOpen_compl_rationalPoleSet`, one term: `(rationalPoleSet_finite r).isClosed.isOpen_compl`. Finite sets are closed; complements of closed sets are open.
 Readable type map: `r` is the rational function; the conclusion is openness of the pole set's complement.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L13).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L13).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ (r : RatFunc.{0} Complex), IsOpen.{0} (Compl.compl.{0} (CrouzeixConjecture.rationalPoleSet r))`.
 Type SHA-256: `6546c6b2a84d65b93dde09deef9b30d30d997442b3eb25d3162fd69a00550f9e`.
@@ -445,7 +445,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.RationalPoleFreeOn`.
 Substantive provider: none — this is a definition, so there is no proof to narrate; `CrouzeixConjecture` is a maintained prefix, so the alias names its target and the definition carries a receipt entry of its own.
 Readable type map: `r` is the rational function and `s` the set; the value is the proposition that the pole set and `s` are disjoint.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L15).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L15).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `RatFunc.{0} Complex → Set.{0} Complex → Prop`.
 Type SHA-256: `1e640019cefe8a185b38ea1896cb2b895c1e42e4e8788383ec7e4867497002c6`.
@@ -527,7 +527,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.rationalScalarEval`.
 Substantive provider: none — this is a definition, so there is no proof to narrate; `CrouzeixConjecture` is a maintained prefix, so the alias names its target and the definition carries a receipt entry of its own.
 Readable type map: `r` is the rational function and `z` the point; the value is the reduced quotient at `z`, totalized by division by zero.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L17).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L17).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `RatFunc.{0} Complex → Complex → Complex`.
 Type SHA-256: `b4be13ee7d5fca850f3f53f9cd7bbacb91727556700fd7b485bd561a2ed52550`.
@@ -673,7 +673,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.rationalMatrixEval`.
 Substantive provider: none — this is a definition, so there is no proof to narrate; `CrouzeixConjecture` is a maintained prefix, so the alias names its target and the definition carries a receipt entry of its own.
 Readable type map: `r` is the rational function and `A` the matrix; the value is `num(A) * (denom(A))⁻¹`, totalized by Mathlib's matrix inverse. No `[Nonempty n]` appears.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L19).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L19).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `{n : Type u_1} → [Fintype.{u_1} n] → [DecidableEq.{u_1 + 1} n] → RatFunc.{0} Complex → CrouzeixConjecture.SquareMatrix.{u_1} n → CrouzeixConjecture.SquareMatrix.{u_1} n`.
 Type SHA-256: `e0b1f943618f688b0db4dbef311558d41b621aa960c8f7229d8962342abea64d`.
@@ -773,7 +773,7 @@ statement.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter17.exercise_01_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L28).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L28).
 Normalized type: `∀ (r : RatFunc.{0} Complex), Eq.{1} (CrouzeixConjecture.rationalPoleSet r) (setOf.{0} fun z => Eq.{1} (Polynomial.eval.{0} z (RatFunc.denom.{0} r)) (OfNat.ofNat.{0} 0))`.
 Type SHA-256: `7befd8d17694051579a853dabd3f34282c7ca9102fb4d984ec664924cc1858e8`.
 Direct maintained dependencies: `CrouzeixConjecture.rationalPoleSet`.
@@ -807,7 +807,7 @@ theorem of this chapter and is a calculation on the definition.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter17.exercise_02_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L32).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L32).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] (p : Polynomial.{0} Complex) (A : CrouzeixConjecture.SquareMatrix.{u_1} n), Eq.{u_1 + 1} (CrouzeixConjecture.rationalMatrixEval.{u_1} (DFunLike.coe.{1, 1, 1} (Algebra.algebraMap.{0, 0} (Polynomial.{0} Complex) (RatFunc.{0} Complex)) p) A) (CrouzeixConjecture.polynomialEval.{u_1} p A)`.
 Type SHA-256: `3610ab65f2e5ad5c79a3db467f1112b82dc6d52a331cbda54ad8e4b1721bfc24`.
 Direct maintained dependencies: `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.polynomialEval`, `CrouzeixConjecture.rationalMatrixEval`.
@@ -845,7 +845,7 @@ assembly, which is the bridge theorem's first three lines.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter17.exercise_03_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L41).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L41).
 Normalized type: `∀ (r : RatFunc.{0} Complex) (s : Set.{0} Complex), CrouzeixConjecture.RationalPoleFreeOn r s → Exists.{1} fun U => And (IsOpen.{0} U) (And (LE.le.{0} s U) (CrouzeixConjecture.RationalPoleFreeOn r U))`.
 Type SHA-256: `e7411bb8f44ed848a6ca9d064458ab5bc15863080fabd204d39c3e8a96beddc4`.
 Direct maintained dependencies: `CrouzeixConjecture.RationalPoleFreeOn`, `CrouzeixConjecture.isOpen_compl_rationalPoleSet`, `CrouzeixConjecture.rationalPoleFreeOn_compl_rationalPoleSet`, `CrouzeixConjecture.rationalPoleFreeOn_iff_subset_compl`, `CrouzeixConjecture.rationalPoleSet`.
@@ -872,7 +872,7 @@ The direction matters for the reader, not for the Lean.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter17.exercise_04_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L48).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L48).
 Normalized type: `∀ (r : RatFunc.{0} Complex) {s t : Set.{0} Complex}, LE.le.{0} s t → CrouzeixConjecture.RationalPoleFreeOn r t → CrouzeixConjecture.RationalPoleFreeOn r s`.
 Type SHA-256: `969e9c6a45f955c231a70a65ce698e504da555bbcc38e8e05ff905941ef9e7ca`.
 Direct maintained dependencies: `CrouzeixConjecture.RationalPoleFreeOn`, `CrouzeixConjecture.rationalPoleSet`.
@@ -902,7 +902,7 @@ denominator to zero, and applies `div_zero`.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter17.exercise_05_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L53).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L53).
 Normalized type: `∀ (r : RatFunc.{0} Complex) {z : Complex}, Membership.mem.{0, 0} (CrouzeixConjecture.rationalPoleSet r) z → Eq.{1} (CrouzeixConjecture.rationalScalarEval r z) (OfNat.ofNat.{0} 0)`.
 Type SHA-256: `0f4b89996bf255b839d82200f369dd54cb42999928ca8d304ec98dab02515b16`.
 Direct maintained dependencies: `CrouzeixConjecture.rationalPoleSet`, `CrouzeixConjecture.rationalScalarEval`.
@@ -936,7 +936,7 @@ Mathlib cancellation lemma; the mathematical content is the engine's.
 
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter17.exercise_06_solution`.
 Formal mode: `proved-here`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean#L60).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter17.lean#L60).
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] [Nonempty.{u_1 + 1} n] (r : RatFunc.{0} Complex) (A : CrouzeixConjecture.SquareMatrix.{u_1} n), CrouzeixConjecture.RationalPoleFreeOn r (CrouzeixConjecture.numericalRange.{u_1} A) → Eq.{u_1 + 1} (HMul.hMul.{u_1, u_1, u_1} (CrouzeixConjecture.rationalMatrixEval.{u_1} r A) (CrouzeixConjecture.polynomialEval.{u_1} (RatFunc.denom.{0} r) A)) (CrouzeixConjecture.polynomialEval.{u_1} (RatFunc.num.{0} r) A)`.
 Type SHA-256: `d9af88a7d89f2b97ac27c9125fd68354da5fe19a120199778e6ffdcd4ef33203`.
 Direct maintained dependencies: `CrouzeixConjecture.RationalPoleFreeOn`, `CrouzeixConjecture.SquareMatrix`, `CrouzeixConjecture.numericalRange`, `CrouzeixConjecture.polynomialEval`, `CrouzeixConjecture.polynomialEval_denom_isUnit_of_rationalPoleFreeOn_numericalRange`, `CrouzeixConjecture.rationalMatrixEval`.

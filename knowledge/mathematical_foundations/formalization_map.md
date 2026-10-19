@@ -289,7 +289,7 @@ is supported by this design alone.
 
 ### Lean module boundaries
 
-All paths below are relative to `formalization/lean/` and are planned unless
+All paths below are relative to `lab/math/lean/` and are planned unless
 already present. Keep the namespace `TextbookBench`.
 
 | File | Responsibility |

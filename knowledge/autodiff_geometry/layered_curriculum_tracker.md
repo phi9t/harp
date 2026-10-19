@@ -48,8 +48,8 @@ Done criteria:
 
 - learner can state gradient, Jacobian, VJP, JVP, Hessian-vector product, and
   pullback in finite coordinates;
-- Lean references point to `formalization/lean/MathematicalFoundations` or
-  `formalization/lean/AutodiffGeometry`, not to informal textbook prose; and
+- Lean references point to `lab/math/lean/MathematicalFoundations` or
+  `lab/math/lean/AutodiffGeometry`, not to informal textbook prose; and
 - no Bishop or Lax source bytes are added to Harp.
 
 ### Layer 1 -- JAX Cookbook Notation
@@ -106,7 +106,7 @@ Status: `not started`.
 
 Primary sources:
 
-- local mathlib dependency in the shared root `formalization/lean`;
+- local mathlib dependency in the shared root `lab/math/lean`;
 - Lean API docs available through the pinned project; and
 - Tao analysis repository import inventory as proof-engineering guidance.
 

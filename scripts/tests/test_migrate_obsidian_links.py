@@ -210,12 +210,12 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
         self.assertEqual(migrated, "[[knowledge/b#Result boundary|Result]]\n")
 
     def test_migrates_safe_directory_target_to_its_regular_readme(self) -> None:
-        crate = self.repo_root / "labs" / "sicp-evaluator"
+        crate = self.repo_root / "lab" / "sicp"
         crate.mkdir(parents=True)
         (crate / "README.md").write_text("# SICP evaluator\n", encoding="utf-8")
         source = self.write_note(
             "rsi/sicp/course/seminars/a.md",
-            "[SICP evaluator crate](../../../../../labs/sicp-evaluator)\n",
+            "[SICP evaluator crate](../../../../../lab/sicp)\n",
         )
 
         migrated = migration.migrate_text(
@@ -225,7 +225,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
         )
 
         self.assertEqual(
-            migrated, "[[labs/sicp-evaluator/README|SICP evaluator crate]]\n"
+            migrated, "[[lab/sicp/README|SICP evaluator crate]]\n"
         )
 
     def test_migrates_evidence_directory_to_its_regular_provenance(self) -> None:
@@ -259,7 +259,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             )
 
     def test_rejects_directory_without_regular_readme(self) -> None:
-        directory = self.repo_root / "labs" / "without-readme"
+        directory = self.repo_root / "lab" / "without-readme"
         directory.mkdir(parents=True)
         source = self.write_note("a.md", "[Directory](../labs/without-readme)\n")
 
@@ -271,7 +271,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             )
 
     def test_rejects_directory_with_symlinked_readme(self) -> None:
-        directory = self.repo_root / "labs" / "symlinked-readme"
+        directory = self.repo_root / "lab" / "symlinked-readme"
         directory.mkdir(parents=True)
         target = self.repo_root / "README.md"
         target.write_text("# Outside directory\n", encoding="utf-8")

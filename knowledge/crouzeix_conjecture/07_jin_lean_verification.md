@@ -216,7 +216,7 @@ formalization root. The current proof-slice chain is:
 | `jin-terminal-crouzeix` | `CrouzeixConjecture.crouzeixConjecture` | `a8b6fdc904ed35de4a533b924bf8847c923f3a50e3cc19785ced4bee5f7da0f9` |
 
 These receipts are Harp-local proof checks against
-`formalization/lean/Crouzeix/Jin/`, not clean-room builds of the upstream Jin
+`lab/math/lean/Crouzeix/Jin/`, not clean-room builds of the upstream Jin
 repository. The receipt chain is validated by the Crouzeix proof-slice tests
 and by the shared-root Lean build.
 

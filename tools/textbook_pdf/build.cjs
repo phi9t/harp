@@ -68,7 +68,7 @@ let unavailable = [];
 function resolveLink(href, wiki = false) {
   if (/^(https?:|mailto:)/i.test(href)) return href;
   const [bare, hash] = href.split('#');
-  let rel = bare ? (wiki || /^(knowledge|formalization|evidence|labs)\//.test(bare) ? bare : path.posix.normalize(path.posix.join(path.posix.dirname(currentDoc.relative), bare))) : currentDoc.relative;
+  let rel = bare ? (wiki || /^(knowledge|evidence|lab)\//.test(bare) ? bare : path.posix.normalize(path.posix.join(path.posix.dirname(currentDoc.relative), bare))) : currentDoc.relative;
   const doc = docs.get(rel.replace(/\.md$/, ''));
   if (doc && selectedDocs.has(doc.relative)) return '#' + doc.id + (hash ? '-' + slug(hash) : '');
   if (!path.extname(rel)) { try { sourcePath(root,rel+'.md'); rel += '.md'; } catch(error) { if(error.code!=='ENOENT')throw error; } }

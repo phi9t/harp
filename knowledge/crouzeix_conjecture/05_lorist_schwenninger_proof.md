@@ -82,9 +82,9 @@ the isometry $V$, and the contraction $Q$ are exactly the inputs.
 Harp now has this terminal boundedness estimate as a compiled Lean support
 lemma for the abstract finite-dimensional perturbation interface:
 `CrouzeixConjecture.LoristSchwenninger.perturbation_mul_target_power_norm_le`
-in `formalization/lean/Crouzeix/LoristSchwenninger/Perturbation.lean`.
+in `lab/math/lean/Crouzeix/LoristSchwenninger/Perturbation.lean`.
 The proof-slice receipt is
-[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|ls-equation-one-terminal-bound/attempt-001]].
+[[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|ls-equation-one-terminal-bound/attempt-001]].
 This support lemma is narrower than the published route theorem: it isolates
 the terminal product bound used inside the finite-dimensional perturbation
 argument, while the published `complete-local` route receipt covers the full
@@ -199,9 +199,9 @@ Harp now has this final real-algebra endpoint as a compiled Lean support
 lemma:
 **[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-033A: Harp Lean proves the Lorist-Schwenninger scalar endpoint|INFERENCE - CC-033A]].**
 `CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two`
-in `formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean`.
+in `lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean`.
 The proof-slice receipt is
-[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json|ls-scalar-contradiction/attempt-001]].
+[[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json|ls-scalar-contradiction/attempt-001]].
 This theorem assumes $0\le b$, $0<\kappa$, $0<(\kappa-1)^2$, the recurrence
 lower bound, and the Hilbert-space upper bound as scalar hypotheses, then
 proves the contradiction endpoint. It does not construct $x$, prove the

@@ -2,6 +2,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::os::unix::fs::MetadataExt;
 use std::path::{Component, Path, PathBuf};
+use std::process::Command;
 
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
@@ -50,8 +51,8 @@ const LS_COMMAND_CACHE_POLICY: &str =
     "requested cached wrapper command; wrapper policy is repository-controlled";
 const LS_LEGACY_BUILD_TARGET: &str = "Crouzeix";
 const LS_BUILD_TARGET: &str = "CrouzeixLoristSchwenninger";
-const LS_LEGACY_AGGREGATE_PATH: &str = "formalization/lean/Crouzeix.lean";
-const LS_AGGREGATE_PATH: &str = "formalization/lean/CrouzeixLoristSchwenninger.lean";
+const LS_LEGACY_AGGREGATE_PATH: &str = "lab/math/lean/Crouzeix.lean";
+const LS_AGGREGATE_PATH: &str = "lab/math/lean/CrouzeixLoristSchwenninger.lean";
 const LS_FORBIDDEN_MODULES: [&str; 8] = [
     "CrouzeixConjecture.MainPerturbationReduction",
     "CrouzeixConjecture.CompletionStatement",
@@ -82,28 +83,28 @@ const FORMALIZATION_SPECS: [FormalizationSpec; 6] = [
         source_node: "harp-closed-range-consequence",
         declaration:
             "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
-        module_path: "formalization/lean/Crouzeix/Harp/Consequences.lean",
+        module_path: "lab/math/lean/Crouzeix/Harp/Consequences.lean",
     },
     FormalizationSpec {
         id: "harp-main-theorem",
         route: "harp",
         source_node: "harp-terminal-theorem",
         declaration: "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
-        module_path: "formalization/lean/Crouzeix/Harp/MainTheorem.lean",
+        module_path: "lab/math/lean/Crouzeix/Harp/MainTheorem.lean",
     },
     FormalizationSpec {
         id: "jin-closed-numerical-range",
         route: "jin",
         source_node: "jin-hilbert-spectral-set-consequence",
         declaration: "CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet",
-        module_path: "formalization/lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+        module_path: "lab/math/lean/CrouzeixConjecture/HilbertSpectralSet.lean",
     },
     FormalizationSpec {
         id: "jin-main-theorem",
         route: "jin",
         source_node: "jin-terminal-crouzeix",
         declaration: "CrouzeixConjecture.crouzeixConjecture",
-        module_path: "formalization/lean/Crouzeix/Jin/Terminal.lean",
+        module_path: "lab/math/lean/Crouzeix/Jin/Terminal.lean",
     },
     FormalizationSpec {
         id: "ls-closed-numerical-range",
@@ -111,14 +112,14 @@ const FORMALIZATION_SPECS: [FormalizationSpec; 6] = [
         source_node: "-",
         declaration:
             "CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet",
-        module_path: "formalization/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
+        module_path: "lab/math/lean/Crouzeix/LoristSchwenninger/Consequences.lean",
     },
     FormalizationSpec {
         id: "ls-main-theorem",
         route: "lorist-schwenninger",
         source_node: "ls-terminal-crouzeix",
         declaration: "CrouzeixConjecture.loristSchwenningerMainTheorem",
-        module_path: "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
+        module_path: "lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
     },
 ];
 
@@ -142,9 +143,9 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         statement_sha256: "f560ccaca9499f62c8cc30fe1a93338d1024101e129b439fbc880df29cb23311",
         dependencies: &[],
         lean_name: "CrouzeixConjecture.LoristSchwenninger.DilationData.perturbation_mul_target_power_norm_le",
-        build_target: "formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean",
+        build_target: "lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean",
         legacy_build_target: Some(
-            "formalization/lean/Crouzeix/LoristSchwenninger/Perturbation.lean",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Perturbation.lean",
         ),
     },
     LsNodeSpec {
@@ -154,7 +155,7 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         statement_sha256: "0b80e8d8bf6e2f5f9d3e3c0fb7e3d2e3f9c9ec7b5ecb392a6d211c7ef7ac0f3d",
         dependencies: &["ls-equation-one-terminal-bound"],
         lean_name: "CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound",
-        build_target: "formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean",
+        build_target: "lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean",
         legacy_build_target: None,
     },
     LsNodeSpec {
@@ -164,9 +165,9 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         statement_sha256: "966cabe377c00b287b67e3a96de1ab53a12b8c4d35d130c26ae2bc899557f9fa",
         dependencies: &[],
         lean_name: "CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two",
-        build_target: "formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
+        build_target: "lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
         legacy_build_target: Some(
-            "formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
+            "lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
         ),
     },
     LsNodeSpec {
@@ -176,7 +177,7 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         statement_sha256: "0d38ea668014d371f14b3ffb7d5e5bdce7417a2aef2cfd81f663257e72d79d86",
         dependencies: &["ls-power-recurrence", "ls-scalar-contradiction"],
         lean_name: "CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two",
-        build_target: "formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean",
+        build_target: "lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean",
         legacy_build_target: None,
     },
     LsNodeSpec {
@@ -186,7 +187,7 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         statement_sha256: "be32b0c50689d78d037f7359bcd03ab51a0e8ef06b8c5e64d533fbdb2cfaa280",
         dependencies: &["ls-perturbation-lemma"],
         lean_name: "CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
-        build_target: "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
+        build_target: "lab/math/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean",
         legacy_build_target: None,
     },
     LsNodeSpec {
@@ -196,7 +197,7 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         statement_sha256: "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67",
         dependencies: &["ls-double-layer-realization"],
         lean_name: "CrouzeixConjecture.loristSchwenningerMainTheorem",
-        build_target: "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
+        build_target: "lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
         legacy_build_target: None,
     },
 ];
@@ -418,6 +419,49 @@ pub(super) struct Report {
 }
 
 pub(super) fn verify(repo_root: &Path) -> Result<Report, AppError> {
+    if repo_root.join("lab/math/relocation.json").is_file() {
+        let output = Command::new("python3")
+            .arg(repo_root.join("lab/math/relocation.py"))
+            .args([
+                "--root",
+                repo_root.to_str().ok_or_else(|| {
+                    invalid(
+                        "sources.crouzeix.relocation",
+                        "repository path is not UTF-8".to_owned(),
+                    )
+                })?,
+            ])
+            .output()
+            .map_err(|error| {
+                invalid(
+                    "sources.crouzeix.relocation",
+                    format!("cannot verify historical relocation: {error}"),
+                )
+            })?;
+        if !output.status.success() {
+            return Err(invalid(
+                "sources.crouzeix.relocation",
+                String::from_utf8_lossy(&output.stdout).into_owned(),
+            ));
+        }
+        let value: serde_json::Value = serde_json::from_slice(&output.stdout).map_err(|error| {
+            invalid(
+                "sources.crouzeix.relocation",
+                format!("invalid relocation result: {error}"),
+            )
+        })?;
+        if value["status"] != "preserved" {
+            return Err(invalid(
+                "sources.crouzeix.relocation",
+                "historical relocation was not preserved".to_owned(),
+            ));
+        }
+        eprintln!("Crouzeix qualification: preserved historical identities; not a fresh route build or review");
+        return Ok(Report {
+            source_receipts: verify_source_manifest(repo_root)?,
+            verification_receipts: verify_verification_manifest(repo_root)?,
+        });
+    }
     let route_evidence = route::verify_published_routes(repo_root)
         .map_err(|detail| invalid("sources.crouzeix.route_contracts", detail))?;
     let local_evidence = verify_local_formalization_bundle_if_present(repo_root)?;
@@ -670,7 +714,7 @@ fn verify_local_formalization_manifest(
         ));
     }
 
-    let toolchain_path = Path::new("formalization/lean/lean-toolchain");
+    let toolchain_path = Path::new("lab/math/lean/lean-toolchain");
     require_regular_file_without_symlinks(
         repo_root,
         toolchain_path,
@@ -721,7 +765,7 @@ fn verify_local_formalization_manifest(
             &format!("cannot hash Lean toolchain identity: {}", error.message),
         )
     })?;
-    let lake_manifest_path = Path::new("formalization/lean/lake-manifest.json");
+    let lake_manifest_path = Path::new("lab/math/lean/lake-manifest.json");
     require_regular_file_without_symlinks(
         repo_root,
         lake_manifest_path,
@@ -829,7 +873,7 @@ fn verify_local_formalization_manifest(
                 LOCAL_FORMALIZATION_CODE,
                 relative,
                 line,
-                "lean_toolchain must equal formalization/lean/lean-toolchain",
+                "lean_toolchain must equal lab/math/lean/lean-toolchain",
             ));
         }
         if declared_toolchain_digest != &toolchain_digest
@@ -1344,7 +1388,7 @@ fn bounded_lean_source_paths(
     manifest: &Path,
     line: usize,
 ) -> Result<Vec<PathBuf>, AppError> {
-    let lean_root = Path::new("formalization/lean");
+    let lean_root = Path::new("lab/math/lean");
     let aggregate = lean_root.join("Crouzeix.lean");
     let mut sources = Vec::new();
     match fs::symlink_metadata(repo_root.join(&aggregate)) {
@@ -1353,7 +1397,7 @@ fn bounded_lean_source_paths(
                 LOCAL_FORMALIZATION_CODE,
                 manifest,
                 line,
-                "active Crouzeix source cannot be a symlink: formalization/lean/Crouzeix.lean",
+                "active Crouzeix source cannot be a symlink: lab/math/lean/Crouzeix.lean",
             ));
         }
         Ok(metadata) if metadata.is_file() => sources.push(aggregate),
@@ -1537,7 +1581,7 @@ fn verify_digest_input_file(
 }
 
 fn module_name_from_source_path(relative: &Path) -> Option<String> {
-    let relative = relative.strip_prefix("formalization/lean").ok()?;
+    let relative = relative.strip_prefix("lab/math/lean").ok()?;
     if relative
         .extension()
         .and_then(|extension| extension.to_str())
@@ -1565,10 +1609,10 @@ fn indexed_local_modules(
     manifest: &Path,
     line: usize,
 ) -> Result<BTreeMap<String, PathBuf>, AppError> {
-    let lean_root = repo_root.join("formalization/lean");
+    let lean_root = repo_root.join("lab/math/lean");
     require_directory_without_symlinks(
         repo_root,
-        Path::new("formalization/lean"),
+        Path::new("lab/math/lean"),
         manifest,
         line,
         "LS Lean source root",
@@ -1753,7 +1797,7 @@ fn required_mathlib_artifacts_digest(
         }
     }
     let artifact_root = fs::canonicalize(
-        repo_root.join("formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean"),
+        repo_root.join("lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean"),
     )
     .map_err(|error| {
         manifest_error(
@@ -1950,7 +1994,7 @@ fn verify_build_command(
     )?;
     verify_digest_bound_file(
         repo_root,
-        Path::new("formalization/lean/lakefile.toml"),
+        Path::new("lab/math/lean/lakefile.toml"),
         &command.lakefile_sha256,
         manifest,
         line,
@@ -1959,7 +2003,7 @@ fn verify_build_command(
     verify_digest_bound_file(
         repo_root,
         Path::new(
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
         ),
         &command.ls_graph_sha256,
         manifest,
@@ -1975,7 +2019,7 @@ fn verify_build_command(
                 LOCAL_FORMALIZATION_CODE,
                 manifest,
                 line,
-                "active Crouzeix source path must be UTF-8 beneath formalization/lean",
+                "active Crouzeix source path must be UTF-8 beneath lab/math/lean",
             ));
         };
         let Some(path_text) = path
@@ -1988,7 +2032,7 @@ fn verify_build_command(
                 LOCAL_FORMALIZATION_CODE,
                 manifest,
                 line,
-                "active Crouzeix source path must be UTF-8 beneath formalization/lean",
+                "active Crouzeix source path must be UTF-8 beneath lab/math/lean",
             ));
         };
         active_sources.push((path_text, path.clone()));
@@ -2027,7 +2071,7 @@ fn verify_build_command(
 
 fn verify_all_ls_receipts(repo_root: &Path, manifest: &Path, line: usize) -> Result<(), AppError> {
     let graph_path = Path::new(
-        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+        "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
     );
     let graph: LsSourceGraph =
         read_strict_json_bounded(repo_root, graph_path, manifest, line, "LS source graph")?;
@@ -2124,10 +2168,9 @@ fn resolve_ls_receipt_attempt(
     manifest: &Path,
     line: usize,
 ) -> Result<PathBuf, AppError> {
-    let node_root = Path::new(
-        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices",
-    )
-    .join(node_id);
+    let node_root =
+        Path::new("lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices")
+            .join(node_id);
     require_directory_without_symlinks(
         repo_root,
         &node_root,
@@ -2627,7 +2670,7 @@ fn verify_success_stdout(
     line: usize,
 ) -> Result<(), AppError> {
     let target_marker = format!("[lean] target={target}");
-    let root_marker = "[lean] root=formalization/lean";
+    let root_marker = "[lean] root=lab/math/lean";
     let passed_marker = "[lean] outcome=passed";
     let lines = stdout.lines().collect::<Vec<_>>();
     let valid = [target_marker.as_str(), root_marker, passed_marker]
@@ -2674,7 +2717,7 @@ fn valid_ls_command(
             } else {
                 verify_digest_bound_file(
                     repo_root,
-                    Path::new("formalization/lean/lake-manifest.json"),
+                    Path::new("lab/math/lean/lake-manifest.json"),
                     &command.lake_manifest_sha256,
                     manifest,
                     line,
@@ -3023,7 +3066,7 @@ fn compute_provider_closure(
     manifest: &Path,
     line: usize,
 ) -> Result<(Vec<ProviderModule>, Vec<ProviderFinding>), AppError> {
-    let lean_root = Path::new("formalization/lean");
+    let lean_root = Path::new("lab/math/lean");
     let mut pending = roots.iter().rev().cloned().collect::<Vec<_>>();
     let mut visited = BTreeSet::new();
     let mut modules = Vec::new();
@@ -3915,9 +3958,9 @@ fn verify_source_manifest(repo_root: &Path) -> Result<usize, AppError> {
             role.as_str(),
             "manuscript"
                 | "source"
+                | "formalization"
                 | "pdf"
                 | "metadata"
-                | "formalization"
                 | "prompt"
                 | "history"
                 | "prerequisite"
@@ -4302,10 +4345,10 @@ fn slash_path(path: &Path) -> String {
 
 fn fixture_route_manifest_path_runtime(route_id: &str) -> String {
     match route_id {
-        "jin" => "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
-        "harp" => "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
+        "jin" => "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+        "harp" => "lab/math/proof_reproduction/formal_targets/harp/route-manifest.json",
         "lorist-schwenninger" => {
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
         }
         _ => return String::new(),
     }
@@ -4637,7 +4680,13 @@ mod tests {
     }
 
     fn sha256_file(path: &Path) -> String {
-        format!("{:x}", Sha256::digest(fs::read(path).unwrap()))
+        format!(
+            "{:x}",
+            Sha256::digest(
+                fs::read(path)
+                    .unwrap_or_else(|error| panic!("cannot read {}: {error}", path.display()))
+            )
+        )
     }
 
     fn sha256_bytes(bytes: &[u8]) -> String {
@@ -4671,7 +4720,7 @@ mod tests {
     }
 
     fn test_active_source_paths(repo_root: &Path) -> Vec<PathBuf> {
-        let lean_root = repo_root.join("formalization/lean");
+        let lean_root = repo_root.join("lab/math/lean");
         let mut paths = Vec::new();
         let aggregate = lean_root.join("Crouzeix.lean");
         if aggregate.exists() {
@@ -4715,7 +4764,7 @@ mod tests {
     }
 
     fn test_ls_source_closure(repo_root: &Path) -> Vec<(String, PathBuf)> {
-        let lean_root = repo_root.join("formalization/lean");
+        let lean_root = repo_root.join("lab/math/lean");
         let mut modules = BTreeMap::new();
         for entry in WalkDir::new(&lean_root).follow_links(false) {
             let entry = entry.unwrap();
@@ -4785,7 +4834,7 @@ mod tests {
             }
         }
         let artifact_root =
-            repo_root.join("formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean");
+            repo_root.join("lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean");
         let records = modules
             .into_iter()
             .map(|module| {
@@ -4799,7 +4848,7 @@ mod tests {
     }
 
     fn test_active_required_mathlib_digest(repo_root: &Path) -> String {
-        let lean_root = repo_root.join("formalization/lean");
+        let lean_root = repo_root.join("lab/math/lean");
         test_required_mathlib_digest(
             repo_root,
             test_active_source_paths(repo_root).into_iter().map(|path| {
@@ -4891,7 +4940,7 @@ mod tests {
     }
 
     fn write_lean_module(repo_root: &Path, module_name: &str, source: &str) {
-        let relative = Path::new("formalization/lean")
+        let relative = Path::new("lab/math/lean")
             .join(module_name.replace('.', "/"))
             .with_extension("lean");
         let path = repo_root.join(relative);
@@ -4932,7 +4981,7 @@ mod tests {
         let mut terminal_binding = None;
         for spec in LS_NODE_SPECS {
             let attempt_relative = Path::new(
-                "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices",
+                "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices",
             )
             .join(spec.node_id)
             .join("attempt-001");
@@ -4988,7 +5037,7 @@ mod tests {
                         &repo_root.join("scripts/check_lean_library.sh"),
                     ),
                     "lake_manifest_sha256": sha256_file(
-                        &repo_root.join("formalization/lean/lake-manifest.json"),
+                        &repo_root.join("lab/math/lean/lake-manifest.json"),
                     ),
                     "dependency_cache_metadata_sha256": "2".repeat(64),
                     "required_mathlib_artifacts_sha256": test_ls_required_mathlib_digest(repo_root),
@@ -4999,7 +5048,7 @@ mod tests {
             fs::write(
                 attempt.join("build/stdout.log"),
                 format!(
-                    "[lean] target={LS_BUILD_TARGET}\n[lean] root=formalization/lean\n[lean] outcome=passed\n"
+                    "[lean] target={LS_BUILD_TARGET}\n[lean] root=lab/math/lean\n[lean] outcome=passed\n"
                 ),
             )
             .unwrap();
@@ -5054,7 +5103,7 @@ mod tests {
         }
         write_json(
             &repo_root.join(
-                "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+                "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
             ),
             &json!({
                 "schema_version": "crouzeix-ls-source-graph/v1",
@@ -5087,7 +5136,7 @@ mod tests {
                 &repo_root.join("scripts/check_lean_library.sh"),
             ),
             "lake_manifest_sha256": sha256_file(
-                &repo_root.join("formalization/lean/lake-manifest.json"),
+                &repo_root.join("lab/math/lean/lake-manifest.json"),
             ),
             "dependency_cache_metadata_sha256": "2".repeat(64),
             "required_mathlib_artifacts_sha256": test_ls_required_mathlib_digest(repo_root),
@@ -5137,7 +5186,7 @@ mod tests {
 
             fs::write(
                 attempt.join("build/stdout.log"),
-                "[lean] target=Crouzeix\n[lean] root=formalization/lean\n[lean] outcome=passed\n",
+                "[lean] target=Crouzeix\n[lean] root=lab/math/lean\n[lean] outcome=passed\n",
             )
             .unwrap();
 
@@ -5161,7 +5210,7 @@ mod tests {
     fn ls_attempt(repo_root: &Path, node_id: &str) -> PathBuf {
         repo_root.join(
             Path::new(
-                "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices",
+                "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices",
             )
             .join(node_id)
             .join("attempt-001"),
@@ -5170,7 +5219,7 @@ mod tests {
 
     fn ls_graph_path(repo_root: &Path) -> PathBuf {
         repo_root.join(
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/\
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/\
              source-graph.json",
         )
     }
@@ -5349,10 +5398,10 @@ mod tests {
 
     fn fixture_route_manifest_path(route_id: &str) -> &'static str {
         match route_id {
-            "jin" => "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
-            "harp" => "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
+            "jin" => "lab/math/proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+            "harp" => "lab/math/proof_reproduction/formal_targets/harp/route-manifest.json",
             "lorist-schwenninger" => {
-                "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+                "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
             }
             other => panic!("unsupported route fixture: {other}"),
         }
@@ -5416,7 +5465,7 @@ mod tests {
                         "      \"node_id\": \"terminal\",\n",
                         "      \"role\": \"terminal\",\n",
                         "      \"declaration\": \"Fixture.{route_id}.terminal\",\n",
-                        "      \"module_path\": \"formalization/lean/{aggregate}.lean\",\n",
+                        "      \"module_path\": \"lab/math/lean/{aggregate}.lean\",\n",
                         "      \"dependency_ids\": [],\n",
                         "      \"provenance_kind\": \"derived\",\n",
                         "      \"correspondence_kind\": \"derived-extraction\",\n",
@@ -5558,7 +5607,7 @@ mod tests {
             write_lean_module(repo_root, module_name, source);
         }
 
-        let lean_root = repo_root.join("formalization/lean");
+        let lean_root = repo_root.join("lab/math/lean");
         fs::write(
             lean_root.join("Crouzeix.lean"),
             "import Crouzeix.Harp.Consequences\nimport Crouzeix.Jin.Terminal\nimport CrouzeixConjecture.HilbertSpectralSet\nimport Crouzeix.LoristSchwenninger.ConcreteDilation\nimport Crouzeix.LoristSchwenninger.Dilation\nimport Crouzeix.LoristSchwenninger.MainTheorem\nimport Crouzeix.LoristSchwenninger.OperatorRecurrence\nimport Crouzeix.LoristSchwenninger.Perturbation\nimport Crouzeix.LoristSchwenninger.PerturbationLemma\nimport Crouzeix.LoristSchwenninger.Scalar\n",
@@ -5602,7 +5651,7 @@ mod tests {
         let lake_manifest_digest = sha256_file(&lean_root.join("lake-manifest.json"));
         write_ls_receipts(repo_root);
         let ls_graph = repo_root.join(
-            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+            "lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
         );
 
         let evidence = local_formalization_bundle(repo_root);
@@ -5614,7 +5663,7 @@ mod tests {
         let stderr_path = evidence.join("build/stderr.log");
         fs::write(
             &stdout_path,
-            "[lean] target=Crouzeix\n[lean] root=formalization/lean\n[lean] outcome=passed\n",
+            "[lean] target=Crouzeix\n[lean] root=lab/math/lean\n[lean] outcome=passed\n",
         )
         .unwrap();
         fs::write(&stderr_path, "").unwrap();
@@ -5964,7 +6013,7 @@ mod tests {
                 fs::write(root.join("scripts/check_lean_library.sh"), "changed\n").unwrap();
             }),
             ("lakefile", |root| {
-                fs::write(root.join("formalization/lean/lakefile.toml"), "changed\n").unwrap();
+                fs::write(root.join("lab/math/lean/lakefile.toml"), "changed\n").unwrap();
             }),
             ("source graph", |root| {
                 let path = ls_graph_path(root);
@@ -6006,7 +6055,7 @@ mod tests {
         write_local_formalization_manifest(repo.path());
         fs::write(
             repo.path().join(
-                "formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Fixture.olean",
+                "lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Fixture.olean",
             ),
             b"changed Mathlib object bytes\n",
         )
@@ -6078,7 +6127,7 @@ mod tests {
                 spec.node_id,
                 "build/stdout.log",
                 "stdout_sha256",
-                b"[lean] target=Crouzeix\n[lean] root=formalization/lean\n[lean] outcome=passed\n",
+                b"[lean] target=Crouzeix\n[lean] root=lab/math/lean\n[lean] outcome=passed\n",
             );
         }
 
@@ -6099,7 +6148,7 @@ mod tests {
         replace_ls_receipts_with_v1_command(repo.path(), &valid_ls_command_v1());
         fs::write(
             repo.path()
-                .join("formalization/lean/CrouzeixLoristSchwenninger.lean"),
+                .join("lab/math/lean/CrouzeixLoristSchwenninger.lean"),
             "-- v1 does not depend on this aggregate root\n",
         )
         .unwrap();
@@ -6110,7 +6159,7 @@ mod tests {
         let repo = fixture();
         write_local_formalization_manifest(repo.path());
         fs::write(
-            repo.path().join("formalization/lean/Crouzeix.lean"),
+            repo.path().join("lab/math/lean/Crouzeix.lean"),
             "-- v2 does not depend on the broad aggregate root\n",
         )
         .unwrap();
@@ -6125,7 +6174,7 @@ mod tests {
         write_local_formalization_manifest(repo.path());
         fs::write(
             repo.path()
-                .join("formalization/lean/CrouzeixLoristSchwenninger.lean"),
+                .join("lab/math/lean/CrouzeixLoristSchwenninger.lean"),
             "-- import Crouzeix.LoristSchwenninger.Consequences\n",
         )
         .unwrap();
@@ -6274,7 +6323,7 @@ mod tests {
                 command["argv"] = json!(["scripts/check_lean_library.sh", "Crouzeix"]);
             }),
             ("cwd", |command: &mut Value| {
-                command["cwd"] = json!("formalization/lean");
+                command["cwd"] = json!("lab/math/lean");
             }),
             ("timeout", |command: &mut Value| {
                 command["timeout_seconds"] = json!(3_599);
@@ -6376,7 +6425,7 @@ mod tests {
         replace_ls_command(repo.path(), &valid_ls_command_v2(repo.path()));
         let source_path = repo
             .path()
-            .join("formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean");
+            .join("lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean");
         fs::write(
             &source_path,
             fs::read_to_string(&source_path).unwrap() + "-- changed after receipt\n",
@@ -6405,7 +6454,7 @@ mod tests {
         replace_ls_command(repo.path(), &valid_ls_command_v2(repo.path()));
         fs::write(
             repo.path().join(
-                "formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Fixture.olean",
+                "lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Fixture.olean",
             ),
             b"changed Mathlib object bytes\n",
         )
@@ -6434,7 +6483,7 @@ mod tests {
         replace_ls_command(repo.path(), &valid_ls_command_v2(repo.path()));
         let aggregate = repo
             .path()
-            .join("formalization/lean/CrouzeixLoristSchwenninger.lean");
+            .join("lab/math/lean/CrouzeixLoristSchwenninger.lean");
         fs::write(
             &aggregate,
             fs::read_to_string(&aggregate).unwrap() + "-- aggregate-only mutation\n",
@@ -6462,7 +6511,7 @@ mod tests {
         );
         let aggregate = repo
             .path()
-            .join("formalization/lean/CrouzeixLoristSchwenninger.lean");
+            .join("lab/math/lean/CrouzeixLoristSchwenninger.lean");
         fs::write(
             &aggregate,
             fs::read_to_string(&aggregate).unwrap() + "import Fixture.Transitive\n",
@@ -6492,7 +6541,7 @@ mod tests {
         );
         let aggregate = repo
             .path()
-            .join("formalization/lean/CrouzeixLoristSchwenninger.lean");
+            .join("lab/math/lean/CrouzeixLoristSchwenninger.lean");
         fs::write(
             &aggregate,
             fs::read_to_string(&aggregate).unwrap()
@@ -6526,7 +6575,7 @@ mod tests {
         );
         let aggregate = repo
             .path()
-            .join("formalization/lean/CrouzeixLoristSchwenninger.lean");
+            .join("lab/math/lean/CrouzeixLoristSchwenninger.lean");
         fs::write(
             &aggregate,
             fs::read_to_string(&aggregate).unwrap() + "import Fixture.MissingManagedTransitive\n",
@@ -6557,7 +6606,7 @@ mod tests {
         );
         let aggregate = repo
             .path()
-            .join("formalization/lean/CrouzeixLoristSchwenninger.lean");
+            .join("lab/math/lean/CrouzeixLoristSchwenninger.lean");
         fs::write(
             &aggregate,
             fs::read_to_string(&aggregate).unwrap() + "import Fixture.TransitiveProvider\n",
@@ -6586,11 +6635,7 @@ mod tests {
         replace_ls_command(repo.path(), &valid_ls_command_v2(repo.path()));
         let target = repo.path().join("unrelated.lean");
         fs::write(&target, "def Unrelated.value : True := True\n").unwrap();
-        symlink(
-            &target,
-            repo.path().join("formalization/lean/Unrelated.lean"),
-        )
-        .unwrap();
+        symlink(&target, repo.path().join("lab/math/lean/Unrelated.lean")).unwrap();
 
         let error = verify(repo.path()).unwrap_err();
         assert!(error.message.contains("symlink"), "{}", error.message);
@@ -6781,7 +6826,7 @@ mod tests {
                 concat!(
                     "[lean] target=Crouzeix\n",
                     "[lean] target=Crouzeix\n",
-                    "[lean] root=formalization/lean\n",
+                    "[lean] root=lab/math/lean\n",
                     "[lean] outcome=passed\n",
                 ),
             ),
@@ -6789,7 +6834,7 @@ mod tests {
                 "contradictory outcome",
                 concat!(
                     "[lean] target=Crouzeix\n",
-                    "[lean] root=formalization/lean\n",
+                    "[lean] root=lab/math/lean\n",
                     "[lean] outcome=passed\n",
                     "[lean] outcome=blocked\n",
                 ),
@@ -7207,7 +7252,7 @@ mod tests {
             ("route_id", "jin"),
             (
                 "module_path",
-                "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
+                "lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
             ),
             (
                 "declaration_name",
@@ -7438,7 +7483,7 @@ mod tests {
         write_local_formalization_manifest(repo.path());
         fs::write(
             repo.path()
-                .join("formalization/lean/Crouzeix/Harp/Consequences.lean"),
+                .join("lab/math/lean/Crouzeix/Harp/Consequences.lean"),
             "theorem changed : True := by trivial\n",
         )
         .unwrap();
@@ -7509,7 +7554,7 @@ mod tests {
 
         let repo = fixture();
         write_local_formalization_manifest(repo.path());
-        let module_root = repo.path().join("formalization/lean/Crouzeix/Harp");
+        let module_root = repo.path().join("lab/math/lean/Crouzeix/Harp");
         let outside_root = repo.path().join("outside-modules");
         fs::rename(&module_root, &outside_root).unwrap();
         symlink(&outside_root, &module_root).unwrap();

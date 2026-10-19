@@ -55,11 +55,11 @@ range.
 
 Lean correspondence: MainTheoremStatement, PolynomialCrouzeixBound, and
 maxPolynomialModulusOnNumericalRange in
-[Statements.lean](../../formalization/lean/CrouzeixConjecture/Statements.lean).
+[Statements.lean](../../lab/math/lean/CrouzeixConjecture/Statements.lean).
 Polynomial evaluation is Polynomial.aeval A p, not entrywise evaluation;
-see [Definitions.lean](../../formalization/lean/CrouzeixConjecture/Definitions.lean).
+see [Definitions.lean](../../lab/math/lean/CrouzeixConjecture/Definitions.lean).
 The independent expansion is in
-[HarpStatementAudit.lean](../../formalization/lean/CrouzeixTextbook/HarpStatementAudit.lean).
+[HarpStatementAudit.lean](../../lab/math/lean/CrouzeixTextbook/HarpStatementAudit.lean).
 Its equivalence compares statements; it is not another terminal proof.
 
 ### The unindexed Lean checks
@@ -105,7 +105,7 @@ definitionally the norm of Matrix.toEuclideanCLM A, the associated continuous
 linear operator on Euclidean space. The declaration
 matrix_norm_eq_euclidean_operator_norm proves this identification by reflexivity.
 The coordinate check is inner_euclideanOperator_eq_star_dotProduct. Both are in
-[Euclidean.lean](../../formalization/lean/CrouzeixConjecture/Euclidean.lean).
+[Euclidean.lean](../../lab/math/lean/CrouzeixConjecture/Euclidean.lean).
 
 Two nonnormal examples distinguish the relevant measurements:
 
@@ -129,11 +129,11 @@ Applying the continuous function $z\mapsto|p(z)|$ gives a nonempty compact
 real set, hence a bounded set attaining its supremum.
 
 Sources: numericalRange_nonempty in
-[Definitions.lean](../../formalization/lean/CrouzeixConjecture/Definitions.lean),
+[Definitions.lean](../../lab/math/lean/CrouzeixConjecture/Definitions.lean),
 isCompact_numericalRange in
-[NumericalRange.lean](../../formalization/lean/CrouzeixConjecture/NumericalRange.lean),
+[NumericalRange.lean](../../lab/math/lean/CrouzeixConjecture/NumericalRange.lean),
 and exists_maxPolynomialModulusOnSet in
-[OuterApproximationLimit.lean](../../formalization/lean/CrouzeixConjecture/OuterApproximationLimit.lean).
+[OuterApproximationLimit.lean](../../lab/math/lean/CrouzeixConjecture/OuterApproximationLimit.lean).
 The last theorem explicitly requires compactness and nonemptiness.
 
 **Disposition.** The maintained norm and supremum have the intended meaning.
@@ -157,9 +157,9 @@ $\sum_j\alpha_jg(s_j)$ with positive retained weights summing to one.
 Multiplication by $a$ gives $w_j=a\alpha_j$. Zero weights are omitted.
 
 The formal providers are exists_positive_cubature in
-[PositiveCubature.lean](../../formalization/lean/Crouzeix/Harp/PositiveCubature.lean)
+[PositiveCubature.lean](../../lab/math/lean/Crouzeix/Harp/PositiveCubature.lean)
 and exists_positive_cubature_finite_measure in
-[FiniteMeasureCubature.lean](../../formalization/lean/Crouzeix/Harp/FiniteMeasureCubature.lean).
+[FiniteMeasureCubature.lean](../../lab/math/lean/Crouzeix/Harp/FiniteMeasureCubature.lean).
 Their continuity, support, compactness, finite-dimensionality and measure
 hypotheses remain part of the theorem.
 
@@ -195,9 +195,9 @@ For $r=1$, this gives $\int F\,d\mu=I$ and hence $\int D\,d\mu=2I$.
 A finite measure alone does not imply this formula; it is a separate
 hypothesis, supplied by the oriented boundary in the terminal proof.
 The definitions and positivity providers are in
-[ParametricBoundary.lean](../../formalization/lean/CrouzeixConjecture/ParametricBoundary.lean);
+[ParametricBoundary.lean](../../lab/math/lean/CrouzeixConjecture/ParametricBoundary.lean);
 the mass and companion identities are in
-[ParametricDoubleLayerIdentity.lean](../../formalization/lean/CrouzeixConjecture/ParametricDoubleLayerIdentity.lean).
+[ParametricDoubleLayerIdentity.lean](../../lab/math/lean/CrouzeixConjecture/ParametricDoubleLayerIdentity.lean).
 
 Harp bundles all moments $h(s)^kD(s)$ for $0\le k\le N+1$ into one
 real finite-dimensional observable. Here $D(s)$ is the positive
@@ -214,9 +214,9 @@ $$
 
 This matrix identity is not $\sum_jw_j=2$.
 The providers are exists_positive_matrix_moment_cubature in
-[FiniteAtomicDilation.lean](../../formalization/lean/Crouzeix/Harp/FiniteAtomicDilation.lean)
+[FiniteAtomicDilation.lean](../../lab/math/lean/Crouzeix/Harp/FiniteAtomicDilation.lean)
 and finiteAtomicDoubleLayer_mass_eq_two_one in
-[FiniteAtomicL2Dilation.lean](../../formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean).
+[FiniteAtomicL2Dilation.lean](../../lab/math/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean).
 The latter consumes a polynomial Cauchy formula.
 
 **Disposition.** Scalar measure mass and matrix mass are kept separate.
@@ -263,13 +263,13 @@ multipliers are contractions.
 
 Lean support is shared explicitly. boundaryEmbeddingField,
 norm_boundaryEmbeddingToLp and boundaryEmbedding in
-[BoundaryEmbedding.lean](../../formalization/lean/Crouzeix/LoristSchwenninger/BoundaryEmbedding.lean)
+[BoundaryEmbedding.lean](../../lab/math/lean/Crouzeix/LoristSchwenninger/BoundaryEmbedding.lean)
 construct the normalized isometry. The power identity is
 boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding in
-[CompressionMoments.lean](../../formalization/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean).
+[CompressionMoments.lean](../../lab/math/lean/Crouzeix/LoristSchwenninger/CompressionMoments.lean).
 Harp's finiteAtomic_compression_eq_of_moments and finiteAtomicL2DilationWitness
 transport and package these results in
-[FiniteAtomicL2Dilation.lean](../../formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean).
+[FiniteAtomicL2Dilation.lean](../../lab/math/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean).
 
 **Disposition.** Normalization and adjoint orientation match the recurrence
 interface. Moment preservation stops at the specified horizon.
@@ -301,9 +301,9 @@ $$
 
 The providers parametricBoundaryCompanion_norm_le and
 parametricBoundaryCompanion_commute_of_mem_generatedAlgebra are in
-[CompanionAlgebra.lean](../../formalization/lean/Crouzeix/LoristSchwenninger/CompanionAlgebra.lean).
+[CompanionAlgebra.lean](../../lab/math/lean/Crouzeix/LoristSchwenninger/CompanionAlgebra.lean).
 The polynomial-power Cauchy provider is in
-[PolynomialPowerCauchy.lean](../../formalization/lean/Crouzeix/LoristSchwenninger/PolynomialPowerCauchy.lean).
+[PolynomialPowerCauchy.lean](../../lab/math/lean/Crouzeix/LoristSchwenninger/PolynomialPowerCauchy.lean).
 The declaration finiteHorizonPolynomialCore packages these hypotheses.
 Only then choose the finite witnesses:
 
@@ -316,7 +316,7 @@ $$
 One finite space need not realize all powers. Conversely, $T$, $E_k$, and
 $L$ may not change with $N$ during the scalar limit.
 CommutingPerturbationData and FiniteHorizonDilationData in
-[FiniteHorizonDilation.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonDilation.lean)
+[FiniteHorizonDilation.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonDilation.lean)
 encode this separation.
 
 For a fixed unit vector $x$, put
@@ -397,7 +397,7 @@ $$
 The terminal moment remains at finite $N$. The source declarations
 adjacentPowerDefect_factorization, recurrence_difference_identity,
 recurrence_difference_lower_bound and equation_three_finite_lower_bound are in
-[FiniteHorizonOperatorRecurrence.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean).
+[FiniteHorizonOperatorRecurrence.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonOperatorRecurrence.lean).
 
 Put $a_N=Q_N^\dagger V_NTx$. The singular-vector and first-moment
 identities give
@@ -422,7 +422,7 @@ Multiplying by a nonnegative sum of weights preserves this direction.
 Substituting $C$ makes the finite left side smaller. The providers are
 displacementSq_le in the operator recurrence module and
 norm_target_le_two_of_finiteHorizonDilationData in
-[FiniteHorizonPerturbation.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonPerturbation.lean).
+[FiniteHorizonPerturbation.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonPerturbation.lean).
 
 **Disposition.** Denominator, sign and terminal term agree.
 The quantitative supplement will expose the remaining finite error.
@@ -445,9 +445,9 @@ $m_1\le2\kappa-\kappa^2<0$. This contradiction proves $\kappa\le2$.
 The case $\|T\|\le1$ needs no division.
 
 Lean correspondence: finite_weighted_inequalities_to_limit_lower_bound in
-[FiniteHorizonRecurrence.lean](../../formalization/lean/Crouzeix/Harp/FiniteHorizonRecurrence.lean)
+[FiniteHorizonRecurrence.lean](../../lab/math/lean/Crouzeix/Harp/FiniteHorizonRecurrence.lean)
 and scalar_endpoint_le_two in
-[Scalar.lean](../../formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean).
+[Scalar.lean](../../lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean).
 
 Next fix an outer domain $\Omega$ and approximate $A$ by simple-spectrum
 matrices $B_j$ with $W(B_j)\subset\Omega$ eventually. Set
@@ -466,11 +466,11 @@ Continuity of $|p|$ on that neighborhood makes their maxima converge to
 $\max_{W(A)}|p|$. The last limit proves the intended bound.
 
 The nesting and zero branch are in harpFiniteHorizonMainTheorem in
-[MainTheorem.lean](../../formalization/lean/Crouzeix/Harp/MainTheorem.lean).
+[MainTheorem.lean](../../lab/math/lean/Crouzeix/Harp/MainTheorem.lean).
 The transport providers are norm_polynomialEval_le_of_tendsto in
-[Limiting.lean](../../formalization/lean/CrouzeixConjecture/Limiting.lean)
+[Limiting.lean](../../lab/math/lean/CrouzeixConjecture/Limiting.lean)
 and tendsto_maxPolynomialModulusOnSet_of_outerApproximation in
-[OuterApproximationLimit.lean](../../formalization/lean/CrouzeixConjecture/OuterApproximationLimit.lean).
+[OuterApproximationLimit.lean](../../lab/math/lean/CrouzeixConjecture/OuterApproximationLimit.lean).
 
 **Disposition.** The order is horizon, matrix approximation, outer domain.
 A different order would need further uniform estimates.
@@ -488,7 +488,7 @@ terminal Crouzeix theorem. It is not independence from all LS mathematics.
 The maintained route validator checks prohibited imports; kernel compilation
 alone does not describe that provenance for readers.
 
-In [Consequences.lean](../../formalization/lean/Crouzeix/Harp/Consequences.lean),
+In [Consequences.lean](../../lab/math/lean/Crouzeix/Harp/Consequences.lean),
 harpFiniteHorizonFiniteMatrixMainTheorem supplies every standard finite
 dimension. Neutral adapters give the rational bound with its pole
 restriction that poles avoid $W(A)$ in finite dimension, and bounded-operator results on complete, nontrivial complex
@@ -537,7 +537,7 @@ stage and merely tend to zero. This boundary must not be confused with the
 zero-outer-maximum branch.
 
 Named unindexed formal checks are in
-[HarpStatementAuditTests.lean](../../formalization/lean/CrouzeixTextbook/HarpStatementAuditTests.lean).
+[HarpStatementAuditTests.lean](../../lab/math/lean/CrouzeixTextbook/HarpStatementAuditTests.lean).
 A consequence that assumes the terminal proposition is labeled as such;
 it does not establish that proposition.
 

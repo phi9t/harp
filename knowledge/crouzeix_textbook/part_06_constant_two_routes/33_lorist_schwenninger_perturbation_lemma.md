@@ -61,7 +61,7 @@ expression `Re ⟪x, E_n T^n x⟫`; real parts agree under this swap.
 
 The last two rows use equal real parts in the two inner-product orientations;
 the exact adjoint transfer is implemented in
-`formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean`.
 
 ## Formal development
 
@@ -245,16 +245,16 @@ CFT-23-004, CFT-23-005, and the common route entry CFT-29-002.
 
 The exact public theorem
 `CrouzeixTextbook.Part06.recurrence_difference_identity` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 It reexports the same normalized proposition proved by
 `DilationData.recurrence_difference_identity` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|OperatorRecurrence.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|OperatorRecurrence.lean]].
 The generated compiler correspondence checks both declarations.
 
 **Receipt audit.** The public declaration is at
-`formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:18:9`; the provider
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:18:9`; the provider
 is at
-`formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean:41`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean:41`.
 The formal mode is `reexported-proof`. Direct kernel dependency:
 `CrouzeixConjecture.LoristSchwenninger.DilationData.recurrence_difference_identity`.
 
@@ -396,20 +396,20 @@ CFT-09-006 and CFT-33-001.
 
 The exact public theorem
 `CrouzeixTextbook.Part06.recurrence_difference_lower_bound` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 Its provider theorem is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|OperatorRecurrence.lean]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|OperatorRecurrence.lean]],
 and the reusable square identity is in
-[[formalization/lean/Crouzeix/LoristSchwenninger/CompletedSquare.lean|CompletedSquare.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/CompletedSquare.lean|CompletedSquare.lean]].
 The two intervening operator facts are
 `DilationData.adjacentPowerDefect_factorization` and
 `DilationData.adjacentPowerDefect_norm_le` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]].
 
 **Receipt audit.** The public declaration is at
-`formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:32:9`; the provider
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:32:9`; the provider
 is at
-`formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean:80`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean:80`.
 The formal mode is `reexported-proof`. Direct kernel dependency:
 `CrouzeixConjecture.LoristSchwenninger.DilationData.recurrence_difference_lower_bound`.
 
@@ -497,7 +497,7 @@ B = data.bound ≥ 0,
 
 These are the fields `DilationData.bound_nonneg` and
 `DilationData.perturbation_norm_le` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]].
 The already established target-power estimate follows from the same data. The
 identity `E_n=2V*(Q*)^nV-(T*)^n` rearranges to
 `(T*)^n=2V*(Q*)^nV-E_n`. Since `V` is an isometry and `Q` is a contraction,
@@ -518,7 +518,7 @@ every `n`.
 
 This is the proof exposed as
 `DilationData.target_power_norm_le_two_add_bound` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]].
 Now Cauchy--Schwarz, the operator-norm inequality, and `‖x‖=1` yield the full
 uniform chain
 
@@ -529,7 +529,7 @@ uniform chain
 Thus name `M = B(2+B) = data.bound * (2 + data.bound)` and conclude
 `|m_n| ≤ M` for every `n`. The compiled statement is
 `recurrenceScalar_abs_le` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/RecurrenceScalar.lean|RecurrenceScalar.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/RecurrenceScalar.lean|RecurrenceScalar.lean]].
 This single `M`, independent of `n`, is exactly what bounds the moving terminal
 index below; pointwise finiteness alone would not suffice.
 
@@ -629,24 +629,24 @@ CFT-33-001 and CFT-33-002; no Jin-route theorem is a prerequisite.
 **EVIDENCE — [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]].**
 The exact public navigation reexport
 `CrouzeixTextbook.Part06.equation_three_lower_bound` points to the provider
-[[formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|DilationData.equation_three_lower_bound]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|DilationData.equation_three_lower_bound]],
 and is declared in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 The provider applies
-[[formalization/lean/Crouzeix/LoristSchwenninger/RecurrenceScalar.lean|recurrenceScalar_abs_le]]
+[[lab/math/lean/Crouzeix/LoristSchwenninger/RecurrenceScalar.lean|recurrenceScalar_abs_le]]
 to supply `M`, then uses the scalar declarations
-[[formalization/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|recurrence_finite_iteration]],
-[[formalization/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|bounded_recurrence_terminal_tendsto_zero]],
-[[formalization/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|inverse_power_weight_sum_tendsto]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|recurrence_finite_iteration]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|bounded_recurrence_terminal_tendsto_zero]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|inverse_power_weight_sum_tendsto]],
 and
-[[formalization/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|recurrence_lower_bound]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|recurrence_lower_bound]].
 The compiled exercise theorem in the textbook module proves only the finite
 scalar telescoping equality by induction, independently of Equation (3).
 
 **Receipt audit.** The public declaration is at
-`formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:46:5`; the provider
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:46:5`; the provider
 is at
-`formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean:95`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean:95`.
 The formal mode is `reexported-proof`. Direct kernel dependency:
 `CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound`.
 
@@ -839,20 +839,20 @@ CFT-33-003.
 
 The public theorem
 `CrouzeixTextbook.Part06.scalar_combined_inequality` is declared in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 Its real hypotheses `hkpos`, `hkminus1sqpos`, `hlower`, and `hupper` correspond
 respectively to positive `κ`, positive denominator square, Equation (3), and
 Equation (4). It reexports the substantive scalar proof
-[[formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean|scalar_combined_inequality_of_recurrence_bounds]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean|scalar_combined_inequality_of_recurrence_bounds]].
 The operator derivation of Equation (4) is compiled separately as
-[[formalization/lean/Crouzeix/LoristSchwenninger/DisplacementUpper.lean|DilationData.displacementSq_le]];
+[[lab/math/lean/Crouzeix/LoristSchwenninger/DisplacementUpper.lean|DilationData.displacementSq_le]];
 its `hx`, `hκ`, and `hsingular` hypotheses are precisely the three audited
 inputs above. Both are checked by `mise run lean-crouzeix-ls`; the public
 wrapper is also checked by `mise run lean-crouzeix-textbook`.
 
 **Receipt audit.** The public declaration is at
-`formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:49:9`; the provider
-is at `formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean:26`.
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:49:9`; the provider
+is at `lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean:26`.
 The formal mode is `reexported-proof`. Direct kernel dependency:
 `CrouzeixConjecture.LoristSchwenninger.scalar_combined_inequality_of_recurrence_bounds`.
 
@@ -972,17 +972,17 @@ CFT-27-004 and CFT-33-004.
 #### Lean correspondence
 
 The public theorem `CrouzeixTextbook.Part06.scalar_endpoint_two` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]
 maps `hb` to `b≥0`, passes the four CFT-33-004 hypotheses unchanged, and
 returns `κ≤2`. It reexports
-[[formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean|scalar_endpoint_le_two]],
+[[lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean|scalar_endpoint_le_two]],
 whose inner helper `scalar_contradiction_le_two` contains the positive-factor
 and negative-right-side proof. The public and provider declarations are built
 by `lean-crouzeix-textbook` and `lean-crouzeix-ls`, respectively.
 
 **Receipt audit.** The public declaration is at
-`formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:60:9`; the provider
-is at `formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean:78`.
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:60:9`; the provider
+is at `lab/math/lean/Crouzeix/LoristSchwenninger/Scalar.lean:78`.
 The formal mode is `reexported-proof`. Direct kernel dependency:
 `CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two`.
 
@@ -1180,18 +1180,18 @@ CFT-23-002, CFT-23-005, and CFT-33-005.
 #### Lean correspondence
 
 The exact public declaration `CrouzeixTextbook.Part06.perturbation_lemma` is in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 It reexports the complete provider proof
 `CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two` in
-[[formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]].
+[[lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]].
 The public hypothesis map is identity-on-data: its finite-dimensional Hilbert
 spaces and `DilationData` argument are passed unchanged, and its conclusion is
 the same `‖data.T‖≤2`.
 
 **Receipt audit.** The public declaration is at
-`formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:72:5`; the provider
+`lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:72:5`; the provider
 is at
-`formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean:27`.
+`lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean:27`.
 The formal mode is `reexported-proof`. Direct kernel dependency:
 `CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two`.
 
@@ -1206,7 +1206,7 @@ built by `lean-crouzeix-ls`.
 
 **EVIDENCE — [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]].**
 The locally compiled provider is
-[[formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]];
+[[lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]];
 its reproduction command and verification boundary are recorded in the claim
 ledger.
 
@@ -1293,7 +1293,7 @@ not transfer unchanged to stochastic or time-varying Jacobians.
 ## Lean translation
 
 The six public names in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]
 compile against the substantive maintained provider. CFT-33-001 through
 CFT-33-006 have exact correspondence and reconstructible prose. Exercises
 E01--E06 have separate compiled solution theorems and source starters. The
@@ -1304,8 +1304,8 @@ The durable compiler receipt recorded in the tracked
 [[knowledge/crouzeix_textbook/status_and_scope|status and scope]] surface has:
 
 - Compiler receipt SHA-256:
-  `52e14d81e53adbf479aaced5ee467ccc1ba6b7c98a2df031b5087e3037b69a42`;
-- serialized bytes: `599445`; and
+  `91fd102247f65d14995b1615d442a8bb4e4b21682e36fd1a6187f15fbfa3b1e7`;
+- serialized bytes: `596736`; and
 - declaration count: `513`.
 
 The compiler receipt and the six-ledger publication generation are distinct
@@ -1322,7 +1322,7 @@ Prove the successor singular-vector bridge
 `rw [pow_succ, mul_apply_eq_comp]`, then use `hsingular` and linearity. The
 compiled solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_01_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 
 ### CFT-33-E02 -- calculation {#exercise-cft-33-e02}
 
@@ -1331,7 +1331,7 @@ For `a>0`, prove
 instantiate the exact completed-square identity and isolate the nonnegative
 term. The distinct compiled solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_02_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 
 ### CFT-33-E03 -- written-proof {#exercise-cft-33-e03}
 
@@ -1347,7 +1347,7 @@ positive/negative cancellation and the two surviving endpoints. Then induct on
 `N`, expose `Finset.sum_range_succ`, and normalize the endpoint terms. The
 compiled solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_03_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 
 ### CFT-33-E04 -- written-proof {#exercise-cft-33-e04}
 
@@ -1361,7 +1361,7 @@ Do not ask an automation tactic to clear the denominator before establishing
 these facts. Lean starter: name `0<κ` and `0<κ-1`, obtain square positivity,
 then use `mul_ne_zero`. The distinct compiled solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_04_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 
 ### CFT-33-E05 -- boundary {#exercise-cft-33-e05}
 
@@ -1382,7 +1382,7 @@ factor the right side as `κ²(2-κ)`, and derive the sign contradiction. Lean
 starter: use `by_contra`, prove `hfactor_pos` and `hright_neg` separately, and
 connect them through the combined inequality. The distinct compiled solution
 is `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_05_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 
 For auditability, both exercise solutions compile as genuine `theorem`
 declarations rather than aliases. E04 maps `hκ` to `1<κ` and returns the two
@@ -1413,7 +1413,7 @@ Invoke Equation (3), use real-part conjugate symmetry, derive Equation (4),
 prove the three sign conditions, and only then call the scalar endpoint. The
 compiled solution is
 `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_06_solution` in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]].
 Its statement differs from every public Chapter 33 checkpoint, and its proof
 does not invoke `perturbation_lemma`, `norm_target_le_two`, or
 `scalar_endpoint_two`.
@@ -1432,18 +1432,18 @@ are `Classical.choice`, `Quot.sound`, and `propext` under verification target
 
 The starter and solution positions below come from the same compiler receipt.
 All positions are in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]],
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]],
 all six solution declarations are compiler-classified `theorem`s, and every
 normalized statement differs from all six public Chapter 33 statements.
 
 | Exercise | Declaration | Starter / solution location | Type SHA-256 |
 |---|---|---|---|
-| CFT-33-E01 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_01_solution` | `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:82:1` / `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:83:9` | `19bf70d60d694bdc94bc1c7c86b28075b96157a35006bed74fc958f0b3d89a9c` |
-| CFT-33-E02 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_02_solution` | `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:95:1` / `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:96:9` | `e04f6c807864c88c2c8cdcb2a4aed4a58135bbaa0efe59e92a672b745ca9980f` |
-| CFT-33-E03 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_03_solution` | `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:103:1` / `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:105:9` | `5dff70645a37f76f6d11a4fc3d33ab9457ecac473765d61f60772b4fdd2fe736` |
-| CFT-33-E04 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_04_solution` | `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:117:1` / `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:119:9` | `9f496c7d5a22e792008c61c6f53c6191cca2373e96b43bab5892bb6399b3f99c` |
-| CFT-33-E05 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_05_solution` | `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:131:1` / `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:133:9` | `71c430c3b0eae949f33b2e2f7b324dd83046d9e27f39348a2b4fd336e18ae3da` |
-| CFT-33-E06 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_06_solution` | `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:154:1` / `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean:157:9` | `6d8a70779a3993e87edea9466272c8742e362b2ecf9b72431465fd03ea7361c9` |
+| CFT-33-E01 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_01_solution` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:82:1` / `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:83:9` | `19bf70d60d694bdc94bc1c7c86b28075b96157a35006bed74fc958f0b3d89a9c` |
+| CFT-33-E02 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_02_solution` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:95:1` / `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:96:9` | `e04f6c807864c88c2c8cdcb2a4aed4a58135bbaa0efe59e92a672b745ca9980f` |
+| CFT-33-E03 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_03_solution` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:103:1` / `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:105:9` | `5dff70645a37f76f6d11a4fc3d33ab9457ecac473765d61f60772b4fdd2fe736` |
+| CFT-33-E04 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_04_solution` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:117:1` / `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:119:9` | `9f496c7d5a22e792008c61c6f53c6191cca2373e96b43bab5892bb6399b3f99c` |
+| CFT-33-E05 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_05_solution` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:131:1` / `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:133:9` | `71c430c3b0eae949f33b2e2f7b324dd83046d9e27f39348a2b4fd336e18ae3da` |
+| CFT-33-E06 | `CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_06_solution` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:154:1` / `lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean:157:9` | `6d8a70779a3993e87edea9466272c8742e362b2ecf9b72431465fd03ea7361c9` |
 
 **Direct kernel dependencies.** E01 reports `DilationData` and
 `DilationData.T`; E02 reports `pre_square_lower_bound`; E03, E04, and E05

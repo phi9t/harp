@@ -182,7 +182,7 @@ Public declaration: `CrouzeixTextbook.Part02.gradient_component_contract`.
 Formal mode: `proved-here`.
 Substantive provider: `none` among maintained Crouzeix declarations; the pairing collapse is `simp` over `Pi.single`, and the derivative clause is Mathlib's `hasDerivAt_id` with `mul_const`.
 Readable type map: `g` is the gradient in coordinates, `i` the index, and `Pi.single i 1` the direction `e_i`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L55).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L55).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Nat} (g : Fin n → Real) (i : Fin n), And (Eq.{1} (dotProduct.{0, 0} g (Pi.single.{0, 0} i (OfNat.ofNat.{0} 1))) (g i)) (HasDerivAt.{0, 0} (fun t => dotProduct.{0, 0} g (HSMul.hSMul.{0, 0, 0} t (Pi.single.{0, 0} i (OfNat.ofNat.{0} 1)))) (g i) (OfNat.ofNat.{0} 0))`.
 Type SHA-256: `20ac241c2f63421a13d2427b679ebd777a14742cf991360c84cc76ea4423f65e`.
@@ -280,7 +280,7 @@ Public declaration: `CrouzeixTextbook.Part02.derivative_action_is_jvp`.
 Formal mode: `proved-here`.
 Substantive provider: `none` among maintained Crouzeix declarations; the derivative clause is Mathlib's `ContinuousLinearMap.hasFDerivAt` and the action clause is `rfl`.
 Readable type map: `A` is the Jacobian, `x` the base point, `v` the tangent, and `jacobianAction A` the derivative as a bounded map.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L70).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L70).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {m n : Nat} (A : Matrix.{0, 0, 0} (Fin m) (Fin n) Real) (x v : Fin n → Real), And (HasFDerivAt.{0, 0, 0} (fun w => Matrix.mulVec.{0, 0, 0} A w) (CrouzeixTextbook.Part02.jacobianAction A) x) (Eq.{1} (DFunLike.coe.{1, 1, 1} (CrouzeixTextbook.Part02.jacobianAction A) v) (Matrix.mulVec.{0, 0, 0} A v))`.
 Type SHA-256: `f20c0b639553eef4c9670e3e49f7ccaca9c0a0f8545b9c27738b139a2a8f8582`.
@@ -371,7 +371,7 @@ Public declaration: `CrouzeixTextbook.Part02.derivative_pullback_is_vjp`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixTextbook.Part02.transpose_coordinate_action` (CFT-10-002) supplies the first clause; the second is `rfl`. No second proof of the transpose identity is offered.
 Readable type map: `A` is the Jacobian and `y` the cotangent; `y ᵥ* A` is the covector pushed through `A`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L77).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L77).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {m n : Nat} (A : Matrix.{0, 0, 0} (Fin m) (Fin n) Real) (y : Fin m → Real), And (Eq.{1} (Matrix.vecMul.{0, 0, 0} y A) (Matrix.mulVec.{0, 0, 0} (Matrix.transpose.{0, 0, 0} A) y)) (Eq.{1} (DFunLike.coe.{1, 1, 1} (CrouzeixTextbook.Part02.jacobianAction (Matrix.transpose.{0, 0, 0} A)) y) (Matrix.mulVec.{0, 0, 0} (Matrix.transpose.{0, 0, 0} A) y))`.
 Type SHA-256: `f53fc7922b6aad49ef87d9a3ccb4b3f4a99f42775d53f2163273301f532632f2`.
@@ -500,7 +500,7 @@ Public declaration: `CrouzeixTextbook.Part02.hessian_vector_action`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixTextbook.Part02.symmetric_cross_terms`, which itself rests on CFT-10-001, for the first clause; Mathlib's `ContinuousLinearMap.hasFDerivAt` after `Matrix.smul_mulVec` for the second. The third clause has no substantive provider: its checked proof is `jacobianAction_apply`, which is `rfl`, followed by `Matrix.smul_mulVec`.
 Readable type map: `H` is the symmetric matrix, `x` the base point, `v` the probe direction, and `w` the test direction of the cross-term clause.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L143).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L143).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Nat} (H : Matrix.{0, 0, 0} (Fin n) (Fin n) Real), Eq.{1} (Matrix.transpose.{0, 0, 0} H) H → ∀ (x v : Fin n → Real), And (∀ (w : Fin n → Real), Eq.{1} (HAdd.hAdd.{0, 0, 0} (dotProduct.{0, 0} (Matrix.mulVec.{0, 0, 0} H x) w) (dotProduct.{0, 0} (Matrix.mulVec.{0, 0, 0} H w) x)) (dotProduct.{0, 0} (HSMul.hSMul.{0, 0, 0} (OfNat.ofNat.{0} 2) (Matrix.mulVec.{0, 0, 0} H x)) w)) (And (HasFDerivAt.{0, 0, 0} (fun z => HSMul.hSMul.{0, 0, 0} (OfNat.ofNat.{0} 2) (Matrix.mulVec.{0, 0, 0} H z)) (CrouzeixTextbook.Part02.jacobianAction (HSMul.hSMul.{0, 0, 0} (OfNat.ofNat.{0} 2) H)) x) (Eq.{1} (DFunLike.coe.{1, 1, 1} (CrouzeixTextbook.Part02.jacobianAction (HSMul.hSMul.{0, 0, 0} (OfNat.ofNat.{0} 2) H)) v) (HSMul.hSMul.{0, 0, 0} (OfNat.ofNat.{0} 2) (Matrix.mulVec.{0, 0, 0} H v))))`.
 Type SHA-256: `9aabb42cdfaa07edac465d7824a08c6b075fe9e3f5a570a557dc6d1dcaab297d`.
@@ -606,7 +606,7 @@ Public declaration: `CrouzeixTextbook.Part02.jvp_vjp_duality`.
 Formal mode: `proved-here`.
 Substantive provider: `CrouzeixTextbook.Part02.bilinear_pairing_duality` (CFT-10-001) supplies the duality clause; the uniqueness clause is proved locally by basis-vector instantiation.
 Readable type map: `A` is the Jacobian, `B` a candidate backward matrix, `v` a tangent and `y` a cotangent.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L84).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L84).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {m n : Nat} (A : Matrix.{0, 0, 0} (Fin m) (Fin n) Real), And (∀ (v : Fin n → Real) (y : Fin m → Real), Eq.{1} (dotProduct.{0, 0} (Matrix.mulVec.{0, 0, 0} A v) y) (dotProduct.{0, 0} v (Matrix.mulVec.{0, 0, 0} (Matrix.transpose.{0, 0, 0} A) y))) (∀ (B : Matrix.{0, 0, 0} (Fin n) (Fin m) Real), (∀ (v : Fin n → Real) (y : Fin m → Real), Eq.{1} (dotProduct.{0, 0} (Matrix.mulVec.{0, 0, 0} A v) y) (dotProduct.{0, 0} v (Matrix.mulVec.{0, 0, 0} B y))) → Eq.{1} B (Matrix.transpose.{0, 0, 0} A))`.
 Type SHA-256: `d2008dc98e51c53e78654d3f872153da3a6baf9d240d818ff62ad8ccbeab6306`.
@@ -710,7 +710,7 @@ Public declaration: `CrouzeixTextbook.Part02.linear_approximation_chain_kernel`.
 Formal mode: `proved-here`.
 Substantive provider: `none` among maintained Crouzeix declarations; the checked proof is the single library application `Matrix.mulVec_mulVec`.
 Readable type map: `A` and `B` are the two Jacobians and `v` the tangent entering the composite.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L99).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L99).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {R : Type u_1} [inst : Semiring.{u_1} R] {m n p : Nat} (A : Matrix.{0, 0, u_1} (Fin m) (Fin n) R) (B : Matrix.{0, 0, u_1} (Fin p) (Fin m) R) (v : Fin n → R), Eq.{u_1 + 1} (Matrix.mulVec.{u_1, 0, 0} B (Matrix.mulVec.{u_1, 0, 0} A v)) (Matrix.mulVec.{u_1, 0, 0} (HMul.hMul.{u_1, u_1, u_1} B A) v)`.
 Type SHA-256: `e8eacf71deee4ea839cea592352011dd5f1b14a2dc680e8af935e814e416fa02`.
@@ -818,7 +818,7 @@ which is the coordinate instance of the same base case.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_01_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib `ContinuousLinearMap.hasFDerivAt` applied twice; no maintained Crouzeix provider and no call to CFT-11-002.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L241).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L241).
 Type SHA-256: `eee304bebe0283cfc107ba8d4215e91dd315029e444be050a4593d169322f656`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -845,7 +845,7 @@ CFT-11-004 carries the hypothesis because a general `H` needs it.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_02_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib `Matrix.one_mulVec` and `dotProduct_comm`; it does not call CFT-11-004 or the `symmetric_cross_terms` lemma.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L249).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L249).
 Type SHA-256: `919a0d7a2b5ce7dcd805f82f98fabbf4bb07d535a0614c86f4101d78b02f10ca`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -875,7 +875,7 @@ rewriting with it.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_03_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib `HasFDerivAt.unique`; the pointwise clause is obtained by rewriting. The displayed limit argument is the one that lemma runs, not a separate compiled proof.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L257).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L257).
 Type SHA-256: `abfa8ccd819e73f74405486d8c103fbb118b86e48caf16903bb393f07825f2ac`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -906,7 +906,7 @@ itself is Mathlib's `HasFDerivAt.comp` and is not re-run here.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_04_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixTextbook.Part02.chain_rule_in_coordinates_is_matrix_product` and `CrouzeixTextbook.Part02.linear_approximation_chain_kernel`; the analytic chain rule descends to Mathlib `HasFDerivAt.comp`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L266).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L266).
 Type SHA-256: `18b2bf2941d47ecfdae750b95917aa176758727215a41dfc69a16c8836890653`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -953,7 +953,7 @@ composing through `ContinuousLinearMap.smulRight` for the line, using
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_05_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixTextbook.Part02.coneCusp_homogeneous`, `coneCusp_not_additive` and `coneCusp_not_frechet_differentiable`, all proved in this chapter; Mathlib supplies only `HasFDerivAt.unique` and the line map.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L275).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L275).
 Type SHA-256: `b32e71ce826ffe4c6fff0733b4eaa5705cc6ca1b94b39fff514e40425e632e01`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -987,7 +987,7 @@ citing CFT-11-005 for each; the uniqueness proof lives there.
 Public declaration: `CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_06_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixTextbook.Part02.jvp_vjp_duality`, both clauses; the duality itself descends to CFT-10-001.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L282).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter11.lean#L282).
 Type SHA-256: `d64cf657ca3dc2c206d1bc6bf6b31cba50277007169c9cc35562ec868868ac67`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.

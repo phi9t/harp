@@ -182,7 +182,7 @@ fn validated_source_module(
             code: "crouzeix-textbook.correspondence",
             identity: Some(identity.to_owned()),
             field: "source_path".to_owned(),
-            expected: "relative maintained formalization/lean/**/*.lean module route".to_owned(),
+            expected: "relative maintained lab/math/lean/**/*.lean module route".to_owned(),
             observed: path.display().to_string(),
             path: Some(path.to_path_buf()),
             line: None,
@@ -250,9 +250,12 @@ fn correspondence_diagnostic(
 
 fn module_from_path(path: &Path) -> Option<String> {
     let mut components = path.components();
-    match (components.next(), components.next()) {
-        (Some(Component::Normal(first)), Some(Component::Normal(second)))
-            if first == "formalization" && second == "lean" => {}
+    match (components.next(), components.next(), components.next()) {
+        (
+            Some(Component::Normal(first)),
+            Some(Component::Normal(second)),
+            Some(Component::Normal(third)),
+        ) if first == "lab" && second == "math" && third == "lean" => {}
         _ => return None,
     }
     let relative = components.collect::<PathBuf>();
@@ -765,7 +768,7 @@ fn validate_row_shape(
         diagnostics.push(diagnostic(
             Some(&row.name),
             "source_path",
-            "relative normalized formalization/lean/*.lean path",
+            "relative normalized lab/math/lean/*.lean path",
             row.source_path.display().to_string(),
             Some(receipt_path.to_path_buf()),
         ));
@@ -1007,7 +1010,7 @@ fn is_safe_relative_lean_path(path: &Path) -> bool {
         && path
             .extension()
             .is_some_and(|extension| extension == "lean")
-        && path.starts_with("formalization/lean")
+        && path.starts_with("lab/math/lean")
         && path
             .components()
             .all(|component| matches!(component, Component::Normal(_)))

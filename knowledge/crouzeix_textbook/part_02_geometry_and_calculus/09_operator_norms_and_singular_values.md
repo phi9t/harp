@@ -99,7 +99,7 @@ one is not new mathematics. It is indexed again here because Chapter 9 is where
 the identity is *used* — every estimate below is stated for the matrix norm and
 proved through the operator norm — and a reader entering at this chapter needs
 the convention in front of them.
-[`induced_matrix_norm_identity`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L14)
+[`induced_matrix_norm_identity`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L14)
 is the declaration.
 
 ### The two halves of "least upper bound"
@@ -109,21 +109,21 @@ proved separately because later chapters use them in opposite directions.
 
 Upper control: $\|Ax\|\le\|A\|\,\|x\|$ for every $x$. This is the defining
 bound of an operator norm, transported across CFT-09-001; it is
-[`matrix_norm_mulVec_bound`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L42),
+[`matrix_norm_mulVec_bound`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L42),
 whose checked proof rewrites by CFT-09-001 and applies the library's
 `le_opNorm`.
 
 Minimality: if $C\ge0$ and $\|Ax\|\le C\|x\|$ for every $x$, then $\|A\|\le C$.
 This is
-[`matrix_norm_le_of_bound`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L48),
+[`matrix_norm_le_of_bound`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L48),
 discharged by `opNorm_le_bound`. Every "the norm is at most two" statement in
 Part VI is an instance of this direction, including CFT-09-005 below.
 
 Two closure properties follow from the same interface.
-[`matrix_norm_mul_le`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L55)
+[`matrix_norm_mul_le`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L55)
 is submultiplicativity $\|AB\|\le\|A\|\|B\|$, which is what makes a bound on
 $\|A\|$ say anything about $\|A^k\|$; it comes from the normed-algebra structure.
-[`matrix_norm_conjTranspose_mul_self`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L61)
+[`matrix_norm_conjTranspose_mul_self`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L61)
 is the C\*-identity $\|A^{\mathsf H}A\|=\|A\|\|A\|$, the bridge to the singular
 values, supplied by `CStarRing.norm_star_mul_self`.
 
@@ -144,7 +144,7 @@ supplied by CFT-08-006, so no new hypothesis is introduced.
 
 **Boundary and Lean provider.** Invertibility of $S$ is needed only to obtain
 that data.
-[`polar_factor_is_unitary`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L17)
+[`polar_factor_is_unitary`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L17)
 re-exports `CrouzeixConjecture.completionPolarUnitary_mem_unitaryGroup`, whose
 checked proof runs exactly the displayed calculation: it rewrites the membership
 criterion, distributes the conjugate transpose using the self-adjointness field,
@@ -171,14 +171,14 @@ matrices: in general the two matrices differ, and the card says nothing about
 which matrix is which. They coincide when $U$ commutes with the conjugated
 factor — at $U=I$, and for the scalar family, among others — so the equality of
 norms is the only conclusion available.
-[`polar_similarity_norm_transfer`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L20)
+[`polar_similarity_norm_transfer`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L20)
 re-exports
 `CrouzeixConjecture.completionDiagonalizableMatrix_norm_eq_completionSimilarity_norm`,
 whose checked proof substitutes the unitary conjugation and then strips the two
 unitary factors with `CStarRing.norm_mem_unitary_mul` and
 `CStarRing.norm_mul_mem_unitary`. Those are exactly the two invariance
 statements recorded here as
-[`matrix_norm_unitary_invariant`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L66).
+[`matrix_norm_unitary_invariant`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L66).
 This is the balancing step Part VI relies on: it replaces an arbitrary
 invertible conjugation, whose condition number is uncontrolled, by a positive
 one, at no cost in norm.
@@ -191,7 +191,7 @@ as induced operator norms of the corresponding Euclidean maps.
 **Proof.** Rewrite both sides by CFT-09-001 and apply CFT-09-003.
 
 **Boundary and Lean provider.**
-[`polar_operator_norm_transfer`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L24)
+[`polar_operator_norm_transfer`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L24)
 re-exports
 `CrouzeixConjecture.completionDiagonalizableMatrix_euclideanOperator_norm_eq`,
 whose checked proof is literally those two rewrites followed by CFT-09-003. The
@@ -212,7 +212,7 @@ minimality, $\|C\|\le2$.
 **Boundary and Lean provider.** This is the shape every terminal bound in the
 book takes: a positivity certificate converted into a norm bound. The constant
 is not special to the argument; $4$ appears because the target constant is $2$.
-[`quadratic_bound_implies_norm_two`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L28)
+[`quadratic_bound_implies_norm_two`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L28)
 re-exports
 `CrouzeixConjecture.matrix_norm_le_two_of_four_sub_conjTranspose_mul_self_posSemidef`,
 whose checked proof rewrites by CFT-09-001 and delegates to the operator-level
@@ -229,7 +229,7 @@ packages it as `norm_add_le`.
 **Boundary and Lean provider.** Like CFT-07-006 this is a weakest-hypothesis
 card, stated because every perturbation estimate in Parts V and VI splits a
 matrix into a main term and a correction and adds the two bounds.
-[`norm_triangle_kernel`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L32)
+[`norm_triangle_kernel`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L32)
 is proved here rather than aliased, because a bare alias of a non-maintained
 library lemma is classified as a direct alias and cannot carry a local-proof
 claim.
@@ -239,7 +239,7 @@ claim.
 Two boundary facts complete the chapter.
 
 A singular matrix kills a nonzero vector:
-[`singular_has_null_vector`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L72)
+[`singular_has_null_vector`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L72)
 turns $\det A=0$ into the existence of some $x\neq0$ with $Ax=0$, via the library
 equivalence `Matrix.exists_mulVec_eq_zero_iff`. The statement is existential, not
 constructive: no witness is produced. In singular-value language the smallest
@@ -252,31 +252,31 @@ $$
 N_\alpha=\begin{bmatrix}0&\alpha\\0&0\end{bmatrix}.
 $$
 It is nilpotent — $N_\alpha^2=0$, checked as
-[`shear_nilpotent`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L82).
+[`shear_nilpotent`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L82).
 Its characteristic polynomial is $t^{2}$, checked as
-[`shear_charpoly`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L97),
+[`shear_charpoly`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L97),
 so zero is its only eigenvalue and the spectral radius is $0$; that spectrum
 computation is
-[`shear_spectrum_eq_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104),
+[`shear_spectrum_eq_zero`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104),
 which reads the characteristic polynomial through Chapter 6's root test. Its
 determinant vanishes too, checked as
-[`shear_det_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L90).
+[`shear_det_zero`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L90).
 Yet its norm is exactly $|\alpha|$. The computation is the C\*-identity applied
 to a Gram matrix that happens to be diagonal:
 $$
 N_\alpha^{\mathsf H}N_\alpha=\operatorname{diag}\bigl(0,\ \overline{\alpha}\alpha\bigr),
 $$
 checked as
-[`shear_conjTranspose_mul_self`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L110).
+[`shear_conjTranspose_mul_self`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L110).
 The induced norm of a diagonal matrix is the largest modulus of its entries; that
 step is Mathlib's `Matrix.l2_opNorm_diagonal`, applied inside
-[`shear_norm_eq`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134).
+[`shear_norm_eq`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134).
 What
-[`shear_diagonal_family_norm`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L119)
+[`shear_diagonal_family_norm`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L119)
 contributes is the supremum norm of the entry family itself, $|\alpha|^2$;
 so $\|N_\alpha\|^2=|\alpha|^2$ and, both sides being nonnegative,
 $\|N_\alpha\|=|\alpha|$. That is
-[`shear_norm_eq`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134).
+[`shear_norm_eq`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134).
 
 The gap between spectral radius $0$ and norm $|\alpha|$ is therefore unbounded.
 This single example is why the rest of the book cannot bound $\|p(A)\|$ by the
@@ -361,7 +361,7 @@ CFT-07-005, as its boundary paragraph states.
 
 The six exercise theorems live in
 `CrouzeixTextbook.Part02.Exercises.Chapter09` in the
-[chapter Lean source](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean).
+[chapter Lean source](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean).
 
 ## Exercises
 
@@ -372,7 +372,7 @@ that convention buys.
 
 **Solution.** The matrix norm is the induced operator norm of the Euclidean
 map, and it dominates every stretching: $\|Ax\|\le\|A\|\|x\|$.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L149)
+[`exercise_01_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L149)
 states both for every finite index type, every matrix and every vector, so the
 convention and the inequality it licenses appear in one checked statement.
 
@@ -386,7 +386,7 @@ $\|A^{\mathsf H}A\|=\|A\|\|A\|$ is the C\*-identity, the step that would identif
 $\|A\|$ as the largest singular value once the norm of a positive semidefinite
 matrix is known to be its spectral radius — an ingredient this book has not
 built.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L155)
+[`exercise_02_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L155)
 states both. Neither is proved here from scratch; both are named library facts
 about the C\*-algebra of matrices, and the exercise records which ones.
 
@@ -399,7 +399,7 @@ similarity leaves the norm unchanged.
 collapsing it with the square-root data. The norm equality is CFT-09-003,
 proved by writing the left matrix as a unitary conjugate of the right and
 stripping the unitary factors.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L161)
+[`exercise_03_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L161)
 states both for every scalar family, which is the form the Part VI balancing
 argument consumes.
 
@@ -412,7 +412,7 @@ that unitary conjugation does too.
 C\*-algebra. For the conjugation, apply the right-hand invariance with
 $U^{\mathsf H}$ — which is unitary because the unitary group is closed under
 the star — and then the left-hand invariance with $U$.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L171)
+[`exercise_04_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L171)
 states all three conjuncts and derives the third from the first two exactly as
 described, rather than citing CFT-09-003.
 
@@ -424,11 +424,11 @@ desired.
 **Solution.** Take $N_\alpha$. Its characteristic polynomial is $t^{2}$, so zero
 is its only eigenvalue and the spectral radius the task asks about is $0$; that
 is
-[`shear_spectrum_eq_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104),
+[`shear_spectrum_eq_zero`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104),
 which the exercise theorem itself does not restate. Its norm is exactly
 $|\alpha|$, by the C\*-identity applied to the diagonal Gram matrix
 $\operatorname{diag}(0,|\alpha|^2)$.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L179)
+[`exercise_05_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L179)
 states the vanishing determinant, the nilpotency and the exact norm as three
 conjuncts. The exact value matters: a lower bound would show the spectrum is
 not an upper bound for the norm, but the equality shows the gap is exactly the
@@ -442,7 +442,7 @@ term to a correction.
 
 **Solution.** The first is CFT-09-005 applied to the supplied certificate; the
 second is CFT-09-006.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L187)
+[`exercise_06_solution`](../../../lab/math/lean/CrouzeixTextbook/Part02/Chapter09.lean#L187)
 states them together, which is the exact pair of ingredients the Part VI
 perturbation arguments combine.
 

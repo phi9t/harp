@@ -17,9 +17,9 @@ fn repo_root() -> &'static Path {
 
 fn canonical_mathlib_artifact_root() -> PathBuf {
     repo_root()
-        .join("formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean")
+        .join("lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean")
         .canonicalize()
-        .expect("canonical Mathlib artifact root must exist under formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean")
+        .expect("canonical Mathlib artifact root must exist under lab/math/lean/.lake/packages/mathlib/.lake/build/lib/lean")
 }
 
 struct LeanEnvFixture {
@@ -261,7 +261,7 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
         .success()
         .stdout(
             predicate::str::contains("[lean] target=AutodiffGeometry")
-                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] root=lab/math/lean"))
                 .and(predicate::str::contains("[lean] scan_seconds="))
                 .and(predicate::str::contains("[lean] cache_seconds="))
                 .and(predicate::str::contains("[lean] lake_seconds="))
@@ -296,7 +296,7 @@ fn shared_wrapper_builds_crouzeix_focused_target() {
         .success()
         .stdout(
             predicate::str::contains("[lean] target=Crouzeix")
-                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] root=lab/math/lean"))
                 .and(predicate::str::contains("[lean] outcome=passed")),
         );
 
@@ -324,7 +324,7 @@ fn shared_wrapper_builds_crouzeix_textbook_target() {
         .success()
         .stdout(
             predicate::str::contains("[lean] target=CrouzeixTextbook")
-                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] root=lab/math/lean"))
                 .and(predicate::str::contains("[lean] outcome=passed")),
         );
 
@@ -534,7 +534,7 @@ fn shared_wrapper_builds_ls_only_cached_target_without_scanning_other_providers(
         .success()
         .stdout(
             predicate::str::contains("[lean] target=CrouzeixLoristSchwenninger")
-                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] root=lab/math/lean"))
                 .and(predicate::str::contains("[lean] outcome=passed")),
         );
 
@@ -650,7 +650,7 @@ theorem neutral_dependency_fixture : True := by trivial\n",
         .success()
         .stdout(
             predicate::str::contains("[lean] target=CrouzeixJin")
-                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] root=lab/math/lean"))
                 .and(predicate::str::contains("[lean] outcome=passed")),
         );
 
@@ -860,7 +860,7 @@ fn shared_wrapper_builds_harp_only_cached_target_without_scanning_terminal_ls_pr
         .success()
         .stdout(
             predicate::str::contains("[lean] target=CrouzeixHarp")
-                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] root=lab/math/lean"))
                 .and(predicate::str::contains("[lean] outcome=passed")),
         );
 
@@ -1191,7 +1191,7 @@ fn ls_only_wrapper_preflights_public_mathlib_imports_before_lake() {
 
 #[test]
 fn ls_only_target_is_not_part_of_default_or_all_builds() {
-    let lakefile = fs::read_to_string(repo_root().join("formalization/lean/lakefile.toml"))
+    let lakefile = fs::read_to_string(repo_root().join("lab/math/lean/lakefile.toml"))
         .expect("read Lake configuration");
     let default_targets = lakefile
         .split_once("defaultTargets = [")
@@ -1267,7 +1267,7 @@ fn shared_wrapper_builds_all_targets_from_shared_root_once() {
     );
     assert_eq!(
         fs::read_to_string(lake_pwd).expect("read lake working directory"),
-        format!("{}\n", repo_root().join("formalization/lean").display())
+        format!("{}\n", repo_root().join("lab/math/lean").display())
     );
 }
 
@@ -1532,9 +1532,7 @@ fn route_wrappers_fail_closed_on_python_preflight_block_before_lake() {
 
         assert_eq!(
             fs::read_to_string(&python_args).expect("read fake python args"),
-            format!(
-                "labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route {route}\n"
-            ),
+            format!("lab/math/proof_reproduction/proof_evidence.py preflight --route {route}\n"),
             "wrapper did not call python preflight with the exact route mapping",
         );
         assert!(
@@ -1587,9 +1585,7 @@ fn route_wrappers_run_lake_once_after_successful_python_preflight() {
 
         assert_eq!(
             fs::read_to_string(&python_args).expect("read fake python args"),
-            format!(
-                "labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route {route}\n"
-            ),
+            format!("lab/math/proof_reproduction/proof_evidence.py preflight --route {route}\n"),
             "wrapper did not call python preflight with the exact route mapping",
         );
         assert_eq!(

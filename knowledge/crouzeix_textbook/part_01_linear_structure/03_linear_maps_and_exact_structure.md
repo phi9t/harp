@@ -74,7 +74,7 @@ argument above justifies treating the set as a vector space.
 **Boundary and Lean provider.** No finite dimension is needed. The retained
 `mem_kernel_iff` allows semirings and semimodules, so it specializes to our
 real or complex spaces. `kernel_range_closure` separately checks closure.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L9).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L9).
 
 ### CFT-03-002: range {#cft-03-002}
 
@@ -91,7 +91,7 @@ the reverse direction inserts that preimage into the range.
 **Boundary and Lean provider.** The range need not equal the codomain.
 `mem_range_iff` allows semirings and semimodules without finite dimension;
 `kernel_range_closure` checks the two subspaces separately.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L15).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L15).
 
 ### CFT-03-003: rank--nullity {#cft-03-003}
 
@@ -126,7 +126,7 @@ division-ring/module generality. The basis-extension step has its own
 The separate local helpers `image_spanning_from_decomposition` and
 `image_independence_from_kernel` check the two image-family arguments;
 `rank_nullity` alone is not their provider.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L21).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L21).
 
 ### CFT-03-004: injectivity {#cft-03-004}
 
@@ -143,7 +143,7 @@ output and is the essential step.
 retained `injective_iff_kernel_bottom` works over division rings and additive
 groups and now follows this difference argument locally. Additive inverses
 are used; the proof is not asserted for arbitrary semimodules.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L28).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L28).
 
 ### CFT-03-005: invariant restriction {#cft-03-005}
 
@@ -165,7 +165,7 @@ its output. It permits semirings and semimodules. The evaluation theorem is
 `invariantRestriction_apply`; E06 separately proves compatibility with powers.
 Without invariance one can restrict the domain to $L$, but cannot claim the
 codomain is $L$.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L44).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L44).
 
 ### CFT-03-006: composition rank bound {#cft-03-006}
 
@@ -181,7 +181,7 @@ $\{0\}$, whereas the final range is $\mathbb R$. In finite dimensions,
 subspace dimension monotonicity gives the corresponding rank inequality;
 the indexed claim is the range inclusion. `composition_range_le` retains
 semiring/semimodule generality, and E05 checks the strict counterexample.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L52).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L52).
 
 ### First isomorphism theorem: the effective input space
 
@@ -214,7 +214,7 @@ bijectivity. `firstIso_well_defined` checks the difference argument and
 [`LinearMap.quotKerEquivRange`](https://github.com/leanprover-community/mathlib4/blob/520045ab14e26149ee970e2e617ca04b09bde5d6/Mathlib/LinearAlgebra/Isomorphisms.lean#L36),
 which constructs the equivalence using the quotient lift. Its ring/module
 generality includes real and complex vector spaces.
-[Local Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L103).
+[Local Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L103).
 
 ## Worked examples
 
@@ -263,7 +263,7 @@ the kernel becomes the whole plane and the range becomes $\{0\}$.
 checks the $\alpha=0$ boundary.
 `nilpotent_power_zero_kernel_range` and `nilpotent_higher_power_kernel_range`
 check the displayed power kernel/range identities in the
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean#L187).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean#L187).
 E06 proves the general
 restriction/power identity by induction. A map with some zero positive power
 is called *nilpotent*; here two steps suffice.
@@ -376,7 +376,7 @@ every restricted application and requires no finite dimension. Checked by
 `Exercises.Chapter03.exercise_06_solution`, whose proof is this induction.
 
 Each exercise has its own theorem with exactly the displayed hypotheses and
-conclusion in the [chapter Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean).
+conclusion in the [chapter Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter03.lean).
 
 ## Synthesis and forward dependencies
 

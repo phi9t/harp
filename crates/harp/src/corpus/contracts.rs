@@ -387,8 +387,7 @@ pub(super) fn normalize_link_path(base: &Path, destination: &Path) -> Option<Pat
     (resolved.starts_with("content")
         || resolved.starts_with("knowledge")
         || resolved.starts_with("evidence")
-        || resolved.starts_with("labs")
-        || resolved.starts_with("crates")
-        || resolved.starts_with("formalization"))
+        || resolved.starts_with("lab")
+        || resolved.starts_with("crates"))
     .then_some(resolved)
 }

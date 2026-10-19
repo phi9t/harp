@@ -173,7 +173,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.maxFunctionModulusOnSet`.
 Substantive provider: `none`; a definition has no proof obligation. The named declaration is an alias of the definition, which the underlying-declaration line names.
 Readable type map: `s` is the set, `f` the function, and the value is the supremum of `‖f‖` over `s`.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L9).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L9).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `Set.{0} Complex → (Complex → Complex) → Real`.
 Type SHA-256: `08e98f1a059154fe41a72cad9d2cedf64b73e7612e856619a4273a4c84d006aa`.
@@ -271,7 +271,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.exists_maxFunctionModulusOnSet`.
 Substantive provider: `CrouzeixConjecture.exists_maxFunctionModulusOnSet`, a genuine multi-step proof: `IsCompact.exists_isMaxOn` on `‖f‖`, then `IsGreatest` assembly, then `IsGreatest.csSup_eq`.
 Readable type map: `s` is the compact set, `f` the function, and `z` the attaining point.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L11).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L11).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {s : Set.{0} Complex} {f : Complex → Complex}, IsCompact.{0} s → Set.Nonempty.{0} s → ContinuousOn.{0, 0} f s → Exists.{1} fun z => And (Membership.mem.{0, 0} s z) (Eq.{1} (Norm.norm.{0} (f z)) (CrouzeixConjecture.maxFunctionModulusOnSet s f))`.
 Type SHA-256: `477120b54163fa7c24b36142f0e0cdca3d9c36244b12566149b5ea20cc15c1ea`.
@@ -364,7 +364,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.norm_function_le_maxFunctionModulusOnSet`.
 Substantive provider: `CrouzeixConjecture.norm_function_le_maxFunctionModulusOnSet`, which re-runs the maximizer construction rather than citing CFT-13-002, then closes with the `IsMaxOn` witness at `z`.
 Readable type map: `s` is the compact set, `f` the function, `z` the point being bounded.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L13).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L13).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {s : Set.{0} Complex} {f : Complex → Complex}, IsCompact.{0} s → Set.Nonempty.{0} s → ContinuousOn.{0, 0} f s → ∀ {z : Complex}, Membership.mem.{0, 0} s z → LE.le.{0} (Norm.norm.{0} (f z)) (CrouzeixConjecture.maxFunctionModulusOnSet s f)`.
 Type SHA-256: `c77f5a3302ab3a64e6b993aeffdecce5675dfbebaa9ec2b23b9f7216b45999ab`.
@@ -456,7 +456,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.maxFunctionModulusOnSet_nonneg`.
 Substantive provider: `CrouzeixConjecture.maxFunctionModulusOnSet_nonneg`, three steps: attain by CFT-13-002's provider, rewrite backwards, apply `norm_nonneg`.
 Readable type map: `s` is the compact set and `f` the function; the value bounded below is the maximum.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L15).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L15).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {s : Set.{0} Complex} {f : Complex → Complex}, IsCompact.{0} s → Set.Nonempty.{0} s → ContinuousOn.{0, 0} f s → LE.le.{0} (OfNat.ofNat.{0} 0) (CrouzeixConjecture.maxFunctionModulusOnSet s f)`.
 Type SHA-256: `495bc7be9d3a28d8fb02c8c329c0e3a46a2a6d915bc1b7ac6b59736e680d8007`.
@@ -552,7 +552,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.maxFunctionModulusOnSet_mono`.
 Substantive provider: `CrouzeixConjecture.maxFunctionModulusOnSet_mono`, which attains on `s` via CFT-13-002's provider and bounds on `t` via CFT-13-003's.
 Readable type map: `s` and `t` are the smaller and larger compact sets and `f` the function.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L17).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L17).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {s t : Set.{0} Complex} {f : Complex → Complex}, IsCompact.{0} s → Set.Nonempty.{0} s → IsCompact.{0} t → Set.Nonempty.{0} t → ContinuousOn.{0, 0} f t → LE.le.{0} s t → LE.le.{0} (CrouzeixConjecture.maxFunctionModulusOnSet s f) (CrouzeixConjecture.maxFunctionModulusOnSet t f)`.
 Type SHA-256: `922c2f0e2aa205a9fb7bfc96cdd44d88c67419b4763dab024c6091f42f4b0109`.
@@ -675,7 +675,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation`.
 Substantive provider: `CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation`, the chapter's longest provider: Heine-Cantor, an epsilon-delta extraction, then the three earlier cards' providers for the two bounds.
 Readable type map: `K` is the target, `s k` the approximating family, `C` the ambient compact set, and `radius k` the approximation scale.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L19).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L19).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {f : Complex → Complex} {K C : Set.{0} Complex}, IsCompact.{0} K → Set.Nonempty.{0} K → IsCompact.{0} C → ContinuousOn.{0, 0} f C → ∀ {s : Nat → Set.{0} Complex}, (∀ (k : Nat), IsCompact.{0} (s k)) → (∀ (k : Nat), LE.le.{0} K (s k)) → (∀ (k : Nat), LE.le.{0} (s k) C) → ∀ {radius : Nat → Real}, Filter.Tendsto.{0, 0} radius Filter.atTop.{0} (nhds.{0} (OfNat.ofNat.{0} 0)) → (∀ (k : Nat) (z : Complex), Membership.mem.{0, 0} (s k) z → Exists.{1} fun w => And (Membership.mem.{0, 0} K w) (LE.le.{0} (Norm.norm.{0} (HSub.hSub.{0, 0, 0} z w)) (radius k))) → Filter.Tendsto.{0, 0} (fun k => CrouzeixConjecture.maxFunctionModulusOnSet (s k) f) Filter.atTop.{0} (nhds.{0} (CrouzeixConjecture.maxFunctionModulusOnSet K f))`.
 Type SHA-256: `7b798048701c82c441890f7a4351d452b93a459e868f17c3b1c04efcbcefacf9`.
@@ -790,7 +790,7 @@ first bites.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_01_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `rfl` for the unfolding and Mathlib's `Set.Nonempty.image` for the second conjunct; no maintained Crouzeix provider and no card cited.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L24).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L24).
 Type SHA-256: `fa7e532c0399011dbd8da1b1a586d35dd6aff087052d1c0130e75f547003b0df`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -817,7 +817,7 @@ work about *varying* functions, not about suprema as such.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_02_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib's `Set.Nonempty.image_const` and `csSup_singleton`; no compactness hypothesis and no card cited.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L30).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L30).
 Type SHA-256: `61ba71e5d3cdb5ab8ae68f581d51df50b1503e7c4c239c1d8e7448938d5ad2b2`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -850,7 +850,7 @@ cards.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_03_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.exists_maxFunctionModulusOnSet` and `norm_function_le_maxFunctionModulusOnSet`, the providers of CFT-13-002 and CFT-13-003.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L37).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L37).
 Type SHA-256: `9726762bd3e1170f6077edc6c0da361f7295e293b59e92ad256d150f879ccad7`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -880,7 +880,7 @@ attainment and `norm_nonneg` directly, which is the point of the exercise.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_04_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.exists_maxFunctionModulusOnSet` and Mathlib's `norm_nonneg`; it does not call CFT-13-004's provider.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L46).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L46).
 Type SHA-256: `37ba6b2f9a3ce0a791d9b4cf34f679dc8794323db67ac1a239d4f9ae694368db`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -909,7 +909,7 @@ the definition and says nothing about `f`.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_05_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib's `Set.image_empty` and `Real.sSup_empty`; a two-rewrite computation with no Crouzeix provider.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L56).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L56).
 Type SHA-256: `3793c7327336f5eb4415269140fed79f458d3c7708275358bdb4cad2e4af152e`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -941,7 +941,7 @@ unchanged in intent.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_06_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.maxFunctionModulusOnSet_mono` and `maxFunctionModulusOnSet_nonneg`, the providers of CFT-13-005 and CFT-13-004; the exercise adds the pairing, not a proof.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean#L61).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter13.lean#L61).
 Type SHA-256: `4181055ad0dc4d82f5a4bd5e3e54fa042ee37a4182a10e03f1c65592010c4438`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.

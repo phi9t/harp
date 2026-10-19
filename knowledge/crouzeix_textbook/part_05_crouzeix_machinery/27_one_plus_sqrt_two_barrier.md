@@ -44,7 +44,7 @@ scaling by two gives the unit-disk numerical range and norm two for `A_{0,2}`.
 For `p(z)=z`, either normalization has ratio `2`, while the independent-term
 proof certifies only `1+√2`. This is method slack, not an attainment claim for
 the larger constant. Lean checks the normalized core in
-[`jordanNilpotentTwo_attains_two`](../../../formalization/lean/CrouzeixConjecture/Sharpness.lean#L34),
+[`jordanNilpotentTwo_attains_two`](../../../lab/math/lean/CrouzeixConjecture/Sharpness.lean#L34),
 whose canonical receipt is `CrouzeixTextbook:454af67489b07bf9f313151152547157983ebf25dfdb60014fe289a908d9641b`
 with axioms `Classical.choice, Quot.sound, propext`.
 
@@ -133,7 +133,7 @@ Public declaration: `CrouzeixTextbook.Part05.sqrt_two_nonnegative`.
 Formal mode: `proved-here`.
 Substantive provider: `none`.
 Readable type map: the closed proposition says exactly that the real square root of two is nonnegative.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L12).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L12).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `LE.le.{0} (OfNat.ofNat.{0} 0) (Real.sqrt (OfNat.ofNat.{0} 2))`.
 Type SHA-256: `0671f6cc626c2d1ec60ba1496a2a0bcfcea215f114a3712a2e6ad0333943c82b`.
@@ -222,7 +222,7 @@ Public declaration: `CrouzeixTextbook.Part05.sqrt_two_squared`.
 Formal mode: `proved-here`.
 Substantive provider: `none`.
 Readable type map: the proposition identifies the square of `Real.sqrt 2` with the real number two.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L16).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L16).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `Eq.{1} (HPow.hPow.{0, 0, 0} (Real.sqrt (OfNat.ofNat.{0} 2)) (OfNat.ofNat.{0} 2)) (OfNat.ofNat.{0} 2)`.
 Type SHA-256: `807b03a281f82bdc472d967959ea405a451a428770ceb42484d1cd5bd3c5c85c`.
@@ -313,7 +313,7 @@ Public declaration: `CrouzeixTextbook.Part05.one_plus_sqrt_two_positive`.
 Formal mode: `proved-here`.
 Substantive provider: `none`.
 Readable type map: the public theorem proves positivity; a nearby checked helper records irrationality separately.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L20).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L20).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `LT.lt.{0} (OfNat.ofNat.{0} 0) (HAdd.hAdd.{0, 0, 0} (OfNat.ofNat.{0} 1) (Real.sqrt (OfNat.ofNat.{0} 2)))`.
 Type SHA-256: `b5d6ab35facd3ff402611c5653d77b68002e38c6a2303ed396fd26262b35ec94`.
@@ -407,7 +407,7 @@ Public declaration: `CrouzeixTextbook.Part05.one_plus_sqrt_two_barrier`.
 Formal mode: `proved-here`.
 Substantive provider: `none`.
 Readable type map: any real `κ` satisfying the quadratic inequality obeys the upper endpoint, with no sign premise.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L31).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L31).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {x : Real}, LE.le.{0} (HPow.hPow.{0, 0, 0} x (OfNat.ofNat.{0} 2)) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} (OfNat.ofNat.{0} 2) x) (OfNat.ofNat.{0} 1)) → LE.le.{0} x (HAdd.hAdd.{0, 0, 0} (OfNat.ofNat.{0} 1) (Real.sqrt (OfNat.ofNat.{0} 2)))`.
 Type SHA-256: `b34b7fab7e6f0711708e126020eace13d85ec177642c7a3d3c3172f0dc9bc8f5`.
@@ -507,7 +507,7 @@ Substantive provider: `none`.
 Readable type map: Lean states the kernel for `X+Y`; substituting `X=u` and
 `Y=-v` gives the displayed difference estimate. The premise `‖X‖≤2κ`
 already forces the sign needed by any nontrivial instance.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L46).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L46).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {E : Type u_1} [inst : SeminormedAddCommGroup.{u_1} E] (X Y : E) (kappa : Real), LE.le.{0} (Norm.norm.{u_1} X) (HMul.hMul.{0, 0, 0} (OfNat.ofNat.{0} 2) kappa) → LE.le.{0} (Norm.norm.{u_1} Y) (OfNat.ofNat.{0} 1) → LE.le.{0} (Norm.norm.{u_1} (HAdd.hAdd.{u_1, u_1, u_1} X Y)) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} (OfNat.ofNat.{0} 2) kappa) (OfNat.ofNat.{0} 1))`.
 Type SHA-256: `4ee8f501079eaa15f32b005c52c5275ec658b9f32af686f89de532b09a890aeb`.
@@ -587,7 +587,7 @@ cross term would improve the vector estimate, but this identity by itself does
 not prove that the operator pair has one.
 
 Supporting Lean identity: `CrouzeixTextbook.Part05.barrier_cross_term_identity`
-is checked at [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L168).
+is checked at [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L168).
 Formalization scope: the Lean helper formalizes only this vector identity; the
 norm-attaining finite-dimensional bridge and any correlation estimate are not
 claimed as part of that helper's formal surface.
@@ -643,7 +643,7 @@ Readable type map: `D,h,T,R` satisfy the displayed positive-map decomposition,
 coefficient budget, and companion bound; the conclusion is exactly the
 quadratic norm inequality. The classical `S,H` identity motivates these inputs
 but is not falsely presented as the public theorem's signature.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L57).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L57).
 Compiler receipt: fresh canonical compiler output joined to this card.
 Normalized type: `∀ {i : Type u_1} {n : Type u_2} [inst : TopologicalSpace.{u_1} i] [inst_1 : MeasurableSpace.{u_1} i] [inst_2 : OpensMeasurableSpace.{u_1} i] [inst_3 : Fintype.{u_2} n] [inst_4 : DecidableEq.{u_2 + 1} n] {mu : MeasureTheory.Measure.{u_1} i} (D : CrouzeixConjecture.PositiveBoundaryDensity.{u_1, u_2} mu) (h : BoundedContinuousFunction.{u_1, 0} i Complex) (T R : CrouzeixConjecture.SquareMatrix.{u_2} n), Eq.{u_2 + 1} (HMul.hMul.{u_2, u_2, u_2} (Matrix.conjTranspose.{0, u_2, u_2} T) T) (HAdd.hAdd.{u_2, u_2, u_2} (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_1 + 1, u_2 + 1} (CrouzeixConjecture.boundaryPhiCLM.{u_1, u_2} D) h) R) → LE.le.{0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (Inv.inv.{0} (OfNat.ofNat.{0} 2)) (MeasureTheory.integral.{u_1, 0} mu fun x => Norm.norm.{u_2} (CrouzeixConjecture.PositiveBoundaryDensity.density.{u_1, u_2} D x))) (Norm.norm.{u_1} h)) (HMul.hMul.{0, 0, 0} (OfNat.ofNat.{0} 2) (Norm.norm.{u_2} T)) → LE.le.{0} (Norm.norm.{u_2} R) (OfNat.ofNat.{0} 1) → LE.le.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_2} T) (OfNat.ofNat.{0} 2)) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} (OfNat.ofNat.{0} 2) (Norm.norm.{u_2} T)) (OfNat.ofNat.{0} 1))`.
 Type SHA-256: `ff5adddf717c380cb4f3b3123f60e9e8569e51e49c18c3d4d3c8de299b91935e`.
@@ -680,7 +680,7 @@ remain separate questions.
 
 The six public declarations are compiler-bound in the correspondence table of
 their cards, and the six exercises have distinct solution theorems in
-[`Chapter27.lean`](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L80).
+[`Chapter27.lean`](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L80).
 The public scalar barrier has no `κ≥0` hypothesis. Exercise E01 retains that
 operator-norm premise pedagogically but reconstructs the factorization without
 calling the endpoint theorem; E03 and E06 likewise expose independent proof
@@ -699,7 +699,7 @@ hypothesis gives `(κ-1-√2)(κ-1+√2)≤0`. If `κ>1+√2`, both factors are
 positive, a contradiction. Therefore `κ≤1+√2`; `κ≥0` is valid norm context
 but unnecessary scalar input.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_01_solution` in [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L80).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_01_solution` in [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L80).
 Formal mode: `proved-here`; the proof avoids the public barrier theorem.
 Compiler locator: line 80, column 9.
 Type SHA-256: `68c6d3b9d3a4994f12a30480fb4fe7a1dd0ad1a6a1bf27b50f896042bff2c944`.
@@ -721,7 +721,7 @@ nonnegative, while `(√2)²=2<9/4=(3/2)²`. Thus
 $$2<1+\sqrt2<\frac52.$$
 The sign checks matter: squaring does not preserve order on all real numbers.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_02_solution` in [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L96).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_02_solution` in [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L96).
 Formal mode: `proved-here`; both strict inequalities are reconstructed.
 Compiler locator: line 96, column 9.
 Type SHA-256: `e1f3ec1cd602af53c5ff34a3a8a4f02706beff01c46434ba4d0dfa9dc7262563`.
@@ -739,7 +739,7 @@ We rewrite as (κ-1)²≤2 and use the nonnegative square-root branch to derive 
 Indeed `(κ-1)²=κ²-2κ+1≤2`; if `κ-1>√2`, squaring positive quantities
 contradicts this inequality. Hence `κ≤1+√2`, without assuming `κ≥0`.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_03_solution` in [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L104).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_03_solution` in [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L104).
 Formal mode: `proved-here`; the proof avoids the public barrier theorem.
 Compiler locator: line 104, column 9.
 Type SHA-256: `bb00d3ff964d18a29c0d722841b2b2763d9a964178d9076cc48ef9ac1c1a4495`.
@@ -757,7 +757,7 @@ We construct aligned complex summands with norms 1 and √2 and verify equality 
 Take `a=1`, `b=√2` as nonnegative real complex numbers. Then `‖a‖=1`,
 `‖b‖=√2`, and `‖a+b‖=1+√2` because their phases coincide.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_04_solution` in [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L122).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_04_solution` in [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L122).
 Formal mode: `proved-here`; the equality witness is explicit.
 Compiler locator: line 122, column 9.
 Type SHA-256: `caf6285507ebf86498b027f7cccb42d4576f2d599e2ffcef1e9ff53b0172efa0`.
@@ -775,7 +775,7 @@ We assume inner-product orthogonality and replace the triangle bound by the Pyth
 Expanding gives `‖x+y‖²=‖x‖²+‖y‖²+2 Re⟨x,y⟩`; when `⟨x,y⟩=0`,
 the cross term vanishes, hence `‖x+y‖²=‖x‖²+‖y‖²`.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_05_solution` in [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L132).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_05_solution` in [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L132).
 Formal mode: `proved-here`; the complex inner-product expansion is checked.
 Compiler locator: line 132, column 9.
 Type SHA-256: `3f90e0243253841699e7da931dc016840f9c032b405a9582eac70c4b3ca73173`.
@@ -793,7 +793,7 @@ We factor the quadratic at 1±√2 and derive κ≤1+√2 without a sign hypothe
 The factor contradiction proves the endpoint. If `κ=‖T‖`, then norm
 nonnegativity separately gives `0≤κ`; that fact is application context only.
 
-Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_06_solution` in [Chapter27.lean](../../../formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean#L140).
+Lean solution: `CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_06_solution` in [Chapter27.lean](../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean#L140).
 Formal mode: `proved-here`; the proof never calls the endpoint theorem.
 Compiler locator: line 140, column 9.
 Type SHA-256: `988d32168cdb145b0cdb418258040fd63fa105628f3b46203623f494df97e0ff`.

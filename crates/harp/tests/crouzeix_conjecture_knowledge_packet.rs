@@ -827,13 +827,12 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     assert!(provenance.contains("efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7"));
 
     let lab_readme =
-        fs::read_to_string(workspace_root().join("labs/crouzeix_proof_reproduction/README.md"))
+        fs::read_to_string(workspace_root().join("lab/math/proof_reproduction/README.md"))
             .expect("read reproduction lab README");
     assert!(lab_readme.contains("complete-local"));
     assert!(lab_readme.contains("evidence/crouzeix_conjecture/local_formalization/manifest.tsv"));
-    assert!(lab_readme.contains(
-        "python3 labs/crouzeix_proof_reproduction/proof_evidence.py validate --route all"
-    ));
+    assert!(lab_readme
+        .contains("python3 lab/math/proof_reproduction/proof_evidence.py validate --route all"));
     assert!(lab_readme.contains("validate_local_formalization_bundle"));
     assert!(lab_readme.contains(
         "from labs.crouzeix_proof_reproduction.local_formalization_validation import validate_local_formalization_bundle"
@@ -933,7 +932,6 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         .contains("9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a"));
     assert!(bundle_manifest
         .contains("60e9bbc25979c8b2e4f38e0d03fa3fc68c8ff077949f94e81a024a56dd1957d6"));
-
 }
 
 #[test]

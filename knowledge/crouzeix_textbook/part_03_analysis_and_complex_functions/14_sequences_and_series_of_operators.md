@@ -173,7 +173,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.matrixPowerSeries`.
 Substantive provider: `none`; a definition has no proof obligation. The named declaration is an alias of the definition, which the underlying-declaration line names.
 Readable type map: `a` is the coefficient sequence and `m` the degree of the term.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L10).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L10).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `{n : Type u_1} → (Nat → CrouzeixConjecture.SquareMatrix.{u_1} n) → FormalMultilinearSeries.{0, 0, u_1} Complex Complex (CrouzeixConjecture.SquareMatrix.{u_1} n)`.
 Type SHA-256: `f150f77a56b65c2b094d4fbe041a0778dd019cd1d9d711145efee98be6ab4bf2`.
@@ -259,7 +259,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.matrixPowerSeries_apply`.
 Substantive provider: `CrouzeixConjecture.matrixPowerSeries_apply`, whose proof is a single `simp` with `matrixPowerSeries` and `ContinuousMultilinearMap.mkPiRing_apply`.
 Readable type map: `a` is the coefficient sequence, `m` the degree, `z` the scalar argument.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L12).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L12).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} (a : Nat → CrouzeixConjecture.SquareMatrix.{u_1} n) (m : Nat) (z : Complex), Eq.{u_1 + 1} (DFunLike.coe.{u_1 + 1, 1, u_1 + 1} (CrouzeixConjecture.matrixPowerSeries.{u_1} a m) fun x => z) (HSMul.hSMul.{0, u_1, u_1} (HPow.hPow.{0, 0, 0} z m) (a m))`.
 Type SHA-256: `399f5d4543254160f695c0d3eb518b77e0e445221ca737e581c737a2299671bf`.
@@ -359,7 +359,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.one_le_matrixPowerSeries_radius`.
 Substantive provider: `CrouzeixConjecture.one_le_matrixPowerSeries_radius`: `FormalMultilinearSeries.le_radius_of_bound` applied at `C`, then `simpa` to reduce the term norm to the coefficient norm.
 Readable type map: `a` is the coefficient sequence and `C` the uniform bound.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L14).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L14).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] (a : Nat → CrouzeixConjecture.SquareMatrix.{u_1} n) (C : Real), (∀ (m : Nat), LE.le.{0} (Norm.norm.{u_1} (a m)) C) → LE.le.{0} (OfNat.ofNat.{0} 1) (FormalMultilinearSeries.radius.{0, 0, u_1} (CrouzeixConjecture.matrixPowerSeries.{u_1} a))`.
 Type SHA-256: `129deb76798151c789bda54a5f52b915a9987b221523bfcbcbd7aee4953675a7`.
@@ -450,7 +450,7 @@ Formal mode: `definition`.
 Underlying declaration: `CrouzeixConjecture.matrixPowerSeriesSum`.
 Substantive provider: `none`; a definition has no proof obligation. The named declaration is an alias of the definition, which the underlying-declaration line names.
 Readable type map: `a` is the coefficient sequence; the value is a function of the complex argument.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L16).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L16).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `{n : Type u_1} → (Nat → CrouzeixConjecture.SquareMatrix.{u_1} n) → Complex → CrouzeixConjecture.SquareMatrix.{u_1} n`.
 Type SHA-256: `344122eb5432b9afc54c26b78cddb716569cf2a0def94923e3239066935c9a46`.
@@ -551,7 +551,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.matrixPowerSeriesSum_analyticOnNhd_unitDisk`.
 Substantive provider: `CrouzeixConjecture.matrixPowerSeriesSum_analyticOnNhd_unitDisk`, which chains `one_le_matrixPowerSeries_radius`, `hasFPowerSeriesOnBall`, `.mono` to radius one, and `analyticAt_of_mem`.
 Readable type map: `a` is the coefficient sequence, `C` the uniform bound, and `unitDisk` the open ball of radius one.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L18).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L18).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] (a : Nat → CrouzeixConjecture.SquareMatrix.{u_1} n) (C : Real), (∀ (m : Nat), LE.le.{0} (Norm.norm.{u_1} (a m)) C) → AnalyticOnNhd.{0, 0, u_1} Complex (CrouzeixConjecture.matrixPowerSeriesSum.{u_1} a) CrouzeixConjecture.unitDisk`.
 Type SHA-256: `1d79c9dee1884eee18821311bdb92ce794fb7052bb1309615802488f23fa15d5`.
@@ -648,7 +648,7 @@ Formal mode: `reexported-proof`.
 Underlying declaration: `CrouzeixConjecture.matrixPowerSeries_hasSum`.
 Substantive provider: `CrouzeixConjecture.matrixPowerSeries_hasSum`, which repeats the ball construction of CFT-14-005 and finishes with `HasFPowerSeriesOnBall.hasSum` and a rewrite by `matrixPowerSeries_apply`.
 Readable type map: `a` is the coefficient sequence, `C` the bound, and `z` the point of the open disk, taken as an implicit binder.
-Code: [Lean re-export](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L20).
+Code: [Lean re-export](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L20).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
 Normalized type: `∀ {n : Type u_1} [inst : Fintype.{u_1} n] [inst_1 : DecidableEq.{u_1 + 1} n] (a : Nat → CrouzeixConjecture.SquareMatrix.{u_1} n) (C : Real), (∀ (m : Nat), LE.le.{0} (Norm.norm.{u_1} (a m)) C) → ∀ {z : Complex}, Membership.mem.{0, 0} CrouzeixConjecture.unitDisk z → HasSum.{u_1, 0} (fun m => HSMul.hSMul.{0, u_1, u_1} (HPow.hPow.{0, 0, 0} z m) (a m)) (CrouzeixConjecture.matrixPowerSeriesSum.{u_1} a z)`.
 Type SHA-256: `68ba8eb2341b7082a7ba51f7586b5ce73c76785f9e26ea77ac1a78ee72451fc2`.
@@ -787,7 +787,7 @@ hypothesis at all, which is why it is worth recording separately from CFT-14-006
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_01_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.matrixPowerSeries_apply` (CFT-14-002's provider) and `CrouzeixConjecture.matrixPowerSeriesSum_zero`, a supporting declaration with no card.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L27).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L27).
 Type SHA-256: `3d7636dc759838e43b97859829dc1dc6e049c21ad320aa5de7a055fdaef6e246`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -818,7 +818,7 @@ the chapter supplies only that starting point.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_02_solution`.
 Formal mode: `proved-here`.
 Provider boundary: Mathlib's `geom_sum_mul_neg`; a ring identity with no hypothesis on `T`, no analysis, and no Crouzeix provider.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L34).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L34).
 Type SHA-256: `39bb2fb60ed0c80ad5861444aa103b66e7bafff3a6c3f13c4ace00e7b84902a7`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -846,7 +846,7 @@ own.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_03_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.one_le_matrixPowerSeries_radius` and `matrixPowerSeriesSum_analyticOnNhd_unitDisk`, the providers of CFT-14-003 and CFT-14-005; the exercise adds the pairing, not a proof.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L40).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L40).
 Type SHA-256: `22dc64980552eec2b2d4058ee85961b2835ea07389bf17be58308b3fefad6d03`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -874,7 +874,7 @@ is that inside the disk the `tsum` is a genuine limit.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_04_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.matrixPowerSeries_hasSum` (CFT-14-006's provider) and Mathlib's `HasSum.tsum_eq`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L48).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L48).
 Type SHA-256: `8e5a15bb9fb6175c991a8e8194581df5cfbfc67416a6f561a6b73b405295808e`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -903,7 +903,7 @@ discussion; the divergence example itself is not compiled.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_05_solution`.
 Formal mode: `proved-here`.
 Provider boundary: the definition of `unitDisk` as `Metric.ball 0 1`, unfolded by `simp`; no Crouzeix provider and no divergence claim.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L57).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L57).
 Type SHA-256: `ed0bf87c2ded5b16942f7307615901fe9ebab61e50bfa6f3ea40cd963b9771f7`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.
@@ -935,7 +935,7 @@ not state.
 Public declaration: `CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_06_solution`.
 Formal mode: `proved-here`.
 Provider boundary: `CrouzeixConjecture.one_le_matrixPowerSeries_radius` (CFT-14-003's provider) at the constant sequence, with both bound instances discharged by `le_rfl`.
-Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean#L64).
+Code: [Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part03/Chapter14.lean#L64).
 Type SHA-256: `02e273182f4d94f929bd17c63517f2ba981c6526b1178290d92340e1d8a43410`.
 Axioms: `Classical.choice`, `Quot.sound`, `propext`.
 Compiler receipt: fresh `CrouzeixTextbook` compiler receipt at the exact source locator.

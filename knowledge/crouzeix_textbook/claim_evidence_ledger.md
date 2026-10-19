@@ -58,7 +58,7 @@ ledger records material source, verification, and publication claims.
   correspondence axis records 174 exact rows, 14 checkpoints, and 28 unmapped
   rows.
 - Source: [[knowledge/crouzeix_textbook/source_registry#mathlib-4-32-1|MATHLIB-4.32.1]]
-- Locator: `formalization/lean/CrouzeixTextbook/Correspondence.lean`.
+- Locator: `lab/math/lean/CrouzeixTextbook/Correspondence.lean`.
 - Scope: exact contract declarations and exercise solutions in the local
   source tree; it does not upgrade prose correspondence.
 - Reproduction: run `mise run crouzeix-textbook-publication` with the canonical
@@ -83,10 +83,10 @@ ledger records material source, verification, and publication claims.
   `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem` is Harp-derived and
   not source-derived.
 - Source: [[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]
-- Locator: `formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`,
-  `formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean`,
-  `formalization/lean/Crouzeix/Harp/MainTheorem.lean`, and
-  [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|Lorist--Schwenninger source graph]].
+- Locator: `lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`,
+  `lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean`,
+  `lab/math/lean/Crouzeix/Harp/MainTheorem.lean`, and
+  [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|Lorist--Schwenninger source graph]].
 - Scope: the exact maintained LS terminal and fixed-domain provider, plus the
   separate Harp-derived finite-horizon provider, compiled in this repository.
   The source graph remains the authority for pinned LS source locators, not
@@ -109,7 +109,7 @@ ledger records material source, verification, and publication claims.
 - Statement: the bounded Jin terminal receipt records successful Lean checking
   and axiom audit for `CrouzeixConjecture.crouzeixConjecture`.
 - Source: [[knowledge/crouzeix_textbook/source_registry#jin-v4-audited|JIN-V4-AUDITED]]
-- Locator: [[labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/receipt.json|Jin terminal receipt]].
+- Locator: [[lab/math/proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/receipt.json|Jin terminal receipt]].
 - Scope: the exact declaration and bounded checks named by that receipt.
 - Reproduction: run `mise run lean-crouzeix-textbook` and
   `mise run lean-crouzeix-jin`.
@@ -125,7 +125,7 @@ ledger records material source, verification, and publication claims.
   `CrouzeixConjecture.LoristSchwenninger.perturbation_mul_target_power_norm_le`,
   its aggregate build, and its allowed-axiom audit.
 - Source: [[knowledge/crouzeix_textbook/source_registry#ls-arxiv-v1|LS-ARXIV-V1]]
-- Locator: [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|Lorist--Schwenninger equation-one intermediate receipt]] and [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|Lorist--Schwenninger source graph]].
+- Locator: [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|Lorist--Schwenninger equation-one intermediate receipt]] and [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|Lorist--Schwenninger source graph]].
 - Scope: only the exact intermediate declaration and bounded checks named by
   that dated receipt. Current provider status is recorded separately by
   [[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]].
@@ -145,8 +145,8 @@ ledger records material source, verification, and publication claims.
   finite-dimensional target operator to have norm at most two.
 - Source: [[knowledge/crouzeix_textbook/source_registry#ls-arxiv-v1|LS-ARXIV-V1]]
 - Locator:
-  [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|Pinned source graph]],
-  `labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json#L1`.
+  [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|Pinned source graph]],
+  `lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json#L1`.
 - Scope: Lemma 1 at
   `arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99`.
 - Reproduction: compare the pinned locator and source digest with the

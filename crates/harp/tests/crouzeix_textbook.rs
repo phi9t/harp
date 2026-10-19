@@ -263,8 +263,8 @@ fn copy_v2_fixture() -> tempfile::TempDir {
     )
     .expect("copy fixture artifact");
     for relative in [
-        "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
-        "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+        "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+        "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
     ] {
         let path = temp.path().join(relative);
         fs::create_dir_all(path.parent().expect("Lean source parent"))
@@ -418,7 +418,7 @@ fn lean_receipt_fixture() -> (tempfile::TempDir, tempfile::TempDir, Value) {
             {
                 "name": "CrouzeixTextbook.Part01.matrix_column_is_basis_image",
                 "kind": "theorem",
-                "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+                "source_path": "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
                 "line": 10,
                 "column": 1,
                 "normalized_type": theorem_type,
@@ -429,7 +429,7 @@ fn lean_receipt_fixture() -> (tempfile::TempDir, tempfile::TempDir, Value) {
             {
                 "name": "CrouzeixTextbook.Part01.LinearTransformation",
                 "kind": "definition",
-                "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+                "source_path": "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
                 "line": 4,
                 "column": 1,
                 "normalized_type": definition_type,
@@ -440,7 +440,7 @@ fn lean_receipt_fixture() -> (tempfile::TempDir, tempfile::TempDir, Value) {
             {
                 "name": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution",
                 "kind": "theorem",
-                "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+                "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
                 "line": 12,
                 "column": 1,
                 "normalized_type": exercise_one_type,
@@ -451,7 +451,7 @@ fn lean_receipt_fixture() -> (tempfile::TempDir, tempfile::TempDir, Value) {
             {
                 "name": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution",
                 "kind": "theorem",
-                "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+                "source_path": "lab/math/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
                 "line": 20,
                 "column": 1,
                 "normalized_type": exercise_two_type,
@@ -477,7 +477,7 @@ fn receipt_row(name: &str, normalized_type: &str, dependencies: &[&str]) -> Valu
     json!({
         "name": name,
         "kind": "theorem",
-        "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+        "source_path": "lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
         "line": 10,
         "column": 1,
         "normalized_type": normalized_type,
@@ -577,14 +577,7 @@ fn retired_dependency_manifest() -> PathBuf {
 }
 
 fn retired_public_theorems_module() -> PathBuf {
-    PathBuf::from(
-        [
-            "formalization/lean/CrouzeixTextbook/",
-            "Public",
-            "Theorems.lean",
-        ]
-        .concat(),
-    )
+    PathBuf::from(["lab/math/lean/CrouzeixTextbook/", "Public", "Theorems.lean"].concat())
 }
 
 fn retired_reader_ledger_renderer() -> PathBuf {
@@ -944,14 +937,14 @@ fn deletion_generated_lean_surface_is_the_contract_correspondence() {
         "the hand-maintained Lean declaration manifest still exists"
     );
     let aggregate =
-        fs::read_to_string(workspace_root().join("formalization/lean/CrouzeixTextbook.lean"))
+        fs::read_to_string(workspace_root().join("lab/math/lean/CrouzeixTextbook.lean"))
             .expect("Crouzeix textbook aggregate");
     assert!(aggregate.contains("import CrouzeixTextbook.Correspondence"));
     assert!(!aggregate.contains(&["CrouzeixTextbook.", "Public", "Theorems"].concat()));
 
     let expected = generate_correspondence(&workspace_root()).expect("contract correspondence");
     let actual = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Correspondence.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Correspondence.lean"),
     )
     .expect("generated correspondence");
     assert_eq!(actual, expected);
@@ -1220,9 +1213,7 @@ fn runtime_publication_state_is_untracked_and_precisely_ignored() {
 fn publication_check_is_read_only_and_write_switches_the_complete_generation() {
     let (fixture, receipt_dir, receipt) = lean_receipt_fixture();
     let receipt_path = write_lean_receipt(&receipt_dir, &receipt);
-    let publication = fixture
-        .path()
-        .join("publications/crouzeix_textbook");
+    let publication = fixture.path().join("publications/crouzeix_textbook");
     assert!(
         !publication.exists(),
         "a clean checkout fixture starts without runtime publication state"
@@ -1364,12 +1355,8 @@ fn publication_rejects_symlinked_and_multiply_linked_outputs() {
     let (ancestor_fixture, ancestor_receipt_dir, ancestor_receipt) = lean_receipt_fixture();
     let ancestor_receipt_path = write_lean_receipt(&ancestor_receipt_dir, &ancestor_receipt);
     let outside = tempfile::tempdir().expect("outside publication directory");
-    fs::create_dir_all(
-        ancestor_fixture
-            .path()
-            .join("publications"),
-    )
-    .expect("create publication parent");
+    fs::create_dir_all(ancestor_fixture.path().join("publications"))
+        .expect("create publication parent");
     symlink(
         outside.path(),
         ancestor_fixture
@@ -1553,9 +1540,7 @@ fn publication_objects_have_exact_owner_mode_and_link_contracts() {
         publish_crouzeix_textbook(fixture.path(), &receipt_path, TextbookPublishMode::Write)
             .expect("publication");
     let owner = unsafe { libc::geteuid() };
-    let publication = fixture
-        .path()
-        .join("publications/crouzeix_textbook");
+    let publication = fixture.path().join("publications/crouzeix_textbook");
     let generations = publication.join("generations");
     let generation = fixture
         .path()
@@ -2050,9 +2035,9 @@ fn lean_correspondence_rejects_injected_names_and_invalid_source_routes() {
         .any(|diagnostic| diagnostic.field == "lean_declaration.name"));
 
     for source_path in [
-        "formalization/lean/.lean",
-        "formalization/lean/../Injected.lean",
-        "formalization/lean/CrouzeixTextbook/Missing.lean",
+        "lab/math/lean/.lean",
+        "lab/math/lean/../Injected.lean",
+        "lab/math/lean/CrouzeixTextbook/Missing.lean",
     ] {
         let fixture = copy_v2_fixture();
         mutate_fixture_json(fixture.path(), "coverage.json", |coverage| {
@@ -2065,15 +2050,13 @@ fn lean_correspondence_rejects_injected_names_and_invalid_source_routes() {
     }
 
     let foreign = copy_v2_fixture();
-    let foreign_source = foreign
-        .path()
-        .join("formalization/lean/Foreign/Injected.lean");
+    let foreign_source = foreign.path().join("lab/math/lean/Foreign/Injected.lean");
     fs::create_dir_all(foreign_source.parent().unwrap()).expect("foreign module parent");
     fs::write(&foreign_source, "theorem injected : True := by trivial\n")
         .expect("foreign module source");
     mutate_fixture_json(foreign.path(), "coverage.json", |coverage| {
         coverage["items"][0]["lean_declaration"]["source_path"] =
-            json!("formalization/lean/Foreign/Injected.lean");
+            json!("lab/math/lean/Foreign/Injected.lean");
     });
     let diagnostics = generate_correspondence(foreign.path()).expect_err("foreign module");
     assert!(diagnostics
@@ -2088,7 +2071,7 @@ fn lean_correspondence_rejects_symlinked_and_hardlinked_sources() {
         let fixture = copy_v2_fixture();
         let source = fixture
             .path()
-            .join("formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean");
+            .join("lab/math/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean");
         let replacement = fixture.path().join("replacement.lean");
         fs::write(&replacement, "theorem replacement : True := by trivial\n")
             .expect("replacement source");
@@ -2109,7 +2092,7 @@ fn lean_correspondence_rejects_symlinked_and_hardlinked_sources() {
 fn lean_receipt_canonical_correspondence_matches_the_contract_generator() {
     let expected = generate_correspondence(&workspace_root()).expect("canonical correspondence");
     let actual = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Correspondence.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Correspondence.lean"),
     )
     .expect("read canonical correspondence");
     assert_eq!(actual, expected);
@@ -5628,9 +5611,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.positive_real_completion",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         provider_declaration: "CrouzeixConjecture.IsPositiveRealCompletion",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionStatement.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionStatement.lean",
         type_sha256: "d72a6d691c4c807c0b20b620c2e030345c8d923a1c9b31d1a2a2e9fb07732523",
         hypotheses: &["B,T∈M_n(ℂ)", "H:ℂ→M_n(ℂ)", "𝔻={z:|z|<1}"],
         statement_steps: &[
@@ -5652,9 +5635,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.positive_real_completion_statement",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         provider_declaration: "CrouzeixConjecture.PositiveRealCompletionStatement",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionStatement.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionStatement.lean",
         type_sha256: "23602f64481feee6c2fd6a0f7e743a74f4a1ee8625f11e06048a5c82ff99aeab",
         hypotheses: &[
             "[Nonempty n]",
@@ -5677,9 +5660,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.completion_gramian_four",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         provider_declaration: "CrouzeixConjecture.completionP_congruence_eq_gramian_four",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
         type_sha256: "d999ab712880d5363dbc792dfeaa9c208ec4eae8435b470a1c25b4344c83fbdc",
         hypotheses: &["G=K²", "K⁻¹K=KK⁻¹=I", "|λ_i|≤1", "P∈M_n(ℂ)"],
         statement_steps: &[
@@ -5700,9 +5683,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.completion_gramian_two",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         provider_declaration: "CrouzeixConjecture.completionR_congruence_eq_gramian_two",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
         type_sha256: "e9a78b5db14824f47398ed1a8a9cdbfcc1bbfae558930039ddbbb5d431dd3f84",
         hypotheses: &["G=K²", "K⁻¹K=KK⁻¹=I", "|λ_i|≤1", "R∈M_n(ℂ)"],
         statement_steps: &[
@@ -5723,9 +5706,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.completion_gramian_difference",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         provider_declaration: "CrouzeixConjecture.completionX_congruence_eq_gramian_difference",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
         type_sha256: "2e7c01edefeb5dc2a3212ae85afc54e9caea46aaacf62c7996ad3de1ab1c1b67",
         hypotheses: &["Define X:=R-P", "G=K²", "K⁻¹K=KK⁻¹=I", "|λ_i|≤1"],
         statement_steps: &["Define X:=R-P", "K⁻¹XK⁻¹=Gramian_2(C)-Gramian_4(C)"],
@@ -5742,10 +5725,10 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.completion_gramian_source_positive",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
         provider_declaration:
             "CrouzeixConjecture.completion_gramian_expression_posSemidef_of_source",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionGramianBridge.lean",
         type_sha256: "f9075e863bc01786d9635fb4461c6901054f999834318bfaf265db564791c01d",
         hypotheses: &["G=K²", "K=Kᴴ", "K⁻¹=(K⁻¹)ᴴ", "Y=4X-XG⁻¹P-PG⁻¹X⪰0"],
         statement_steps: &[
@@ -5768,9 +5751,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.completion_kernel_model",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         provider_declaration: "CrouzeixConjecture.completionKernelModel",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
         type_sha256: "b6f13ba7834ee232d6361bbf95f939ad00760f82d267ffde7b3c22ed1b5a48b1",
         hypotheses: &[
             "G∈M_n(ℂ)",
@@ -5797,9 +5780,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.completion_kernel_at_zero",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         provider_declaration: "CrouzeixConjecture.completionKernelModel_zero",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
         type_sha256: "4749a4faa985491913c85c0e2c8b4194e3338905cc25dd01a2bca6426686e927",
         hypotheses: &["K(0)=G", "G invertible", "D(0) diagonal"],
         statement_steps: &["K(0)=G+D(0)G", "D(0)G=0", "D(0)=0"],
@@ -5812,9 +5795,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.sample_origin_quadratic_identity",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         provider_declaration: "CrouzeixConjecture.completionResolventKernel_sampling_quadratic_eq",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
         type_sha256: "a19830b823dec21c68e5ab7b248b9d78c9b03518b8605d869ee888192c2db7db",
         hypotheses: &["z_0=0", "z_i=conj(λ_i)/2", "x_0=v=-G⁻¹Pu", "x_i=u_i e_i∈ℂⁿ"],
         statement_steps: &[
@@ -5840,9 +5823,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.correction_sampling_identity",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         provider_declaration: "CrouzeixConjecture.completionCorrectionKernel_sampling_quadratic_eq",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
         type_sha256: "3fbcbf6aba9f45dc919a68fa512cb886899febda58461c932c11d93054a74053",
         hypotheses: &[
             "G=G*",
@@ -5873,9 +5856,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.correction_sampling_cancels",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         provider_declaration: "CrouzeixConjecture.completionCorrectionKernel_sampling_eq_zero",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
         type_sha256: "3883ecf653a417da1c0aceb9c8ee7dd5f2c9444bf7fa7936660051df5e071234",
         hypotheses: &["G=G*", "G invertible", "v=-G⁻¹Pu", "d(0)=0"],
         statement_steps: &["Gv+Pu=0", "Θ=0", "Θ+conj(Θ)=0", "correction sampling sum=0"],
@@ -5893,9 +5876,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.kernel_positivity_implies_X",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         provider_declaration: "CrouzeixConjecture.completion_X_inequality_of_positiveKernel",
-        provider_file: "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
         type_sha256: "8ea6a00ebbb6a7326410c88a8d764396afc51794cde409a6c5f3b44855ce7e04",
         hypotheses: &[
             "L_K positive as a matrix kernel on 𝔻",
@@ -5926,10 +5909,10 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.completion_implies_norm_two",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         provider_declaration:
             "CrouzeixConjecture.norm_completionDiagonalizableMatrix_le_two_of_positiveKernelModel",
-        provider_file: "formalization/lean/CrouzeixConjecture/PositiveRealCompletion.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/PositiveRealCompletion.lean",
         type_sha256: "1c24687b99a83a92aa728551ff33b388ec0e9f1551a6a36145d826b25311ccd1",
         hypotheses: &[
             "S invertible",
@@ -5969,9 +5952,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.jin_polynomial_constant_two",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         provider_declaration: "CrouzeixConjecture.jinFinalCrouzeixConjecture",
-        provider_file: "formalization/lean/CrouzeixConjecture/FinalTheorems.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/FinalTheorems.lean",
         type_sha256: "0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d",
         hypotheses: &["A∈M_n(ℂ)", "p∈ℂ[z]", "M=max_{z∈W(A)}|p(z)|"],
         statement_steps: &[
@@ -6011,9 +5994,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.jin_rational_spectral_set",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         provider_declaration: "CrouzeixConjecture.crouzeixRationalSpectralSetCorollary",
-        provider_file: "formalization/lean/CrouzeixConjecture/FinalTheorems.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/FinalTheorems.lean",
         type_sha256: "a68683384ff3984804bccbfaf7f5dea8ca6128d26a0618984bc5d293837f0144",
         hypotheses: &[
             "poles(r)∩W(A)=∅",
@@ -6033,9 +6016,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "checkpoint",
         baseline_correspondence: "checkpoint",
         public_declaration: "CrouzeixTextbook.Part06.jin_rational_constant_two",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         provider_declaration: "CrouzeixConjecture.crouzeixRationalBound",
-        provider_file: "formalization/lean/CrouzeixConjecture/FinalTheorems.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/FinalTheorems.lean",
         type_sha256: "45eabf35921b773b4ec7c3aacb0af28c045bd1f008d6f6ced30c63724d5a91c8",
         hypotheses: &["M=max_{z∈W(A)}|r(z)|", "poles(r)∩W(A)=∅"],
         statement_steps: &["s=r/M when M>0", "max_{W(A)}|s|≤1", "‖r(A)‖≤2M"],
@@ -6054,9 +6037,9 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.holomorphic_constant_two",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         provider_declaration: "CrouzeixConjecture.holomorphicCrouzeixBound",
-        provider_file: "formalization/lean/CrouzeixConjecture/HolomorphicOuterLimit.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/HolomorphicOuterLimit.lean",
         type_sha256: "46a9ed9e7bfeb40a079ae46d8cb6d2bbb0d0d330b9eaf2646c0f15ddae2552b8",
         hypotheses: &["U open", "W(A)⊆U", "f holomorphic on U"],
         statement_steps: &["‖f(A)‖≤2 max_{z∈W(A)}|f(z)|"],
@@ -6076,10 +6059,10 @@ const JIN_CFT_SPECS: [JinCftSpec; 18] = [
         baseline_mode: "reexported-proof",
         baseline_correspondence: "unmapped",
         public_declaration: "CrouzeixTextbook.Part06.polynomial_from_holomorphic",
-        public_file: "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        public_file: "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         provider_declaration:
             "CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound",
-        provider_file: "formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean",
+        provider_file: "lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean",
         type_sha256: "0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d",
         hypotheses: &["p∈ℂ[z]", "p holomorphic on ℂ", "W(A) compact"],
         statement_steps: &[
@@ -6152,12 +6135,12 @@ fn jin_completed_provider_declaration(spec: &JinCftSpec) -> &'static str {
 
 fn jin_completed_provider_file(spec: &JinCftSpec) -> &'static str {
     match spec.item_id {
-        "CFT-30-002" => "formalization/lean/CrouzeixConjecture/CompletionDiagonalization.lean",
-        "CFT-31-002" => "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "CFT-30-002" => "lab/math/lean/CrouzeixConjecture/CompletionDiagonalization.lean",
+        "CFT-31-002" => "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
         "CFT-32-002" | "CFT-32-004" => {
-            "formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean"
+            "lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean"
         }
-        "CFT-32-003" => "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "CFT-32-003" => "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
         _ => spec.provider_file,
     }
 }
@@ -6266,7 +6249,7 @@ run_cmd do
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .map_err(|error| error.to_string())?;
     if !output.status.success() {
@@ -6380,7 +6363,7 @@ end CrouzeixTextbook.JinExerciseDependencyProbe
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .map_err(|error| error.to_string())?;
     if !output.status.success() {
@@ -6917,7 +6900,7 @@ fn jin_phase_metadata_errors(coverage: &Value, exercises: &Value, phase: JinPhas
                 spec.chapter
             );
             let expected_file = format!(
-                "formalization/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
+                "lab/math/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
                 spec.chapter
             );
             if solution["declaration"].as_str() != Some(expected_name.as_str())
@@ -6989,7 +6972,7 @@ fn jin_promote_phase_fixture(coverage: &mut Value, exercises: &mut Value, phase:
                 spec.chapter
             ),
             "source_path": format!(
-                "formalization/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
+                "lab/math/lean/CrouzeixTextbook/Part06/Chapter{}.lean",
                 spec.chapter
             ),
             "verification_target": "CrouzeixTextbook",
@@ -7646,7 +7629,7 @@ fn fresh_provider_receipt_rows(phase: JinPhase) -> Vec<Value> {
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run fresh provider compiler probe");
     assert!(
@@ -7768,7 +7751,7 @@ fn validate_ls_status_boundary(fields: &BTreeMap<String, String>) -> Result<(), 
         ),
         (
             "Terminal source".to_owned(),
-            "`formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`".to_owned(),
+            "`lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`".to_owned(),
         ),
         (
             "Fixed-domain provider".to_owned(),
@@ -8018,10 +8001,8 @@ fn status_and_claim_ledgers_name_checked_ls_and_harp_terminal_boundaries() {
     for document in [&status, &ledger] {
         assert!(document.contains("CrouzeixConjecture.loristSchwenningerMainTheorem"));
         assert!(document.contains("CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem"));
-        assert!(
-            document.contains("formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean")
-        );
-        assert!(document.contains("formalization/lean/Crouzeix/Harp/MainTheorem.lean"));
+        assert!(document.contains("lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean"));
+        assert!(document.contains("lab/math/lean/Crouzeix/Harp/MainTheorem.lean"));
         assert!(document.contains("Harp-derived"));
         assert!(document.contains("not source-derived"));
     }
@@ -8128,7 +8109,7 @@ fn chapter_33_cft_001_002_reconstruct_the_recurrence_and_completed_square() {
     for required in [
         "adjacentPowerDefect_factorization",
         "adjacentPowerDefect_norm_le",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/Dilation.lean|Dilation.lean]]",
     ] {
         assert!(
             lower_lean.contains(required),
@@ -8252,10 +8233,10 @@ fn chapter_33_cft_003_e03_states_the_certificate_and_keeps_its_proof_independent
     let card = chapter_33_card(&markdown, "CFT-33-003");
     let lean_correspondence = chapter_33_card_field(card, "Lean correspondence");
     for link in [
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|DilationData.equation_three_lower_bound]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|bounded_recurrence_terminal_tendsto_zero]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|inverse_power_weight_sum_tendsto]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/RecurrenceScalar.lean|recurrenceScalar_abs_le]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean|DilationData.equation_three_lower_bound]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|bounded_recurrence_terminal_tendsto_zero]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/Recurrence.lean|inverse_power_weight_sum_tendsto]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/RecurrenceScalar.lean|recurrenceScalar_abs_le]]",
     ] {
         assert!(
             lean_correspondence.contains(link),
@@ -8264,7 +8245,7 @@ fn chapter_33_cft_003_e03_states_the_certificate_and_keeps_its_proof_independent
     }
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
     )
     .expect("Chapter 33 Lean module");
     let exercise_proof = lean
@@ -8479,7 +8460,7 @@ fn chapter_33_cft_004_005_reconstruct_equation_four_and_the_scalar_contradiction
         .contains("statements differ from every public Chapter 33 checkpoint"));
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
     )
     .expect("Chapter 33 Lean module");
     let e04_proof = lean
@@ -8701,8 +8682,8 @@ fn chapter_33_cft_006_assembles_the_operator_argument_and_publishes_distinct_e06
 
     let lean_correspondence = chapter_33_card_field(card, "Lean correspondence");
     for required in [
-        "[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]",
-        "[[formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]]",
+        "[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]",
+        "[[lab/math/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean|PerturbationLemma.lean]]",
         "CrouzeixTextbook.Part06.perturbation_lemma",
         "CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two",
         "normalized type fingerprint",
@@ -8724,7 +8705,7 @@ fn chapter_33_cft_006_assembles_the_operator_argument_and_publishes_distinct_e06
             .collect::<Vec<_>>()
             .join(" ");
         for required in [
-            "[[formalization/lean/",
+            "[[lab/math/lean/",
             "type fingerprint",
             "axioms",
             "verification target",
@@ -8769,7 +8750,7 @@ fn chapter_33_cft_006_assembles_the_operator_argument_and_publishes_distinct_e06
     );
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
     )
     .expect("Chapter 33 Lean module");
     let e06_proof = lean
@@ -8914,7 +8895,7 @@ fn chapter_33_cft_001_through_003_publish_exact_distinct_lean_support() {
     }
 
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean"),
     )
     .expect("Chapter 33 Lean module");
     assert!(lean.contains("theorem recurrence_difference_identity"));
@@ -8927,7 +8908,7 @@ fn chapter_33_cft_001_through_003_publish_exact_distinct_lean_support() {
 #[test]
 fn chapter_01_exercises_02_through_05_publish_prompt_matched_lean_tasks() {
     let lean = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean"),
     )
     .expect("Chapter 1 Lean module");
     let e02 = lean
@@ -9457,7 +9438,7 @@ fn jin_route_contract_freezes_all_anchors_cards_and_exercise_targets_by_phase() 
     );
 
     let exporter = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/ExportReceipt.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/ExportReceipt.lean"),
     )
     .expect("textbook receipt exporter");
     assert!(exporter.contains("checkedExerciseTheoremNames"));
@@ -9468,7 +9449,7 @@ fn jin_route_contract_freezes_all_anchors_cards_and_exercise_targets_by_phase() 
             assert!(
                 !workspace_root()
                     .join(format!(
-                        "formalization/lean/CrouzeixTextbook/Part06/Exercises/Chapter{chapter}.lean"
+                        "lab/math/lean/CrouzeixTextbook/Part06/Exercises/Chapter{chapter}.lean"
                     ))
                     .exists(),
                 "pending Chapter {chapter} must not hide an unregistered exercise namespace"
@@ -9560,7 +9541,7 @@ fn jin_route_contract_freezes_all_anchors_cards_and_exercise_targets_by_phase() 
                 assert_eq!(actual, expected);
                 assert_eq!(
                     string(&exercise["lean_solution"], "source_path", &exercise_id),
-                    format!("formalization/lean/CrouzeixTextbook/Part06/Chapter{chapter}.lean")
+                    format!("lab/math/lean/CrouzeixTextbook/Part06/Chapter{chapter}.lean")
                 );
                 assert_eq!(
                     string(
@@ -9949,7 +9930,7 @@ fn chapter_30_completion_endpoint_reexports_the_proved_theorem() {
     );
 
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
     )
     .expect("Chapter30 Lean source");
     assert!(source.contains("import CrouzeixConjecture.CompletionDiagonalization"));
@@ -10022,8 +10003,7 @@ fn chapter_30_endpoint_dependency_ledger_matches_the_compiled_proof_term() {
     assert!(ml.contains("The exact compiled transfer is shared-basis diagonalization"));
 
     let provider = fs::read_to_string(
-        workspace_root()
-            .join("formalization/lean/CrouzeixConjecture/CompletionDiagonalization.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixConjecture/CompletionDiagonalization.lean"),
     )
     .expect("completion-diagonalization provider");
     let route = provider
@@ -10073,7 +10053,7 @@ fn chapter_30_difference_and_positivity_cards_match_their_lean_statements() {
     assert!(source_positive["lean_declaration"]["underlying_declaration"].is_null());
 
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
     )
     .expect("Chapter30 Lean source");
     assert!(source.contains("theorem completion_gramian_source_positive"));
@@ -10179,7 +10159,7 @@ fn chapter_30_exercises_expose_exact_signatures_links_and_written_derivations() 
             section.contains("Lean declaration:"),
             "E{index:02} lacks link label"
         );
-        assert!(section.contains("[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|"));
+        assert!(section.contains("[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|"));
         assert!(section.contains(&declaration));
         assert!(section.contains("theorem exercise_"));
     }
@@ -10250,7 +10230,7 @@ fn chapter_30_exercises_expose_exact_signatures_links_and_written_derivations() 
 #[test]
 fn chapter_30_e06_builds_the_ordered_identity_from_smaller_bridges() {
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
     )
     .expect("Chapter30 Lean source");
     let proof = source
@@ -10309,7 +10289,7 @@ fn chapter_30_atlas_render_preserves_adjoint_and_matrix_notation() {
 #[test]
 fn chapter_30_lean_source_exports_exact_six_solutions_without_ls() {
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean"),
     )
     .expect("Chapter 30 Lean source");
     assert!(source.contains("namespace Exercises.Chapter30"));
@@ -10570,7 +10550,7 @@ fn chapter_31_reverse_normalization_is_proved_here_with_invertibility() {
     );
 
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean"),
     )
     .expect("Chapter31 Lean source");
     assert!(
@@ -10591,7 +10571,7 @@ fn chapter_31_reverse_normalization_is_proved_here_with_invertibility() {
 #[test]
 fn chapter_31_exercises_are_exact_distinct_proofs_without_endpoint_shortcuts() {
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean"),
     )
     .expect("Chapter31 Lean source");
     assert!(source.contains("namespace Exercises.Chapter31"));
@@ -10626,7 +10606,7 @@ fn chapter_31_exercises_are_exact_distinct_proofs_without_endpoint_shortcuts() {
         let declaration =
             format!("CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_{index:02}_solution");
         assert!(markdown.contains(&declaration));
-        assert!(markdown.contains("[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|"));
+        assert!(markdown.contains("[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|"));
         assert!(markdown.contains(&format!("#### CFT-31-E{index:02} solution")));
     }
 }
@@ -10869,7 +10849,7 @@ fn chapter_32_exercises_publish_exact_signatures_and_full_solutions() {
         let declaration =
             format!("CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_{index:02}_solution");
         assert!(exercises.contains(&declaration));
-        assert!(exercises.contains("[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|"));
+        assert!(exercises.contains("[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|"));
         assert!(exercises.contains(&format!("#### CFT-32-E{index:02} solution")));
         assert!(exercises.contains(&format!("theorem exercise_{index:02}_solution")));
     }
@@ -10908,7 +10888,7 @@ fn chapter_32_exercises_publish_exact_signatures_and_full_solutions() {
 #[test]
 fn chapter_32_lean_solutions_are_distinct_and_avoid_terminal_shortcuts() {
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean"),
     )
     .expect("Chapter32 Lean source");
     assert!(source.contains("theorem completion_implies_norm_two"));
@@ -11030,7 +11010,7 @@ fn jin_route_complete_cards_reject_filler_without_scoped_equations() {
              #### Proof\n\n{words}\n\n\
              #### Boundary case\n\n{words}\n\n\
              #### Pedagogical prerequisites\n\n{words}\n\n\
-             #### Lean correspondence\n\n[[formalization/lean/fake|fake]] type fingerprint axioms verification target {words}\n\n\
+             #### Lean correspondence\n\n[[lab/math/lean/fake|fake]] type fingerprint axioms verification target {words}\n\n\
              #### Historical context\n\n{words}\n\n\
              #### ML analogy\n\n**Mathematical object / ML counterpart.** {words} **Exact transfer.** {words} **Non-transfer.** {words} **Diagnostic.** {words}\n\n"
         ));
@@ -11134,7 +11114,7 @@ fn jin_route_completed_exercises_have_a_compiler_derived_transitive_dependency_a
         "declarations": declarations
     });
     let exporter = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/ExportReceipt.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/ExportReceipt.lean"),
     )
     .expect("exercise exporter source");
     let errors = jin_exercise_receipt_errors(&receipt, &exporter, phase);
@@ -11539,7 +11519,7 @@ fn jin_route_lean_map_matches_coverage_and_a_fresh_compiler_receipt() {
         "active Jin Lean map differs from the fresh compiler receipt: {mapping_errors:#?}"
     );
     let exporter = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/ExportReceipt.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/ExportReceipt.lean"),
     )
     .expect("textbook receipt exporter");
     let exercise_errors = jin_exercise_receipt_errors(&receipt, &exporter, phase);
@@ -11807,7 +11787,7 @@ fn jin_route_pedagogical_independence_rejects_ls_to_jin_crossings() {
 
 #[test]
 fn jin_route_import_closure_uses_the_canonical_parser_and_rejects_ls_transitively() {
-    let lakefile = fs::read_to_string(workspace_root().join("formalization/lean/lakefile.toml"))
+    let lakefile = fs::read_to_string(workspace_root().join("lab/math/lean/lakefile.toml"))
         .expect("Lean lakefile");
     assert!(lakefile.contains("[[lean_lib]]\nname = \"CrouzeixJin\""));
     let mise = fs::read_to_string(workspace_root().join("mise.toml")).expect("mise config");
@@ -11820,7 +11800,7 @@ fn jin_route_import_closure_uses_the_canonical_parser_and_rejects_ls_transitivel
         .0;
     assert!(task.contains("scripts/check_lean_library.sh CrouzeixJin"));
 
-    let actual = run_jin_closure(&workspace_root().join("formalization/lean"));
+    let actual = run_jin_closure(&workspace_root().join("lab/math/lean"));
     assert!(
         actual.status.success(),
         "canonical Jin closure failed: {}",
@@ -12130,12 +12110,12 @@ fn jin_route_review_exposes_handoffs_independence_and_lean_audit() {
         );
     }
     for path in [
-        "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
-        "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
-        "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
-        "formalization/lean/CrouzeixConjecture/CompletionStatement.lean",
-        "formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean",
-        "formalization/lean/CrouzeixConjecture/PositiveRealCompletion.lean",
+        "lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "lab/math/lean/CrouzeixConjecture/CompletionStatement.lean",
+        "lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean",
+        "lab/math/lean/CrouzeixConjecture/PositiveRealCompletion.lean",
     ] {
         assert!(
             markdown.contains(path),
@@ -12182,7 +12162,7 @@ fn chapter_25_projection_cards_show_the_full_lax_style_argument() {
 #[test]
 fn chapter_25_projection_theorem_is_closed_convex_not_compact_only() {
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean"),
     )
     .expect("Chapter 25 Lean source");
     let theorem = source
@@ -12377,7 +12357,7 @@ fn chapter_25_outer_geometry_is_uniform_exactly_c1_and_advances_the_ellipse() {
 #[test]
 fn chapter_25_lean_exercises_are_distinct_reconstructions_without_shortcuts() {
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean"),
     )
     .expect("Chapter 25 Lean source");
     for index in 1..=6 {
@@ -12429,8 +12409,7 @@ fn chapter_25_atlas_contains_the_equations_and_compiler_validated_links() {
     }
 
     for line in [14, 47, 56, 65, 71, 114, 122, 136, 204, 219, 243, 282] {
-        let href =
-            format!("../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L{line}");
+        let href = format!("../../lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean#L{line}");
         assert!(
             corpus.contains(&href),
             "rendered Chapter 25 omits exact Lean href `{href}`"

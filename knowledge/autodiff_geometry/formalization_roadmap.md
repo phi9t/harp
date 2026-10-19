@@ -25,7 +25,7 @@ and
 ## Compiled declaration inventory
 
 The first Lean phase lives in the shared Lake root at
-`formalization/lean/AutodiffGeometry`.
+`lab/math/lean/AutodiffGeometry`.
 
 | Module | Compiled public declarations |
 |---|---|

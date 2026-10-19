@@ -375,7 +375,7 @@ The published route and review hashes are:
 - Class: `INFERENCE`
 - Statement: Harp's local Lean route proves that `0 ≤ b`, `0 < κ`, `0 < (κ - 1)^2`, the scalar recurrence lower bound, and the Hilbert-space upper bound from the Lorist-Schwenninger proof imply `κ ≤ 2`.
 - Source: [[knowledge/crouzeix_conjecture/source_registry#HARP-LOCAL-VERIFY: Local build and scan observations|HARP-LOCAL-VERIFY]]
-- Locator: [[evidence/crouzeix_conjecture/PROVENANCE|local LS scalar receipt record]] ([exact lines 18–22](../../evidence/crouzeix_conjecture/PROVENANCE.md#L18)) and [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json|ls-scalar-contradiction receipt]]
+- Locator: [[evidence/crouzeix_conjecture/PROVENANCE|local LS scalar receipt record]] ([exact lines 18–22](../../evidence/crouzeix_conjecture/PROVENANCE.md#L18)) and [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json|ls-scalar-contradiction receipt]]
 - Scope: Local theorem `CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two`, assuming the nonnegativity/positivity side conditions plus the scalar lower and upper inequalities as hypotheses.
 - Reproduction: Run `ELAN_HOME=/private/tmp/harp-mathematical-foundations-elan PATH="/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:$PATH" scripts/check_lean_library.sh Crouzeix` from the repository root with the shared `.lake` cache.
 - Confidence: `high`

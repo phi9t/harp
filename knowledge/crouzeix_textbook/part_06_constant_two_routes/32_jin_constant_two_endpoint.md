@@ -213,14 +213,14 @@ positive square roots, Gramian series, and polar decomposition from Chapters
 
 #### Lean correspondence
 
-Public theorem: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
-Main provider: [[formalization/lean/CrouzeixConjecture/PositiveRealCompletion.lean|PositiveRealCompletion.lean]].
+Public theorem: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+Main provider: [[lab/math/lean/CrouzeixConjecture/PositiveRealCompletion.lean|PositiveRealCompletion.lean]].
 The eigenvector and tail steps are in
-[[formalization/lean/CrouzeixConjecture/CompletionEigenvector.lean|CompletionEigenvector.lean]];
+[[lab/math/lean/CrouzeixConjecture/CompletionEigenvector.lean|CompletionEigenvector.lean]];
 the norm extraction from `4I-CᴴC⪰0` is in
-[[formalization/lean/CrouzeixConjecture/Positivity.lean|Positivity.lean]].
+[[lab/math/lean/CrouzeixConjecture/Positivity.lean|Positivity.lean]].
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_implies_norm_two; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.norm_completionDiagonalizableMatrix_le_two_of_positiveKernelModel; provider-file=formalization/lean/CrouzeixConjecture/PositiveRealCompletion.lean; type-sha256=1c24687b99a83a92aa728551ff33b388ec0e9f1551a6a36145d826b25311ccd1; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.completion_implies_norm_two; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.norm_completionDiagonalizableMatrix_le_two_of_positiveKernelModel; provider-file=lab/math/lean/CrouzeixConjecture/PositiveRealCompletion.lean; type-sha256=1c24687b99a83a92aa728551ff33b388ec0e9f1551a6a36145d826b25311ccd1; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -422,18 +422,18 @@ approximation, polynomial functional-calculus continuity, and CFT-32-001.
 
 #### Lean correspondence
 
-Public alias: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
+Public alias: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
 The alias is the checked polynomial theorem. Exercise E02 separately exposes
 the two normalization branches. The completion construction displayed above
 is supported by checked declarations in
-[[formalization/lean/CrouzeixConjecture/ParametricDoubleLayerIdentity.lean|ParametricDoubleLayerIdentity.lean]],
-[[formalization/lean/CrouzeixConjecture/DoubleLayerBoundary.lean|DoubleLayerBoundary.lean]],
+[[lab/math/lean/CrouzeixConjecture/ParametricDoubleLayerIdentity.lean|ParametricDoubleLayerIdentity.lean]],
+[[lab/math/lean/CrouzeixConjecture/DoubleLayerBoundary.lean|DoubleLayerBoundary.lean]],
 and
-[[formalization/lean/CrouzeixConjecture/CompletionDiagonalization.lean|CompletionDiagonalization.lean]];
+[[lab/math/lean/CrouzeixConjecture/CompletionDiagonalization.lean|CompletionDiagonalization.lean]];
 it is not inferred from the eigenvalue inequality alone.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.jin_polynomial_constant_two; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound; provider-file=formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.jin_polynomial_constant_two; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound; provider-file=lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -526,15 +526,15 @@ holomorphic functional calculus from Chapters 17 and 21.
 
 #### Lean correspondence
 
-Public alias: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+Public alias: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
 Provider: Chapter32.lean, declaration
 `CrouzeixTextbook.Part06.jin_rational_spectral_set_provider`; see
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|the checked source]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|the checked source]].
 `CrouzeixConjecture.holomorphicCrouzeixRationalBound` is its proof dependency, not the direct provider:
 the dependency and its underlying evaluation bridge live in
-[[formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
+[[lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.jin_rational_spectral_set; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixTextbook.Part06.jin_rational_spectral_set_provider; provider-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; type-sha256=a68683384ff3984804bccbfaf7f5dea8ca6128d26a0618984bc5d293837f0144; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.jin_rational_spectral_set; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixTextbook.Part06.jin_rational_spectral_set_provider; provider-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; type-sha256=a68683384ff3984804bccbfaf7f5dea8ca6128d26a0618984bc5d293837f0144; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -639,11 +639,11 @@ CFT-32-002.
 
 #### Lean correspondence
 
-Public alias: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
+Public alias: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
 Exercise E04 has a distinct normalization proposition.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.jin_rational_constant_two; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.holomorphicCrouzeixRationalBound; provider-file=formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=45eabf35921b773b4ec7c3aacb0af28c045bd1f008d6f6ced30c63724d5a91c8; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.jin_rational_constant_two; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.holomorphicCrouzeixRationalBound; provider-file=lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=45eabf35921b773b4ec7c3aacb0af28c045bd1f008d6f6ced30c63724d5a91c8; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -757,12 +757,12 @@ outer approximation, and continuity of holomorphic functional calculus.
 
 #### Lean correspondence
 
-Public alias: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/HolomorphicOuterLimit.lean|HolomorphicOuterLimit.lean]].
+Public alias: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/HolomorphicOuterLimit.lean|HolomorphicOuterLimit.lean]].
 The provider fully formalizes simple-spectrum evaluation continuity, eventual
 containment, outer maxima convergence, and the two norm-limit passages.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.holomorphic_constant_two; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.holomorphicCrouzeixBound; provider-file=formalization/lean/CrouzeixConjecture/HolomorphicOuterLimit.lean; type-sha256=46a9ed9e7bfeb40a079ae46d8cb6d2bbb0d0d330b9eaf2646c0f15ddae2552b8; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.holomorphic_constant_two; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.holomorphicCrouzeixBound; provider-file=lab/math/lean/CrouzeixConjecture/HolomorphicOuterLimit.lean; type-sha256=46a9ed9e7bfeb40a079ae46d8cb6d2bbb0d0d330b9eaf2646c0f15ddae2552b8; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -851,8 +851,8 @@ calculus from Chapter 16.
 
 #### Lean correspondence
 
-Public alias: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
-Provider: [[formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
+Public alias: [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+Provider: [[lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
 Exercise E06 checks the two rewrite identities directly.
 
 Duplication disclosure. This card and
@@ -868,7 +868,7 @@ not adjusted. The whole-roster figure is on the
 [[knowledge/crouzeix_textbook/status_and_scope|status and scope]] page, and
 `mise run textbook-counts` with `--audit` lists every such pair.
 
-Receipt audit: {public-declaration=CrouzeixTextbook.Part06.polynomial_from_holomorphic; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound; provider-file=formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
+Receipt audit: {public-declaration=CrouzeixTextbook.Part06.polynomial_from_holomorphic; public-file=lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound; provider-file=lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
 
@@ -967,9 +967,9 @@ not existence of a completion for that member.
 Lean proves the normalized version with
 $J=\left(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\right)$: the public
 declaration
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean|`CrouzeixTextbook.Part06.jordan_two_attains_two`]]
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean|`CrouzeixTextbook.Part06.jordan_two_attains_two`]]
 points to
-[[formalization/lean/CrouzeixConjecture/Sharpness.lean|`CrouzeixConjecture.jordanNilpotentTwo_attains_two`]].
+[[lab/math/lean/CrouzeixConjecture/Sharpness.lean|`CrouzeixConjecture.jordanNilpotentTwo_attains_two`]].
 Our matrix is $A_{0,2}=2J$, so the displayed norm and numerical-range
 calculation is the scalar-rescaled form of that checked sharpness witness.
 
@@ -1001,7 +1001,7 @@ are truthful reexports. Six exercise theorems have distinct compiler types.
 E01 exposes the Gramian hypotheses and proves the norm bridge without calling
 the completion endpoint. E03 proves the pole-free neighborhood. E05 returns
 the two ordered `Tendsto` facts. E06 proves the two specialization identities.
-The file is [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+The file is [[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
 
 ## Exercises
 
@@ -1014,7 +1014,7 @@ Derive `4I-CᴴC⪰0` from the visible Gramian inequality, then extract ‖C‖�
 Do not invoke the completion endpoint.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_01_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_01_solution`]].
 
 ```lean
 theorem exercise_01_solution
@@ -1033,7 +1033,7 @@ Prove the zero branch and the positive rescaling implication as one checked
 conjunction.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_02_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_02_solution`]].
 
 ```lean
 theorem exercise_02_solution
@@ -1052,7 +1052,7 @@ theorem exercise_02_solution
 Turn pole avoidance into an open domain, set containment, and differentiability.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_03_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_03_solution`]].
 
 ```lean
 theorem exercise_03_solution (r : RatFunc ℂ) (s : Set ℂ)
@@ -1068,7 +1068,7 @@ Prove the rational zero branch and positive branch without confusing rational
 evaluation with polynomial evaluation.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_04_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_04_solution`]].
 
 ```lean
 theorem exercise_04_solution
@@ -1089,7 +1089,7 @@ Return both the simple-spectrum evaluation limit and a shifted outer-domain
 maximum limit. The order in the conjunction matches the proof.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_05_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_05_solution`]].
 
 ```lean
 theorem exercise_05_solution
@@ -1111,7 +1111,7 @@ theorem exercise_05_solution
 Prove both the evaluation identity and the maximum-modulus identity.
 
 Lean declaration:
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_06_solution`]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|`CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_06_solution`]].
 
 ```lean
 theorem exercise_06_solution
@@ -1257,15 +1257,15 @@ sharp.
 
 **Formalization boundary.** The route has 18 theorem cards and 18 exercise
 solutions. Their public declarations live in
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]],
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]],
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter30.lean|Chapter30.lean]],
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter31.lean|Chapter31.lean]],
 and
-[[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
+[[lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapter32.lean]].
 The principal provider files are
-[[formalization/lean/CrouzeixConjecture/CompletionStatement.lean|CompletionStatement.lean]],
-[[formalization/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]],
+[[lab/math/lean/CrouzeixConjecture/CompletionStatement.lean|CompletionStatement.lean]],
+[[lab/math/lean/CrouzeixConjecture/CompletionKernelModel.lean|CompletionKernelModel.lean]],
 and
-[[formalization/lean/CrouzeixConjecture/PositiveRealCompletion.lean|PositiveRealCompletion.lean]].
+[[lab/math/lean/CrouzeixConjecture/PositiveRealCompletion.lean|PositiveRealCompletion.lean]].
 The `CrouzeixJin` target checks the Jin provider closure; the
 `CrouzeixTextbook` target checks public declarations and exercises. Each card's
 receipt audit identifies its exact public declaration, provider declaration,

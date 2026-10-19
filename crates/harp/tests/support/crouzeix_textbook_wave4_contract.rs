@@ -116,36 +116,36 @@ struct ExerciseSpec {
 }
 
 const COMMON_SPECS: [CommonSpec; 30] = [
-    CommonSpec { item_id: "CFT-25-001", chapter: 25, anchor: "cft-25-001", public_declaration: "CrouzeixTextbook.Part05.convex_projection", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 14, type_sha256: "4ffef37c950b39279846aeb028511a0d8f18a945e1d8888379d849d8096a6100", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "prove closed-convex nearest-point existence and separate existence from uniqueness" },
-    CommonSpec { item_id: "CFT-25-002", chapter: 25, anchor: "cft-25-002", public_declaration: "CrouzeixTextbook.Part05.convex_projection_variational", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 47, type_sha256: "e5ff9225c14b24a0bc391ce2d438e1f6d80e2f0e1fe4075becb75d5ac2fe160a", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "differentiate squared distance along a convex segment and handle the endpoint" },
-    CommonSpec { item_id: "CFT-25-003", chapter: 25, anchor: "cft-25-003", public_declaration: "CrouzeixTextbook.Part05.convex_projection_nonexpansive", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 56, type_sha256: "6491d411e634da59fa43f86b95c536274c4f53474e95382ada98b49cc76f6fc5", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "add both variational inequalities and apply Cauchy--Schwarz" },
-    CommonSpec { item_id: "CFT-25-004", chapter: 25, anchor: "cft-25-004", public_declaration: "CrouzeixTextbook.Part05.outer_approximation_radius", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 65, type_sha256: "b2294ee6be90f9259c5d55fcb89f02182b9ba7feeeb8124179e51fabf7056ce8", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define the parallel outer radius and its geometric containment data" },
-    CommonSpec { item_id: "CFT-25-005", chapter: 25, anchor: "cft-25-005", public_declaration: "CrouzeixTextbook.Part05.outer_radius_tends_to_zero", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 71, type_sha256: "1f2d7a4b929e101df48496466ae11483b7aa7f7328ffe49b5c0d95c34335b000", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove outer-radius decay with compactness and uniformity explicit" },
-    CommonSpec { item_id: "CFT-25-006", chapter: 25, anchor: "cft-25-006", public_declaration: "CrouzeixTextbook.Part05.parallel_outer_domain_data", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 114, type_sha256: "e0c090a879dce8bda6dbcd5297ac2597904ac6646e0fff4ebdae2e33e4f846b9", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "construct the positively oriented regular radial C¹ boundary package consumed by Cauchy integration" },
-    CommonSpec { item_id: "CFT-26-001", chapter: 26, anchor: "cft-26-001", public_declaration: "CrouzeixTextbook.Part05.support_point_outside_numerical_range", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 15, type_sha256: "c81aa6c33f155d60b3ea289c9683b19f669b9b37f5b0fa0e1afbe8be12f42086", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove boundary exclusion together with unit-vector scalar half-plane separation from numerical-range containment" },
-    CommonSpec { item_id: "CFT-26-002", chapter: 26, anchor: "cft-26-002", public_declaration: "CrouzeixTextbook.Part05.support_resolvent_invertible", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 29, type_sha256: "ba925bdd2b8af209941855dc71402f2fc0d602598e38bb205a1282955c8e5866", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "contradict a kernel vector using strict separation; isolate the boundary limit" },
-    CommonSpec { item_id: "CFT-26-003", chapter: 26, anchor: "cft-26-003", public_declaration: "CrouzeixTextbook.Part05.double_layer_support_positive", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 33, type_sha256: "669c3561a5e2fa2329dbac180de86d6b8ac4f22a91c3d0ab2b827e9570dbd577", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove support-resolvent positivity by an explicit quadratic-form congruence" },
-    CommonSpec { item_id: "CFT-26-004", chapter: 26, anchor: "cft-26-004", public_declaration: "CrouzeixTextbook.Part05.double_layer_resolvent", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 37, type_sha256: "2576ccb833b38fce237c0923d56df69609bf656489d5f61e0ab3427e4486ec09", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define the oriented normalized double-layer resolvent from scalar Cauchy data" },
-    CommonSpec { item_id: "CFT-26-005", chapter: 26, anchor: "cft-26-005", public_declaration: "CrouzeixTextbook.Part05.double_layer_congruence", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 41, type_sha256: "3ca440cf9415bc7043af96c8f7c9292238e56809c47f535ee2f896ccbb9006b1", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "write the matrix congruence in full, including adjoints and scalar factors" },
-    CommonSpec { item_id: "CFT-26-006", chapter: 26, anchor: "cft-26-006", public_declaration: "CrouzeixTextbook.Part05.double_layer_density_positive", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 46, type_sha256: "acfa9886104dc38842086a82b8fe579c01f2b5ebf959a35159b37f1b76cea4b4", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "integrate pointwise positivity with integrability and finite-sum interchange justified" },
-    CommonSpec { item_id: "CFT-27-001", chapter: 27, anchor: "cft-27-001", public_declaration: "CrouzeixTextbook.Part05.sqrt_two_nonnegative", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 12, type_sha256: "0671f6cc626c2d1ec60ba1496a2a0bcfcea215f114a3712a2e6ad0333943c82b", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "establish the nonnegative real square-root branch" },
-    CommonSpec { item_id: "CFT-27-002", chapter: 27, anchor: "cft-27-002", public_declaration: "CrouzeixTextbook.Part05.sqrt_two_squared", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 16, type_sha256: "807b03a281f82bdc472d967959ea405a451a428770ceb42484d1cd5bd3c5c85c", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove the square-root specification at two" },
-    CommonSpec { item_id: "CFT-27-003", chapter: 27, anchor: "cft-27-003", public_declaration: "CrouzeixTextbook.Part05.one_plus_sqrt_two_positive", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 20, type_sha256: "b5d6ab35facd3ff402611c5653d77b68002e38c6a2303ed396fd26262b35ec94", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "exclude the negative root with the sign branch visible" },
-    CommonSpec { item_id: "CFT-27-004", chapter: 27, anchor: "cft-27-004", public_declaration: "CrouzeixTextbook.Part05.one_plus_sqrt_two_barrier", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 31, type_sha256: "b34b7fab7e6f0711708e126020eace13d85ec177642c7a3d3c3172f0dc9bc8f5", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "factor the scalar quadratic and audit both factor signs" },
-    CommonSpec { item_id: "CFT-27-005", chapter: 27, anchor: "cft-27-005", public_declaration: "CrouzeixTextbook.Part05.triangle_barrier_kernel", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 46, type_sha256: "4ee8f501079eaa15f32b005c52c5275ec658b9f32af686f89de532b09a890aeb", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "derive the independent-term triangle estimate and expose its equality case" },
-    CommonSpec { item_id: "CFT-27-006", chapter: 27, anchor: "cft-27-006", public_declaration: "CrouzeixTextbook.Part05.positive_map_norm_kernel", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 57, type_sha256: "ff5adddf717c380cb4f3b3123f60e9e8569e51e49c18c3d4d3c8de299b91935e", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "derive the positive-map quadratic barrier and identify the discarded cross term" },
-    CommonSpec { item_id: "CFT-28-001", chapter: 28, anchor: "cft-28-001", public_declaration: "CrouzeixTextbook.Part05.power_cauchy_formula", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 11, type_sha256: "258dcd40effc3e1c87075f12ed8e7b33594385efb646067ebd90517af2e3238f", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "state the power-indexed Cauchy formula with domain, orientation, and analyticity" },
-    CommonSpec { item_id: "CFT-28-002", chapter: 28, anchor: "cft-28-002", public_declaration: "CrouzeixTextbook.Part05.power_cauchy_mass_one", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 35, type_sha256: "af7ffea07579ffc73817d257712c98a60596ed2a7df38403d75cee67224d96dd", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "apply scalar Cauchy to the constant function and track normalization" },
-    CommonSpec { item_id: "CFT-28-003", chapter: 28, anchor: "cft-28-003", public_declaration: "CrouzeixTextbook.Part05.contractive_boundary_function", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 50, type_sha256: "89cd7ac55f8eef42107167ebd2bc6310d339d9a3a319ed58ca3ceba31f31e907", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define normalized boundary data and prove its supremum norm is at most one" },
-    CommonSpec { item_id: "CFT-28-004", chapter: 28, anchor: "cft-28-004", public_declaration: "CrouzeixTextbook.Part05.power_cayley_companion", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 68, type_sha256: "b8f10ac0cc5db54f484a749ec7b303f346a9d9803d1a9bab62062bbefc2099dc", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "construct every Cayley companion power and prove the positivity identity" },
-    CommonSpec { item_id: "CFT-28-005", chapter: 28, anchor: "cft-28-005", public_declaration: "CrouzeixTextbook.Part05.positive_completion_from_power_family", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 102, type_sha256: "655425bab338ed249ed27b699808957c6fddbfb80f2a31fdfa72e65852a6ccb0", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "assemble pointwise positivity into a positive-real completion for all powers" },
-    CommonSpec { item_id: "CFT-28-006", chapter: 28, anchor: "cft-28-006", public_declaration: "CrouzeixTextbook.Part05.power_family_norm_two", source_path: "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 129, type_sha256: "a505f972d0a99bda91d63ea153feeadbea85c3112034679470c5e48b4da9f7bc", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "assemble the common completion and preview the deferred Jin completion-to-two consequence" },
-    CommonSpec { item_id: "CFT-29-001", chapter: 29, anchor: "cft-29-001", public_declaration: "CrouzeixTextbook.Part06.max_polynomial_modulus", source_path: "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 150, type_sha256: "3799044d1d7cf216e1d5a16d6f176195a40d2f60105cb22cc17066c56df6e3f4", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define the closed numerical-range maximum and prove existence by compactness" },
-    CommonSpec { item_id: "CFT-29-002", chapter: 29, anchor: "cft-29-002", public_declaration: "CrouzeixTextbook.Part06.polynomial_crouzeix_bound", source_path: "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 162, type_sha256: "4d98441cfca7d869d873c43a1e6794f5127c362be399d6291ef85f13f0fb6707", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "state the quantified polynomial bound and its zero-maximum edge case" },
-    CommonSpec { item_id: "CFT-29-003", chapter: 29, anchor: "cft-29-003", public_declaration: "CrouzeixTextbook.Part06.main_theorem_statement", source_path: "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 180, type_sha256: "c500bddcbe4f0b4927ef40b3effb463212129a1744caca97cd171c2e30a863bd", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "separate finite-matrix, rational spectral-set, and Hilbert-space theorem surfaces" },
-    CommonSpec { item_id: "CFT-29-004", chapter: 29, anchor: "cft-29-004", public_declaration: "CrouzeixTextbook.Part06.jordan_two_maximum", source_path: "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 188, type_sha256: "4fcca18fce47dfeafad4133214ea02a50d523e160c2cca7be86a383beef98641", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "compute the unit-disk numerical range of the scaled two-by-two Jordan block" },
-    CommonSpec { item_id: "CFT-29-005", chapter: 29, anchor: "cft-29-005", public_declaration: "CrouzeixTextbook.Part06.jordan_two_attains_two", source_path: "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 197, type_sha256: "4cf9d3a9c2a267d26959ef5ae89a54abaf2ab714d3fabc2a5ea4e930c55cb7cd", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "evaluate the identity polynomial and calculate norm two against maximum one" },
-    CommonSpec { item_id: "CFT-29-006", chapter: 29, anchor: "cft-29-006", public_declaration: "CrouzeixTextbook.Part06.constant_two_is_least", source_path: "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 213, type_sha256: "e4e8201aa2ea2f299dac20b63ca70ac72b1e0dfb1ffae78c75485eb6d88f4eed", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "combine the universal lower bound only with a separately identified upper bound" },
+    CommonSpec { item_id: "CFT-25-001", chapter: 25, anchor: "cft-25-001", public_declaration: "CrouzeixTextbook.Part05.convex_projection", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 14, type_sha256: "4ffef37c950b39279846aeb028511a0d8f18a945e1d8888379d849d8096a6100", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "prove closed-convex nearest-point existence and separate existence from uniqueness" },
+    CommonSpec { item_id: "CFT-25-002", chapter: 25, anchor: "cft-25-002", public_declaration: "CrouzeixTextbook.Part05.convex_projection_variational", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 47, type_sha256: "e5ff9225c14b24a0bc391ce2d438e1f6d80e2f0e1fe4075becb75d5ac2fe160a", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "differentiate squared distance along a convex segment and handle the endpoint" },
+    CommonSpec { item_id: "CFT-25-003", chapter: 25, anchor: "cft-25-003", public_declaration: "CrouzeixTextbook.Part05.convex_projection_nonexpansive", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 56, type_sha256: "6491d411e634da59fa43f86b95c536274c4f53474e95382ada98b49cc76f6fc5", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "add both variational inequalities and apply Cauchy--Schwarz" },
+    CommonSpec { item_id: "CFT-25-004", chapter: 25, anchor: "cft-25-004", public_declaration: "CrouzeixTextbook.Part05.outer_approximation_radius", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 65, type_sha256: "b2294ee6be90f9259c5d55fcb89f02182b9ba7feeeb8124179e51fabf7056ce8", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define the parallel outer radius and its geometric containment data" },
+    CommonSpec { item_id: "CFT-25-005", chapter: 25, anchor: "cft-25-005", public_declaration: "CrouzeixTextbook.Part05.outer_radius_tends_to_zero", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 71, type_sha256: "1f2d7a4b929e101df48496466ae11483b7aa7f7328ffe49b5c0d95c34335b000", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove outer-radius decay with compactness and uniformity explicit" },
+    CommonSpec { item_id: "CFT-25-006", chapter: 25, anchor: "cft-25-006", public_declaration: "CrouzeixTextbook.Part05.parallel_outer_domain_data", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter25.lean", line: 114, type_sha256: "e0c090a879dce8bda6dbcd5297ac2597904ac6646e0fff4ebdae2e33e4f846b9", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "construct the positively oriented regular radial C¹ boundary package consumed by Cauchy integration" },
+    CommonSpec { item_id: "CFT-26-001", chapter: 26, anchor: "cft-26-001", public_declaration: "CrouzeixTextbook.Part05.support_point_outside_numerical_range", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 15, type_sha256: "c81aa6c33f155d60b3ea289c9683b19f669b9b37f5b0fa0e1afbe8be12f42086", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove boundary exclusion together with unit-vector scalar half-plane separation from numerical-range containment" },
+    CommonSpec { item_id: "CFT-26-002", chapter: 26, anchor: "cft-26-002", public_declaration: "CrouzeixTextbook.Part05.support_resolvent_invertible", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 29, type_sha256: "ba925bdd2b8af209941855dc71402f2fc0d602598e38bb205a1282955c8e5866", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "contradict a kernel vector using strict separation; isolate the boundary limit" },
+    CommonSpec { item_id: "CFT-26-003", chapter: 26, anchor: "cft-26-003", public_declaration: "CrouzeixTextbook.Part05.double_layer_support_positive", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 33, type_sha256: "669c3561a5e2fa2329dbac180de86d6b8ac4f22a91c3d0ab2b827e9570dbd577", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove support-resolvent positivity by an explicit quadratic-form congruence" },
+    CommonSpec { item_id: "CFT-26-004", chapter: 26, anchor: "cft-26-004", public_declaration: "CrouzeixTextbook.Part05.double_layer_resolvent", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 37, type_sha256: "2576ccb833b38fce237c0923d56df69609bf656489d5f61e0ab3427e4486ec09", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define the oriented normalized double-layer resolvent from scalar Cauchy data" },
+    CommonSpec { item_id: "CFT-26-005", chapter: 26, anchor: "cft-26-005", public_declaration: "CrouzeixTextbook.Part05.double_layer_congruence", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 41, type_sha256: "3ca440cf9415bc7043af96c8f7c9292238e56809c47f535ee2f896ccbb9006b1", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "write the matrix congruence in full, including adjoints and scalar factors" },
+    CommonSpec { item_id: "CFT-26-006", chapter: 26, anchor: "cft-26-006", public_declaration: "CrouzeixTextbook.Part05.double_layer_density_positive", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean", line: 46, type_sha256: "acfa9886104dc38842086a82b8fe579c01f2b5ebf959a35159b37f1b76cea4b4", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "integrate pointwise positivity with integrability and finite-sum interchange justified" },
+    CommonSpec { item_id: "CFT-27-001", chapter: 27, anchor: "cft-27-001", public_declaration: "CrouzeixTextbook.Part05.sqrt_two_nonnegative", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 12, type_sha256: "0671f6cc626c2d1ec60ba1496a2a0bcfcea215f114a3712a2e6ad0333943c82b", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "establish the nonnegative real square-root branch" },
+    CommonSpec { item_id: "CFT-27-002", chapter: 27, anchor: "cft-27-002", public_declaration: "CrouzeixTextbook.Part05.sqrt_two_squared", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 16, type_sha256: "807b03a281f82bdc472d967959ea405a451a428770ceb42484d1cd5bd3c5c85c", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "prove the square-root specification at two" },
+    CommonSpec { item_id: "CFT-27-003", chapter: 27, anchor: "cft-27-003", public_declaration: "CrouzeixTextbook.Part05.one_plus_sqrt_two_positive", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 20, type_sha256: "b5d6ab35facd3ff402611c5653d77b68002e38c6a2303ed396fd26262b35ec94", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "exclude the negative root with the sign branch visible" },
+    CommonSpec { item_id: "CFT-27-004", chapter: 27, anchor: "cft-27-004", public_declaration: "CrouzeixTextbook.Part05.one_plus_sqrt_two_barrier", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 31, type_sha256: "b34b7fab7e6f0711708e126020eace13d85ec177642c7a3d3c3172f0dc9bc8f5", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "factor the scalar quadratic and audit both factor signs" },
+    CommonSpec { item_id: "CFT-27-005", chapter: 27, anchor: "cft-27-005", public_declaration: "CrouzeixTextbook.Part05.triangle_barrier_kernel", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 46, type_sha256: "4ee8f501079eaa15f32b005c52c5275ec658b9f32af686f89de532b09a890aeb", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "derive the independent-term triangle estimate and expose its equality case" },
+    CommonSpec { item_id: "CFT-27-006", chapter: 27, anchor: "cft-27-006", public_declaration: "CrouzeixTextbook.Part05.positive_map_norm_kernel", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter27.lean", line: 57, type_sha256: "ff5adddf717c380cb4f3b3123f60e9e8569e51e49c18c3d4d3c8de299b91935e", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "derive the positive-map quadratic barrier and identify the discarded cross term" },
+    CommonSpec { item_id: "CFT-28-001", chapter: 28, anchor: "cft-28-001", public_declaration: "CrouzeixTextbook.Part05.power_cauchy_formula", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 11, type_sha256: "258dcd40effc3e1c87075f12ed8e7b33594385efb646067ebd90517af2e3238f", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "state the power-indexed Cauchy formula with domain, orientation, and analyticity" },
+    CommonSpec { item_id: "CFT-28-002", chapter: 28, anchor: "cft-28-002", public_declaration: "CrouzeixTextbook.Part05.power_cauchy_mass_one", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 35, type_sha256: "af7ffea07579ffc73817d257712c98a60596ed2a7df38403d75cee67224d96dd", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "apply scalar Cauchy to the constant function and track normalization" },
+    CommonSpec { item_id: "CFT-28-003", chapter: 28, anchor: "cft-28-003", public_declaration: "CrouzeixTextbook.Part05.contractive_boundary_function", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 50, type_sha256: "89cd7ac55f8eef42107167ebd2bc6310d339d9a3a319ed58ca3ceba31f31e907", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define normalized boundary data and prove its supremum norm is at most one" },
+    CommonSpec { item_id: "CFT-28-004", chapter: 28, anchor: "cft-28-004", public_declaration: "CrouzeixTextbook.Part05.power_cayley_companion", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 68, type_sha256: "b8f10ac0cc5db54f484a749ec7b303f346a9d9803d1a9bab62062bbefc2099dc", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "construct every Cayley companion power and prove the positivity identity" },
+    CommonSpec { item_id: "CFT-28-005", chapter: 28, anchor: "cft-28-005", public_declaration: "CrouzeixTextbook.Part05.positive_completion_from_power_family", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 102, type_sha256: "655425bab338ed249ed27b699808957c6fddbfb80f2a31fdfa72e65852a6ccb0", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "assemble pointwise positivity into a positive-real completion for all powers" },
+    CommonSpec { item_id: "CFT-28-006", chapter: 28, anchor: "cft-28-006", public_declaration: "CrouzeixTextbook.Part05.power_family_norm_two", source_path: "lab/math/lean/CrouzeixTextbook/Part05/Chapter28.lean", line: 129, type_sha256: "a505f972d0a99bda91d63ea153feeadbea85c3112034679470c5e48b4da9f7bc", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "assemble the common completion and preview the deferred Jin completion-to-two consequence" },
+    CommonSpec { item_id: "CFT-29-001", chapter: 29, anchor: "cft-29-001", public_declaration: "CrouzeixTextbook.Part06.max_polynomial_modulus", source_path: "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 150, type_sha256: "3799044d1d7cf216e1d5a16d6f176195a40d2f60105cb22cc17066c56df6e3f4", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "define the closed numerical-range maximum and prove existence by compactness" },
+    CommonSpec { item_id: "CFT-29-002", chapter: 29, anchor: "cft-29-002", public_declaration: "CrouzeixTextbook.Part06.polynomial_crouzeix_bound", source_path: "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 162, type_sha256: "4d98441cfca7d869d873c43a1e6794f5127c362be399d6291ef85f13f0fb6707", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "state the quantified polynomial bound and its zero-maximum edge case" },
+    CommonSpec { item_id: "CFT-29-003", chapter: 29, anchor: "cft-29-003", public_declaration: "CrouzeixTextbook.Part06.main_theorem_statement", source_path: "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 180, type_sha256: "c500bddcbe4f0b4927ef40b3effb463212129a1744caca97cd171c2e30a863bd", baseline_proof: "summary", baseline_correspondence: "checkpoint", obligation: "separate finite-matrix, rational spectral-set, and Hilbert-space theorem surfaces" },
+    CommonSpec { item_id: "CFT-29-004", chapter: 29, anchor: "cft-29-004", public_declaration: "CrouzeixTextbook.Part06.jordan_two_maximum", source_path: "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 188, type_sha256: "4fcca18fce47dfeafad4133214ea02a50d523e160c2cca7be86a383beef98641", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "compute the unit-disk numerical range of the scaled two-by-two Jordan block" },
+    CommonSpec { item_id: "CFT-29-005", chapter: 29, anchor: "cft-29-005", public_declaration: "CrouzeixTextbook.Part06.jordan_two_attains_two", source_path: "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 197, type_sha256: "4cf9d3a9c2a267d26959ef5ae89a54abaf2ab714d3fabc2a5ea4e930c55cb7cd", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "evaluate the identity polynomial and calculate norm two against maximum one" },
+    CommonSpec { item_id: "CFT-29-006", chapter: 29, anchor: "cft-29-006", public_declaration: "CrouzeixTextbook.Part06.constant_two_is_least", source_path: "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean", line: 213, type_sha256: "e4e8201aa2ea2f299dac20b63ca70ac72b1e0dfb1ffae78c75485eb6d88f4eed", baseline_proof: "summary", baseline_correspondence: "unmapped", obligation: "combine the universal lower bound only with a separately identified upper bound" },
 ];
 
 const EXERCISE_SPECS: [ExerciseSpec; 30] = [
@@ -426,7 +426,7 @@ fn compile_planned_exercise_receipt() -> Value {
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run planned exercise compiler probe");
     assert!(
@@ -1529,7 +1529,7 @@ fn compile_canonical_receipt() -> Value {
     let output = super::textbook_lean_command("lake")
         .args(["env", "lean", "--run", "CrouzeixTextbook.lean"])
         .arg(&receipt_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run canonical textbook compiler receipt");
     assert!(
@@ -1596,7 +1596,7 @@ fn compile_public_receipt() -> Value {
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run common compiler probe");
     assert!(
@@ -1633,7 +1633,7 @@ fn compile_supporting_receipt(name: &str) -> Value {
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run supporting theorem compiler probe");
     assert!(
@@ -1709,7 +1709,7 @@ run_cmd do
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run common provider compiler probe");
     assert!(
@@ -1746,7 +1746,7 @@ run_cmd do
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .expect("run radial completion compiler probe");
     assert!(
@@ -1831,7 +1831,7 @@ run_cmd do
         .arg("env")
         .arg("lean")
         .arg(&source_path)
-        .current_dir(workspace_root().join("formalization/lean"))
+        .current_dir(workspace_root().join("lab/math/lean"))
         .output()
         .map_err(|error| error.to_string())?;
     if !output.status.success() {
@@ -2323,7 +2323,7 @@ fn chapter_29_normalization_and_sharpness_separate_exact_attainment_from_limits(
 #[test]
 fn chapter_29_positive_normalization_derives_the_maximum_in_lean() {
     const NAME: &str = "CrouzeixTextbook.Part06.normalized_max_polynomial_modulus";
-    const SOURCE: &str = "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean";
+    const SOURCE: &str = "lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean";
     const TYPE_SHA256: &str = "907f1242b2662c78c6878597633b91cb7ac60ffc0b11b47b416f011ffabe18ab";
     let markdown = chapter_markdown(29);
     assert!(
@@ -2331,7 +2331,7 @@ fn chapter_29_positive_normalization_derives_the_maximum_in_lean() {
         "Chapter 29 omits the checked maximum-scaling theorem"
     );
     for exact in [
-        "[Lean proof](../../../formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean#L120)",
+        "[Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean#L120)",
         "M(A,M^{-1}p)=1",
         "derived from `M(A,p)=M` and `M>0`",
         "E05 keeps the frozen normalized-maximum hypothesis",
@@ -2560,9 +2560,9 @@ fn chapter_29_theorem_surfaces_link_their_supporting_lean_declarations() {
     let card = card_region(&markdown, common_spec("CFT-29-003")).expect("CFT-29-003 card");
     for exact in [
         "CrouzeixConjecture.crouzeixRationalSpectralSetCorollary",
-        "../../../formalization/lean/CrouzeixConjecture/FinalTheorems.lean#L26",
+        "../../../lab/math/lean/CrouzeixConjecture/FinalTheorems.lean#L26",
         "CrouzeixConjecture.hilbertSpaceRationalSpectralSet",
-        "../../../formalization/lean/CrouzeixConjecture/HilbertSpectralSet.lean#L115",
+        "../../../lab/math/lean/CrouzeixConjecture/HilbertSpectralSet.lean#L115",
         "Supporting declarations, not the primary card theorem",
     ] {
         assert!(card.contains(exact), "CFT-29-003 omits `{exact}`");
@@ -2580,7 +2580,7 @@ fn chapter_29_history_records_dated_three_route_provenance() {
         "arxiv:2608.03841v1",
         "observed on 2026-08-14",
         "2026-08-29 Harp review boundary",
-        "../../../formalization/lean/Crouzeix/Harp/MainTheorem.lean#L25",
+        "../../../lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25",
         "claim_evidence_ledger#cft-cl-003",
     ] {
         assert!(card.contains(exact), "CFT-29-006 omits `{exact}`");
@@ -2867,7 +2867,7 @@ fn chapter_26_congruence_exercise_rejects_the_mathlib_shortcut_transitively() {
     let coverage = read_json(&contracts_root().join("coverage.json"));
     let exercises = read_json(&contracts_root().join("exercises.json"));
     let source = fs::read_to_string(
-        workspace_root().join("formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean"),
+        workspace_root().join("lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean"),
     )
     .expect("Chapter 26 Lean source");
     assert!(
@@ -3347,7 +3347,7 @@ fn common_machinery_contract_freezes_complete_cards_and_distinct_exercise_target
             .as_u64()
             .expect("compiler-reported exercise solution line");
         let locator =
-            format!("../../../formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean#L{line}");
+            format!("../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L{line}");
         assert!(
             chapter_26.contains(&locator),
             "{exercise_id} prose omits exact compiler-bound locator `{locator}`"
@@ -3456,7 +3456,7 @@ fn common_machinery_contract_preserves_the_dag_and_independent_branch_seeds() {
 
 #[test]
 fn common_machinery_contract_closure_excludes_terminal_provider_namespaces() {
-    let output = run_common_closure(&workspace_root().join("formalization/lean"), &COMMON_ROOTS);
+    let output = run_common_closure(&workspace_root().join("lab/math/lean"), &COMMON_ROOTS);
     assert!(
         output.status.success(),
         "common closure failed:\n{}\n{}",

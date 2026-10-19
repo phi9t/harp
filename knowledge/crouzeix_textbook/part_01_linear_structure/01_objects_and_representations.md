@@ -114,7 +114,7 @@ basis.
 
 **Formal correspondence.** Definition
 `CrouzeixTextbook.Part01.LinearTransformation`, whose provider is Mathlib's
-`LinearMap`. [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+`LinearMap`. [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 The alias also allows semirings and semimodules; the definition above is its
 field specialization. There is no theorem proof obligation for a definition.
 `linear_map_preserves_zero` is an unindexed structural consequence.
@@ -147,7 +147,7 @@ do not determine $T$ on the whole space.
 **Formal correspondence.** Public theorem
 `CrouzeixTextbook.Part01.basis_image_columns`, using
 `LinearMap.toMatrix_apply`.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 The statement has a field, two vector spaces, finite basis index types,
 explicit bases $B,C$, and indices $i,j$. It states
 `LinearMap.toMatrix B C T i j = C.repr (T (B j)) i`.
@@ -190,7 +190,7 @@ images only determines the whole map under the linearity hypothesis.
 **Formal correspondence.** Proof written here:
 `CrouzeixTextbook.Part01.basis_coordinate_action`; substantive basis provider
 `Module.Basis.sum_repr` and coordinate provider `LinearMap.toMatrix_apply`.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 It assumes the same field and finite bases as CFT-01-002 and proves
 `C.repr (T x) = LinearMap.toMatrix B C T *ᵥ B.repr x` as coordinate functions.
 The proof expands $x$ in $B$ and moves the linear maps through the sum.
@@ -242,7 +242,7 @@ basis change. For example, $(x,y)\mapsto x$ cannot reconstruct $(0,1)$.
 **Formal correspondence.** Proof written here:
 `CrouzeixTextbook.Part01.basis_change_conjugacy`, provider
 `LinearMap.toMatrix_comp` for composition in specified bases.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 The exact formal equality uses the two matrices of the identity, $S$ and $R$,
 instead of a separately chosen inverse operation. The inverse conclusion
 follows by applying the same composition rule to the identity round trips;
@@ -296,7 +296,7 @@ preserved by unitary changes of basis, not by every invertible $S$.
 **Formal correspondence.** Public theorem
 `CrouzeixTextbook.Part01.similarity_preserves_charpoly`, using
 `Matrix.charpoly_units_conj`.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 Lean assumes a commutative ring, a finite square index type with decidable
 equality, and a matrix unit. The correspondence is exact; the prose proof
 scope is a summary with the explicit Chapter 5 dependency. Formal availability
@@ -357,7 +357,7 @@ intrinsic norm on the underlying vector space.
 
 **Formal correspondence.** Proof written here:
 `CrouzeixTextbook.Part01.nonunitary_similarity_norm_counterexample`.
-[Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+[Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 It proves both inverse identities, similarity, the uniform squared bounds
 $\sum_i(\Lambda x)_i^2\le\sum_i x_i^2$ and
 $\sum_i(Tx)_i^2\le2\sum_i x_i^2$, and a unit input attaining $1$ and $2$.
@@ -467,7 +467,7 @@ metric on the new coordinate array.
 
 Unindexed Lean helpers `runningFamily_change_basis` (with $s\ne0$) and
 `runningFamily_output_length_sq` prove the matrix and squared-length
-calculations. [Lean source](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean).
+calculations. [Lean source](../../../lab/math/lean/CrouzeixTextbook/Part01/Chapter01.lean).
 They do not add indexed theorem cards.
 
 ## ML bridge
