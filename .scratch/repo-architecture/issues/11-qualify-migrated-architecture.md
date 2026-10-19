@@ -11,7 +11,7 @@ Review and qualify the complete existing-code migration against the new source i
 ## Acceptance criteria
 
 - [ ] Required native lifecycle tests pass without required skips for the migrated runtime/bridge/backend identities.
-- [ ] Real Codex and Trae single-worker runs, a mixed pair and four overlapping mixed workers pass independent checks and reviewed serialized exact landings.
+- [ ] Real Codex runs with one worker, two overlapping workers and four overlapping workers pass independent checks and reviewed serialized exact landings.
 - [ ] The two audit reproducers fail safely and ordinary correct candidates succeed.
 - [ ] An SSH-dispatched retained workload completes under Insula with reconnect/cancellation evidence and host-neutral public artifacts.
 - [ ] Benchmark inventory completeness passes, including acquired dirty-source snapshots and the Emacs gym/AI-LSP suites; historical-only evidence is labeled and no benchmark is silently retired.

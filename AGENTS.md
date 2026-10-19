@@ -51,6 +51,11 @@ handling.
 
 ### Test selection
 
+- Colocate new or moved tests and fixtures with the source they protect. Use
+  adjacent test modules or in-module tests; configure native integration targets
+  explicitly where needed instead of adding separate tests/ trees. Preserve
+  behavioral coverage when relocating imported tests.
+
 - Prefer the smallest set of tests that protects useful observable behavior:
   public API and CLI contracts, data schemas, boundary validation, and meaningful
   integration outcomes. Choose checks by the regression they can catch, not a

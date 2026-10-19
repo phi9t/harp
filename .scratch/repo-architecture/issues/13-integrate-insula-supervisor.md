@@ -16,6 +16,7 @@ Keep service policy separate from the single agent/workload control plane.
 
 ## Acceptance criteria
 
+- [ ] Imported tests are colocated with owning source modules, with native integration targets configured explicitly; preserve original archive provenance and test behavior.
 - [ ] Source/archive and adaptations have exact provenance. Reconcile workspace SQLite linkage/toolchain constraints and rerun tests against the chosen lock without silently changing pins.
 - [ ] The real owner implements all eight interface methods, exclusive root claims, effect-time epoch/generation fencing, durable launch and endpoint reservations, and complete observation semantics. A test fixture never supplies production authority.
 - [ ] Durable activity admission and service claims share the authoritative execution boundary without state-directory or socket aliases bypassing exclusivity. No competing namespace keeper or reaping loop is introduced.

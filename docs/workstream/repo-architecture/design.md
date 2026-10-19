@@ -29,7 +29,7 @@ durable/                    one Python execution control plane
   __main__.py               implementation behind harp durable
   runtime/                  replay, activities, guardian, receipt acceptance
   state/                    SQLite schema, transactions, operational records
-  agents/                   admission, Codex/Trae adapters, coding activities
+  agents/                   admission, Codex adapter, coding activities
   intent/                   Git-managed specs, issues, dependencies and acceptance
   collaboration/            bounded assignments, worktree ownership, integration policy
   git/                      source/candidate/verification/landing domain
@@ -106,13 +106,37 @@ Durable orchestration owns when they run and records their outcome. Verification
 remains an independent activity. A passing workload or provider command is not
 an approval, and the destination only changes through the owner-approved path.
 
+## Provider and test scope
+
+Codex is the first supported provider for the migrated framework. Qualify the
+one/two/four-worker lifecycle using Codex. This supersedes the earlier requirement
+for mixed Codex/Trae qualification in this migration. Preserve existing Trae
+source and historical evidence in the disposition record; further Trae migration
+and qualification are deferred, not silently claimed complete or discarded.
+Pi is a possible later agent harness, not a current implementation dependency
+or acceptance requirement. Keep a narrow provider boundary grounded in Codex;
+do not build speculative multi-provider infrastructure for Pi now.
+
+Tests live beside the source they protect. Use adjacent Python test modules,
+Rust in-module or neighboring test modules, and nearby fixtures. Native
+integration/acceptance targets should also reference source-adjacent files via
+explicit build configuration where needed. Do not add separate component-wide
+or repository-wide tests/ trees. During import, preserve the supplied archive's
+original test identities and behavior while mapping their new colocated paths.
+Colocation changes file placement, not the observable contracts being tested.
+
 ## Durable agentic engineering framework
 
 Durable includes the Git-managed engineering workflow as well as execution.
 `durable/intent/` supports the existing local-Markdown contract: specs, issues,
 tickets, acceptance criteria and dependency links authored in the Matt Pocock
 skill style. Those records remain under `.scratch/<feature>/`, outside the code
-package. Reuse the [tracker contract](../../agents/issue-tracker.md); do not
+package. Materializing intent into detailed specs and independently verifiable
+implementation tickets follows the Matt Pocock-style authoring workflow and
+existing Harp skills. The framework supplies record parsing, validation, revision
+binding and execution handoff; it does not replace human design decisions with a
+second requirements generator or infer a detailed spec from a task title.
+Reuse the [tracker contract](../../agents/issue-tracker.md); do not
 invent another tracker format or require a service to use it.
 
 Git owns authored intent and issue state. Admission freezes their exact revisions
@@ -312,8 +336,8 @@ the retained Lean/SICP/PDF checks. Enforce import direction and single authority
 with executable checks of supported entrypoints and import dependencies. Avoid
 tests that freeze every internal helper or merely search for the new spelling.
 
-Runtime qualification progresses through one worker for each provider, a mixed
-pair, then four mixed workers with actual overlap, restart/cancellation tests,
+Runtime qualification progresses through one Codex worker, two Codex workers,
+then four Codex workers with actual overlap, restart/cancellation tests,
 independent acceptance and serialized exact approval/landing. Reuse current
 behavioral tests, but bind fresh results to migrated code. A renamed tree with
 only portable tests passing has not completed this migration.

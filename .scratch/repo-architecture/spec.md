@@ -139,3 +139,17 @@ the single-runtime migration; this does not add a separate tracker or scheduler.
 This clarification passed `mise run verify -- --base 967df339`, selecting diff
 whitespace and changed-document local-link checks. Runtime source remains
 unmoved; these checks validate the revised design and ticket contracts only.
+
+## Provider, intent authoring and test placement clarification
+
+Codex is the migration's first provider. Qualify one, two and four Codex workers;
+mixed-provider qualification is no longer required for this delivery. Existing
+Trae source/evidence remains preserved with further integration deferred. Pi may
+be considered later and is not a current implementation prerequisite.
+
+The framework-side intent module supports the existing Git-managed records.
+Intent materialization into detailed specs and tickets follows the Matt Pocock
+style and Harp authoring skills. Colocate new/moved tests with source and preserve
+behavioral coverage and import provenance. These decisions supersede the earlier
+multi-provider acceptance and the separate tests/ folders shown in the expanded
+layout sketch; source migration remains pending.
