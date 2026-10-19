@@ -381,3 +381,15 @@ Benchmark notes live under `lab/benchmarks/`, shared implementation studies unde
 headless corpus is generated at `lab/generated/corpus.json`. Registered document
 IDs and the `harp-knowledge/v1` schema remain unchanged. Captured upstream sources
 stay in `evidence/`. See [ticket 16](../../../.scratch/repo-architecture/issues/16-merge-knowledge-into-lab.md).
+
+## Next durable module consolidation
+
+The agreed follow-up groups durable internals into `runtime/`, `intent/` and
+`jobs/`, with coding and declared-command workflows beside their implementations.
+A dedicated `estate/` module owns repository identities, managed workspaces,
+attempt-bound leases, retention and safe reclamation through the existing SQLite
+journal. The runtime owns attempt lifetime; estate owns workspace lifetime;
+coding verification and explicit human approval continue to govern landing.
+Workers currently use isolated bundle clones; introducing estate must preserve
+that isolation. Runner supplies SSH transport and Insula supplies containment.
+This is a planned change, tracked in [ticket 17](../../../.scratch/repo-architecture/issues/17-consolidate-durable-modules-and-estate.md).

@@ -172,3 +172,10 @@ The owner requested merging maintained knowledge into lab. Ticket
 workloads, benchmark notes under lab/benchmarks/, shared engineering studies under
 lab/agentic_engineering/, and the generated corpus under lab/generated/. Captured
 upstream evidence stays in evidence/ and document identities remain unchanged.
+
+The owner accepted the runtime/intent/jobs organization and requested a dedicated
+owner for Git worktrees and the managed estate. Ticket
+[17](issues/17-consolidate-durable-modules-and-estate.md) records that follow-up,
+including durable/estate/ for repository identity, workspace allocation, leases,
+retention and safe cleanup using the existing SQLite journal. This is design
+intent, not a claim that the runtime reorganization or estate is implemented.
