@@ -1,0 +1,15 @@
+{
+  "checks": [
+    [
+      "/usr/bin/python3",
+      "-c",
+      "from pathlib import Path; p=Path('docs/repository-structure-review.md'); assert p.is_file() and not p.is_symlink(); t=p.read_text(encoding='utf-8'); assert t.startswith('# ') and len(t.strip())>200"
+    ],
+    [
+      "/usr/bin/python3",
+      "scripts/verify_changes.py",
+      "--check-docs",
+      "docs/repository-structure-review.md"
+    ]
+  ]
+}

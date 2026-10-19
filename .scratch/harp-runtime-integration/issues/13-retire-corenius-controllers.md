@@ -1,7 +1,7 @@
 # 13: Retire the superseded Corenius controller paths
 
-Status: ready-for-agent
-Owner: unassigned
+Status: done
+Owner: Codex team on `codex/harp-durable-runtime`
 Parent: [Harp durable coding-worker integration](../spec.md)
 
 ## What to build
@@ -15,12 +15,12 @@ then four. This ticket does not authorize implementation or live setup by itself
 
 ## Acceptance criteria
 
-- [ ] Inventory imported controller, Collab and tracker entry points, distinguishing reusable execution/Git mechanisms from competing lifecycle owners.
-- [ ] No supported launcher or fallback starts the old controller to admit, schedule, cancel, recover, verify, approve or land the new path’s workers.
-- [ ] Retain required mechanisms as subordinate adapters/libraries with the selected runtime owning authoritative transitions; remove obsolete controller/tracker commands or provide explicit retirement guidance.
-- [ ] Git-managed Markdown remains intended work. Kata, a second backlog or sibling-policy synchronization is not introduced as an operational dependency.
-- [ ] Update affected imports, build/gate selection, operator guidance and import-preservation dispositions. Preserve recoverable source history and captured evidence/license bytes.
-- [ ] CLI/build tests demonstrate retirement and the continued selected-runtime path, without relying on an old daemon or historical private environment.
+- [x] Inventory imported controller, Collab and tracker entry points, distinguishing reusable execution/Git mechanisms from competing lifecycle owners.
+- [x] No supported launcher or fallback starts the old controller to admit, schedule, cancel, recover, verify, approve or land the new path’s workers.
+- [x] Retain required mechanisms as subordinate adapters/libraries with the selected runtime owning authoritative transitions; remove obsolete controller/tracker commands or provide explicit retirement guidance.
+- [x] Git-managed Markdown remains intended work. Kata, a second backlog or sibling-policy synchronization is not introduced as an operational dependency.
+- [x] Update affected imports, build/gate selection, operator guidance and import-preservation dispositions. Preserve recoverable source history and captured evidence/license bytes.
+- [x] CLI/build tests demonstrate retirement and the continued selected-runtime path, without relying on an old daemon or historical private environment.
 
 ## Blocked by
 
@@ -37,3 +37,18 @@ existing contract coverage where sufficient. Run the changed-surface gate agains
 the complete candidate and supplement it for affected consumers. Record exact
 source, selected checks, outcomes and limitations here. Historical qualification,
 missing prerequisites or unavailable required capabilities are not fresh passes.
+
+Implemented in `d5e923bd`, corrected in `207b8ce9` and `d6fe9807`.
+Retired controller/native/Collab/tracker/worker/benchmark authority and all four
+old Rust binaries; dependency-free refusal entrypoints preserve actionable
+guidance. Removed obsolete check registrations while retaining their precise
+source provenance. Imported AGENTS now follows root governance. Pure scanners,
+parsers, snapshots and reference/noop replay remain; selected durable/Insula
+source is unchanged. Independent review caught worker recovery/write/terminal
+bypasses and the tmux wrapper's early uv/state startup; both were repaired.
+Five no-effect retirement tests pass, including 24 real Python/shell launcher
+invocations, provider/uv/tmux traps and unchanged state/home snapshots. Twelve
+import-verifier cases pass; the selected import gate verifies 8,149 original
+files, 62 declared retirements, 29 branches and 13 worktrees with retained
+objects, modes, digests, ancestry and license/evidence records.
+Final whole-entrypoint audit and whole-candidate gate remain ticket 14.

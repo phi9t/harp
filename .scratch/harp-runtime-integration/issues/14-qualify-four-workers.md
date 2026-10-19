@@ -1,7 +1,7 @@
 # 14: Qualify four workers and complete supersession
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on `codex/harp-durable-runtime`
 Parent: [Harp durable coding-worker integration](../spec.md)
 
 ## What to build
@@ -41,3 +41,11 @@ existing contract coverage where sufficient. Run the changed-surface gate agains
 the complete candidate and supplement it for affected consumers. Record exact
 source, selected checks, outcomes and limitations here. Historical qualification,
 missing prerequisites or unavailable required capabilities are not fresh passes.
+
+The owner explicitly authorized completion of the four-worker run on actual
+Harp tasks, full review, required checks and local landing. No push. Frozen
+tasks and independent checks live in `../qualification/`: gate dispatch coverage
+(Codex), retained Lean workflow (Trae), runtime architecture (Codex), repository
+structure review (Trae). Documentation checks establish structure/link integrity;
+semantic review remains separate. Each candidate will have a distinct clean
+Harp destination, with serialized reviewed integration into the delivery branch.

@@ -42,9 +42,11 @@ you explicitly use `--replace`. Personal `.obsidian/` state is ignored by Git.
 
 ## Build the CLI
 
-Prerequisites: Git, Mise, Python 3.9 or newer, and the native C/C++ compiler and
-linker required by Rust dependencies. Review `mise.toml` before trusting it.
-Then run:
+Prerequisites for the ordinary CLI build: Git, Mise, Python 3.9 or newer, and the
+native C/C++ compiler and linker required by Rust dependencies.
+[Durable coding work](durable-runtime.md#prepare-a-project) requires Python 3.11
+or newer on both the Linux host and in its native rootfs. Review `mise.toml`
+before trusting it, then run:
 
 ```sh
 mise trust

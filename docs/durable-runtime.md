@@ -12,8 +12,10 @@ a separate human approval and checked-out local landing are subsequent steps.
 
 ## Prepare a project
 
-Use private, owned local storage, a supported SQLite version (at least 3.51.3),
-and a writable delegated cgroup v2 subtree. Preparation pins the runtime code,
+Use Python 3.11 or newer on the Linux host and for `/usr/bin/python3` in the
+native rootfs. Use private, owned local storage, a supported SQLite version
+(at least 3.51.3), and a writable delegated cgroup v2 subtree. Preparation pins
+the runtime code,
 native rootfs contents and provider executable bytes. A changed profile requires
 a new execution record; it never silently upgrades an existing admission.
 
@@ -62,6 +64,13 @@ The admitted OS delegation must remain available across controller restarts.
 Ending that delegation prevents new dispatch under its execution record. Retained
 status and evidence remain inspectable. This contract does not promise host reboot
 recovery or automatic replacement of an execution capability.
+
+For new work after a delegation ends, prepare a new execution record against a
+fresh explicit delegation. The same private project state may retain completed
+history, but first confirm no active attempts, unresolved cleanup blocks or held
+controller lock. Running or blocked work keeps its original contract and must be
+reconciled under it; a new profile never rebinds old attempts. Inspect or approve
+old results with their old execution record, and admit fresh work with the new one.
 
 ## Admit and execute
 

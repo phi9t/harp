@@ -12,12 +12,13 @@ Harp owns the agent runtime and maintained education library:
 - SICP and proof-reproduction labs and Lean companions;
 - local SQLite full-text search, immutable context releases and provider diagnostics;
 - project-scoped durable coding work through `harp durable`;
-- the imported Corenius terminal agent, SQLite controller, collaboration tools,
-  benchmarks and durable-execution source under `corenius/`.
+- selected imported durable/Insula mechanisms and retained reference source,
+  benchmark evidence and provenance under `corenius/`.
 
 See [Corenius integration](corenius-integration.md) for its separate pinned Cargo
 workspace, retained branch/worktree provenance and qualification limits.
-PostgreSQL/Temporal remain parked source; no service adoption is implied.
+PostgreSQL/Temporal active source and dependencies are retired; original source
+remains recoverable through the import ledger and retained Git history.
 The RSI research library, article reproduction labs and Atlas are retired.
 
 Hosted model access and authentication are supplied by the operator. The selected

@@ -1,7 +1,7 @@
 # 12: Migrate or retire Harp’s older task-graph execution
 
-Status: ready-for-agent
-Owner: unassigned
+Status: done
+Owner: Codex team on `codex/harp-durable-runtime`
 Parent: [Harp durable coding-worker integration](../spec.md)
 
 ## What to build
@@ -15,11 +15,11 @@ then four. This ticket does not authorize implementation or live setup by itself
 
 ## Acceptance criteria
 
-- [ ] Inventory supported task-graph execution/inspection/cancellation/recovery entry points and record a migration or explicit retirement for each.
-- [ ] Retained execution reaches the selected durable runtime with pinned inputs and truthful state/result projections; the old engine cannot continue scheduling underneath an adapter.
-- [ ] Unsupported historical inputs receive an actionable explanation instead of being silently interpreted as a different workflow. Old live databases are not automatically imported.
-- [ ] Public contract tests demonstrate the supported replacement behavior and retirement guidance, including restart/cancel ownership where retained.
-- [ ] Remove obsolete scheduling callers and their active gate/documentation dependencies after migration, preserving reusable pure contracts and historical provenance where appropriate.
+- [x] Inventory supported task-graph execution/inspection/cancellation/recovery entry points and record a migration or explicit retirement for each.
+- [x] Retained execution reaches the selected durable runtime with pinned inputs and truthful state/result projections; the old engine cannot continue scheduling underneath an adapter.
+- [x] Unsupported historical inputs receive an actionable explanation instead of being silently interpreted as a different workflow. Old live databases are not automatically imported.
+- [x] Public contract tests demonstrate the supported replacement behavior and retirement guidance, including restart/cancel ownership where retained.
+- [x] Remove obsolete scheduling callers and their active gate/documentation dependencies after migration, preserving reusable pure contracts and historical provenance where appropriate.
 
 ## Blocked by
 
@@ -36,3 +36,13 @@ existing contract coverage where sufficient. Run the changed-surface gate agains
 the complete candidate and supplement it for affected consumers. Record exact
 source, selected checks, outcomes and limitations here. Historical qualification,
 missing prerequisites or unavailable required capabilities are not fresh passes.
+
+Implemented in `26e5d82c`: all old workflow/task-graph execution, inspection,
+cancellation and recovery subcommands refuse with replacement guidance before
+reading old inputs or databases. No automatic graph/database migration is
+claimed. Pure retained contracts and source evidence remain available. The
+public retirement tests cover no-effect behavior and restart entry points.
+The changed-surface gate and retained workspace/SICP/docs consumers passed,
+including the 467 library cases, 13 general CLI cases and five durable bridge
+cases; native Linux final CLI tests also passed (10 cases, zero skips).
+Final integrated dispatch/consumer coverage belongs to ticket 14.

@@ -1,6 +1,6 @@
 # 09: Qualify the complete one-worker milestone
 
-Status: in-progress
+Status: done
 Owner: Codex on `codex/harp-durable-runtime`
 Parent: [Harp durable coding-worker integration](../spec.md)
 
@@ -15,10 +15,10 @@ then four. This ticket does not authorize implementation or live setup by itself
 
 ## Acceptance criteria
 
-- [ ] Run each provider on Linux at devx_b200_dbg using the same admitted lifecycle. Each task produces a useful inspectable code change, passing exact verification and an explicitly approved landing.
+- [x] Run each provider on Linux at devx_b200_dbg using the same admitted lifecycle. Each task produces a useful inspectable code change, passing exact verification and an explicitly approved landing.
 - [x] Observe that actual active worker count never exceeds one and a queued second task is admitted only after the old execution is cleaned up.
 - [x] Exercise integrated cancellation and runtime-restart recovery with the real provider adapters; completed results are preserved and ambiguous active effects require explicit reconciliation.
-- [ ] Retain exact source/provider/runtime/SQLite versions, execution contract, isolation/backend evidence, commands, attempt/candidate identities, check results, approval and landing outcomes.
+- [x] Retain exact source/provider/runtime/SQLite versions, execution contract, isolation/backend evidence, commands, attempt/candidate identities, check results, approval and landing outcomes.
 - [x] All required deterministic fault, isolation, stale-result and Git-boundary checks pass. Missing credentials, delegated capability or prerequisites remain explicit blockers.
 - [x] Normal operation and verification need neither PostgreSQL nor Temporal. A retained old scheduler, historical test record or fixture-only provider result cannot satisfy acceptance.
 
@@ -57,7 +57,7 @@ hashes were rechecked before reviewing the exact diffs locally.
 Both destinations are separate task-owned repositories under `runs/live-one-04`.
 The public owner capability was registered outside projected inputs, without
 printing its contents. The exact two candidates were presented for human approval;
-no approval or landing is recorded yet. Deterministic integrated adapter
+approval and physical landing subsequently completed as recorded below. Deterministic integrated adapter
 cancellation/queued-capacity/restart qualification passed in
 `runs/provider-recovery-03`: three tests covering both actual adapters per case,
 zero skips, 60.969 seconds, 47 frozen source files unchanged. Fixture executables
@@ -82,3 +82,13 @@ review confirmed that separate real provider runs plus controlled adapter fault
 tests match the specification. No further live model probe is needed for this
 milestone. Exact human approval and physical local landing remain outstanding;
 tickets 10–14 have not been claimed as delivered.
+
+The owner explicitly approved both exact candidates in the approval reply.
+Both were approved and physically landed through the public CLI; retained
+`runs/live-one-04/landings.json` and `landing-commands.jsonl` contain the outcomes.
+Codex approval: `approval-6115812dcb0018e54ebe73f9edf78c249f64390e0f3a2ccce60394b9c8f31d71`.
+Trae approval: `approval-d2fd0a245d7d47111438d67fff8d7c25b96d0c1340029f09ef51fa801f7fa86b`.
+For each destination, branch HEAD, index tree, tracked checkout bytes and clean
+status matched the approved commit/tree. No candidate was substituted or
+automatically reapproved. The one-worker milestone is complete. Earlier pending
+notes above describe the preapproval checkpoint.

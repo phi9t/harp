@@ -27,36 +27,37 @@ current Harp guidance.
 
 ## Use and ownership
 
-The inherited [component guide](../corenius/README.md) maps the terminal agent,
-controller and optional collaboration tools. Its Cargo workspace and lockfile
-remain separate because it requires Rust 1.95 and a different SQLite binding
-version from Harp's existing runtime. Use the already-installed pinned toolchain:
+Use [durable coding work](durable-runtime.md) for current Codex/Trae execution.
+The Corenius-adapted Python + SQLite journal owns admission, attempts, capacity,
+cancellation, recovery, candidate verification and explicitly approved landing.
+Insula and delegated cgroups provide subordinate containment and cleanup.
+This is a custom replay runtime, with no Temporal server or PostgreSQL service.
 
-```sh
-cd corenius
-python3 tools/temp_root.py -- cargo +1.95.0 run --offline --locked -p corenius -- --help
-```
+The imported [component guide](../corenius/README.md) records current dispositions.
+Old Rust controller/supervisor/gate/terminal-agent, Collab, agent worktree/landing,
+lead/worker, tracker and coding benchmark launch paths are retired. Their commands
+refuse before launching providers, opening legacy state or installing services.
+Historical databases are preserved without automatic migration. The retained
+Cargo workspace builds dependency-free retirement messages, not a second runtime.
 
-The controller, collaboration CLI and durable process backend retain their Linux
-requirements. Harp's root contributor guide and Harp-owned workflow skills govern
-current repository work. Existing Kata adapters and sibling-policy tools are
-retained source, not a change to Harp's Git-managed Markdown tracker. Do not run
-sibling synchronization or initialize a second ledger as part of the import.
+Pure evidence parsers, protocol/contracts, snapshot helpers and offline benchmark
+reference material remain available. Current intent is Git-managed Markdown;
+Harp's root contributor instructions and repository-owned skills govern work.
+The manifest records adapted files and removed active gates against original Git
+objects. Captured evidence, licenses, branches and worktree revisions remain
+preserved. PostgreSQL/Temporal source is recoverable from that history, with its
+active build/service paths removed.
 
-Harp selects the lightweight Python + SQLite durable runtime as its execution
-foundation. It is custom operation-journal replay, not an embedded Temporal server.
-The PostgreSQL/Temporal experiment and service-launching gate are retired from the
-active source and Cargo workspace; the workspace lock no longer includes their
-SDK/database dependencies. Exact original source remains recoverable through the
-import manifest's declared retirements and retained Git objects. Historical
-captured evidence and licenses are preserved. This cleanup does not qualify the
-planned Codex/Trae worker integration or replace the remaining controller paths;
-those changes have separate integration tickets. The complete live two-worker
-baseline and native active-turn recovery remain unqualified; preserving source does not establish those results.
+The [integration tickets](../.scratch/harp-runtime-integration/tickets.md) distinguish
+completed milestones from pending qualification. Real Codex and Trae one-worker
+runs passed independent checks and explicitly approved physical landings. A real
+mixed pair also overlapped; its same-base proposals and fresh integration candidate
+exercise serialized landing and stale-base refusal. Four-worker qualification and
+the final composed repository gate remain the final acceptance work.
 
-Math, proof work, Crouzeix, SICP and other educational material remain in Harp.
-The separate RSI retirement ticket preserves a brief article survey and removes
-RSI-specific material without retiring those retained consumers.
+Math, proof work, Crouzeix, SICP, educational material and PDF publication remain
+in Harp. Atlas and RSI-specific article reproduction are retired; a brief article
+survey remains maintained.
 
 ## Consolidation checks
 

@@ -72,6 +72,9 @@ def plan(root, paths):
             # Article-only projections and reproduction tooling were retired.
             # Repository provenance checks cover their explicit disposition.
             add("repository", "mise", "run", "verify-repository")
+        elif path.startswith(".scratch/harp-runtime-integration/qualification/") and path.endswith("-acceptance.json"):
+            add("durable-input", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
+                "python3", "-c", "import sys; from pathlib import Path; from harp_durable.admission import acceptance; acceptance(Path(sys.argv[1]).read_bytes())", path)
         elif path.startswith("harp_durable/"):
             add("durable-runtime", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
                 "python3", "-m", "unittest", "discover", "-s", "harp_durable", "-t", ".", "-p", "test_*.py")

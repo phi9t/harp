@@ -35,12 +35,16 @@ SICP, mathematical foundations, and proof-reproduction studies. Workstream recor
 
 ## Build the CLI
 
-The Corenius terminal agent, SQLite controller and collaboration tools live in
-[`corenius/`](corenius/README.md). See [engineering subsystem usage and scope](docs/corenius-integration.md)
-for its pinned toolchain, imported work and current qualification limits.
+The selected Python + SQLite runtime and imported reference source live in
+[`corenius/`](corenius/README.md). Its former controller, terminal-agent and
+Collab launch commands are retired. See [integration ownership and provenance](docs/corenius-integration.md)
+and the [durable operator guide](docs/durable-runtime.md).
 
-With Mise and Python 3.9 or newer installed, run these commands from the
-repository root after reviewing `mise.toml`:
+The ordinary CLI build supports Python 3.9 or newer. Durable coding work
+requires Python 3.11 or newer on both the Linux host and in its native rootfs;
+see [the runtime prerequisites](docs/durable-runtime.md#prepare-a-project).
+With Mise installed, run these commands from the repository root after reviewing
+`mise.toml`:
 
 ```sh
 mise trust

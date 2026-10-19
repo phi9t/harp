@@ -1,0 +1,15 @@
+{
+  "checks": [
+    [
+      "/usr/bin/python3",
+      "-c",
+      "import json,os,pathlib,subprocess,tempfile\nscript=pathlib.Path('scripts/verify_changes.py').resolve()\nenv={k:v for k,v in os.environ.items() if not k.startswith('GIT_')}\nenv.update(GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL='/dev/null')\nretirement=['python3','corenius/tools/temp_root.py','--','python3','corenius/tools/agents/test_wt.py']\ndurable=['env','PYTHONPATH=corenius:.','PYTHONDONTWRITEBYTECODE=1','python3','-m','unittest','discover','-s','harp_durable','-t','.','-p','test_*.py']\ncases=[('corenius/controller/src/main.rs','controller-retirement'),('corenius/controller/Cargo.toml','controller-retirement'),('corenius/terminal_agent/src/main.rs','controller-retirement'),('corenius/tools/agents/worker.py','controller-retirement'),('corenius/tools/collab/run.py','controller-retirement'),('corenius/controller/operator/cli.py','controller-retirement'),('corenius/bench/tmuxh/bench-tmux','controller-retirement'),('corenius/bench/harness/fleet.py','controller-retirement'),('corenius/controller/durable/runtime.py','durable-runtime'),('corenius/tools/insula/capsule.py','durable-runtime'),('corenius/tools/temp_root.py','durable-runtime'),('corenius/controller/src/lib.rs',None),('corenius/docs/old.md',None)]\nfor name,surface in cases:\n with tempfile.TemporaryDirectory() as temp:\n  root=pathlib.Path(temp)\n  def git(*args):return subprocess.check_output(['git',*args],cwd=root,env=env)\n  git('init','-q');git('config','user.name','Acceptance');git('config','user.email','acceptance@harp.invalid')\n  (root/'AGENTS.md').write_text('# Fixture\\n');git('add','AGENTS.md');git('commit','-qm','base')\n  p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('# changed\\n')\n  result=subprocess.run(['/usr/bin/python3',str(script),'--plan'],cwd=root,env=env,capture_output=True,text=True,check=True)\n  jobs=json.loads(result.stdout)['checks'];surfaces={j['surface'] for j in jobs}\n  assert surfaces=={'diff','corenius-import'}|({surface} if surface else set()),(name,jobs)\n  if surface:assert {'surface':surface,'command':retirement if surface=='controller-retirement' else durable} in jobs,(name,jobs)\nprint('independent imported controller dispatch checks passed')\n"
+    ],
+    [
+      "/usr/bin/python3",
+      "-m",
+      "unittest",
+      "scripts.tests.test_verify_changes"
+    ]
+  ]
+}

@@ -3,7 +3,7 @@
 Status: resolved
 Owner: Codex and project owner
 Base: 1418455d
-Scope: design and specification only; implementation has not been authorized.
+Scope: settled design decisions. Implementation, live qualification and local landing were subsequently authorized by the owner; execution is tracked in tickets.md.
 
 ## Settled first milestone
 
