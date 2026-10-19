@@ -27,7 +27,7 @@ class RetiredLaunchers(unittest.TestCase):
         self.bin.mkdir()
         self.trace = self.root / "launched"
         source = "#!" + sys.executable + "\nimport os\nfrom pathlib import Path\nPath(os.environ['RETIREMENT_TRACE']).write_text('launched')\nraise SystemExit(97)\n"
-        for name in ("git", "tmux", "codex", "traecli", "traex", "cargo", "kata", "curl"):
+        for name in ("git", "uv", "tmux", "codex", "trae", "traecli", "traex", "cargo", "kata", "curl"):
             path = self.bin / name
             path.write_text(source)
             path.chmod(0o700)
@@ -86,6 +86,26 @@ class RetiredLaunchers(unittest.TestCase):
                      ["task", "--condition=fleet:2"]):
             with self.subTest(args=args):
                 self.refusal([sys.executable, str(ROOT / "bench/harness/run.py"), *args])
+
+    def test_tmux_launchers_refuse_every_command_before_dependencies_or_state(self):
+        # Dependency imports and executable launch must both remain unreachable.
+        imports = self.root / "imports"
+        imports.mkdir()
+        (imports / "libtmux.py").write_text(
+            "import os\nfrom pathlib import Path\n"
+            "Path(os.environ['RETIREMENT_TRACE']).write_text('dependency imported')\n"
+            "raise SystemExit(98)\n")
+        self.environment["PYTHONPATH"] = str(imports)
+        cases = [[], ["--help"], ["run", "task", "--agent", "traecli", "--authorize-model-spend"],
+                 ["run", "task", "--agent=cmd:touch unauthorized"],
+                 ["run", "task", "--condition=fleet:4"],
+                 ["run", "task", "--agent", "reference"],
+                 ["watch", "run.json"], ["dash"], ["ls"], ["attach"], ["down"], ["unknown-alias"]]
+        for entry in ([sys.executable, str(ROOT / "bench/tmuxh/cli.py")],
+                      ["/bin/sh", str(ROOT / "bench/tmuxh/bench-tmux")]):
+            for args in cases:
+                with self.subTest(entry=entry[-1], args=args):
+                    self.refusal([*entry, *args])
 
     def test_imported_library_authority_refuses_before_opening_or_launching(self):
         code = """import json,sys

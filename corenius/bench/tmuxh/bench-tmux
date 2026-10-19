@@ -1,4 +1,4 @@
 #!/bin/sh
-# bench-tmux: tmux harness for the corenius benchmark. Installs libtmux on first use through uv (PyPI).
-dir="$(cd "$(dirname "$0")" && pwd)"
-exec uv run --quiet --project "$dir" python "$dir/cli.py" "$@"
+# Refuse before uv, dependency installation, state access or tmux startup.
+printf '%s\n' 'Retired imported tmux harness. Use harp durable --help for coding lifecycle and human-approved landing; pure offline reference/noop replay remains in bench/harness/run.py.' >&2
+exit 2

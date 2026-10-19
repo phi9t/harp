@@ -1987,8 +1987,8 @@
       "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
     },
     "tools/agents/test_wt.py": {
-      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry. Close direct recovery, terminal messaging/launch, lock/state-writing helper bypasses before argument inspection; preserve pure descriptions and scanners.",
-      "sha256": "b375a53397c8b95486ee960261c2b3f991a71e368779741a09ff8da4a8739c6e"
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry. Close direct recovery, terminal messaging/launch, lock/state-writing helper bypasses before argument inspection; preserve pure descriptions and scanners. Verify tmux Python and shell launchers refuse every command before dependency imports or executable effects.",
+      "sha256": "822be8c7688e55741741d63268eda3003107f0b6d8d85aecdf398b4a84da536f"
     },
     "tools/agents/tracker.py": {
       "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
@@ -2029,6 +2029,14 @@
     "tools/collab/worktree_compat.py": {
       "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
       "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "bench/tmuxh/cli.py": {
+      "reason": "Retire tmux harness entrypoints before dependency imports, uv installation, state writes or terminal service startup. Keep pure offline reference/noop replay in bench/harness/run.py; exact original launcher bytes remain recoverable in retained source ancestry.",
+      "sha256": "31e256ce620e12cc3bc0bfec90b76d40d5a1069f4790a2fae7d175cc933d4f2c"
+    },
+    "bench/tmuxh/bench-tmux": {
+      "reason": "Retire tmux harness entrypoints before dependency imports, uv installation, state writes or terminal service startup. Keep pure offline reference/noop replay in bench/harness/run.py; exact original launcher bytes remain recoverable in retained source ancestry.",
+      "sha256": "1beb199b7b4c0dcb663829ad66dead977b20a822590aafca9bde82707708445a"
     }
   },
   "retirements": {
@@ -2409,7 +2417,7 @@
     "authority": "harp durable using controller/durable; no alternative controller or implicit state migration",
     "rust": "Only corenius, corenius-sqlite-controller, corenius-attempt-supervisor and corenius-attempt-gate refusal binaries remain explicit Cargo targets. Historical libraries/examples/tests are unregistered.",
     "python": "Baseline/relay/native/operator/Collab/worktree/landing/lead/worker/operational tracker CLI boundaries refuse before effects. Writable Collab/StateStore constructors and worker launch/supervise/candidate-import/verification boundaries refuse. Direct worker resume/deliver-findings and terminal send/launch, temp/state/lock/rework writer helpers refuse before effects, including persist-enabled diagnostics.",
-    "benchmarks": "Solo reference/noop replay and pure validation remain; direct cmd/Trae, fleet/controller and lead-driven execution authority refuse. Historical source/results remain reference material.",
+    "benchmarks": "Solo reference/noop replay and pure validation remain in bench/harness/run.py; direct cmd/Trae, fleet/controller, lead-driven and every tmux harness CLI command refuse. The tmux shell wrapper refuses before uv/dependency setup; historical source/results remain reference material.",
     "retained": "controller/durable/**, tools/insula/{capsule,durable}.py and tools/temp_root.py unchanged; evidence/license bytes, pure catalog/parser/provider protocol/check contracts and historical records retained.",
     "checks": "10-wt validates command/library refusal with real Git/files and recording executables, all 4 compiled Rust bins; selected 72/73 durable tests remain, alongside temp/evidence/snapshot checks. Removed old policy synchronization/authority suites cannot be enabled by old flags.",
     "verification": {
@@ -2443,6 +2451,11 @@
       "recovery_boundary_repair": {
         "command": "SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.11 corenius/tools/temp_root.py -- /opt/homebrew/bin/python3.11 corenius/tools/agents/test_wt.py -v",
         "result": "4 tests passed. Expanded existing-state sentinel cases cover direct worker resume, delivery, terminal process/message, lock, state/temp/bind, candidate/rework and persist-enabled diagnostic authority before any effect. Pure parser/argv data behavior remains available. Retained evidence consumers: python3 tools/agents/test_evidence.py passed all15 tests. Changed-surface/import gate against ed91a3bc passed; selected runtime/Insula/temp bytes remain unchanged."
+      },
+      "tmux_boundary_repair": {
+        "base": "207b8ce97aab67a48fcce5567c4e0ba0de38ae28",
+        "command": "SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk mise exec -- /opt/homebrew/bin/python3.11 corenius/tools/temp_root.py -- /opt/homebrew/bin/python3.11 corenius/tools/agents/test_wt.py -v",
+        "result": "5 retirement cases passed. New case covers 24 real Python/shell invocations: empty/help, provider/cmd/fleet/reference run, watch, dash, ls, attach, down and unknown command. Dependency-import and uv/tmux/provider traps remain untouched; existing operator files and home snapshots remain identical. Selected runtime, Insula and temporary-root source files are unchanged."
       }
     }
   }
