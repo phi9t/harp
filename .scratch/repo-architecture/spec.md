@@ -96,7 +96,7 @@ Emacs. The [coverage inventory](../../docs/workstream/repo-architecture/benchmar
 records 42 current task directories, 18 readiness scenarios, embedded studies,
 fixtures, catalogs, tmux work and result records. Read-only inspection also found
 Soma's Emacs/Doom gym and DevX's AI/LSP workload in separate dirty source
-checkouts. Ticket 12 acquires those workloads into lab/emacs/ and blocks final
+checkouts. Ticket 12 acquires those workloads into lab/soma/ and blocks final
 migration acceptance. New Bazel/Triton/training implementations remain deferred.
 The newly inspected Emacs sources have not yet been snapshotted or imported.
 

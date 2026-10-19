@@ -1,4 +1,4 @@
-# 12: Preserve the complete Emacs benchmark work under lab
+# 12: Bring Soma and its Emacs workloads into lab/soma
 
 Status: ready-for-agent
 Owner: unassigned
@@ -8,8 +8,13 @@ Inventory: [benchmark coverage](../../../docs/workstream/repo-architecture/bench
 ## What to build
 
 Acquire the existing Soma Emacs/Doom gym and DevX AI/LSP verification workload
-into lab/emacs/gym/ and lab/emacs/ai_lsp/, including their required bridge, worker,
-probe, fixture, oracle, profile and documentation code. The imported Corenius
+into lab/soma/ and lab/soma/ai_lsp/, respectively. Preserve Soma as a coherent
+project, including its gym, bridge, lifecycle workers, mechanism probes and
+maintained source documentation, rather than extracting only benchmark folders.
+Include the required
+probe, fixture, oracle, profile and documentation code. Shared isolation/service
+mechanisms use insula/ and its supervisor; agent execution/collaboration uses
+durable/, with no duplicate source of lifecycle authority. The imported Corenius
 review points to these sibling sources, but their payloads are not yet in Harp.
 Capture committed and dirty source identities before migration, preserving both
 old evidence and uncommitted work without altering either source checkout.

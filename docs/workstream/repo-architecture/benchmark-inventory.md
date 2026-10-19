@@ -70,8 +70,14 @@ read-only inspection confirmed both source checkouts.
 
 | Source | Observed source identity | Required lab coverage |
 | --- | --- | --- |
-| soma | HEAD `0bfd646a1e2263b53f723796ab2945db325aacbf`, plus uncommitted work | lab/emacs/gym/ |
-| devx project | HEAD `2724406183236616badef061138208eb20417903`, plus uncommitted work | lab/emacs/ai_lsp/ |
+| soma | HEAD `0bfd646a1e2263b53f723796ab2945db325aacbf`, plus uncommitted work | lab/soma/ |
+| devx project | HEAD `2724406183236616badef061138208eb20417903`, plus uncommitted work | lab/soma/ai_lsp/ |
+
+The owner selected lab/soma/ as the project home. Preserve the complete gym,
+bridge, lifecycle workers, mechanism probes and maintained documentation there;
+extract shared isolation/service mechanisms into Insula and use durable for
+agent execution. The AI/LSP verifier is a separately sourced companion under
+lab/soma/ai_lsp/, not evidence that those sources were already part of Soma.
 
 Soma has 276 tracked files under benchmarks/emacs-gym/ at this HEAD:
 

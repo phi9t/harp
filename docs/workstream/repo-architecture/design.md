@@ -43,7 +43,7 @@ lab/
   math/                     Lean developments and proof companion programs
   sicp/                     evaluator and executable educational exercises
   benchmarks/               retained terminal/build/coding task collections
-  emacs/                    Emacs/Doom gym, bridge, AI/LSP verification workloads
+  soma/                     Emacs/Doom environment, gym, probes and AI/LSP workloads
   mixed_build/              compact C++/Rust/Python Bazel workload
   triton_compile/           Triton compilation and correctness workload
   training/                 small transformer training workload
@@ -259,6 +259,10 @@ fixtures/prototypes in effort records, tmux scenarios, catalogs and reports.
 Soma's Emacs gym and DevX's AI/LSP workload are separate source acquisitions;
 they were referenced by the imported review but are not in the absorbed tree.
 Their dirty source snapshots must be captured and their support closure migrated.
+Soma comes in as a coherent project under lab/soma/, including its gym, bridge,
+workers, probes and maintained source documentation. Shared isolation and service
+mechanisms move into Insula; execution/collaboration uses durable. The separately
+sourced AI/LSP verifier lives under lab/soma/ai_lsp/ with its own provenance.
 Ticket 12 makes that work a prerequisite for final existing-code acceptance.
 Captured evidence keeps its canonical bytes and location, referenced by the lab
 manifest. Competing scheduler retirement must not discard benchmark scenarios.
