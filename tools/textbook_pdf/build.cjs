@@ -300,4 +300,4 @@ async function main() {
   writeOutput(path.join(out,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 }
 if(require.main===module)main().catch(error=>{console.error(error);process.exitCode=1;});
-module.exports={safeTarget,editionNote, renderForTest(text,relative='knowledge/crouzeix_textbook/fixture.md'){selectedDocs=new Set();headingCounts.clear();const prior=release;release=false;try{return body({relative,id:'fixture',text});}finally{release=prior;}}};
+module.exports={safeTarget,editionNote, renderForTest(text,relative='lab/math/crouzeix_textbook/fixture.md'){selectedDocs=new Set();headingCounts.clear();const prior=release;release=false;try{return body({relative,id:'fixture',text});}finally{release=prior;}}};

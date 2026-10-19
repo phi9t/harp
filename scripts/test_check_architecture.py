@@ -1,6 +1,7 @@
 """Wrong-way framework dependencies and resurrected wrappers fail the gate."""
 from pathlib import Path
 import tempfile
+import subprocess
 import unittest
 from check_architecture import check
 
@@ -24,12 +25,24 @@ class OwnershipTests(unittest.TestCase):
     def test_retired_container_roots_cannot_return(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            for name in ('benchmarks', 'assets', 'content', 'crates'):
+            for name in ('benchmarks', 'assets', 'content', 'crates', 'knowledge'):
                 with self.subTest(name=name):
                     (root/name).mkdir()
                     with self.assertRaisesRegex(ValueError, 'retired top-level'):
                         check(root)
                     (root/name).rmdir()
+
+    def test_ignored_operator_notes_are_preserved_but_new_knowledge_source_is_refused(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            (root / '.gitignore').write_text('knowledge/private/\n')
+            (root / 'knowledge/private').mkdir(parents=True)
+            (root / 'knowledge/private/note.md').write_text('operator note\n')
+            check(root)
+            (root / 'knowledge/new.md').write_text('new canonical source\n')
+            with self.assertRaisesRegex(ValueError, 'retired top-level'):
+                check(root)
 
     def test_product_cannot_depend_on_the_retired_workload(self):
         with tempfile.TemporaryDirectory() as directory:

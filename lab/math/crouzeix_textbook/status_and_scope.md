@@ -1,0 +1,159 @@
+---
+id: crouzeix-textbook-status-and-scope
+title: Crouzeix foundations textbook status and scope
+type: status
+status: active
+created: 2026-08-23
+updated: 2026-09-09
+tags: [crouzeix-textbook, status, scope, verification]
+confidence: high
+canonical: status_and_scope.md
+---
+
+# Crouzeix foundations textbook status and scope
+
+Back to the [[lab/math/crouzeix_textbook/crouzeix_textbook_index|book index]].
+
+## Current state
+
+- Publication status: all 36 chapters are `active`.
+- Proof-exposition status: 167 coverage rows are now `reconstructible`; 47 remain `summary` and two other
+  definition rows are `not-applicable`.
+- Whole-book exact Lean correspondence: `incomplete`.
+- Coverage rows: 216, comprising 69 `proved-here`, 117
+  `reexported-proof`, 14 `checkpoint`, and 16 `definition` rows.
+- Distinct proofs behind those rows: 208. 8 cards restate
+  a theorem another card already indexes; they share its provider. Run
+  `mise run textbook-counts` with `--audit` to list them.
+- Exact-correspondence rows: 174. The other rows remain `checkpoint` or
+  `unmapped` until prose and Lean are reviewed together.
+- Indexed exercises: 216.
+- Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9,
+  10, 11, 12, 13, 14, 15, 16, 17, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36.
+  The other 42 exercise rows have no claimed formal solution yet.
+- Active Lean target: `CrouzeixTextbook`.
+
+## Contract snapshot
+
+| Metric | Count |
+| --- | ---: |
+| theorem rows | 216 |
+| summary prose rows | 47 |
+| reconstructible prose rows | 167 |
+| exact correspondence rows | 174 |
+| unmapped correspondence rows | 28 |
+| solved exercises | 174 |
+| unresolved exercises | 42 |
+
+## What the current route provides
+
+Chapters 1–17 now provide a reviewed core, with 102 exact statement
+correspondences and 102 distinct Lean exercise solutions. The Chapter 1
+characteristic-polynomial preview and Chapter 4's three scalar-invariant
+previews deliberately retain summary proofs and are now labelled forward
+references to their owning derivations in Chapters 5 and 6; keeping them as
+previews is what keeps the teaching order acyclic, and they stay outside the
+completed-proof count. The two definition cards have no theorem-proof
+obligation. This acceptance does not complete the foundations wave or the book:
+Chapters 18–24 still hold 42 unsolved exercises and 42 rows whose
+correspondence is `checkpoint` or `unmapped`.
+
+Parts I--III rebuild structural linear algebra, Euclidean geometry, analysis,
+complex differentiability, and functional calculus. Parts IV--V develop
+numerical ranges, spectral sets, positivity, dilation, Gramians, convex outer
+boundaries, and the complete double-layer power family. Part VI presents the
+Jin and Lorist--Schwenninger constant-two routes as independent branches after
+their common Chapter 29 trunk.
+
+At the current comparison phase, those chapters are a source-registered teaching
+route, not yet a claim that every proof can be reconstructed from the prose.
+The maintained Jin route has a bounded compiled terminal receipt. The checked
+Lorist--Schwenninger terminal provider is
+`CrouzeixConjecture.loristSchwenningerMainTheorem` in
+`lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`; its
+fixed-domain kernel uses
+`CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two`.
+The separately checked finite-horizon terminal is
+`CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem` in
+`lab/math/lean/Crouzeix/Harp/MainTheorem.lean`. That theorem is
+Harp-derived and not source-derived: its local compilation is evidence only
+for the maintained formal provider and does not assign it to Jin or
+Lorist--Schwenninger. These boundaries are recorded by
+[[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]].
+The pinned theorem attribution is recorded separately by
+[[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]].
+The maintained [[lab/math/proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json|source graph]]
+remains the locator and dated historical-status authority; its older node
+statuses do not override a fresh aggregate build. Neither record establishes
+publication beyond its pinned source version or independent peer review.
+
+## Lorist--Schwenninger verification boundary:
+
+- Checked terminal provider: `CrouzeixConjecture.loristSchwenningerMainTheorem`
+- Terminal source: `lab/math/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean`
+- Fixed-domain provider: `CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two`
+- Current verification: [[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]]
+- Pinned source claim: [[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]]
+- Source-graph authority: `locator-and-dated-historical-status-only`
+- Publication status: `not-established-by-local-compilation`
+- Peer-review status: `not-established-by-local-compilation`
+
+## Harp finite-horizon verification boundary:
+
+- Checked terminal provider: `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem`
+- Terminal source: `lab/math/lean/Crouzeix/Harp/MainTheorem.lean`
+- Provenance class: `Harp-derived; not source-derived`
+- Current verification: `mise run lean-crouzeix-harp` and the aggregate
+  `mise run lean-crouzeix-textbook`
+- Mathematical scope: the maintained finite-horizon theorem statement named
+  by the provider; it is not a substitute attribution for the Jin or
+  Lorist--Schwenninger routes.
+- Publication status: `not-applicable-to-a-Harp-derived-local-route`
+- Peer-review status: `not-established-by-local-compilation`
+
+## Formalization boundary
+
+The [[lab/math/crouzeix_textbook/lean_coverage_ledger|Lean coverage ledger]]
+is a maintained reader projection of the structured contracts. The Rust-owned
+immutable publication ledgers are generated from those contracts and a fresh
+compiled receipt. The migration metadata was validated against this durable
+compiler receipt identity:
+
+- Compiler receipt SHA-256:
+  `91fd102247f65d14995b1615d442a8bb4e4b21682e36fd1a6187f15fbfa3b1e7`
+- Compiler receipt bytes: `596736`
+- Compiler receipt declarations: `513`
+
+Those 513 unique declarations comprise 216 public coverage declarations,
+174 distinct exercise solutions, and the 123 additional underlying proof
+providers needed by `reexported-proof` rows. The receipt SHA-256 hashes the
+exact serialized output accepted by the Rust validator. It is not the
+six-ledger publication generation: that separate digest hashes the rendered
+publication ledgers and is selected by the runtime `current.json` pointer.
+
+Compiler acceptance establishes the recorded Lean declarations in the pinned
+environment. It does not establish that a summary paragraph exactly states the
+Lean type. For that reason a declaration can be present in the baseline while
+its correspondence status remains `checkpoint` or `unmapped`.
+
+## Source and copyright boundary
+
+All textbook prose and exercises are newly authored. Lax and Bishop are
+local-only orientation records; the Spivak repository is structure-parsed but
+content-gated; JAX sources support API notation only; recent Crouzeix sources
+retain the publication and verification ceilings in the maintained proof
+packet. See the [[lab/math/crouzeix_textbook/source_registry|source registry]]
+and [[lab/math/crouzeix_textbook/claim_evidence_ledger|claim ledger]].
+
+## Completion gate
+
+Whole-book exact correspondence is restored only after every content wave has
+made its theorem proofs reconstructible, supplied distinct checked formal
+exercise solutions where claimed, validated the Jin and
+Lorist--Schwenninger boundaries, and published fresh ledgers, corpus data, and
+Atlas artifacts. The final reviewed candidate must pass `mise run verify`.
+
+Even then, compilation certifies formal derivations only in the pinned
+environment. It does not establish independent peer review, historical
+priority, numerical implementation stability, or empirical transfer of an ML
+analogy.

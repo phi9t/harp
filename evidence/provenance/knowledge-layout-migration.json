@@ -1,0 +1,827 @@
+{
+  "schema": "harp-knowledge-layout/v1",
+  "source_commit": "2da4f4cf2bda80f3f9808846b5851ab7b5b215f8",
+  "entries": [
+    {
+      "source": "knowledge/agentic_engineering/agentic_engineering_index.md",
+      "destination": "lab/agentic_engineering/agentic_engineering_index.md",
+      "source_sha256": "c6af9b6566c38ec9ea2ded554137c34d7ae6d263bacf9858b30d1156a76fa8a6",
+      "destination_sha256": "47870a395bc8498e74c02e7e8d31058f7ff1856c90c109892c12bc98502d3104"
+    },
+    {
+      "source": "knowledge/agentic_engineering/claim_evidence_ledger.md",
+      "destination": "lab/agentic_engineering/claim_evidence_ledger.md",
+      "source_sha256": "bf3c219ed2127dc131ef20fd467e0ec610a323ebf45b8ea4665981fe15866fd7",
+      "destination_sha256": "bf3c219ed2127dc131ef20fd467e0ec610a323ebf45b8ea4665981fe15866fd7"
+    },
+    {
+      "source": "knowledge/agentic_engineering/codex_harness_deep_dive.md",
+      "destination": "lab/agentic_engineering/codex_harness_deep_dive.md",
+      "source_sha256": "0772478ef88d04b8eb05d54260898a718c9bc60a61c62bc96c9bb71823a2d2e0",
+      "destination_sha256": "0772478ef88d04b8eb05d54260898a718c9bc60a61c62bc96c9bb71823a2d2e0"
+    },
+    {
+      "source": "knowledge/agentic_engineering/codex_state_continuity_and_compaction.md",
+      "destination": "lab/agentic_engineering/codex_state_continuity_and_compaction.md",
+      "source_sha256": "00531eaa588fdba40bc293b96090ef5df30e22747472b214ba5c4bbf58a6f781",
+      "destination_sha256": "00531eaa588fdba40bc293b96090ef5df30e22747472b214ba5c4bbf58a6f781"
+    },
+    {
+      "source": "knowledge/agentic_engineering/deepseek_harness_deep_dive.md",
+      "destination": "lab/agentic_engineering/deepseek_harness_deep_dive.md",
+      "source_sha256": "2fdaf3a313525c618a47859646fc5b0846f61ae8762f3ec5ba3dd90156e10c4c",
+      "destination_sha256": "2fdaf3a313525c618a47859646fc5b0846f61ae8762f3ec5ba3dd90156e10c4c"
+    },
+    {
+      "source": "knowledge/agentic_engineering/hermes_harness_deep_dive.md",
+      "destination": "lab/agentic_engineering/hermes_harness_deep_dive.md",
+      "source_sha256": "bf22528bbd24d7c36a91a6ecee8e112f72ded6ac5fafe62a23350ad1c1f67641",
+      "destination_sha256": "bf22528bbd24d7c36a91a6ecee8e112f72ded6ac5fafe62a23350ad1c1f67641"
+    },
+    {
+      "source": "knowledge/agentic_engineering/kenn_reference_architecture.md",
+      "destination": "lab/agentic_engineering/kenn_reference_architecture.md",
+      "source_sha256": "2bc05c1e201ba288158b3058c996e9d8c4bf8a2e1a6dfd1342f8ca077f829916",
+      "destination_sha256": "1f041cef5358d635669fa2803655f1e5e775e2e4f10675bc1e92fc5d10976652"
+    },
+    {
+      "source": "knowledge/agentic_engineering/missing_evidence.md",
+      "destination": "lab/agentic_engineering/missing_evidence.md",
+      "source_sha256": "b718dd292f8cf17d667f65fdceffa0eda270a2e9daf9d4a6e368676c4510e5d0",
+      "destination_sha256": "b718dd292f8cf17d667f65fdceffa0eda270a2e9daf9d4a6e368676c4510e5d0"
+    },
+    {
+      "source": "knowledge/agentic_engineering/pi_harness_deep_dive.md",
+      "destination": "lab/agentic_engineering/pi_harness_deep_dive.md",
+      "source_sha256": "d6e8b1958b799a513916735b4f1a6dfdd61f6df62dc372f92a5681f45b663603",
+      "destination_sha256": "d6e8b1958b799a513916735b4f1a6dfdd61f6df62dc372f92a5681f45b663603"
+    },
+    {
+      "source": "knowledge/agentic_engineering/source_registry.md",
+      "destination": "lab/agentic_engineering/source_registry.md",
+      "source_sha256": "d4f999d39250d561609c3c879ab6a819f9abb6c51b5ff37860355303498437cc",
+      "destination_sha256": "d4f999d39250d561609c3c879ab6a819f9abb6c51b5ff37860355303498437cc"
+    },
+    {
+      "source": "knowledge/agentic_engineering/tool_stack_investigation.md",
+      "destination": "lab/agentic_engineering/tool_stack_investigation.md",
+      "source_sha256": "9d9ab2f0242fe0dc7cdf9395617b77b2e73c54c9f66a82cc0974191df293ba7e",
+      "destination_sha256": "9d9ab2f0242fe0dc7cdf9395617b77b2e73c54c9f66a82cc0974191df293ba7e"
+    },
+    {
+      "source": "knowledge/article_survey.md",
+      "destination": "lab/article_survey.md",
+      "source_sha256": "7afded97d056886918529ac816cbccfa3130ae4fbfa2dd9a17c80352a832b375",
+      "destination_sha256": "7afded97d056886918529ac816cbccfa3130ae4fbfa2dd9a17c80352a832b375"
+    },
+    {
+      "source": "knowledge/autodiff_geometry/autodiff_geometry_index.md",
+      "destination": "lab/math/autodiff_geometry/autodiff_geometry_index.md",
+      "source_sha256": "60852e2ad57df2e06ba6555076b1c9c69bb6839ab682750aaca98e38852f65d3",
+      "destination_sha256": "874585dd75ea2510b2131a939b6cd55b0f0b5039bad02b8e8701d2364f837772"
+    },
+    {
+      "source": "knowledge/autodiff_geometry/claim_evidence_ledger.md",
+      "destination": "lab/math/autodiff_geometry/claim_evidence_ledger.md",
+      "source_sha256": "9be80b908f2048604c332a194515a8db797b7d700c7e77c154838d27387bab02",
+      "destination_sha256": "a3d0a1c4a7b972badbdfb414672efd61719fcd680b43cf3be7b691d31f3f6fbb"
+    },
+    {
+      "source": "knowledge/autodiff_geometry/formalization_roadmap.md",
+      "destination": "lab/math/autodiff_geometry/formalization_roadmap.md",
+      "source_sha256": "22182e34887d4c7fa0376ad76cc8f19429f5e993cf300723a49b5512acdcd19a",
+      "destination_sha256": "fa35b4f8dd675b18662ad54ff37abf733522656979221896d352c5247658cce6"
+    },
+    {
+      "source": "knowledge/autodiff_geometry/layered_curriculum_tracker.md",
+      "destination": "lab/math/autodiff_geometry/layered_curriculum_tracker.md",
+      "source_sha256": "4fa7fae3456569e4f2fa6cc5b33ddef4327b69612bad2940c53faf3838d2a535",
+      "destination_sha256": "29bae571b8fc932a083439b06f9e1c73db389d88e85c452820dee0d9403e60cf"
+    },
+    {
+      "source": "knowledge/autodiff_geometry/source_acquisition_and_parsing.md",
+      "destination": "lab/math/autodiff_geometry/source_acquisition_and_parsing.md",
+      "source_sha256": "906bf9b7bda877278b7d6c2e5c5054b70bf9d8dca666960fcea49d724187cc07",
+      "destination_sha256": "07317bf27d5eff05f05b9b9ad63f875a746bb0f1ebc951c5fcb4c29e9cfe0b0a"
+    },
+    {
+      "source": "knowledge/autodiff_geometry/source_registry.md",
+      "destination": "lab/math/autodiff_geometry/source_registry.md",
+      "source_sha256": "d8cc54df20c7633b0d1ddf49aa540d79a781dc7aa85c7f2b9b42f3c5f68dd699",
+      "destination_sha256": "cf24aba403af0857651ecbb87eae303deb60f5f44ba58fc3fa83529a3576ff9f"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/01_problem_and_prior_barrier.md",
+      "destination": "lab/math/crouzeix_conjecture/01_problem_and_prior_barrier.md",
+      "source_sha256": "5c3e6e4e67444fdcd43714c13a7295a45c4243d0987fcae5cb9923135a028544",
+      "destination_sha256": "85cbbf7aea250071cc3a8af930138ed6d68a4015d9804cd7a547d3426ce38a88"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/02_shared_power_family.md",
+      "destination": "lab/math/crouzeix_conjecture/02_shared_power_family.md",
+      "source_sha256": "e2579218767cb0f30b50f2c950bc63b83edaefc0e766fa4f270194aea76f4075",
+      "destination_sha256": "8e29cf76fc41b24fe39dec72ebd73974bf0b798625c9c5f71d6990f6955ad01b"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/03_jin_proof_spine.md",
+      "destination": "lab/math/crouzeix_conjecture/03_jin_proof_spine.md",
+      "source_sha256": "b0a3d9f34b0bd7e1e0b2816764f989935380943b8961a9703bae3b4eba652079",
+      "destination_sha256": "e3f28455fb3c96e9f19ffd056c8cc27d3c7d8133c78b2b63db52b52c7781729c"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md",
+      "destination": "lab/math/crouzeix_conjecture/04_jin_positive_real_completion.md",
+      "source_sha256": "ed43b768531e15acdd829f89999c5b26f59355aa4c009344045944e90bb5052f",
+      "destination_sha256": "50c42f27383b89418e7bdb6f37c366dc20c09f528af695b9c40f1ff538c19b1a"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof.md",
+      "destination": "lab/math/crouzeix_conjecture/05_lorist_schwenninger_proof.md",
+      "source_sha256": "5fa6605f2cf93b6a69a48454442f72f9328c19445d817ff476eee6faf23a877f",
+      "destination_sha256": "12743828886d21b331ba590c1fb66d77960f6eb2a7ea0f32faea4bea9882cab0"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/06_proof_comparison.md",
+      "destination": "lab/math/crouzeix_conjecture/06_proof_comparison.md",
+      "source_sha256": "09e52facd1ef6f79ee6d4ce8f7761933166d4b31cfc83e6b2cf400a7169f7fff",
+      "destination_sha256": "56acba3afc0e893cbaa04bb1bd4da8551f9221e4119a0e1071d328062004b34a"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/07_jin_lean_verification.md",
+      "destination": "lab/math/crouzeix_conjecture/07_jin_lean_verification.md",
+      "source_sha256": "aff7b82219fa1592578dd365b7413366dff7af630950db08df93cf60426e89ee",
+      "destination_sha256": "70c7825f4665687bf185d0dce18774fbef8781ede83d6e72a117eb86a6076b87"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/08_ai_assisted_discovery.md",
+      "destination": "lab/math/crouzeix_conjecture/08_ai_assisted_discovery.md",
+      "source_sha256": "0239f4bc49f43c37b19388f38e9e052718ca85e9fcf89c2d753374527547bff4",
+      "destination_sha256": "7e955a795b3dbc9edaa4d39908a2023b9e070ab9b0cf1d16d58adc6c6883d0a3"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/09_status_and_critical_assessment.md",
+      "destination": "lab/math/crouzeix_conjecture/09_status_and_critical_assessment.md",
+      "source_sha256": "1227375b31a85495a91f6973f107bf0f334b8ad62fbc3c5a52b8da57bdcbf23f",
+      "destination_sha256": "98a4308d8b925b9e45546f55995f939c47a5c26141181becfd02f80f9e1f43b3"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/10_jin_proof_editorial.md",
+      "destination": "lab/math/crouzeix_conjecture/10_jin_proof_editorial.md",
+      "source_sha256": "9e22af88e89d4ecc94d6618b9d069c5eeeb09ff0e7b87200ef74703efe3662b5",
+      "destination_sha256": "3b69258f045e082085a6e9a10535a3e30c9926ad0db65509d52566df81bd1a31"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/claim_evidence_ledger.md",
+      "destination": "lab/math/crouzeix_conjecture/claim_evidence_ledger.md",
+      "source_sha256": "f87c9ac7a952cb4dcfcdf653ac50e7f7ef6f2a07b71c98a5709d3720c2732dcd",
+      "destination_sha256": "44b478bba43ee784515a6df67110391fe9c90083891df30c946432080365791c"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
+      "destination": "lab/math/crouzeix_conjecture/crouzeix_conjecture_index.md",
+      "source_sha256": "54163b2abe9642542fbc37dae8cf4cf886a1b77614b2999d7314b7a3247c13d8",
+      "destination_sha256": "6a9390601cc82f383e66b3c762f9190a57d144d08652a3bffc6267aa13148ee8"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/glossary.md",
+      "destination": "lab/math/crouzeix_conjecture/glossary.md",
+      "source_sha256": "c2305b69b46dbe4797c57f9a0bd42eb8602f71141bdb889ce62dae766c223df4",
+      "destination_sha256": "6780649185ce49c97c9e0dcdaf4743f3a9de5c00dd925d65ea91af4a4748beed"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/reproduction_research.md",
+      "destination": "lab/math/crouzeix_conjecture/reproduction_research.md",
+      "source_sha256": "e36e5e379e2e6840d247e3f4313bce503a36b1d7b829650efdc38d463a07626c",
+      "destination_sha256": "c74e26b6907c8efdcf78b86a73535ad6fd7c43f534ab14b5878dc68b9c811360"
+    },
+    {
+      "source": "knowledge/crouzeix_conjecture/source_registry.md",
+      "destination": "lab/math/crouzeix_conjecture/source_registry.md",
+      "source_sha256": "df1d053f6837717a2d467ebaea55f722a4bf4ae106733ed76498b74e8d764bad",
+      "destination_sha256": "7e6f5a9eceeee1b7d55ed83587b227b9076d7fc42ca87b60a2c50279fca0b108"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/claim_evidence_ledger.md",
+      "destination": "lab/math/crouzeix_textbook/claim_evidence_ledger.md",
+      "source_sha256": "eb61e247062ed6efd893054d0ef12698622aac0dfc9d3ba04da994a52b4fee1f",
+      "destination_sha256": "16f09600285d78f87993ea9f4a91d3b515b5a92660f42ee67b82b7358b59b7a9"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/crouzeix_textbook_index.md",
+      "destination": "lab/math/crouzeix_textbook/crouzeix_textbook_index.md",
+      "source_sha256": "3479906a9d310e46b00a27e7b21937ca78a37e38ceef1ffb2bbb8460780130f0",
+      "destination_sha256": "04648b9beaa49d8d1557c6c22885bff80268c6382468fc1b394206f68572f191"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/exercise_index.md",
+      "destination": "lab/math/crouzeix_textbook/exercise_index.md",
+      "source_sha256": "9c33190a17f4832e8647b0b7e8d4547245cb84879ee6bd288585521671890114",
+      "destination_sha256": "f9f21dad1c2a68df34326ae530fad4541fc1c15ecf88340a7609ff65cc51c071"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/harp_finite_horizon_remainder.md",
+      "destination": "lab/math/crouzeix_textbook/harp_finite_horizon_remainder.md",
+      "source_sha256": "48e0995ca0c587b45fa21d126aa113c73bdbdd61b8188c66f133c124ac14336c",
+      "destination_sha256": "2abb9cb75fcbe2d07ae4335e0ce96c03a4bd5480bac49c21fcfd823223d5cd0b"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/harp_mathematical_audit.md",
+      "destination": "lab/math/crouzeix_textbook/harp_mathematical_audit.md",
+      "source_sha256": "5745a8ff9ae3d5486642849a645188c135411e8cf90825987cb7c7773fc397e3",
+      "destination_sha256": "0e0d9fedf71b8c8ee1d93031b14da044ed60c98ff03a463dab133e95ec2a2f15"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/lean_coverage_ledger.md",
+      "destination": "lab/math/crouzeix_textbook/lean_coverage_ledger.md",
+      "source_sha256": "b17ca26ecfa1065a6b7b5a1c5a3c64f19b18e836309245b146bdb80a3cc8292f",
+      "destination_sha256": "53eb56a163f0ecf567c6857b03e6cdff852228c8da99ddadbbe00b7dca6e07a3"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/notation_and_glossary.md",
+      "destination": "lab/math/crouzeix_textbook/notation_and_glossary.md",
+      "source_sha256": "7e4bad0709b964ba33b7b630e9d4459bac290ade7974ecfcd4830702c3c09fbc",
+      "destination_sha256": "0bf5a7372038f15e901bb0f78294a7548ed0f159288b95c8d0375c0c39172137"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md",
+      "destination": "lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md",
+      "source_sha256": "db11ff4f6256b6ddf2b2b9e7a78e5c1941b2de0f1a899b3b1f57daa9543889eb",
+      "destination_sha256": "d7db63f177d582d7e16264aa2dd73a7468fc7f6e4405c639aad36e5484e099a5"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md",
+      "destination": "lab/math/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md",
+      "source_sha256": "bb849aa0cf5e62899e27647089478c1aae6e5f7de1d2cb30197c5d4c4c7d1bcb",
+      "destination_sha256": "32d3e4950a07529c190555e4ba8752bd13cac534d47af568a534f6e031856377"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_01_linear_structure/03_linear_maps_and_exact_structure.md",
+      "destination": "lab/math/crouzeix_textbook/part_01_linear_structure/03_linear_maps_and_exact_structure.md",
+      "source_sha256": "d7b54a38b3ea7b8dcea50ae6132089481d8d85ea43357915aefe2109b8b30fd9",
+      "destination_sha256": "5dd8252d7a22b3234b0a93b78c6ffa076c8154e2633871bbb288aec923570053"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_01_linear_structure/04_coordinates_and_duality.md",
+      "destination": "lab/math/crouzeix_textbook/part_01_linear_structure/04_coordinates_and_duality.md",
+      "source_sha256": "4fad4982ca39e82299932a27ce6a80406d8c4efa29d5535a2eb05c205051e8fc",
+      "destination_sha256": "8fb4b1ad26a5e706605ebba357b2bbbd4c60f0a06ddb886d266e7b1495eb0a6b"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra.md",
+      "destination": "lab/math/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra.md",
+      "source_sha256": "0b0f1d9f730642fa828d11a15ae6826362c92625ae519e49489af0f6c6a86327",
+      "destination_sha256": "2375d2215f8ae887994fd35fc1d6a2237d300b97d441aa1b1e672830cf48bb84"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_01_linear_structure/06_eigenvalues_and_polynomial_algebra.md",
+      "destination": "lab/math/crouzeix_textbook/part_01_linear_structure/06_eigenvalues_and_polynomial_algebra.md",
+      "source_sha256": "a3f7ed002860713afc28e708a05f2d9c4d0e82baea757ce3770d271c7920d840",
+      "destination_sha256": "f888e7f0f9afab5dbb4eea84cfea035daaca4d76a51facdb83e98a448a24c632"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/07_inner_product_spaces.md",
+      "destination": "lab/math/crouzeix_textbook/part_02_geometry_and_calculus/07_inner_product_spaces.md",
+      "source_sha256": "877670e0601da5ac774b827fb94bf8c87503125c6a7fdb004e7923c74ccb791c",
+      "destination_sha256": "25e06add75f5229054f8ce3b233fc4f4c6b93b46c27aac5d2903dd72d970619d"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/08_positive_operators_and_gram_geometry.md",
+      "destination": "lab/math/crouzeix_textbook/part_02_geometry_and_calculus/08_positive_operators_and_gram_geometry.md",
+      "source_sha256": "4a03bc78a03b7889343b1fd6ba17296aae9a8b43c79af9db2b13c540e344f807",
+      "destination_sha256": "2261f43a755049b2f4f93ebeef9d96846581844cdd1aafe05044e1cbbce3d37f"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/09_operator_norms_and_singular_values.md",
+      "destination": "lab/math/crouzeix_textbook/part_02_geometry_and_calculus/09_operator_norms_and_singular_values.md",
+      "source_sha256": "d2d128243337ee7d710c1924c820306d59e503b358d8272826a0c90fad6f471b",
+      "destination_sha256": "2f578513b04e580836a28a47028bfc8cd8b38b187e4d14b92883f5eb3ef0863d"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/10_multilinear_maps_and_tensors.md",
+      "destination": "lab/math/crouzeix_textbook/part_02_geometry_and_calculus/10_multilinear_maps_and_tensors.md",
+      "source_sha256": "cc465715d4c466d4860f908cdaaf2e4c0364adb3b73073a564a9ec4f3ef13bbf",
+      "destination_sha256": "6e9efb3cf0fa3a657a3abfa19163420808ee860536108ec57b1861d5c66c2f66"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/11_differentiation_as_linear_approximation.md",
+      "destination": "lab/math/crouzeix_textbook/part_02_geometry_and_calculus/11_differentiation_as_linear_approximation.md",
+      "source_sha256": "9adc65599aa3f961cd24c4f1bfa3eb009529a9a95c05fa632d1687471951fe0d",
+      "destination_sha256": "e7230f8ef2764a2bd9ab043f810de2df7f968d62ab413830fd6778a1a2600977"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/12_differential_forms_and_stokes.md",
+      "destination": "lab/math/crouzeix_textbook/part_02_geometry_and_calculus/12_differential_forms_and_stokes.md",
+      "source_sha256": "003e510587271927ecb8014019c77ffe0f5b7fa186a18bb6ac38b4b5fe091331",
+      "destination_sha256": "e8294e204e6213c753cfd3a99fdf2b43c7d6ef22abee5f71ad9df7e3a527e87d"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/13_metric_and_normed_spaces.md",
+      "destination": "lab/math/crouzeix_textbook/part_03_analysis_and_complex_functions/13_metric_and_normed_spaces.md",
+      "source_sha256": "64e608f7d23f114c304c3647bba542e16de24bbbe5dfbf1065390279d049d155",
+      "destination_sha256": "6e3802d61627f4fb7a49a83f2fd06e4c976154951ae047e1d89dc150bb396d3a"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/14_sequences_and_series_of_operators.md",
+      "destination": "lab/math/crouzeix_textbook/part_03_analysis_and_complex_functions/14_sequences_and_series_of_operators.md",
+      "source_sha256": "134656cf36d7db10a41c03f3dd7eead4dfb0195683651fb2f27c80ec674a9fed",
+      "destination_sha256": "7b32de5896d7814eb49f5894c36f922c2c4b4187071185b94c3a47d595672723"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/15_complex_differentiability.md",
+      "destination": "lab/math/crouzeix_textbook/part_03_analysis_and_complex_functions/15_complex_differentiability.md",
+      "source_sha256": "f8088a636191bdbbcae5ed90a9dc65e9dbcfa1afd894cc670336a85ab195c7ee",
+      "destination_sha256": "058ccb47f7021de45e561a585818d40437cee0b6ab5c304d9a427a9c128440e9"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/16_consequences_of_cauchy_theory.md",
+      "destination": "lab/math/crouzeix_textbook/part_03_analysis_and_complex_functions/16_consequences_of_cauchy_theory.md",
+      "source_sha256": "3c178f9d089f4022757e5bdd70c450e7741cc51e5a8de62eb0ae437ec007380d",
+      "destination_sha256": "356edc0cdf3e0d831ca87a3e084b10dbedead371045bbc28fd03718fbfe7c5d5"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/17_functions_of_matrices_and_operators.md",
+      "destination": "lab/math/crouzeix_textbook/part_03_analysis_and_complex_functions/17_functions_of_matrices_and_operators.md",
+      "source_sha256": "25b4ddccb338519a9c981acf76207090311825864d6daffc84f06f7677b8ec97",
+      "destination_sha256": "919e0e7fa7024ede58fe22e6fc5e5e76b77e0fb7672a0cb23bf994cd86519f9a"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/18_positive_real_analytic_functions.md",
+      "destination": "lab/math/crouzeix_textbook/part_03_analysis_and_complex_functions/18_positive_real_analytic_functions.md",
+      "source_sha256": "1b5e78ac806ccb766050973cf29a228c285a9299848258d3805dde7319d7f33c",
+      "destination_sha256": "cc71508be8e5a427bd5b263e9e10a513cab73231ff44ca26e478d3a30e5fa310"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_04_operator_theory/19_normality_and_nonnormality.md",
+      "destination": "lab/math/crouzeix_textbook/part_04_operator_theory/19_normality_and_nonnormality.md",
+      "source_sha256": "bfc7dab081389f639bf188e0162dd262d6e7b8e2fb89001a1a4e5c7de3da582a",
+      "destination_sha256": "199dbecce475e6633b3b50e4a458369b1a07dd8a85fb17f1cd36539dd5060458"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_04_operator_theory/20_numerical_range.md",
+      "destination": "lab/math/crouzeix_textbook/part_04_operator_theory/20_numerical_range.md",
+      "source_sha256": "0600b496b08a0744c9173a07522636d88a191fad8c5a8c849c0c856591fd5ea5",
+      "destination_sha256": "f5f48a5114f53f25654896671f0754af191e5f51755aefe2d1b0cafd971fb3eb"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_04_operator_theory/21_spectral_sets.md",
+      "destination": "lab/math/crouzeix_textbook/part_04_operator_theory/21_spectral_sets.md",
+      "source_sha256": "e889d3007fcbf9ff2a9ce9595cbf57bb61017f141b8efab0eb4e3f49c0ed46dd",
+      "destination_sha256": "49ed6ee73a32649384c2919692eecae49ad6bc90a5600bc4c66d9db613a8e211"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_04_operator_theory/22_positive_and_completely_positive_maps.md",
+      "destination": "lab/math/crouzeix_textbook/part_04_operator_theory/22_positive_and_completely_positive_maps.md",
+      "source_sha256": "7dd7dcd79ba5c8f0967c9005cc90ebd0d90deab5608087b6ccac82c9a8a48eb4",
+      "destination_sha256": "5760226475b8c4ddc656f4fa8a4f9f351c47169c130f4b588a3c5de49f3e13a6"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_04_operator_theory/23_compression_and_dilation.md",
+      "destination": "lab/math/crouzeix_textbook/part_04_operator_theory/23_compression_and_dilation.md",
+      "source_sha256": "6a436f3385157e554725f30bbf595207c6226c3f46b6a98123b9d66a839eca6e",
+      "destination_sha256": "eb7e23e647741535b59997b8524c4af6dafe51be7fbcfba1e0b65bee3a307830"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_04_operator_theory/24_gramians_and_ordered_matrix_inequalities.md",
+      "destination": "lab/math/crouzeix_textbook/part_04_operator_theory/24_gramians_and_ordered_matrix_inequalities.md",
+      "source_sha256": "98a04e80127dd3255424de161173f89dc0a38e8fe416cd7ce1c06c18f9c7b971",
+      "destination_sha256": "9f349668d1143bb19d6c167e4be990dffed298c1e104bed1bddf32cd0b601578"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md",
+      "destination": "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md",
+      "source_sha256": "29178a35460fadbe50c5da0c78832f253a0a3c9c448e222fc46caa4aa1258f68",
+      "destination_sha256": "2909bbddfdcf08d2c2a0854c2cc3765becee9352f9fe657df2c04c5a5946e51b"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md",
+      "destination": "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md",
+      "source_sha256": "63bc65a0e6c069e717978d386e45b0b453a474868b65cfa8a14b19f4aa831de4",
+      "destination_sha256": "d92931ef503a5dc65abfefe849ed98685e6d45568f0553f0fe65c104eb6b3b9c"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/27_one_plus_sqrt_two_barrier.md",
+      "destination": "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/27_one_plus_sqrt_two_barrier.md",
+      "source_sha256": "d6ba1ed8e11e98d1b8ac83677d583eea4e1b633bccd90e10d80edd0ad21fa5cc",
+      "destination_sha256": "aaf3080801f3a155af7b43010dd4c373aca59b4947f08894696308a2287982ee"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md",
+      "destination": "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md",
+      "source_sha256": "4868c6d2d20977c42ef6702714fb38cdc0ad03949fe5269a8960540219f2a852",
+      "destination_sha256": "17cbab7a70804e2f62c51be6dbb59e063cb6d051ddbe1d90731b39d7eb070edc"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md",
+      "source_sha256": "a956ac3d7c98ada7c7cbff91485229dae4258c82db7380f60e83f5ff06ca8470",
+      "destination_sha256": "6777a48c54968d5dc4ef6353c1e1a3d3dabd52cacdadc2969021e5edd26f404e"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/30_jin_positive_real_completion.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/30_jin_positive_real_completion.md",
+      "source_sha256": "c040478c0dc9f537be9517155aeedeccaace9fc78d2a828b4b71b246144ff337",
+      "destination_sha256": "2d363f5ae7de65c288b34ebaf4bc55e08263b4419c30d7edb2bacb4de3517b90"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/31_jin_correction_cancellation.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/31_jin_correction_cancellation.md",
+      "source_sha256": "f37d7f483cd13f0615da114fcaea3bb71294f53059bae301098e4a9b0c479c0c",
+      "destination_sha256": "0c154e68fac65cc300e8985077f6a8e3ce573190531a3cd46b0c110afe3e2278"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/32_jin_constant_two_endpoint.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/32_jin_constant_two_endpoint.md",
+      "source_sha256": "c0c5dee0ee7423b638be3484e77c7c5c13554c8ea681c1e2a489ca2d18b257bb",
+      "destination_sha256": "8c0a9ca4e4104ff0594ac4c1817eef6fc34f49639921ce14259397bbf57f3b0a"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
+      "source_sha256": "e54f44a2929e850e46060bd2b248e1070f057cfa69eb047b0900feb4ff38156a",
+      "destination_sha256": "5eb4391345a0ee5979b79e95ccbc32a551c41b73f0dee58649de6eee52bc0706"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/34_lorist_schwenninger_realization.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/34_lorist_schwenninger_realization.md",
+      "source_sha256": "9c3dd429eb752313161d80c2e1c1e9c1ac703679debb9e13bb534c194bd01f39",
+      "destination_sha256": "49a08f98f58bc45451e8fc0f97016e38b9419dca9ce0d6de9d79f8ae900eb7d2"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/35_comparison_verification_and_boundaries.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/35_comparison_verification_and_boundaries.md",
+      "source_sha256": "ff157e761a178b5677409db34cca9a355154c3e1636a77567f662161feab0b88",
+      "destination_sha256": "a5883e38a7f485177336f4f0e6bccec796ed0f853c12a1ded67fb760d7ce7d2c"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "destination": "lab/math/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "source_sha256": "d0cb339987ecfee0b63e9bc1b2073a161054ca969d3c753e0fa8c7136f0ecbd8",
+      "destination_sha256": "333ea22d6a5641f27a26686b8f0230088246d0375b4997145402862cc21e89a0"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/reading_guide.md",
+      "destination": "lab/math/crouzeix_textbook/reading_guide.md",
+      "source_sha256": "fe4713f6b41e11d394b63215284f537a4a6342499eed58e18eac0f9173deace2",
+      "destination_sha256": "f610c1de490775dbbaa2bfeb19bc23d74a777f5edf4e16ec0f179d8504299fca"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/source_registry.md",
+      "destination": "lab/math/crouzeix_textbook/source_registry.md",
+      "source_sha256": "1e479638f6b720d69eee9378060866eab2a06324751a16eb052a2b75c458870b",
+      "destination_sha256": "6b6f90798905784eb697415034a9b081ff16881a860999dc0c480206cf156909"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/status_and_scope.md",
+      "destination": "lab/math/crouzeix_textbook/status_and_scope.md",
+      "source_sha256": "d344dbd9207024873a13a885ee22783a9a3b216fae091249d00722cfb6629fd7",
+      "destination_sha256": "9bbd500a575bdcd9419528927bf60345131577156aed9eb36dabcdf00d69f40c"
+    },
+    {
+      "source": "knowledge/crouzeix_textbook/theorem_dependency_map.md",
+      "destination": "lab/math/crouzeix_textbook/theorem_dependency_map.md",
+      "source_sha256": "94cf9c58fada4b5a654839c0f53a829b09f9e72791e77db07ba2da1f620f732b",
+      "destination_sha256": "94cf9c58fada4b5a654839c0f53a829b09f9e72791e77db07ba2da1f620f732b"
+    },
+    {
+      "source": "knowledge/deepseek_harness/01_cordis_spatiotemporal_composition.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/01_cordis_spatiotemporal_composition.md",
+      "source_sha256": "4db96784b06e713872d40a9babfba65e8c2c9c08b95423273a1e6d29d4f0a2ed",
+      "destination_sha256": "ebcf78507a5dcb033544e064b49954d77ab999a319ce066aa66b45bf8e56bb05"
+    },
+    {
+      "source": "knowledge/deepseek_harness/02_profiles_bundles_and_patch_layers.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/02_profiles_bundles_and_patch_layers.md",
+      "source_sha256": "94b94904bcea8d8d9bf4e95671e4908beeb6c06aa158f3094d34d2ed9f010fe7",
+      "destination_sha256": "4b5bba9b6528ef85710153b708679b414d97a737fe190627ccd369889a118529"
+    },
+    {
+      "source": "knowledge/deepseek_harness/03_events_effects_and_reversible_lifecycle.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/03_events_effects_and_reversible_lifecycle.md",
+      "source_sha256": "c432b635abfe7200e6a3a0e2d0453e7fd8acff8a17a623e867144aa95efa1a70",
+      "destination_sha256": "4bbf0bf6ca867783cfe0c8b22aa8feb535fe3126ffac49ceea6acd261a6fe207"
+    },
+    {
+      "source": "knowledge/deepseek_harness/04_turn_session_and_model_visible_log.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/04_turn_session_and_model_visible_log.md",
+      "source_sha256": "09075d1b0c80f0937fc7ddad740cc5bf721965ac4d894225ec60bc5c221596eb",
+      "destination_sha256": "3c6bf880b00c60c915e66b9a790f2eb30cfc36055dd5a29edeba4dc1614018b6"
+    },
+    {
+      "source": "knowledge/deepseek_harness/05_capability_seams.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/05_capability_seams.md",
+      "source_sha256": "58302484378e24fb493c0a980ed3832bc7e5026a5c9871b61f66a1b1c945a61e",
+      "destination_sha256": "8f39f3c43323ac7deb25439a84a9a07375f487246562fcbb72c05ab2f145996a"
+    },
+    {
+      "source": "knowledge/deepseek_harness/06_tool_registry_and_policy_pipeline.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/06_tool_registry_and_policy_pipeline.md",
+      "source_sha256": "b469e9952da4b76444ce653231340e0475f8d44e54c1f16f3efb26bc4906957f",
+      "destination_sha256": "6b3d17f963dff9f4814dd8d7f1603d5229c3f0292c1a3c94fcb95889dd031a5d"
+    },
+    {
+      "source": "knowledge/deepseek_harness/07_sandbox_permission_and_filesystem_boundaries.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/07_sandbox_permission_and_filesystem_boundaries.md",
+      "source_sha256": "b24bfa41f2e6f9dd2cb41faf6b1442c3fe269697a9c715e1dd5918ef13451ad7",
+      "destination_sha256": "2c7faa7446f70253f801dce6d2dd40f8f42e162ee2c9336a1eab8520d5419f8d"
+    },
+    {
+      "source": "knowledge/deepseek_harness/08_subagents_and_continuable_children.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/08_subagents_and_continuable_children.md",
+      "source_sha256": "e899a1c064b8b52cedde1e9c404a5825b931a26e04543489e735d0163bf18e66",
+      "destination_sha256": "e156c78cac962f91816680fd08ef9f2cf97c492134cf2016288b5d55f935b801"
+    },
+    {
+      "source": "knowledge/deepseek_harness/09_persistence_sdk_and_runtime_packaging.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/09_persistence_sdk_and_runtime_packaging.md",
+      "source_sha256": "33a6499ad74e6203172acbf716152299d18127ed1792ccc6875531ab5251b194",
+      "destination_sha256": "3101b497ceb1df7e8683a5af577edb0175642e5c5814009fbdb4c57b5f1843d4"
+    },
+    {
+      "source": "knowledge/deepseek_harness/10_self_modification_and_dynamic_cordis.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/10_self_modification_and_dynamic_cordis.md",
+      "source_sha256": "5da01361ad783d859e8f28ddfef406e8e8ca8a63b1927cf7092ab340ceda53d7",
+      "destination_sha256": "d0e71a6e7fead3ea2f0deaf2ce7178ecc6c153416f1f475917ea6eded47c24f2"
+    },
+    {
+      "source": "knowledge/deepseek_harness/claim_evidence_ledger.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/claim_evidence_ledger.md",
+      "source_sha256": "71e50f1d5dea5ed1accfc16c43a49d66d411245025112a11029173085128df46",
+      "destination_sha256": "71e50f1d5dea5ed1accfc16c43a49d66d411245025112a11029173085128df46"
+    },
+    {
+      "source": "knowledge/deepseek_harness/deepseek_harness_index.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/deepseek_harness_index.md",
+      "source_sha256": "ad45b62aae68647c4bcc5d7172e22cd35e33f474de538bbdc7ea934d53a9cbae",
+      "destination_sha256": "7e48cbbe05a7fe6439b1d4809eb10e91fa954e9b526135c98892105436ed7300"
+    },
+    {
+      "source": "knowledge/deepseek_harness/source_registry.md",
+      "destination": "lab/agentic_engineering/deepseek_harness/source_registry.md",
+      "source_sha256": "a0f14297e8756b57cab064d2735dfc348c347ccb13da1c08e594029616e54ffe",
+      "destination_sha256": "a0f14297e8756b57cab064d2735dfc348c347ccb13da1c08e594029616e54ffe"
+    },
+    {
+      "source": "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
+      "destination": "lab/benchmarks/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
+      "source_sha256": "52c15cc25b8e91098f61e1e84ad91497131f15775368674ac933939a1aec26db",
+      "destination_sha256": "52c15cc25b8e91098f61e1e84ad91497131f15775368674ac933939a1aec26db"
+    },
+    {
+      "source": "knowledge/generated/corpus.json",
+      "destination": "lab/generated/corpus.json",
+      "source_sha256": "1143794d6a82f6b1e49ecdd9a983aa8faf2678de1bf7a199fbe432584706ee79",
+      "destination_sha256": "e39fb5e04c60cf9000410be385223d698c830ebbe9dc6ea2490fc5397e1b0cb7"
+    },
+    {
+      "source": "knowledge/harness_benchmarks/dynamic_workflow_need_and_eval.md",
+      "destination": "lab/benchmarks/harness_benchmarks/dynamic_workflow_need_and_eval.md",
+      "source_sha256": "35fb37dcec94b16d0e45556a0c44e66b149bef9b8ea76d1874521ece5c81469b",
+      "destination_sha256": "062fc2a2cdcad9734fb0759e5bf4192c3df46770d9cadbe6ef174c727a4729ee"
+    },
+    {
+      "source": "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
+      "destination": "lab/benchmarks/harness_benchmarks/harness_benchmark_field_guide.md",
+      "source_sha256": "d4fa8c997d8d0c60b9a2e79f45731de98599546bcd9cd052eceaa69313152128",
+      "destination_sha256": "1f76f8c78d9534ad43632a886d1eb118c044b7e09af08bf59bf4792f33267981"
+    },
+    {
+      "source": "knowledge/harp_knowledge_home.md",
+      "destination": "lab/harp_knowledge_home.md",
+      "source_sha256": "de7066594e3a3032124805ec55a749102a05dfc6f653481dfa6f07ced2b4f10e",
+      "destination_sha256": "adf624c964cfd2d3276530f777d20757ee40750d5d50c154d325820af20bc698"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/01_linear_spaces_and_maps.md",
+      "destination": "lab/math/mathematical_foundations/01_linear_spaces_and_maps.md",
+      "source_sha256": "faaf86f7ebdc1028395809b85d7ea36246637cb6b7cb0a57021674eeae031f4c",
+      "destination_sha256": "faaf86f7ebdc1028395809b85d7ea36246637cb6b7cb0a57021674eeae031f4c"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/02_orthogonality_spectra_and_decompositions.md",
+      "destination": "lab/math/mathematical_foundations/02_orthogonality_spectra_and_decompositions.md",
+      "source_sha256": "e7e50696181a7ab3e8814fefa7bdca50b00ba6c5d47aac6403dd77131d9fc8d6",
+      "destination_sha256": "e7e50696181a7ab3e8814fefa7bdca50b00ba6c5d47aac6403dd77131d9fc8d6"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/03_probability_and_gaussian_models.md",
+      "destination": "lab/math/mathematical_foundations/03_probability_and_gaussian_models.md",
+      "source_sha256": "0db7cdeb597cb8d7340be480d0d49117bf44a0bbdd1087d1d80823debeefd596",
+      "destination_sha256": "0db7cdeb597cb8d7340be480d0d49117bf44a0bbdd1087d1d80823debeefd596"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/04_bayesian_inference_and_information.md",
+      "destination": "lab/math/mathematical_foundations/04_bayesian_inference_and_information.md",
+      "source_sha256": "22dcb1fa1ce1a6d65bb67f738913203fb99cfdd9a5ccc98f88b5305c4614583a",
+      "destination_sha256": "22dcb1fa1ce1a6d65bb67f738913203fb99cfdd9a5ccc98f88b5305c4614583a"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/05_linear_models_and_regularization.md",
+      "destination": "lab/math/mathematical_foundations/05_linear_models_and_regularization.md",
+      "source_sha256": "484102d558bbcf165f50728b18548301b52eb9a37d7f7e48e0e62adef3753c84",
+      "destination_sha256": "484102d558bbcf165f50728b18548301b52eb9a37d7f7e48e0e62adef3753c84"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/06_optimization_and_iterative_methods.md",
+      "destination": "lab/math/mathematical_foundations/06_optimization_and_iterative_methods.md",
+      "source_sha256": "d4ee6d590d6374fda648b45c6075b52dffba4b7474d8dbde226eae28a919ff23",
+      "destination_sha256": "d4ee6d590d6374fda648b45c6075b52dffba4b7474d8dbde226eae28a919ff23"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/claim_evidence_ledger.md",
+      "destination": "lab/math/mathematical_foundations/claim_evidence_ledger.md",
+      "source_sha256": "0837d746a946da902985e32b371929dd356f8fe73015f919b23b00f191f82af6",
+      "destination_sha256": "0837d746a946da902985e32b371929dd356f8fe73015f919b23b00f191f82af6"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/curriculum_map.md",
+      "destination": "lab/math/mathematical_foundations/curriculum_map.md",
+      "source_sha256": "df359ef1bf58cecc5bebaecc076c6b8040fc2d7b2e9e76b0e6db97485d2b9f05",
+      "destination_sha256": "df359ef1bf58cecc5bebaecc076c6b8040fc2d7b2e9e76b0e6db97485d2b9f05"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/formalization_map.md",
+      "destination": "lab/math/mathematical_foundations/formalization_map.md",
+      "source_sha256": "f235fa354cbf90f730fe6e91f86075a03b79229c1f8552f23326b3c42086a14d",
+      "destination_sha256": "f235fa354cbf90f730fe6e91f86075a03b79229c1f8552f23326b3c42086a14d"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/glossary.md",
+      "destination": "lab/math/mathematical_foundations/glossary.md",
+      "source_sha256": "d82d16d3a05af5f7a7941cd0b24667c83295832d0254000cff882f241196f9d8",
+      "destination_sha256": "d82d16d3a05af5f7a7941cd0b24667c83295832d0254000cff882f241196f9d8"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/mathematical_foundations_index.md",
+      "destination": "lab/math/mathematical_foundations/mathematical_foundations_index.md",
+      "source_sha256": "071f6630932273e6c0875bb2a471eb89ca6b82749169ffc50ad1fc31dc121689",
+      "destination_sha256": "071f6630932273e6c0875bb2a471eb89ca6b82749169ffc50ad1fc31dc121689"
+    },
+    {
+      "source": "knowledge/mathematical_foundations/source_registry.md",
+      "destination": "lab/math/mathematical_foundations/source_registry.md",
+      "source_sha256": "324d27d2b2d9de3ca239dd1f1e5fe0089f1e9a93f9fa8e49d182611d84e7e285",
+      "destination_sha256": "324d27d2b2d9de3ca239dd1f1e5fe0089f1e9a93f9fa8e49d182611d84e7e285"
+    },
+    {
+      "source": "knowledge/obsidian/README.md",
+      "destination": "lab/obsidian/README.md",
+      "source_sha256": "2af3aa66a64ffe1723eb144bbb30143c9fdf2906e613473d36e8a9cf10c500aa",
+      "destination_sha256": "4664fe68bcd1978267054f10cc488a79be097e69011c3d9018f1d6c087834256"
+    },
+    {
+      "source": "knowledge/obsidian/harp_knowledge.base",
+      "destination": "lab/obsidian/harp_knowledge.base",
+      "source_sha256": "29f1708a37733a8da79a57969f52a63b6e1625dfbaa53f983a9c1e478812bc57",
+      "destination_sha256": "42e4ace06af7dfe8966e07d6c141c696a51919c5ca031464426ee53adc5f765e"
+    },
+    {
+      "source": "knowledge/obsidian/harp_knowledge_map.canvas",
+      "destination": "lab/obsidian/harp_knowledge_map.canvas",
+      "source_sha256": "9a2069fbdc11970ce64eb9e70387b6769765e48ac1a76ec2854ed7658c9a5478",
+      "destination_sha256": "3d008707f03f5bdb6e8b530462764b490669901b303bd628177e813fd6442d11"
+    },
+    {
+      "source": "knowledge/sicp/agentic_eval_apply.md",
+      "destination": "lab/sicp/agentic_eval_apply.md",
+      "source_sha256": "0dbfe024596c75b588f70e0ab6743c2353cebb99c324867509defc69557f0775",
+      "destination_sha256": "c98d701ae49158464d2be22241be1662748e0267c92d7654941de4ed6f07b42f"
+    },
+    {
+      "source": "knowledge/sicp/course/capstone/agent_harness_architecture_dossier.md",
+      "destination": "lab/sicp/course/capstone/agent_harness_architecture_dossier.md",
+      "source_sha256": "268eb64b6beb48902f33cdcc89376271b363214bca3dde2c410596337d865282",
+      "destination_sha256": "34d778c9c612b657439af01a1bb4c562c40cf15742ab9d435ab7049a167bfbb5"
+    },
+    {
+      "source": "knowledge/sicp/course/dialogue_state.md",
+      "destination": "lab/sicp/course/dialogue_state.md",
+      "source_sha256": "5b5460bcaa074b8cf804cd812a4e09797ea39f30c986c15d80d4bf849e35edda",
+      "destination_sha256": "85a3387ab481a79e7decdd353bc1e101bcc48b25e0dc4d2cf5bd7a73d2534c52"
+    },
+    {
+      "source": "knowledge/sicp/course/exercise_map.md",
+      "destination": "lab/sicp/course/exercise_map.md",
+      "source_sha256": "2da230d0c31dec111f8a347bd5a00d4929bf765645df7a660d0866ea3d4b2115",
+      "destination_sha256": "2da230d0c31dec111f8a347bd5a00d4929bf765645df7a660d0866ea3d4b2115"
+    },
+    {
+      "source": "knowledge/sicp/course/scheme_reading_primer.md",
+      "destination": "lab/sicp/course/scheme_reading_primer.md",
+      "source_sha256": "5239833e31332e4cd28b8ffa7598ef8f79c5905067b5ba2e628779be2a6e9fdc",
+      "destination_sha256": "5239833e31332e4cd28b8ffa7598ef8f79c5905067b5ba2e628779be2a6e9fdc"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md",
+      "destination": "lab/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md",
+      "source_sha256": "eb0366a23922305ae1469a831c9ad0d3f7670b87e933189bddd09e9d9be2932d",
+      "destination_sha256": "283aa2987c7c53fb3906abd5591bddb6020a4a31b27685abe391f2f27c6be320"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md",
+      "destination": "lab/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md",
+      "source_sha256": "d9c178a939f8e2aa7f39aaea43806e4e31d46ce79f25d8bd97779d639a14f51d",
+      "destination_sha256": "afeae54095179dc498f93ff8dc974cab5baff27b228f09b56219bb64410f1441"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md",
+      "destination": "lab/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md",
+      "source_sha256": "cca0713b89ac3e470cf3a7328993f34143e4f0aa0c3711095b71db2cd0362d60",
+      "destination_sha256": "afc43696135c9ec2525310f3c04323f5852bae41d699c406006ae878e05db6b4"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md",
+      "destination": "lab/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md",
+      "source_sha256": "d4613012185585f5b2b1c2fc2f57c4fad054042c5304825913290c01da2d6c59",
+      "destination_sha256": "3eead54a4827d87dcd58b3d27791eaa3f8a558c3dd5422149c1446d84c708330"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/05-state-identity-and-environments.md",
+      "destination": "lab/sicp/course/seminars/05-state-identity-and-environments.md",
+      "source_sha256": "7058604490205a394a3bdd8f6ba0f64af7fdf87ef3657fbd6b271368b7dcf137",
+      "destination_sha256": "436326dd5e297cc6897d32bf3383f24370455467518dc5a624f864ad3d1ee207"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/06-mutation-simulation-and-constraints.md",
+      "destination": "lab/sicp/course/seminars/06-mutation-simulation-and-constraints.md",
+      "source_sha256": "38401778e72b0e0603cac96afcf88567ef6d5f9169374d8d6b33d7fd39161e94",
+      "destination_sha256": "004561e040be20ec3216b1a51dc6cfd12e6ea0b75c0b067279dc4f60f1e466c0"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md",
+      "destination": "lab/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md",
+      "source_sha256": "fea80d5188dd86858894c2ff2931eaf92219e63bfe29d929b32f7ba6fcbcbfa5",
+      "destination_sha256": "00d3c49b0e2d743f01b02dc2d0798adee7c10c3f663ff27c97b8d3f340a99e82"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/08-streams-delay-and-infinite-processes.md",
+      "destination": "lab/sicp/course/seminars/08-streams-delay-and-infinite-processes.md",
+      "source_sha256": "50ac650031b5b44f757db6ffee902554a1cd30b57dcb79f2e78591822b13a6fa",
+      "destination_sha256": "97ea5d06e3d266d6a5fcc1f98844c57bd6e2c591b322559ebb554fff405bb793"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
+      "destination": "lab/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
+      "source_sha256": "43195bf31f1446f2f6545a9d7010b854cf275b6229d0cef24e06d5b44baed3b2",
+      "destination_sha256": "8c355a456f2432ceac00be29bcaf8589497e75e6db21bbe21a048307492bbad9"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md",
+      "destination": "lab/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md",
+      "source_sha256": "87685f4d355d069d1d07327a62009615cf58a7f268c86459f794de5692f6398d",
+      "destination_sha256": "3ef803fd98808c7af0a6824efeb37ff80a250fe282d1ea648c06fc9349db0bf3"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/11-logic-programming-and-declarative-query.md",
+      "destination": "lab/sicp/course/seminars/11-logic-programming-and-declarative-query.md",
+      "source_sha256": "5811840c849791be15eb51589453362e0bcaf86ddd0266f714e79574f77b2fc6",
+      "destination_sha256": "5c7b9ba10e109122889523a30493fc7b190e5abde2a06ab6dbde6278bea75a7f"
+    },
+    {
+      "source": "knowledge/sicp/course/seminars/12-machines-storage-control-and-compilation.md",
+      "destination": "lab/sicp/course/seminars/12-machines-storage-control-and-compilation.md",
+      "source_sha256": "6c24d52be9e0eeaf406c497ab17b2457820a3589fd40ae5a3d0e429d9426312e",
+      "destination_sha256": "5003d81f583b7589ef00959e0577a0ca6e7968650f8fd056292d1c2a7b3f718c"
+    },
+    {
+      "source": "knowledge/sicp/course/sicp_course_guide.md",
+      "destination": "lab/sicp/course/sicp_course_guide.md",
+      "source_sha256": "11ce12c34f1b18d5f81c7a0e05a38c0b62b821c6969467bd481ad9b551e47948",
+      "destination_sha256": "86eb8890c8a691703e7db83d6c579648f92a172b58c0602ed33bcbe31e980153"
+    },
+    {
+      "source": "knowledge/sicp/domain_orientation.md",
+      "destination": "lab/sicp/domain_orientation.md",
+      "source_sha256": "ae3659b3b626711cd6d61dec444aabf8972eee0c101f97ce721df151db00c8f3",
+      "destination_sha256": "ab2f7773dad91c052a126e552d06374f89ad05ed577ae1025d1a0975c4c45908"
+    },
+    {
+      "source": "knowledge/sicp/eval-apply-reader-companion.md",
+      "destination": "lab/sicp/eval-apply-reader-companion.md",
+      "source_sha256": "497b633aa54c768ae16f89eba732c25e20b82a901f82931a3862ab1b595ef92f",
+      "destination_sha256": "70fbadaa51045c9953cd1088743a00f9ca0fc1457af0f7def2b9271d59b1d553"
+    },
+    {
+      "source": "knowledge/sicp/metacircular_evaluator_deep_dive.md",
+      "destination": "lab/sicp/metacircular_evaluator_deep_dive.md",
+      "source_sha256": "cc6dc671f1fd7a85c7e37835b506b888b7ccfbc48a22500c6c404b06bc3c0b39",
+      "destination_sha256": "cc6dc671f1fd7a85c7e37835b506b888b7ccfbc48a22500c6c404b06bc3c0b39"
+    },
+    {
+      "source": "knowledge/sicp/missing_evidence.md",
+      "destination": "lab/sicp/missing_evidence.md",
+      "source_sha256": "37d79f7f93ce194ccd9aefe7c49193df271b1d3c32318c5da308640cf82bbd0d",
+      "destination_sha256": "37d79f7f93ce194ccd9aefe7c49193df271b1d3c32318c5da308640cf82bbd0d"
+    },
+    {
+      "source": "knowledge/sicp/sicp_index.md",
+      "destination": "lab/sicp/sicp_index.md",
+      "source_sha256": "32492ba0b713ae6730b90ebf8ada4a417ef14dd6f123e7e0bbb07b66ccc07151",
+      "destination_sha256": "b09961f297356751532bb72730cff87c9044069ca011939e3e45a7d2abfcbc64"
+    }
+  ],
+  "notes": [
+    "All original tracked knowledge files retained under lab.",
+    "Changes adapt paths and relative links; corpus schema and document IDs stay unchanged.",
+    "Captured upstream bytes and historical receipts are unchanged."
+  ]
+}

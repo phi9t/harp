@@ -164,7 +164,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
 
 #[test]
 fn build_check_accepts_the_checked_in_payload_without_writing() {
-    let generated = repo_root().join("knowledge/generated/corpus.json");
+    let generated = repo_root().join("lab/generated/corpus.json");
     let before = fs::read(&generated).expect("checked-in payload");
 
     harp()
@@ -185,7 +185,7 @@ fn build_rejects_outputs_outside_the_generated_directory() {
         .assert()
         .failure()
         .stderr(predicate::str::contains(
-            "output must stay beneath knowledge/generated",
+            "output must stay beneath lab/generated",
         ));
 }
 
@@ -260,9 +260,9 @@ fn crouzeix_textbook_cli_requires_the_receipt_argument() {
 #[test]
 fn search_status_rejects_a_missing_index() {
     let repo = TempDir::new().expect("temp repository");
-    fs::create_dir_all(repo.path().join("knowledge/sicp")).expect("SICP knowledge");
+    fs::create_dir_all(repo.path().join("lab/sicp")).expect("SICP knowledge");
     fs::write(
-        repo.path().join("knowledge/sicp/intro.md"),
+        repo.path().join("lab/sicp/intro.md"),
         "# SICP\n\nA bounded improvement loop.\n",
     )
     .expect("SICP document");
@@ -278,77 +278,77 @@ fn search_status_rejects_a_missing_index() {
 #[test]
 fn search_refresh_status_and_query_share_a_digest_receipt() {
     let repo = TempDir::new().expect("temp repository");
-    fs::create_dir_all(repo.path().join("knowledge/sicp")).expect("SICP knowledge");
-    fs::create_dir_all(repo.path().join("knowledge/deepseek_harness"))
+    fs::create_dir_all(repo.path().join("lab/sicp")).expect("SICP knowledge");
+    fs::create_dir_all(repo.path().join("lab/agentic_engineering/deepseek_harness"))
         .expect("implementation packet");
-    fs::create_dir_all(repo.path().join("knowledge/agentic_engineering")).expect("knowledge");
-    fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks")).expect("benchmark packet");
-    fs::create_dir_all(repo.path().join("knowledge/agentic_engineering")).expect("survey packet");
-    fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks"))
+    fs::create_dir_all(repo.path().join("lab/agentic_engineering")).expect("knowledge");
+    fs::create_dir_all(repo.path().join("lab/benchmarks/harness_benchmarks")).expect("benchmark packet");
+    fs::create_dir_all(repo.path().join("lab/agentic_engineering")).expect("survey packet");
+    fs::create_dir_all(repo.path().join("lab/benchmarks/harness_benchmarks"))
         .expect("verified coevolution packet");
-    fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).expect("Crouzeix packet");
-    fs::create_dir_all(repo.path().join("knowledge/evaluator_integrity"))
+    fs::create_dir_all(repo.path().join("lab/math/crouzeix_conjecture")).expect("Crouzeix packet");
+    fs::create_dir_all(repo.path().join("lab/benchmarks/evaluator_integrity"))
         .expect("evaluator packet");
-    fs::create_dir_all(repo.path().join("knowledge/mathematical_foundations"))
+    fs::create_dir_all(repo.path().join("lab/math/mathematical_foundations"))
         .expect("mathematical foundations packet");
-    fs::create_dir_all(repo.path().join("knowledge/autodiff_geometry"))
+    fs::create_dir_all(repo.path().join("lab/math/autodiff_geometry"))
         .expect("autodiff geometry packet");
-    fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
+    fs::create_dir_all(repo.path().join("lab/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/sicp")).expect("evidence");
     fs::write(
-        repo.path().join("knowledge/sicp/intro.md"),
+        repo.path().join("lab/sicp/intro.md"),
         "# SICP\n\nA bounded SICP loop.\n",
     )
     .expect("SICP document");
     fs::write(
-        repo.path().join("knowledge/private/draft.md"),
+        repo.path().join("lab/private/draft.md"),
         "# Private draft\n\nThis must not enter the search index.\n",
     )
     .expect("loose document");
     fs::write(
         repo.path()
-            .join("knowledge/agentic_engineering/codex_harness_deep_dive.md"),
+            .join("lab/agentic_engineering/codex_harness_deep_dive.md"),
         "# Codex harness\n\nPackage identity is an executable candidate contract.\n",
     )
     .expect("knowledge file");
     fs::write(
         repo.path()
-            .join("knowledge/agentic_engineering/source_registry.md"),
+            .join("lab/agentic_engineering/source_registry.md"),
         "# Engineering sources\n\nProvider contracts separate model parameters from scaffold state.\n",
     )
     .expect("survey file");
     fs::write(
         repo.path()
-            .join("knowledge/harness_benchmarks/dynamic_workflow_need_and_eval.md"),
+            .join("lab/benchmarks/harness_benchmarks/dynamic_workflow_need_and_eval.md"),
         "# Dynamic workflow\n\nDurable replay must preserve effect receipts.\n",
     )
     .expect("workflow file");
     fs::write(
         repo.path()
-            .join("knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md"),
+            .join("lab/math/crouzeix_conjecture/04_jin_positive_real_completion.md"),
         "# Crouzeix\n\nThe origin sample cancels the diagonal correction.\n",
     )
     .expect("Crouzeix file");
     fs::write(
-        repo.path().join("knowledge/harp_knowledge_home.md"),
+        repo.path().join("lab/harp_knowledge_home.md"),
         "# Harp knowledge home\n\nReader entrypoint.\n",
     )
     .expect("knowledge home");
     fs::write(
         repo.path()
-            .join("knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md"),
+            .join("lab/benchmarks/evaluator_integrity/evaluator_integrity_benchmark_suite.md"),
         "# Evaluator integrity\n\nProtected scoring preserves evaluation independence.\n",
     )
     .expect("evaluator guide");
     fs::write(
         repo.path()
-            .join("knowledge/mathematical_foundations/03_probability_and_gaussian_models.md"),
+            .join("lab/math/mathematical_foundations/03_probability_and_gaussian_models.md"),
         "# Probability\n\nA covariance matrix records paired variation.\n",
     )
     .expect("mathematical foundations file");
     fs::write(
         repo.path()
-            .join("knowledge/autodiff_geometry/formalization_roadmap.md"),
+            .join("lab/math/autodiff_geometry/formalization_roadmap.md"),
         "# Autodiff geometry roadmap\n\nJVP VJP duality connects pushed tangent and pulled cotangent coordinates.\n",
     )
     .expect("autodiff geometry file");
@@ -377,7 +377,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/sicp/intro.md\"",
+            "\"path\":\"lab/sicp/intro.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -385,7 +385,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains("\"data\":[]"))
-        .stdout(predicate::str::contains("knowledge/private/draft.md").not());
+        .stdout(predicate::str::contains("lab/private/draft.md").not());
     harp()
         .current_dir(repo.path())
         .args([
@@ -398,7 +398,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/agentic_engineering/codex_harness_deep_dive.md\"",
+            "\"path\":\"lab/agentic_engineering/codex_harness_deep_dive.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -406,7 +406,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/agentic_engineering/source_registry.md\"",
+            "\"path\":\"lab/agentic_engineering/source_registry.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -414,7 +414,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/harness_benchmarks/dynamic_workflow_need_and_eval.md\"",
+            "\"path\":\"lab/benchmarks/harness_benchmarks/dynamic_workflow_need_and_eval.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -422,7 +422,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md\"",
+            "\"path\":\"lab/math/crouzeix_conjecture/04_jin_positive_real_completion.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -436,7 +436,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md\"",
+            "\"path\":\"lab/benchmarks/evaluator_integrity/evaluator_integrity_benchmark_suite.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -450,7 +450,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/mathematical_foundations/03_probability_and_gaussian_models.md\"",
+            "\"path\":\"lab/math/mathematical_foundations/03_probability_and_gaussian_models.md\"",
         ));
     harp()
         .current_dir(repo.path())
@@ -458,11 +458,11 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "\"path\":\"knowledge/autodiff_geometry/formalization_roadmap.md\"",
+            "\"path\":\"lab/math/autodiff_geometry/formalization_roadmap.md\"",
         ));
 
     fs::write(
-        repo.path().join("knowledge/sicp/intro.md"),
+        repo.path().join("lab/sicp/intro.md"),
         "# SICP\n\nThe corpus changed.\n",
     )
     .expect("mutated SICP document");

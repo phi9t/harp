@@ -29,7 +29,7 @@ request to add a focused mapping rather than running every prerequisite.
 | Changed surface | Selected checks |
 | --- | --- |
 | Agent guidance, skills, ordinary Markdown | Diff whitespace; changed local links and skill frontmatter; no Rust, Lean or React dependency |
-| Corpus contracts and canonical knowledge/lessons | Rust corpus validation and generated corpus freshness, without proof builds or React |
+| Corpus contracts and canonical lab/lessons | Rust corpus validation and generated corpus freshness, without proof builds or React |
 | Rust | Affected workspace packages and transitive consumers; Harp corpus/context modules where isolated; changed integration targets and CLI entry point checks |
 | Durable/Insula/runner | Composed portable lifecycle and boundary suites; required Linux qualification is recorded separately against exact source bytes |
 | Imported benchmark studies | Byte, mode, complete inventory and ancestry preservation; historical links are retained |

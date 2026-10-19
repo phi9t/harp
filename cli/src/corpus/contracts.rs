@@ -23,7 +23,7 @@ fn validate_no_content_markdown(repository: &HeldDirectory) -> Result<(), AppErr
         return Err(invalid(
             "knowledge.rsi.content_markdown",
             format!(
-                "technical Markdown must live under knowledge/, not {}",
+                "technical Markdown must live under lab/, not {}",
                 path.display()
             ),
         ));
@@ -384,8 +384,7 @@ pub(super) fn normalize_link_path(base: &Path, destination: &Path) -> Option<Pat
             _ => return None,
         }
     }
-    (resolved.starts_with("knowledge")
-        || resolved.starts_with("evidence")
+    (resolved.starts_with("evidence")
         || resolved.starts_with("lab")
         || resolved.starts_with("cli")
         || resolved.starts_with("durable")

@@ -67,7 +67,7 @@ For executable packaging, follow [native release candidates](releasing.md).
 ## Agentic engineering
 
 Harp follows the agentic engineering reference captured under
-`knowledge/agentic_engineering/`: scale agent execution, not agent authority.
+`lab/agentic_engineering/`: scale agent execution, not agent authority.
 Humans retain intent, architecture, merge, release, and authority-widening
 decisions. Agents work on bounded tasks in isolated worktrees, with explicit
 verification and repair before landing.
@@ -91,7 +91,7 @@ inform later distillation but are not themselves project guidance.
 
 ## Content changes
 
-1. Edit canonical technical prose under `knowledge/`; use `lab/math/textbook/` only for
+1. Edit canonical technical prose under `lab/`; use `lab/math/textbook/` only for
    structured machine-readable contracts and diagnostics.
 2. Use vault-root-qualified wiki links for managed note, claim-ledger, and
    artifact navigation. Preserve exact raw-evidence line locators as the
@@ -122,7 +122,7 @@ upstream bytes remain byte-faithful.
 ### Obsidian-native knowledge presentation
 
 Open the repository root as the Obsidian vault and begin at
-[Harp knowledge home](../knowledge/harp_knowledge_home.md). `knowledge/` is still
+[Harp knowledge home](../lab/harp_knowledge_home.md). `lab/` is still
 the sole technical-prose authority; Obsidian is a reader and navigation layer,
 not a second source of truth.
 

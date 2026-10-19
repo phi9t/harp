@@ -2630,7 +2630,7 @@ fn chapter_34_boundary_data_card_states_history_ml_transfer_and_formal_boundary(
 
 #[test]
 fn chapter_34_boundary_data_atlas_render_preserves_the_typed_derivation() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -3135,7 +3135,7 @@ fn chapter_34_moments_publish_only_exact_moment_rows_and_exercise_receipts() {
 
 #[test]
 fn chapter_34_moments_atlas_render_preserves_integral_and_power_algebra() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -3500,7 +3500,7 @@ fn chapter_34_handoff_records_completed_chapter_35_and_renders_it_in_atlas() {
     assert!(markdown.contains("harpFiniteHorizonMainTheorem"));
     assert!(!markdown.contains("Chapter 35 remains pending"));
 
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -3548,7 +3548,7 @@ fn chapter_34_realization_publishes_exact_rows_exercise_receipts_and_rendered_al
         assert_eq!(row["lean_solution"]["axioms"], json!(AXIOMS));
     }
 
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -4013,7 +4013,7 @@ fn chapter_35_exercises_match_final_compiler_targets_without_terminal_shortcuts(
 
 #[test]
 fn chapter_35_atlas_renders_consequences_and_comparison() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -4231,7 +4231,7 @@ fn chapter_35_comparison_e06_transports_all_three_route_witnesses() {
 
 #[test]
 fn chapter_35_comparison_atlas_renders_terminal_evidence_and_code_links() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -4265,7 +4265,7 @@ fn chapter_35_comparison_atlas_renders_terminal_evidence_and_code_links() {
 
 #[test]
 fn chapter_35_comparison_atlas_table_has_four_columns_and_eight_complete_axes() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")

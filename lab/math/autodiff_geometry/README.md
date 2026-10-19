@@ -13,7 +13,7 @@ cookbook:
 
 The project does not model JAX tracing, floating-point behavior, pytrees,
 complex differentiation, or analytic differentiability. Those remain roadmap
-items in `knowledge/autodiff_geometry/formalization_roadmap.md`.
+items in `lab/math/autodiff_geometry/formalization_roadmap.md`.
 
 The toolchain and dependency graph are pinned by the shared Lake root in
 `../lean/`, so proof iteration reuses the same mathlib cache as the other Harp

@@ -14,7 +14,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary_directory = tempfile.TemporaryDirectory()
         self.repo_root = Path(self.temporary_directory.name)
-        self.knowledge = self.repo_root / "knowledge"
+        self.knowledge = self.repo_root / "lab"
         self.evidence = self.repo_root / "evidence"
         self.knowledge.mkdir()
         self.evidence.mkdir()
@@ -29,7 +29,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
         (self.evidence / "paper.pdf").write_bytes(b"%PDF-1.7\n")
         captured = self.evidence / "artifacts" / "capture.md"
         captured.parent.mkdir()
-        captured.write_text("[Captured](../../knowledge/b.md)\n", encoding="utf-8")
+        captured.write_text("[Captured](../../lab/b.md)\n", encoding="utf-8")
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
@@ -74,7 +74,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
 
         self.assertEqual(
             migrated,
-            "[[knowledge/b#Result boundary|Result]]\n"
+            "[[lab/b#Result boundary|Result]]\n"
             "[[evidence/source.txt|source]] ([exact lines 2–3](../evidence/source.txt#L2-L3))\n"
             "`[Code](b.md)`\n"
             "```md\n"
@@ -84,12 +84,12 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
 
     def test_migrates_root_relative_note_anchor_and_pdf_artifact(self) -> None:
         source = self.write_note(
-            "nested/a.md",
+            "agentic_engineering/a.md",
             "[Root](../b.md)\n"
             "[Same](#local-anchor)\n"
             "[PDF](../../evidence/paper.pdf)\n"
             "[Outside](https://example.test/reference)\n"
-            "[[knowledge/b|Existing wiki]]\n"
+            "[[lab/b|Existing wiki]]\n"
             "## Local anchor\n",
         )
 
@@ -101,11 +101,11 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
 
         self.assertEqual(
             migrated,
-            "[[knowledge/b|Root]]\n"
+            "[[lab/b|Root]]\n"
             "[[#Local anchor|Same]]\n"
             "[[evidence/paper.pdf|PDF]]\n"
             "[Outside](https://example.test/reference)\n"
-            "[[knowledge/b|Existing wiki]]\n"
+            "[[lab/b|Existing wiki]]\n"
             "## Local anchor\n",
         )
 
@@ -134,7 +134,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             "<details>\n"
             "<summary>Source notes</summary>\n"
             "\n"
-            "[[knowledge/b|Result]]\n"
+            "[[lab/b|Result]]\n"
             "\n"
             "```md\n"
             "[Literal](b.md)\n"
@@ -161,7 +161,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
 
         self.assertEqual(
             migrated,
-            "[[knowledge/b|what makes an improvement loop recursive]]\n"
+            "[[lab/b|what makes an improvement loop recursive]]\n"
             "```md\n"
             "[literal\n"
             "label](b.md)\n"
@@ -207,15 +207,15 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             self.repo_root,
         )
 
-        self.assertEqual(migrated, "[[knowledge/b#Result boundary|Result]]\n")
+        self.assertEqual(migrated, "[[lab/b#Result boundary|Result]]\n")
 
     def test_migrates_safe_directory_target_to_its_regular_readme(self) -> None:
         crate = self.repo_root / "lab" / "sicp"
         crate.mkdir(parents=True)
         (crate / "README.md").write_text("# SICP evaluator\n", encoding="utf-8")
         source = self.write_note(
-            "rsi/sicp/course/seminars/a.md",
-            "[SICP evaluator crate](../../../../../lab/sicp)\n",
+            "sicp/course/seminars/a.md",
+            "[SICP evaluator crate](../../../../lab/sicp)\n",
         )
 
         migrated = migration.migrate_text(
@@ -233,7 +233,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
         bundle.mkdir()
         (bundle / "PROVENANCE.md").write_text("captured source\n", encoding="utf-8")
         source = self.write_note(
-            "rsi/sicp/a.md", "[evidence/sicp/](../../../evidence/sicp)\n"
+            "sicp/a.md", "[evidence/sicp/](../../evidence/sicp)\n"
         )
 
         migrated = migration.migrate_text(
@@ -292,6 +292,10 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             "[Result](../../b.md)\n",
         )
         captured = self.evidence / "artifacts" / "capture.md"
+        for relative in ("benchmarks/tasks/captured.md", "soma/history/captured.md",
+                         "math/proof_reproduction/fixtures/captured.md",
+                         "math/autodiff_geometry/.lake/packages/captured.md"):
+            self.write_note(relative, "[Captured](missing-at-capture.md)\n")
 
         discovered = migration.discover_managed_notes(self.repo_root)
 
@@ -326,7 +330,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
         self.assertEqual(write.returncode, 0, write.stderr)
         self.assertEqual(
             source.read_text(encoding="utf-8"),
-            "[[knowledge/b#Result boundary|Result]]\n"
+            "[[lab/b#Result boundary|Result]]\n"
             "[[evidence/source.txt|source]] ([exact lines 2–3](../evidence/source.txt#L2-L3))\n",
         )
         self.assertEqual(
@@ -356,7 +360,7 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
 
     def test_cli_rejects_input_outside_managed_knowledge_roots(self) -> None:
         outside = self.repo_root / "notes.md"
-        outside.write_text("[Result](knowledge/b.md)\n", encoding="utf-8")
+        outside.write_text("[Result](lab/b.md)\n", encoding="utf-8")
 
         result = self.run_cli("--check", str(outside))
 

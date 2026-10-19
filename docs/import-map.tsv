@@ -42,7 +42,7 @@ knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2Froutes.ts	retired	-	Atlas browser an
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcontracts.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fgenerated%2Fchapters.json	generated	knowledge/generated/corpus.json	compiled headless corpus
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fgenerated%2Fchapters.json	generated	lab/generated/corpus.json	compiled headless corpus
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Ftypes.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fcontracts.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fengine.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
@@ -59,129 +59,129 @@ knowledge%2Frsi%2Fatlas%2Fapp%2Ftests%2Fstatic-export.test.mjs	retired	-	Atlas b
 knowledge%2Frsi%2Fatlas%2Fapp%2Ftsconfig.json	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fvite.config.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fvitest.config.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
-knowledge%2Frsi%2Fbounded_transitive_closure.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fautomated-research.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fdurable-improvement-workflows.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fevaluation-promotion-containment.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Ffoundation-model-inside-the-loop.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fharness-engineering.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fharness-search.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fjoint-harness-weight-adaptation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Fprocedure-internalization.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fchapters%2Frecursive-improvement-loop.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fclaim_evidence_ledger.md	rewritten	knowledge/agentic_engineering/claim_evidence_ledger.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fcodex_harness_deep_dive.md	rewritten	knowledge/agentic_engineering/codex_harness_deep_dive.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fcodex_state_continuity_and_compaction.md	rewritten	knowledge/agentic_engineering/codex_state_continuity_and_compaction.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fconcepts%2Fdurable-execution.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fevaluation-and-control.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fharness-components.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fharness-search-methods.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fimprovement-types.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fjoint-adaptation-methods.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fmodel-adaptation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fprocedure-representations.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fresearch-loop-components.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fconcepts%2Fsystem-state-and-notation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fcontext_engineering_deep_dive.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fcoverage-map.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Face.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fadas.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Faflow.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fahe.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Falphaevolve.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fcontinual-harness.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fdgm.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fmce.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fself-harness.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fself-refine.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fsia.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fstop.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fexport-schema.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Frules.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdiagnostics%2Fworksheet-fields.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fdomain_orientation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fevaluator_integrity_and_promotion.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fevidence_graph.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+knowledge%2Frsi%2Fbounded_transitive_closure.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fautomated-research.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fdurable-improvement-workflows.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fevaluation-promotion-containment.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Ffoundation-model-inside-the-loop.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fharness-engineering.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fharness-search.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fjoint-harness-weight-adaptation.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Fprocedure-internalization.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fchapters%2Frecursive-improvement-loop.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fclaim_evidence_ledger.md	rewritten	lab/agentic_engineering/claim_evidence_ledger.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fcodex_harness_deep_dive.md	rewritten	lab/agentic_engineering/codex_harness_deep_dive.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fcodex_state_continuity_and_compaction.md	rewritten	lab/agentic_engineering/codex_state_continuity_and_compaction.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fconcepts%2Fdurable-execution.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fevaluation-and-control.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fharness-components.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fharness-search-methods.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fimprovement-types.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fjoint-adaptation-methods.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fmodel-adaptation.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fprocedure-representations.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fresearch-loop-components.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fconcepts%2Fsystem-state-and-notation.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fcontext_engineering_deep_dive.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fcoverage-map.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Face.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fadas.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Faflow.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fahe.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Falphaevolve.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fcontinual-harness.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fdgm.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fmce.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fself-harness.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fself-refine.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fsia.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fcases%2Fstop.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fexport-schema.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Frules.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdiagnostics%2Fworksheet-fields.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fdomain_orientation.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fevaluator_integrity_and_promotion.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fevidence_graph.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 knowledge%2Frsi%2Fharness_deep_dive_manifest.tsv	rewritten	evidence/implementations/harness_deep_dive_manifest.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fhermes_harness_deep_dive.md	rewritten	knowledge/agentic_engineering/hermes_harness_deep_dive.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fimplementation_harnesses.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fimprovement_loop_taxonomy.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons%2F01-self-refine-vs-persistence.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons%2F02-ace-vs-mce.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons%2F03-adas-vs-aflow.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons%2F04-stop-vs-self-harness-ahe.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons%2F05-alphaevolve-vs-dgm.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Flessons%2F06-sia-vs-continual-harness.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fmissing_evidence.md	rewritten	knowledge/agentic_engineering/missing_evidence.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fpi_harness_deep_dive.md	rewritten	knowledge/agentic_engineering/pi_harness_deep_dive.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Frecursive_language_models_compositional_generalization.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fretained-concepts.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Frsi_harness_by_lil_log_deconstructed.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Frsi_index.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fcapstone%2Fharvest_architecture_dossier.md	rewritten	knowledge/sicp/course/capstone/agent_harness_architecture_dossier.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fhermes_harness_deep_dive.md	rewritten	lab/agentic_engineering/hermes_harness_deep_dive.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fimplementation_harnesses.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fimprovement_loop_taxonomy.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons%2F01-self-refine-vs-persistence.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons%2F02-ace-vs-mce.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons%2F03-adas-vs-aflow.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons%2F04-stop-vs-self-harness-ahe.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons%2F05-alphaevolve-vs-dgm.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Flessons%2F06-sia-vs-continual-harness.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fmissing_evidence.md	rewritten	lab/agentic_engineering/missing_evidence.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fpi_harness_deep_dive.md	rewritten	lab/agentic_engineering/pi_harness_deep_dive.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Frecursive_language_models_compositional_generalization.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fretained-concepts.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Frsi_harness_by_lil_log_deconstructed.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Frsi_index.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fcapstone%2Fharvest_architecture_dossier.md	rewritten	lab/sicp/course/capstone/agent_harness_architecture_dossier.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsicp%2Fcourse%2Fcoverage.tsv	rewritten	lab/sicp/contracts/course/coverage.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fdialogue_state.md	rewritten	knowledge/sicp/course/dialogue_state.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fexercise_map.md	rewritten	knowledge/sicp/course/exercise_map.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fscheme_reading_primer.md	rewritten	knowledge/sicp/course/scheme_reading_primer.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F01-process-shape-and-higher-order-abstraction.md	rewritten	knowledge/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F02-data-abstraction-and-immutable-representation.md	rewritten	knowledge/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F03-trees-sequences-and-functional-interfaces.md	rewritten	knowledge/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F04-symbols-sets-compression-and-generic-dispatch.md	rewritten	knowledge/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F05-state-identity-and-environments.md	rewritten	knowledge/sicp/course/seminars/05-state-identity-and-environments.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F06-mutation-simulation-and-constraints.md	rewritten	knowledge/sicp/course/seminars/06-mutation-simulation-and-constraints.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F07-concurrency-serialization-and-interleavings.md	rewritten	knowledge/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F08-streams-delay-and-infinite-processes.md	rewritten	knowledge/sicp/course/seminars/08-streams-delay-and-infinite-processes.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F09-eval-apply-and-executable-semantics.md	rewritten	knowledge/sicp/course/seminars/09-eval-apply-and-executable-semantics.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F10-lazy-evaluation-and-nondeterministic-search.md	rewritten	knowledge/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F11-logic-programming-and-declarative-query.md	rewritten	knowledge/sicp/course/seminars/11-logic-programming-and-declarative-query.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F12-machines-storage-control-and-compilation.md	rewritten	knowledge/sicp/course/seminars/12-machines-storage-control-and-compilation.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fsicp_course_guide.md	rewritten	knowledge/sicp/course/sicp_course_guide.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fdomain_orientation.md	rewritten	knowledge/sicp/domain_orientation.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Feval-apply-reader-companion.md	rewritten	knowledge/sicp/eval-apply-reader-companion.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fmetacircular_evaluator_deep_dive.md	rewritten	knowledge/sicp/metacircular_evaluator_deep_dive.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fmissing_evidence.md	rewritten	knowledge/sicp/missing_evidence.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fdialogue_state.md	rewritten	lab/sicp/course/dialogue_state.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fexercise_map.md	rewritten	lab/sicp/course/exercise_map.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fscheme_reading_primer.md	rewritten	lab/sicp/course/scheme_reading_primer.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F01-process-shape-and-higher-order-abstraction.md	rewritten	lab/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F02-data-abstraction-and-immutable-representation.md	rewritten	lab/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F03-trees-sequences-and-functional-interfaces.md	rewritten	lab/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F04-symbols-sets-compression-and-generic-dispatch.md	rewritten	lab/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F05-state-identity-and-environments.md	rewritten	lab/sicp/course/seminars/05-state-identity-and-environments.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F06-mutation-simulation-and-constraints.md	rewritten	lab/sicp/course/seminars/06-mutation-simulation-and-constraints.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F07-concurrency-serialization-and-interleavings.md	rewritten	lab/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F08-streams-delay-and-infinite-processes.md	rewritten	lab/sicp/course/seminars/08-streams-delay-and-infinite-processes.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F09-eval-apply-and-executable-semantics.md	rewritten	lab/sicp/course/seminars/09-eval-apply-and-executable-semantics.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F10-lazy-evaluation-and-nondeterministic-search.md	rewritten	lab/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F11-logic-programming-and-declarative-query.md	rewritten	lab/sicp/course/seminars/11-logic-programming-and-declarative-query.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fseminars%2F12-machines-storage-control-and-compilation.md	rewritten	lab/sicp/course/seminars/12-machines-storage-control-and-compilation.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fsicp_course_guide.md	rewritten	lab/sicp/course/sicp_course_guide.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fdomain_orientation.md	rewritten	lab/sicp/domain_orientation.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Feval-apply-reader-companion.md	rewritten	lab/sicp/eval-apply-reader-companion.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fmetacircular_evaluator_deep_dive.md	rewritten	lab/sicp/metacircular_evaluator_deep_dive.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fmissing_evidence.md	rewritten	lab/sicp/missing_evidence.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsicp%2Frun_receipt.md	omitted-%74arocco-specific	-	obsolete source-repository run receipt
-knowledge%2Frsi%2Fsicp%2Fsicp_index.md	rewritten	knowledge/sicp/sicp_index.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsicp%2Fsicp_index.md	rewritten	lab/sicp/sicp_index.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsicp%2Fsources%2Fartifact_digests.tsv	omitted-%74arocco-specific	-	obsolete whole-run digest receipt
 knowledge%2Frsi%2Fsicp%2Fsources%2Fevidence_graph.tsv	rewritten	lab/sicp/contracts/sources/evidence_graph.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fsicp%2Fsources%2Fharness_revisions.tsv	rewritten	lab/sicp/contracts/sources/harness_revisions.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fsicp%2Fsources%2Fmaterialize_harness_sources.sh	replaced	cli/src/sources.rs	hardened public-source materializer
 knowledge%2Frsi%2Fsicp%2Fsources%2Fsource_registry.tsv	rewritten	lab/sicp/contracts/sources/source_registry.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fsource_registry.md	rewritten	knowledge/agentic_engineering/source_registry.md	relocated retained educational or engineering material
+knowledge%2Frsi%2Fsource_registry.md	rewritten	lab/agentic_engineering/source_registry.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsources%2Fcodex-state-continuity-claims.tsv	rewritten	evidence/sources/codex-state-continuity-claims.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fsources%2Fcodex-state-continuity-provenance.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsources%2Fevidence_graph.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+knowledge%2Frsi%2Fsources%2Fcodex-state-continuity-provenance.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsources%2Fevidence_graph.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 knowledge%2Frsi%2Fsources%2Fsource_registry.tsv	rewritten	evidence/sources/source_registry.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fsystem_state_and_notation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Face.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fadas.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Faflow.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fahe.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fai-scientist.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Falphaevolve.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fautoresearch.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fcontinual-harness.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fdgm.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fharness-disentangle.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fmce.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fmeta-harness.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Frlm.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fself-harness.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fsia.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fstop.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fsystem_readings.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsystems%2Fsystem_readings_index.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng-reading-map.json	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F01-system-being-improved.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F02-harness-design-patterns.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F03-harness-layer-vs-core-intelligence.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F04-context-engineering.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F05-workflow-design-and-search.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F06-self-improving-harnesses.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F07-evolutionary-search.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F08-joint-harness-weight-optimization.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fweng%2F09-future-challenges.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+knowledge%2Frsi%2Fsystem_state_and_notation.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Face.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fadas.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Faflow.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fahe.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fai-scientist.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Falphaevolve.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fautoresearch.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fcontinual-harness.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fdgm.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fharness-disentangle.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fmce.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fmeta-harness.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Frlm.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fself-harness.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fsia.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fstop.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fsystem_readings.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fsystems%2Fsystem_readings_index.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng-reading-map.json	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F01-system-being-improved.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F02-harness-design-patterns.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F03-harness-layer-vs-core-intelligence.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F04-context-engineering.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F05-workflow-design-and-search.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F06-self-improving-harnesses.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F07-evolutionary-search.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F08-joint-harness-weight-optimization.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+knowledge%2Frsi%2Fweng%2F09-future-challenges.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 learning%2Fsicp_evaluator%2FCargo.lock	ported	lab/sicp/Cargo.lock	standalone workspace member
 learning%2Fsicp_evaluator%2FCargo.toml	ported	lab/sicp/Cargo.toml	standalone workspace member
 learning%2Fsicp_evaluator%2FREADME.md	rewritten	lab/sicp/README.md	standalone workspace member
@@ -193,329 +193,329 @@ learning%2Fsicp_evaluator%2Fsrc%2Fmain.rs	ported	lab/sicp/src/main.rs	standalone
 src%2Fcommands%2Fknowledge%2F%71%6D%64_index.rs	replaced	cli/src/search.rs	bundled SQLite FTS5 search
 src%2Fcommands%2Fknowledge%2Frsi.rs	rewritten	cli/src/corpus/mod.rs	standalone corpus compiler
 src%2Fcommands%2Fknowledge%2Frsi%2Fcontracts.rs	rewritten	cli/src/corpus/contracts.rs	standalone paths and adapters
-src%2Fcommands%2Fknowledge%2Frsi%2Flessons.rs	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+src%2Fcommands%2Fknowledge%2Frsi%2Flessons.rs	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 src%2Fcommands%2Fknowledge%2Frsi%2Frender.rs	rewritten	cli/src/corpus/render.rs	standalone paths and adapters
-src%2Fcommands%2Fknowledge%2Frsi%2Frules.rs	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+src%2Fcommands%2Fknowledge%2Frsi%2Frules.rs	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 src%2Fcommands%2Fknowledge%2Frsi%2Ftests.rs	rewritten	cli/src/corpus/tests.rs	standalone paths and adapters
 tests%2F%71%6D%64_index_cli.rs	replaced	cli/src/search.rs	bundled SQLite FTS5 search
 third_party%2Fa1zhang-rlm-harness-generalization%2F.gitattributes	replaced	.gitattributes	root binary LFS policy
-third_party%2Fa1zhang-rlm-harness-generalization%2F%54%41%52%4F%43%43%4F_PROVENANCE.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Facquire.sh	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifact_inventory.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fgit%2FLICENSE	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fgit%2FREADME.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fhtml%2Flanguage-model-harnesses-are-compositional-generalizers.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig1a_rlm_trajectory_isomorphism.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig1b_length_strategy_generalization_lift.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig2_mgh_long_task_decomposition.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig3_locally_in_distribution.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig4_context_offloading_programmatic_subcalls.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig5_length_generalization_curves.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig6_strategy_generalization_curves.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig7_trajectory_similarity.png	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fpdf%2Frecursive-language-models-2512.24601v3.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Farxiv-bibliography.xsl	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fmanifest.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fmetadata%2Frecursive-language-models-2512.24601v3-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fmetadata%2Frecursive-language-models-2512.24601v3-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Freferences%2Flocally_in_distribution.bib	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Freferences%2Frlm-paper-citations.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Frun-receipt.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Fsources.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Ftext%2Flanguage-model-harnesses-are-compositional-generalizers.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Ftext%2Frecursive-language-models-2512.24601v3.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Fa1zhang-rlm-harness-generalization%2Ftext%2Frlm-repository-readme.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2F%54%41%52%4F%43%43%4F_PROVENANCE.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Facquire.sh	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifact_inventory.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fgit%2FLICENSE	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fgit%2FREADME.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fhtml%2Flanguage-model-harnesses-are-compositional-generalizers.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig1a_rlm_trajectory_isomorphism.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig1b_length_strategy_generalization_lift.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig2_mgh_long_task_decomposition.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig3_locally_in_distribution.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig4_context_offloading_programmatic_subcalls.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig5_length_generalization_curves.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig6_strategy_generalization_curves.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fimages%2Ffig7_trajectory_similarity.png	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fartifacts%2Fpdf%2Frecursive-language-models-2512.24601v3.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Farxiv-bibliography.xsl	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fmanifest.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fmetadata%2Frecursive-language-models-2512.24601v3-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fmetadata%2Frecursive-language-models-2512.24601v3-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Freferences%2Flocally_in_distribution.bib	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Freferences%2Frlm-paper-citations.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Frun-receipt.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Fsources.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Ftext%2Flanguage-model-harnesses-are-compositional-generalizers.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Ftext%2Frecursive-language-models-2512.24601v3.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Fa1zhang-rlm-harness-generalization%2Ftext%2Frlm-repository-readme.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 third_party%2Frsi-weng-citation-closure%2F.gitattributes	replaced	.gitattributes	root binary LFS policy
-third_party%2Frsi-weng-citation-closure%2F%54%41%52%4F%43%43%4F_PROVENANCE.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Facquire.sh	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifact_inventory.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fgit%2Fkarpathy-autoresearch%2FREADME.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fai-scientist.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fanthropic-rsi.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Ffunsearch.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fgodel-machine.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fweng-harness.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fweng-reward.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fyudkowsky-2008.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fabsolute-zero.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Face.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fadas.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Faflow.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fahe.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Falphaevolve.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fasp.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fautodata.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fconcrete-safety.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fcontinual-harness.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fcorebench.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fdemoevolve.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fdgm.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fepistemic-discovery.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fgepa.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fgood-1965.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fgpt5-science.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fharness-disentangle.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fhyperagents.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fkernelbench.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Flearning-discover.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fmce.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fmeta-harness.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fmlebench.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fnot-scientists.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fpaperbench.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fpromptbreeder.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fqd-2016.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Frebench.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fscienceagentbench.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fscientistone.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fself-harness.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fself-refine.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fself-rewarding.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fshinkaevolve.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fsia.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fspin.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fstop.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fthetaevolve.pdf	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Farxiv-bibliography.xsl	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fclosure_edges.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Flicense_assignments.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-4.0.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-NC-ND-4.0.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-NC-SA-4.0.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-SA-4.0.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Flicenses%2Farxiv-nonexclusive-distribution-1.0.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmanifest.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fabsolute-zero-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fabsolute-zero-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Face-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Face-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Faflow-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fahe-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fahe-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Falphaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fasp-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fasp-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fautodata-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fautodata-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fconcrete-safety-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcontinual-harness-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcontinual-harness-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcorebench-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcorebench-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdemoevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdemoevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdgm-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdgm-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fepistemic-discovery-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fepistemic-discovery-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fgepa-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fgpt5-science-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fgpt5-science-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fharness-disentangle-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fharness-disentangle-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fhyperagents-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fkernelbench-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fkernelbench-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Flearning-discover-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Flearning-discover-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmce-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmce-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmeta-harness-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmeta-harness-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmlebench-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fnot-scientists-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fnot-scientists-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fpromptbreeder-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fpromptbreeder-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscienceagentbench-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscienceagentbench-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscientistone-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscientistone-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-harness-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-harness-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-refine-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-rewarding-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-rewarding-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fshinkaevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fshinkaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fsia-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fsia-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fspin-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fspin-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fstop-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fthetaevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fthetaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Foutgoing_citations.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+third_party%2Frsi-weng-citation-closure%2F%54%41%52%4F%43%43%4F_PROVENANCE.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Facquire.sh	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifact_inventory.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fgit%2Fkarpathy-autoresearch%2FREADME.md	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fai-scientist.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fanthropic-rsi.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Ffunsearch.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fgodel-machine.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fweng-harness.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fweng-reward.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fhtml%2Fyudkowsky-2008.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fabsolute-zero.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Face.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fadas.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Faflow.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fahe.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Falphaevolve.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fasp.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fautodata.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fconcrete-safety.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fcontinual-harness.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fcorebench.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fdemoevolve.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fdgm.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fepistemic-discovery.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fgepa.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fgood-1965.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fgpt5-science.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fharness-disentangle.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fhyperagents.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fkernelbench.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Flearning-discover.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fmce.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fmeta-harness.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fmlebench.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fnot-scientists.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fpaperbench.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fpromptbreeder.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fqd-2016.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Frebench.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fscienceagentbench.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fscientistone.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fself-harness.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fself-refine.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fself-rewarding.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fshinkaevolve.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fsia.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fspin.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fstop.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fartifacts%2Fpdf%2Fthetaevolve.pdf	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Farxiv-bibliography.xsl	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fclosure_edges.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Flicense_assignments.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-4.0.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-NC-ND-4.0.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-NC-SA-4.0.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Flicenses%2FCC-BY-SA-4.0.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Flicenses%2Farxiv-nonexclusive-distribution-1.0.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmanifest.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fabsolute-zero-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fabsolute-zero-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Face-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Face-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Faflow-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fahe-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fahe-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Falphaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fasp-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fasp-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fautodata-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fautodata-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fconcrete-safety-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcontinual-harness-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcontinual-harness-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcorebench-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fcorebench-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdemoevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdemoevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdgm-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fdgm-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fepistemic-discovery-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fepistemic-discovery-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fgepa-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fgpt5-science-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fgpt5-science-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fharness-disentangle-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fharness-disentangle-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fhyperagents-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fkernelbench-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fkernelbench-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Flearning-discover-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Flearning-discover-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmce-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmce-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmeta-harness-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmeta-harness-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fmlebench-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fnot-scientists-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fnot-scientists-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fpromptbreeder-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fpromptbreeder-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscienceagentbench-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscienceagentbench-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscientistone-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fscientistone-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-harness-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-harness-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-refine-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-rewarding-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fself-rewarding-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fshinkaevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fshinkaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fsia-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fsia-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fspin-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fspin-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fstop-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fthetaevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fthetaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Foutgoing_citations.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 third_party%2Frsi-weng-citation-closure%2F%71%6D%64-index.sh	replaced	cli/src/search.rs	bundled SQLite FTS5 search
 third_party%2Frsi-weng-citation-closure%2F%71%6D%64-receipt.tsv	replaced	cli/src/search.rs	bundled SQLite FTS5 search
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fabsolute-zero.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Face.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fadas.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Faflow.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fahe.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fai-scientist.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Falphaevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fanthropic-rsi.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fasp.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fautodata.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fconcrete-safety.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fcontinual-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fcorebench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fdemoevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fdgm.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fepistemic-discovery.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Ffunsearch.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgepa.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgodel-machine.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgood-1965.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgpt5-science.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fharness-disentangle.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fhyperagents.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fkarpathy-autoresearch.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fkernelbench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Flearning-discover.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fmce.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fmeta-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fmlebench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fnot-scientists.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fpaperbench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fpromptbreeder.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fqd-2016.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Frebench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fscienceagentbench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fscientistone.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fself-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fself-refine.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fself-rewarding.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fshinkaevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fsia.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fspin.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fstop.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fthetaevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fweng-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fweng-reward.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freceipts%2Fyudkowsky-2008.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fabsolute-zero.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Face.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fadas.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Faflow.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fahe.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fai-scientist.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Falphaevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fasp.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fautodata.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fconcrete-safety.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fcontinual-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fcorebench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fdemoevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fdgm.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fepistemic-discovery.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Ffunsearch.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fgepa.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fgodel-machine.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fgpt5-science.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fharness-disentangle.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fhyperagents.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fkernelbench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Flearning-discover.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fmce.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fmeta-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fmlebench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fnot-scientists.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fpaperbench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fpromptbreeder.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fqd-2016.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Frebench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fscienceagentbench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fscientistone.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fself-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fself-refine.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fself-rewarding.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fshinkaevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fsia.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fspin.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstop.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fabsolute-zero.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fahe.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Falphaevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fasp.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fautodata.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fconcrete-safety.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fcontinual-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fcorebench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fdemoevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fdgm.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fepistemic-discovery.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fgpt5-science.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fharness-disentangle.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fkernelbench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Flearning-discover.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fmce.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fmeta-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fnot-scientists.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fpromptbreeder.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fscienceagentbench.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fscientistone.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fself-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fself-rewarding.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fshinkaevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fsia.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fspin.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fthetaevolve.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fweng-harness.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fweng-reward.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fthetaevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fweng-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Freferences%2Fweng-reward.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Frun-receipt.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Fsources.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fabsolute-zero.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Face.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fadas.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Faflow.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fahe.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fai-scientist.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Falphaevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fanthropic-rsi.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fasp.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fautodata.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fconcrete-safety.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fcontinual-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fcorebench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fdemoevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fdgm.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fepistemic-discovery.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Ffunsearch.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fgepa.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fgodel-machine.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fgood-1965.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fgpt5-science.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fharness-disentangle.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fhyperagents.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fkarpathy-autoresearch.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fkernelbench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Flearning-discover.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fmce.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fmeta-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fmlebench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fnot-scientists.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fpaperbench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fpromptbreeder.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fqd-2016.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Frebench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fscienceagentbench.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fscientistone.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fself-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fself-refine.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fself-rewarding.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fshinkaevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fsia.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fspin.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fstop.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fthetaevolve.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fweng-harness.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fweng-reward.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2Ftext%2Fyudkowsky-2008.txt	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fabsolute-zero.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Face.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fadas.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Faflow.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fahe.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fai-scientist.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Falphaevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fanthropic-rsi.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fasp.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fautodata.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fconcrete-safety.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fcontinual-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fcorebench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fdemoevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fdgm.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fepistemic-discovery.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Ffunsearch.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgepa.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgodel-machine.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgood-1965.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fgpt5-science.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fharness-disentangle.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fhyperagents.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fkarpathy-autoresearch.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fkernelbench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Flearning-discover.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fmce.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fmeta-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fmlebench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fnot-scientists.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fpaperbench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fpromptbreeder.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fqd-2016.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Frebench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fscienceagentbench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fscientistone.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fself-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fself-refine.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fself-rewarding.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fshinkaevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fsia.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fspin.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fstop.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fthetaevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fweng-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fweng-reward.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freceipts%2Fyudkowsky-2008.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fabsolute-zero.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Face.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fadas.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Faflow.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fahe.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fai-scientist.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Falphaevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fasp.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fautodata.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fconcrete-safety.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fcontinual-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fcorebench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fdemoevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fdgm.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fepistemic-discovery.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Ffunsearch.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fgepa.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fgodel-machine.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fgpt5-science.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fharness-disentangle.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fhyperagents.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fkernelbench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Flearning-discover.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fmce.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fmeta-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fmlebench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fnot-scientists.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fpaperbench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fpromptbreeder.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fqd-2016.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Frebench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fscienceagentbench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fscientistone.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fself-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fself-refine.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fself-rewarding.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fshinkaevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fsia.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fspin.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstop.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fabsolute-zero.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fahe.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Falphaevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fasp.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fautodata.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fconcrete-safety.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fcontinual-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fcorebench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fdemoevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fdgm.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fepistemic-discovery.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fgpt5-science.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fharness-disentangle.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fkernelbench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Flearning-discover.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fmce.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fmeta-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fnot-scientists.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fpromptbreeder.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fscienceagentbench.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fscientistone.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fself-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fself-rewarding.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fshinkaevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fsia.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fspin.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fthetaevolve.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fweng-harness.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fstructured%2Fweng-reward.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fthetaevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fweng-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Freferences%2Fweng-reward.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Frun-receipt.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Fsources.tsv	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fabsolute-zero.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Face.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fadas.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Faflow.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fahe.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fai-scientist.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Falphaevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fanthropic-rsi.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fasp.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fautodata.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fconcrete-safety.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fcontinual-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fcorebench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fdemoevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fdgm.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fepistemic-discovery.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Ffunsearch.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fgepa.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fgodel-machine.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fgood-1965.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fgpt5-science.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fharness-disentangle.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fhyperagents.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fkarpathy-autoresearch.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fkernelbench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Flearning-discover.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fmce.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fmeta-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fmlebench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fnot-scientists.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fpaperbench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fpromptbreeder.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fqd-2016.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Frebench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fscienceagentbench.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fscientistone.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fself-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fself-refine.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fself-rewarding.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fshinkaevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fsia.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fspin.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fstop.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fthetaevolve.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fweng-harness.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fweng-reward.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
+third_party%2Frsi-weng-citation-closure%2Ftext%2Fyudkowsky-2008.txt	retired	-	RSI article product retired; brief survey retained at lab/article_survey.md
 third_party%2Fsicp-2e%2FLICENSE.txt	ported	evidence/sicp/LICENSE.txt	captured bytes preserved
 third_party%2Fsicp-2e%2F%54%41%52%4F%43%43%4F_PROVENANCE.md	rewritten	evidence/sicp/PROVENANCE.md	Harp paths and metadata
 third_party%2Fsicp-2e%2Fmanifest.tsv	rewritten	evidence/sicp/manifest.tsv	Harp paths and metadata

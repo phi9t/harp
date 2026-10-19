@@ -42,9 +42,9 @@ insula/                     capsule, rootfs, projection and isolation mechanisms
 runner/                     SSH transport, preflight, request/result transfer
   hosts.example.toml        fictional example only
 lab/
-  math/                     Lean developments and proof companion programs
+  math/                     Lean developments, mathematical prose and textbook
     textbook/               textbook coverage, exercises and compatibility JSON
-  sicp/                     evaluator and executable educational exercises
+  sicp/                     evaluator, course prose and educational exercises
   benchmarks/               retained terminal/build/coding task collections
     legacy_runtime/         isolated historical Rust runtime qualification workspace
   soma/                     Emacs/Doom environment, gym, probes and AI/LSP workloads
@@ -53,8 +53,6 @@ lab/
   training/                 small transformer training workload
 cli/                        Harp Rust CLI and supporting product library
 sessions/                   rollout indexing and session analysis
-knowledge/                  maintained shared prose, including math and SICP
-  # Workload contracts live beside math/SICP; context contracts live in durable/.
 evidence/                   captured bytes, licenses, provenance, qualification
 tools/                      shared authoring, PDF and repository tools
 scripts/                    repository verification and maintenance
@@ -63,8 +61,8 @@ docs/                       product/operator documentation and decisions
 ```
 
 `lab/` describes the role of executable work, not its quality or importance.
-Novel Crouzeix proofs remain maintained work. Shared prose, coverage contracts
-and captured evidence keep their canonical ownership; each workload manifest
+Novel Crouzeix proofs remain maintained work. Maintained prose and coverage contracts live beside their workloads;
+captured evidence keeps its original location and bytes; each workload manifest
 names those inputs explicitly. Moving executable proofs does not require copying
 the textbook, changing captured source bytes or creating a second prose authority.
 
@@ -372,5 +370,14 @@ for schema checks.
 The generic content directory is removed. Textbook JSON lives under
 lab/math/textbook, SICP records under lab/sicp/contracts, embedded workflow context
 under durable/context, and shared source records under evidence/sources. The
-compiled corpus is knowledge/generated/corpus.json. Original evidence and
+compiled corpus is lab/generated/corpus.json. Original evidence and
 historical qualification source identities remain distinct from current checks.
+
+## Knowledge consolidation
+
+Maintained mathematical and SICP prose now lives beside its workload under `lab/`.
+Benchmark notes live under `lab/benchmarks/`, shared implementation studies under
+`lab/agentic_engineering/`, and portable navigation under `lab/obsidian/`. The
+headless corpus is generated at `lab/generated/corpus.json`. Registered document
+IDs and the `harp-knowledge/v1` schema remain unchanged. Captured upstream sources
+stay in `evidence/`. See [ticket 16](../../../.scratch/repo-architecture/issues/16-merge-knowledge-into-lab.md).

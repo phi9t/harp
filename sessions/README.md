@@ -8,7 +8,7 @@ Trace dialect `traecli.dual_stream.v1` (`event_msg` ∪ `history_mutation`).
 See:
 
 - `docs/adr/0003-session-analyzer-raw-rollouts-pluggable-dialects.md`
-- `knowledge/investigations/local/long-horizon-trace-analysis/20260904-traecli-long-horizon/dialects/traecli-dual-stream/SPEC.md`
+- `lab/investigations/local/long-horizon-trace-analysis/20260904-traecli-long-horizon/dialects/traecli-dual-stream/SPEC.md`
 
 ## CLI
 

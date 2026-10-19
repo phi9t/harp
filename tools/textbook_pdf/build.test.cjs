@@ -47,7 +47,7 @@ test('edition provenance does not claim unpublished local work or a missing chap
 });
 
 test('unavailable references do not redirect to unrelated edition notes', () => {
-  const html=renderForTest('[[knowledge/crouzeix_textbook/nonexistent-fixture|Missing]]');
+  const html=renderForTest('[[lab/math/crouzeix_textbook/nonexistent-fixture|Missing]]');
   assert.match(html,/#unavailable-ref-/);
   assert.doesNotMatch(html,/#edition/);
 });

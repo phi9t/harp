@@ -65,7 +65,7 @@ forces the constant two remains an explicit Jin-route preview.
 - `part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md`
 
 The repository-root versions of these paths live under
-`knowledge/crouzeix_textbook/`. Their 30 CFT identifiers, anchors, public Lean
+`lab/math/crouzeix_textbook/`. Their 30 CFT identifiers, anchors, public Lean
 names, and 30 exercise identifiers are stable.
 
 ## Complete theorem-card shape

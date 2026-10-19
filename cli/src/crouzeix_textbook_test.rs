@@ -218,37 +218,37 @@ fn copy_v2_fixture() -> tempfile::TempDir {
     }
     let knowledge = temp
         .path()
-        .join("knowledge/crouzeix_textbook/part_01_linear_structure");
+        .join("lab/math/crouzeix_textbook/part_01_linear_structure");
     fs::create_dir_all(&knowledge).expect("v2 fixture knowledge directory");
     fs::copy(
         Path::new(env!("CARGO_MANIFEST_DIR"))
             .join(V2_FIXTURE)
-            .join("knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md"),
+            .join("lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md"),
         knowledge.join("01_objects_and_representations.md"),
     )
     .expect("copy v2 fixture chapter");
     fs::copy(
         Path::new(env!("CARGO_MANIFEST_DIR"))
             .join(V2_FIXTURE)
-            .join("knowledge/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md"),
+            .join("lab/math/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md"),
         knowledge.join("02_vector_spaces_and_subspaces.md"),
     )
     .expect("copy second v2 fixture chapter");
     fs::copy(
         Path::new(env!("CARGO_MANIFEST_DIR"))
             .join(V2_FIXTURE)
-            .join("knowledge/crouzeix_textbook/reading_guide.md"),
+            .join("lab/math/crouzeix_textbook/reading_guide.md"),
         temp.path()
-            .join("knowledge/crouzeix_textbook/reading_guide.md"),
+            .join("lab/math/crouzeix_textbook/reading_guide.md"),
     )
     .expect("copy v2 fixture support document");
     for name in ["source_registry.md", "claim_evidence_ledger.md"] {
         fs::copy(
             Path::new(env!("CARGO_MANIFEST_DIR"))
                 .join(V2_FIXTURE)
-                .join("knowledge/crouzeix_textbook")
+                .join("lab/math/crouzeix_textbook")
                 .join(name),
-            temp.path().join("knowledge/crouzeix_textbook").join(name),
+            temp.path().join("lab/math/crouzeix_textbook").join(name),
         )
         .unwrap_or_else(|error| panic!("copy v2 fixture {name}: {error}"));
     }
@@ -298,7 +298,7 @@ fn mutate_fixture_json(root: &Path, name: &str, mutate: impl FnOnce(&mut Value))
 }
 
 fn mutate_fixture_markdown(root: &Path, name: &str, mutate: impl FnOnce(String) -> String) {
-    let path = root.join("knowledge/crouzeix_textbook").join(name);
+    let path = root.join("lab/math/crouzeix_textbook").join(name);
     let markdown = fs::read_to_string(&path).expect("read fixture Markdown");
     fs::write(path, mutate(markdown)).expect("write mutated fixture Markdown");
 }
@@ -369,12 +369,12 @@ fn assert_has_diagnostic(
 
 fn first_fixture_chapter(root: &Path) -> PathBuf {
     root.join(
-        "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md",
+        "lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md",
     )
 }
 
 fn fixture_support_document(root: &Path) -> PathBuf {
-    root.join("knowledge/crouzeix_textbook/reading_guide.md")
+    root.join("lab/math/crouzeix_textbook/reading_guide.md")
 }
 
 fn mutate_first_theorem_card(root: &Path, mutate: impl FnOnce(&str) -> String) {
@@ -759,7 +759,7 @@ fn scan_retired_references_at(root: &Path, paths: &[PathBuf]) -> Result<Vec<Stri
 
 fn deletion_guard_excludes(path: &Path) -> bool {
     path.starts_with("docs")
-        || path == Path::new("knowledge/generated/corpus.json")
+        || path == Path::new("lab/generated/corpus.json")
         || path == Path::new("evidence/provenance/absorption.json")
 }
 
@@ -1012,7 +1012,7 @@ fn deletion_guard_matches_retired_spellings_including_knowledge() {
     let mut paths = Vec::new();
     for (index, spelling) in cases.iter().enumerate() {
         let relative = if index == 3 {
-            PathBuf::from("knowledge/crouzeix_textbook/retired-reference.md")
+            PathBuf::from("lab/math/crouzeix_textbook/retired-reference.md")
         } else {
             PathBuf::from(format!("src/reference-{index}.txt"))
         };
@@ -1047,8 +1047,8 @@ fn deletion_guard_excludes_docs_and_exact_generated_or_provenance_artifacts() {
         .into_owned();
     let paths = [
         PathBuf::from("docs/retired-reference.md"),
-        PathBuf::from("knowledge/generated/corpus.json"),
-        PathBuf::from("knowledge/generated/not-corpus.json"),
+        PathBuf::from("lab/generated/corpus.json"),
+        PathBuf::from("lab/generated/not-corpus.json"),
         PathBuf::from("evidence/provenance/absorption.json"),
         PathBuf::from("evidence/provenance/not-absorption.json"),
     ];
@@ -2183,7 +2183,7 @@ fn canonical_identity_maps_all_current_documents_and_legacy_mismatches() {
             && string(route, "legacy_concept_id", "route")
                 == "crouzeix-textbook-chapter-01"
             && string(route, "canonical_path", "route")
-                == "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md"
+                == "lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md"
     }));
 }
 
@@ -2531,7 +2531,7 @@ fn rejects_nonregular_symlinked_chapter() {
         .unwrap();
     assert_eq!(
         diagnostic.path.as_deref(),
-        Some(Path::new("knowledge/crouzeix_textbook"))
+        Some(Path::new("lab/math/crouzeix_textbook"))
     );
     assert!(diagnostic.expected.contains("Markdown tree"));
 }
@@ -2556,7 +2556,7 @@ fn rejects_nonregular_fifo_and_markdown_directory_nodes() {
     let fifo_fixture = copy_v2_fixture();
     let fifo = fifo_fixture
         .path()
-        .join("knowledge/crouzeix_textbook/injected.md");
+        .join("lab/math/crouzeix_textbook/injected.md");
     let status = Command::new("mkfifo")
         .arg(&fifo)
         .status()
@@ -2574,7 +2574,7 @@ fn rejects_nonregular_fifo_and_markdown_directory_nodes() {
     fs::create_dir(
         directory_fixture
             .path()
-            .join("knowledge/crouzeix_textbook/injected.md"),
+            .join("lab/math/crouzeix_textbook/injected.md"),
     )
     .expect("create Markdown-named directory");
     let diagnostics =
@@ -2590,7 +2590,7 @@ fn rejects_nonregular_fifo_and_markdown_directory_nodes() {
 #[test]
 fn rejects_nonregular_bounded_discovery_limits() {
     let depth = copy_v2_fixture();
-    let mut nested = depth.path().join("knowledge/crouzeix_textbook");
+    let mut nested = depth.path().join("lab/math/crouzeix_textbook");
     for index in 0..9 {
         nested.push(format!("level-{index}"));
     }
@@ -2605,7 +2605,7 @@ fn rejects_nonregular_bounded_discovery_limits() {
     );
 
     let entries = copy_v2_fixture();
-    let root = entries.path().join("knowledge/crouzeix_textbook");
+    let root = entries.path().join("lab/math/crouzeix_textbook");
     for index in 0..257 {
         fs::write(root.join(format!("entry-{index}.txt")), b"entry").expect("write packet entry");
     }
@@ -2618,7 +2618,7 @@ fn rejects_nonregular_bounded_discovery_limits() {
     );
 
     let files = copy_v2_fixture();
-    let root = files.path().join("knowledge/crouzeix_textbook");
+    let root = files.path().join("lab/math/crouzeix_textbook");
     for index in 0..65 {
         fs::write(root.join(format!("extra-{index}.md")), b"file").expect("write packet Markdown");
     }
@@ -2631,7 +2631,7 @@ fn rejects_nonregular_bounded_discovery_limits() {
     );
 
     let aggregate = copy_v2_fixture();
-    let root = aggregate.path().join("knowledge/crouzeix_textbook");
+    let root = aggregate.path().join("lab/math/crouzeix_textbook");
     for index in 0..9 {
         fs::write(
             root.join(format!("large-{index}.md")),
@@ -2652,7 +2652,7 @@ fn rejects_nonregular_bounded_discovery_limits() {
         .unwrap();
     assert_eq!(
         diagnostic.path.as_deref(),
-        Some(Path::new("knowledge/crouzeix_textbook"))
+        Some(Path::new("lab/math/crouzeix_textbook"))
     );
     assert!(diagnostic.expected.contains("4194304 aggregate bytes"));
 }
@@ -3393,7 +3393,7 @@ fn evidence_rejects_zero_parsed_and_mixed_claim_source_identities() {
         let fixture = copy_v2_fixture();
         mutate_fixture_markdown(fixture.path(), "claim_evidence_ledger.md", |markdown| {
             markdown.replacen(
-                "[[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
+                "[[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
                 source,
                 1,
             )
@@ -3410,8 +3410,8 @@ fn evidence_rejects_zero_parsed_and_mixed_claim_source_identities() {
     let fixture = copy_v2_fixture();
     mutate_fixture_markdown(fixture.path(), "claim_evidence_ledger.md", |markdown| {
         markdown.replacen(
-            "[[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
-            "[[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]], [[knowledge/crouzeix_textbook/source_registry#unknown-source|UNKNOWN-SOURCE]]",
+            "[[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
+            "[[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]], [[lab/math/crouzeix_textbook/source_registry#unknown-source|UNKNOWN-SOURCE]]",
             1,
         )
     });
@@ -3489,13 +3489,13 @@ fn evidence_rejects_organizational_source_headings_without_source_record_bodies(
 #[test]
 fn evidence_requires_source_wikilinks_to_resolve_the_registered_path_and_anchor() {
     for replacement in [
-        "[[knowledge/crouzeix_textbook/reading_guide#crouzeix-packet|CROUZEIX-PACKET]]",
-        "[[knowledge/crouzeix_textbook/source_registry#lax-2007|CROUZEIX-PACKET]]",
+        "[[lab/math/crouzeix_textbook/reading_guide#crouzeix-packet|CROUZEIX-PACKET]]",
+        "[[lab/math/crouzeix_textbook/source_registry#lax-2007|CROUZEIX-PACKET]]",
     ] {
         let fixture = copy_v2_fixture();
         mutate_fixture_markdown(fixture.path(), "claim_evidence_ledger.md", |markdown| {
             markdown.replacen(
-                "[[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
+                "[[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
                 replacement,
                 1,
             )
@@ -3514,7 +3514,7 @@ fn evidence_requires_source_wikilinks_to_resolve_the_registered_path_and_anchor(
 fn evidence_rejects_nonexistent_locator_files_and_heading_anchors() {
     for locator in [
         "`fixture/Missing.lean:1`.",
-        "[[knowledge/crouzeix_textbook/reading_guide#missing-anchor|Missing]].",
+        "[[lab/math/crouzeix_textbook/reading_guide#missing-anchor|Missing]].",
     ] {
         let fixture = copy_v2_fixture();
         mutate_fixture_markdown(fixture.path(), "claim_evidence_ledger.md", |markdown| {
@@ -3535,8 +3535,8 @@ fn evidence_ignores_fake_fields_inside_code_and_preserves_multiline_fields() {
     let fenced = copy_v2_fixture();
     mutate_fixture_markdown(fenced.path(), "claim_evidence_ledger.md", |markdown| {
         markdown.replacen(
-            "- Source: [[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
-            "```text\n- Source: [[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]\n```",
+            "- Source: [[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
+            "```text\n- Source: [[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]\n```",
             1,
         )
     });
@@ -3592,7 +3592,7 @@ fn evidence_priority_detection_avoids_sequencing_and_rejects_same_route_bypasses
             )
             .replacen(
                 "- Locator: `fixture/Compile.lean:1`.",
-                "- Locator: `fixture/Compile.lean:1`.\n- Priority evidence source: [[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]\n- Priority evidence locator: `fixture/Compile.lean:1`.",
+                "- Locator: `fixture/Compile.lean:1`.\n- Priority evidence source: [[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]\n- Priority evidence locator: `fixture/Compile.lean:1`.",
                 1,
             )
     });
@@ -3644,7 +3644,7 @@ fn evidence_compares_priority_locators_by_resolved_route_identity() {
             )
             .replacen(
                 "- Locator: `fixture/Compile.lean:1`.",
-                "- Locator: [[fixture/Compile.lean|Main display]].\n- Priority evidence source: [[knowledge/crouzeix_textbook/source_registry#jin-v4-audited|JIN-V4-AUDITED]]\n- Priority evidence locator: [Different display](fixture/Compile.lean).",
+                "- Locator: [[fixture/Compile.lean|Main display]].\n- Priority evidence source: [[lab/math/crouzeix_textbook/source_registry#jin-v4-audited|JIN-V4-AUDITED]]\n- Priority evidence locator: [Different display](fixture/Compile.lean).",
                 1,
             )
     });
@@ -3666,7 +3666,7 @@ fn evidence_requires_clickable_source_registry_routes_for_main_and_priority_sour
     let main = copy_v2_fixture();
     mutate_fixture_markdown(main.path(), "claim_evidence_ledger.md", |markdown| {
         markdown.replacen(
-            "[[knowledge/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
+            "[[lab/math/crouzeix_textbook/source_registry#crouzeix-packet|CROUZEIX-PACKET]]",
             "CROUZEIX-PACKET",
             1,
         )
@@ -3705,10 +3705,10 @@ fn evidence_requires_clickable_source_registry_routes_for_main_and_priority_sour
 #[test]
 fn evidence_rejects_each_unsupported_or_unparseable_mixed_locator_component() {
     for locator in [
-        "[[knowledge/crouzeix_textbook/reading_guide#fixture-locator|Valid]], [external](https://example.com).",
-        "[[knowledge/crouzeix_textbook/reading_guide#fixture-locator|Valid]], `fixture/UnsupportedRoute`.",
-        "[[knowledge/crouzeix_textbook/reading_guide#fixture-locator|Valid]], `CrouzeixTextbook.Part06.unresolved_declaration`.",
-        "[[knowledge/crouzeix_textbook/reading_guide#fixture-locator|Valid]], [broken](.",
+        "[[lab/math/crouzeix_textbook/reading_guide#fixture-locator|Valid]], [external](https://example.com).",
+        "[[lab/math/crouzeix_textbook/reading_guide#fixture-locator|Valid]], `fixture/UnsupportedRoute`.",
+        "[[lab/math/crouzeix_textbook/reading_guide#fixture-locator|Valid]], `CrouzeixTextbook.Part06.unresolved_declaration`.",
+        "[[lab/math/crouzeix_textbook/reading_guide#fixture-locator|Valid]], [broken](.",
     ] {
         let fixture = copy_v2_fixture();
         mutate_fixture_markdown(fixture.path(), "claim_evidence_ledger.md", |markdown| {
@@ -3755,7 +3755,7 @@ fn evidence_duplicate_field_diagnostic_points_to_the_duplicate_occurrence() {
     let ledger = fs::read_to_string(
         fixture
             .path()
-            .join("knowledge/crouzeix_textbook/claim_evidence_ledger.md"),
+            .join("lab/math/crouzeix_textbook/claim_evidence_ledger.md"),
     )
     .expect("fixture ledger");
     let duplicate_line = ledger
@@ -3785,7 +3785,7 @@ fn evidence_accumulates_missing_registry_and_ledger_inputs() {
         fs::remove_file(
             fixture
                 .path()
-                .join("knowledge/crouzeix_textbook")
+                .join("lab/math/crouzeix_textbook")
                 .join(name),
         )
         .expect("remove fixture input");
@@ -3842,7 +3842,7 @@ fn evidence_rejects_unsupported_claim_classes() {
         let ledger = fs::read_to_string(
             fixture
                 .path()
-                .join("knowledge/crouzeix_textbook/claim_evidence_ledger.md"),
+                .join("lab/math/crouzeix_textbook/claim_evidence_ledger.md"),
         )
         .expect("fixture ledger");
         let class_line = ledger
@@ -3894,7 +3894,7 @@ fn evidence_rejects_missing_empty_and_unstable_claim_locators() {
 fn evidence_locator_policy_accepts_specific_routes_and_rejects_vague_text() {
     let positives = [
         "`fixture/Compile.lean:12`.",
-        "[[knowledge/crouzeix_textbook/reading_guide#fixture-locator|Fixture locator]].",
+        "[[lab/math/crouzeix_textbook/reading_guide#fixture-locator|Fixture locator]].",
         "Chapter III, printed pages 19--31.",
         "Section 2.1.",
         "Equation (3.2).",
@@ -4158,7 +4158,7 @@ fn pedagogical_graph_generic_validation_accepts_a_structural_complete_graph() {
                 "item_id": item_id,
                 "chapter": chapter,
                 "kind": "definition",
-                "prose_path": "knowledge/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md",
+                "prose_path": "lab/math/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md",
                 "anchor": anchor,
                 "source_ids": source_ids,
                 "pedagogical_prerequisites": prerequisites,
@@ -4177,7 +4177,7 @@ fn pedagogical_graph_generic_validation_accepts_a_structural_complete_graph() {
     });
     fs::write(
         fixture.path().join(
-            "knowledge/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md",
+            "lab/math/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md",
         ),
         markdown,
     )
@@ -4476,7 +4476,7 @@ fn contracts_root() -> PathBuf {
 }
 
 fn packet_root() -> PathBuf {
-    workspace_root().join("knowledge/crouzeix_textbook")
+    workspace_root().join("lab/math/crouzeix_textbook")
 }
 
 fn read_json(path: &Path) -> Value {
@@ -4611,11 +4611,11 @@ fn textbook_packet_has_exact_support_and_chapter_roster() {
             cursor += offset + heading.len();
         }
         assert!(
-            text.contains("Book: [[knowledge/crouzeix_textbook/crouzeix_textbook_index"),
+            text.contains("Book: [[lab/math/crouzeix_textbook/crouzeix_textbook_index"),
             "{chapter} is missing book navigation"
         );
         assert!(
-            text.contains("Part: [[knowledge/crouzeix_textbook/crouzeix_textbook_index#part-"),
+            text.contains("Part: [[lab/math/crouzeix_textbook/crouzeix_textbook_index#part-"),
             "{chapter} is missing part navigation"
         );
         assert!(
@@ -5026,7 +5026,7 @@ fn assert_chapter_markers_project_contracts(coverage: &Value, exercises: &Value)
     let exercise_rows = array(exercises, "exercises", "exercises");
     for (chapter_index, relative_path) in CHAPTERS.iter().enumerate() {
         let chapter = u64::try_from(chapter_index + 1).expect("chapter number");
-        let prose_path = format!("knowledge/crouzeix_textbook/{relative_path}");
+        let prose_path = format!("lab/math/crouzeix_textbook/{relative_path}");
         let chapter_coverage = coverage_rows
             .iter()
             .filter(|row| integer(row, "chapter", "coverage row") == chapter)
@@ -7773,12 +7773,12 @@ fn validate_ls_status_boundary(fields: &BTreeMap<String, String>) -> Result<(), 
         ),
         (
             "Current verification".to_owned(),
-            "[[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]]"
+            "[[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-003|CFT-CL-003]]"
                 .to_owned(),
         ),
         (
             "Pinned source claim".to_owned(),
-            "[[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]]"
+            "[[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]]"
                 .to_owned(),
         ),
         (
@@ -7913,7 +7913,7 @@ fn chapter_33_prose_routes_labeled_claims_to_structured_ledger_entries() {
     let markdown = chapter_33_markdown();
     for claim_id in ["CFT-CL-003", "CFT-CL-006"] {
         let route = format!(
-            "[[knowledge/crouzeix_textbook/claim_evidence_ledger#{}|{claim_id}]]",
+            "[[lab/math/crouzeix_textbook/claim_evidence_ledger#{}|{claim_id}]]",
             claim_id.to_ascii_lowercase()
         );
         assert!(markdown.contains(&route), "Chapter 33 is missing `{route}`");
@@ -7987,7 +7987,7 @@ fn chapter_33_prose_routes_labeled_claims_to_structured_ledger_entries() {
         ),
         (
             "Pinned source claim".to_owned(),
-            "[[knowledge/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]]"
+            "[[lab/math/crouzeix_textbook/claim_evidence_ledger#cft-cl-006|CFT-CL-006]]"
                 .to_owned(),
         ),
         (
@@ -9161,7 +9161,7 @@ fn chapter_33_release_freeze_exposes_complete_reader_and_lean_audits() {
         );
     }
     assert!(markdown.contains("Compiler receipt SHA-256"));
-    assert!(markdown.contains("[[knowledge/crouzeix_textbook/status_and_scope|status and scope]]"));
+    assert!(markdown.contains("[[lab/math/crouzeix_textbook/status_and_scope|status and scope]]"));
     assert!(visible_markdown_text(&markdown).contains(
         "The compiler receipt and the six-ledger publication generation are distinct identities"
     ));
@@ -9170,7 +9170,7 @@ fn chapter_33_release_freeze_exposes_complete_reader_and_lean_audits() {
         "Chapter 33 must not call the six-ledger pointer a compiler receipt"
     );
     assert!(
-        !markdown.contains("[[knowledge/generated"),
+        !markdown.contains("[[lab/generated"),
         "Atlas is not a vault-root wikilink namespace"
     );
 
@@ -10273,7 +10273,7 @@ fn chapter_30_e06_builds_the_ordered_identity_from_smaller_bridges() {
 
 #[test]
 fn chapter_30_atlas_render_preserves_adjoint_and_matrix_notation() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -10670,7 +10670,7 @@ fn chapter_31_ml_contract_names_exact_transfer_limits_and_diagnostic() {
 
 #[test]
 fn chapter_31_atlas_preserves_kernel_and_block_math() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -10990,7 +10990,7 @@ fn chapter_32_history_ml_and_running_example_are_concrete() {
 
 #[test]
 fn chapter_32_atlas_preserves_endpoint_and_limit_math() {
-    let corpus = read_json(&workspace_root().join("knowledge/generated/corpus.json"));
+    let corpus = read_json(&workspace_root().join("lab/generated/corpus.json"));
     let chapter = corpus["documents"]
         .as_array()
         .expect("Atlas documents")
@@ -12407,7 +12407,7 @@ fn chapter_25_lean_exercises_are_distinct_reconstructions_without_shortcuts() {
 
 #[test]
 fn chapter_25_atlas_contains_the_equations_and_compiler_validated_links() {
-    let corpus = fs::read_to_string(workspace_root().join("knowledge/generated/corpus.json"))
+    let corpus = fs::read_to_string(workspace_root().join("lab/generated/corpus.json"))
         .expect("generated Atlas corpus");
     for required in [
         "CFT-25-001",

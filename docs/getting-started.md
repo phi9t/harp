@@ -21,13 +21,13 @@ full verification. Markdown reading remains available.
 
 ## Read the knowledge library
 
-Read Markdown under `knowledge/`, including the preserved mathematics, Crouzeix,
+Read Markdown under `lab/`, including the preserved mathematics, Crouzeix,
 SICP and educational material. The Atlas reader and HTML export are retired.
 
 ### Use Obsidian
 
-Open the repository root as a vault, not just `knowledge/`. Begin at
-[Harp knowledge home](../knowledge/harp_knowledge_home.md). Root-qualified
+Open the repository root as a vault, not just `lab/`. Begin at
+[Harp knowledge home](../lab/harp_knowledge_home.md). Root-qualified
 wikilinks connect notes to their captured evidence. GitHub's Markdown view does
 not provide all of Obsidian's navigation.
 

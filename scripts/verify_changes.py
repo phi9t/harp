@@ -61,6 +61,10 @@ def check_docs(root, paths):
 def plan(root, paths):
     jobs = []
     def add(label, *command):
+        if command[-2:] == ("--test", "crouzeix_textbook"):
+            preflight = {"surface": "lean-preflight", "command": ["mise", "run", "lean-env"]}
+            if preflight not in jobs:
+                jobs.append(preflight)
         job = {"surface": label, "command": list(command)}
         if job not in jobs:
             jobs.append(job)
@@ -84,7 +88,7 @@ def plan(root, paths):
                          ("content/crouzeix_textbook/", "lab/math/textbook/"),
                          ("content/sicp/", "lab/sicp/contracts/"),
                          ("content/context_control/", "durable/context/"),
-                         ("content/generated/", "knowledge/generated/"),
+                         ("content/generated/", "lab/generated/"),
                          ("content/sources/", "evidence/sources/")):
             if path.startswith(old):
                 path = new + path[len(old):]
@@ -126,6 +130,15 @@ def plan(root, paths):
             add("native-lifecycle", "python3", "scripts/verify_native_receipt.py", "--suite", "integrated")
             if path.startswith("insula/supervisor/") and "/provenance/" not in path:
                 rust_paths.append(path)
+        elif (path.startswith(("lab/agentic_engineering/", "lab/benchmarks/harness_benchmarks/",
+                               "lab/benchmarks/evaluator_integrity/", "lab/generated/"))
+              or path in ("lab/article_survey.md", "lab/harp_knowledge_home.md")
+              or (path.endswith(".md") and path.startswith(("lab/math/crouzeix_conjecture/",
+                  "lab/math/crouzeix_textbook/", "lab/math/mathematical_foundations/",
+                  "lab/math/autodiff_geometry/", "lab/sicp/")))):
+            for command in ("check", "build"):
+                args = ("--check",) if command == "build" else ()
+                add("corpus", "cargo", "run", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--", command, *args)
         elif path.startswith("lab/benchmarks/legacy_runtime/"):
             add("legacy-runtime", "cargo", "test", "--manifest-path", "lab/benchmarks/legacy_runtime/Cargo.toml", "--offline", "--locked", "--workspace", "--all-features", "--profile", "test-small")
         elif path.startswith("evidence/sources/") or path == "evidence/implementations/harness_deep_dive_manifest.tsv":
@@ -151,7 +164,7 @@ def plan(root, paths):
             rust_paths.append(path)
         elif path in ("docs/import-receipt.md", "docs/import-map.tsv") or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
-        elif path.startswith("tools/obsidian/") or path in ("scripts/validate_obsidian_assets.py", "scripts/tests/test_obsidian_assets.py") or (path.startswith("knowledge/obsidian/") and not path.endswith(".md")):
+        elif path.startswith("tools/obsidian/") or path in ("scripts/validate_obsidian_assets.py", "scripts/tests/test_obsidian_assets.py") or (path.startswith("lab/obsidian/") and not path.endswith(".md")):
             add("obsidian", "python3", "scripts/validate_obsidian_assets.py")
             add("obsidian", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_obsidian_assets.py")
         elif path.startswith(("knowledge/", "lab/math/textbook/", "lab/sicp/contracts/", "lessons/")):

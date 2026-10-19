@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Enforce the consolidated Python package ownership graph."""
 import ast
+import subprocess
 import tomllib
 from pathlib import Path
 
@@ -18,6 +19,17 @@ def check(root=ROOT):
     for retired in ('benchmarks', 'assets', 'content', 'crates'):
         if (root / retired).exists():
             raise ValueError('retired top-level directory remains: ' + retired)
+    if (root / 'knowledge').exists():
+        # Preserve ignored operator notes while rejecting tracked or new source.
+        if (root / '.git').exists():
+            files = subprocess.check_output(
+                ['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', 'knowledge'],
+                cwd=root).decode().split('\0')
+            remaining = any(name and (root / name).exists() for name in files)
+        else:
+            remaining = True
+        if remaining:
+            raise ValueError('retired top-level directory remains: knowledge')
     legacy = (root / 'lab/benchmarks/legacy_runtime').resolve()
     for name in ('cli/Cargo.toml', 'sessions/Cargo.toml',
                  'insula/supervisor/Cargo.toml', 'lab/sicp/Cargo.toml'):

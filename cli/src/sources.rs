@@ -1499,7 +1499,7 @@ mod tests {
             "evidence/implementations/harness_deep_dive_manifest.tsv",
         ] {
             let repo = tempdir().unwrap();
-            fs::create_dir_all(repo.path().join("knowledge/generated")).unwrap();
+            fs::create_dir_all(repo.path().join("lab/generated")).unwrap();
             fs::create_dir_all(repo.path().join("evidence/example")).unwrap();
             let artifact = repo.path().join("evidence/example/source.txt");
             fs::write(&artifact, "retained source").unwrap();
@@ -1507,7 +1507,7 @@ mod tests {
             fs::create_dir_all(authored.parent().unwrap()).unwrap();
             fs::write(authored, "locator\nevidence/example/source.txt\n").unwrap();
             fs::write(
-                repo.path().join("knowledge/generated/corpus.json"),
+                repo.path().join("lab/generated/corpus.json"),
                 r#"{"html":"<a href=\"evidence/derived-copy.txt\">source</a>"}"#,
             ).unwrap();
             assert_eq!(verify_content_locators(repo.path()).unwrap(), 1, "{manifest}");

@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
-use std::path::Path;
+use std::path::{Component, Path, PathBuf};
 use std::process::{Command, Output};
 use std::sync::OnceLock;
 
@@ -926,13 +926,46 @@ fn rows_for_chapters<'a>(value: &'a Value, key: &str) -> Vec<&'a Value> {
 
 fn chapter_path(chapter: u64) -> &'static str {
     match chapter {
-        25 => "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md",
-        26 => "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md",
-        27 => "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/27_one_plus_sqrt_two_barrier.md",
-        28 => "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md",
-        29 => "knowledge/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md",
+        25 => "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md",
+        26 => "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md",
+        27 => "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/27_one_plus_sqrt_two_barrier.md",
+        28 => "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md",
+        29 => "lab/math/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md",
         _ => panic!("Chapter {chapter} is outside the common-machinery contract"),
     }
+}
+
+fn has_code_link(markdown: &str, chapter: u64, source: &str, line: u64) -> bool {
+    use pulldown_cmark::{Event, Parser, Tag};
+    Parser::new(markdown).any(|event| {
+        let Event::Start(Tag::Link { dest_url, .. }) = event else {
+            return false;
+        };
+        let Some((file, anchor)) = dest_url.rsplit_once('#') else {
+            return false;
+        };
+        if anchor != format!("L{line}") {
+            return false;
+        }
+        let target = if file.starts_with("lab/") {
+            PathBuf::from(file)
+        } else {
+            Path::new(chapter_path(chapter))
+                .parent()
+                .unwrap()
+                .join(file)
+        };
+        let mut normalized = PathBuf::new();
+        for component in target.components() {
+            match component {
+                Component::Normal(value) => normalized.push(value),
+                Component::CurDir => {}
+                Component::ParentDir if normalized.pop() => {}
+                _ => return false,
+            }
+        }
+        normalized == Path::new(source)
+    })
 }
 
 fn chapter_markdown(chapter: u64) -> String {
@@ -1192,10 +1225,15 @@ fn canonical_card_errors(markdown: &str, spec: CommonSpec) -> Vec<String> {
     let type_sha256 = receipt["type_sha256"]
         .as_str()
         .expect("public receipt type hash");
+    if !has_code_link(lean, spec.chapter, spec.source_path, receipt_line) {
+        errors.push(format!(
+            "{} Lean correspondence does not match compiler field `{}#L{receipt_line}`",
+            spec.item_id, spec.source_path
+        ));
+    }
     for exact in [
         format!("Public declaration: `{}`", spec.public_declaration),
         format!("Substantive provider: `{dependencies_display}`"),
-        format!("{}#L{receipt_line}", spec.source_path),
         format!("Normalized type: `{normalized_type}`"),
         format!("Type SHA-256: `{type_sha256}`"),
         format!("Direct maintained dependencies: `{dependencies_display}`"),
@@ -2218,7 +2256,7 @@ fn chapter_28_power_family_keeps_every_power_and_the_sharp_extraction_visible() 
     );
 
     let corpus: serde_json::Value = serde_json::from_str(
-        &fs::read_to_string(workspace_root().join("knowledge/generated/corpus.json"))
+        &fs::read_to_string(workspace_root().join("lab/generated/corpus.json"))
             .expect("generated Atlas corpus"),
     )
     .expect("valid generated Atlas corpus");
@@ -2229,7 +2267,7 @@ fn chapter_28_power_family_keeps_every_power_and_the_sharp_extraction_visible() 
         .find(|document| {
             document["canonical_markdown_path"].as_str()
                 == Some(
-                    "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md",
+                    "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md",
                 )
         })
         .and_then(|document| document["html"].as_str())
@@ -2290,7 +2328,7 @@ fn chapter_29_normalization_and_sharpness_separate_exact_attainment_from_limits(
     );
 
     let corpus: serde_json::Value = serde_json::from_str(
-        &fs::read_to_string(workspace_root().join("knowledge/generated/corpus.json"))
+        &fs::read_to_string(workspace_root().join("lab/generated/corpus.json"))
             .expect("generated Atlas corpus"),
     )
     .expect("valid generated Atlas corpus");
@@ -2301,7 +2339,7 @@ fn chapter_29_normalization_and_sharpness_separate_exact_attainment_from_limits(
         .find(|document| {
             document["canonical_markdown_path"].as_str()
                 == Some(
-                    "knowledge/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md",
+                    "lab/math/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md",
                 )
         })
         .and_then(|document| document["html"].as_str())
@@ -2331,7 +2369,6 @@ fn chapter_29_positive_normalization_derives_the_maximum_in_lean() {
         "Chapter 29 omits the checked maximum-scaling theorem"
     );
     for exact in [
-        "[Lean proof](../../../lab/math/lean/CrouzeixTextbook/Part06/Chapter29.lean#L120)",
         "M(A,M^{-1}p)=1",
         "derived from `M(A,p)=M` and `M>0`",
         "E05 keeps the frozen normalized-maximum hypothesis",
@@ -2343,6 +2380,8 @@ fn chapter_29_positive_normalization_derives_the_maximum_in_lean() {
             "Chapter 29 normalization support omits `{exact}`"
         );
     }
+
+    assert!(has_code_link(&markdown, 29, SOURCE, 120));
 
     let receipt = compile_supporting_receipt(NAME);
     let rows = receipt
@@ -2558,11 +2597,21 @@ fn chapter_25_variational_card_states_the_formal_compactness_scope() {
 fn chapter_29_theorem_surfaces_link_their_supporting_lean_declarations() {
     let markdown = chapter_markdown(29);
     let card = card_region(&markdown, common_spec("CFT-29-003")).expect("CFT-29-003 card");
+    assert!(has_code_link(
+        card,
+        29,
+        "lab/math/lean/CrouzeixConjecture/FinalTheorems.lean",
+        26
+    ));
+    assert!(has_code_link(
+        card,
+        29,
+        "lab/math/lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+        115
+    ));
     for exact in [
         "CrouzeixConjecture.crouzeixRationalSpectralSetCorollary",
-        "../../../lab/math/lean/CrouzeixConjecture/FinalTheorems.lean#L26",
         "CrouzeixConjecture.hilbertSpaceRationalSpectralSet",
-        "../../../lab/math/lean/CrouzeixConjecture/HilbertSpectralSet.lean#L115",
         "Supporting declarations, not the primary card theorem",
     ] {
         assert!(card.contains(exact), "CFT-29-003 omits `{exact}`");
@@ -2573,6 +2622,12 @@ fn chapter_29_theorem_surfaces_link_their_supporting_lean_declarations() {
 fn chapter_29_history_records_dated_three_route_provenance() {
     let markdown = chapter_markdown(29);
     let card = card_region(&markdown, common_spec("CFT-29-006")).expect("CFT-29-006 card");
+    assert!(has_code_link(
+        card,
+        29,
+        "lab/math/lean/Crouzeix/Harp/MainTheorem.lean",
+        25
+    ));
     for exact in [
         "2026-08-05T16:32:05+08:00",
         "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
@@ -2580,7 +2635,6 @@ fn chapter_29_history_records_dated_three_route_provenance() {
         "arxiv:2608.03841v1",
         "observed on 2026-08-14",
         "2026-08-29 Harp review boundary",
-        "../../../lab/math/lean/Crouzeix/Harp/MainTheorem.lean#L25",
         "claim_evidence_ledger#cft-cl-003",
     ] {
         assert!(card.contains(exact), "CFT-29-006 omits `{exact}`");
@@ -2924,7 +2978,7 @@ fn chapter_26_congruence_exercise_rejects_the_mathlib_shortcut_transitively() {
 fn chapter_26_nilpotent_example_tracks_cauchy_and_measure_normalization() {
     let markdown = chapter_markdown(26);
     let corpus: serde_json::Value = serde_json::from_str(
-        &fs::read_to_string(workspace_root().join("knowledge/generated/corpus.json"))
+        &fs::read_to_string(workspace_root().join("lab/generated/corpus.json"))
             .expect("generated Atlas corpus"),
     )
     .expect("valid generated Atlas corpus");
@@ -2935,7 +2989,7 @@ fn chapter_26_nilpotent_example_tracks_cauchy_and_measure_normalization() {
         .find(|document| {
             document["canonical_markdown_path"].as_str()
                 == Some(
-                    "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md",
+                    "lab/math/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md",
                 )
         })
         .and_then(|document| document["html"].as_str())
@@ -3346,14 +3400,18 @@ fn common_machinery_contract_freezes_complete_cards_and_distinct_exercise_target
         let line = row["lean_solution"]["line"]
             .as_u64()
             .expect("compiler-reported exercise solution line");
-        let locator =
-            format!("../../../lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L{line}");
-        assert!(
-            chapter_26.contains(&locator),
-            "{exercise_id} prose omits exact compiler-bound locator `{locator}`"
-        );
+        let locator = format!("lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean#L{line}");
         let region = exercise_region(&chapter_26, exercise_id)
             .unwrap_or_else(|| panic!("missing unique exercise region for {exercise_id}"));
+        assert!(
+            has_code_link(
+                region,
+                26,
+                "lab/math/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+                line
+            ),
+            "{exercise_id} prose omits exact compiler-bound locator `{locator}`"
+        );
         let solution = &row["lean_solution"];
         let declaration = solution["declaration"].as_str().expect("declaration");
         let type_sha256 = solution["type_sha256"].as_str().expect("type hash");
@@ -3362,7 +3420,6 @@ fn common_machinery_contract_freezes_complete_cards_and_distinct_exercise_target
             .expect("verification target");
         for exact in [
             declaration.to_owned(),
-            locator,
             type_sha256.to_owned(),
             "Axioms: `Classical.choice, Quot.sound, propext`.".to_owned(),
             format!("Verification target: `{verification_target}`."),

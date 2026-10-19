@@ -9,8 +9,8 @@ use crate::fs::HeldDirectory;
 use super::markdown::Document;
 use super::{TextbookContracts, TextbookDiagnostic};
 
-const SOURCE_REGISTRY_PATH: &str = "knowledge/crouzeix_textbook/source_registry.md";
-const CLAIM_LEDGER_PATH: &str = "knowledge/crouzeix_textbook/claim_evidence_ledger.md";
+const SOURCE_REGISTRY_PATH: &str = "lab/math/crouzeix_textbook/source_registry.md";
+const CLAIM_LEDGER_PATH: &str = "lab/math/crouzeix_textbook/claim_evidence_ledger.md";
 const SOURCE_ID_CODE: &str = "crouzeix-textbook.evidence.source-id";
 const REVIEW_SOURCE_ID_CODE: &str = "crouzeix-textbook.evidence.review-source-id";
 const CLAIM_ENTRY_CODE: &str = "crouzeix-textbook.evidence.claim-entry";

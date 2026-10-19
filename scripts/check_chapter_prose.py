@@ -41,7 +41,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-INDEX = ROOT / "knowledge/crouzeix_textbook/crouzeix_textbook_index.md"
+INDEX = ROOT / "lab/math/crouzeix_textbook/crouzeix_textbook_index.md"
 COVERAGE = ROOT / "lab/math/textbook/coverage.json"
 EXERCISES = ROOT / "lab/math/textbook/exercises.json"
 

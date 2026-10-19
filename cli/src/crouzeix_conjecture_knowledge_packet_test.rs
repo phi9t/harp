@@ -142,7 +142,7 @@ fn workspace_root() -> PathBuf {
 }
 
 fn packet_root() -> PathBuf {
-    workspace_root().join("knowledge/crouzeix_conjecture")
+    workspace_root().join("lab/math/crouzeix_conjecture")
 }
 
 fn markdown_options() -> Options {
@@ -427,7 +427,7 @@ fn validate_wiki_links(source: &Path, text: &str) -> Result<(), String> {
     {
         if !link
             .target
-            .starts_with(Path::new("knowledge/crouzeix_conjecture"))
+            .starts_with(Path::new("lab/math/crouzeix_conjecture"))
             || link.requested_heading.is_none()
         {
             continue;
@@ -476,7 +476,7 @@ fn native_reader_claim_ids(source: &Path, text: &str) -> Result<BTreeSet<String>
         let resolution = resolutions
             .first()
             .ok_or_else(|| format!("missing native claim resolution `{line}`"))?;
-        if resolution.target != Path::new("knowledge/crouzeix_conjecture/claim_evidence_ledger.md")
+        if resolution.target != Path::new("lab/math/crouzeix_conjecture/claim_evidence_ledger.md")
             || !resolution
                 .heading_id
                 .as_deref()
@@ -648,7 +648,7 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         if name != "crouzeix_conjecture_index.md" {
             assert!(
                 text.trim_end().ends_with(
-                    "Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]]."
+                    "Back to the [[lab/math/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]]."
                 ),
                 "{name} lacks the exact index backlink"
             );

@@ -256,7 +256,7 @@ def validate_repository_assets(repository_root: Path) -> None:
     if repository_root.is_symlink() or not root.is_dir():
         raise ValidationError(f"repository root must be a real directory: {repository_root}")
     validate_profile(root / "tools" / "obsidian" / "profile")
-    navigation_root = root / "knowledge" / "obsidian"
+    navigation_root = root / "lab" / "obsidian"
     validate_base(navigation_root / "harp_knowledge.base")
     validate_canvas(navigation_root / "harp_knowledge_map.canvas", root)
 

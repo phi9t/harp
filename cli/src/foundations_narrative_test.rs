@@ -4,7 +4,7 @@ use std::path::Path;
 use harp::crouzeix_textbook::{check, generate_correspondence};
 
 const CHAPTER: &str =
-    "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md";
+    "lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md";
 const NARRATIVE: &str = "**Theorem (column rule).** **Statement.** For a linear map and finite bases, each column records the coordinates of a basis image.\n\n**Proof.** The entries are the coefficients in the unique basis expansion.\n\n**Boundary.** Without a basis, coordinates need not be unique.\n\n**Formal correspondence.** Lean theorem `CrouzeixTextbook.Part01.matrix_column_is_basis_image` uses `LinearMap.toMatrix_apply`.\n";
 
 fn copy_tree(source: &Path, destination: &Path) {
@@ -60,7 +60,7 @@ fn rejects(card: &str, label: &str) {
 
 #[test]
 fn narrative_accepts_current_approved_column_rule_through_public_check() {
-    let chapter = include_str!("../../knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md");
+    let chapter = include_str!("../../lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md");
     let (_, card) = chapter.split_once("{#cft-01-002}").unwrap();
     let (card, _) = card.split_once("### Coordinate action").unwrap();
     let root = fixture(card);

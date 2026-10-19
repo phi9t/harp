@@ -2,7 +2,7 @@
 
 This document is the executable development contract for Chapters 34 and 35.
 It freezes the state before the chapter mathematics is rewritten. Canonical
-mathematics remains under `knowledge/crouzeix_textbook/`; canonical
+mathematics remains under `lab/math/crouzeix_textbook/`; canonical
 correspondence metadata remains under `lab/math/textbook/`.
 
 - Active phase: `three-route-comparison-complete`.

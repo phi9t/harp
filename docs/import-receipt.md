@@ -47,9 +47,9 @@ tracked file that names the source repository.
 
 ## Rewrites and removals
 
-- Canonical material moved from `knowledge/rsi/` to `lab/math/textbook/`.
+- Canonical material moved from `lab/rsi/` to `lab/math/textbook/`.
 - The dedicated app moved to `atlas/`, with
-  `atlas/src/knowledge/generated/corpus.json` and
+  `atlas/src/lab/generated/corpus.json` and
   `atlas/dist/harp-atlas.html` as derived artifacts.
 - Evidence moved from source third-party paths to `evidence/weng/`,
   `evidence/rlm/`, and `evidence/sicp/`; provenance and acquisition metadata
@@ -80,7 +80,7 @@ The maintained product now also contains:
 - one normalized local TRAE proposal receipt and one deterministic raw archive;
   and
 - one additional canonical Markdown deep dive under
-  `knowledge/meta_harness/` and its regenerated Atlas outputs.
+  `lab/meta_harness/` and its regenerated Atlas outputs.
 
 These additions are Harp maintenance after the initial import. They do not
 change the source repository identity, source commit, source path counts, or
@@ -119,7 +119,7 @@ The maintained product also adds a bounded survey-anchor packet for
 - a one-hop link inventory that records hub topology without crawling child
   bibliographies; and
 - four canonical Markdown packet documents under
-  `knowledge/self_improving_agents_survey/` with regenerated Atlas outputs.
+  `lab/self_improving_agents_survey/` with regenerated Atlas outputs.
 
 The packet supports survey taxonomy, dated hub topology, and source identity.
 It does not validate linked-paper mechanisms, benchmark results, venue status,
@@ -141,7 +141,7 @@ The maintained product also adds a bounded verified-coevolution agenda packet:
   Machine `2608.07645v1`, and the historical Godel Machine `cs/0309048v5`;
 - eight new source-registry rows and three evidence-graph edges; and
 - five canonical Markdown packet documents under
-  `knowledge/verified_coevolution_agenda/` with regenerated Atlas outputs.
+  `lab/verified_coevolution_agenda/` with regenerated Atlas outputs.
 
 The packet publishes a falsifiable research agenda. It does not reproduce paper
 experiments, validate reported benchmark results, prove broad alignment
@@ -165,7 +165,7 @@ study:
 - two new source-registry rows and three evidence-graph edges for the Cordis
   paper and DSH smoke receipt; and
 - thirteen canonical Markdown packet documents under
-  `knowledge/deepseek_harness/` with regenerated Atlas outputs.
+  `lab/agentic_engineering/deepseek_harness/` with regenerated Atlas outputs.
 
 The packet supports design-decision study of DSH's pinned plugin composition,
 events, sessions, tools, sandbox policy, subagent seam, persistence/API
@@ -210,7 +210,7 @@ packet:
   contracts for gradient component selection, JVPs, VJPs, Hessian-vector
   products, and JVP/VJP dot-product duality;
 - no vendored textbook or JAX source bytes in this phase; and
-- four canonical Markdown packet documents under `knowledge/autodiff_geometry/`
+- four canonical Markdown packet documents under `lab/math/autodiff_geometry/`
   with regenerated Atlas outputs.
 
 The packet supports notation-bound finite-coordinate proof contracts and a
@@ -244,7 +244,7 @@ This extension does not alter the fixed 521-row initial import account.
 The maintained product also adds a reader-facing technical editorial on the
 Crouzeix conjecture and Jin's proof:
 
-- one canonical Markdown article under `knowledge/crouzeix_conjecture/` aimed
+- one canonical Markdown article under `lab/math/crouzeix_conjecture/` aimed
   at senior ML research-engineering readers;
 - stable corpus registration and packet-roster coverage for the article; and
 - regenerated Atlas corpus and static export artifacts.
@@ -261,7 +261,7 @@ The maintained product also adds a bounded EnvHarness system reading:
 - arXiv `2608.19880v1` captured as a CC BY 4.0 PDF, Atom metadata, abstract
   page, deterministic text sidecar, source manifest, artifact inventory, and
   receipt under `evidence/envharness/`;
-- a seventeenth registered system reading under `knowledge/rsi/systems/` for
+- a seventeenth registered system reading under `lab/rsi/systems/` for
   learner-conditioned environment intervention, external skill retrieval, and
   the separate fixed-seed GRPO experiment;
 - source-registry, evidence-graph, claim-ledger, gap-map, and chapter cross
@@ -280,4 +280,4 @@ recursive successor improvement. This extension does not alter the fixed
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`a3f5c3b8db3bcab11d4d941dd6e15bb41cebb4d7dcfb5c06cb37ce2e82e01628`
+`0be5b26bfbb595cde5dd32b248912b921c98c2dd578c5410282816e06f5451f9`

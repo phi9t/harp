@@ -34,12 +34,12 @@ class ObsidianAssetValidationTests(unittest.TestCase):
     def write_valid_assets(self) -> None:
         profile = self.root / "tools" / "obsidian" / "profile"
         (profile / "snippets").mkdir(parents=True)
-        (self.root / "knowledge" / "rsi").mkdir(parents=True)
-        (self.root / "knowledge" / "darwinx").mkdir(parents=True)
-        (self.root / "knowledge" / "rsi" / "rsi_index.md").write_text(
+        (self.root / "lab" / "rsi").mkdir(parents=True)
+        (self.root / "lab" / "darwinx").mkdir(parents=True)
+        (self.root / "lab" / "rsi" / "rsi_index.md").write_text(
             "# RSI\n", encoding="utf-8"
         )
-        (self.root / "knowledge" / "darwinx" / "darwinx_index.md").write_text(
+        (self.root / "lab" / "darwinx" / "darwinx_index.md").write_text(
             "# DarwinX\n", encoding="utf-8"
         )
         (profile / "app.json").write_text("{}\n", encoding="utf-8")
@@ -52,11 +52,11 @@ class ObsidianAssetValidationTests(unittest.TestCase):
         (profile / "snippets" / "harp-knowledge.css").write_text(
             ".obsidian-callout {}\n", encoding="utf-8"
         )
-        navigation = self.root / "knowledge" / "obsidian"
+        navigation = self.root / "lab" / "obsidian"
         navigation.mkdir()
         (navigation / "harp_knowledge.base").write_text(
             """
-filters: 'file.inFolder("knowledge") && file.ext == "md"'
+filters: 'file.inFolder("lab") && file.ext == "md"'
 properties:
   file.link:
     displayName: "Document"
@@ -78,7 +78,7 @@ views:
                             "y": 0,
                             "width": 300,
                             "height": 200,
-                            "file": "knowledge/rsi/rsi_index.md",
+                            "file": "lab/rsi/rsi_index.md",
                         },
                         {
                             "id": "fedcba9876543210",
@@ -87,7 +87,7 @@ views:
                             "y": 0,
                             "width": 300,
                             "height": 200,
-                            "file": "knowledge/darwinx/darwinx_index.md",
+                            "file": "lab/darwinx/darwinx_index.md",
                         },
                     ],
                     "edges": [
@@ -131,10 +131,10 @@ views:
             assets.validate_repository_assets(self.root)
 
     def test_base_rejects_unknown_top_level_key_and_unsupported_view(self) -> None:
-        base = self.root / "knowledge" / "obsidian" / "harp_knowledge.base"
+        base = self.root / "lab" / "obsidian" / "harp_knowledge.base"
         base.write_text(
             """
-filters: 'file.inFolder("knowledge")'
+filters: 'file.inFolder("lab")'
 unsupported: true
 views:
   - type: timeline
@@ -147,7 +147,7 @@ views:
             assets.validate_repository_assets(self.root)
 
     def test_canvas_rejects_duplicate_ids_dangling_edges_and_missing_files(self) -> None:
-        canvas = self.root / "knowledge" / "obsidian" / "harp_knowledge_map.canvas"
+        canvas = self.root / "lab" / "obsidian" / "harp_knowledge_map.canvas"
         canvas.write_text(
             json.dumps(
                 {
@@ -159,7 +159,7 @@ views:
                             "y": 0,
                             "width": 300,
                             "height": 200,
-                            "file": "knowledge/missing.md",
+                            "file": "lab/missing.md",
                         },
                         {
                             "id": "0123456789abcdef",

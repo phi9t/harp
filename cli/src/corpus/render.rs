@@ -380,7 +380,7 @@ fn has_vault_root(path: &Path) -> bool {
             std::path::Component::Normal(value) => value.to_str(),
             _ => None,
         })
-        .is_some_and(|root| ["knowledge", "evidence", "lab", "cli", "durable", "sessions"].contains(&root))
+        .is_some_and(|root| ["evidence", "lab", "cli", "durable", "sessions"].contains(&root))
 }
 
 fn markdown_options(source_path: &str) -> Options {
@@ -396,10 +396,10 @@ fn markdown_options(source_path: &str) -> Options {
 }
 
 fn is_mathematics_packet(source_path: &str) -> bool {
-    source_path.starts_with("knowledge/crouzeix_conjecture/")
-        || source_path.starts_with("knowledge/crouzeix_textbook/")
-        || source_path.starts_with("knowledge/mathematical_foundations/")
-        || source_path.starts_with("knowledge/autodiff_geometry/")
+    source_path.starts_with("lab/math/crouzeix_conjecture/")
+        || source_path.starts_with("lab/math/crouzeix_textbook/")
+        || source_path.starts_with("lab/math/mathematical_foundations/")
+        || source_path.starts_with("lab/math/autodiff_geometry/")
 }
 
 fn math_span(tex: &str, display: bool) -> String {

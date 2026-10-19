@@ -12,7 +12,7 @@ fn fixture() -> TempDir {
         .tempdir_in(target)
         .unwrap();
     fs::create_dir_all(repo.path().join("lab/math/textbook")).unwrap();
-    fs::create_dir_all(repo.path().join("knowledge/generated")).unwrap();
+    fs::create_dir_all(repo.path().join("lab/generated")).unwrap();
     repo
 }
 fn write_complete_fixture(repo: &Path) {
@@ -45,8 +45,8 @@ fn write_complete_fixture(repo: &Path) {
 #[test]
 fn registration_derives_reader_and_auxiliary_views() {
     let registration = KnowledgeRegistration::new(vec![
-        RegisteredDocument::reader("reader", "Reader", "knowledge/reader.md"),
-        RegisteredDocument::auxiliary("reference", "knowledge/reference.md"),
+        RegisteredDocument::reader("reader", "Reader", "lab/reader.md"),
+        RegisteredDocument::auxiliary("reference", "lab/reference.md"),
     ])
     .unwrap();
 
@@ -57,20 +57,20 @@ fn registration_derives_reader_and_auxiliary_views() {
 #[test]
 fn registration_rejects_duplicate_id_path_and_reader_label() {
     let duplicate_id = vec![
-        RegisteredDocument::auxiliary("same", "knowledge/a.md"),
-        RegisteredDocument::auxiliary("same", "knowledge/b.md"),
+        RegisteredDocument::auxiliary("same", "lab/a.md"),
+        RegisteredDocument::auxiliary("same", "lab/b.md"),
     ];
     assert!(KnowledgeRegistration::new(duplicate_id).is_err());
 
     let duplicate_path = vec![
-        RegisteredDocument::auxiliary("a", "knowledge/same.md"),
-        RegisteredDocument::auxiliary("b", "knowledge/same.md"),
+        RegisteredDocument::auxiliary("a", "lab/same.md"),
+        RegisteredDocument::auxiliary("b", "lab/same.md"),
     ];
     assert!(KnowledgeRegistration::new(duplicate_path).is_err());
 
     let duplicate_label = vec![
-        RegisteredDocument::reader("a", "Same", "knowledge/a.md"),
-        RegisteredDocument::reader("b", "Same", "knowledge/b.md"),
+        RegisteredDocument::reader("a", "Same", "lab/a.md"),
+        RegisteredDocument::reader("b", "Same", "lab/b.md"),
     ];
     assert!(KnowledgeRegistration::new(duplicate_label).is_err());
 }
@@ -241,7 +241,7 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
         route.route_id == "mathematical-foundations"
             && route.label == "Math foundations"
             && route.canonical_markdown_path
-                == "knowledge/mathematical_foundations/mathematical_foundations_index.md"
+                == "lab/math/mathematical_foundations/mathematical_foundations_index.md"
     }));
 
     let document_ids = corpus
@@ -266,7 +266,7 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
     ]);
     let auxiliary_document_ids = AUXILIARY_DOCUMENTS
         .iter()
-        .filter(|(_, path)| path.starts_with("knowledge/mathematical_foundations/"))
+        .filter(|(_, path)| path.starts_with("lab/math/mathematical_foundations/"))
         .map(|(document_id, _)| *document_id)
         .collect::<BTreeSet<_>>();
     assert_eq!(
@@ -291,7 +291,7 @@ fn compiles_the_crouzeix_textbook_route_and_current_packet() {
         route.route_id == "crouzeix-textbook"
             && route.label == "Crouzeix textbook"
             && route.canonical_markdown_path
-                == "knowledge/crouzeix_textbook/crouzeix_textbook_index.md"
+                == "lab/math/crouzeix_textbook/crouzeix_textbook_index.md"
     }));
 
     let routes: serde_json::Value = serde_json::from_slice(
@@ -307,7 +307,7 @@ fn compiles_the_crouzeix_textbook_route_and_current_packet() {
         .filter(|document| {
             document
                 .canonical_markdown_path
-                .starts_with("knowledge/crouzeix_textbook/")
+                .starts_with("lab/math/crouzeix_textbook/")
         })
         .map(|document| (document.canonical_markdown_path.as_str(), document))
         .collect::<BTreeMap<_, _>>();
@@ -347,11 +347,11 @@ fn compiles_harp_mathematics_supplements_without_new_chapters() {
     for (id, path) in [
         (
             "cft-harp-mathematical-audit",
-            "knowledge/crouzeix_textbook/harp_mathematical_audit.md",
+            "lab/math/crouzeix_textbook/harp_mathematical_audit.md",
         ),
         (
             "cft-harp-finite-horizon-remainder",
-            "knowledge/crouzeix_textbook/harp_finite_horizon_remainder.md",
+            "lab/math/crouzeix_textbook/harp_finite_horizon_remainder.md",
         ),
     ] {
         let document = corpus
@@ -376,7 +376,7 @@ fn compiles_harp_mathematics_supplements_without_new_chapters() {
 #[test]
 fn crouzeix_textbook_packet_rejects_symlinked_and_hardlinked_markdown() {
     let canonical =
-        "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md";
+        "lab/math/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md";
 
     let symlink_fixture = fixture();
     write_complete_fixture(symlink_fixture.path());
@@ -402,7 +402,7 @@ fn crouzeix_textbook_packet_rejects_symlinked_and_hardlinked_markdown() {
 fn crouzeix_textbook_markdown_enables_math_rendering() {
     let rendered = render_markdown(
         "Inline $Ax$ and display $$A^2x$$.",
-        "knowledge/crouzeix_textbook/example.md",
+        "lab/math/crouzeix_textbook/example.md",
     );
     assert!(rendered.contains("class=\"math math-inline\""));
     assert!(rendered.contains("class=\"math math-display\""));
@@ -419,7 +419,7 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
         route.route_id == "autodiff-geometry"
             && route.label == "Autodiff geometry"
             && route.canonical_markdown_path
-                == "knowledge/autodiff_geometry/autodiff_geometry_index.md"
+                == "lab/math/autodiff_geometry/autodiff_geometry_index.md"
     }));
 
     let expected_document_ids = BTreeSet::from([
@@ -432,7 +432,7 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
     ]);
     let auxiliary_document_ids = AUXILIARY_DOCUMENTS
         .iter()
-        .filter(|(_, path)| path.starts_with("knowledge/autodiff_geometry/"))
+        .filter(|(_, path)| path.starts_with("lab/math/autodiff_geometry/"))
         .map(|(document_id, _)| *document_id)
         .collect::<BTreeSet<_>>();
     assert_eq!(
@@ -454,7 +454,7 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
 #[test]
 fn compiles_the_mathematical_foundations_formalization_map() {
     const MAP_ID: &str = "math-foundations-formalization-map";
-    const MAP_PATH: &str = "knowledge/mathematical_foundations/formalization_map.md";
+    const MAP_PATH: &str = "lab/math/mathematical_foundations/formalization_map.md";
     const MANIFEST_PATH: &str = "lab/math/lean/MathematicalFoundations/PublicTheorems.lean";
     const STATUSES: [&str; 3] = ["Direct theorem", "Corollary/application", "Prose-only"];
     const INVENTORY_NAMESPACES: [&str; 6] = [
@@ -761,7 +761,7 @@ fn preserves_native_details_in_rendered_html() {
         &format!(
             "# Test\n\n## Mechanism\n\nText.\n\n<details>\n{SOURCE_SUMMARY}\n\n- Source.\n\n</details>\n"
         ),
-        "knowledge/rsi/chapters/test.md",
+        "lab/rsi/chapters/test.md",
     );
 
     assert!(rendered.contains("<details>"));
@@ -772,7 +772,7 @@ fn preserves_native_details_in_rendered_html() {
 #[test]
 fn renders_obsidian_wikilinks_as_offline_routes_without_rewriting_code() {
     let targets = BTreeMap::from([(
-        "knowledge/rsi/target.md".to_owned(),
+        "lab/rsi/target.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "target".to_owned(),
             heading_ids: BTreeMap::from([(
@@ -782,21 +782,21 @@ fn renders_obsidian_wikilinks_as_offline_routes_without_rewriting_code() {
         },
     )]);
     let rendered = render::render_markdown_with_targets(
-        "[[knowledge/rsi/target#Result boundary|Result]]\n\n`[[knowledge/rsi/target]]`\n",
-        "knowledge/rsi/source.md",
+        "[[lab/rsi/target#Result boundary|Result]]\n\n`[[lab/rsi/target]]`\n",
+        "lab/rsi/source.md",
         &targets,
     );
 
     assert!(rendered.contains("href=\"#documents/target?section=result-boundary\""));
     assert!(rendered.contains(">Result</a>"));
-    assert!(rendered.contains("[[knowledge/rsi/target]]"));
+    assert!(rendered.contains("[[lab/rsi/target]]"));
 }
 
 #[test]
 fn renders_obsidian_callouts_as_escaped_semantic_html() {
     let rendered = render_markdown(
         "> [!warning] <Unsafe & title>\n> Body with **emphasis**.\n",
-        "knowledge/rsi/chapters/test.md",
+        "lab/rsi/chapters/test.md",
     );
 
     assert!(rendered.contains(
@@ -811,7 +811,7 @@ fn renders_obsidian_callouts_as_escaped_semantic_html() {
 fn leaves_obsidian_callout_syntax_literal_inside_code() {
     let rendered = render_markdown(
         "```md\n> [!tip] Fence literal\n```\n\n> ~~~md\n> [!tip] Blockquote fence literal\n> ~~~\n\n`> [!tip] Inline literal`\n",
-        "knowledge/rsi/chapters/test.md",
+        "lab/rsi/chapters/test.md",
     );
 
     assert!(!rendered.contains("obsidian-callout"));
@@ -823,7 +823,7 @@ fn leaves_obsidian_callout_syntax_literal_inside_code() {
 #[test]
 fn renders_same_note_obsidian_heading_links_to_the_source_document_route() {
     let targets = BTreeMap::from([(
-        "knowledge/crouzeix_conjecture/source.md".to_owned(),
+        "lab/math/crouzeix_conjecture/source.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "crouzeix-source".to_owned(),
             heading_ids: BTreeMap::from([(
@@ -834,7 +834,7 @@ fn renders_same_note_obsidian_heading_links_to_the_source_document_route() {
     )]);
     let rendered = render::render_markdown_with_targets(
         "[[#Visible heading|Jump]]",
-        "knowledge/crouzeix_conjecture/source.md",
+        "lab/math/crouzeix_conjecture/source.md",
         &targets,
     );
 
@@ -846,7 +846,7 @@ fn renders_same_note_obsidian_heading_links_to_the_source_document_route() {
 fn renders_pdf_embeds_as_accessible_fallback_links() {
     let rendered = render_markdown(
         "![[evidence/example/paper.pdf#page=2|Paper]]",
-        "knowledge/rsi/chapters/test.md",
+        "lab/rsi/chapters/test.md",
     );
 
     assert!(rendered.contains(
@@ -857,7 +857,7 @@ fn renders_pdf_embeds_as_accessible_fallback_links() {
 #[test]
 fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
     let targets = BTreeMap::from([(
-        "knowledge/rsi/target.md".to_owned(),
+        "lab/rsi/target.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "target".to_owned(),
             heading_ids: BTreeMap::new(),
@@ -865,7 +865,7 @@ fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
     )]);
     let rendered = render::render_markdown_with_targets(
         "[[target|Target]]",
-        "knowledge/rsi/source.md",
+        "lab/rsi/source.md",
         &targets,
     );
 
@@ -877,7 +877,7 @@ fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
 fn renders_chapter_33_formalization_wikilinks_from_the_vault_root() {
     let rendered = render::render_markdown_with_targets(
         "[[lab/math/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]",
-        "knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
+        "lab/math/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
         &BTreeMap::new(),
     );
 
@@ -886,7 +886,7 @@ fn renders_chapter_33_formalization_wikilinks_from_the_vault_root() {
         "rendered Chapter 33 link: {rendered}"
     );
     assert!(
-        !rendered.contains("knowledge/crouzeix_textbook/part_06_constant_two_routes/formalization")
+        !rendered.contains("lab/math/crouzeix_textbook/part_06_constant_two_routes/formalization")
     );
 }
 
@@ -894,7 +894,7 @@ fn renders_chapter_33_formalization_wikilinks_from_the_vault_root() {
 fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
     let rendered = render_markdown(
         "# Test\n\n| Field | Value |\n|---|---|\n| state | durable |\n",
-        "knowledge/rsi/chapters/test.md",
+        "lab/rsi/chapters/test.md",
     );
 
     assert!(rendered.contains(
@@ -907,7 +907,7 @@ fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
 fn math_and_heading_attributes_are_scoped_to_mathematics_packets() {
     let packet = render_markdown(
         "## Bound {#bound}\n\n$\\|T\\|\\le2$",
-        "knowledge/crouzeix_conjecture/example.md",
+        "lab/math/crouzeix_conjecture/example.md",
     );
     assert!(packet.contains("id=\"bound\""));
     assert!(packet.contains("class=\"math math-inline\""));
@@ -915,14 +915,14 @@ fn math_and_heading_attributes_are_scoped_to_mathematics_packets() {
 
     let foundations = render_markdown(
         "## Gradient {#gradient}\n\n$\\nabla f(x)$",
-        "knowledge/mathematical_foundations/example.md",
+        "lab/math/mathematical_foundations/example.md",
     );
     assert!(foundations.contains("id=\"gradient\""));
     assert!(foundations.contains("class=\"math math-inline\""));
 
     let legacy = render_markdown(
         "Revenue moved from $0.0291 to $0.6371.",
-        "knowledge/rsi/systems/aflow.md",
+        "lab/rsi/systems/aflow.md",
     );
     assert!(!legacy.contains("math-inline"));
 }
@@ -931,19 +931,19 @@ fn math_and_heading_attributes_are_scoped_to_mathematics_packets() {
 fn mathematics_packet_heading_ids_are_unique_and_math_payloads_are_escaped() {
     let error = render::heading_ids_for_source(
         "## First {#duplicate}\n\n## Second {#duplicate}\n",
-        "knowledge/crouzeix_conjecture/example.md",
+        "lab/math/crouzeix_conjecture/example.md",
     )
     .unwrap_err();
     assert_eq!(error.code(), "knowledge.rsi.heading_id");
 
     let foundations_error = render::heading_ids_for_source(
         "## First {#duplicate}\n\n## Second {#duplicate}\n",
-        "knowledge/mathematical_foundations/example.md",
+        "lab/math/mathematical_foundations/example.md",
     )
     .unwrap_err();
     assert_eq!(foundations_error.code(), "knowledge.rsi.heading_id");
 
-    let rendered = render_markdown("$x<&>\"'$", "knowledge/crouzeix_conjecture/example.md");
+    let rendered = render_markdown("$x<&>\"'$", "lab/math/crouzeix_conjecture/example.md");
     assert!(rendered.contains("data-tex=\"x&lt;&amp;&gt;&quot;&#39;\""));
     assert!(rendered.contains(">x&lt;&amp;&gt;\"'</span>"));
 }
@@ -952,10 +952,10 @@ fn mathematics_packet_heading_ids_are_unique_and_math_payloads_are_escaped() {
 fn resolves_parent_links_without_allowing_repository_escape() {
     assert_eq!(
         normalize_link_path(
-            Path::new("knowledge/rsi/chapters"),
+            Path::new("lab/rsi/chapters"),
             Path::new("../source_registry.md")
         ),
-        Some(PathBuf::from("knowledge/rsi/source_registry.md"))
+        Some(PathBuf::from("lab/rsi/source_registry.md"))
     );
     assert_eq!(
         normalize_link_path(Path::new("content"), Path::new("../../../secret")),
@@ -970,11 +970,11 @@ fn resolves_parent_links_without_allowing_repository_escape() {
     );
     assert_eq!(
         normalize_link_path(
-            Path::new("knowledge/rsi/systems"),
+            Path::new("lab/rsi/systems"),
             Path::new("../../meta_harness/meta_harness_deep_dive.md"),
         ),
         Some(PathBuf::from(
-            "knowledge/meta_harness/meta_harness_deep_dive.md"
+            "lab/meta_harness/meta_harness_deep_dive.md"
         ))
     );
 }
@@ -992,7 +992,7 @@ fn validates_local_links_in_product_roots() {
     let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
 
     validate_local_links(
-        "knowledge/rsi/sicp/course/capstone/guide.md",
+        "lab/rsi/sicp/course/capstone/guide.md",
         "[source](../../../../../evidence/sicp/sicp.pdf)\n[lab](../../../../../lab/sicp/)\n[materializer](../../../../../cli/src/sources.rs)\n",
         &repository,
     )
@@ -1002,7 +1002,7 @@ fn validates_local_links_in_product_roots() {
 #[test]
 fn validates_obsidian_wikilinks_in_product_roots() {
     let repo = fixture();
-    let target = repo.path().join("knowledge/rsi/target.md");
+    let target = repo.path().join("lab/rsi/target.md");
     fs::create_dir_all(target.parent().unwrap()).unwrap();
     fs::write(target, "# Target\n\n## Result boundary\n\nText.\n").unwrap();
     let lean_target = repo.path().join("lab/math/lean/Example.lean");
@@ -1011,22 +1011,22 @@ fn validates_obsidian_wikilinks_in_product_roots() {
     let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
 
     validate_local_links(
-        "knowledge/rsi/chapters/guide.md",
-        "[[knowledge/rsi/target#Result boundary|Result]]",
+        "lab/rsi/chapters/guide.md",
+        "[[lab/rsi/target#Result boundary|Result]]",
         &repository,
     )
     .unwrap();
 
     validate_local_links(
-        "knowledge/rsi/chapters/guide.md",
+        "lab/rsi/chapters/guide.md",
         "[[lab/math/lean/Example.lean|Lean proof]]",
         &repository,
     )
     .unwrap();
 
     let error = validate_local_links(
-        "knowledge/rsi/chapters/guide.md",
-        "[[knowledge/rsi/missing|Missing]]",
+        "lab/rsi/chapters/guide.md",
+        "[[lab/rsi/missing|Missing]]",
         &repository,
     )
     .unwrap_err();
@@ -1042,7 +1042,7 @@ fn build_rejects_a_symlinked_output_without_changing_its_target() {
     write_complete_fixture(repo.path());
     let victim = repo.path().join("victim.json");
     fs::write(&victim, b"do not overwrite\n").unwrap();
-    let output = PathBuf::from("knowledge/generated/corpus.json");
+    let output = PathBuf::from("lab/generated/corpus.json");
     symlink(&victim, repo.path().join(&output)).unwrap();
 
     let error =
@@ -1059,11 +1059,11 @@ fn build_rejects_a_symlinked_output_ancestor_without_writing_outside() {
 
     let repo = fixture();
     write_complete_fixture(repo.path());
-    let generated = repo.path().join("knowledge/generated");
+    let generated = repo.path().join("lab/generated");
     fs::remove_dir(&generated).unwrap();
     let outside = tempfile::tempdir().unwrap();
     symlink(outside.path(), &generated).unwrap();
-    let output = PathBuf::from("knowledge/generated/corpus.json");
+    let output = PathBuf::from("lab/generated/corpus.json");
 
     let error =
         crate::build_corpus(repo.path(), Some(&output), crate::BuildMode::Write).unwrap_err();
@@ -1080,7 +1080,7 @@ fn canonical_frontmatter_rejects_duplicate_and_nested_identity_fields() {
         "---\nid: invalid identity\n---\n# Title\n",
         "---\ntitle: Missing identity\n---\n# Title\n",
     ] {
-        let error = canonical_frontmatter_identity(markdown, "knowledge/example.md")
+        let error = canonical_frontmatter_identity(markdown, "lab/example.md")
             .expect_err("canonical identity must be unambiguous");
         assert_eq!(error.code(), "knowledge.rsi.frontmatter");
     }

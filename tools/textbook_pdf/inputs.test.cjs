@@ -7,7 +7,7 @@ const { discoverChapters, readSource, candidateHash, chapterModule } = require('
 function fixture(t) {
   const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'harp-pdf-inputs-')));
   t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
-  const dir=path.join(root,'knowledge/crouzeix_textbook/part_01_fixture');fs.mkdirSync(dir,{recursive:true});
+  const dir=path.join(root,'lab/math/crouzeix_textbook/part_01_fixture');fs.mkdirSync(dir,{recursive:true});
   for(let i=1;i<=36;i++)fs.writeFileSync(path.join(dir,`${String(i).padStart(2,'0')}_chapter.md`),'# Chapter');
   return {root,dir};
 }
@@ -21,7 +21,7 @@ test('duplicate chapter numbers cannot replace a required chapter',t=>{
 });
 test('source reads reject symlinks and repository escapes',t=>{
   const {root,dir}=fixture(t);fs.symlinkSync('/etc/passwd',path.join(dir,'linked.md'));
-  assert.throws(()=>readSource(root,'knowledge/crouzeix_textbook/part_01_fixture/linked.md'),/Symlink/);
+  assert.throws(()=>readSource(root,'lab/math/crouzeix_textbook/part_01_fixture/linked.md'),/Symlink/);
   assert.throws(()=>readSource(root,'../outside'),/escapes/);
   fs.symlinkSync(dir,path.join(root,'alias'));
   assert.throws(()=>readSource(root,'alias/01_chapter.md'),/Symlink/);

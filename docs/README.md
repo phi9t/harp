@@ -11,9 +11,9 @@
 | [Agent workflows](agent-workflows.md) | Retained context tools and retirement guidance for old execution commands |
 | [Native release candidates](releasing.md) | Build a verified host-native archive and install it locally |
 
-Start with the [knowledge home](../knowledge/harp_knowledge_home.md) or
-[brief article survey](../knowledge/article_survey.md). Those notes belong to the
-maintained corpus under `knowledge/`; this directory explains how to use and
+Start with the [knowledge home](../lab/harp_knowledge_home.md) or
+[brief article survey](../lab/article_survey.md). Those notes belong to the
+maintained corpus under `lab/`; this directory explains how to use and
 contribute to the software.
 
 ## Contribute and understand the design

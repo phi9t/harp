@@ -365,15 +365,15 @@ def render_inventory(text: str, cards, problems, counts) -> str:
 
 
 SURFACES = (
-    ("knowledge/crouzeix_textbook/status_and_scope.md", "status"),
-    ("knowledge/crouzeix_textbook/claim_evidence_ledger.md", "claim"),
+    ("lab/math/crouzeix_textbook/status_and_scope.md", "status"),
+    ("lab/math/crouzeix_textbook/claim_evidence_ledger.md", "claim"),
     (
-        "knowledge/crouzeix_textbook/part_06_constant_two_routes/"
+        "lab/math/crouzeix_textbook/part_06_constant_two_routes/"
         "35_comparison_verification_and_boundaries.md",
         "snapshot",
     ),
     (
-        "knowledge/crouzeix_textbook/part_06_constant_two_routes/"
+        "lab/math/crouzeix_textbook/part_06_constant_two_routes/"
         "33_lorist_schwenninger_perturbation_lemma.md",
         "identity",
     ),

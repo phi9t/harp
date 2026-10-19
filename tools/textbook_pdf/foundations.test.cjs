@@ -11,7 +11,7 @@ for (const name of [
   '04_coordinates_and_duality',
 ]) {
   test(`foundations reading edition renders mathematics and six solution references: ${name}`, () => {
-    const relative = `knowledge/crouzeix_textbook/part_01_linear_structure/${name}.md`;
+    const relative = `lab/math/crouzeix_textbook/part_01_linear_structure/${name}.md`;
     const source = fs.readFileSync(path.join(__dirname, '../..', relative), 'utf8');
     const html = renderForTest(source, relative);
     assert.match(html, /<math[ >]/, 'the actual chapter must render mathematics');

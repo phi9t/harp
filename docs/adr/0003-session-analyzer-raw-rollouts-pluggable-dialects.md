@@ -19,7 +19,7 @@ where AgentsView’s archive can report an empty transcript while the on-disk
 JSONL remains complete, and where publication-oriented postmortem capture
 correctly strips private detail but cannot serve interactive reconstruction at
 seed scale. A bounded investigation under
-`knowledge/investigations/local/long-horizon-trace-analysis/20260904-traecli-long-horizon/`
+`lab/investigations/local/long-horizon-trace-analysis/20260904-traecli-long-horizon/`
 documented mechanical hazards (dual streams, compaction replace, oversize
 lines, externalized tool blobs). Grilling settled product shape before
 implementation.

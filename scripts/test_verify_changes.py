@@ -64,6 +64,16 @@ class VerificationTests(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_workload_prose_selects_corpus_without_native_execution(self):
+        for path in ("lab/math/crouzeix_textbook/chapter.md", "lab/sicp/course/chapter.md",
+                     "lab/benchmarks/harness_benchmarks/guide.md",
+                     "lab/agentic_engineering/study.md", "lab/generated/corpus.json"):
+            with self.subTest(path=path):
+                self.write(path, "{}\n")
+        jobs = self.selected()["checks"]
+        self.assertIn("corpus", {j["surface"] for j in jobs})
+        self.assertFalse(any(j["surface"].startswith("native-") for j in jobs))
+
     def test_context_contracts_select_their_rust_consumer(self):
         self.write("durable/context/workflows/general_coding/manifest.json", "{}\n")
         commands = [job["command"] for job in self.selected()["checks"]]
@@ -172,6 +182,25 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(self.run_gate().returncode, 0)
         self.assertIn("-p harp --lib", log.read_text())
         self.assertIn("-p harp-session-index", log.read_text())
+
+    def test_publication_cache_failure_prevents_the_native_test_launch(self):
+        self.write("cli/src/test_support/example.rs", "// publication fixture\n")
+        package = {"name": "harp", "id": "harp", "manifest_path": str(self.root / "cli/Cargo.toml"), "dependencies": []}
+        metadata = self.write("fake-tools/metadata.json", json.dumps({"packages": [package], "workspace_members": ["harp"]}))
+        log = self.root / "fake-tools/checks.log"
+        cargo = self.write("fake-tools/cargo", '#!/bin/sh\ncase "$1" in\nmetadata) cat "$FIXTURE_METADATA" ;;\ntest) printf "%s\\n" "$*" >> "$CHECKS_LOG" ;;\n*) exit 9 ;;\nesac\n')
+        cargo.chmod(0o755)
+        mise = self.write("fake-tools/mise", '#!/bin/sh\nprintf "%s\\n" "cache unavailable" >&2\nexit 7\n')
+        mise.chmod(0o755)
+        self.write(".gitignore", "fake-tools/\n")
+        self.env.update(PATH=str(cargo.parent) + os.pathsep + self.env["PATH"], FIXTURE_METADATA=str(metadata), CHECKS_LOG=str(log))
+        commands = [job["command"] for job in self.selected()["checks"]]
+        native = next(command for command in commands if command[-2:] == ["--test", "crouzeix_textbook"])
+        self.assertLess(commands.index(["mise", "run", "lean-env"]), commands.index(native))
+        result = self.run_gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("cache unavailable", result.stderr)
+        self.assertNotIn("--test crouzeix_textbook", log.read_text())
 
     def test_portable_profile_changes_select_real_asset_validation(self):
         self.write("tools/obsidian/profile/bookmarks.json", "[]\n")

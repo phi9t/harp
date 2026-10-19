@@ -18,11 +18,11 @@ documentation dependencies on another local checkout.
   documentation. Imported benchmark fixture tests retain their external format.
 
 
-- Managed Markdown in registered topic packets under `knowledge/` is the
+- Managed Markdown in registered topic packets under `lab/` is the
   authority for technical prose. Structured contracts live beside their owners: `lab/math/textbook/`,
   `lab/sicp/contracts/` and `durable/context/`. Do not add Markdown beneath the
   textbook JSON contract directory.
-- `knowledge/generated/corpus.json` is derived and must be regenerated with
+- `lab/generated/corpus.json` is derived and must be regenerated with
   its canonical inputs. The Atlas browser reader and HTML export are retired.
 - Crouzeix publication outputs live under
   `publications/crouzeix_textbook/` and remain ignored.
@@ -34,7 +34,7 @@ documentation dependencies on another local checkout.
   snapshot, not a Harp prose authority. Update it only through the
   implementation-manifest workflow with its complete upstream byte set,
   revision, license record, and digests.
-- The repository root is the portable Obsidian vault. `knowledge/` remains the
+- The repository root is the portable Obsidian vault. `lab/` remains the
   prose authority; root-qualified wikilinks are the managed internal
   navigation form. Preserve exact raw-evidence locations as the dual form:
   a native artifact wikilink plus the conventional Markdown `#L...` locator.

@@ -235,26 +235,25 @@ pub fn query(repo_root: &Path, query: &str, limit: usize) -> Result<Vec<SearchRe
 
 fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), AppError> {
     let roots = [
-        ("knowledge/sicp", "canonical-markdown", "md"),
-        ("knowledge/deepseek_harness", "canonical-markdown", "md"),
-        ("knowledge/harness_benchmarks", "canonical-markdown", "md"),
-        ("knowledge/evaluator_integrity", "canonical-markdown", "md"),
-        ("knowledge/agentic_engineering", "canonical-markdown", "md"),
-        ("knowledge/crouzeix_conjecture", "canonical-markdown", "md"),
-        ("knowledge/crouzeix_textbook", "canonical-markdown", "md"),
+        ("lab/sicp", "canonical-markdown", "md"),
+        ("lab/benchmarks/harness_benchmarks", "canonical-markdown", "md"),
+        ("lab/benchmarks/evaluator_integrity", "canonical-markdown", "md"),
+        ("lab/agentic_engineering", "canonical-markdown", "md"),
+        ("lab/math/crouzeix_conjecture", "canonical-markdown", "md"),
+        ("lab/math/crouzeix_textbook", "canonical-markdown", "md"),
         (
-            "knowledge/mathematical_foundations",
+            "lab/math/mathematical_foundations",
             "canonical-markdown",
             "md",
         ),
-        ("knowledge/autodiff_geometry", "canonical-markdown", "md"),
-        ("knowledge/obsidian", "canonical-markdown", "md"),
+        ("lab/math/autodiff_geometry", "canonical-markdown", "md"),
+        ("lab/obsidian", "canonical-markdown", "md"),
         (
-            "knowledge/harp_knowledge_home.md",
+            "lab/harp_knowledge_home.md",
             "canonical-markdown",
             "md",
         ),
-        ("knowledge/article_survey.md", "canonical-markdown", "md"),
+        ("lab/article_survey.md", "canonical-markdown", "md"),
     ];
     let mut paths = Vec::new();
     for (root, kind, extension) in roots {
@@ -436,4 +435,27 @@ fn slash_path(path: &Path) -> String {
 
 fn database_error(error: rusqlite::Error) -> AppError {
     AppError::external("search.sqlite", format!("SQLite search error: {error}"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{query, refresh};
+    use std::fs;
+
+    #[test]
+    fn nested_engineering_notes_appear_once_after_refresh() {
+        let repository = tempfile::tempdir().unwrap();
+        let root = repository.path().canonicalize().unwrap();
+        let relative = "lab/agentic_engineering/deepseek_harness/study.md";
+        let note = root.join(relative);
+        fs::create_dir_all(note.parent().unwrap()).unwrap();
+        fs::write(note, "# SICP harness study\n\nNested engineering notes.\n").unwrap();
+        for _ in 0..2 {
+            let receipt = refresh(&root).unwrap();
+            assert_eq!(receipt.document_count, 1);
+            let results = query(&root, "SICP", 10).unwrap();
+            assert_eq!(results.len(), 1);
+            assert_eq!(results[0].path, relative);
+        }
+    }
 }

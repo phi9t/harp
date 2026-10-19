@@ -15,7 +15,7 @@ use super::{
     ValidatedTextbookDocument,
 };
 
-const KNOWLEDGE_ROOT: &str = "knowledge/crouzeix_textbook";
+const KNOWLEDGE_ROOT: &str = "lab/math/crouzeix_textbook";
 const COMPATIBILITY_PATH: &str = "lab/math/textbook/compatibility_routes.json";
 const COMPATIBILITY_SCHEMA: &str = "crouzeix-textbook-compatibility-routes/v1";
 const MAX_MARKDOWN_BYTES: usize = 512 * 1024;
@@ -341,7 +341,7 @@ fn validate_routes(
                 ROUTE_CODE,
                 Some(route.canonical_id.clone()),
                 "canonical_path",
-                "normal .md path beneath knowledge/crouzeix_textbook",
+                "normal .md path beneath lab/math/crouzeix_textbook",
                 route.canonical_path.display().to_string(),
                 PathBuf::from(COMPATIBILITY_PATH),
             ));
@@ -475,7 +475,7 @@ fn validate_theorems(
                 THEOREM_PATH_CODE,
                 Some(theorem.item_id.clone()),
                 "prose_path",
-                "normal .md path beneath knowledge/crouzeix_textbook",
+                "normal .md path beneath lab/math/crouzeix_textbook",
                 theorem.prose_path.display().to_string(),
                 PathBuf::from("lab/math/textbook/coverage.json"),
             ));

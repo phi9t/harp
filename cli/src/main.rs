@@ -43,7 +43,7 @@ enum Command {
     Build {
         #[arg(long)]
         check: bool,
-        #[arg(long, default_value = "knowledge/generated/corpus.json")]
+        #[arg(long, default_value = "lab/generated/corpus.json")]
         output: PathBuf,
     },
     /// Check or publish the verified Crouzeix textbook ledgers.

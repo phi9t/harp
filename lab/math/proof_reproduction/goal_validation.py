@@ -54,7 +54,7 @@ FIXED_LEDGER_PATH = Path(
     "docs/workstream/crouzeix-proof-reproduction/execution-ledger-003.tsv"
 )
 GIT_ID_RE = re.compile(r"[0-9a-f]{40,64}\Z")
-READER_EVIDENCE_PATHS = ("knowledge/generated/corpus.json",)
+READER_EVIDENCE_PATHS = ("lab/generated/corpus.json",)
 HISTORICAL_LANDING_EVIDENCE_PHASES = frozenset({"cpfr-088", "cpfr-089"})
 PHASE_ORDER = (
     "cpfr-085",

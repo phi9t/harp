@@ -14,7 +14,7 @@ or read the maintained explanations and their source evidence.
 ## Start reading
 
 Open the repository root as an Obsidian vault and visit the
-[knowledge home](knowledge/harp_knowledge_home.md), or read Markdown directly.
+[knowledge home](lab/harp_knowledge_home.md), or read Markdown directly.
 The library includes SICP, educational materials, mathematical foundations,
 and Crouzeix proof studies. The browser Atlas and offline HTML export are retired.
 See the [reading guide](docs/getting-started.md#read-the-knowledge-library) for
@@ -24,8 +24,8 @@ local reading and evidence setup.
 
 | Goal | Where to start |
 | --- | --- |
-| Review the articles previously read | [Brief article survey](knowledge/article_survey.md) |
-| Study interpreters and agent engineering | [SICP](knowledge/sicp/sicp_index.md) and [agentic engineering](knowledge/agentic_engineering/agentic_engineering_index.md) |
+| Review the articles previously read | [Brief article survey](lab/article_survey.md) |
+| Study interpreters and agent engineering | [SICP](lab/sicp/sicp_index.md) and [agentic engineering](lab/agentic_engineering/agentic_engineering_index.md) |
 | Search and validate the local corpus | [CLI setup and first commands](docs/getting-started.md#build-the-cli) |
 | Run Codex in isolated, restartable coding attempts | [Durable coding work](docs/durable-runtime.md) |
 | Inspect context tools and old command dispositions | [Agent workflows](docs/agent-workflows.md) |
@@ -71,8 +71,9 @@ require the full contributor verification gate.
 - `lab/math/`, `lab/sicp/`, `lab/soma/` and `lab/benchmarks/` hold workloads,
   proofs, educational exercises and preserved benchmarks. Textbook JSON
   contracts and SICP contracts live with those workloads.
-- `knowledge/` holds maintained prose; `knowledge/generated/corpus.json` is
-  its derived headless index. PDF outputs live under ignored `publications/`.
+- Maintained prose lives beside its workload in `lab/`; shared implementation
+  studies live in `lab/agentic_engineering/`. `lab/generated/corpus.json` is the
+  derived headless index. PDF outputs live under ignored `publications/`.
 - `evidence/` holds pinned source bytes, licenses and verification provenance.
   See [the evidence guide](evidence/README.md).
 

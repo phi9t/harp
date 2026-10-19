@@ -164,3 +164,11 @@ eight exact approved qualification candidates landed with matching Git trees and
 authority journals. The retained Soma workload completed 139 cases through SSH
 and Insula with verified artifact retrieval. New workload implementations and
 richer service-owner capabilities remain follow-ups, not claimed deliveries.
+
+## Layout amendments after initial qualification
+
+The owner requested merging maintained knowledge into lab. Ticket
+[16](issues/16-merge-knowledge-into-lab.md) places math and SICP prose beside their
+workloads, benchmark notes under lab/benchmarks/, shared engineering studies under
+lab/agentic_engineering/, and the generated corpus under lab/generated/. Captured
+upstream evidence stays in evidence/ and document identities remain unchanged.

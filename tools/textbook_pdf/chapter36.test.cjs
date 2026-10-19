@@ -5,7 +5,7 @@ const path = require('node:path');
 const { renderForTest } = require('./build.cjs');
 
 test('canonical Harp chapter renders its endpoint and recurrence as mathematics', () => {
-  const relative = 'knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md';
+  const relative = 'lab/math/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md';
   const source = fs.readFileSync(path.join(__dirname, '../..', relative), 'utf8');
   const html = renderForTest(source, relative);
   const annotations = [...html.matchAll(/<annotation encoding="application\/x-tex">([\s\S]*?)<\/annotation>/g)]
@@ -21,7 +21,7 @@ test('canonical Harp chapter renders its endpoint and recurrence as mathematics'
 });
 
 test('canonical audit renders the expanded statement and finite recurrence', () => {
-  const relative='knowledge/crouzeix_textbook/harp_mathematical_audit.md';
+  const relative='lab/math/crouzeix_textbook/harp_mathematical_audit.md';
   const source=fs.readFileSync(path.join(__dirname,'../..',relative),'utf8');
   const html=renderForTest(source,relative);
   const annotations=[...html.matchAll(/<annotation encoding="application\/x-tex">([\s\S]*?)<\/annotation>/g)].map(match=>match[1]);
@@ -33,7 +33,7 @@ test('canonical audit renders the expanded statement and finite recurrence', () 
 });
 
 test('canonical remainder supplement renders all six tagged equations', () => {
-  const relative='knowledge/crouzeix_textbook/harp_finite_horizon_remainder.md';
+  const relative='lab/math/crouzeix_textbook/harp_finite_horizon_remainder.md';
   const source=fs.readFileSync(path.join(__dirname,'../..',relative),'utf8');
   const html=renderForTest(source,relative);
   const annotations=[...html.matchAll(/<annotation encoding="application\/x-tex">([\s\S]*?)<\/annotation>/g)].map(match=>match[1]);

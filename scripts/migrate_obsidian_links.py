@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import stat
 import sys
@@ -13,8 +14,14 @@ from pathlib import Path
 from urllib.parse import unquote
 
 
-MANAGED_ROOT = Path("knowledge")
-LOCAL_INVESTIGATION_ROOT = MANAGED_ROOT / "investigations" / "local"
+MANAGED_ROOT = Path("lab")
+MANAGED_DIRECTORIES = tuple(Path(p) for p in (
+    "lab/agentic_engineering", "lab/math/crouzeix_conjecture",
+    "lab/math/crouzeix_textbook", "lab/math/mathematical_foundations",
+    "lab/math/autodiff_geometry", "lab/sicp", "lab/obsidian",
+    "lab/benchmarks/harness_benchmarks", "lab/benchmarks/evaluator_integrity",
+))
+
 CAPTURED_ARTIFACT_ROOT = Path("evidence") / "artifacts"
 MARKDOWN_SUFFIXES = {".md", ".markdown"}
 EXTERNAL_SCHEMES = ("http://", "https://", "mailto:", "tel:")
@@ -54,19 +61,32 @@ class MigrationResult:
     remaining_managed_markdown_link_count: int
 
 
+def is_managed_note(source: Path, repo_root: Path) -> bool:
+    if not is_relative_to(source, repo_root):
+        return False
+    if any(part.startswith(".") or part in {"node_modules", "target", "__pycache__"}
+           for part in source.relative_to(repo_root).parts):
+        return False
+    return (source.parent == repo_root / MANAGED_ROOT
+            or any(is_relative_to(source, repo_root / directory)
+                   for directory in MANAGED_DIRECTORIES))
+
+
 def discover_managed_notes(repo_root: Path) -> list[Path]:
     """Return canonical managed Markdown notes in deterministic repository order."""
-    knowledge_root = repo_root / MANAGED_ROOT
-    if not knowledge_root.is_dir():
+    lab_root = repo_root / MANAGED_ROOT
+    if not lab_root.is_dir():
         return []
-
-    return [
-        path
-        for path in sorted(knowledge_root.rglob("*"))
-        if path.is_file()
-        and path.suffix.lower() in MARKDOWN_SUFFIXES
-        and not is_relative_to(path, repo_root / LOCAL_INVESTIGATION_ROOT)
-    ]
+    candidates = list(lab_root.iterdir())
+    for directory in MANAGED_DIRECTORIES:
+        for current, folders, files in os.walk(repo_root / directory, followlinks=False):
+            folders[:] = [name for name in folders
+                          if not name.startswith(".")
+                          and name not in {"node_modules", "target", "__pycache__"}]
+            candidates.extend(Path(current) / name for name in files)
+    return sorted(path for path in candidates
+                  if path.is_file() and path.suffix.lower() in MARKDOWN_SUFFIXES
+                  and is_managed_note(path, repo_root))
 
 
 def scan_markdown_links(text: str) -> list[LinkSpan]:
@@ -322,10 +342,7 @@ def validate_input_path(path: Path, repo_root: Path) -> Path:
 
 
 def ensure_managed_source(source: Path, repo_root: Path) -> None:
-    managed_root = repo_root / MANAGED_ROOT
-    if not is_relative_to(source, managed_root) or is_relative_to(
-        source, repo_root / LOCAL_INVESTIGATION_ROOT
-    ):
+    if not is_managed_note(source, repo_root):
         raise MigrationError(f"{source}: input is outside managed knowledge roots")
 
 

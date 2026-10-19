@@ -2,7 +2,7 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
-const bookRoot='knowledge/crouzeix_textbook';
+const bookRoot='lab/math/crouzeix_textbook';
 function sourcePath(root,relative) {
   root=fs.realpathSync(root);
   const target=path.resolve(root,relative);

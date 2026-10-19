@@ -13,10 +13,15 @@
 /tmp/pdfs/
 /tools/textbook_pdf/node_modules/
 /.obsidian/
+# Preserve existing private notes left in the retired local vault.
 /knowledge/investigations/local/
 /knowledge/.obsidian/
 /knowledge/Pasted image *.png
 /knowledge/Untitled.md
+/lab/investigations/local/
+/lab/.obsidian/
+/lab/Pasted image *.png
+/lab/Untitled.md
 **/__pycache__/
 **/*.pyc
 **/*.dSYM/

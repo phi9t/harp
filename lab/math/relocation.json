@@ -1064,8 +1064,8 @@
     },
     {
       "destination": "lab/math/autodiff_geometry/README.md",
-      "destination_sha256": "4229c8c570586e4b01aea4f6eb9aedfafb7d07b0cfa6f862c2819719570d80f7",
-      "disposition": "retained",
+      "destination_sha256": "8e353da0bf4501185cdcb042192a2fa0155c5ffb2c105ed9392e1ce554413666",
+      "disposition": "adapted",
       "mode": "100644",
       "source": "formalization/autodiff_geometry/README.md",
       "source_blob": "9b1f5dc3e0aa022a6453f5ad65a8e4e867d6cb83",
@@ -4889,7 +4889,7 @@
     },
     {
       "destination": "lab/math/proof_reproduction/goal_validation.py",
-      "destination_sha256": "47eea457b63d4fe242b04219d23ccf86d8b9f259bffa514ffb6ef3779a3137fe",
+      "destination_sha256": "6eb22ed54c0ab278ab5376c1f1b1383df7873f0f8b397eeb377fd17c6b92947e",
       "disposition": "adapted",
       "mode": "100644",
       "source": "labs/crouzeix_proof_reproduction/goal_validation.py",
@@ -5564,7 +5564,7 @@
     },
     {
       "destination": "lab/math/proof_reproduction/test_goal_validation.py",
-      "destination_sha256": "0c50dd222c2c6caf2839c12fa94632a7eb1addb5e941b0fa424238354c76a79a",
+      "destination_sha256": "1b67d4aa1a0869481e3291ce54343c87281407fe630a9fe7ea531c73d06feb93",
       "disposition": "adapted",
       "mode": "100644",
       "source": "labs/crouzeix_proof_reproduction/tests/test_goal_validation.py",

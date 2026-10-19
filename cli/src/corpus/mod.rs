@@ -84,369 +84,369 @@ pub(super) const READER_ROUTES: &[(&str, &str, &str)] = &[
     (
         "agentic-eval-apply",
         "Agentic eval/apply",
-        "knowledge/sicp/agentic_eval_apply.md",
+        "lab/sicp/agentic_eval_apply.md",
     ),
     (
         "benchmarks",
         "Benchmarks",
-        "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
+        "lab/benchmarks/harness_benchmarks/harness_benchmark_field_guide.md",
     ),
     (
         "evaluator-integrity",
         "Evaluator integrity",
-        "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
+        "lab/benchmarks/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
     ),
     (
         "agentic-engineering",
         "Agentic engineering",
-        "knowledge/agentic_engineering/kenn_reference_architecture.md",
+        "lab/agentic_engineering/kenn_reference_architecture.md",
     ),
     (
         "crouzeix-conjecture",
         "Crouzeix",
-        "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
+        "lab/math/crouzeix_conjecture/crouzeix_conjecture_index.md",
     ),
     (
         "crouzeix-textbook",
         "Crouzeix textbook",
-        "knowledge/crouzeix_textbook/crouzeix_textbook_index.md",
+        "lab/math/crouzeix_textbook/crouzeix_textbook_index.md",
     ),
     (
         "mathematical-foundations",
         "Math foundations",
-        "knowledge/mathematical_foundations/mathematical_foundations_index.md",
+        "lab/math/mathematical_foundations/mathematical_foundations_index.md",
     ),
     (
         "autodiff-geometry",
         "Autodiff geometry",
-        "knowledge/autodiff_geometry/autodiff_geometry_index.md",
+        "lab/math/autodiff_geometry/autodiff_geometry_index.md",
     ),
     (
         "article-survey",
         "Article survey",
-        "knowledge/article_survey.md",
+        "lab/article_survey.md",
     ),
-    ("sicp", "SICP", "knowledge/sicp/sicp_index.md"),
+    ("sicp", "SICP", "lab/sicp/sicp_index.md"),
 ];
 pub(super) const AUXILIARY_DOCUMENTS: &[(&str, &str)] = &[
-    ("agentic-eval-apply", "knowledge/sicp/agentic_eval_apply.md"),
+    ("agentic-eval-apply", "lab/sicp/agentic_eval_apply.md"),
     (
         "sicp-seminar-09-eval-apply",
-        "knowledge/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
+        "lab/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
     ),
     (
         "sicp-evaluator-deep-dive",
-        "knowledge/sicp/metacircular_evaluator_deep_dive.md",
+        "lab/sicp/metacircular_evaluator_deep_dive.md",
     ),
     (
         "pi-harness-deep-dive",
-        "knowledge/agentic_engineering/pi_harness_deep_dive.md",
+        "lab/agentic_engineering/pi_harness_deep_dive.md",
     ),
     (
         "hermes-harness-deep-dive",
-        "knowledge/agentic_engineering/hermes_harness_deep_dive.md",
+        "lab/agentic_engineering/hermes_harness_deep_dive.md",
     ),
     (
         "codex-harness-deep-dive",
-        "knowledge/agentic_engineering/codex_harness_deep_dive.md",
+        "lab/agentic_engineering/codex_harness_deep_dive.md",
     ),
     (
         "deepseek-harness-deep-dive",
-        "knowledge/agentic_engineering/deepseek_harness_deep_dive.md",
+        "lab/agentic_engineering/deepseek_harness_deep_dive.md",
     ),
     (
         "deepseek-harness-study-index",
-        "knowledge/deepseek_harness/deepseek_harness_index.md",
+        "lab/agentic_engineering/deepseek_harness/deepseek_harness_index.md",
     ),
     (
         "deepseek-harness-cordis-spatiotemporal-composition",
-        "knowledge/deepseek_harness/01_cordis_spatiotemporal_composition.md",
+        "lab/agentic_engineering/deepseek_harness/01_cordis_spatiotemporal_composition.md",
     ),
     (
         "deepseek-harness-profiles-bundles-and-patch-layers",
-        "knowledge/deepseek_harness/02_profiles_bundles_and_patch_layers.md",
+        "lab/agentic_engineering/deepseek_harness/02_profiles_bundles_and_patch_layers.md",
     ),
     (
         "deepseek-harness-events-effects-and-reversible-lifecycle",
-        "knowledge/deepseek_harness/03_events_effects_and_reversible_lifecycle.md",
+        "lab/agentic_engineering/deepseek_harness/03_events_effects_and_reversible_lifecycle.md",
     ),
     (
         "deepseek-harness-turn-session-and-model-visible-log",
-        "knowledge/deepseek_harness/04_turn_session_and_model_visible_log.md",
+        "lab/agentic_engineering/deepseek_harness/04_turn_session_and_model_visible_log.md",
     ),
     (
         "deepseek-harness-capability-seams",
-        "knowledge/deepseek_harness/05_capability_seams.md",
+        "lab/agentic_engineering/deepseek_harness/05_capability_seams.md",
     ),
     (
         "deepseek-harness-tool-registry-and-policy-pipeline",
-        "knowledge/deepseek_harness/06_tool_registry_and_policy_pipeline.md",
+        "lab/agentic_engineering/deepseek_harness/06_tool_registry_and_policy_pipeline.md",
     ),
     (
         "deepseek-harness-sandbox-permission-and-filesystem-boundaries",
-        "knowledge/deepseek_harness/07_sandbox_permission_and_filesystem_boundaries.md",
+        "lab/agentic_engineering/deepseek_harness/07_sandbox_permission_and_filesystem_boundaries.md",
     ),
     (
         "deepseek-harness-subagents-and-continuable-children",
-        "knowledge/deepseek_harness/08_subagents_and_continuable_children.md",
+        "lab/agentic_engineering/deepseek_harness/08_subagents_and_continuable_children.md",
     ),
     (
         "deepseek-harness-persistence-sdk-and-runtime-packaging",
-        "knowledge/deepseek_harness/09_persistence_sdk_and_runtime_packaging.md",
+        "lab/agentic_engineering/deepseek_harness/09_persistence_sdk_and_runtime_packaging.md",
     ),
     (
         "deepseek-harness-self-modification-and-dynamic-cordis",
-        "knowledge/deepseek_harness/10_self_modification_and_dynamic_cordis.md",
+        "lab/agentic_engineering/deepseek_harness/10_self_modification_and_dynamic_cordis.md",
     ),
     (
         "deepseek-harness-source-registry",
-        "knowledge/deepseek_harness/source_registry.md",
+        "lab/agentic_engineering/deepseek_harness/source_registry.md",
     ),
     (
         "deepseek-harness-claim-evidence-ledger",
-        "knowledge/deepseek_harness/claim_evidence_ledger.md",
+        "lab/agentic_engineering/deepseek_harness/claim_evidence_ledger.md",
     ),
     (
         "agent-harness-architecture-dossier",
-        "knowledge/sicp/course/capstone/agent_harness_architecture_dossier.md",
+        "lab/sicp/course/capstone/agent_harness_architecture_dossier.md",
     ),
     (
         "codex-state-continuity",
-        "knowledge/agentic_engineering/codex_state_continuity_and_compaction.md",
+        "lab/agentic_engineering/codex_state_continuity_and_compaction.md",
     ),
     (
         "harness-benchmark-field-guide",
-        "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
+        "lab/benchmarks/harness_benchmarks/harness_benchmark_field_guide.md",
     ),
     (
         "evaluator-integrity-benchmark-suite",
-        "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
+        "lab/benchmarks/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
     ),
     (
         "agentic-engineering-index",
-        "knowledge/agentic_engineering/agentic_engineering_index.md",
+        "lab/agentic_engineering/agentic_engineering_index.md",
     ),
     (
         "agentic-engineering-reference",
-        "knowledge/agentic_engineering/kenn_reference_architecture.md",
+        "lab/agentic_engineering/kenn_reference_architecture.md",
     ),
     (
         "agentic-engineering-tool-stack",
-        "knowledge/agentic_engineering/tool_stack_investigation.md",
+        "lab/agentic_engineering/tool_stack_investigation.md",
     ),
     (
         "agentic-engineering-source-registry",
-        "knowledge/agentic_engineering/source_registry.md",
+        "lab/agentic_engineering/source_registry.md",
     ),
     (
         "agentic-engineering-claim-ledger",
-        "knowledge/agentic_engineering/claim_evidence_ledger.md",
+        "lab/agentic_engineering/claim_evidence_ledger.md",
     ),
     (
         "agentic-engineering-missing-evidence",
-        "knowledge/agentic_engineering/missing_evidence.md",
+        "lab/agentic_engineering/missing_evidence.md",
     ),
     (
         "crouzeix-problem-and-prior-barrier",
-        "knowledge/crouzeix_conjecture/01_problem_and_prior_barrier.md",
+        "lab/math/crouzeix_conjecture/01_problem_and_prior_barrier.md",
     ),
     (
         "crouzeix-shared-power-family",
-        "knowledge/crouzeix_conjecture/02_shared_power_family.md",
+        "lab/math/crouzeix_conjecture/02_shared_power_family.md",
     ),
     (
         "crouzeix-jin-proof-spine",
-        "knowledge/crouzeix_conjecture/03_jin_proof_spine.md",
+        "lab/math/crouzeix_conjecture/03_jin_proof_spine.md",
     ),
     (
         "crouzeix-jin-positive-real-completion",
-        "knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md",
+        "lab/math/crouzeix_conjecture/04_jin_positive_real_completion.md",
     ),
     (
         "crouzeix-lorist-schwenninger-proof",
-        "knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof.md",
+        "lab/math/crouzeix_conjecture/05_lorist_schwenninger_proof.md",
     ),
     (
         "crouzeix-proof-comparison",
-        "knowledge/crouzeix_conjecture/06_proof_comparison.md",
+        "lab/math/crouzeix_conjecture/06_proof_comparison.md",
     ),
     (
         "crouzeix-jin-lean-verification",
-        "knowledge/crouzeix_conjecture/07_jin_lean_verification.md",
+        "lab/math/crouzeix_conjecture/07_jin_lean_verification.md",
     ),
     (
         "crouzeix-ai-assisted-discovery",
-        "knowledge/crouzeix_conjecture/08_ai_assisted_discovery.md",
+        "lab/math/crouzeix_conjecture/08_ai_assisted_discovery.md",
     ),
     (
         "crouzeix-status-and-critical-assessment",
-        "knowledge/crouzeix_conjecture/09_status_and_critical_assessment.md",
+        "lab/math/crouzeix_conjecture/09_status_and_critical_assessment.md",
     ),
     (
         "crouzeix-jin-proof-editorial",
-        "knowledge/crouzeix_conjecture/10_jin_proof_editorial.md",
+        "lab/math/crouzeix_conjecture/10_jin_proof_editorial.md",
     ),
     (
         "crouzeix-proof-reproduction-research",
-        "knowledge/crouzeix_conjecture/reproduction_research.md",
+        "lab/math/crouzeix_conjecture/reproduction_research.md",
     ),
     (
         "crouzeix-glossary",
-        "knowledge/crouzeix_conjecture/glossary.md",
+        "lab/math/crouzeix_conjecture/glossary.md",
     ),
     (
         "crouzeix-source-registry",
-        "knowledge/crouzeix_conjecture/source_registry.md",
+        "lab/math/crouzeix_conjecture/source_registry.md",
     ),
     (
         "crouzeix-claim-evidence-ledger",
-        "knowledge/crouzeix_conjecture/claim_evidence_ledger.md",
+        "lab/math/crouzeix_conjecture/claim_evidence_ledger.md",
     ),
     (
         "math-foundations-index",
-        "knowledge/mathematical_foundations/mathematical_foundations_index.md",
+        "lab/math/mathematical_foundations/mathematical_foundations_index.md",
     ),
     (
         "math-foundations-linear-spaces-and-maps",
-        "knowledge/mathematical_foundations/01_linear_spaces_and_maps.md",
+        "lab/math/mathematical_foundations/01_linear_spaces_and_maps.md",
     ),
     (
         "math-foundations-orthogonality-spectra-and-decompositions",
-        "knowledge/mathematical_foundations/02_orthogonality_spectra_and_decompositions.md",
+        "lab/math/mathematical_foundations/02_orthogonality_spectra_and_decompositions.md",
     ),
     (
         "math-foundations-probability-and-gaussian-models",
-        "knowledge/mathematical_foundations/03_probability_and_gaussian_models.md",
+        "lab/math/mathematical_foundations/03_probability_and_gaussian_models.md",
     ),
     (
         "math-foundations-bayesian-inference-and-information",
-        "knowledge/mathematical_foundations/04_bayesian_inference_and_information.md",
+        "lab/math/mathematical_foundations/04_bayesian_inference_and_information.md",
     ),
     (
         "math-foundations-linear-models-and-regularization",
-        "knowledge/mathematical_foundations/05_linear_models_and_regularization.md",
+        "lab/math/mathematical_foundations/05_linear_models_and_regularization.md",
     ),
     (
         "math-foundations-optimization-and-iterative-methods",
-        "knowledge/mathematical_foundations/06_optimization_and_iterative_methods.md",
+        "lab/math/mathematical_foundations/06_optimization_and_iterative_methods.md",
     ),
     (
         "math-foundations-curriculum-map",
-        "knowledge/mathematical_foundations/curriculum_map.md",
+        "lab/math/mathematical_foundations/curriculum_map.md",
     ),
     (
         "math-foundations-glossary",
-        "knowledge/mathematical_foundations/glossary.md",
+        "lab/math/mathematical_foundations/glossary.md",
     ),
     (
         "math-foundations-source-registry",
-        "knowledge/mathematical_foundations/source_registry.md",
+        "lab/math/mathematical_foundations/source_registry.md",
     ),
     (
         "math-foundations-claim-evidence-ledger",
-        "knowledge/mathematical_foundations/claim_evidence_ledger.md",
+        "lab/math/mathematical_foundations/claim_evidence_ledger.md",
     ),
     (
         "math-foundations-formalization-map",
-        "knowledge/mathematical_foundations/formalization_map.md",
+        "lab/math/mathematical_foundations/formalization_map.md",
     ),
     (
         "autodiff-geometry-index",
-        "knowledge/autodiff_geometry/autodiff_geometry_index.md",
+        "lab/math/autodiff_geometry/autodiff_geometry_index.md",
     ),
     (
         "autodiff-geometry-source-registry",
-        "knowledge/autodiff_geometry/source_registry.md",
+        "lab/math/autodiff_geometry/source_registry.md",
     ),
     (
         "autodiff-geometry-claim-evidence-ledger",
-        "knowledge/autodiff_geometry/claim_evidence_ledger.md",
+        "lab/math/autodiff_geometry/claim_evidence_ledger.md",
     ),
     (
         "autodiff-geometry-formalization-roadmap",
-        "knowledge/autodiff_geometry/formalization_roadmap.md",
+        "lab/math/autodiff_geometry/formalization_roadmap.md",
     ),
     (
         "autodiff-geometry-source-acquisition-and-parsing",
-        "knowledge/autodiff_geometry/source_acquisition_and_parsing.md",
+        "lab/math/autodiff_geometry/source_acquisition_and_parsing.md",
     ),
     (
         "autodiff-geometry-layered-curriculum-tracker",
-        "knowledge/autodiff_geometry/layered_curriculum_tracker.md",
+        "lab/math/autodiff_geometry/layered_curriculum_tracker.md",
     ),
     (
         "sicp-dialogue-state",
-        "knowledge/sicp/course/dialogue_state.md",
+        "lab/sicp/course/dialogue_state.md",
     ),
-    ("sicp-exercise-map", "knowledge/sicp/course/exercise_map.md"),
+    ("sicp-exercise-map", "lab/sicp/course/exercise_map.md"),
     (
         "sicp-scheme-reading-primer",
-        "knowledge/sicp/course/scheme_reading_primer.md",
+        "lab/sicp/course/scheme_reading_primer.md",
     ),
     (
         "sicp-01-process-shape-and-higher-order-abstraction",
-        "knowledge/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md",
+        "lab/sicp/course/seminars/01-process-shape-and-higher-order-abstraction.md",
     ),
     (
         "sicp-02-data-abstraction-and-immutable-representation",
-        "knowledge/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md",
+        "lab/sicp/course/seminars/02-data-abstraction-and-immutable-representation.md",
     ),
     (
         "sicp-03-trees-sequences-and-functional-interfaces",
-        "knowledge/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md",
+        "lab/sicp/course/seminars/03-trees-sequences-and-functional-interfaces.md",
     ),
     (
         "sicp-04-symbols-sets-compression-and-generic-dispatch",
-        "knowledge/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md",
+        "lab/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch.md",
     ),
     (
         "sicp-05-state-identity-and-environments",
-        "knowledge/sicp/course/seminars/05-state-identity-and-environments.md",
+        "lab/sicp/course/seminars/05-state-identity-and-environments.md",
     ),
     (
         "sicp-06-mutation-simulation-and-constraints",
-        "knowledge/sicp/course/seminars/06-mutation-simulation-and-constraints.md",
+        "lab/sicp/course/seminars/06-mutation-simulation-and-constraints.md",
     ),
     (
         "sicp-07-concurrency-serialization-and-interleavings",
-        "knowledge/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md",
+        "lab/sicp/course/seminars/07-concurrency-serialization-and-interleavings.md",
     ),
     (
         "sicp-08-streams-delay-and-infinite-processes",
-        "knowledge/sicp/course/seminars/08-streams-delay-and-infinite-processes.md",
+        "lab/sicp/course/seminars/08-streams-delay-and-infinite-processes.md",
     ),
     (
         "sicp-10-lazy-evaluation-and-nondeterministic-search",
-        "knowledge/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md",
+        "lab/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search.md",
     ),
     (
         "sicp-11-logic-programming-and-declarative-query",
-        "knowledge/sicp/course/seminars/11-logic-programming-and-declarative-query.md",
+        "lab/sicp/course/seminars/11-logic-programming-and-declarative-query.md",
     ),
     (
         "sicp-12-machines-storage-control-and-compilation",
-        "knowledge/sicp/course/seminars/12-machines-storage-control-and-compilation.md",
+        "lab/sicp/course/seminars/12-machines-storage-control-and-compilation.md",
     ),
     (
         "sicp-sicp-course-guide",
-        "knowledge/sicp/course/sicp_course_guide.md",
+        "lab/sicp/course/sicp_course_guide.md",
     ),
     (
         "sicp-domain-orientation",
-        "knowledge/sicp/domain_orientation.md",
+        "lab/sicp/domain_orientation.md",
     ),
     (
         "sicp-eval-apply-reader-companion",
-        "knowledge/sicp/eval-apply-reader-companion.md",
+        "lab/sicp/eval-apply-reader-companion.md",
     ),
     (
         "sicp-missing-evidence",
-        "knowledge/sicp/missing_evidence.md",
+        "lab/sicp/missing_evidence.md",
     ),
-    ("sicp-index", "knowledge/sicp/sicp_index.md"),
+    ("sicp-index", "lab/sicp/sicp_index.md"),
 ];
 const KNOWLEDGE_HOME: (&str, &str, &str) =
-    ("knowledge", "Knowledge", "knowledge/harp_knowledge_home.md");
+    ("knowledge", "Knowledge", "lab/harp_knowledge_home.md");
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub(super) struct CanonicalDocument {
     pub(super) concept_id: String,
@@ -545,7 +545,7 @@ pub(super) fn compile(repo_root: &Path) -> Result<KnowledgeCorpus, AppError> {
 
 pub(super) fn validate_build_output(output: &Path) -> Result<PathBuf, AppError> {
     if output.is_absolute()
-        || !output.starts_with("knowledge/generated")
+        || !output.starts_with("lab/generated")
         || output.extension().and_then(|value| value.to_str()) != Some("json")
         || !output
             .components()
@@ -553,7 +553,7 @@ pub(super) fn validate_build_output(output: &Path) -> Result<PathBuf, AppError> 
     {
         return Err(invalid(
             "corpus.output_path",
-            "output must stay beneath knowledge/generated",
+            "output must stay beneath lab/generated",
         ));
     }
     Ok(output.to_path_buf())

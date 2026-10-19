@@ -424,7 +424,7 @@ fn has_vault_root(path: &Path) -> bool {
             _ => None,
         })
         .is_some_and(|root| {
-            ["knowledge", "evidence", "lab", "cli", "durable", "sessions", "docs"].contains(&root)
+            ["evidence", "lab", "cli", "durable", "sessions", "docs"].contains(&root)
         })
 }
 
@@ -506,8 +506,8 @@ pub(super) fn canonical_heading_map(markdown: &str, source_path: &str) -> BTreeM
 
 fn canonical_heading_aliases(markdown: &str, source_path: &str) -> BTreeMap<String, Vec<String>> {
     let mut options = Options::empty();
-    if source_path.starts_with("knowledge/crouzeix_conjecture/")
-        || source_path.starts_with("knowledge/crouzeix_textbook/")
+    if source_path.starts_with("lab/math/crouzeix_conjecture/")
+        || source_path.starts_with("lab/math/crouzeix_textbook/")
     {
         options |= Options::ENABLE_HEADING_ATTRIBUTES;
     }
@@ -566,22 +566,22 @@ mod tests {
     #[test]
     fn parses_alias_and_heading_links() {
         assert_eq!(
-            parse_wiki_links("[[knowledge/darwinx/darwinx_index|DarwinX]]").unwrap(),
+            parse_wiki_links("[[lab/darwinx/darwinx_index|DarwinX]]").unwrap(),
             vec![WikiLink {
                 embed: false,
-                path: Some("knowledge/darwinx/darwinx_index".into()),
+                path: Some("lab/darwinx/darwinx_index".into()),
                 subpath: None,
                 alias: Some("DarwinX".into()),
             }]
         );
         assert_eq!(
             parse_wiki_links(
-                "[[knowledge/darwinx/claim_evidence_ledger#DX-024: Durable capability|DX-024]]"
+                "[[lab/darwinx/claim_evidence_ledger#DX-024: Durable capability|DX-024]]"
             )
             .unwrap(),
             vec![WikiLink {
                 embed: false,
-                path: Some("knowledge/darwinx/claim_evidence_ledger".into()),
+                path: Some("lab/darwinx/claim_evidence_ledger".into()),
                 subpath: Some(WikiSubpath::Heading("DX-024: Durable capability".into())),
                 alias: Some("DX-024".into()),
             }]
@@ -592,12 +592,12 @@ mod tests {
     fn ignores_links_inside_code() {
         assert_eq!(
             parse_wiki_links(
-                "``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n[[knowledge/rsi/rsi_index]]"
+                "``[[lab/rsi/rsi_index]]``\n~~~md\n[[lab/rsi/rsi_index]]\n~~~\n````md\n[[lab/rsi/rsi_index]]\n````\n[[lab/rsi/rsi_index]]"
             )
             .unwrap(),
             vec![WikiLink {
                 embed: false,
-                path: Some("knowledge/rsi/rsi_index".into()),
+                path: Some("lab/rsi/rsi_index".into()),
                 subpath: None,
                 alias: None,
             }]
@@ -607,12 +607,12 @@ mod tests {
     #[test]
     fn preserves_multiline_inline_code_state_while_parsing_and_rewriting() {
         let markdown =
-            "`literal\n[[knowledge/rsi/rsi_index]]\nliteral`\n[[knowledge/rsi/rsi_index|RSI]]";
+            "`literal\n[[lab/rsi/rsi_index]]\nliteral`\n[[lab/rsi/rsi_index|RSI]]";
         assert_eq!(
             parse_wiki_links(markdown).unwrap(),
             vec![WikiLink {
                 embed: false,
-                path: Some("knowledge/rsi/rsi_index".into()),
+                path: Some("lab/rsi/rsi_index".into()),
                 subpath: None,
                 alias: Some("RSI".into()),
             }]
@@ -622,7 +622,7 @@ mod tests {
                 format!("[{}](target)", link.alias.as_deref().unwrap_or("missing"))
             })
             .unwrap(),
-            "`literal\n[[knowledge/rsi/rsi_index]]\nliteral`\n[RSI](target)"
+            "`literal\n[[lab/rsi/rsi_index]]\nliteral`\n[RSI](target)"
         );
     }
 
@@ -630,12 +630,12 @@ mod tests {
     fn ignores_links_inside_blockquote_fences() {
         assert_eq!(
             parse_wiki_links(
-                "> ```md\n> [[knowledge/rsi/rsi_index]]\n> ```\n[[knowledge/rsi/rsi_index]]"
+                "> ```md\n> [[lab/rsi/rsi_index]]\n> ```\n[[lab/rsi/rsi_index]]"
             )
             .unwrap(),
             vec![WikiLink {
                 embed: false,
-                path: Some("knowledge/rsi/rsi_index".into()),
+                path: Some("lab/rsi/rsi_index".into()),
                 subpath: None,
                 alias: None,
             }]
@@ -646,12 +646,12 @@ mod tests {
     fn accepts_longer_whitespace_only_fence_closers() {
         assert_eq!(
             parse_wiki_links(
-                "~~~md\n[[knowledge/rsi/rsi_index]]\n~~~~  \n[[knowledge/rsi/rsi_index]]"
+                "~~~md\n[[lab/rsi/rsi_index]]\n~~~~  \n[[lab/rsi/rsi_index]]"
             )
             .unwrap(),
             vec![WikiLink {
                 embed: false,
-                path: Some("knowledge/rsi/rsi_index".into()),
+                path: Some("lab/rsi/rsi_index".into()),
                 subpath: None,
                 alias: None,
             }]
@@ -661,7 +661,7 @@ mod tests {
     #[test]
     fn rejects_fence_closers_with_non_whitespace_suffixes() {
         let error =
-            parse_wiki_links("```md\n[[knowledge/rsi/rsi_index]]\n``` still code").unwrap_err();
+            parse_wiki_links("```md\n[[lab/rsi/rsi_index]]\n``` still code").unwrap_err();
 
         assert_eq!(error, "unclosed Markdown code fence");
     }
@@ -669,14 +669,14 @@ mod tests {
     #[test]
     fn parses_block_links_and_rejects_them_until_a_block_contract_exists() {
         let repo = fixture();
-        fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
+        fs::create_dir_all(repo.path().join("lab/example")).unwrap();
         fs::write(
-            repo.path().join("knowledge/example/note.md"),
+            repo.path().join("lab/example/note.md"),
             "# Note\n\nparagraph ^block-id\n",
         )
         .unwrap();
         let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
-        let link = parse_wiki_links("[[knowledge/example/note#^block-id|Block]]")
+        let link = parse_wiki_links("[[lab/example/note#^block-id|Block]]")
             .unwrap()
             .pop()
             .unwrap();
@@ -686,7 +686,7 @@ mod tests {
             Some(WikiSubpath::Block("block-id".to_owned()))
         );
         assert_eq!(
-            resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+            resolve_wiki_link(&directory, "lab/example/source.md", &link)
                 .unwrap_err()
                 .code(),
             "knowledge.obsidian.block"
@@ -697,9 +697,9 @@ mod tests {
     fn rejects_malformed_links() {
         for value in [
             "[[../../etc/passwd]]",
-            "[[knowledge/darwinx/darwinx_index|]]",
-            "[[knowledge/darwinx/darwinx_index|first|second]]",
-            "[[knowledge/darwinx/darwinx_index",
+            "[[lab/darwinx/darwinx_index|]]",
+            "[[lab/darwinx/darwinx_index|first|second]]",
+            "[[lab/darwinx/darwinx_index",
             "[[#]]",
             "[[evidence/source.pdf#page=0]]",
         ] {
@@ -710,37 +710,37 @@ mod tests {
     #[test]
     fn rewrites_links_without_touching_code() {
         let rewritten = rewrite_wiki_links(
-            "[[knowledge/rsi/rsi_index|RSI]] ``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n",
+            "[[lab/rsi/rsi_index|RSI]] ``[[lab/rsi/rsi_index]]``\n~~~md\n[[lab/rsi/rsi_index]]\n~~~\n````md\n[[lab/rsi/rsi_index]]\n````\n",
             |link| format!("[{}](target)", link.alias.as_deref().unwrap_or("missing")),
         )
         .unwrap();
         assert_eq!(
             rewritten,
-            "[RSI](target) ``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n"
+            "[RSI](target) ``[[lab/rsi/rsi_index]]``\n~~~md\n[[lab/rsi/rsi_index]]\n~~~\n````md\n[[lab/rsi/rsi_index]]\n````\n"
         );
     }
 
     #[test]
     fn resolves_note_heading_and_pdf_page() {
         let repo = fixture();
-        fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
+        fs::create_dir_all(repo.path().join("lab/example")).unwrap();
         fs::create_dir_all(repo.path().join("evidence/example")).unwrap();
         fs::write(
-            repo.path().join("knowledge/example/note.md"),
+            repo.path().join("lab/example/note.md"),
             "# Note\n\n## Result boundary\n\nText.\n",
         )
         .unwrap();
         fs::write(repo.path().join("evidence/example/paper.pdf"), b"%PDF").unwrap();
         let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
 
-        let note = parse_wiki_links("[[knowledge/example/note#Result boundary|Result]]")
+        let note = parse_wiki_links("[[lab/example/note#Result boundary|Result]]")
             .unwrap()
             .pop()
             .unwrap();
         assert_eq!(
-            resolve_wiki_link(&directory, "knowledge/example/source.md", &note).unwrap(),
+            resolve_wiki_link(&directory, "lab/example/source.md", &note).unwrap(),
             ResolvedWikiLink {
-                target: PathBuf::from("knowledge/example/note.md"),
+                target: PathBuf::from("lab/example/note.md"),
                 heading_id: Some("result-boundary".into()),
                 pdf_page: None,
                 embed: false,
@@ -753,7 +753,7 @@ mod tests {
             .pop()
             .unwrap();
         assert_eq!(
-            resolve_wiki_link(&directory, "knowledge/example/source.md", &pdf).unwrap(),
+            resolve_wiki_link(&directory, "lab/example/source.md", &pdf).unwrap(),
             ResolvedWikiLink {
                 target: PathBuf::from("evidence/example/paper.pdf"),
                 heading_id: None,
@@ -776,7 +776,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+            resolve_wiki_link(&directory, "lab/example/source.md", &link)
                 .unwrap()
                 .target,
             PathBuf::from("evidence/example/REVISION")
@@ -799,7 +799,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+            resolve_wiki_link(&directory, "lab/example/source.md", &link)
                 .unwrap()
                 .target,
             PathBuf::from("docs/writing-style/STYLE_GUIDE.md")
@@ -809,10 +809,10 @@ mod tests {
     #[test]
     fn rejects_non_pdf_embeds() {
         let repo = fixture();
-        fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
+        fs::create_dir_all(repo.path().join("lab/example")).unwrap();
         fs::create_dir_all(repo.path().join("evidence/example")).unwrap();
         fs::write(
-            repo.path().join("knowledge/example/note.md"),
+            repo.path().join("lab/example/note.md"),
             "# Note\n\n## Result\n",
         )
         .unwrap();
@@ -820,13 +820,13 @@ mod tests {
         let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
 
         for source in [
-            "![[knowledge/example/note]]",
-            "![[knowledge/example/note#Result]]",
+            "![[lab/example/note]]",
+            "![[lab/example/note#Result]]",
             "![[evidence/example/blob.bin]]",
         ] {
             let link = parse_wiki_links(source).unwrap().pop().unwrap();
             assert_eq!(
-                resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+                resolve_wiki_link(&directory, "lab/example/source.md", &link)
                     .unwrap_err()
                     .code(),
                 "knowledge.obsidian.embed"
@@ -837,28 +837,28 @@ mod tests {
     #[test]
     fn rejects_missing_or_ambiguous_heading() {
         let repo = fixture();
-        fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
+        fs::create_dir_all(repo.path().join("lab/example")).unwrap();
         fs::write(
-            repo.path().join("knowledge/example/note.md"),
+            repo.path().join("lab/example/note.md"),
             "# Note\n\n## Duplicate\n\nA.\n\n## Duplicate\n\nB.\n",
         )
         .unwrap();
         let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
-        let link = parse_wiki_links("[[knowledge/example/note#Duplicate]]")
+        let link = parse_wiki_links("[[lab/example/note#Duplicate]]")
             .unwrap()
             .pop()
             .unwrap();
         let error =
-            resolve_wiki_link(&directory, "knowledge/example/source.md", &link).unwrap_err();
+            resolve_wiki_link(&directory, "lab/example/source.md", &link).unwrap_err();
         assert_eq!(error.code(), "knowledge.obsidian.heading");
     }
 
     #[test]
     fn resolves_crouzeix_explicit_heading_ids_and_regular_slugs() {
         let repo = fixture();
-        fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).unwrap();
+        fs::create_dir_all(repo.path().join("lab/math/crouzeix_conjecture")).unwrap();
         fs::write(
-            repo.path().join("knowledge/crouzeix_conjecture/note.md"),
+            repo.path().join("lab/math/crouzeix_conjecture/note.md"),
             "# Note\n\n## Explicit heading {#explicit-id}\n\n## Regular heading\n",
         )
         .unwrap();
@@ -869,13 +869,13 @@ mod tests {
             ("Regular heading", "regular-heading"),
         ] {
             let link = parse_wiki_links(&format!(
-                "[[knowledge/crouzeix_conjecture/note#{fragment}]]"
+                "[[lab/math/crouzeix_conjecture/note#{fragment}]]"
             ))
             .unwrap()
             .pop()
             .unwrap();
             assert_eq!(
-                resolve_wiki_link(&directory, "knowledge/crouzeix_conjecture/source.md", &link)
+                resolve_wiki_link(&directory, "lab/math/crouzeix_conjecture/source.md", &link)
                     .unwrap()
                     .heading_id
                     .as_deref(),
@@ -883,19 +883,19 @@ mod tests {
             );
         }
 
-        fs::create_dir_all(repo.path().join("knowledge/crouzeix_textbook")).unwrap();
+        fs::create_dir_all(repo.path().join("lab/math/crouzeix_textbook")).unwrap();
         fs::write(
-            repo.path().join("knowledge/crouzeix_textbook/ledger.md"),
+            repo.path().join("lab/math/crouzeix_textbook/ledger.md"),
             "# Ledger\n\n## Stable claim {#stable-claim}\n",
         )
         .unwrap();
         let link =
-            parse_wiki_links("[[knowledge/crouzeix_textbook/ledger#stable-claim|Stable claim]]")
+            parse_wiki_links("[[lab/math/crouzeix_textbook/ledger#stable-claim|Stable claim]]")
                 .unwrap()
                 .pop()
                 .unwrap();
         assert_eq!(
-            resolve_wiki_link(&directory, "knowledge/crouzeix_textbook/source.md", &link,)
+            resolve_wiki_link(&directory, "lab/math/crouzeix_textbook/source.md", &link,)
                 .unwrap()
                 .heading_id
                 .as_deref(),

@@ -1158,7 +1158,7 @@ Body.
     );
 
     let missing_native_ledger = "\
-**[[knowledge/example/missing_ledger#EX-002: Capture record describes the edition|SOURCE CLAIM - EX-002]].**
+**[[lab/example/missing_ledger#EX-002: Capture record describes the edition|SOURCE CLAIM - EX-002]].**
 Body.
 ";
     let error = validate_main_document(&path, missing_native_ledger)
@@ -1245,7 +1245,7 @@ fn locators_must_target_underlying_evidence() {
     )
     .replace(
         "- Locator: [Paper](../../evidence/sicp/LICENSE.txt)",
-        "- Locator: [Prose summary](../../knowledge/sicp/sicp_index.md#claim-ceiling)",
+        "- Locator: [Prose summary](../../lab/sicp/sicp_index.md#claim-ceiling)",
     );
     assert!(validate_claim_entries(&prose_locator)
         .expect_err("canonical prose cannot substitute for evidence")
@@ -1286,7 +1286,7 @@ fn native_evidence_locators_require_an_evidence_target_and_matching_line_target(
     )
     .replace(
         "[Paper](../../evidence/sicp/LICENSE.txt)",
-        "[[knowledge/sicp/sicp_index|DGM]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))",
+        "[[lab/sicp/sicp_index|DGM]] ([exact line 1](../../evidence/sicp/LICENSE.txt#L1))",
     );
     assert!(validate_claim_entries(&native_knowledge_target)
         .expect_err("native locator cannot target maintained knowledge")
@@ -1441,7 +1441,7 @@ fn evidence_locators_cannot_escape_evidence_through_symlinks() {
     let evidence = workspace_root().join("evidence");
     let inside = tempfile::tempdir_in(&evidence).expect("create evidence temp directory");
     let link = inside.path().join("escape.md");
-    symlink(workspace_root().join("knowledge/sicp/sicp_index.md"), &link)
+    symlink(workspace_root().join("lab/sicp/sicp_index.md"), &link)
         .expect("create evidence escape symlink");
     let relative = link
         .strip_prefix(&evidence)
