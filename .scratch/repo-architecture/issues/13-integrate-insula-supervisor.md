@@ -74,7 +74,7 @@ Unsupported. These refusal boundaries are explicit in `INTEGRATION.md` and
 
 - Linux Rust suite: 54 executions passed, zero skipped; clippy with warnings
   denied and cargo fmt passed. Rust 1.95.0, rusqlite 0.39.0 and private tmux 3.4.
-- Native real-owner suite: eight tests passed, zero skipped, through actual
+- Native real-owner suite: nine tests passed, zero skipped, through actual
   cgroup v2 and capsule PID/mount/network namespaces. Includes namespace access
   limits, fork/setsid descendant cleanup, duplicate launch, stale generation,
   claim EOF fencing, lost reply reconciliation, root alias exclusion, owner
@@ -99,4 +99,11 @@ policy and probe cases; it does not qualify those capabilities for this owner.
 Non-process probes, secret resolution and controller-independent survival remain
 explicitly unsupported. Shared durable guardian integration and root-workspace
 linkage/verification are parent integration responsibilities. Do not represent
-the eight native cases as proof of the unimplemented stronger capabilities.
+the nine native cases as proof of the unimplemented stronger capabilities.
+
+Post-import boundary review also found and closed generation reuse across service
+keys. The owner now reserves each physical generation payload and rejects both
+cross-service aliases and retired generation reuse before launching. Native
+regression verifies the original process identity remains unchanged, operation-ID
+collisions refuse, and replay of a completed original launch observes Gone
+without replaying its bootstrap. Final native result is nine passed, zero skipped.

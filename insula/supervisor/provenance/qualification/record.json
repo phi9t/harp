@@ -8,8 +8,8 @@
     "source/insula/cgroup.py": "856f5a0887164930bdf63280f1cc5a6483cbae4a4f2e83c3575c8548113c97d0",
     "source/insula/owner/__init__.py": "5d844a6baba4d8fb25c7e66577232320d195f0675f4da19e88d89a7ccaf2b91d",
     "source/insula/owner/process.py": "a2c7b7081af30f3b4fc121d9af99023d8cf5c09832c52d275a69af65c7957c8f",
-    "source/insula/owner/service.py": "323c3db99a2daef503d0d8e3d9d95eb557d765d0543d99c2de43e822add8e31b",
-    "source/insula/owner/test_service.py": "571abf4a6503b6200674e422107100cae34a4730ba9881ead05745b3714fc37d",
+    "source/insula/owner/service.py": "618fc5fe46f9b4c892613c6846dda425a8180780764935a54edb4f054d80b6ee",
+    "source/insula/owner/test_service.py": "e07ef5dc01185f77778921e17d0ae087b7e32a383c0b30eb36978ccc920f7766",
     "source/insula/rootfs.py": "2161b607fe2c96ed4f93f2c521f90c9acd5fa396d5090471de20bde262b096ab",
     "source/insula/temp_root.py": "0b4a9d7fcb8b741ac97e098d3f8e1b62debfcac8a92a30a0151279c9760d0887",
     "source/insula/test_capsule.py": "4e54a45120928d40c269ae350cc95a90203e7c027168d7615122d264e57cc25b",
@@ -63,7 +63,7 @@
     "fmt": "cargo fmt --check"
   },
   "native_owner_tests": {
-    "executions": 8,
+    "executions": 9,
     "skipped": 0,
     "command": "INSULA_OWNER_NATIVE=1 python3 -m unittest -v insula.owner.test_service",
     "boundary": "actual Linux delegated cgroup v2 and capsule PID/mount/network namespaces; Rust client round trip"

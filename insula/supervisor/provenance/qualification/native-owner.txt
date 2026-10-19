@@ -1,5 +1,6 @@
 test_bounded_logs_and_unsupported_capabilities (insula.owner.test_service.NativeOwner.test_bounded_logs_and_unsupported_capabilities) ... ok
 test_claim_loss_fences_effect_and_cleans_boundary (insula.owner.test_service.NativeOwner.test_claim_loss_fences_effect_and_cleans_boundary) ... ok
+test_generation_reservation_prevents_cross_service_payload_alias (insula.owner.test_service.NativeOwner.test_generation_reservation_prevents_cross_service_payload_alias) ... ok
 test_lost_launch_reply_reconciles_without_duplicate_effect (insula.owner.test_service.NativeOwner.test_lost_launch_reply_reconciles_without_duplicate_effect) ... ok
 test_owner_crash_reconciles_cgroup_without_replaying_bootstrap (insula.owner.test_service.NativeOwner.test_owner_crash_reconciles_cgroup_without_replaying_bootstrap) ... ok
 test_real_namespace_descendants_and_stale_generation (insula.owner.test_service.NativeOwner.test_real_namespace_descendants_and_stale_generation) ... ok
@@ -8,6 +9,6 @@ test_rust_supervisor_uses_real_execution_owner (insula.owner.test_service.Native
 test_tmux_reconnect_and_empty_replacement_do_not_replay_pane (insula.owner.test_service.NativeOwner.test_tmux_reconnect_and_empty_replacement_do_not_replay_pane) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 1.567s
+Ran 9 tests in 1.644s
 
 OK

@@ -327,6 +327,18 @@ class Owner:
             raise Refused("unsupported", "cwd must be under readonly workspace")
         if spec["adapter"]["kind"] not in {"foreground", "tmux"}:
             raise Refused("unsupported", "unknown adapter")
+        if spec["adapter"]["kind"] == "tmux":
+            endpoint = spec["adapter"]["socket"]
+            if (
+                command["args"]
+                or not endpoint.startswith("/home/bench/service/")
+                or ".." in Path(endpoint).parts
+                or len(endpoint.encode()) > 90
+            ):
+                raise Refused(
+                    "unsupported",
+                    "tmux requires a fresh short endpoint below service projection and no arguments",
+                )
         if len(command["args"]) > 256 or any(
             not isinstance(a, str) or len(a) > 8192 or "\0" in a
             for a in command["args"]
@@ -334,16 +346,35 @@ class Owner:
             raise Refused("invalid", "invalid command arguments")
 
     def start(self, ownership, request):
+        if set(request) != {"operation_id", "generation", "spec"}:
+            raise Refused("invalid", "unexpected launch request fields")
         self._spec(request["spec"])
         self._verify_capsule()
         spec = request["spec"]
         generation = str(uuid.UUID(request["generation"]))
         key = canonical(spec["key"])
         row = self._row(spec["key"])
+        if self.db.execute(
+            "SELECT 1 FROM operations WHERE id=?",
+            (str(uuid.UUID(request["operation_id"])),),
+        ).fetchone():
+            _op, _result = self._reserve({"launch": True, **request})
+            return self.observe(spec["key"], generation)
         if row is not None and row[4] != "gone":
             if row[1] == generation and row[2] == canonical(spec):
                 return self.observe(spec["key"], generation)
             raise Refused("conflict", "service boundary still owned")
+        reserved_directory = self.authority / ("service-" + uuid.UUID(generation).hex)
+        if (
+            reserved_directory.exists()
+            or reserved_directory.is_symlink()
+            or self.db.execute(
+                "SELECT 1 FROM services WHERE generation=?", (generation,)
+            ).fetchone()
+        ):
+            raise Refused(
+                "conflict", "generation and physical payload are already reserved"
+            )
         if (
             self.db.execute(
                 "SELECT count(*) FROM services WHERE phase!='gone'"
@@ -375,15 +406,6 @@ class Owner:
         argv = [command["executable"], *command["args"]]
         if spec["adapter"]["kind"] == "tmux":
             endpoint = spec["adapter"]["socket"]
-            if (
-                command["args"]
-                or not endpoint.startswith("/home/bench/service/")
-                or ".." in Path(endpoint).parts
-            ):
-                raise Refused(
-                    "unsupported",
-                    "tmux requires a fresh endpoint below service projection and no arguments",
-                )
             # Each generation gets a distinct private host projection; all
             # endpoint names are reserved by this service's durable generation.
             argv = [
@@ -449,6 +471,8 @@ class Owner:
         return result
 
     def stop(self, ownership, request):
+        if set(request) != {"operation_id", "key", "expected_generation", "policy"}:
+            raise Refused("invalid", "unexpected stop request fields")
         row = self._row(request["key"])
         if row is None:
             raise Refused("not_found")

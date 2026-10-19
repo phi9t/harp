@@ -280,6 +280,31 @@ class NativeOwner(unittest.TestCase):
         self.assertEqual(self.stop(req)["error"]["code"], "stale_generation")
         self.stop(newer)
 
+    def test_generation_reservation_prevents_cross_service_payload_alias(self):
+        request = self.request()
+        first = self.launch(request)
+        alias = self.request(name="other-service")
+        alias["generation"] = request["generation"]
+        refused = self.rpc.owned("launch", request=alias)
+        self.assertEqual(refused["error"]["code"], "conflict")
+        observed = self.rpc.owned(
+            "observe", key=request["spec"]["key"], generation=request["generation"]
+        )
+        self.assertEqual(observed["value"]["value"]["identity"], first["identity"])
+        collision = self.request(name="operation-collision")
+        collision["operation_id"] = request["operation_id"]
+        self.assertEqual(
+            self.rpc.owned("launch", request=collision)["error"]["code"], "conflict"
+        )
+        self.stop(request)
+        reused = self.request()
+        reused["generation"] = request["generation"]
+        self.assertEqual(
+            self.rpc.owned("launch", request=reused)["error"]["code"], "conflict"
+        )
+        replayed = self.rpc.owned("launch", request=request)
+        self.assertEqual(replayed["value"]["value"]["state"], "gone")
+
     def test_claim_loss_fences_effect_and_cleans_boundary(self):
         req = self.request()
         self.launch(req)
