@@ -40,6 +40,7 @@ lab/
   math/                     Lean developments and proof companion programs
   sicp/                     evaluator and executable educational exercises
   benchmarks/               retained terminal/build/coding task collections
+  emacs/                    Emacs/Doom gym, bridge, AI/LSP verification workloads
   mixed_build/              compact C++/Rust/Python Bazel workload
   triton_compile/           Triton compilation and correctness workload
   training/                 small transformer training workload
@@ -193,6 +194,18 @@ Privacy checks cover tracked runner files, generated requests, logs and report
 fixtures, including a forced-stage test for a real local inventory. Audit existing
 tracked records for exposure separately; adding an ignore rule does not sanitize
 already tracked files or Git history. Captured evidence cannot be silently edited.
+
+## Benchmark completeness
+
+The [benchmark inventory](benchmark-inventory.md) expands the earlier directory
+map. All existing benchmark payloads are retained under lab entries, including
+fixtures/prototypes in effort records, tmux scenarios, catalogs and reports.
+Soma's Emacs gym and DevX's AI/LSP workload are separate source acquisitions;
+they were referenced by the imported review but are not in the absorbed tree.
+Their dirty source snapshots must be captured and their support closure migrated.
+Ticket 12 makes that work a prerequisite for final existing-code acceptance.
+Captured evidence keeps its canonical bytes and location, referenced by the lab
+manifest. Competing scheduler retirement must not discard benchmark scenarios.
 
 ## Workload contracts
 

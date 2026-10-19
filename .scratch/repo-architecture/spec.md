@@ -61,6 +61,7 @@ is a prerequisite for that first operation.
 - [09: Add a bounded Triton compilation workload](issues/09-triton-compilation-workload.md)
 - [10: Add a checkpointable small transformer training job](issues/10-transformer-training-workload.md)
 - [11: Qualify the migrated architecture end to end](issues/11-qualify-migrated-architecture.md)
+- [12: Preserve the complete Emacs benchmark work under lab](issues/12-preserve-emacs-benchmarks.md)
 
 Runtime consolidation and the two bounded trust repairs can begin independently;
 compose them before final qualification. Extract Insula before adding remote
@@ -85,3 +86,21 @@ whitespace and changed local links. An additional inspection validated eleven
 ticket structures, an acyclic blocker graph and absence of the private host token
 from the new design/tracker files. No runtime, Lean, GPU or remote-runner
 qualification was performed for this architecture-only change.
+
+## Benchmark scope clarification
+
+The owner explicitly requires preserving all existing benchmark work, including
+Emacs. The [coverage inventory](../../docs/workstream/repo-architecture/benchmark-inventory.md)
+records 42 current task directories, 18 readiness scenarios, embedded studies,
+fixtures, catalogs, tmux work and result records. Read-only inspection also found
+Soma's Emacs/Doom gym and DevX's AI/LSP workload in separate dirty source
+checkouts. Ticket 12 acquires those workloads into lab/emacs/ and blocks final
+migration acceptance. New Bazel/Triton/training implementations remain deferred.
+The newly inspected Emacs sources have not yet been snapshotted or imported.
+
+Benchmark clarification checks passed: twelve acyclic tickets, final acceptance
+blocked on Emacs acquisition, current 42-task/18-scenario counts checked against
+tracked source, changed local links valid, and no private host token in changed
+records. `mise run verify -- --base 31e3a076154ef7ec18f176f2628b0c8050195f68`
+passed its selected documentation checks. These checks qualify the migration
+coverage records, not benchmark execution or import completeness after relocation.
