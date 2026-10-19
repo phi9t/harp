@@ -469,10 +469,6 @@ impl<'a> EpisodeWriter<'a> {
         &self.relative_directory
     }
 
-    pub(crate) fn manifest(&self) -> &EpisodeManifest {
-        &self.manifest
-    }
-
     #[cfg(any(target_os = "macos", target_os = "linux"))]
     #[cfg(test)]
     pub(crate) fn provider_raw_path(&self) -> Result<EpisodeProviderRawPath, AppError> {

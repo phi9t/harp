@@ -27,8 +27,8 @@ local reading and evidence setup.
 | Review the articles previously read | [Brief article survey](knowledge/article_survey.md) |
 | Study interpreters and agent engineering | [SICP](knowledge/sicp/sicp_index.md) and [agentic engineering](knowledge/agentic_engineering/agentic_engineering_index.md) |
 | Search and validate the local corpus | [CLI setup and first commands](docs/getting-started.md#build-the-cli) |
-| Run and recover Codex task graphs | [Durable task graphs](docs/agent-workflows.md#durable-task-graphs) |
-| Run Codex or Trae CLI with recorded context and output | [Provider workflows](docs/agent-workflows.md#provider-workflows) |
+| Run Codex or Trae in isolated, restartable coding attempts | [Durable coding work](docs/durable-runtime.md) |
+| Inspect context tools and old command dispositions | [Agent workflows](docs/agent-workflows.md) |
 
 The library also covers harness benchmarks, agentic engineering,
 SICP, mathematical foundations, and proof-reproduction studies. Workstream records describe checked-in research and proof work.
@@ -62,7 +62,8 @@ require the full contributor verification gate.
   license records.
 - `content/` holds machine-readable contracts.
 - `content/generated/` holds the compiled headless corpus and local publication outputs.
-- `crates/` holds the CLI, contracts, and durable execution engine.
+- `crates/` holds the CLI, reusable contracts and retained Rust libraries.
+- `harp_durable/` exposes the selected coding lifecycle over the imported lightweight runtime.
 - `labs/` and `formalization/` hold experiments and Lean companions.
 
 Markdown is the authority for technical prose. The compiled headless corpus is generated from it. The

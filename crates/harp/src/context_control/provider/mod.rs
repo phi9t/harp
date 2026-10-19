@@ -1,9 +1,15 @@
+#[cfg_attr(
+    not(test),
+    expect(
+        dead_code,
+        reason = "Retained invocation and evidence contracts also support the test-only legacy executor."
+    )
+)]
 mod invocation;
 mod probe;
-#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[cfg(all(test, any(target_os = "macos", target_os = "linux")))]
 mod process;
 
-pub(crate) use invocation::build_invocation_from_snapshot;
 pub use invocation::{
     build_invocation, encode_provider_command, ApprovalPolicy, ProviderArgumentPlan,
     ProviderCapabilitySnapshot, ProviderInvocation, ProviderRunOptions, SandboxMode,
@@ -14,8 +20,27 @@ pub use invocation::{
     MaterializedProviderInvocation, SealedProviderEvidence,
 };
 pub use probe::{locate, probe, ProviderCapabilities};
+#[cfg(all(test, any(target_os = "macos", target_os = "linux")))]
+pub(crate) use process::execute;
+
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-pub use process::{execute, ProviderExecution, ProviderProcessResult};
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ProviderProcessResult {
+    pub exit_code: Option<i32>,
+    pub terminated_by_signal: Option<i32>,
+    pub capture_complete: bool,
+    pub stdout_sha256: String,
+    pub stderr_sha256: String,
+    pub final_message_sha256: Option<String>,
+    pub raw_archive_sha256: String,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Debug)]
+pub struct ProviderExecution {
+    pub result: ProviderProcessResult,
+    pub evidence: SealedProviderEvidence,
+}
 
 use std::path::Path;
 

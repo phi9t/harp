@@ -1,5 +1,12 @@
 pub mod canonical;
 pub mod context;
+#[cfg_attr(
+    not(test),
+    expect(
+        dead_code,
+        reason = "Retained episode records and execution fixtures have no live controller caller."
+    )
+)]
 pub mod episode;
 pub mod policy;
 pub mod provider;

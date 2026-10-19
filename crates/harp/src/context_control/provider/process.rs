@@ -13,8 +13,7 @@ use signal_hook::iterator::{Handle as SignalHandle, Signals};
 
 use super::invocation::{
     canonical_raw_archive, canonical_raw_members_manifest, ClaimedProviderInvocation,
-    ProviderRawMember, SealedProviderEvidence, MAX_FINAL_MESSAGE_BYTES, MAX_STDERR_BYTES,
-    MAX_STDOUT_BYTES,
+    ProviderRawMember, MAX_FINAL_MESSAGE_BYTES, MAX_STDERR_BYTES, MAX_STDOUT_BYTES,
 };
 use super::BoundProviderInvocation;
 use crate::AppError;
@@ -28,22 +27,7 @@ const WORKER_POLL_INTERVAL: Duration = Duration::from_millis(5);
 #[cfg(test)]
 const SIGNAL_POLL_INTERVAL: Duration = Duration::from_millis(10);
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ProviderProcessResult {
-    pub exit_code: Option<i32>,
-    pub terminated_by_signal: Option<i32>,
-    pub capture_complete: bool,
-    pub stdout_sha256: String,
-    pub stderr_sha256: String,
-    pub final_message_sha256: Option<String>,
-    pub raw_archive_sha256: String,
-}
-
-#[derive(Debug)]
-pub struct ProviderExecution {
-    pub result: ProviderProcessResult,
-    pub evidence: SealedProviderEvidence,
-}
+use super::{ProviderExecution, ProviderProcessResult};
 
 pub fn execute(invocation: BoundProviderInvocation) -> Result<ProviderExecution, AppError> {
     execute_with_options(invocation, ProcessOptions::standard()?)

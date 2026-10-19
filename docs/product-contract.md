@@ -10,7 +10,8 @@ Harp owns the agent runtime and maintained education library:
 - deterministic headless corpus validation and compilation in `crates/harp/`;
 - source-specific evidence, licenses and proof receipts under `evidence/`;
 - SICP and proof-reproduction labs and Lean companions;
-- local SQLite full-text search and context-control/provider observation;
+- local SQLite full-text search, immutable context releases and provider diagnostics;
+- project-scoped durable coding work through `harp durable`;
 - the imported Corenius terminal agent, SQLite controller, collaboration tools,
   benchmarks and durable-execution source under `corenius/`.
 
@@ -19,13 +20,11 @@ workspace, retained branch/worktree provenance and qualification limits.
 PostgreSQL/Temporal remain parked source; no service adoption is implied.
 The RSI research library, article reproduction labs and Atlas are retired.
 
-Hosted model access, provider authentication, provider security enforcement,
-internal infrastructure, and provider-specific CI are outside the product
-boundary. Harp observes local provider CLIs without replacing or weakening
-their native configuration, repository rules, or enforcement. Harp does not
-synthesize or silently widen privileges. Explicit user-supplied native
-sandbox, approval, and profile overrides are forwarded to the provider and may
-change its behavior.
+Hosted model access and authentication are supplied by the operator. The selected
+coding path pins provider binaries, projects only selected credentials and runs
+workers inside its explicit Insula/cgroup boundary. It does not load host sessions
+or user configuration. See [the execution contract](durable-runtime.md) for the
+profile, network, permission and recovery boundaries.
 
 ## Stable interfaces
 
@@ -65,44 +64,31 @@ in this order:
 2. `${XDG_STATE_HOME}/harp`; then
 3. `${HOME}/.local/state/harp`.
 
-If all three variables are unavailable, stateful release and run commands fail
+If all three variables are unavailable, stateful release commands fail
 rather than choose another location. `providers doctor` remains stateless. The
 state root is opened through the secure filesystem boundary and rejects
 symlinked, wrongly owned, or group/world-accessible state.
 
-Repository policy is optional and is read only from
-`.harp/context-control.json`. A missing file means enabled with no additional
-restriction. When present, the strict `harp-repository-policy/v1` object may
-disable Harp, limit allowed workflows, pin an immutable release, lower a
-workflow's built-in context budget, and declare required verification labels.
-Required labels are validated and included in the policy digest, but verifier
-execution and outcome enforcement are not implemented in this milestone. The
-policy cannot inject prompt text, choose a provider executable or selector,
-raise a context budget, or broaden provider authority.
+`harp providers doctor` performs bounded local executable, version and capability
+probes. `harp releases compile`, `list` and `inspect` manage content-addressed
+immutable releases. These tools do not admit or execute a coding task.
 
-`harp providers doctor` performs bounded local executable, version, and
-capability probes. `harp releases compile`, `list`, and `inspect` manage
-content-addressed immutable releases. `harp run` supports `trae` and `codex`
-across `auto`, `ci_repair`, `code_review`, `dependency_update`, and
-`general_coding`.
+The direct `harp run` wrapper and the `rlm`/`workflow` command families are retired.
+They return typed errors before provider probes, input reads, state initialization
+or process observation. Old graph databases are not imported or resumed. The old
+byte-exact provider stdout contract does not apply to the selected runtime;
+provider logs are retained per attempt.
 
-Provider stdout bytes requested in JSONL mode are copied byte-for-byte and
-remain the only process stdout from `harp run`; malformed output is preserved.
-Harp lifecycle records and the final episode ID are written to stderr. The
-wrapper keeps native provider configuration, repository rules, and enforcement
-active. It forwards explicit user-selected native sandbox, approval, and
-profile overrides but does not create hidden bypasses.
+Context schemas, restriction-only policy descriptions and historical partial
+context/episode records remain library and reference material. They are not
+implicitly converted into selected-runtime admission or execution authority.
+Likewise, pure task-graph validation and result decoding helpers remain available
+without exposing the old scheduler through supported Harp commands.
 
-V1 context-manifest completeness is partial. The pre-launch manifest records
-the selected release, Harp context supplement, invocation identity, and pre-run
-repository state; it does not claim to reconstruct the provider's complete
-effective prompt, native skill selection, retained reasoning, or compaction
-state. Raw provider bytes and their completion receipt are separate post-run
-evidence.
-
-This milestone is observation-only. Normalized learning export, ACE and MCE
-suggestion generation, candidate evaluation, shadowing, canarying, automatic
-promotion, and rollback remain deferred.
+The selected lifecycle is documented in [Durable coding work](durable-runtime.md).
+It separates proposal generation, exact-candidate verification, human approval and
+conditional local landing. Automatic learning, canarying, promotion and rollback
+remain deferred.
 
 ## Canonical content and search
 

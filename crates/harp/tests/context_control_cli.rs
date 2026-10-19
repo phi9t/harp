@@ -19,7 +19,7 @@ fn context_control_commands_are_exposed_without_running_a_provider() {
 }
 
 #[test]
-fn run_returns_a_typed_preflight_error_when_provider_is_missing() {
+fn retired_run_does_not_require_an_installed_provider() {
     let empty_path = tempfile::tempdir().expect("empty provider search path");
     assert_error_code_with_path(
         &[
@@ -34,12 +34,12 @@ fn run_returns_a_typed_preflight_error_when_provider_is_missing() {
             "test",
         ],
         empty_path.path(),
-        "provider.missing",
+        "run.retired",
     );
 }
 
 #[test]
-fn run_accepts_every_documented_context_control_option_value() {
+fn retired_run_recognizes_historical_options_without_executing() {
     let cases: &[(&str, &[&str])] = &[
         ("provider trae", &["--provider", "trae"]),
         ("provider codex", &["--provider", "codex"]),
@@ -71,7 +71,7 @@ fn run_accepts_every_documented_context_control_option_value() {
         args.extend(["--", "test"]);
 
         let empty_path = tempfile::tempdir().expect("empty provider search path");
-        assert_error_code_with_path_for_case(&args, empty_path.path(), "provider.missing", name);
+        assert_error_code_with_path_for_case(&args, empty_path.path(), "run.retired", name);
     }
 }
 

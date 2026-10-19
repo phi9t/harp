@@ -171,26 +171,29 @@ repository-relative, symlink-safe, atomic, and race-aware. Add a failing test
 before production behavior changes. Corpus tests protect canonical identities, source mapping, safe links,
 path escapes, symlink output and byte stability.
 
-## Context-control changes
+## Execution and context changes
 
-Keep repository policy restrictions-only. `.harp/context-control.json` may
-disable Harp, narrow workflows, pin a release, lower a context budget, or
-declare required verification labels; it must not inject prompts, choose
-executables, or broaden sandbox, approval, network, tool, MCP, or
-authentication authority. Labels are currently validated and included in the
-policy digest, but no verifier or outcome gate enforces them yet.
+The selected execution authority is the lightweight runtime behind `harp durable`.
+Keep task intent, admission, worker effects, verification, human approval and
+landing distinct. Test at the public CLI, real Git and durable-state boundaries.
+Cancellation or recovery must not silently launch an old controller or reuse an
+uncertain effect.
 
-Provider tests use fake executables for the selected Trae CLI or Codex CLI
-adapter. Preserve the `harp run` stream contract in every end-to-end test:
-byte-exact provider stdout requested in JSONL mode is the only stdout, while
-Harp lifecycle records and the final episode ID use stderr. Preserve malformed
-provider output unchanged. `mise run verify` must never launch a real provider
-or require provider credentials.
+The direct `harp run` and old `rlm`/`workflow` commands are retired. Regression
+tests must prove refusal precedes input reads, private-state initialization,
+provider probes and process launch. Historical database bytes must remain intact.
+Preserve the reusable graph/result contracts, including Crouzeix source-contract
+decoder tests, when removing execution callers.
 
-Document context manifests as partial until a provider exposes enough
-telemetry to reconstruct the complete effective prompt, native skill
-selection, and compaction state. Do not describe ACE/MCE suggestion generation,
-evaluation, canarying, promotion, or rollback as implemented.
+Capability probes and immutable context releases remain supported. Context
+policy descriptions stay restriction-only; they cannot inject prompts or broaden
+authority. Do not describe historical partial context records as complete prompt,
+native skill or compaction telemetry.
+
+Provider adapter tests use process fixtures. Explicit Linux qualification uses
+real namespaces, delegated cgroups and supported SQLite. `mise run verify` must
+never launch a real provider or require provider credentials. Live model runs
+need their own explicit qualification evidence; an offline pass does not replace it.
 
 ## Licensing
 

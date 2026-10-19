@@ -2,186 +2,63 @@
 
 [Documentation](README.md) / Agent workflows
 
-Harp has two ways to run an installed agent CLI. Choose a provider workflow
-for a single coding task with recorded context and output. Choose a durable
-task graph when work needs persisted dependencies, results, and restart
-recovery.
+Use [durable coding work](durable-runtime.md) to run Codex or Trae through Harp.
+The project-scoped Python + SQLite runtime owns admission, attempts, capacity,
+cancellation and recovery. Each worker receives committed task and acceptance
+inputs, an isolated source workspace and an admitted execution profile.
 
-| Command | Purpose | Implemented live adapters |
-| --- | --- | --- |
-| `harp run` | Run a task with an immutable context release and record provider output | Codex CLI and Trae CLI |
-| `harp rlm` | Execute a task graph with durable state and recovery | Codex CLI and TraeCLI |
+A completed worker produces a proposal. Independent verification binds the exact
+candidate; human approval and checked-out local landing are separate operations.
+The [operator guide](durable-runtime.md) covers preparation, execution, retained
+logs, reconciliation, verification and landing on Linux.
 
-These are opt-in live runs. Install and authenticate the provider separately.
-A run may contact its service, incur charges, and change files within the
-provider's permissions. Harp does not supply model credentials or replace
-provider security enforcement.
+Provider authentication is supplied explicitly during preparation. Starting a
+live coding worker can contact its provider and incur charges. Offline repository
+verification uses deterministic fixtures and never starts a live model session.
 
-The examples assume you have [built the CLI](getting-started.md#build-the-cli)
-and run it from the repository root. For brevity, they use `harp`; substitute
-`.build/harp-target/size/harp` if it is not installed on PATH.
+## Retired execution commands
 
-## Provider workflows
+| Previous command | Current disposition |
+| --- | --- |
+| `harp run --provider … --workflow … -- TASK` | Retired. Commit task Markdown and acceptance JSON, then use `harp durable admit` and `start`. |
+| `harp rlm run` or `resume` | Retired. Task graphs are not automatically converted into coding tasks. |
+| `harp rlm status` or `checkpoint` | Retired. Existing graph databases are retained without opening or migrating them. |
+| `harp workflow run` or `resume` | Retired. Dynamic Workflow IR is not executed through the old scheduler. |
+| `harp workflow status`, `inspect` or `explain` | Retired. These commands do not open historical databases or resume processes. |
 
-For Codex, inspect installed capabilities, then compile a local context release:
+Valid historical argument spellings remain recognizable so commands can return
+an actionable retirement error. They do not forward provider flags, probe an
+executable, read graph inputs, create state or start a worker. Old task-graph and
+context-control state is not imported into the selected runtime. Preserve that
+state for historical inspection; a new admission pins its own explicit inputs.
+
+The old `harp run` byte-for-byte provider stdout contract ended with that
+execution path. The selected runtime reports lifecycle data and retains provider
+stdout/stderr in attempt logs; it does not emulate the old live stream wrapper.
+The context-control `run` library entrypoint also refuses direct execution.
+
+## Retained context tools
+
+Capability diagnostics and immutable context releases remain available:
 
 ```sh
 harp providers doctor --provider codex
+harp providers doctor --provider trae
 harp releases compile
 harp --format json releases list
-```
-
-For Trae CLI, use `harp providers doctor --provider trae` instead. The
-unqualified `harp providers doctor` checks both providers and fails if either
-is unavailable.
-
-Inspect a release by replacing `RELEASE_ID` with an ID from the JSON list.
-The plain-text list reports only a count:
-
-```sh
 harp --format json releases inspect RELEASE_ID
 ```
 
-Start a live task only when you are ready to use the provider:
+Replace `RELEASE_ID` with an identifier from the list. The doctor commands perform
+bounded local help/version probes. They do not establish that a provider is ready
+inside a particular execution profile; preparation verifies that profile separately.
 
-```sh
-harp run --provider codex --workflow code_review -- review this change
-harp run --provider trae --workflow auto -- fix the failing CI test
-```
+Releases retain content-addressed context descriptions and their schemas. They
+do not admit work, grant permissions or start provider sessions. The historical
+`.harp/context-control.json` policy and workflow names are not implicitly translated
+into the selected runtime's execution contract.
 
-The task begins after `--`; that section is not a channel for native provider
-arguments. The supported workflows are `auto`, `ci_repair`, `code_review`,
-`dependency_update`, and `general_coding`.
-
-Optional `--model`, `--profile`, `--sandbox`, and `--approval` values are
-accepted only when the selected provider reports the required capability.
-Native configuration, repository rules, and enforcement remain active. Harp
-does not silently widen privileges, but explicit sandbox, approval, and profile
-overrides may change the provider's native behavior.
-
-### Output and records
-
-During `harp run`, provider stdout requested in JSONL mode is copied
-byte-for-byte. Malformed output is preserved. Harp lifecycle records and the
-final episode ID go to stderr. This remains true with global `--format json`;
-Harp does not wrap the live provider stream in a JSON envelope.
-
-The pre-launch manifest is partial. It records the selected release, Harp's
-context supplement, invocation identity, and pre-run repository state. It does
-not reconstruct the provider's complete prompt, native skill selection, or
-compaction state. Raw provider output and the completion receipt are separate
-post-run records.
-
-Private context-control state uses the first nonempty location:
-
-1. `HARP_HOME`, used as the complete state-root path.
-2. `${XDG_STATE_HOME}/harp`.
-3. `${HOME}/.local/state/harp`.
-
-Stateful commands fail if none is available. The state directory must be
-privately owned and must not be symlinked or accessible by group or world.
-
-### Repository restrictions
-
-Optional `.harp/context-control.json` may disable Harp, restrict workflows,
-pin a release, lower the context budget, or declare required verification
-labels. It cannot inject prompts, select an executable, or broaden provider
-authority.
-
-Required verification labels are validated and included in the policy digest.
-They do not yet execute verifiers or enforce an outcome gate. Automated
-learning suggestions, evaluation, canarying, promotion, and rollback are also
-deferred. See the [product contract](product-contract.md#local-context-control)
-for the full boundary.
-
-## Durable task graphs
-
-`harp rlm` executes a JSON task graph through the durable engine. The
-[task-graph schema](../benchmarks/codex-architecture/schemas/task-graph.json)
-defines graph inputs; the
-[result-envelope schema](../benchmarks/codex-architecture/schemas/result-envelope.json)
-defines results.
-
-Given a graph file, start a live Codex run:
-
-```sh
-harp rlm run --benchmark path/to/task-graph.json --runtime codex
-```
-
-Replace the placeholder with your graph path. Use
-`--runtime-executable /path/to/codex` when Codex is not on PATH. The adapter
-uses `codex exec --json`, supplies a per-activity output schema, and parses
-bounded JSONL events.
-
-State defaults to `.harp/rlm`:
-
-| Path | Contents |
-| --- | --- |
-| `state.sqlite` | Runs, tasks, attempts, activities, leases, and recovery state |
-| `artifacts/` | Content-addressed results, evidence, and checkpoints |
-| `runtime-home/` | Supervised CLI process records and output spools |
-
-Use the run ID returned by the CLI for status and recovery:
-
-```sh
-harp rlm checkpoint
-harp rlm status RUN_ID
-harp rlm resume RUN_ID
-harp rlm resume --all-incomplete
-```
-
-Resume can observe an existing process or start work needed to finish the
-graph. It is not a read-only status check. Each run pins graph policy,
-projection policy, artifact-store identity, and runtime provenance. Resume
-rejects mismatched runtime or artifact authority before observing processes
-or starting new work.
-
-The engine records process fingerprints and escalates cancellation through
-SIGINT, SIGTERM, then SIGKILL when needed. The runtime options include `fake`
-for deterministic tests. `traecli` uses the supervised process runtime too;
-select it with `--runtime traecli` and optionally `--runtime-executable`.
-The provider wrapper for `harp run` remains a separate execution path.
-
-### Inspecting failures without resuming
-
-Dynamic workflows expose persisted evidence through two read-only commands:
-
-```sh
-harp workflow inspect RUN_ID
-harp --format json workflow explain RUN_ID --task TASK_ID
-harp workflow inspect RUN_ID --after-sequence 50 --limit 50
-```
-
-These commands default to `.harp/workflow`. Pass `--state-dir .harp/rlm` to
-inspect a raw task-graph run. They open only an existing, current-schema state
-database, without initializing directories, migrating state, starting a provider,
-or changing execution state. A missing database is an error.
-
-JSON reports have `schema_version: 1`. They include task states, direct unfinished
-dependencies, accepted attempt IDs, semantic and CLI failure classes when
-recorded, token/wall observations, result and checkpoint hashes, and durable
-events. `explain` filters task and event evidence to the named task. Event pages
-accept a limit of 1–1000; use the returned `next_after_sequence` as the next
-cursor. Each invocation reads one consistent snapshot; later pages may include
-newly recorded events. Hash references are not verification of artifact bytes.
-
-Next actions are `none`, `wait`, `resume`, or `review_failure`, with stable
-reason codes. A live lease produces `wait`, including when another task owns
-it. Expiry only permits asking resume to reconcile. Resume still revalidates
-pinned authorities, ownership, budgets and process state. A terminal run is not
-automatically reopened, and an accepted result does not establish code quality.
-Unrecorded failure classes remain explicit rather than inferred from logs.
-
-For the design rationale, read
-[ADR 0002: dynamic workflows compile to durable task graphs](adr/0002-dynamic-workflow-compiles-to-durable-task-graph.md).
-
-## Proposer experiment and verification
-
-The [Meta-Harness proposer lab](../labs/meta_harness_trae/README.md) is a separate,
-opt-in experiment. It checks proposal shape and candidate interfaces. Its
-recorded run does not establish a benchmark score, held-out evaluation, or
-recursive self-improvement result.
-
-`mise run verify` uses fake providers and deterministic fixtures. It never
-launches a live Codex or Trae CLI task and does not require their credentials.
-A passing offline gate does not verify a live provider session.
+Pure graph schemas, validation and decoding helpers remain useful library and
+reference material. Their presence does not expose another supported scheduler.
+Historical design records, including [ADR0002](adr/0002-dynamic-workflow-compiles-to-durable-task-graph.md),
+describe the earlier architecture.

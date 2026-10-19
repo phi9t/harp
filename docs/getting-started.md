@@ -84,9 +84,10 @@ For machine-readable output, put `--format json` before the command:
 .build/harp-target/size/harp --help
 ```
 
-Most commands use a schema-versioned JSON envelope. Live `harp run` is the
-exception: provider stdout stays byte-exact, with Harp lifecycle records on
-stderr. See [agent workflows](agent-workflows.md).
+Commands use schema-versioned JSON envelopes where documented. Durable coding
+work retains provider stdout/stderr as attempt logs. The old `harp run` live
+stream wrapper is retired; see [agent workflows](agent-workflows.md) and the
+[durable operator guide](durable-runtime.md).
 
 ### Verify or refresh evidence
 
